@@ -1,10 +1,17 @@
 Package: mapview
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1
+Title: GIS-Like Viewing of Spatial Objects in R
+Version: 0.1.0
 Date: 2015-08-20
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: Tim Appelhans
+Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
+Description: Methods to view spatial objects interactively using leaflet.
+License: GPL (>= 3) | file LICENSE
 LazyData: TRUE
+Depends: leaflet,
+    methods
+Imports:
+    sp,
+    raster,
+    satellite,
+    scales

@@ -4,6 +4,7 @@
 \name{mapView}
 \alias{mapView}
 \alias{mapView,RasterBrick-method}
+\alias{mapView,RasterLayer-method}
 \alias{mapView,RasterStack-method}
 \alias{mapView,Satellite-method}
 \alias{mapView,SpatialLines-method}
@@ -12,20 +13,19 @@
 \alias{mapView,SpatialPointsDataFrame-method}
 \alias{mapView,SpatialPolygons-method}
 \alias{mapView,SpatialPolygonsDataFrame-method}
-\alias{mapView,leaflet-method}
 \title{view raster layers interactively}
 \usage{
-\S4method{mapView}{RasterLayer}(x, map = NULL, cols = envinmrPalette(7),
+\S4method{mapView}{RasterLayer}(x, map = NULL, cols = mapViewPalette(7),
   na.color = "transparent", values = NULL, map.types = c("OpenStreetMap",
   "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
   legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
 
-\S4method{mapView}{RasterStack}(x, map = NULL, cols = envinmrPalette(7),
+\S4method{mapView}{RasterStack}(x, map = NULL, cols = mapViewPalette(7),
   na.color = "transparent", values = NULL, map.types = c("OpenStreetMap",
   "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
   legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
 
-\S4method{mapView}{RasterBrick}(x, map = NULL, cols = envinmrPalette(7),
+\S4method{mapView}{RasterBrick}(x, map = NULL, cols = mapViewPalette(7),
   na.color = "transparent", values = NULL, map.types = c("OpenStreetMap",
   "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
   legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
@@ -33,7 +33,7 @@
 \S4method{mapView}{Satellite}(x, ...)
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, map = NULL, burst = FALSE,
-  cols = envinmrPalette(7), na.color = "transparent", values = NULL,
+  cols = mapViewPalette(7), na.color = "transparent", values = NULL,
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
   legend = TRUE, legend.opacity = 1, verbose = FALSE, ...)
 
@@ -42,7 +42,7 @@
   verbose = FALSE, ...)
 
 \S4method{mapView}{SpatialPolygonsDataFrame}(x, map = NULL, burst = FALSE,
-  cols = envinmrPalette(7), na.color = "transparent", values = NULL,
+  cols = mapViewPalette(7), na.color = "transparent", values = NULL,
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
   legend = TRUE, legend.opacity = 1, weight = 2, verbose = FALSE, ...)
 
@@ -51,18 +51,18 @@
   weight = 2, verbose = FALSE, ...)
 
 \S4method{mapView}{SpatialLinesDataFrame}(x, map = NULL, burst = FALSE,
-  cols = envinmrPalette(7), na.color = "transparent", values = NULL,
+  cols = mapViewPalette(7), na.color = "transparent", values = NULL,
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
   legend = TRUE, legend.opacity = 1, weight = 2, verbose = FALSE, ...)
 
 \S4method{mapView}{SpatialLines}(x, map = NULL, na.color = "transparent",
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
   weight = 2, verbose = FALSE, ...)
-
-\S4method{mapView}{leaflet}(x, y)
 }
 \arguments{
 \item{x}{a \code{\link{raster}}* object}
+
+\item{map}{an optional existing map to be updated/added to}
 
 \item{cols}{color palette for the layers}
 
@@ -83,9 +83,13 @@ for available options.}
 
 \item{trim}{should the raster be trimmed in case there are NAs on the egdes}
 
+\item{verbose}{should some details be printed during the process}
+
 \item{...}{additional arguments passed on to \code{\link{addLegend}}}
 
 \item{burst}{whether to show all (TRUE) or only one (FALSE) layers}
+
+\item{weight}{line width (see \code{\link{leaflet}} for details)}
 }
 \description{
 this function produces an interactive GIS-like view of the specified
@@ -110,11 +114,13 @@ raster layers on top of the specified base maps.
 \item \code{SpatialLinesDataFrame}: 
 
 \item \code{SpatialLines}: 
-
-\item \code{leaflet}: 
 }}
 \examples{
+\dontrun{
 ### raster data ###
+library(sp)
+library(raster)
+
 data(meuse.grid)
 coordinates(meuse.grid) = ~x+y
 proj4string(meuse.grid) <- CRS("+init=epsg:28992")
@@ -153,22 +159,22 @@ m3
 
 m4 <- mapView(meuse, map = m2, burst = TRUE)
 m4 # is the same as
-m5 <- addLayer(meuse, m2, burst = TRUE)
+m5 <- addMapLayer(meuse, m2, burst = TRUE)
 m5
 
 
 
 ### polygon vector data ###
-data("DEU_adm2")
-m <- mapView(gadm, burst = FALSE)
+data("DEU_admin2")
+m <- mapView(DEU_admin2, burst = FALSE)
 m
 
 ## points on polygons ##
-centres <- data.frame(coordinates(gadm))
+centres <- data.frame(coordinates(DEU_admin2))
 names(centres) <- c("x", "y")
 coordinates(centres) <- ~ x + y
-projection(centres) <- projection(gadm)
-addLayer(centres, m)
+projection(centres) <- projection(DEU_admin2)
+addMapLayer(centres, m)
 
 
 
@@ -176,6 +182,7 @@ addLayer(centres, m)
 data("atlStorms2005")
 mapView(atlStorms2005, burst = FALSE)
 mapView(atlStorms2005, burst = TRUE)
+}
 }
 \author{
 Tim Appelhans
