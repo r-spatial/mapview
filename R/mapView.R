@@ -43,7 +43,8 @@ if ( !isGeneric('mapView') ) {
 #' m1 <- mapView(meuse_rst)
 #' m1
 #'
-#' m2 <- mapView(meuse_rst[[1]])
+#' # factorial RasterLayer
+#' m2 <- mapView(raster::as.factor(meuse_rst[[4]]))
 #' m2
 #'
 #'
@@ -125,11 +126,9 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 
             is.fact <- raster::is.factor(x)
 
-            #llcrs <- CRS("+init=epsg:3857")@projargs
-            llcrs <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs"
-
-            if (!identical(projection(x), llcrs)) {
+            if (!identical(projection(x), leaflet:::epsg3857)) {
               if(verbose) cat("\n", "reprojecting to web mercator", "\n\n")
+              projectRasterForMapView(x)
             }
 
             ## create base map using specified map types
@@ -151,8 +150,8 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                 values <- x@data@attributes[[1]]$ID
               } else {
                 offset <- diff(range(x[], na.rm = TRUE)) * 0.05
-                top <- ceiling(max(x[], na.rm = TRUE)) + offset
-                bot <- floor(min(x[], na.rm = TRUE)) - offset
+                top <- max(x[], na.rm = TRUE) + offset
+                bot <- min(x[], na.rm = TRUE) - offset
                 values <- seq(bot, top, length.out = 10)
                 values <- round(values, 5)
               }
@@ -170,12 +169,11 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                                            na.color = na.color)
             }
 
-
             ## add layers to base map
             m <- leaflet::addRasterImage(map = m,
                                          x = x,
                                          colors = pal,
-                                         project = TRUE,
+                                         project = FALSE,
                                          opacity = layer.opacity,
                                          group = names(x),
                                          ...)

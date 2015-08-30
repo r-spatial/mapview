@@ -130,7 +130,8 @@ meuse_rst <- stack(meuse.grid)
 m1 <- mapView(meuse_rst)
 m1
 
-m2 <- mapView(meuse_rst[[1]])
+# factorial RasterLayer
+m2 <- mapView(raster::as.factor(meuse_rst[[4]]))
 m2
 
 
