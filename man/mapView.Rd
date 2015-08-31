@@ -101,7 +101,7 @@ of the column(s) to be rendered}
 }
 \description{
 this function produces an interactive GIS-like view of the specified
-raster layers on top of the specified base maps.
+spatial object(s) on top of the specified base maps.
 }
 \section{Methods (by class)}{
 \itemize{

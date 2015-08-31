@@ -7,7 +7,7 @@ if ( !isGeneric('mapView') ) {
 #'
 #' @description
 #' this function produces an interactive GIS-like view of the specified
-#' raster layers on top of the specified base maps.
+#' spatial object(s) on top of the specified base maps.
 #'
 #' @param x a \code{\link{raster}}* object
 #' @param map an optional existing map to be updated/added to
@@ -375,10 +375,15 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
             if (!identical(projection(x), llcrs)) {
               if(verbose) cat("\n", "reprojecting to web mercator", "\n\n")
-              x <- spTransform(x, CRSobj = llcrs)
+              x <- sp::spTransform(x, CRSobj = llcrs)
             }
 
-            m <- initBaseMaps(map.types)
+            ## create base map using specified map types
+            if (is.null(map)) {
+              m <- initBaseMaps(map.types)
+            } else {
+              m <- map
+            }
 
             if (burst) {
               lst <- lapply(names(x), function(j) x[j])
@@ -520,10 +525,15 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
 
             if (!identical(projection(x), llcrs)) {
               if(verbose) cat("\n", "reprojecting to web mercator", "\n\n")
-              x <- spTransform(x, CRSobj = llcrs)
+              x <- sp::spTransform(x, CRSobj = llcrs)
             }
 
-            m <- initBaseMaps(map.types)
+            ## create base map using specified map types
+            if (is.null(map)) {
+              m <- initBaseMaps(map.types)
+            } else {
+              m <- map
+            }
 
             txt_x <- paste0("x: ", round(coordinates(x)[, 1], 2))
             txt_y <- paste0("y: ", round(coordinates(x)[, 2], 2))
@@ -594,10 +604,15 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
             if (!identical(projection(x), llcrs)) {
               if(verbose) cat("\n", "reprojecting to web mercator", "\n\n")
-              x <- spTransform(x, CRSobj = llcrs)
+              x <- sp::spTransform(x, CRSobj = llcrs)
             }
 
-            m <- initBaseMaps(map.types)
+            ## create base map using specified map types
+            if (is.null(map)) {
+              m <- initBaseMaps(map.types)
+            } else {
+              m <- map
+            }
 
             if (burst) {
 
@@ -757,10 +772,15 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
 
             if (!identical(projection(x), llcrs)) {
               if(verbose) cat("\n", "reprojecting to web mercator", "\n\n")
-              x <- spTransform(x, CRSobj = llcrs)
+              x <- sp::spTransform(x, CRSobj = llcrs)
             }
 
-            m <- initBaseMaps(map.types)
+            ## create base map using specified map types
+            if (is.null(map)) {
+              m <- initBaseMaps(map.types)
+            } else {
+              m <- map
+            }
 
             nam <- sys.call(-1)
             grp <- as.character(nam)[2]
@@ -825,10 +845,15 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
             if (!identical(projection(x), llcrs)) {
               if(verbose) cat("\n", "reprojecting to web mercator", "\n\n")
-              x <- spTransform(x, CRSobj = llcrs)
+              x <- sp::spTransform(x, CRSobj = llcrs)
             }
 
-            m <- initBaseMaps(map.types)
+            ## create base map using specified map types
+            if (is.null(map)) {
+              m <- initBaseMaps(map.types)
+            } else {
+              m <- map
+            }
 
             if (burst) {
 
@@ -989,10 +1014,15 @@ setMethod('mapView', signature(x = 'SpatialLines'),
 
             if (!identical(projection(x), llcrs)) {
               if(verbose) cat("\n", "reprojecting to web mercator", "\n\n")
-              x <- spTransform(x, CRSobj = llcrs)
+              x <- sp::spTransform(x, CRSobj = llcrs)
             }
 
-            m <- initBaseMaps(map.types)
+            ## create base map using specified map types
+            if (is.null(map)) {
+              m <- initBaseMaps(map.types)
+            } else {
+              m <- map
+            }
 
             nam <- sys.call(-1)
             grp <- as.character(nam)[2]
