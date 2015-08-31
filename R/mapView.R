@@ -3,7 +3,7 @@ if ( !isGeneric('mapView') ) {
     standardGeneric('mapView'))
 }
 
-#' view raster layers interactively
+#' view spatial objects interactively
 #'
 #' @description
 #' this function produces an interactive GIS-like view of the specified
@@ -23,7 +23,9 @@ if ( !isGeneric('mapView') ) {
 #' @param legend.opacity opacity of the legend
 #' @param trim should the raster be trimmed in case there are NAs on the egdes
 #' @param verbose should some details be printed during the process
-#' @param ... additional arguments passed on to \code{\link{addLegend}}
+#' @param ... additional arguments passed on to repective functions.
+#' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
+#' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
 #'
 #' @author
 #' Tim Appelhans
@@ -249,7 +251,9 @@ setMethod('mapView', signature(x = 'RasterStack'),
                 m <- mapView(x[[i]], m, ...)
               }
 
-              m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+              if (length(getLayerNamesFromMap(m)) > 1) {
+                m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+              }
 
             }
 
@@ -300,7 +304,9 @@ setMethod('mapView', signature(x = 'RasterBrick'),
                 m <- mapView(x[[i]], m, ...)
               }
 
-              m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+              if (length(getLayerNamesFromMap(m)) > 1) {
+                m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+              }
 
             }
 
@@ -334,7 +340,9 @@ setMethod('mapView', signature(x = 'Satellite'),
               }
             }
 
-            m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+            if (length(getLayerNamesFromMap(m)) > 1) {
+              m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+            }
 
             return(m)
 
@@ -348,9 +356,12 @@ setMethod('mapView', signature(x = 'Satellite'),
 ## SpatialPointsDataFrame =================================================
 #' @describeIn mapView
 #' @param burst whether to show all (TRUE) or only one (FALSE) layers
+#' @param zcol attribute name(s) or column number(s) in attribute table
+#' of the column(s) to be rendered
 
 setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
           function(x,
+                   zcol = NULL,
                    map = NULL,
                    burst = FALSE,
                    cols = mapViewPalette(7),
@@ -367,6 +378,8 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
             pkgs <- c("leaflet", "sp", "magrittr")
             tst <- sapply(pkgs, "requireNamespace",
                           quietly = TRUE, USE.NAMES = FALSE)
+
+            if(!is.null(zcol)) x <- x[, zcol]
 
             llcrs <- CRS("+init=epsg:4326")@projargs
 
@@ -415,14 +428,14 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                                lat = coordinates(lst[[i]])[, 2],
                                                group = names(lst[[i]]),
                                                color = pal_n[[i]](vals[[i]]),
+                                               popup = txt,
                                                ...)
 
-
-                m <- leaflet::addMarkers(m, lng = coordinates(lst[[i]])[, 1],
-                                         lat = coordinates(lst[[i]])[, 2],
-                                         group = names(lst[[i]]),
-                                         options = leaflet::markerOptions(opacity = 0),
-                                         popup = txt)
+#                 m <- leaflet::addMarkers(m, lng = coordinates(lst[[i]])[, 1],
+#                                          lat = coordinates(lst[[i]])[, 2],
+#                                          group = names(lst[[i]]),
+#                                          options = leaflet::markerOptions(opacity = 0),
+#                                          popup = txt)
 
                 m <- leaflet::addLegend(map = m, position = "topright",
                                         pal = pal_n[[i]],
@@ -449,7 +462,9 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                 }
               }
 
-              m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+              if (length(getLayerNamesFromMap(m)) > 1) {
+                m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+              }
 
             } else {
 
@@ -463,12 +478,6 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
               len <- length(m$x$calls)
 
-              m <- leaflet::addCircleMarkers(m, lng = coordinates(x)[, 1],
-                                             lat = coordinates(x)[, 2],
-                                             group = grp,
-                                             color = cols[length(cols)],
-                                             ...)
-
               txt_x <- paste0("x: ", round(coordinates(x)[, 1], 2))
               txt_y <- paste0("y: ", round(coordinates(x)[, 2], 2))
 
@@ -480,11 +489,18 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                 paste(txt[, j], collapse = " <br/> ")
               })
 
-              m <- leaflet::addMarkers(m, lng = coordinates(x)[, 1],
-                                       lat = coordinates(x)[, 2],
-                                       group = grp,
-                                       options = leaflet::markerOptions(opacity = 0),
-                                       popup = txt)
+              m <- leaflet::addCircleMarkers(m, lng = coordinates(x)[, 1],
+                                             lat = coordinates(x)[, 2],
+                                             group = grp,
+                                             color = cols[length(cols)],
+                                             popup = txt,
+                                             ...)
+
+#               m <- leaflet::addMarkers(m, lng = coordinates(x)[, 1],
+#                                        lat = coordinates(x)[, 2],
+#                                        group = grp,
+#                                        options = leaflet::markerOptions(opacity = 0),
+#                                        popup = txt)
 
               m <- leaflet::addLayersControl(map = m,
                                              position = "topleft",
@@ -549,14 +565,15 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
             m <- leaflet::addCircleMarkers(m, lng = coordinates(x)[, 1],
                                            lat = coordinates(x)[, 2],
                                            group = grp,
+                                           popup = txt,
                                            ...)
 
 
-            m <- leaflet::addMarkers(m, lng = coordinates(x)[, 1],
-                                     lat = coordinates(x)[, 2],
-                                     group = grp,
-                                     options = leaflet::markerOptions(opacity = 0),
-                                     popup = txt)
+#             m <- leaflet::addMarkers(m, lng = coordinates(x)[, 1],
+#                                      lat = coordinates(x)[, 2],
+#                                      group = grp,
+#                                      options = leaflet::markerOptions(opacity = 0),
+#                                      popup = txt)
 
             m <- leaflet::addLayersControl(map = m,
                                            position = "topleft",
@@ -580,6 +597,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
 
 setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
           function(x,
+                   zcol = NULL,
                    map = NULL,
                    burst = FALSE,
                    cols = mapViewPalette(7),
@@ -597,6 +615,8 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
             pkgs <- c("leaflet", "sp", "magrittr")
             tst <- sapply(pkgs, "requireNamespace",
                           quietly = TRUE, USE.NAMES = FALSE)
+
+            if(!is.null(zcol)) x <- x[, zcol]
 
             llcrs <- CRS("+init=epsg:4326")@projargs
 
@@ -690,7 +710,9 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
               }
 
-              m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+              if (length(getLayerNamesFromMap(m)) > 1) {
+                m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+              }
 
             } else {
 
@@ -702,9 +724,11 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
               nam <- sys.call(-1)
               grp <- as.character(nam)[2]
 
-              txt <- sapply(seq(nrow(x@data)), function(i) {
+              txt <- as.matrix(sapply(seq(nrow(x@data)), function(i) {
                 paste(nms, df[i, ], sep = ": ")
-              })
+              }))
+
+              if (length(zcol) == 1) txt <- t(txt)
 
               txt <- sapply(seq(ncol(txt)), function(j) {
                 paste(txt[, j], collapse = " <br> ")
@@ -821,6 +845,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
 
 setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
           function(x,
+                   zcol = NULL,
                    map = NULL,
                    burst = FALSE,
                    cols = mapViewPalette(7),
@@ -838,6 +863,8 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
             pkgs <- c("leaflet", "sp", "magrittr")
             tst <- sapply(pkgs, "requireNamespace",
                           quietly = TRUE, USE.NAMES = FALSE)
+
+            if(!is.null(zcol)) x <- x[, zcol]
 
             llcrs <- CRS("+init=epsg:4326")@projargs
 
@@ -933,7 +960,9 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
               }
 
-              m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+              if (length(getLayerNamesFromMap(m)) > 1) {
+                m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+              }
 
             } else {
 

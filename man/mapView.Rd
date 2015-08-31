@@ -13,7 +13,7 @@
 \alias{mapView,SpatialPointsDataFrame-method}
 \alias{mapView,SpatialPolygons-method}
 \alias{mapView,SpatialPolygonsDataFrame-method}
-\title{view raster layers interactively}
+\title{view spatial objects interactively}
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL, cols = mapViewPalette(7),
   na.color = "transparent", values = NULL, map.types = c("OpenStreetMap",
@@ -32,28 +32,31 @@
 
 \S4method{mapView}{Satellite}(x, ...)
 
-\S4method{mapView}{SpatialPointsDataFrame}(x, map = NULL, burst = FALSE,
-  cols = mapViewPalette(7), na.color = "transparent", values = NULL,
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  legend = TRUE, legend.opacity = 1, verbose = FALSE, ...)
+\S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
+  burst = FALSE, cols = mapViewPalette(7), na.color = "transparent",
+  values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
+  layer.opacity = 0.8, legend = TRUE, legend.opacity = 1,
+  verbose = FALSE, ...)
 
 \S4method{mapView}{SpatialPoints}(x, map = NULL, na.color = "transparent",
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
   verbose = FALSE, ...)
 
-\S4method{mapView}{SpatialPolygonsDataFrame}(x, map = NULL, burst = FALSE,
-  cols = mapViewPalette(7), na.color = "transparent", values = NULL,
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  legend = TRUE, legend.opacity = 1, weight = 2, verbose = FALSE, ...)
+\S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL, map = NULL,
+  burst = FALSE, cols = mapViewPalette(7), na.color = "transparent",
+  values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
+  layer.opacity = 0.8, legend = TRUE, legend.opacity = 1, weight = 2,
+  verbose = FALSE, ...)
 
 \S4method{mapView}{SpatialPolygons}(x, map = NULL, na.color = "transparent",
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
   weight = 2, verbose = FALSE, ...)
 
-\S4method{mapView}{SpatialLinesDataFrame}(x, map = NULL, burst = FALSE,
-  cols = mapViewPalette(7), na.color = "transparent", values = NULL,
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  legend = TRUE, legend.opacity = 1, weight = 2, verbose = FALSE, ...)
+\S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
+  burst = FALSE, cols = mapViewPalette(7), na.color = "transparent",
+  values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
+  layer.opacity = 0.8, legend = TRUE, legend.opacity = 1, weight = 2,
+  verbose = FALSE, ...)
 
 \S4method{mapView}{SpatialLines}(x, map = NULL, na.color = "transparent",
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
@@ -85,7 +88,12 @@ for available options.}
 
 \item{verbose}{should some details be printed during the process}
 
-\item{...}{additional arguments passed on to \code{\link{addLegend}}}
+\item{...}{additional arguments passed on to repective functions.
+See \code{\link{addRasterImage}}, \code{\link{addCircles}},
+\code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
+
+\item{zcol}{attribute name(s) or column number(s) in attribute table
+of the column(s) to be rendered}
 
 \item{burst}{whether to show all (TRUE) or only one (FALSE) layers}
 
