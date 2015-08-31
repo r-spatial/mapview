@@ -5,8 +5,8 @@
 #' of the supplied spatial object
 #'
 #' @param x either a Raster* object or a Spatial* object
-#' @param map a leaflet map the extent should be added to. In viewExtent
-#' this can be NULL, then standard background layers are cretaed
+#' @param map a leaflet map the extent should be added to. If NULL
+#' standard background layers are cretaed
 #' @param map.types the map types to be used in case map is NULL
 #' @param ... additional arguments passed on to \code{\link{addRectangles}}
 #'
@@ -30,7 +30,7 @@
 #' @export viewExtent
 #' @name viewExtent
 #' @rdname viewExtent
-#' @aliases viewExtent
+#' @aliases viewExtent,addExtent
 #'
 
 ## view Extent ============================================================
@@ -112,7 +112,7 @@ addExtent <- function(x, map, ...) {
 
   txt <- paste(txt_xmin, txt_xmax, txt_ymin, txt_ymax, sep = "<br/>")
 
-  m <- leaflet::addRectangles(map,
+  m <- leaflet::addRectangles(map = map,
                               lng1 = ext@xmin,
                               lat1 = ext@ymin,
                               lng2 = ext@xmax,

@@ -3,6 +3,7 @@
 \name{viewExtent}
 \alias{addExtent}
 \alias{viewExtent}
+\alias{viewExtent,addExtent}
 \title{view extent/bbox of spatial objects interactively}
 \usage{
 viewExtent(x, map = NULL, map.types = c("OpenStreetMap",
@@ -13,8 +14,8 @@ addExtent(x, map, ...)
 \arguments{
 \item{x}{either a Raster* object or a Spatial* object}
 
-\item{map}{a leaflet map the extent should be added to. In viewExtent
-this can be NULL, then standard background layers are cretaed}
+\item{map}{a leaflet map the extent should be added to. If NULL
+standard background layers are cretaed}
 
 \item{map.types}{the map types to be used in case map is NULL}
 

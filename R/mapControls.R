@@ -1,4 +1,10 @@
-# convenience functios
+#' convenience functions for working with leaflet maps
+#'
+#' @param m a leaflet map
+#'
+#' @author
+#' Tim Appelhans
+#'
 
 getLayerControlEntriesFromMap <- function(m) {
 
