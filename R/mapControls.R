@@ -52,6 +52,20 @@ projectRasterForMapView <- function(x) {
 }
 
 
+initBaseMaps <- function(map.types) {
+  ## create base map using specified map types
+    m <- leaflet::leaflet()
+    m <- leaflet::addProviderTiles(m, provider = map.types[1],
+                                   group = map.types[1])
+    if (length(map.types) > 1) {
+      for (i in 2:length(map.types)) {
+        m <- leaflet::addProviderTiles(m, provider = map.types[i],
+                                       group = map.types[i])
+      }
+    }
+  return(m)
+}
+
 # extractObjectName <- function(x) {
 #   pipe_splt <- strsplit(x, "%>%")[[1]][-1]
 #

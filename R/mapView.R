@@ -130,15 +130,12 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 
             if (!identical(projection(x), leaflet:::epsg3857)) {
               if(verbose) cat("\n", "reprojecting to web mercator", "\n\n")
-              projectRasterForMapView(x)
+              x <- projectRasterForMapView(x)
             }
 
             ## create base map using specified map types
             if (is.null(map)) {
-              m <- leaflet::leaflet()
-              m <- leaflet::addTiles(m, group = map.types[1])
-              m <- leaflet::addProviderTiles(m, provider = map.types[2],
-                                             group = map.types[2])
+              m <- initBaseMaps(map.types)
             } else {
               m <- map
             }
@@ -186,8 +183,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                                       pal = pal,
                                       opacity = legend.opacity,
                                       values = values,
-                                      title = names(x),
-                                      ...)
+                                      title = names(x))
             }
 
             ## add layer control buttons
@@ -235,20 +231,17 @@ setMethod('mapView', signature(x = 'RasterStack'),
 
             ## create base map using specified map types
             if (is.null(map)) {
-              m <- leaflet::leaflet()
-              m <- leaflet::addTiles(m, group = map.types[1])
-              m <- leaflet::addProviderTiles(m, provider = map.types[2],
-                                             group = map.types[2])
+              m <- initBaseMaps(map.types)
             } else {
               m <- map
             }
 
             if (nlayers(x) == 1) {
-              m <- mapView(x[[1]], m, ...)
+              m <- mapView(x[[1]], map = m, map.types = map.types, ...)
             } else {
-              m <- mapView(x[[1]], m, ...)
+              m <- mapView(x[[1]], map = m, map.types = map.types, ...)
               for (i in 2:nlayers(x)) {
-                m <- mapView(x[[i]], m, ...)
+                m <- mapView(x[[i]], map = m, map.types = map.types, ...)
               }
 
               if (length(getLayerNamesFromMap(m)) > 1) {
@@ -288,20 +281,17 @@ setMethod('mapView', signature(x = 'RasterBrick'),
 
             ## create base map using specified map types
             if (is.null(map)) {
-              m <- leaflet::leaflet()
-              m <- leaflet::addTiles(m, group = map.types[1])
-              m <- leaflet::addProviderTiles(m, provider = map.types[2],
-                                             group = map.types[2])
+              m <- initBaseMaps(map.types)
             } else {
               m <- map
             }
 
             if (nlayers(x) == 1) {
-              m <- mapView(x[[1]], m, ...)
+              m <- mapView(x[[1]], map = m, map.types = map.types, ...)
             } else {
-              m <- mapView(x[[1]], m, ...)
+              m <- mapView(x[[1]], map = m, map.types = map.types, ...)
               for (i in 2:nlayers(x)) {
-                m <- mapView(x[[i]], m, ...)
+                m <- mapView(x[[i]], map = m, map.types = map.types, ...)
               }
 
               if (length(getLayerNamesFromMap(m)) > 1) {
@@ -388,14 +378,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
               x <- spTransform(x, CRSobj = llcrs)
             }
 
-            if (is.null(map)) {
-              m <- leaflet::leaflet()
-              m <- leaflet::addTiles(m, group = map.types[1])
-              m <- leaflet::addProviderTiles(m, provider = map.types[2],
-                                             group = map.types[2])
-            } else {
-              m <- map
-            }
+            m <- initBaseMaps(map.types)
 
             if (burst) {
               lst <- lapply(names(x), function(j) x[j])
@@ -446,16 +429,14 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                 if (i == 1) {
                   m <- leaflet::addLayersControl(map = m,
                                                  position = "topleft",
-                                                 baseGroups = c("OpenStreetMap",
-                                                                "Esri.WorldImagery"),
+                                                 baseGroups = map.types,
                                                  overlayGroups = c(
                                                    getLayerNamesFromMap(m),
                                                    names(lst[[i]])))
                 } else {
                   m <- leaflet::addLayersControl(map = m,
                                                  position = "topleft",
-                                                 baseGroups = c("OpenStreetMap",
-                                                                "Esri.WorldImagery"),
+                                                 baseGroups = map.types,
                                                  overlayGroups = c(
                                                    getLayerNamesFromMap(m),
                                                    names(lst[[i]])))
@@ -504,8 +485,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
               m <- leaflet::addLayersControl(map = m,
                                              position = "topleft",
-                                             baseGroups = c("OpenStreetMap",
-                                                            "Esri.WorldImagery"),
+                                             baseGroups = map.types,
                                              overlayGroups = c(
                                                getLayerNamesFromMap(m),
                                                grp))
@@ -543,14 +523,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
               x <- spTransform(x, CRSobj = llcrs)
             }
 
-            if (is.null(map)) {
-              m <- leaflet::leaflet()
-              m <- leaflet::addTiles(m, group = map.types[1])
-              m <- leaflet::addProviderTiles(m, provider = map.types[2],
-                                             group = map.types[2])
-            } else {
-              m <- map
-            }
+            m <- initBaseMaps(map.types)
 
             txt_x <- paste0("x: ", round(coordinates(x)[, 1], 2))
             txt_y <- paste0("y: ", round(coordinates(x)[, 2], 2))
@@ -577,8 +550,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
 
             m <- leaflet::addLayersControl(map = m,
                                            position = "topleft",
-                                           baseGroups = c("OpenStreetMap",
-                                                          "Esri.WorldImagery"),
+                                           baseGroups = map.types,
                                            overlayGroups = c(
                                              getLayerNamesFromMap(m),
                                              grp))
@@ -625,14 +597,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
               x <- spTransform(x, CRSobj = llcrs)
             }
 
-            if (is.null(map)) {
-              m <- leaflet::leaflet()
-              m <- leaflet::addTiles(m, group = map.types[1])
-              m <- leaflet::addProviderTiles(m, provider = map.types[2],
-                                             group = map.types[2])
-            } else {
-              m <- map
-            }
+            m <- initBaseMaps(map.types)
 
             if (burst) {
 
@@ -702,8 +667,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
                 m <- leaflet::addLayersControl(map = m,
                                                position = "topleft",
-                                               baseGroups = c("OpenStreetMap",
-                                                              "Esri.WorldImagery"),
+                                               baseGroups = map.types,
                                                overlayGroups = c(
                                                  getLayerNamesFromMap(m),
                                                  grp))
@@ -757,8 +721,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
               m <- leaflet::addLayersControl(map = m,
                                              position = "topleft",
-                                             baseGroups = c("OpenStreetMap",
-                                                            "Esri.WorldImagery"),
+                                             baseGroups = map.types,
                                              overlayGroups = c(
                                                getLayerNamesFromMap(m),
                                                grp))
@@ -797,14 +760,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
               x <- spTransform(x, CRSobj = llcrs)
             }
 
-            if (is.null(map)) {
-              m <- leaflet::leaflet()
-              m <- leaflet::addTiles(m, group = map.types[1])
-              m <- leaflet::addProviderTiles(m, provider = map.types[2],
-                                             group = map.types[2])
-            } else {
-              m <- map
-            }
+            m <- initBaseMaps(map.types)
 
             nam <- sys.call(-1)
             grp <- as.character(nam)[2]
@@ -828,8 +784,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
 
             m <- leaflet::addLayersControl(map = m,
                                            position = "topleft",
-                                           baseGroups = c("OpenStreetMap",
-                                                          "Esri.WorldImagery"),
+                                           baseGroups = map.types,
                                            overlayGroups = c(
                                              getLayerNamesFromMap(m),
                                              grp))
@@ -873,14 +828,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
               x <- spTransform(x, CRSobj = llcrs)
             }
 
-            if (is.null(map)) {
-              m <- leaflet::leaflet()
-              m <- leaflet::addTiles(m, group = map.types[1])
-              m <- leaflet::addProviderTiles(m, provider = map.types[2],
-                                             group = map.types[2])
-            } else {
-              m <- map
-            }
+            m <- initBaseMaps(map.types)
 
             if (burst) {
 
@@ -952,8 +900,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
                 m <- leaflet::addLayersControl(map = m,
                                                position = "topleft",
-                                               baseGroups = c("OpenStreetMap",
-                                                              "Esri.WorldImagery"),
+                                               baseGroups = map.types,
                                                overlayGroups = c(
                                                  getLayerNamesFromMap(m),
                                                  grp))
@@ -1005,8 +952,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
               m <- leaflet::addLayersControl(map = m,
                                              position = "topleft",
-                                             baseGroups = c("OpenStreetMap",
-                                                            "Esri.WorldImagery"),
+                                             baseGroups = map.types,
                                              overlayGroups = c(
                                                getLayerNamesFromMap(m),
                                                grp))
@@ -1046,14 +992,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
               x <- spTransform(x, CRSobj = llcrs)
             }
 
-            if (is.null(map)) {
-              m <- leaflet::leaflet()
-              m <- leaflet::addTiles(m, group = map.types[1])
-              m <- leaflet::addProviderTiles(m, provider = map.types[2],
-                                             group = map.types[2])
-            } else {
-              m <- map
-            }
+            m <- initBaseMaps(map.types)
 
             nam <- sys.call(-1)
             grp <- as.character(nam)[2]
@@ -1077,8 +1016,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
 
             m <- leaflet::addLayersControl(map = m,
                                            position = "topleft",
-                                           baseGroups = c("OpenStreetMap",
-                                                          "Esri.WorldImagery"),
+                                           baseGroups = map.types,
                                            overlayGroups = c(
                                              getLayerNamesFromMap(m),
                                              grp))
