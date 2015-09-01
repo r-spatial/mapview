@@ -309,7 +309,6 @@ setMethod('mapView', signature(x = 'RasterBrick'),
 
 
 ## Satellite object =======================================================
-
 #' @describeIn mapView
 
 setMethod('mapView', signature(x = 'Satellite'),
@@ -373,14 +372,23 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
             llcrs <- CRS("+init=epsg:4326")@projargs
 
-            if (!identical(projection(x), llcrs)) {
+            non_proj_waning <-
+              paste("supplied SpatialPointsDataFrame has no projection information!", "\n",
+                    "scaling coordinates and showing layer without background map")
+
+            if (is.na(proj4string(x))) {
+              warning(non_proj_waning)
+              slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
+                                                    coordinates(x)[, 2])
+            } else if (!identical(projection(x), llcrs)) {
               if(verbose) cat("\n", "reprojecting to web mercator", "\n\n")
               x <- sp::spTransform(x, CRSobj = llcrs)
             }
 
             ## create base map using specified map types
             if (is.null(map)) {
-              m <- initBaseMaps(map.types)
+              if (is.na(proj4string(x))) m <- leaflet() else
+                m <- initBaseMaps(map.types)
             } else {
               m <- map
             }
@@ -523,14 +531,23 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
 
             llcrs <- CRS("+init=epsg:4326")@projargs
 
-            if (!identical(projection(x), llcrs)) {
+            non_proj_waning <-
+              paste("supplied SpatialPointsDataFrame has no projection information!", "\n",
+                    "scaling coordinates and showing layer without background map")
+
+            if (is.na(proj4string(x))) {
+              warning(non_proj_waning)
+              slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
+                                                    coordinates(x)[, 2])
+            } else if (!identical(projection(x), llcrs)) {
               if(verbose) cat("\n", "reprojecting to web mercator", "\n\n")
               x <- sp::spTransform(x, CRSobj = llcrs)
             }
 
             ## create base map using specified map types
             if (is.null(map)) {
-              m <- initBaseMaps(map.types)
+              if (is.na(proj4string(x))) m <- leaflet() else
+                m <- initBaseMaps(map.types)
             } else {
               m <- map
             }
@@ -602,14 +619,28 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
             llcrs <- CRS("+init=epsg:4326")@projargs
 
-            if (!identical(projection(x), llcrs)) {
+            non_proj_waning <-
+              paste("supplied SpatialPointsDataFrame has no projection information!", "\n",
+                    "scaling coordinates and showing layer without background map")
+
+            coord_lst <- lapply(slot(x, "polygons"), function(x) {
+              lapply(slot(x, "Polygons"), function(y) slot(y, "coords"))
+            })
+
+            if (is.na(proj4string(x))) {
+              warning(non_proj_waning)
+
+              ############################.......##########################
+
+            } else if (!identical(projection(x), llcrs)) {
               if(verbose) cat("\n", "reprojecting to web mercator", "\n\n")
               x <- sp::spTransform(x, CRSobj = llcrs)
             }
 
             ## create base map using specified map types
             if (is.null(map)) {
-              m <- initBaseMaps(map.types)
+              if (is.na(proj4string(x))) m <- leaflet() else
+                m <- initBaseMaps(map.types)
             } else {
               m <- map
             }
@@ -655,12 +686,11 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
                 len <- length(m$x$calls)
 
-                coord_lst <- lapply(slot(x, "polygons"), function(x) {
-                  lapply(slot(x, "Polygons"), function(y) slot(y, "coords"))
-                })
-
                 for (j in seq(coord_lst)) {
                   for (h in seq(coord_lst[[j]])) {
+                    if (is.na(proj4string(x))) {
+                      x <- scalePolygonsCoordinates(x)
+                    }
                     x_coord <- coordinates(x@polygons[[j]]@Polygons[[h]])[, 1]
                     y_coord <- coordinates(x@polygons[[j]]@Polygons[[h]])[, 2]
                     clrs <- pal_n[[i]](vals[[i]])
@@ -715,12 +745,15 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
               len <- length(m$x$calls)
 
-              coord_lst <- lapply(slot(x, "polygons"), function(x) {
-                lapply(slot(x, "Polygons"), function(y) slot(y, "coords"))
-              })
+#               coord_lst <- lapply(slot(x, "polygons"), function(x) {
+#                 lapply(slot(x, "Polygons"), function(y) slot(y, "coords"))
+#               })
 
               for (j in seq(coord_lst)) {
                 for (h in seq(coord_lst[[j]])) {
+                  if (is.na(proj4string(x))) {
+                    x <- scalePolygonsCoordinates(x)
+                  }
                   x_coord <- coordinates(x@polygons[[j]]@Polygons[[h]])[, 1]
                   y_coord <- coordinates(x@polygons[[j]]@Polygons[[h]])[, 2]
                   m <- leaflet::addPolygons(m,

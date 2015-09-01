@@ -66,6 +66,61 @@ initBaseMaps <- function(map.types) {
   return(m)
 }
 
+
+scaleCoordinates <- function(x, y) {
+
+  ratio <- diff(range(y)) / diff(range(x))
+  x_mn <- x - min(x, na.rm = TRUE)
+  x_sc <- x_mn / max(x_mn, na.rm = TRUE)
+  y_mn <- y - min(y, na.rm = TRUE)
+  y_sc <- y_mn / max(y_mn, na.rm = TRUE) * ratio
+
+  return(cbind(x_sc, y_sc))
+
+}
+
+
+scalePolygonsCoordinates <- function(x) {
+
+  coord_lst <- lapply(slot(x, "polygons"), function(x) {
+    lapply(slot(x, "Polygons"), function(y) slot(y, "coords"))
+  })
+
+  xcoords <- do.call("c", do.call("c", lapply(seq(coord_lst), function(i) {
+    lapply(seq(coord_lst[[i]]), function(j) {
+      coord_lst[[i]][[j]][, 1]
+    })
+  })))
+
+  ycoords <- do.call("c", do.call("c", lapply(seq(coord_lst), function(i) {
+    lapply(seq(coord_lst[[i]]), function(j) {
+      coord_lst[[i]][[j]][, 2]
+    })
+  })))
+
+  ratio <- diff(range(ycoords)) / diff(range(xcoords))
+
+  x_mn <- min(xcoords, na.rm = TRUE)
+  x_mx <- max(xcoords - min(xcoords, na.rm = TRUE), na.rm = TRUE)
+
+  y_mn <- min(ycoords, na.rm = TRUE)
+  y_mx <- max(ycoords - min(ycoords, na.rm = TRUE), na.rm = TRUE)
+
+  for (j in seq(coord_lst)) {
+    for (h in seq(coord_lst[[j]])) {
+      slot(x@polygons[[j]]@Polygons[[h]], "coords") <-
+        cbind((coordinates(x@polygons[[j]]@Polygons[[h]])[, 1] - x_mn) / x_mx,
+              (coordinates(x@polygons[[j]]@Polygons[[h]])[, 2] - y_mn) / y_mx)
+    }
+  }
+
+  return(x)
+
+}
+
+
+
+
 # extractObjectName <- function(x) {
 #   pipe_splt <- strsplit(x, "%>%")[[1]][-1]
 #
