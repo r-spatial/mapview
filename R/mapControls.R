@@ -1,49 +1,66 @@
-#' convenience functions for working with leaflet maps
-#'
-#' @param m a leaflet map
+#' convenience functions for working with spatial objects and leaflet maps
 #'
 #' @author
 #' Tim Appelhans
 #'
+#' @name mapControls
+NULL
 
-getLayerControlEntriesFromMap <- function(m) {
+# query leaflet map for position of 'addLayersControl' entry --------------
+#' @describeIn mapControls query leaflet map for position of 'addLayersControl' entry
+#' @export getLayerControlEntriesFromMap
+#'
+#' @param map a leaflet map
+getLayerControlEntriesFromMap <- function(map) {
 
-  seq_along(m$x$calls)[sapply(m$x$calls,
-                              FUN = function(X) "addLayersControl" %in% X)]
+  seq_along(map$x$calls)[sapply(map$x$calls,
+                                FUN = function(X) "addLayersControl" %in% X)]
 
 }
 
+# get layer names of leaflet map ------------------------------------------
+#' @describeIn mapControls get layer names of leaflet map
+#' @export getLayerNamesFromMap
+#'
+getLayerNamesFromMap <- function(map) {
 
-getLayerNamesFromMap <- function(m) {
-
-  len <- getLayerControlEntriesFromMap(m)
+  len <- getLayerControlEntriesFromMap(map)
   len <- len[length(len)]
-  if (length(len) != 0) m$x$calls[[len]]$args[[2]] else NULL
+  if (length(len) != 0) map$x$calls[[len]]$args[[2]] else NULL
 
 }
 
+# identify layers to be hidden from initial map rendering -----------------
+#' @describeIn mapControls identify layers to be hidden from initial map rendering
+#' @export layers2bHidden
+#'
+layers2bHidden <- function(map) {
 
-layers2bHidden <- function(m) {
-
-  nms <- getLayerNamesFromMap(m)
-  nms[2:length(nms)]
+  nms <- getLayerNamesFromMap(map)
+  nms[-c(1)]
 
 }
 
+wmcrs <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs"
+llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
 
 
+# project Raster* objects for mapView -------------------------------------
+#' @describeIn mapControls project Raster* objects for mapView
+#' @export projectRasterForMapView
+#'
+#' @param x a Raster* or Spatial* object
 projectRasterForMapView <- function(x) {
-  #epsg4326 <- "+proj=longlat +datum=WGS84 +no_defs"
-  wmerc <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs"
+
   is.fact <- raster::is.factor(x)
   if (is.fact) {
     out_rst <- raster::projectRaster(
-      x, raster::projectExtent(x, crs = sp::CRS(wmerc)),
+      x, raster::projectExtent(x, crs = sp::CRS(wmcrs)),
       method = "ngb")
     out_rst <- raster::as.factor(out_rst)
   } else {
     out_rst <- raster::projectRaster(
-      x, raster::projectExtent(x, crs = sp::CRS(wmerc)),
+      x, raster::projectExtent(x, crs = sp::CRS(wmcrs)),
       method = "bilinear")
   }
 
@@ -52,6 +69,11 @@ projectRasterForMapView <- function(x) {
 }
 
 
+# initialise mapView base maps --------------------------------------------
+#' @describeIn mapControls initialise mapView base maps
+#' @export initBaseMaps
+#'
+#' @param map.types map types to be used as backgraound maps
 initBaseMaps <- function(map.types) {
   ## create base map using specified map types
     m <- leaflet::leaflet()
@@ -67,12 +89,43 @@ initBaseMaps <- function(map.types) {
 }
 
 
-scaleCoordinates <- function(x, y) {
+# initialise mapView map --------------------------------------------------
+#' @describeIn mapControls initialise mapView map
+#' @export initMap
+#'
+#' @param proj4str \code{\link{proj4string}} of the spatial objects to be viewed
+initMap <- function(map, map.types, proj4str) {
 
-  ratio <- diff(range(y)) / diff(range(x))
-  x_mn <- x - min(x, na.rm = TRUE)
+  if (missing(map.types)) map.types <- c("OpenStreetMap",
+                                         "Esri.WorldImagery")
+  if (missing(map)) map <- NULL
+  if (missing(proj4str)) proj4str <- NA
+  ## create base map using specified map types
+  if (is.null(map)) {
+    if (is.na(proj4str)) {
+      m <- leaflet::leaflet()
+    } else {
+      m <- initBaseMaps(map.types)
+    }
+  } else {
+    m <- map
+  }
+  return(m)
+}
+
+
+# scale coordinates for unprojected spatial objects -----------------------
+#' @describeIn mapControls scale coordinates for unprojected spatial objects
+#' @export scaleCoordinates
+#'
+#' @param x.coords vector of x coordinates
+#' @param y.coords vector of y coordinates
+scaleCoordinates <- function(x.coords, y.coords) {
+
+  ratio <- diff(range(y.coords)) / diff(range(x.coords))
+  x_mn <- x.coords - min(x.coords, na.rm = TRUE)
   x_sc <- x_mn / max(x_mn, na.rm = TRUE)
-  y_mn <- y - min(y, na.rm = TRUE)
+  y_mn <- y.coords - min(y.coords, na.rm = TRUE)
   y_sc <- y_mn / max(y_mn, na.rm = TRUE) * ratio
 
   return(cbind(x_sc, y_sc))
@@ -80,6 +133,10 @@ scaleCoordinates <- function(x, y) {
 }
 
 
+# scale unprojected SpatialPolygons* objects ------------------------------
+#' @describeIn mapControls scale unprojected SpatialPolygons* objects
+#' @export scalePolygonsCoordinates
+#'
 scalePolygonsCoordinates <- function(x) {
 
   coord_lst <- lapply(slot(x, "polygons"), function(x) {
@@ -109,14 +166,82 @@ scalePolygonsCoordinates <- function(x) {
   for (j in seq(coord_lst)) {
     for (h in seq(coord_lst[[j]])) {
       slot(x@polygons[[j]]@Polygons[[h]], "coords") <-
-        cbind((coordinates(x@polygons[[j]]@Polygons[[h]])[, 1] - x_mn) / x_mx,
-              (coordinates(x@polygons[[j]]@Polygons[[h]])[, 2] - y_mn) / y_mx)
+        cbind((sp::coordinates(x@polygons[[j]]@Polygons[[h]])[, 1] - x_mn) / x_mx,
+              (sp::coordinates(x@polygons[[j]]@Polygons[[h]])[, 2] - y_mn) / y_mx)
     }
   }
 
   return(x)
 
 }
+
+
+# scale unprojected SpatialLines* objects ------------------------------
+#' @describeIn mapControls scale unprojected SpatialLines* objects
+#' @export scaleLinesCoordinates
+#'
+scaleLinesCoordinates <- function(x) {
+
+  coord_lst <- lapply(slot(x, "lines"), function(x) {
+    lapply(slot(x, "Lines"), function(y) slot(y, "coords"))
+  })
+
+  xcoords <- do.call("c", do.call("c", lapply(seq(coord_lst), function(i) {
+    lapply(seq(coord_lst[[i]]), function(j) {
+      coord_lst[[i]][[j]][, 1]
+    })
+  })))
+
+  ycoords <- do.call("c", do.call("c", lapply(seq(coord_lst), function(i) {
+    lapply(seq(coord_lst[[i]]), function(j) {
+      coord_lst[[i]][[j]][, 2]
+    })
+  })))
+
+  ratio <- diff(range(ycoords)) / diff(range(xcoords))
+
+  x_mn <- min(xcoords, na.rm = TRUE)
+  x_mx <- max(xcoords - min(xcoords, na.rm = TRUE), na.rm = TRUE)
+
+  y_mn <- min(ycoords, na.rm = TRUE)
+  y_mx <- max(ycoords - min(ycoords, na.rm = TRUE), na.rm = TRUE)
+
+  for (j in seq(coord_lst)) {
+    for (h in seq(coord_lst[[j]])) {
+      slot(x@lines[[j]]@Lines[[h]], "coords") <-
+        cbind((sp::coordinates(x@lines[[j]]@Lines[[h]])[, 1] - x_mn) / x_mx,
+              (sp::coordinates(x@lines[[j]]@Lines[[h]])[, 2] - y_mn) / y_mx)
+    }
+  }
+
+  return(x)
+
+}
+
+
+# check and potentially adjust projection of Spatial* objects -------------
+#' @describeIn mapControls check and potentially adjust projection of Spatial* objects
+#' @export spCheckAdjustProjection
+#'
+#' @param verbose whether details should be printed to the console
+spCheckAdjustProjection <- function(x, verbose = FALSE) {
+
+  non_proj_waning <-
+    paste("supplied", class(x)[1], "has no projection information!", "\n",
+          "scaling coordinates and showing layer without background map")
+
+  if (is.na(raster::projection(x))) {
+    warning(non_proj_waning)
+  } else if (!identical(raster::projection(x), llcrs)) {
+    if(verbose) cat("\n", "reprojecting to web mercator", "\n\n")
+    x <- sp::spTransform(x, CRSobj = llcrs)
+  }
+
+  return(x)
+
+}
+
+
 
 
 

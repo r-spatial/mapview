@@ -40,12 +40,14 @@ viewExtent <- function(x,
                                      "Esri.WorldImagery"),
                        ...) {
 
-  ## create base map using specified map types
-  if (is.null(map)) {
-    m <- initBaseMaps(map.types)
-  } else {
-    m <- map
-  }
+#   ## create base map using specified map types
+#   if (is.null(map)) {
+#     m <- initBaseMaps(map.types)
+#   } else {
+#     m <- map
+#   }
+
+  m <- initMap(map, map.types, projection(x))
 
   nam <- sys.call(0)
   grp <- as.character(nam)[2]
@@ -85,12 +87,12 @@ addExtent <- function(x, map, ...) {
               "SpatialPoints",
               "SpatialPolygons",
               "SpatialLines")
-  sptrue <- any(class(x) %in% spclss)
+  sptrue <- any(class(x)[1] %in% spclss)
 
-  rstclss <- c("RatserLayer",
+  rstclss <- c("RasterLayer",
                "RasterStack",
                "RasterBrick")
-  rsttrue <- any(class(x) %in% rstclss)
+  rsttrue <- any(class(x)[1] %in% rstclss)
 
   if (sptrue) {
     if (!identical(projection(x), llcrs)) {
@@ -100,8 +102,8 @@ addExtent <- function(x, map, ...) {
     if (!identical(projection(x), llcrs)) {
       x <- raster::projectExtent(x, crs = llcrs)
     }
-  } else stop(paste("need one of", spclss, "or", rstclss,
-                    "to draw extent"))
+  } else stop(paste("need one of", paste(spclss, collapse = " or "), "or",
+                    paste(rstclss, collapse = " or "), "to draw extent"))
 
   ext <- raster::extent(x)
 
