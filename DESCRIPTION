@@ -1,8 +1,8 @@
 Package: mapview
 Type: Package
 Title: GIS-Like Viewing of Spatial Objects in R
-Version: 0.3.0
-Date: 2015-09-02
+Version: 0.3.1
+Date: 2015-09-03
 Author: Tim Appelhans
 Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
 Description: Methods to view spatial objects interactively using leaflet.
