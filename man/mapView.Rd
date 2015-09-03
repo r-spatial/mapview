@@ -105,23 +105,25 @@ spatial object(s) on top of the specified base maps.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{RasterStack}: 
+\item \code{RasterLayer}: \code{\link{raster}}
 
-\item \code{RasterBrick}: 
+\item \code{RasterStack}: \code{\link{stack}}
 
-\item \code{Satellite}: 
+\item \code{RasterBrick}: \code{\link{brick}}
 
-\item \code{SpatialPointsDataFrame}: 
+\item \code{Satellite}: \code{\link{satellite}}
 
-\item \code{SpatialPoints}: 
+\item \code{SpatialPointsDataFrame}: \code{\link{SpatialPointsDataFrame}}
 
-\item \code{SpatialPolygonsDataFrame}: 
+\item \code{SpatialPoints}: \code{\link{SpatialPoints}}
 
-\item \code{SpatialPolygons}: 
+\item \code{SpatialPolygonsDataFrame}: \code{\link{SpatialPolygonsDataFrame}}
 
-\item \code{SpatialLinesDataFrame}: 
+\item \code{SpatialPolygons}: \code{\link{SpatialPolygons}}
 
-\item \code{SpatialLines}: 
+\item \code{SpatialLinesDataFrame}: \code{\link{SpatialLinesDataFrame}}
+
+\item \code{SpatialLines}: \code{\link{SpatialLines}}
 }}
 \examples{
 \dontrun{

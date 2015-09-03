@@ -70,7 +70,9 @@ viewExtent <- function(x,
                                        grp))
   }
 
-  return(m)
+  out <- new('mapview', object = x, map = m)
+
+  return(out)
 
 }
 

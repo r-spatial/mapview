@@ -4,7 +4,7 @@
 #' this function adds a layer to an interactive GIS-like view produced
 #' with \code{\link{mapView}}
 #'
-#' @param x an object that can be passed to \code{\link{mapView}}
+#' @param object an object that can be passed to \code{\link{mapView}}
 #' @param map the map to which the layer should be added
 #' @param ... additional arguments passed on to \code{\link{mapView}}
 #'
@@ -38,11 +38,34 @@
 #' @rdname addMapLayer
 #' @aliases addMapLayer
 
-addMapLayer <- function(x, map, ...) {
+addMapLayer <- function(lay, map) {
 
-  m <- mapView(x = x, map = map, ...)
+  m <- mapView(x = lay, map = map)
 
   return(m)
 
 }
 
+# if ( !isGeneric("+") ) {
+#   setGeneric("+", function(x, y, ...)
+#     standardGeneric("+"))
+# }
+#
+
+setMethod("+",
+          signature(e1 = "mapview",
+                    e2 = "mapview"),
+          function (e1, e2)
+          {
+            addMapLayer(lay = e2@object, map = e1@map)
+          }
+)
+
+setMethod("+",
+          signature(e1 = "mapview",
+                    e2 = "ANY"),
+          function (e1, e2)
+          {
+            mapView(e2, map = e1@map)
+          }
+)

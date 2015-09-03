@@ -103,10 +103,11 @@ if ( !isGeneric('mapView') ) {
 #' @export mapView
 #' @name mapView
 #' @rdname mapView
-#' @aliases mapView,RasterLayer-method
-
+#' @aliases mapView
+NULL
 
 ## RasterLayer ============================================================
+#' @describeIn mapView \code{\link{raster}}
 setMethod('mapView', signature(x = 'RasterLayer'),
           function(x,
                    map = NULL,
@@ -189,26 +190,28 @@ setMethod('mapView', signature(x = 'RasterLayer'),
             ## add layer control buttons
             if (is.null(map)) {
               m <- leaflet::addLayersControl(map = m,
-                                             position = "topleft",
+                                             position = "bottomleft",
                                              baseGroups = map.types,
                                              overlayGroups = names(x))
             } else {
               m <- leaflet::addLayersControl(map = m,
-                                             position = "topleft",
+                                             position = "bottomleft",
                                              baseGroups = map.types,
                                              overlayGroups =
                                                c(getLayerNamesFromMap(m),
                                                  names(x)))
             }
 
-            return(m)
+            out <- new('mapview', object = x, map = m)
+
+            return(out)
 
           }
 
 )
 
 ## Raster Stack ===========================================================
-#' @describeIn mapView
+#' @describeIn mapView \code{\link{stack}}
 
 setMethod('mapView', signature(x = 'RasterStack'),
           function(x,
@@ -258,7 +261,7 @@ setMethod('mapView', signature(x = 'RasterStack'),
 
 
 ## Raster Brick ===========================================================
-#' @describeIn mapView
+#' @describeIn mapView \code{\link{brick}}
 
 setMethod('mapView', signature(x = 'RasterBrick'),
           function(x,
@@ -300,7 +303,9 @@ setMethod('mapView', signature(x = 'RasterBrick'),
 
             }
 
-            return(m)
+            out <- new('mapview', object = x, map = m)
+
+            return(out)
 
           }
 
@@ -309,7 +314,7 @@ setMethod('mapView', signature(x = 'RasterBrick'),
 
 
 ## Satellite object =======================================================
-#' @describeIn mapView
+#' @describeIn mapView \code{\link{satellite}}
 
 setMethod('mapView', signature(x = 'Satellite'),
           function(x,
@@ -333,7 +338,9 @@ setMethod('mapView', signature(x = 'Satellite'),
               m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
             }
 
-            return(m)
+            out <- new('mapview', object = x, map = m)
+
+            return(out)
 
           }
 
@@ -343,7 +350,7 @@ setMethod('mapView', signature(x = 'Satellite'),
 
 
 ## SpatialPointsDataFrame =================================================
-#' @describeIn mapView
+#' @describeIn mapView \code{\link{SpatialPointsDataFrame}}
 #' @param burst whether to show all (TRUE) or only one (FALSE) layers
 #' @param zcol attribute name(s) or column number(s) in attribute table
 #' of the column(s) to be rendered
@@ -369,6 +376,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                           quietly = TRUE, USE.NAMES = FALSE)
 
             if(!is.null(zcol)) x <- x[, zcol]
+            if(!is.null(zcol)) burst <- TRUE
 
             x <- spCheckAdjustProjection(x, verbose)
             if (is.na(proj4string(x))) {
@@ -389,7 +397,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                        levels = levels(lst[[i]]@data[, 1]))
                 } else {
                   leaflet::colorNumeric(cols, vals[[i]],
-                                        na.color = "transparent")
+                                        na.color = na.color)
                 }
               })
 
@@ -418,21 +426,13 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                         title = names(lst[[i]]),
                                         layerId = names(lst[[i]]))
 
-                if (i == 1) {
-                  m <- leaflet::addLayersControl(map = m,
-                                                 position = "topleft",
-                                                 baseGroups = map.types,
-                                                 overlayGroups = c(
-                                                   getLayerNamesFromMap(m),
-                                                   names(lst[[i]])))
-                } else {
-                  m <- leaflet::addLayersControl(map = m,
-                                                 position = "topleft",
-                                                 baseGroups = map.types,
-                                                 overlayGroups = c(
-                                                   getLayerNamesFromMap(m),
-                                                   names(lst[[i]])))
-                }
+                m <- leaflet::addLayersControl(map = m,
+                                               position = "bottomleft",
+                                               baseGroups = map.types,
+                                               overlayGroups = c(
+                                                 getLayerNamesFromMap(m),
+                                                 names(lst[[i]])))
+
               }
 
               if (length(getLayerNamesFromMap(m)) > 1) {
@@ -446,7 +446,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
               nms <- names(df)
 
-              nam <- sys.call(-1)
+              nam <- sys.call(sys.parent())
               grp <- as.character(nam)[2]
 
               len <- length(m$x$calls)
@@ -470,14 +470,16 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                              ...)
 
               m <- leaflet::addLayersControl(map = m,
-                                             position = "topleft",
+                                             position = "bottomleft",
                                              baseGroups = map.types,
                                              overlayGroups = c(
                                                getLayerNamesFromMap(m),
                                                grp))
             }
 
-            return(m)
+            out <- new('mapview', object = x, map = m)
+
+            return(out)
 
           }
 
@@ -486,7 +488,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
 
 ## SpatialPoints ==========================================================
-#' @describeIn mapView
+#' @describeIn mapView \code{\link{SpatialPoints}}
 
 setMethod('mapView', signature(x = 'SpatialPoints'),
           function(x,
@@ -513,7 +515,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
               paste(txt_x[j], txt_y[j], sep = "<br/>")
             })
 
-            nam <- sys.call(-1)
+            nam <- sys.call(sys.parent())
             grp <- as.character(nam)[2]
 
             m <- leaflet::addCircleMarkers(m, lng = coordinates(x)[, 1],
@@ -523,13 +525,15 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                                            ...)
 
             m <- leaflet::addLayersControl(map = m,
-                                           position = "topleft",
+                                           position = "bottomleft",
                                            baseGroups = map.types,
                                            overlayGroups = c(
                                              getLayerNamesFromMap(m),
                                              grp))
 
-            return(m)
+            out <- new('mapview', object = x, map = m)
+
+            return(out)
 
           }
 )
@@ -538,7 +542,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
 
 
 ## SpatialPolygonsDataFrame ===============================================
-#' @describeIn mapView
+#' @describeIn mapView \code{\link{SpatialPolygonsDataFrame}}
 #' @param weight line width (see \code{\link{leaflet}} for details)
 
 setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
@@ -563,6 +567,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                           quietly = TRUE, USE.NAMES = FALSE)
 
             if(!is.null(zcol)) x <- x[, zcol]
+            if(!is.null(zcol)) burst <- TRUE
 
             x <- spCheckAdjustProjection(x, verbose)
 
@@ -590,10 +595,10 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                 if (is.factor(df_all[[i]][, 1])) {
                   leaflet::colorFactor(cols, vals[[i]],
                                        levels = levels(vals[[i]]),
-                                       na.color = "transparent")
+                                       na.color = na.color)
                 } else {
                   leaflet::colorNumeric(cols, vals[[i]],
-                                        na.color = "transparent")
+                                        na.color = na.color)
                 }
               })
 
@@ -638,7 +643,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                                         title = grp)
 
                 m <- leaflet::addLayersControl(map = m,
-                                               position = "topleft",
+                                               position = "bottomleft",
                                                baseGroups = map.types,
                                                overlayGroups = c(
                                                  getLayerNamesFromMap(m),
@@ -657,7 +662,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
               nms <- names(df)
 
-              nam <- sys.call(-1)
+              nam <- sys.call(sys.parent())
               grp <- as.character(nam)[2]
 
               txt <- as.matrix(sapply(seq(nrow(x@data)), function(i) {
@@ -695,14 +700,16 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
               }
 
               m <- leaflet::addLayersControl(map = m,
-                                             position = "topleft",
+                                             position = "bottomleft",
                                              baseGroups = map.types,
                                              overlayGroups = c(
                                                getLayerNamesFromMap(m),
                                                grp))
             }
 
-            return(m)
+            out <- new('mapview', object = x, map = m)
+
+            return(out)
 
           }
 
@@ -711,7 +718,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
 
 ## SpatialPolygons ========================================================
-#' @describeIn mapView
+#' @describeIn mapView \code{\link{SpatialPolygons}}
 
 setMethod('mapView', signature(x = 'SpatialPolygons'),
           function(x,
@@ -732,7 +739,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
 
             m <- initMap(map, map.types, proj4string(x))
 
-            nam <- sys.call(-1)
+            nam <- sys.call(sys.parent())
             grp <- as.character(nam)[2]
 
             coord_lst <- lapply(slot(x, "polygons"), function(x) {
@@ -753,20 +760,22 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
             }
 
             m <- leaflet::addLayersControl(map = m,
-                                           position = "topleft",
+                                           position = "bottomleft",
                                            baseGroups = map.types,
                                            overlayGroups = c(
                                              getLayerNamesFromMap(m),
                                              grp))
 
-            return(m)
+            out <- new('mapview', object = x, map = m)
+
+            return(out)
 
           }
 )
 
 
 ## SpatialLinesDataFrame =================================================
-#' @describeIn mapView
+#' @describeIn mapView \code{\link{SpatialLinesDataFrame}}
 
 setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
           function(x,
@@ -790,6 +799,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                           quietly = TRUE, USE.NAMES = FALSE)
 
             if(!is.null(zcol)) x <- x[, zcol]
+            if(!is.null(zcol)) burst <- TRUE
 
             x <- spCheckAdjustProjection(x, verbose)
 
@@ -816,10 +826,10 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                 if (is.factor(df_all[[i]][, 1])) {
                   leaflet::colorFactor(cols, vals[[i]],
                                        levels = levels(vals[[i]]),
-                                       na.color = "transparent")
+                                       na.color = na.color)
                 } else {
                   leaflet::colorNumeric(cols, vals[[i]],
-                                        na.color = "transparent")
+                                        na.color = na.color)
                 }
               })
 
@@ -867,7 +877,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                                         values = vals[[i]], title = grp)
 
                 m <- leaflet::addLayersControl(map = m,
-                                               position = "topleft",
+                                               position = "bottomleft",
                                                baseGroups = map.types,
                                                overlayGroups = c(
                                                  getLayerNamesFromMap(m),
@@ -886,7 +896,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
               nms <- names(df)
 
-              nam <- sys.call(-1)
+              nam <- sys.call(sys.parent())
               grp <- as.character(nam)[2]
 
               txt <- sapply(seq(nrow(x@data)), function(i) {
@@ -922,14 +932,16 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
               }
 
               m <- leaflet::addLayersControl(map = m,
-                                             position = "topleft",
+                                             position = "bottomleft",
                                              baseGroups = map.types,
                                              overlayGroups = c(
                                                getLayerNamesFromMap(m),
                                                grp))
             }
 
-            return(m)
+            out <- new('mapview', object = x, map = m)
+
+            return(out)
 
           }
 
@@ -939,7 +951,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
 
 ## SpatialLines ===========================================================
-#' @describeIn mapView
+#' @describeIn mapView \code{\link{SpatialLines}}
 
 setMethod('mapView', signature(x = 'SpatialLines'),
           function(x,
@@ -962,7 +974,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
 
             m <- initMap(map, map.types, proj4string(x))
 
-            nam <- sys.call(-1)
+            nam <- sys.call(sys.parent())
             grp <- as.character(nam)[2]
 
             coord_lst <- lapply(slot(x, "lines"), function(x) {
@@ -983,13 +995,15 @@ setMethod('mapView', signature(x = 'SpatialLines'),
             }
 
             m <- leaflet::addLayersControl(map = m,
-                                           position = "topleft",
+                                           position = "bottomleft",
                                            baseGroups = map.types,
                                            overlayGroups = c(
                                              getLayerNamesFromMap(m),
                                              grp))
 
-            return(m)
+            out <- new('mapview', object = x, map = m)
+
+            return(out)
 
           }
 

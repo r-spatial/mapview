@@ -243,9 +243,6 @@ spCheckAdjustProjection <- function(x, verbose = FALSE) {
 
 
 
-
-
-
 # extractObjectName <- function(x) {
 #   pipe_splt <- strsplit(x, "%>%")[[1]][-1]
 #

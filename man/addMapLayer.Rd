@@ -4,12 +4,12 @@
 \alias{addMapLayer}
 \title{add a layer to a leaflet map using mapView}
 \usage{
-addMapLayer(x, map, ...)
+addMapLayer(lay, map)
 }
 \arguments{
-\item{x}{an object that can be passed to \code{\link{mapView}}}
-
 \item{map}{the map to which the layer should be added}
+
+\item{object}{an object that can be passed to \code{\link{mapView}}}
 
 \item{...}{additional arguments passed on to \code{\link{mapView}}}
 }
