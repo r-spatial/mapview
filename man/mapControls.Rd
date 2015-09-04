@@ -5,8 +5,10 @@
 \alias{getLayerNamesFromMap}
 \alias{initBaseMaps}
 \alias{initMap}
+\alias{layerName}
 \alias{layers2bHidden}
 \alias{mapControls}
+\alias{mapViewLayersControl}
 \alias{projectRasterForMapView}
 \alias{scaleCoordinates}
 \alias{scaleLinesCoordinates}
@@ -33,6 +35,10 @@ scalePolygonsCoordinates(x)
 scaleLinesCoordinates(x)
 
 spCheckAdjustProjection(x, verbose = FALSE)
+
+mapViewLayersControl(map, map.types, names)
+
+layerName()
 }
 \arguments{
 \item{map}{a leaflet map}
@@ -48,6 +54,8 @@ spCheckAdjustProjection(x, verbose = FALSE)
 \item{y.coords}{vector of y coordinates}
 
 \item{verbose}{whether details should be printed to the console}
+
+\item{names}{names of the layer groups to be added to control button}
 }
 \description{
 convenience functions for working with spatial objects and leaflet maps
@@ -73,6 +81,10 @@ convenience functions for working with spatial objects and leaflet maps
 \item \code{scaleLinesCoordinates}: scale unprojected SpatialLines* objects
 
 \item \code{spCheckAdjustProjection}: check and potentially adjust projection of Spatial* objects
+
+\item \code{mapViewLayersControl}: add leaflet control button to map
+
+\item \code{layerName}: create layer name for grouping in map
 }}
 \author{
 Tim Appelhans

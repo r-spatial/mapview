@@ -40,6 +40,7 @@
 
 addMapLayer <- function(lay, map) {
 
+  if (class(map)[1] == "mapview") map <- map@map
   m <- mapView(x = lay, map = map)
 
   return(m)
@@ -67,5 +68,14 @@ setMethod("+",
           function (e1, e2)
           {
             mapView(e2, map = e1@map)
+          }
+)
+
+setMethod("+",
+          signature(e1 = "leaflet",
+                    e2 = "ANY"),
+          function (e1, e2)
+          {
+            mapView(e2, map = e1)
           }
 )

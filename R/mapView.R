@@ -134,12 +134,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
               x <- projectRasterForMapView(x)
             }
 
-            ## create base map using specified map types
-            if (is.null(map)) {
-              m <- initBaseMaps(map.types)
-            } else {
-              m <- map
-            }
+            m <- initMap(map, map.types, proj4string(x))
 
             if (trim) x <- trim(x)
 
@@ -188,19 +183,22 @@ setMethod('mapView', signature(x = 'RasterLayer'),
             }
 
             ## add layer control buttons
-            if (is.null(map)) {
-              m <- leaflet::addLayersControl(map = m,
-                                             position = "bottomleft",
-                                             baseGroups = map.types,
-                                             overlayGroups = names(x))
-            } else {
-              m <- leaflet::addLayersControl(map = m,
-                                             position = "bottomleft",
-                                             baseGroups = map.types,
-                                             overlayGroups =
-                                               c(getLayerNamesFromMap(m),
-                                                 names(x)))
-            }
+            #if (is.null(map)) {
+              m <- mapViewLayersControl(map = m,
+                                        map.types = map.types,
+                                        names = names(x))
+#               m <- leaflet::addLayersControl(map = m,
+#                                              position = "bottomleft",
+#                                              baseGroups = map.types,
+#                                              overlayGroups = names(x))
+#             } else {
+#               m <- leaflet::addLayersControl(map = m,
+#                                              position = "bottomleft",
+#                                              baseGroups = map.types,
+#                                              overlayGroups =
+#                                                c(getLayerNamesFromMap(m),
+#                                                  names(x)))
+#             }
 
             out <- new('mapview', object = x, map = m)
 
@@ -232,28 +230,26 @@ setMethod('mapView', signature(x = 'RasterStack'),
             tst <- sapply(pkgs, "requireNamespace",
                           quietly = TRUE, USE.NAMES = FALSE)
 
-            ## create base map using specified map types
-            if (is.null(map)) {
-              m <- initBaseMaps(map.types)
-            } else {
-              m <- map
-            }
+            m <- initMap(map, map.types, proj4string(x))
 
             if (nlayers(x) == 1) {
               m <- mapView(x[[1]], map = m, map.types = map.types, ...)
             } else {
               m <- mapView(x[[1]], map = m, map.types = map.types, ...)
               for (i in 2:nlayers(x)) {
-                m <- mapView(x[[i]], map = m, map.types = map.types, ...)
+                m <- mapView(x[[i]], map = m@map, map.types = map.types, ...)
               }
 
-              if (length(getLayerNamesFromMap(m)) > 1) {
-                m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+              if (length(getLayerNamesFromMap(m@map)) > 1) {
+                m <- leaflet::hideGroup(map = m@map,
+                                        group = layers2bHidden(m@map))
               }
 
             }
 
-            return(m)
+            out <- new('mapview', object = x, map = m)
+
+            return(out)
 
           }
 
@@ -282,23 +278,19 @@ setMethod('mapView', signature(x = 'RasterBrick'),
             tst <- sapply(pkgs, "requireNamespace",
                           quietly = TRUE, USE.NAMES = FALSE)
 
-            ## create base map using specified map types
-            if (is.null(map)) {
-              m <- initBaseMaps(map.types)
-            } else {
-              m <- map
-            }
+            m <- initMap(map, map.types, proj4string(x))
 
             if (nlayers(x) == 1) {
               m <- mapView(x[[1]], map = m, map.types = map.types, ...)
             } else {
               m <- mapView(x[[1]], map = m, map.types = map.types, ...)
               for (i in 2:nlayers(x)) {
-                m <- mapView(x[[i]], map = m, map.types = map.types, ...)
+                m <- mapView(x[[i]], map = m@map, map.types = map.types, ...)
               }
 
-              if (length(getLayerNamesFromMap(m)) > 1) {
-                m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+              if (length(getLayerNamesFromMap(m@map)) > 1) {
+                m <- leaflet::hideGroup(map = m@map,
+                                        group = layers2bHidden(m@map))
               }
 
             }
@@ -426,12 +418,15 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                         title = names(lst[[i]]),
                                         layerId = names(lst[[i]]))
 
-                m <- leaflet::addLayersControl(map = m,
-                                               position = "bottomleft",
-                                               baseGroups = map.types,
-                                               overlayGroups = c(
-                                                 getLayerNamesFromMap(m),
-                                                 names(lst[[i]])))
+                m <- mapViewLayersControl(map = m,
+                                          map.types = map.types,
+                                          names = names(lst[[i]]))
+#                 m <- leaflet::addLayersControl(map = m,
+#                                                position = "bottomleft",
+#                                                baseGroups = map.types,
+#                                                overlayGroups = c(
+#                                                  getLayerNamesFromMap(m),
+#                                                  names(lst[[i]])))
 
               }
 
@@ -445,11 +440,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                   stringsAsFactors = FALSE)
 
               nms <- names(df)
-
-              nam <- sys.call(sys.parent())
-              grp <- as.character(nam)[2]
-
-              len <- length(m$x$calls)
+              grp <- layerName()
 
               txt_x <- paste0("x: ", round(coordinates(x)[, 1], 2))
               txt_y <- paste0("y: ", round(coordinates(x)[, 2], 2))
@@ -469,12 +460,15 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                              popup = txt,
                                              ...)
 
-              m <- leaflet::addLayersControl(map = m,
-                                             position = "bottomleft",
-                                             baseGroups = map.types,
-                                             overlayGroups = c(
-                                               getLayerNamesFromMap(m),
-                                               grp))
+              m <- mapViewLayersControl(map = m,
+                                        map.types = map.types,
+                                        names = grp)
+#               m <- leaflet::addLayersControl(map = m,
+#                                              position = "bottomleft",
+#                                              baseGroups = map.types,
+#                                              overlayGroups = c(
+#                                                getLayerNamesFromMap(m),
+#                                                grp))
             }
 
             out <- new('mapview', object = x, map = m)
@@ -515,8 +509,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
               paste(txt_x[j], txt_y[j], sep = "<br/>")
             })
 
-            nam <- sys.call(sys.parent())
-            grp <- as.character(nam)[2]
+            grp <- layerName()
 
             m <- leaflet::addCircleMarkers(m, lng = coordinates(x)[, 1],
                                            lat = coordinates(x)[, 2],
@@ -524,12 +517,15 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                                            popup = txt,
                                            ...)
 
-            m <- leaflet::addLayersControl(map = m,
-                                           position = "bottomleft",
-                                           baseGroups = map.types,
-                                           overlayGroups = c(
-                                             getLayerNamesFromMap(m),
-                                             grp))
+            m <- mapViewLayersControl(map = m,
+                                      map.types = map.types,
+                                      names = grp)
+#             m <- leaflet::addLayersControl(map = m,
+#                                            position = "bottomleft",
+#                                            baseGroups = map.types,
+#                                            overlayGroups = c(
+#                                              getLayerNamesFromMap(m),
+#                                              grp))
 
             out <- new('mapview', object = x, map = m)
 
@@ -642,12 +638,15 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                                         values = vals[[i]],
                                         title = grp)
 
-                m <- leaflet::addLayersControl(map = m,
-                                               position = "bottomleft",
-                                               baseGroups = map.types,
-                                               overlayGroups = c(
-                                                 getLayerNamesFromMap(m),
-                                                 grp))
+                m <- mapViewLayersControl(map = m,
+                                          map.types = map.types,
+                                          names = grp)
+#                 m <- leaflet::addLayersControl(map = m,
+#                                                position = "bottomleft",
+#                                                baseGroups = map.types,
+#                                                overlayGroups = c(
+#                                                  getLayerNamesFromMap(m),
+#                                                  grp))
 
               }
 
@@ -662,8 +661,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
               nms <- names(df)
 
-              nam <- sys.call(sys.parent())
-              grp <- as.character(nam)[2]
+              grp <- layerName()
 
               txt <- as.matrix(sapply(seq(nrow(x@data)), function(i) {
                 paste(nms, df[i, ], sep = ": ")
@@ -699,12 +697,15 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                 }
               }
 
-              m <- leaflet::addLayersControl(map = m,
-                                             position = "bottomleft",
-                                             baseGroups = map.types,
-                                             overlayGroups = c(
-                                               getLayerNamesFromMap(m),
-                                               grp))
+              m <- mapViewLayersControl(map = m,
+                                        map.types = map.types,
+                                        names = grp)
+#               m <- leaflet::addLayersControl(map = m,
+#                                              position = "bottomleft",
+#                                              baseGroups = map.types,
+#                                              overlayGroups = c(
+#                                                getLayerNamesFromMap(m),
+#                                                grp))
             }
 
             out <- new('mapview', object = x, map = m)
@@ -739,8 +740,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
 
             m <- initMap(map, map.types, proj4string(x))
 
-            nam <- sys.call(sys.parent())
-            grp <- as.character(nam)[2]
+            grp <- layerName()
 
             coord_lst <- lapply(slot(x, "polygons"), function(x) {
               lapply(slot(x, "Polygons"), function(y) slot(y, "coords"))
@@ -759,12 +759,15 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
               }
             }
 
-            m <- leaflet::addLayersControl(map = m,
-                                           position = "bottomleft",
-                                           baseGroups = map.types,
-                                           overlayGroups = c(
-                                             getLayerNamesFromMap(m),
-                                             grp))
+            m <- mapViewLayersControl(map = m,
+                                      map.types = map.types,
+                                      names = grp)
+#             m <- leaflet::addLayersControl(map = m,
+#                                            position = "bottomleft",
+#                                            baseGroups = map.types,
+#                                            overlayGroups = c(
+#                                              getLayerNamesFromMap(m),
+#                                              grp))
 
             out <- new('mapview', object = x, map = m)
 
@@ -876,12 +879,15 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                                         pal = pal_n[[i]], opacity = 1,
                                         values = vals[[i]], title = grp)
 
-                m <- leaflet::addLayersControl(map = m,
-                                               position = "bottomleft",
-                                               baseGroups = map.types,
-                                               overlayGroups = c(
-                                                 getLayerNamesFromMap(m),
-                                                 grp))
+                m <- mapViewLayersControl(map = m,
+                                          map.types = map.types,
+                                          names = grp)
+#                 m <- leaflet::addLayersControl(map = m,
+#                                                position = "bottomleft",
+#                                                baseGroups = map.types,
+#                                                overlayGroups = c(
+#                                                  getLayerNamesFromMap(m),
+#                                                  grp))
 
               }
 
@@ -896,8 +902,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
               nms <- names(df)
 
-              nam <- sys.call(sys.parent())
-              grp <- as.character(nam)[2]
+              grp <- layerName()
 
               txt <- sapply(seq(nrow(x@data)), function(i) {
                 paste(nms, df[i, ], sep = ": ")
@@ -931,12 +936,16 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                 }
               }
 
-              m <- leaflet::addLayersControl(map = m,
-                                             position = "bottomleft",
-                                             baseGroups = map.types,
-                                             overlayGroups = c(
-                                               getLayerNamesFromMap(m),
-                                               grp))
+              m <- mapViewLayersControl(map = m,
+                                        map.types = map.types,
+                                        names = grp)
+
+#               m <- leaflet::addLayersControl(map = m,
+#                                              position = "bottomleft",
+#                                              baseGroups = map.types,
+#                                              overlayGroups = c(
+#                                                getLayerNamesFromMap(m),
+#                                                grp))
             }
 
             out <- new('mapview', object = x, map = m)
@@ -974,8 +983,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
 
             m <- initMap(map, map.types, proj4string(x))
 
-            nam <- sys.call(sys.parent())
-            grp <- as.character(nam)[2]
+            grp <- layerName()
 
             coord_lst <- lapply(slot(x, "lines"), function(x) {
               lapply(slot(x, "Lines"), function(y) slot(y, "coords"))
@@ -994,12 +1002,15 @@ setMethod('mapView', signature(x = 'SpatialLines'),
               }
             }
 
-            m <- leaflet::addLayersControl(map = m,
-                                           position = "bottomleft",
-                                           baseGroups = map.types,
-                                           overlayGroups = c(
-                                             getLayerNamesFromMap(m),
-                                             grp))
+            m <- mapViewLayersControl(map = m,
+                                      map.types = map.types,
+                                      names = grp)
+#             m <- leaflet::addLayersControl(map = m,
+#                                            position = "bottomleft",
+#                                            baseGroups = map.types,
+#                                            overlayGroups = c(
+#                                              getLayerNamesFromMap(m),
+#                                              grp))
 
             out <- new('mapview', object = x, map = m)
 
@@ -1008,16 +1019,4 @@ setMethod('mapView', signature(x = 'SpatialLines'),
           }
 
 )
-
-
-
-
-# ## leaflet ================================================================
-# #' @describeIn mapView
-#
-# setMethod('mapView', signature(x = 'leaflet'),
-#           function(x, y) {
-#             mapview::addMapLayer(y, map = x)
-#           }
-# )
 

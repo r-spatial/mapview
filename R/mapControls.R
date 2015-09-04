@@ -242,6 +242,44 @@ spCheckAdjustProjection <- function(x, verbose = FALSE) {
 }
 
 
+# add leaflet control button to map ---------------------------------------
+#' @describeIn mapControls add leaflet control button to map
+#' @export mapViewLayersControl
+#'
+#' @param names names of the layer groups to be added to control button
+mapViewLayersControl <- function(map, map.types, names) {
+
+  leaflet::addLayersControl(map = map,
+                            position = "bottomleft",
+                            baseGroups = map.types,
+                            overlayGroups = c(
+                              getLayerNamesFromMap(map),
+                              names))
+
+}
+
+
+# create layer name for grouping in map -----------------------------------
+#' @describeIn mapControls create layer name for grouping in map
+#' @export layerName
+#'
+layerName <- function() {
+  mvclss <- c("SpatialPointsDataFrame",
+              "SpatialPolygonsDataFrame",
+              "SpatialLinesDataFrame",
+              "SpatialPoints",
+              "SpatialPolygons",
+              "SpatialLines",
+              "RasterLayer",
+              "RasterStack",
+              "RasterBrick")
+  nam <- as.character(sys.calls()[[1]])
+  clss <- sapply(nam, function(i) try(class(get(i)), silent = TRUE))
+  indx <- which(clss %in% mvclss)
+  grp <- nam[indx]
+  return(grp)
+}
+
 
 # extractObjectName <- function(x) {
 #   pipe_splt <- strsplit(x, "%>%")[[1]][-1]
