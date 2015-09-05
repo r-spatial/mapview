@@ -6,7 +6,8 @@
 #' different bandwidths in the electromagnetic spectrum) are combined such
 #' that they represent the red, green and blue channel. This function can
 #' be used to make 'true (or false) color images' from Landsat and other
-#' multi-band satellite images.
+#' multi-band satellite images. Note, this text is plagirized, i.e. copied
+#' from \code{\link{plotRGB}}.
 #'
 #' @param x a RasterBrick or RasterStack
 #' @param r integer. Index of the Red channel, between 1 and nlayers(x)

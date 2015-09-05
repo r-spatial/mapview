@@ -33,6 +33,8 @@ if ( !isGeneric('mapView') ) {
 #'
 #' @examples
 #' \dontrun{
+#' mapView()
+#'
 #' ### raster data ###
 #' library(sp)
 #' library(raster)
@@ -955,3 +957,43 @@ setMethod('mapView', signature(x = 'SpatialLines'),
 
 )
 
+
+## Missing ================================================================
+#' @describeIn mapView initiate a map without an object
+#'
+#' @param easter.egg well, you might find out if you set this to TRUE
+setMethod('mapView', signature(x = 'missing'),
+          function(map.types = c("OpenStreetMap",
+                                 "Esri.WorldImagery"),
+                   easter.egg = FALSE) {
+
+            if(easter.egg) {
+              envinMR <- data.frame(x = 8.771676,
+                                    y = 50.814891,
+                                    envinMR = "envinMR")
+              coordinates(envinMR) <- ~x+y
+              proj4string(envinMR) <- CRS(llcrs)
+              m <- initBaseMaps(map.types)
+
+              m <- leaflet::addCircles(data = envinMR, map = m,
+                                       fillColor = "white",
+                                       color = "black",
+                                       weight = 8,
+                                       opacity = 1,
+                                       fillOpacity = 0.5,
+                                       group = "envinMR",
+                                       popup = '<a target="_blank" href="http://environmentalinformatics-marburg.de/">Environmental Informatics Marburg</a>')
+              m <- mapViewLayersControl(map = m, map.types = map.types,
+                                        names = "envinMR")
+              m <- leaflet::setView(map = m, 8.771676, 50.814891, zoom = 18)
+              return(m)
+            } else {
+              m <- initBaseMaps(map.types)
+              m <- leaflet::setView(map = m, 8.770862, 50.814772, zoom = 18)
+              m <- leaflet::addLayersControl(map = m, baseGroups = map.types,
+                                             position = "bottomleft")
+              out <- new('mapview', object = NULL, map = m)
+              return(out)
+            }
+          }
+)

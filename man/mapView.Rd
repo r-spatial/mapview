@@ -13,6 +13,7 @@
 \alias{mapView,SpatialPointsDataFrame-method}
 \alias{mapView,SpatialPolygons-method}
 \alias{mapView,SpatialPolygonsDataFrame-method}
+\alias{mapView,missing-method}
 \title{view spatial objects interactively}
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL, cols = mapViewPalette(7),
@@ -61,6 +62,9 @@
 \S4method{mapView}{SpatialLines}(x, map = NULL, na.color = "transparent",
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
   weight = 2, verbose = FALSE, ...)
+
+\S4method{mapView}{missing}(map.types = c("OpenStreetMap",
+  "Esri.WorldImagery"), easter.egg = FALSE)
 }
 \arguments{
 \item{x}{a \code{\link{raster}}* object}
@@ -100,6 +104,8 @@ of the column(s) to be rendered}
 \item{burst}{whether to show all (TRUE) or only one (FALSE) layers}
 
 \item{weight}{line width (see \code{\link{leaflet}} for details)}
+
+\item{easter.egg}{well, you might find out if you set this to TRUE}
 }
 \description{
 this function produces an interactive GIS-like view of the specified
@@ -126,9 +132,13 @@ spatial object(s) on top of the specified base maps.
 \item \code{SpatialLinesDataFrame}: \code{\link{SpatialLinesDataFrame}}
 
 \item \code{SpatialLines}: \code{\link{SpatialLines}}
+
+\item \code{missing}: initiate a map without an object
 }}
 \examples{
 \dontrun{
+mapView()
+
 ### raster data ###
 library(sp)
 library(raster)

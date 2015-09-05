@@ -76,6 +76,8 @@ projectRasterForMapView <- function(x) {
 #' @param map.types map types to be used as backgraound maps
 initBaseMaps <- function(map.types) {
   ## create base map using specified map types
+  if (missing(map.types)) map.types <- c("OpenStreetMap",
+                                         "Esri.WorldImagery")
     m <- leaflet::leaflet()
     m <- leaflet::addProviderTiles(m, provider = map.types[1],
                                    group = map.types[1])

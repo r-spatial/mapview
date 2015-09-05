@@ -45,7 +45,14 @@ setMethod("+",
                     e2 = "mapview"),
           function (e1, e2)
           {
-            mapView(x = e2@object, map = e1@map)
+            m <- mapView(x = e2@object, map = e1@map)
+            m <- leaflet::fitBounds(map = m@map,
+                                    lng1 = extent(m@object)@xmin,
+                                    lat1 = extent(m@object)@ymin,
+                                    lng2 = extent(m@object)@xmax,
+                                    lat2 = extent(m@object)@ymax)
+            out <- new('mapview', object = e2@object, map = m)
+            return(out)
           }
 )
 
@@ -59,7 +66,14 @@ setMethod("+",
                     e2 = "ANY"),
           function (e1, e2)
           {
-            mapView(e2, map = e1@map)
+            m <- mapView(e2, map = e1@map)
+            m <- leaflet::fitBounds(map = m@map,
+                                    lng1 = extent(m@object)@xmin,
+                                    lat1 = extent(m@object)@ymin,
+                                    lng2 = extent(m@object)@xmax,
+                                    lat2 = extent(m@object)@ymax)
+            out <- new('mapview', object = e2, map = m)
+            return(out)
           }
 )
 
@@ -73,6 +87,13 @@ setMethod("+",
                     e2 = "ANY"),
           function (e1, e2)
           {
-            mapView(e2, map = e1)
+            m <- mapView(e2, map = e1)
+            m <- leaflet::fitBounds(map = m@map,
+                                    lng1 = extent(m@object)@xmin,
+                                    lat1 = extent(m@object)@ymin,
+                                    lng2 = extent(m@object)@xmax,
+                                    lat2 = extent(m@object)@ymax)
+            out <- new('mapview', object = e2, map = m)
+            return(out)
           }
 )
