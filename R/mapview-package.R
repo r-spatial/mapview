@@ -12,6 +12,7 @@
 #' \emph{Maintainer:} Tim Appelhans \email{tim.appelhans@@gmail.com}
 #'
 #' @import leaflet sp raster satellite scales methods
+#' @importFrom grDevices rgb
 #'
 #' @keywords package
 #'

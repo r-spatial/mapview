@@ -52,7 +52,7 @@ llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
 #' @param x a Raster* or Spatial* object
 projectRasterForMapView <- function(x) {
 
-  is.fact <- raster::is.factor(x)
+  is.fact <- raster::is.factor(x)[1]
   if (is.fact) {
     out_rst <- raster::projectRaster(
       x, raster::projectExtent(x, crs = sp::CRS(wmcrs)),
@@ -272,11 +272,14 @@ layerName <- function() {
               "SpatialLines",
               "RasterLayer",
               "RasterStack",
-              "RasterBrick")
+              "RasterBrick",
+              "mapview",
+              "leaflet")
   nam <- as.character(sys.calls()[[1]])
   clss <- sapply(nam, function(i) try(class(get(i)), silent = TRUE))
   indx <- which(clss %in% mvclss)
   grp <- nam[indx]
+  grp <- grp[length(grp)]
   return(grp)
 }
 

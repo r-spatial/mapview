@@ -7,9 +7,9 @@
 addMapLayer(lay, map)
 }
 \arguments{
-\item{map}{the map to which the layer should be added}
+\item{lay}{an object that can be passed to \code{\link{mapView}}}
 
-\item{object}{an object that can be passed to \code{\link{mapView}}}
+\item{map}{the map to which the layer should be added}
 
 \item{...}{additional arguments passed on to \code{\link{mapView}}}
 }
@@ -37,7 +37,7 @@ coordinates(meuse) <- ~x+y
 proj4string(meuse) <- CRS("+init=epsg:28992")
 
 # all layers of meuse
-addMapLayer(meuse, m1)
+addMapLayer(meuse, slot(m1, "map"))
 }
 \author{
 Tim Appelhans

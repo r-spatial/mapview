@@ -41,7 +41,7 @@ gridded(meuse.grid) = TRUE
 meuse_rst <- stack(meuse.grid)
 
 m1 <- mapView(meuse_rst[[1]])
-viewExtent(meuse_rst, map = m1)
+viewExtent(meuse_rst, map = slot(m1, "map"))
 }
 \author{
 Tim Appelhans

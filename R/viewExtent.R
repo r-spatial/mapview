@@ -25,7 +25,7 @@
 #' meuse_rst <- stack(meuse.grid)
 #'
 #' m1 <- mapView(meuse_rst[[1]])
-#' viewExtent(meuse_rst, map = m1)
+#' viewExtent(meuse_rst, map = slot(m1, "map"))
 #'
 #' @export viewExtent
 #' @name viewExtent
@@ -40,35 +40,16 @@ viewExtent <- function(x,
                                      "Esri.WorldImagery"),
                        ...) {
 
-#   ## create base map using specified map types
-#   if (is.null(map)) {
-#     m <- initBaseMaps(map.types)
-#   } else {
-#     m <- map
-#   }
-
   m <- initMap(map, map.types, projection(x))
 
-  nam <- sys.call(0)
-  grp <- as.character(nam)[2]
+  grp <- layerName()
   grp <- paste("extent", grp)
 
   m <- addExtent(x, map = m, group = grp, ...)
 
-  ## add layer control buttons
-  if (is.null(map)) {
-    m <- leaflet::addLayersControl(map = m,
-                                   position = "topleft",
-                                   baseGroups = map.types,
-                                   overlayGroups = grp)
-  } else {
-    m <- leaflet::addLayersControl(map = m,
-                                   position = "topleft",
-                                   baseGroups = map.types,
-                                   overlayGroups =
-                                     c(getLayerNamesFromMap(m),
-                                       grp))
-  }
+  m <- mapViewLayersControl(map = m,
+                            map.types = map.types,
+                            names = grp)
 
   out <- new('mapview', object = x, map = m)
 

@@ -4,7 +4,7 @@
 #' this function adds a layer to an interactive GIS-like view produced
 #' with \code{\link{mapView}}
 #'
-#' @param object an object that can be passed to \code{\link{mapView}}
+#' @param lay an object that can be passed to \code{\link{mapView}}
 #' @param map the map to which the layer should be added
 #' @param ... additional arguments passed on to \code{\link{mapView}}
 #'
@@ -31,7 +31,7 @@
 #' proj4string(meuse) <- CRS("+init=epsg:28992")
 #'
 #' # all layers of meuse
-#' addMapLayer(meuse, m1)
+#' addMapLayer(meuse, slot(m1, "map"))
 #'
 #' @export addMapLayer
 #' @name addMapLayer
@@ -53,29 +53,4 @@ addMapLayer <- function(lay, map) {
 # }
 #
 
-setMethod("+",
-          signature(e1 = "mapview",
-                    e2 = "mapview"),
-          function (e1, e2)
-          {
-            addMapLayer(lay = e2@object, map = e1@map)
-          }
-)
 
-setMethod("+",
-          signature(e1 = "mapview",
-                    e2 = "ANY"),
-          function (e1, e2)
-          {
-            mapView(e2, map = e1@map)
-          }
-)
-
-setMethod("+",
-          signature(e1 = "leaflet",
-                    e2 = "ANY"),
-          function (e1, e2)
-          {
-            mapView(e2, map = e1)
-          }
-)

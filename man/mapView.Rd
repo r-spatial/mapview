@@ -16,9 +16,9 @@
 \title{view spatial objects interactively}
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL, cols = mapViewPalette(7),
-  na.color = "transparent", values = NULL, map.types = c("OpenStreetMap",
-  "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
-  legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
+  na.color = "transparent", use.layer.names = TRUE, values = NULL,
+  map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
+  legend = TRUE, legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
 
 \S4method{mapView}{RasterStack}(x, map = NULL, cols = mapViewPalette(7),
   na.color = "transparent", values = NULL, map.types = c("OpenStreetMap",
@@ -70,6 +70,8 @@
 \item{cols}{color palette for the layers}
 
 \item{na.color}{color for missing values}
+
+\item{use.layer.names}{should layer names of the Raster* object be used?}
 
 \item{values}{a vector of values for the visualisation of the layers.
 Per default these are calculated based on the supplied raster* object.}
@@ -165,12 +167,12 @@ mapView(meuse_pts)
 
 
 ### overlay vector on top of raster ###
-m3 <- mapView(meuse, map = m2)
+m3 <- mapView(meuse, map = slot(m2, "map"))
 m3
 
-m4 <- mapView(meuse, map = m2, burst = TRUE)
+m4 <- mapView(meuse, map = slot(m2, "map"), burst = TRUE)
 m4 # is the same as
-m5 <- addMapLayer(meuse, m2, burst = TRUE)
+m5 <- addMapLayer(meuse, slot(m2, "map"), burst = TRUE)
 m5
 
 
@@ -185,7 +187,7 @@ centres <- data.frame(coordinates(DEU_admin2))
 names(centres) <- c("x", "y")
 coordinates(centres) <- ~ x + y
 projection(centres) <- projection(DEU_admin2)
-addMapLayer(centres, m)
+addMapLayer(centres, map = slot(m, "map"))
 
 
 

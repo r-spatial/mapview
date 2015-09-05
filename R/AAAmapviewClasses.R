@@ -8,3 +8,5 @@ setClass('mapview',
          slots = c(object = 'ANY',
                    map = 'ANY'))
 NULL
+
+setOldClass("leaflet")
