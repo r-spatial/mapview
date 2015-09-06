@@ -972,17 +972,40 @@ setMethod('mapView', signature(x = 'missing'),
                                     y = 50.814891,
                                     envinMR = "envinMR")
               coordinates(envinMR) <- ~x+y
-              proj4string(envinMR) <- CRS(llcrs)
+              proj4string(envinMR) <- sp::CRS(llcrs)
               m <- initBaseMaps(map.types)
 
+              pop <- paste("<center>", "<b>", "mapview", "</b>", "<br>", " was created at",
+                           "<br>",
+                           '<a target="_blank" href="http://environmentalinformatics-marburg.de/">Environmental Informatics Marburg</a>',
+                           "<br>", "by ", "<br>",
+                           '<a target="_blank" href="http://umweltinformatik-marburg.de/en/staff/tim-appelhans/">Tim Appelhans</a>',
+                           "<br>", "and is released under", "<br>",
+                           strsplit(utils::packageDescription("mapview", fields = "License"), "\\|")[[1]][1],
+                           "<br>", "<br>",
+                           '<hr width=50% style="border: none; height: 1px; color: #D8D8D8; background: #D8D8D8;"/>',
+                           "<br>",
+                           "Please cite as: ", "<br>",
+                           attr(unclass(utils::citation("mapview"))[[1]], "textVersion"),
+                           "<br>", "<br>",
+                           'A BibTeX entry for LaTeX users can be created with',
+                           "<br>",
+                           '<font face="courier">',
+                           'citation("mapview")',
+                           '</font face="courier">',
+                           "</center>")
               m <- leaflet::addCircles(data = envinMR, map = m,
                                        fillColor = "white",
                                        color = "black",
-                                       weight = 8,
-                                       opacity = 1,
+                                       weight = 6,
+                                       opacity = 0.8,
                                        fillOpacity = 0.5,
                                        group = "envinMR",
-                                       popup = '<a target="_blank" href="http://environmentalinformatics-marburg.de/">Environmental Informatics Marburg</a>')
+                                       popup = pop)
+              m <- leaflet::addPopups(map = m,
+                                      lng = 8.771676,
+                                      lat = 50.814891,
+                                      popup = pop)
               m <- mapViewLayersControl(map = m, map.types = map.types,
                                         names = "envinMR")
               m <- leaflet::setView(map = m, 8.771676, 50.814891, zoom = 18)
