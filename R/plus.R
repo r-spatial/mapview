@@ -38,7 +38,7 @@ if ( !isGeneric('+') ) {
 #' @docType methods
 #' @rdname plus
 #' @aliases +,mapview,mapview-method
-#'
+NULL
 
 setMethod("+",
           signature(e1 = "mapview",

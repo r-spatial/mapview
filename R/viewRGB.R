@@ -44,6 +44,7 @@
 #' @name viewRGB
 #' @rdname viewRGB
 #' @aliases viewRGB
+NULL
 
 viewRGB <- function(x, r = 3, g = 2, b = 1,
                     quantiles = c(0.02, 0.98),

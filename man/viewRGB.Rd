@@ -3,11 +3,6 @@
 \name{viewRGB}
 \alias{viewRGB}
 \title{Red-Green-Blue map view of a multi-layered Raster object}
-\usage{
-viewRGB(x, r = 3, g = 2, b = 1, quantiles = c(0.02, 0.98), map = NULL,
-  maxpixels = 5e+05, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
-  na.color = "#00000000", ...)
-}
 \arguments{
 \item{x}{a RasterBrick or RasterStack}
 

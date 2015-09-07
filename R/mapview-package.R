@@ -4,7 +4,7 @@
 #' using leaflet.
 #'
 #' @name mapview-package
-#' @aliases mapview-package
+#' @aliases mapviewpackage
 #' @docType package
 #' @title GIS-like viewing of spatial objects in R
 #' @author Tim Appelhans \cr

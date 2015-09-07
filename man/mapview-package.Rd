@@ -3,6 +3,7 @@
 \docType{package}
 \name{mapview-package}
 \alias{mapview-package}
+\alias{mapviewpackage}
 \title{GIS-like viewing of spatial objects in R}
 \description{
 GIS-like viewing of spatial objects in R

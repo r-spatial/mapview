@@ -8,8 +8,10 @@
 #' @seealso
 #' \code{\link{colorRampPalette}}
 #'
+#' @name mapViewPalette
 #' @export mapViewPalette
 #' @aliases mapViewPalette
+NULL
 
 mapViewPalette <- function(n) {
   colorRampPalette(c("#ebeaf7", "#83b0d6",

@@ -37,6 +37,7 @@
 #' @name addMapLayer
 #' @rdname addMapLayer
 #' @aliases addMapLayer
+NULL
 
 addMapLayer <- function(lay, map) {
 

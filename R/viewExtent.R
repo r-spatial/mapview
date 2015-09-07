@@ -29,11 +29,12 @@
 #'
 #' @export viewExtent
 #' @name viewExtent
-#' @rdname viewExtent
 #' @aliases viewExtent,addExtent
 #'
+NULL
 
 ## view Extent ============================================================
+#' @rdname viewExtent
 viewExtent <- function(x,
                        map = NULL,
                        map.types = c("OpenStreetMap",
@@ -59,7 +60,7 @@ viewExtent <- function(x,
 
 ## add Extent =============================================================
 #' @describeIn viewExtent
-#'
+
 addExtent <- function(x, map, ...) {
 
   llcrs <- "+proj=longlat +datum=WGS84 +no_defs"

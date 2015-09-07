@@ -8,8 +8,6 @@
 \alias{+,mapview,mapview-method}
 \title{add a layer to a mapview or leaflet map}
 \usage{
-\S4method{+}{mapview,mapview}(e1, e2)
-
 \S4method{+}{mapview,ANY}(e1, e2)
 
 \S4method{+}{leaflet,ANY}(e1, e2)

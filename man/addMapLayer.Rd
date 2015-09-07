@@ -3,9 +3,6 @@
 \name{addMapLayer}
 \alias{addMapLayer}
 \title{add a layer to a leaflet map using mapView}
-\usage{
-addMapLayer(lay, map)
-}
 \arguments{
 \item{lay}{an object that can be passed to \code{\link{mapView}}}
 
