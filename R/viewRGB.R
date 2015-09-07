@@ -15,6 +15,8 @@
 #' @param b integer. Index of the Blue channel, between 1 and nlayers(x)
 #' @param quantiles the upper and lower quantiles used for streching
 #' @param map the map to which the layer should be added
+#' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
+#' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param map.types character spcifications for the base maps.
 #' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
 #' for available options.
@@ -46,12 +48,13 @@
 viewRGB <- function(x, r = 3, g = 2, b = 1,
                     quantiles = c(0.02, 0.98),
                     map = NULL,
+                    maxpixels = 500000,
                     map.types = c("OpenStreetMap",
                                   "Esri.WorldImagery"),
                     na.color = "#00000000",
                     ...) {
 
-  x <- projectRasterForMapView(x)
+  x <- rasterCheckAdjustProjection(x, maxpixels)
 
   mat <- cbind(x[[r]][],
                x[[g]][],

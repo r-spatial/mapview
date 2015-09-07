@@ -9,6 +9,7 @@
 \alias{mapView,Satellite-method}
 \alias{mapView,SpatialLines-method}
 \alias{mapView,SpatialLinesDataFrame-method}
+\alias{mapView,SpatialPixelsDataFrame-method}
 \alias{mapView,SpatialPoints-method}
 \alias{mapView,SpatialPointsDataFrame-method}
 \alias{mapView,SpatialPolygons-method}
@@ -16,22 +17,29 @@
 \alias{mapView,missing-method}
 \title{view spatial objects interactively}
 \usage{
-\S4method{mapView}{RasterLayer}(x, map = NULL, cols = mapViewPalette(7),
-  na.color = "transparent", use.layer.names = TRUE, values = NULL,
+\S4method{mapView}{RasterLayer}(x, map = NULL, maxpixels = 5e+05,
+  cols = mapViewPalette(7), na.color = "transparent",
+  use.layer.names = TRUE, values = NULL, map.types = c("OpenStreetMap",
+  "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
+  legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
+
+\S4method{mapView}{RasterStack}(x, map = NULL, maxpixels = 5e+05,
+  cols = mapViewPalette(7), na.color = "transparent", values = NULL,
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
   legend = TRUE, legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
 
-\S4method{mapView}{RasterStack}(x, map = NULL, cols = mapViewPalette(7),
-  na.color = "transparent", values = NULL, map.types = c("OpenStreetMap",
-  "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
-  legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
-
-\S4method{mapView}{RasterBrick}(x, map = NULL, cols = mapViewPalette(7),
-  na.color = "transparent", values = NULL, map.types = c("OpenStreetMap",
-  "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
-  legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
+\S4method{mapView}{RasterBrick}(x, map = NULL, maxpixels = 5e+05,
+  cols = mapViewPalette(7), na.color = "transparent", values = NULL,
+  map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
+  legend = TRUE, legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
 
 \S4method{mapView}{Satellite}(x, ...)
+
+\S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL, map = NULL,
+  maxpixels = 5e+05, cols = mapViewPalette(7), na.color = "transparent",
+  values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
+  layer.opacity = 0.8, legend = TRUE, legend.opacity = 1,
+  verbose = FALSE, ...)
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, cols = mapViewPalette(7), na.color = "transparent",
@@ -70,6 +78,9 @@
 \item{x}{a \code{\link{raster}}* object}
 
 \item{map}{an optional existing map to be updated/added to}
+
+\item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
+If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
 \item{cols}{color palette for the layers}
 
@@ -120,6 +131,8 @@ spatial object(s) on top of the specified base maps.
 \item \code{RasterBrick}: \code{\link{brick}}
 
 \item \code{Satellite}: \code{\link{satellite}}
+
+\item \code{SpatialPixelsDataFrame}: \code{\link{SpatialPixelsDataFrame}}
 
 \item \code{SpatialPointsDataFrame}: \code{\link{SpatialPointsDataFrame}}
 

@@ -5,7 +5,7 @@
 \title{Red-Green-Blue map view of a multi-layered Raster object}
 \usage{
 viewRGB(x, r = 3, g = 2, b = 1, quantiles = c(0.02, 0.98), map = NULL,
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"),
+  maxpixels = 5e+05, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
   na.color = "#00000000", ...)
 }
 \arguments{
@@ -20,6 +20,9 @@ viewRGB(x, r = 3, g = 2, b = 1, quantiles = c(0.02, 0.98), map = NULL,
 \item{quantiles}{the upper and lower quantiles used for streching}
 
 \item{map}{the map to which the layer should be added}
+
+\item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
+If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
 \item{map.types}{character spcifications for the base maps.
 see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}

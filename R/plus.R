@@ -46,11 +46,12 @@ setMethod("+",
           function (e1, e2)
           {
             m <- mapView(x = e2@object, map = e1@map)
+            ext <- extent(projectExtent(m@object, crs = llcrs))
             m <- leaflet::fitBounds(map = m@map,
-                                    lng1 = extent(m@object)@xmin,
-                                    lat1 = extent(m@object)@ymin,
-                                    lng2 = extent(m@object)@xmax,
-                                    lat2 = extent(m@object)@ymax)
+                                    lng1 = ext@xmin,
+                                    lat1 = ext@ymin,
+                                    lng2 = ext@xmax,
+                                    lat2 = ext@ymax)
             out <- new('mapview', object = e2@object, map = m)
             return(out)
           }
@@ -67,11 +68,12 @@ setMethod("+",
           function (e1, e2)
           {
             m <- mapView(e2, map = e1@map)
+            ext <- extent(projectExtent(m@object, crs = llcrs))
             m <- leaflet::fitBounds(map = m@map,
-                                    lng1 = extent(m@object)@xmin,
-                                    lat1 = extent(m@object)@ymin,
-                                    lng2 = extent(m@object)@xmax,
-                                    lat2 = extent(m@object)@ymax)
+                                    lng1 = ext@xmin,
+                                    lat1 = ext@ymin,
+                                    lng2 = ext@xmax,
+                                    lat2 = ext@ymax)
             out <- new('mapview', object = e2, map = m)
             return(out)
           }
@@ -88,11 +90,12 @@ setMethod("+",
           function (e1, e2)
           {
             m <- mapView(e2, map = e1)
+            ext <- extent(projectExtent(m@object, crs = llcrs))
             m <- leaflet::fitBounds(map = m@map,
-                                    lng1 = extent(m@object)@xmin,
-                                    lat1 = extent(m@object)@ymin,
-                                    lng2 = extent(m@object)@xmax,
-                                    lat2 = extent(m@object)@ymax)
+                                    lng1 = ext@xmin,
+                                    lat1 = ext@ymin,
+                                    lng2 = ext@xmax,
+                                    lat2 = ext@ymax)
             out <- new('mapview', object = e2, map = m)
             return(out)
           }

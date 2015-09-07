@@ -9,7 +9,7 @@
 \alias{layers2bHidden}
 \alias{mapControls}
 \alias{mapViewLayersControl}
-\alias{projectRasterForMapView}
+\alias{rasterCheckAdjustProjection}
 \alias{scaleCoordinates}
 \alias{scaleLinesCoordinates}
 \alias{scalePolygonsCoordinates}
@@ -22,7 +22,7 @@ getLayerNamesFromMap(map)
 
 layers2bHidden(map)
 
-projectRasterForMapView(x)
+rasterCheckAdjustProjection(x, maxpixels)
 
 initBaseMaps(map.types)
 
@@ -44,6 +44,9 @@ layerName()
 \item{map}{a leaflet map}
 
 \item{x}{a Raster* or Spatial* object}
+
+\item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
+If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
 \item{map.types}{map types to be used as backgraound maps}
 
@@ -68,7 +71,7 @@ convenience functions for working with spatial objects and leaflet maps
 
 \item \code{layers2bHidden}: identify layers to be hidden from initial map rendering
 
-\item \code{projectRasterForMapView}: project Raster* objects for mapView
+\item \code{rasterCheckAdjustProjection}: check and potentially adjust projection of Raster* objects
 
 \item \code{initBaseMaps}: initialise mapView base maps
 

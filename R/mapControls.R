@@ -46,12 +46,21 @@ llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
 
 
 # project Raster* objects for mapView -------------------------------------
-#' @describeIn mapControls project Raster* objects for mapView
-#' @export projectRasterForMapView
+#' @describeIn mapControls check and potentially adjust projection of Raster* objects
+#' @export rasterCheckAdjustProjection
 #'
 #' @param x a Raster* or Spatial* object
-projectRasterForMapView <- function(x) {
+#' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
+#' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
+rasterCheckAdjustProjection <- function(x, maxpixels) {
 
+  if (maxpixels < ncell(x)) {
+    warning(paste("maximum number of pixels for Raster* viewing is",
+                  maxpixels, "the supplied Raster* has", ncell(x), "\n",
+                  "... decreasing Raster* resolution to", maxpixels, "pixels\n",
+                  "to view full resolution adjust 'maxpixels = ...'"))
+    x <- sampleRegular(x, maxpixels, asRaster = TRUE, useGDAL = TRUE)
+  }
   is.fact <- raster::is.factor(x)[1]
   if (is.fact) {
     out_rst <- raster::projectRaster(
@@ -278,7 +287,10 @@ layerName <- function() {
               "mapview",
               "leaflet")
   nam <- as.character(sys.calls()[[1]])
-  clss <- sapply(nam, function(i) try(class(get(i)), silent = TRUE))
+  clss <- sapply(nam, function(i) {
+    try(class(dynGet(i, inherits = TRUE, minframe = 2L,
+                     ifnotfound = NULL)), silent = TRUE)
+  })
   indx <- which(clss %in% mvclss)
   grp <- nam[indx]
   grp <- grp[length(grp)]

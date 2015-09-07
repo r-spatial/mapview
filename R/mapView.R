@@ -11,6 +11,8 @@ if ( !isGeneric('mapView') ) {
 #'
 #' @param x a \code{\link{raster}}* object
 #' @param map an optional existing map to be updated/added to
+#' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
+#' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param cols color palette for the layers
 #' @param na.color color for missing values
 #' @param use.layer.names should layer names of the Raster* object be used?
@@ -114,6 +116,7 @@ NULL
 setMethod('mapView', signature(x = 'RasterLayer'),
           function(x,
                    map = NULL,
+                   maxpixels = 500000,
                    cols = mapViewPalette(7),
                    na.color = "transparent",
                    use.layer.names = TRUE,
@@ -133,7 +136,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 
             is.fact <- raster::is.factor(x)
 
-            x <- projectRasterForMapView(x)
+            x <- rasterCheckAdjustProjection(x, maxpixels = maxpixels)
 
             m <- initMap(map, map.types, proj4string(x))
 
@@ -165,14 +168,22 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                                            na.color = na.color)
             }
 
-            nm <- as.character(sys.calls()[[1]])
-            clss <- sapply(nm, function(i) try(dynGet(i, ifnotfound = NULL),
-                                               silent = TRUE))
-            if (!any(unlist(clss) == TRUE) || use.layer.names) {
+#             nm <- as.character(sys.calls()[[1]])
+#             print(nm)
+#             clss <- sapply(nm, function(i) {
+#               try(class(dynGet(i, inherits = TRUE, minframe = 2L,
+#                                ifnotfound = NULL)), silent = TRUE)
+#             })
+#             print(clss)
+#             print(!any(unlist(clss) == TRUE))
+#             print(use.layer.names)
+#             print((!any(unlist(clss) == TRUE) | use.layer.names))
+
+            if (use.layer.names) {
               grp <- names(x)
-              } else {
-                grp <- layerName()
-              }
+            } else {
+              grp <- layerName()
+            }
 
             ## add layers to base map
             m <- leaflet::addRasterImage(map = m,
@@ -210,6 +221,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 setMethod('mapView', signature(x = 'RasterStack'),
           function(x,
                    map = NULL,
+                   maxpixels = 500000,
                    cols = mapViewPalette(7),
                    na.color = "transparent",
                    values = NULL,
@@ -229,7 +241,9 @@ setMethod('mapView', signature(x = 'RasterStack'),
             m <- initMap(map, map.types, proj4string(x))
 
             if (nlayers(x) == 1) {
-              m <- mapView(x[[1]], map = m, map.types = map.types, ...)
+              x <- raster(x, layer = 1)
+              m <- mapView(x, map = m, map.types = map.types, ...)
+              out <- new('mapview', object = x, map = m@map)
             } else {
               m <- mapView(x[[1]], map = m, map.types = map.types, ...)
               for (i in 2:nlayers(x)) {
@@ -240,10 +254,8 @@ setMethod('mapView', signature(x = 'RasterStack'),
                 m <- leaflet::hideGroup(map = m@map,
                                         group = layers2bHidden(m@map))
               }
-
+              out <- new('mapview', object = x, map = m)
             }
-
-            out <- new('mapview', object = x, map = m)
 
             return(out)
 
@@ -258,6 +270,7 @@ setMethod('mapView', signature(x = 'RasterStack'),
 setMethod('mapView', signature(x = 'RasterBrick'),
           function(x,
                    map = NULL,
+                   maxpixels = 500000,
                    cols = mapViewPalette(7),
                    na.color = "transparent",
                    values = NULL,
@@ -335,6 +348,46 @@ setMethod('mapView', signature(x = 'Satellite'),
 )
 
 
+## SpatialPixelsDataFrame =================================================
+#' @describeIn mapView \code{\link{SpatialPixelsDataFrame}}
+#'
+setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
+          function(x,
+                   zcol = NULL,
+                   map = NULL,
+                   maxpixels = 500000,
+                   cols = mapViewPalette(7),
+                   na.color = "transparent",
+                   values = NULL,
+                   map.types = c("OpenStreetMap",
+                                 "Esri.WorldImagery"),
+                   layer.opacity = 0.8,
+                   legend = TRUE,
+                   legend.opacity = 1,
+                   verbose = FALSE,
+                   ...) {
+
+            pkgs <- c("leaflet", "sp", "magrittr")
+            tst <- sapply(pkgs, "requireNamespace",
+                          quietly = TRUE, USE.NAMES = FALSE)
+
+            if(!is.null(zcol)) x <- x[, zcol]
+
+            stck <- do.call("stack", lapply(seq(ncol(x)), function(i) {
+              r <- raster::raster(x[, i])
+              if (is.factor(x[, i])) r <- raster::as.factor(r)
+              return(r)
+            }))
+
+            m <- mapView(stck)
+
+            out <- new('mapview', object = x, map = m@map)
+
+            return(out)
+
+          }
+
+)
 
 
 ## SpatialPointsDataFrame =================================================
@@ -443,7 +496,8 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                 paste(txt[, j], collapse = " <br/> ")
               })
 
-              m <- leaflet::addCircleMarkers(m, lng = coordinates(x)[, 1],
+              m <- leaflet::addCircleMarkers(map = m,
+                                             lng = coordinates(x)[, 1],
                                              lat = coordinates(x)[, 2],
                                              group = grp,
                                              color = cols[length(cols)],
