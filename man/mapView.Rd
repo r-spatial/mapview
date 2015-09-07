@@ -43,7 +43,7 @@
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, cols = mapViewPalette(7), na.color = "transparent",
-  values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
+  radius = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
   layer.opacity = 0.8, legend = TRUE, legend.opacity = 1,
   verbose = FALSE, ...)
 
@@ -113,6 +113,9 @@ See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 of the column(s) to be rendered}
 
 \item{burst}{whether to show all (TRUE) or only one (FALSE) layers}
+
+\item{radius}{attribute name(s) or column number(s) in attribute table
+of the column(s) to be used for defining the size of circles}
 
 \item{weight}{line width (see \code{\link{leaflet}} for details)}
 

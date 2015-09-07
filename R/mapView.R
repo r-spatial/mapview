@@ -395,6 +395,8 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
 #' @param burst whether to show all (TRUE) or only one (FALSE) layers
 #' @param zcol attribute name(s) or column number(s) in attribute table
 #' of the column(s) to be rendered
+#' @param radius attribute name(s) or column number(s) in attribute table
+#' of the column(s) to be used for defining the size of circles
 
 setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
           function(x,
@@ -403,7 +405,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    burst = FALSE,
                    cols = mapViewPalette(7),
                    na.color = "transparent",
-                   values = NULL,
+                   radius = NULL,
                    map.types = c("OpenStreetMap",
                                  "Esri.WorldImagery"),
                    layer.opacity = 0.8,
@@ -416,6 +418,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
             tst <- sapply(pkgs, "requireNamespace",
                           quietly = TRUE, USE.NAMES = FALSE)
 
+            if(!is.null(radius)) rad_vals <- scale(x@data[, radius]) * 10
             if(!is.null(zcol)) x <- x[, zcol]
             if(!is.null(zcol)) burst <- TRUE
 
@@ -459,6 +462,10 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                                group = names(lst[[i]]),
                                                color = pal_n[[i]](vals[[i]]),
                                                popup = txt,
+                                               data = x,
+                                               if(!is.null(radius)) {
+                                                 radius = ~rad_vals
+                                               },
                                                ...)
 
                 m <- leaflet::addLegend(map = m, position = "topright",
@@ -502,6 +509,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                              group = grp,
                                              color = cols[length(cols)],
                                              popup = txt,
+                                             data = x,
                                              ...)
 
               m <- mapViewLayersControl(map = m,
