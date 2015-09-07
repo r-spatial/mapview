@@ -379,7 +379,7 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
               return(r)
             }))
 
-            m <- mapView(stck)
+            m <- mapView(stck, ...)
 
             out <- new('mapview', object = x, map = m@map)
 
@@ -465,7 +465,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                                data = x,
                                                if(!is.null(radius)) {
                                                  radius = ~rad_vals
-                                               },
+                                               } else radius = 10,
                                                ...)
 
                 m <- leaflet::addLegend(map = m, position = "topright",
@@ -510,6 +510,9 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                              color = cols[length(cols)],
                                              popup = txt,
                                              data = x,
+                                             if(!is.null(radius)) {
+                                               radius = ~rad_vals
+                                             } else radius = 10,
                                              ...)
 
               m <- mapViewLayersControl(map = m,
