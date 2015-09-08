@@ -13,7 +13,7 @@ if ( !isGeneric('mapView') ) {
 #' @param map an optional existing map to be updated/added to
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
-#' @param cols color palette for the layers
+#' @param color color (palette) of the points/polygons/lines/pixels
 #' @param na.color color for missing values
 #' @param use.layer.names should layer names of the Raster* object be used?
 #' @param values a vector of values for the visualisation of the layers.
@@ -117,7 +117,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
           function(x,
                    map = NULL,
                    maxpixels = 500000,
-                   cols = mapViewPalette(7),
+                   color = mapViewPalette(7),
                    na.color = "transparent",
                    use.layer.names = TRUE,
                    values = NULL,
@@ -159,25 +159,14 @@ setMethod('mapView', signature(x = 'RasterLayer'),
             }
 
             if (is.fact) {
-              pal <- leaflet::colorFactor(cols,
+              pal <- leaflet::colorFactor(color,
                                           domain = NULL,
                                           na.color = na.color)
             } else {
-              pal <- leaflet::colorNumeric(cols,
+              pal <- leaflet::colorNumeric(color,
                                            domain = values,
                                            na.color = na.color)
             }
-
-#             nm <- as.character(sys.calls()[[1]])
-#             print(nm)
-#             clss <- sapply(nm, function(i) {
-#               try(class(dynGet(i, inherits = TRUE, minframe = 2L,
-#                                ifnotfound = NULL)), silent = TRUE)
-#             })
-#             print(clss)
-#             print(!any(unlist(clss) == TRUE))
-#             print(use.layer.names)
-#             print((!any(unlist(clss) == TRUE) | use.layer.names))
 
             if (use.layer.names) {
               grp <- names(x)
@@ -222,7 +211,7 @@ setMethod('mapView', signature(x = 'RasterStack'),
           function(x,
                    map = NULL,
                    maxpixels = 500000,
-                   cols = mapViewPalette(7),
+                   color = mapViewPalette(7),
                    na.color = "transparent",
                    values = NULL,
                    map.types = c("OpenStreetMap",
@@ -271,7 +260,7 @@ setMethod('mapView', signature(x = 'RasterBrick'),
           function(x,
                    map = NULL,
                    maxpixels = 500000,
-                   cols = mapViewPalette(7),
+                   color = mapViewPalette(7),
                    na.color = "transparent",
                    values = NULL,
                    map.types = c("OpenStreetMap",
@@ -354,17 +343,6 @@ setMethod('mapView', signature(x = 'Satellite'),
 setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
           function(x,
                    zcol = NULL,
-                   map = NULL,
-                   maxpixels = 500000,
-                   cols = mapViewPalette(7),
-                   na.color = "transparent",
-                   values = NULL,
-                   map.types = c("OpenStreetMap",
-                                 "Esri.WorldImagery"),
-                   layer.opacity = 0.8,
-                   legend = TRUE,
-                   legend.opacity = 1,
-                   verbose = FALSE,
                    ...) {
 
             pkgs <- c("leaflet", "sp", "magrittr")
@@ -403,9 +381,9 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    zcol = NULL,
                    map = NULL,
                    burst = FALSE,
-                   cols = mapViewPalette(7),
+                   color = mapViewPalette(7),
                    na.color = "transparent",
-                   radius = NULL,
+                   radius = 10,
                    map.types = c("OpenStreetMap",
                                  "Esri.WorldImagery"),
                    layer.opacity = 0.8,
@@ -418,7 +396,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
             tst <- sapply(pkgs, "requireNamespace",
                           quietly = TRUE, USE.NAMES = FALSE)
 
-            if(!is.null(radius)) rad_vals <- scale(x@data[, radius]) * 10
+            rad_vals <- circleRadius(x, radius)
             if(!is.null(zcol)) x <- x[, zcol]
             if(!is.null(zcol)) burst <- TRUE
 
@@ -437,10 +415,10 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
               pal_n <- lapply(seq(lst), function(i) {
                 if (is.factor(lst[[i]]@data[, 1])) {
-                  leaflet::colorFactor(cols, lst[[i]]@data[, 1],
+                  leaflet::colorFactor(color, lst[[i]]@data[, 1],
                                        levels = levels(lst[[i]]@data[, 1]))
                 } else {
-                  leaflet::colorNumeric(cols, vals[[i]],
+                  leaflet::colorNumeric(color, vals[[i]],
                                         na.color = na.color)
                 }
               })
@@ -463,9 +441,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                                color = pal_n[[i]](vals[[i]]),
                                                popup = txt,
                                                data = x,
-                                               if(!is.null(radius)) {
-                                                 radius = ~rad_vals
-                                               } else radius = 10,
+                                               radius = rad_vals,
                                                ...)
 
                 m <- leaflet::addLegend(map = m, position = "topright",
@@ -507,7 +483,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                              lng = coordinates(x)[, 1],
                                              lat = coordinates(x)[, 2],
                                              group = grp,
-                                             color = cols[length(cols)],
+                                             color = color[length(color)],
                                              popup = txt,
                                              data = x,
                                              if(!is.null(radius)) {
@@ -589,7 +565,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    zcol = NULL,
                    map = NULL,
                    burst = FALSE,
-                   cols = mapViewPalette(7),
+                   color = mapViewPalette(7),
                    na.color = "transparent",
                    values = NULL,
                    map.types = c("OpenStreetMap",
@@ -632,11 +608,11 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
               pal_n <- lapply(seq(lst), function(i) {
                 if (is.factor(df_all[[i]][, 1])) {
-                  leaflet::colorFactor(cols, vals[[i]],
+                  leaflet::colorFactor(color, vals[[i]],
                                        levels = levels(vals[[i]]),
                                        na.color = na.color)
                 } else {
-                  leaflet::colorNumeric(cols, vals[[i]],
+                  leaflet::colorNumeric(color, vals[[i]],
                                         na.color = na.color)
                 }
               })
@@ -724,7 +700,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                                             lat = y_coord,
                                             weight = weight,
                                             group = grp,
-                                            color = cols[length(cols)],
+                                            color = color[length(color)],
                                             popup = txt[j],
                                             ...)
                 }
@@ -806,7 +782,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                    zcol = NULL,
                    map = NULL,
                    burst = FALSE,
-                   cols = mapViewPalette(7),
+                   color = mapViewPalette(7),
                    na.color = "transparent",
                    values = NULL,
                    map.types = c("OpenStreetMap",
@@ -848,11 +824,11 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
               pal_n <- lapply(seq(lst), function(i) {
                 if (is.factor(df_all[[i]][, 1])) {
-                  leaflet::colorFactor(cols, vals[[i]],
+                  leaflet::colorFactor(color, vals[[i]],
                                        levels = levels(vals[[i]]),
                                        na.color = na.color)
                 } else {
-                  leaflet::colorNumeric(cols, vals[[i]],
+                  leaflet::colorNumeric(color, vals[[i]],
                                         na.color = na.color)
                 }
               })
@@ -945,7 +921,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                                              lat = y_coord,
                                              weight = weight,
                                              group = grp,
-                                             color = cols[length(cols)],
+                                             color = color[length(color)],
                                              popup = txt[j],
                                              ...)
                 }

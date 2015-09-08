@@ -298,6 +298,27 @@ layerName <- function() {
 }
 
 
+# set or calculate circle radius ------------------------------------------
+#' @describeIn mapControls set or calculate circle radius
+#' @export circleRadius
+#'
+#' @param radius either an integer specifying circle radius or the name
+#' (character) of one of the columns in the SpatialPointsDataFrame
+#' (attribute table)
+#'
+circleRadius <- function(x, radius) {
+  if (is.character(radius)) {
+    rad <- scale(x@data[, radius], center = FALSE) * 10
+  } else rad <- radius
+
+  return(rad)
+}
+
+
+
+
+
+
 # extractObjectName <- function(x) {
 #   pipe_splt <- strsplit(x, "%>%")[[1]][-1]
 #

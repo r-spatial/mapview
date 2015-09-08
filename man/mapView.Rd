@@ -18,32 +18,28 @@
 \title{view spatial objects interactively}
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL, maxpixels = 5e+05,
-  cols = mapViewPalette(7), na.color = "transparent",
+  color = mapViewPalette(7), na.color = "transparent",
   use.layer.names = TRUE, values = NULL, map.types = c("OpenStreetMap",
   "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
   legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
 
 \S4method{mapView}{RasterStack}(x, map = NULL, maxpixels = 5e+05,
-  cols = mapViewPalette(7), na.color = "transparent", values = NULL,
+  color = mapViewPalette(7), na.color = "transparent", values = NULL,
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
   legend = TRUE, legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
 
 \S4method{mapView}{RasterBrick}(x, map = NULL, maxpixels = 5e+05,
-  cols = mapViewPalette(7), na.color = "transparent", values = NULL,
+  color = mapViewPalette(7), na.color = "transparent", values = NULL,
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
   legend = TRUE, legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
 
 \S4method{mapView}{Satellite}(x, ...)
 
-\S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL, map = NULL,
-  maxpixels = 5e+05, cols = mapViewPalette(7), na.color = "transparent",
-  values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
-  layer.opacity = 0.8, legend = TRUE, legend.opacity = 1,
-  verbose = FALSE, ...)
+\S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL, ...)
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, cols = mapViewPalette(7), na.color = "transparent",
-  radius = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
+  burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
+  radius = 10, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
   layer.opacity = 0.8, legend = TRUE, legend.opacity = 1,
   verbose = FALSE, ...)
 
@@ -52,7 +48,7 @@
   verbose = FALSE, ...)
 
 \S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, cols = mapViewPalette(7), na.color = "transparent",
+  burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
   values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
   layer.opacity = 0.8, legend = TRUE, legend.opacity = 1, weight = 2,
   verbose = FALSE, ...)
@@ -62,7 +58,7 @@
   weight = 2, verbose = FALSE, ...)
 
 \S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, cols = mapViewPalette(7), na.color = "transparent",
+  burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
   values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
   layer.opacity = 0.8, legend = TRUE, legend.opacity = 1, weight = 2,
   verbose = FALSE, ...)
@@ -82,7 +78,7 @@
 \item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
 If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
-\item{cols}{color palette for the layers}
+\item{color}{color (palette) of the points/polygons/lines/pixels}
 
 \item{na.color}{color for missing values}
 
