@@ -46,14 +46,15 @@ setMethod("+",
           function (e1, e2)
           {
             m <- e1@map
-            m <- mapView(x = e2@object, map = m)
-            ext <- extent(projectExtent(m@object, crs = llcrs))
-            m <- leaflet::fitBounds(map = m@map,
+            m <- appendMapCallEntries(m, e2@map)
+            ext <- extent(projectExtent(e2@object, crs = llcrs))
+            m <- leaflet::fitBounds(map = m,
                                     lng1 = ext@xmin,
                                     lat1 = ext@ymin,
                                     lng2 = ext@xmax,
                                     lat2 = ext@ymax)
-            out <- new('mapview', object = e2@object, map = m)
+            out_obj <- list(e1@object, e2@object)
+            out <- new('mapview', object = out_obj, map = m)
             return(out)
           }
 )

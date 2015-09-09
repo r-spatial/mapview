@@ -30,6 +30,22 @@ getLayerNamesFromMap <- function(map) {
 
 }
 
+
+# update layer names of leaflet map ---------------------------------------
+#' @describeIn mapControls update layer names of leaflet map
+#' @export updateLayerControlNames
+#'
+#' @param map1 map to be modified
+#' @param map2 map to get modification from
+#'
+updateLayerControlNames <- function(map1, map2) {
+  len <- getLayerControlEntriesFromMap(map1)
+  len <- len[length(len)]
+  map1$x$calls[[len]]$args[[2]] <- c(getLayerNamesFromMap(map1),
+                                     getLayerNamesFromMap(map2))
+  return(map1)
+}
+
 # identify layers to be hidden from initial map rendering -----------------
 #' @describeIn mapControls identify layers to be hidden from initial map rendering
 #' @export layers2bHidden
@@ -40,6 +56,68 @@ layers2bHidden <- function(map) {
   nms[-c(1)]
 
 }
+
+
+
+# get calls from a map ----------------------------------------------------
+#' @describeIn mapControls get calls from a map
+#' @export getMapCalls
+#'
+getMapCalls <- function(map) {
+  map$x$calls
+}
+
+
+
+# append calls to a map ---------------------------------------------------
+#' @describeIn mapControls append calls to a map
+#' @export appendMapCallEntries
+#'
+appendMapCallEntries <- function(map1, map2) {
+  ## base map controls
+  ctrls1 <- getLayerControlEntriesFromMap(map1)
+  ctrls2 <- getLayerControlEntriesFromMap(map2)
+  bmaps1 <- map1$x$calls[[ctrls1[1]]]$args[[1]]
+  bmaps2 <- map2$x$calls[[ctrls2[1]]]$args[[1]]
+  bmaps <- c(bmaps1, bmaps2)[!duplicated(c(bmaps1, bmaps2))]
+
+  ## layer controls
+  lyrs1 <- getLayerNamesFromMap(map1)
+  lyrs2 <- getLayerNamesFromMap(map2)
+  lyrs <- c(lyrs1, lyrs2)
+  dup <- duplicated(lyrs)
+  lyrs[dup] <- paste0(lyrs[dup], ".2")
+
+  ## merge
+  mpcalls <- append(map1$x$calls, map2$x$calls)
+  mpcalls <- mpcalls[!duplicated(mpcalls)]
+  mpcalls[[ctrls1[1]]]$args[[1]] <- bmaps
+  mpcalls[[ctrls1[1]]]$args[[2]] <- lyrs
+
+  ind <- seq_along(mpcalls)[sapply(mpcalls,
+                                  FUN = function(X) "addLayersControl" %in% X)]
+  ind <- ind[-1]
+  try({
+    mpcalls[[ind]] <- NULL
+  }, silent = TRUE)
+
+  map1$x$calls <- mpcalls
+  return(map1)
+}
+
+
+
+# remove duuplicated map calls --------------------------------------------
+#' @describeIn mapControls remove duuplicated map calls
+#' @export removeDuplicatedMapCalls
+#'
+removeDuplicatedMapCalls <- function(map) {
+  ind <- anyDuplicated(map$x$calls)
+  for (i in ind) map$x$calls[[ind]] <- NULL
+  return(map)
+}
+
+
 
 wmcrs <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs"
 llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
@@ -308,7 +386,7 @@ layerName <- function() {
 #'
 circleRadius <- function(x, radius) {
   if (is.character(radius)) {
-    rad <- scale(x@data[, radius], center = FALSE) * 10
+    rad <- scale(as.numeric(x@data[, radius]), center = FALSE) * 10
   } else rad <- radius
 
   return(rad)
