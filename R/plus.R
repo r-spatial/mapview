@@ -69,7 +69,8 @@ setMethod("+",
                     e2 = "ANY"),
           function (e1, e2)
           {
-            m <- mapView(e2, map = e1@map)
+            nm <- deparse(substitute(e2))
+            m <- mapView(e2, map = e1@map, layer.name = nm)
             ext <- extent(projectExtent(m@object, crs = llcrs))
             m <- leaflet::fitBounds(map = m@map,
                                     lng1 = ext@xmin,
@@ -91,7 +92,8 @@ setMethod("+",
                     e2 = "ANY"),
           function (e1, e2)
           {
-            m <- mapView(e2, map = e1)
+            nm <- deparse(substitute(e2))
+            m <- mapView(e2, map = e1, layer.name = nm)
             ext <- extent(projectExtent(m@object, crs = llcrs))
             m <- leaflet::fitBounds(map = m@map,
                                     lng1 = ext@xmin,

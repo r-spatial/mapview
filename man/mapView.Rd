@@ -21,7 +21,8 @@
   color = mapViewPalette(7), na.color = "transparent",
   use.layer.names = TRUE, values = NULL, map.types = c("OpenStreetMap",
   "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
-  legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
+  legend.opacity = 1, trim = TRUE, verbose = FALSE,
+  layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
 \S4method{mapView}{RasterStack}(x, map = NULL, maxpixels = 5e+05,
   color = mapViewPalette(7), na.color = "transparent", values = NULL,
@@ -41,31 +42,37 @@
   burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
   radius = 10, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
   layer.opacity = 0.8, legend = TRUE, legend.opacity = 1,
-  verbose = FALSE, ...)
+  verbose = FALSE, layer.name = deparse(substitute(x, env =
+  parent.frame())), ...)
 
 \S4method{mapView}{SpatialPoints}(x, map = NULL, na.color = "transparent",
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  verbose = FALSE, ...)
+  verbose = FALSE, layer.name = deparse(substitute(x, env =
+  parent.frame())), ...)
 
 \S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
   values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
   layer.opacity = 0.8, legend = TRUE, legend.opacity = 1, weight = 2,
-  verbose = FALSE, ...)
+  verbose = FALSE, layer.name = deparse(substitute(x, env =
+  parent.frame())), ...)
 
 \S4method{mapView}{SpatialPolygons}(x, map = NULL, na.color = "transparent",
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  weight = 2, verbose = FALSE, ...)
+  weight = 2, verbose = FALSE, layer.name = deparse(substitute(x, env =
+  parent.frame())), ...)
 
 \S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
   values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
   layer.opacity = 0.8, legend = TRUE, legend.opacity = 1, weight = 2,
-  verbose = FALSE, ...)
+  verbose = FALSE, layer.name = deparse(substitute(x, env =
+  parent.frame())), ...)
 
 \S4method{mapView}{SpatialLines}(x, map = NULL, na.color = "transparent",
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  weight = 2, verbose = FALSE, ...)
+  weight = 2, verbose = FALSE, layer.name = deparse(substitute(x, env =
+  parent.frame())), ...)
 
 \S4method{mapView}{missing}(map.types = c("OpenStreetMap",
   "Esri.WorldImagery"), easter.egg = FALSE)
@@ -100,6 +107,8 @@ for available options.}
 \item{trim}{should the raster be trimmed in case there are NAs on the egdes}
 
 \item{verbose}{should some details be printed during the process}
+
+\item{layer.name}{the name of the layer to be shown on the map}
 
 \item{...}{additional arguments passed on to repective functions.
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},

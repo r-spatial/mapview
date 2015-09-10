@@ -26,6 +26,7 @@ if ( !isGeneric('mapView') ) {
 #' @param legend.opacity opacity of the legend
 #' @param trim should the raster be trimmed in case there are NAs on the egdes
 #' @param verbose should some details be printed during the process
+#' @param layer.name the name of the layer to be shown on the map
 #' @param ... additional arguments passed on to repective functions.
 #' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
@@ -128,6 +129,8 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    legend.opacity = 1,
                    trim = TRUE,
                    verbose = FALSE,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
                    ...) {
 
             pkgs <- c("leaflet", "raster", "magrittr")
@@ -171,7 +174,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
             if (use.layer.names) {
               grp <- names(x)
             } else {
-              grp <- layerName()
+              grp <- layer.name
             }
 
             ## add layers to base map
@@ -390,6 +393,8 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    legend = TRUE,
                    legend.opacity = 1,
                    verbose = FALSE,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
                    ...) {
 
             pkgs <- c("leaflet", "sp", "magrittr")
@@ -440,7 +445,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                                group = names(lst[[i]]),
                                                color = pal_n[[i]](vals[[i]]),
                                                popup = txt,
-                                               data = x,
+                                               #data = x,
                                                radius = rad_vals,
                                                ...)
 
@@ -466,7 +471,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                   stringsAsFactors = FALSE)
 
               nms <- names(df)
-              grp <- layerName()
+              grp <- layer.name
 
               txt_x <- paste0("x: ", round(coordinates(x)[, 1], 2))
               txt_y <- paste0("y: ", round(coordinates(x)[, 2], 2))
@@ -485,10 +490,8 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                              group = grp,
                                              color = color[length(color)],
                                              popup = txt,
-                                             data = x,
-                                             if(!is.null(radius)) {
-                                               radius = ~rad_vals
-                                             } else radius = 10,
+                                             #data = x,
+                                             radius = rad_vals,
                                              ...)
 
               m <- mapViewLayersControl(map = m,
@@ -517,6 +520,8 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                                  "Esri.WorldImagery"),
                    layer.opacity = 0.8,
                    verbose = FALSE,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
                    ...) {
 
             pkgs <- c("leaflet", "sp", "magrittr")
@@ -534,7 +539,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
               paste(txt_x[j], txt_y[j], sep = "<br/>")
             })
 
-            grp <- layerName()
+            grp <- layer.name
 
             m <- leaflet::addCircleMarkers(m, lng = coordinates(x)[, 1],
                                            lat = coordinates(x)[, 2],
@@ -575,6 +580,8 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    legend.opacity = 1,
                    weight = 2,
                    verbose = FALSE,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
                    ...) {
 
             pkgs <- c("leaflet", "sp", "magrittr")
@@ -674,7 +681,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
               nms <- names(df)
 
-              grp <- layerName()
+              grp <- layer.name
 
               txt <- as.matrix(sapply(seq(nrow(x@data)), function(i) {
                 paste(nms, df[i, ], sep = ": ")
@@ -733,6 +740,8 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                    layer.opacity = 0.8,
                    weight = 2,
                    verbose = FALSE,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
                    ...) {
 
             pkgs <- c("leaflet", "sp", "magrittr")
@@ -743,7 +752,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
 
             m <- initMap(map, map.types, proj4string(x))
 
-            grp <- layerName()
+            grp <- layer.name
 
             coord_lst <- lapply(slot(x, "polygons"), function(x) {
               lapply(slot(x, "Polygons"), function(y) slot(y, "coords"))
@@ -792,6 +801,8 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                    legend.opacity = 1,
                    weight = 2,
                    verbose = FALSE,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
                    ...) {
 
             pkgs <- c("leaflet", "sp", "magrittr")
@@ -893,7 +904,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
               nms <- names(df)
 
-              grp <- layerName()
+              grp <- layer.name
 
               txt <- sapply(seq(nrow(x@data)), function(i) {
                 paste(nms, df[i, ], sep = ": ")
@@ -955,6 +966,8 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                    layer.opacity = 0.8,
                    weight = 2,
                    verbose = FALSE,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
                    ...) {
 
             pkgs <- c("leaflet", "sp", "magrittr")
@@ -967,7 +980,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
 
             m <- initMap(map, map.types, proj4string(x))
 
-            grp <- layerName()
+            grp <- layer.name
 
             coord_lst <- lapply(slot(x, "lines"), function(x) {
               lapply(slot(x, "Lines"), function(y) slot(y, "coords"))
