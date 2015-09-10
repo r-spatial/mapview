@@ -73,7 +73,8 @@ addExtent <- function(x, map, ...) {
               "SpatialLines")
   sptrue <- any(class(x)[1] %in% spclss)
 
-  rstclss <- c("RasterLayer",
+  rstclss <- c("SpatialPixelsDataFrame",
+               "RasterLayer",
                "RasterStack",
                "RasterBrick")
   rsttrue <- any(class(x)[1] %in% rstclss)
@@ -91,12 +92,13 @@ addExtent <- function(x, map, ...) {
 
   ext <- raster::extent(x)
 
+  title <- "EXTENT (EPSG:4326):"
   txt_xmin <- paste0("xmin: ", round(ext@xmin, 5))
   txt_xmax <- paste0("xmax: ", round(ext@xmax, 5))
   txt_ymin <- paste0("ymin: ", round(ext@ymin, 5))
   txt_ymax <- paste0("ymax: ", round(ext@ymax, 5))
 
-  txt <- paste(txt_xmin, txt_xmax, txt_ymin, txt_ymax, sep = "<br/>")
+  txt <- paste(title, txt_xmin, txt_xmax, txt_ymin, txt_ymax, sep = "<br/>")
 
   m <- leaflet::addRectangles(map = map,
                               lng1 = ext@xmin,
