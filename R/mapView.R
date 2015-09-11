@@ -87,16 +87,16 @@ if ( !isGeneric('mapView') ) {
 #'
 #'
 #' ### polygon vector data ###
-#' data("DEU_admin2")
-#' m <- mapView(DEU_admin2, burst = FALSE)
+#' data("gadmCHE")
+#' m <- mapView(gadmCHE)
 #' m
 #'
 #' ## points on polygons ##
-#' centres <- data.frame(coordinates(DEU_admin2))
+#' centres <- data.frame(coordinates(gadmCHE))
 #' names(centres) <- c("x", "y")
 #' coordinates(centres) <- ~ x + y
-#' projection(centres) <- projection(DEU_admin2)
-#' addMapLayer(centres, map = slot(m, "map"))
+#' projection(centres) <- projection(gadmCHE)
+#' m + centres
 #'
 #'
 #'
@@ -120,7 +120,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    maxpixels = 500000,
                    color = mapViewPalette(7),
                    na.color = "transparent",
-                   use.layer.names = TRUE,
+                   use.layer.names = FALSE,
                    values = NULL,
                    map.types = c("OpenStreetMap",
                                  "Esri.WorldImagery"),
@@ -199,7 +199,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                                       map.types = map.types,
                                       names = grp)
 
-            out <- new('mapview', object = x, map = m)
+            out <- new('mapview', object = list(x), map = m)
 
             return(out)
 
@@ -207,10 +207,10 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 
 )
 
-## Raster Stack ===========================================================
-#' @describeIn mapView \code{\link{stack}}
+## Raster Stack/Brick ===========================================================
+#' @describeIn mapView \code{\link{stack}} / \code{\link{stack}}
 
-setMethod('mapView', signature(x = 'RasterStack'),
+setMethod('mapView', signature(x = 'RasterStackBrick'),
           function(x,
                    map = NULL,
                    maxpixels = 500000,
@@ -234,69 +234,23 @@ setMethod('mapView', signature(x = 'RasterStack'),
 
             if (nlayers(x) == 1) {
               x <- raster(x, layer = 1)
-              m <- mapView(x, map = m, map.types = map.types, ...)
-              out <- new('mapview', object = x, map = m@map)
+              m <- mapView(x, map = m, map.types = map.types,
+                           use.layer.names = TRUE, ...)
+              out <- new('mapview', object = list(x), map = m@map)
             } else {
-              m <- mapView(x[[1]], map = m, map.types = map.types, ...)
+              m <- mapView(x[[1]], map = m, map.types = map.types,
+                           use.layer.names = TRUE, ...)
               for (i in 2:nlayers(x)) {
-                m <- mapView(x[[i]], map = m@map, map.types = map.types, ...)
+                m <- mapView(x[[i]], map = m@map, map.types = map.types,
+                             use.layer.names = TRUE, ...)
               }
 
               if (length(getLayerNamesFromMap(m@map)) > 1) {
                 m <- leaflet::hideGroup(map = m@map,
                                         group = layers2bHidden(m@map))
               }
-              out <- new('mapview', object = x, map = m)
+              out <- new('mapview', object = list(x), map = m)
             }
-
-            return(out)
-
-          }
-
-)
-
-
-## Raster Brick ===========================================================
-#' @describeIn mapView \code{\link{brick}}
-
-setMethod('mapView', signature(x = 'RasterBrick'),
-          function(x,
-                   map = NULL,
-                   maxpixels = 500000,
-                   color = mapViewPalette(7),
-                   na.color = "transparent",
-                   values = NULL,
-                   map.types = c("OpenStreetMap",
-                                 "Esri.WorldImagery"),
-                   layer.opacity = 0.8,
-                   legend = TRUE,
-                   legend.opacity = 1,
-                   trim = TRUE,
-                   verbose = FALSE,
-                   ...) {
-
-            pkgs <- c("leaflet", "raster", "magrittr")
-            tst <- sapply(pkgs, "requireNamespace",
-                          quietly = TRUE, USE.NAMES = FALSE)
-
-            m <- initMap(map, map.types, proj4string(x))
-
-            if (nlayers(x) == 1) {
-              m <- mapView(x[[1]], map = m, map.types = map.types, ...)
-            } else {
-              m <- mapView(x[[1]], map = m, map.types = map.types, ...)
-              for (i in 2:nlayers(x)) {
-                m <- mapView(x[[i]], map = m@map, map.types = map.types, ...)
-              }
-
-              if (length(getLayerNamesFromMap(m@map)) > 1) {
-                m <- leaflet::hideGroup(map = m@map,
-                                        group = layers2bHidden(m@map))
-              }
-
-            }
-
-            out <- new('mapview', object = x, map = m)
 
             return(out)
 
@@ -331,7 +285,7 @@ setMethod('mapView', signature(x = 'Satellite'),
               m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
             }
 
-            out <- new('mapview', object = x, map = m)
+            out <- new('mapview', object = list(x), map = m)
 
             return(out)
 
@@ -362,7 +316,7 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
 
             m <- mapView(stck, ...)
 
-            out <- new('mapview', object = x, map = m@map)
+            out <- new('mapview', object = list(x), map = m@map)
 
             return(out)
 
@@ -499,7 +453,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                         names = grp)
             }
 
-            out <- new('mapview', object = x, map = m)
+            out <- new('mapview', object = list(x), map = m)
 
             return(out)
 
@@ -551,7 +505,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                                       map.types = map.types,
                                       names = grp)
 
-            out <- new('mapview', object = x, map = m)
+            out <- new('mapview', object = list(x), map = m)
 
             return(out)
 
@@ -718,7 +672,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                                         names = grp)
             }
 
-            out <- new('mapview', object = x, map = m)
+            out <- new('mapview', object = list(x), map = m)
 
             return(out)
 
@@ -775,7 +729,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                                       map.types = map.types,
                                       names = grp)
 
-            out <- new('mapview', object = x, map = m)
+            out <- new('mapview', object = list(x), map = m)
 
             return(out)
 
@@ -943,7 +897,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                                         names = grp)
             }
 
-            out <- new('mapview', object = x, map = m)
+            out <- new('mapview', object = list(x), map = m)
 
             return(out)
 
@@ -1003,7 +957,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                                       map.types = map.types,
                                       names = grp)
 
-            out <- new('mapview', object = x, map = m)
+            out <- new('mapview', object = list(x), map = m)
 
             return(out)
 

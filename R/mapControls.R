@@ -96,9 +96,11 @@ appendMapCallEntries <- function(map1, map2) {
 
   ind <- seq_along(mpcalls)[sapply(mpcalls,
                                   FUN = function(X) "addLayersControl" %in% X)]
-  ind <- ind[-1]
+  ind1 <- ind[1]
+  ind2 <- ind[-1]
   try({
-    mpcalls[[ind]] <- NULL
+    mpcalls[[ind2]] <- mpcalls[[ind1]]
+    mpcalls[[ind1]] <- NULL
   }, silent = TRUE)
 
   map1$x$calls <- mpcalls
@@ -338,12 +340,13 @@ spCheckAdjustProjection <- function(x, verbose = FALSE) {
 #' @param names names of the layer groups to be added to control button
 mapViewLayersControl <- function(map, map.types, names) {
 
-  leaflet::addLayersControl(map = map,
-                            position = "bottomleft",
-                            baseGroups = map.types,
-                            overlayGroups = c(
-                              getLayerNamesFromMap(map),
-                              names))
+  m <- leaflet::addLayersControl(map = map,
+                                 position = "bottomleft",
+                                 baseGroups = map.types,
+                                 overlayGroups = c(
+                                   getLayerNamesFromMap(map),
+                                   names))
+  return(m)
 
 }
 

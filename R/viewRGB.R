@@ -1,3 +1,8 @@
+if ( !isGeneric('viewRGB') ) {
+  setGeneric('viewRGB', function(x, ...)
+    standardGeneric('viewRGB'))
+}
+
 #' Red-Green-Blue map view of a multi-layered Raster object
 #'
 #' @description
@@ -21,6 +26,7 @@
 #' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
 #' for available options.
 #' @param na.color the color to be used for NA pixels
+#' @param layer.name the name of the layer to be shown on the map
 #' @param ... additional arguments passed on to \code{\link{mapView}}
 #'
 #' @author
@@ -40,55 +46,61 @@
 #' viewRGB(meuse_rst)
 #' viewRGB(meuse_rst, 5, 4, 3)
 #'
-#' @export viewRGB
+#' @export
+#' @docType methods
 #' @name viewRGB
 #' @rdname viewRGB
-#' @aliases viewRGB
+#' @aliases viewRGB,RasterStackBrick-method
 NULL
 
-viewRGB <- function(x, r = 3, g = 2, b = 1,
-                    quantiles = c(0.02, 0.98),
-                    map = NULL,
-                    maxpixels = 500000,
-                    map.types = c("OpenStreetMap",
-                                  "Esri.WorldImagery"),
-                    na.color = "#00000000",
-                    ...) {
+setMethod("viewRGB", signature(x = "RasterStackBrick"),
+          function(x, r = 3, g = 2, b = 1,
+                   quantiles = c(0.02, 0.98),
+                   map = NULL,
+                   maxpixels = 500000,
+                   map.types = c("OpenStreetMap",
+                                 "Esri.WorldImagery"),
+                   na.color = "#00000000",
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
+                   ...) {
 
-  x <- rasterCheckAdjustProjection(x, maxpixels)
+            xout <- rasterCheckAdjustProjection(x, maxpixels)
 
-  mat <- cbind(x[[r]][],
-               x[[g]][],
-               x[[b]][])
+            mat <- cbind(xout[[r]][],
+                         xout[[g]][],
+                         xout[[b]][])
 
-  for(i in seq(ncol(mat))){
-    z <- mat[, i]
-    lwr <- stats::quantile(z, quantiles[1], na.rm = TRUE)
-    upr <- stats::quantile(z, quantiles[2], na.rm = TRUE)
-    z <- (z - lwr) / (upr - lwr)
-    z[z < 0] <- 0
-    z[z > 1] <- 1
-    mat[, i] <- z
-  }
+            for(i in seq(ncol(mat))){
+              z <- mat[, i]
+              lwr <- stats::quantile(z, quantiles[1], na.rm = TRUE)
+              upr <- stats::quantile(z, quantiles[2], na.rm = TRUE)
+              z <- (z - lwr) / (upr - lwr)
+              z[z < 0] <- 0
+              z[z > 1] <- 1
+              mat[, i] <- z
+            }
 
-  na_indx <- apply(mat, 1, anyNA)
-  cols <- mat[, 1]
-  cols[na_indx] <- na.color
-  cols[!na_indx] <- grDevices::rgb(mat[!na_indx, ], alpha = 1)
-  p <- function(x) cols
+            na_indx <- apply(mat, 1, anyNA)
+            cols <- mat[, 1]
+            cols[na_indx] <- na.color
+            cols[!na_indx] <- grDevices::rgb(mat[!na_indx, ], alpha = 1)
+            p <- function(x) cols
 
-  grp <- layerName()
-  grp <- paste(grp, r, g, b, sep = ".")
+            grp <- layer.name
+            lyrs <- paste(r, g, b, sep = ".")
+            grp <- paste(grp, lyrs, sep = "_")
 
-  m <- initMap(map, map.types, projection(x))
-  m <- leaflet::addRasterImage(map = m, x = x[[r]], colors = p,
-                               group = grp)
-  m <- mapViewLayersControl(map = m,
-                            map.types = map.types,
-                            names = grp)
+            m <- initMap(map, map.types, projection(xout))
+            m <- leaflet::addRasterImage(map = m, x = xout[[r]], colors = p,
+                                         group = grp)
+            m <- mapViewLayersControl(map = m,
+                                      map.types = map.types,
+                                      names = grp)
 
-  out <- new('mapview', object = x, map = m)
+            out <- new('mapview', object = list(xout), map = m)
 
-  return(out)
+            return(out)
 
-}
+          }
+)

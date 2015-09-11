@@ -3,9 +3,8 @@
 \docType{methods}
 \name{mapView}
 \alias{mapView}
-\alias{mapView,RasterBrick-method}
 \alias{mapView,RasterLayer-method}
-\alias{mapView,RasterStack-method}
+\alias{mapView,RasterStackBrick-method}
 \alias{mapView,Satellite-method}
 \alias{mapView,SpatialLines-method}
 \alias{mapView,SpatialLinesDataFrame-method}
@@ -19,17 +18,12 @@
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL, maxpixels = 5e+05,
   color = mapViewPalette(7), na.color = "transparent",
-  use.layer.names = TRUE, values = NULL, map.types = c("OpenStreetMap",
+  use.layer.names = FALSE, values = NULL, map.types = c("OpenStreetMap",
   "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
   legend.opacity = 1, trim = TRUE, verbose = FALSE,
   layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
-\S4method{mapView}{RasterStack}(x, map = NULL, maxpixels = 5e+05,
-  color = mapViewPalette(7), na.color = "transparent", values = NULL,
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  legend = TRUE, legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
-
-\S4method{mapView}{RasterBrick}(x, map = NULL, maxpixels = 5e+05,
+\S4method{mapView}{RasterStackBrick}(x, map = NULL, maxpixels = 5e+05,
   color = mapViewPalette(7), na.color = "transparent", values = NULL,
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
   legend = TRUE, legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
@@ -134,9 +128,7 @@ spatial object(s) on top of the specified base maps.
 \itemize{
 \item \code{RasterLayer}: \code{\link{raster}}
 
-\item \code{RasterStack}: \code{\link{stack}}
-
-\item \code{RasterBrick}: \code{\link{brick}}
+\item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{stack}}
 
 \item \code{Satellite}: \code{\link{satellite}}
 
@@ -209,16 +201,16 @@ m5
 
 
 ### polygon vector data ###
-data("DEU_admin2")
-m <- mapView(DEU_admin2, burst = FALSE)
+data("gadmCHE")
+m <- mapView(gadmCHE)
 m
 
 ## points on polygons ##
-centres <- data.frame(coordinates(DEU_admin2))
+centres <- data.frame(coordinates(gadmCHE))
 names(centres) <- c("x", "y")
 coordinates(centres) <- ~ x + y
-projection(centres) <- projection(DEU_admin2)
-addMapLayer(centres, map = slot(m, "map"))
+projection(centres) <- projection(gadmCHE)
+m + centres
 
 
 

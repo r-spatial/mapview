@@ -43,16 +43,18 @@ viewExtent <- function(x,
 
   m <- initMap(map, map.types, projection(x))
 
-  grp <- layerName()
-  grp <- paste("extent", grp)
+  grp <- deparse(substitute(x))
+  grp <- paste(grp, "extent", sep = "_")
 
-  m <- addExtent(x, map = m, group = grp, ...)
+  addex <- addExtent(x, map = m, group = grp, ...)
+  m <- addex$map
+  out_obj <- list(addex$obj)
 
   m <- mapViewLayersControl(map = m,
                             map.types = map.types,
                             names = grp)
 
-  out <- new('mapview', object = x, map = m)
+  out <- new('mapview', object = out_obj, map = m)
 
   return(out)
 
@@ -108,6 +110,6 @@ addExtent <- function(x, map, ...) {
                               popup = txt,
                               ...)
 
-  return(m)
+  return(list(obj = ext, map = m))
 }
 

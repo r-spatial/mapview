@@ -6,7 +6,7 @@
 #' @exportClass mapview
 
 setClass('mapview',
-         slots = c(object = 'ANY',
+         slots = c(object = 'list',
                    map = 'ANY'))
 NULL
 
