@@ -1017,13 +1017,13 @@ setMethod('mapView', signature(x = 'missing'),
               m <- mapViewLayersControl(map = m, map.types = map.types,
                                         names = "envinMR")
               m <- leaflet::setView(map = m, 8.771676, 50.814891, zoom = 18)
-              out <- new('mapview', object = NULL, map = m)
+              out <- new('mapview', object = list(NULL), map = m)
             } else {
               m <- initBaseMaps(map.types)
               m <- leaflet::setView(map = m, 8.770862, 50.814772, zoom = 18)
               m <- leaflet::addLayersControl(map = m, baseGroups = map.types,
                                              position = "bottomleft")
-              out <- new('mapview', object = NULL, map = m)
+              out <- new('mapview', object = list(NULL), map = m)
             }
             return(out)
           }

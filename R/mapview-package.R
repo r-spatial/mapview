@@ -59,13 +59,23 @@ NULL
 NULL
 #'
 #' @docType data
-#' @name kiliLS8
-#' @title Landsat 8 detail of Mt Kilimanjaro
-#' @description Landsat 8 detail of Mt Kilimanjaro showing an elevational
-#' cross-section from savannah to alpine helichrysum vegetation
+#' @name poppendorf
+#' @title Landsat 8 detail of Franconian Switzerland centered on Poppendorf
+#' @description Landsat 8 detail of Franconian Switzerland centered on Poppendorf
 #' @details Use of this data requires your agreement to the USGS regulations on
 #' using Landsat data.
-#' @format \code{"RasterBrick-class"} with 11 bands.
+#' @format \code{"RasterBrick-class"} with 10 bands (layers 8 and 12 have been dropped).
 #' @source
 #' \url{http://earthexplorer.usgs.gov/}
+NULL
+#'
+#' @docType data
+#' @name breweries91
+#' @title Selected breweries in Franconia
+#' @description Selected breweries in Franconia (zip code starting with 91...)
+#' @details This dataset contains selected breweries in Franconia. It is a
+#' subset of a larger database that was compiled by students at the
+#' University of Marburg for a seminar called
+#' "The Geography of Beer, sustainability in the food industry"
+#' @format \code{sp::SpatialPointsDataFrame}
 NULL

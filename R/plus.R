@@ -106,7 +106,8 @@ setMethod("+",
           function (e1, e2)
           {
             nm <- deparse(substitute(e2))
-            m <- mapView(e2, map = e1, layer.name = nm)
+            m <- mapView(e2, map = e1, layer.name = nm,
+                         map.types = getProviderTileNamesFromMap(e1))
             out_obj <- list(e2)
             ext <- extent(projectExtent(e2, crs = llcrs))
             m <- leaflet::fitBounds(map = m@map,

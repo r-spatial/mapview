@@ -6,6 +6,8 @@
 \alias{getLayerControlEntriesFromMap}
 \alias{getLayerNamesFromMap}
 \alias{getMapCalls}
+\alias{getProviderTileEntriesFromMap}
+\alias{getProviderTileNamesFromMap}
 \alias{initBaseMaps}
 \alias{initMap}
 \alias{layerName}
@@ -24,6 +26,10 @@
 getLayerControlEntriesFromMap(map)
 
 getLayerNamesFromMap(map)
+
+getProviderTileEntriesFromMap(map)
+
+getProviderTileNamesFromMap(map)
 
 updateLayerControlNames(map1, map2)
 
@@ -91,6 +97,10 @@ convenience functions for working with spatial objects and leaflet maps
 \item \code{getLayerControlEntriesFromMap}: query leaflet map for position of 'addLayersControl' entry
 
 \item \code{getLayerNamesFromMap}: get layer names of leaflet map
+
+\item \code{getProviderTileEntriesFromMap}: query leaflet map for position of 'addProviderTiles' entry
+
+\item \code{getProviderTileNamesFromMap}: get provider tile names of leaflet map
 
 \item \code{updateLayerControlNames}: update layer names of leaflet map
 

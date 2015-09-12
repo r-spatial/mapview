@@ -31,6 +31,30 @@ getLayerNamesFromMap <- function(map) {
 }
 
 
+# query leaflet map for position of 'addProviderTiles' entry --------------
+#' @describeIn mapControls query leaflet map for position of 'addProviderTiles' entry
+#' @export getProviderTileEntriesFromMap
+#'
+getProviderTileEntriesFromMap <- function(map) {
+
+  seq_along(map$x$calls)[sapply(map$x$calls,
+                                FUN = function(X) "addProviderTiles" %in% X)]
+
+}
+
+
+# get provider tile names of leaflet map ------------------------------------------
+#' @describeIn mapControls get provider tile names of leaflet map
+#' @export getProviderTileNamesFromMap
+#'
+getProviderTileNamesFromMap <- function(map) {
+
+  len <- getProviderTileEntriesFromMap(map)
+  len <- len[length(len)]
+  if (length(len) != 0) map$x$calls[[len]]$args[[1]] else NULL
+
+}
+
 # update layer names of leaflet map ---------------------------------------
 #' @describeIn mapControls update layer names of leaflet map
 #' @export updateLayerControlNames
@@ -189,7 +213,11 @@ initMap <- function(map, map.types, proj4str) {
 
   if (missing(map.types)) map.types <- c("OpenStreetMap",
                                          "Esri.WorldImagery")
-  if (missing(map)) map <- NULL
+  if (missing(map) & missing(map.types)) {
+    map <- NULL
+    map.types <- c("OpenStreetMap",
+                   "Esri.WorldImagery")
+  }
   if (missing(proj4str)) proj4str <- NA
   ## create base map using specified map types
   if (is.null(map)) {
