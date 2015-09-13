@@ -162,6 +162,7 @@ proj4string(meuse.grid) <- CRS("+init=epsg:28992")
 gridded(meuse.grid) = TRUE
 meuse_rst <- stack(meuse.grid)
 
+# raster stack
 m1 <- mapView(meuse_rst)
 m1
 
@@ -169,6 +170,8 @@ m1
 m2 <- mapView(raster::as.factor(meuse_rst[[4]]))
 m2
 
+# SpatialPixelsDataFrame
+mapView(meuse.grid, zcol = "soil")
 
 
 ### point vector data ###
@@ -181,7 +184,7 @@ proj4string(meuse) <- CRS("+init=epsg:28992")
 mapView(meuse, burst = TRUE)
 
 # only one layer, all info in popups
-mapView(meuse, burst = FALSE)
+mapView(meuse)
 
 ## SpatialPoints ##
 meuse_pts <- as(meuse, "SpatialPoints")
@@ -190,15 +193,7 @@ mapView(meuse_pts)
 
 
 ### overlay vector on top of raster ###
-m3 <- mapView(meuse, map = slot(m2, "map"))
-m3
-
-m4 <- mapView(meuse, map = slot(m2, "map"), burst = TRUE)
-m4 # is the same as
-m5 <- addMapLayer(meuse, slot(m2, "map"), burst = TRUE)
-m5
-
-
+mapView(meuse.grid, zcol = "ffreq") + meuse
 
 ### polygon vector data ###
 data("gadmCHE")
@@ -212,11 +207,9 @@ coordinates(centres) <- ~ x + y
 projection(centres) <- projection(gadmCHE)
 m + centres
 
-
-
 ### lines vector data
 data("atlStorms2005")
-mapView(atlStorms2005, burst = FALSE)
+mapView(atlStorms2005)
 mapView(atlStorms2005, burst = TRUE)
 }
 }
