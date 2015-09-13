@@ -42,8 +42,10 @@ m2 <- mapView(meuse)
 
 ### add two mapview objects
 m1 + m2
+'+'(m1, m2)
 
 ### add spatial object to mapview object
 m1 + meuse
+'+'(m1, meuse)
 }
 

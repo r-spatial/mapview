@@ -37,14 +37,10 @@ if ( !isGeneric('viewRGB') ) {
 #' library(sp)
 #' library(raster)
 #'
-#' data(meuse.grid)
-#' coordinates(meuse.grid) = ~x+y
-#' proj4string(meuse.grid) <- CRS("+init=epsg:28992")
-#' gridded(meuse.grid) = TRUE
-#' meuse_rst <- stack(meuse.grid)
+#' data(poppendorf)
 #'
-#' viewRGB(meuse_rst)
-#' viewRGB(meuse_rst, 5, 4, 3)
+#' viewRGB(poppendorf, 4, 3, 2) # true-color
+#' viewRGB(poppendorf, 5, 4, 3) # false-color
 #'
 #' @export
 #' @docType methods

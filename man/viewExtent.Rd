@@ -38,10 +38,8 @@ data(meuse.grid)
 coordinates(meuse.grid) = ~x+y
 proj4string(meuse.grid) <- CRS("+init=epsg:28992")
 gridded(meuse.grid) = TRUE
-meuse_rst <- stack(meuse.grid)
 
-m1 <- mapView(meuse_rst[[1]])
-viewExtent(meuse_rst, map = slot(m1, "map"))
+viewExtent(meuse.grid)
 }
 \author{
 Tim Appelhans
