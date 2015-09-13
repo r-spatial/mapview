@@ -3,9 +3,6 @@
 \name{mapViewPalette}
 \alias{mapViewPalette}
 \title{mapView colour palette}
-\usage{
-mapViewPalette(n)
-}
 \arguments{
 \item{n}{the number of colours to be created}
 }

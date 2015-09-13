@@ -3,70 +3,87 @@
 \docType{methods}
 \name{mapView}
 \alias{mapView}
-\alias{mapView,RasterBrick-method}
 \alias{mapView,RasterLayer-method}
-\alias{mapView,RasterStack-method}
+\alias{mapView,RasterStackBrick-method}
 \alias{mapView,Satellite-method}
 \alias{mapView,SpatialLines-method}
 \alias{mapView,SpatialLinesDataFrame-method}
+\alias{mapView,SpatialPixelsDataFrame-method}
 \alias{mapView,SpatialPoints-method}
 \alias{mapView,SpatialPointsDataFrame-method}
 \alias{mapView,SpatialPolygons-method}
 \alias{mapView,SpatialPolygonsDataFrame-method}
-\title{view raster layers interactively}
+\alias{mapView,missing-method}
+\title{view spatial objects interactively}
 \usage{
-\S4method{mapView}{RasterLayer}(x, map = NULL, cols = mapViewPalette(7),
-  na.color = "transparent", values = NULL, map.types = c("OpenStreetMap",
+\S4method{mapView}{RasterLayer}(x, map = NULL, maxpixels = 5e+05,
+  color = mapViewPalette(7), na.color = "transparent",
+  use.layer.names = FALSE, values = NULL, map.types = c("OpenStreetMap",
   "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
-  legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
+  legend.opacity = 1, trim = TRUE, verbose = FALSE,
+  layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
-\S4method{mapView}{RasterStack}(x, map = NULL, cols = mapViewPalette(7),
-  na.color = "transparent", values = NULL, map.types = c("OpenStreetMap",
-  "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
-  legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
-
-\S4method{mapView}{RasterBrick}(x, map = NULL, cols = mapViewPalette(7),
-  na.color = "transparent", values = NULL, map.types = c("OpenStreetMap",
-  "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
-  legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
+\S4method{mapView}{RasterStackBrick}(x, map = NULL, maxpixels = 5e+05,
+  color = mapViewPalette(7), na.color = "transparent", values = NULL,
+  map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
+  legend = TRUE, legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
 
 \S4method{mapView}{Satellite}(x, ...)
 
-\S4method{mapView}{SpatialPointsDataFrame}(x, map = NULL, burst = FALSE,
-  cols = mapViewPalette(7), na.color = "transparent", values = NULL,
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  legend = TRUE, legend.opacity = 1, verbose = FALSE, ...)
+\S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL, ...)
+
+\S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
+  burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
+  radius = 10, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
+  layer.opacity = 0.8, legend = TRUE, legend.opacity = 1,
+  verbose = FALSE, layer.name = deparse(substitute(x, env =
+  parent.frame())), ...)
 
 \S4method{mapView}{SpatialPoints}(x, map = NULL, na.color = "transparent",
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  verbose = FALSE, ...)
+  verbose = FALSE, layer.name = deparse(substitute(x, env =
+  parent.frame())), ...)
 
-\S4method{mapView}{SpatialPolygonsDataFrame}(x, map = NULL, burst = FALSE,
-  cols = mapViewPalette(7), na.color = "transparent", values = NULL,
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  legend = TRUE, legend.opacity = 1, weight = 2, verbose = FALSE, ...)
+\S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL, map = NULL,
+  burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
+  values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
+  layer.opacity = 0.8, legend = TRUE, legend.opacity = 1, weight = 2,
+  verbose = FALSE, layer.name = deparse(substitute(x, env =
+  parent.frame())), ...)
 
 \S4method{mapView}{SpatialPolygons}(x, map = NULL, na.color = "transparent",
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  weight = 2, verbose = FALSE, ...)
+  weight = 2, verbose = FALSE, layer.name = deparse(substitute(x, env =
+  parent.frame())), ...)
 
-\S4method{mapView}{SpatialLinesDataFrame}(x, map = NULL, burst = FALSE,
-  cols = mapViewPalette(7), na.color = "transparent", values = NULL,
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  legend = TRUE, legend.opacity = 1, weight = 2, verbose = FALSE, ...)
+\S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
+  burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
+  values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
+  layer.opacity = 0.8, legend = TRUE, legend.opacity = 1, weight = 2,
+  verbose = FALSE, layer.name = deparse(substitute(x, env =
+  parent.frame())), ...)
 
 \S4method{mapView}{SpatialLines}(x, map = NULL, na.color = "transparent",
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  weight = 2, verbose = FALSE, ...)
+  weight = 2, verbose = FALSE, layer.name = deparse(substitute(x, env =
+  parent.frame())), ...)
+
+\S4method{mapView}{missing}(map.types = c("OpenStreetMap",
+  "Esri.WorldImagery"), easter.egg = FALSE)
 }
 \arguments{
 \item{x}{a \code{\link{raster}}* object}
 
 \item{map}{an optional existing map to be updated/added to}
 
-\item{cols}{color palette for the layers}
+\item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
+If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
+
+\item{color}{color (palette) of the points/polygons/lines/pixels}
 
 \item{na.color}{color for missing values}
+
+\item{use.layer.names}{should layer names of the Raster* object be used?}
 
 \item{values}{a vector of values for the visualisation of the layers.
 Per default these are calculated based on the supplied raster* object.}
@@ -85,38 +102,56 @@ for available options.}
 
 \item{verbose}{should some details be printed during the process}
 
-\item{...}{additional arguments passed on to \code{\link{addLegend}}}
+\item{layer.name}{the name of the layer to be shown on the map}
+
+\item{...}{additional arguments passed on to repective functions.
+See \code{\link{addRasterImage}}, \code{\link{addCircles}},
+\code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
+
+\item{zcol}{attribute name(s) or column number(s) in attribute table
+of the column(s) to be rendered}
 
 \item{burst}{whether to show all (TRUE) or only one (FALSE) layers}
 
+\item{radius}{attribute name(s) or column number(s) in attribute table
+of the column(s) to be used for defining the size of circles}
+
 \item{weight}{line width (see \code{\link{leaflet}} for details)}
+
+\item{easter.egg}{well, you might find out if you set this to TRUE}
 }
 \description{
 this function produces an interactive GIS-like view of the specified
-raster layers on top of the specified base maps.
+spatial object(s) on top of the specified base maps.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{RasterStack}: 
+\item \code{RasterLayer}: \code{\link{raster}}
 
-\item \code{RasterBrick}: 
+\item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{stack}}
 
-\item \code{Satellite}: 
+\item \code{Satellite}: \code{\link{satellite}}
 
-\item \code{SpatialPointsDataFrame}: 
+\item \code{SpatialPixelsDataFrame}: \code{\link{SpatialPixelsDataFrame}}
 
-\item \code{SpatialPoints}: 
+\item \code{SpatialPointsDataFrame}: \code{\link{SpatialPointsDataFrame}}
 
-\item \code{SpatialPolygonsDataFrame}: 
+\item \code{SpatialPoints}: \code{\link{SpatialPoints}}
 
-\item \code{SpatialPolygons}: 
+\item \code{SpatialPolygonsDataFrame}: \code{\link{SpatialPolygonsDataFrame}}
 
-\item \code{SpatialLinesDataFrame}: 
+\item \code{SpatialPolygons}: \code{\link{SpatialPolygons}}
 
-\item \code{SpatialLines}: 
+\item \code{SpatialLinesDataFrame}: \code{\link{SpatialLinesDataFrame}}
+
+\item \code{SpatialLines}: \code{\link{SpatialLines}}
+
+\item \code{missing}: initiate a map without an object
 }}
 \examples{
 \dontrun{
+mapView()
+
 ### raster data ###
 library(sp)
 library(raster)
@@ -155,27 +190,27 @@ mapView(meuse_pts)
 
 
 ### overlay vector on top of raster ###
-m3 <- mapView(meuse, map = m2)
+m3 <- mapView(meuse, map = slot(m2, "map"))
 m3
 
-m4 <- mapView(meuse, map = m2, burst = TRUE)
+m4 <- mapView(meuse, map = slot(m2, "map"), burst = TRUE)
 m4 # is the same as
-m5 <- addMapLayer(meuse, m2, burst = TRUE)
+m5 <- addMapLayer(meuse, slot(m2, "map"), burst = TRUE)
 m5
 
 
 
 ### polygon vector data ###
-data("DEU_admin2")
-m <- mapView(DEU_admin2, burst = FALSE)
+data("gadmCHE")
+m <- mapView(gadmCHE)
 m
 
 ## points on polygons ##
-centres <- data.frame(coordinates(DEU_admin2))
+centres <- data.frame(coordinates(gadmCHE))
 names(centres) <- c("x", "y")
 coordinates(centres) <- ~ x + y
-projection(centres) <- projection(DEU_admin2)
-addMapLayer(centres, m)
+projection(centres) <- projection(gadmCHE)
+m + centres
 
 
 

@@ -1,0 +1,437 @@
+---
+title: "mapview - basic interactive viewing of spatial data in R"
+author: "Tim Appelhans"
+date: "July 23, 2015"
+output: 
+  html_document: 
+    toc: yes
+---
+
+![](http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png) (CC-BY-NC-SA)
+
+_last edit **`r Sys.Date()`**_
+
+------
+
+## Introduction
+
+Working with spatial data in R I find myself quite often in the need to quickly visually check whether a certain analysis has produced reasonable results. There are two ways I usually do this. Either I:
+
+1. (sp)plot the data in R and then toggle back and forth between the static plots (I use RStudio) or
+2. save the data to the disk and then open in QGIS or similar to interactively examine the results.
+
+Both these approaches are semi-optimal. Where option 1. is fine for a quick glance at a coarse patterns, it lacks the possibility to have a closer look into the results via zooming and panning. While option 2. provides the interactivity, the detour via the hard disk is annoying (at best), especially when fine-tuning and checking regularly.
+
+I attended this years useR2015! conference in Aalborg (which was marvelous!) and attended the session on interactive graphics in R where Joe Cheng from <a href="https://www.rstudio.com/" target="_blank">RStudio</a> presented the <a href="https://rstudio.github.io/leaflet/" target="_blank">leaflet package</a>. leaflet is great as it gives you a great deal of control over the individual map components. This, however, also means that in order to get some useful visualization of spatial objects, we need to do a fair bit of coding for the map components to show what we want (e.g. we would need to provide popup-text manually for each object that we want to map). What a GIS-like functionality would need is some default behaviour for different objects from the spatial universe.
+
+This got me thinking and sparked my enthusiasm to write some wrapper functions for leaflet to provide at least very basic GIS-like interactive graphing capabilities that are directly accessible within RStudio (or the web browser, if you're not using RStudio). 
+
+------
+
+The result is a package called <a href="https://github.com/environmentalinformatics-marburg/mapview" target="_blank">mapview</a>. The main workhorse function is `mapView()` (mind the capital 'V') and is currently defined for:
+
+* _Raster_ *objects (Layer, Stack, Brick) and SpatialPixelsDataFrame
+* _Spatial_ *objects (Points, Polygons, Lines and their DataFrame version)
+* _Satellite_ *objects (from the  <a href="https://cran.r-project.org/web/packages/satellite/index.html" target="_blank">satellite package</a> for working with satellite data)
+
+------
+
+### General design
+
+A call to `mapView()` will return an object of class `mapview`. This class has 2 slots
+
+* @object - a list of the objects that are displayed on the map. This means that this slot will contain the re-projected (and in the case of Raster objects possibly re-sampled) objects which enables tracing of the modifications that took place.
+* @map - the `leaflet` map. This is an S3 class object (see `leaflet` documentation for details on the specifics).
+
+By default `mapView()` provides two base layers between which one can toggle (a standard OpenStreeMap layer and ESRI's WorldImagery layer). Depending on the object and/or argument settings one or several layers are created (each with or without it's own legend) that can also be toggled. Note that in order to render properly, all layers need to be re-projected to leaflet's underlying web mercator projection 
+
++proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs
+
+which in the case of large Raster* objects or Spatial objects with lots of features can be time consuming.
+
+------
+
+In the following I would like to present a few use case scenarios that highlight the current capabilities of **mapview** (largely taken from the help files):
+
+
+## Raster data objects
+
+**NOTE:** similar to `spplot()` for Raster* objects `mapView()` has a `maxpixels = ` argument to avoid long rendering times for large rasters. This is currently set to a default value of `500000` (which produces acceptable rendering times on my machine) and a suitable warning is printed for larger Raster objects.
+
+### RasterLayer
+```{r, warning=FALSE, message=FALSE, fig.width=9.47}
+## to install mapview use 
+# library(devtools)
+# install_github("environmentalinformatics-marburg/mapview")
+library(mapview)
+library(raster)
+
+data(meuse.grid)
+coordinates(meuse.grid) = ~x+y
+proj4string(meuse.grid) <- CRS("+init=epsg:28992")
+gridded(meuse.grid) = TRUE
+
+## convert to RasterStack
+meuse_rst <- stack(meuse.grid)
+
+mapView(meuse_rst[[4]])
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+mapView(meuse_rst[[4]])@map
+```
+
+Actually, in the original meuse.grid data frame the 4th column is a factor with 3 levels. So when we convert the RasterLayer to a factor, we will see that we get a proper factorial layer with a suitable legend.
+
+```{r, warning=FALSE, message=FALSE, fig.width=9.47}
+meuse_rst[[4]] <- as.factor(meuse_rst[[4]])
+mapView(meuse_rst[[4]])
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+mapView(meuse_rst[[4]])@map
+```
+
+
+------
+
+### RasterStack/Brick
+If you pass a RasterStack/Brick to `mapView()` this will create one map layer + legend for each RasterLayer. This is likely to cause problems for larger Stacks as there is currently no way to tell `mapView()` to only show the legend of the highlighted layer. This means that some of the legends won't show in the viewer. 
+
+```{r, warning=FALSE, message=FALSE, fig.width=9.47}
+mapView(meuse_rst)
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+mapView(meuse_rst)@map
+```
+
+There is (to my knowledge) currently no way to provide this functionality in the leaflet package, though I have seen <a href="http://gis.stackexchange.com/questions/68941/how-to-add-remove-legend-with-leaflet-layers-control" target="_blank">solutions for this</a> in JavaScript which means that this will likely be available in the future. 
+
+------
+
+### SpatialPixelsDataFrame
+
+Given that a SpatialPixelsDataFrame has an attribute table we can use argument `zcol = "column_name"` to plot specific columns of the table. The `zcol` argument can be used with the ...DataFrame versions of all Spatial* objects that are currently supported (see below).
+
+```{r, eval = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+mapView(meuse.grid, zcol = "dist")
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+mapView(meuse.grid, zcol = "dist")@map
+```
+
+------
+
+## Vector data objects
+
+For spatial vector objects from the `sp-package` I would like to highlight the following arguments:
+
+* `zcol` similar to SpatialPixelsDataFrame you can specify which column of the attribute table to view. If this is set to `NULL` (the default) all columns will be used.
+* `burst` if set to `FALSE` (the default) one layer is rendered with information from all columns in the attribute table provided in pop-ups (triggered by clicking on the features). If set to `TRUE` one layer + legend for each column in the attribute table will be drawn. Again, depending on the number of columns, this may mean that not all legend will be visible.
+
+
+### SpatialPoints(DataFrame)
+```{r, warning=FALSE, message=FALSE, fig.width=9.47}
+data(meuse)
+coordinates(meuse) <- ~x+y
+proj4string(meuse) <- CRS("+init=epsg:28992")
+
+# only one layer, all info in popups
+mapView(meuse)
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+mapView(meuse)@map
+```
+
+Another argument you can use with SpatialPointsDataFrame is `radius` which takes either an integer value (default is 10) or the character name of one of the columns in the attribute table. If the latter is provided, circles are scaled relative to the respective values in the column provided.
+
+```{r, warning=FALSE, message=FALSE, fig.width=9.47}
+mapView(meuse, radius = "lead")
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+mapView(meuse, radius = "lead")@map
+```
+
+------
+
+Apart from the `radius` argument, the same functionality is implemented for 
+
+### SpatialPolygons(DataFrame)
+```{r, warning=FALSE, message=FALSE, fig.width=9.47}
+data("gadmCHE")
+mapView(gadmCHE)
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+mapView(gadmCHE)@map
+```
+
+and 
+
+### SpatialLines(DataFrame)
+```{r, warning=FALSE, message=FALSE, fig.width=9.47}
+data("atlStorms2005")
+mapView(atlStorms2005, burst = TRUE)
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+mapView(atlStorms2005, burst = TRUE)@map
+```
+
+------
+
+## Additional functionality
+
+For the remote sensing inclined, `mapview-package` offers some additional functionality:
+
+* `viewRGB()` to view true-/false color images of satellite imagery
+* `viewExtent()` to only view the extent of a Raster* object. This is useful to quickly check the area covered by an image. This is really fast even for large rasters, as only the extent (4 coordinates) need to be re-projected. Note, `viewExtent()` also works for all supported Spatial objects.
+
+### Red-Green-Blue images
+
+`viewRGB()` provides the possibility to view Red-Green-Blue true-/false-color images of RasterStacks/Bricks. Any band combination is possible.
+
+#### True color example
+```{r, warning=FALSE, message=FALSE, fig.width=9.47}
+data("poppendorf")
+viewRGB(poppendorf, 4, 3, 2) #Bands 4,3,2 correspond to Red Green Blue
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+viewRGB(poppendorf, 4, 3, 2)@map
+```
+
+Note, by default the color to render `NA` values is set to `"transparent"`, so let's change that to `"black"`
+
+#### False color example
+```{r, warning=FALSE, message=FALSE, fig.width=9.47}
+viewRGB(poppendorf, 5, 4, 3, na.color = "black") #Bands 5,4,3 correspond to NIR Red Green
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+viewRGB(poppendorf, 5, 4, 3, na.color = "black")@map
+```
+
+**Fun fact:** within this tiny area one can find at least five breweries (see below)...
+Welcome to the land of Beer!
+
+### View extent only
+
+As mentioned above, it is possible to view only the extent of Raster and bbox of Spatial objects. Clicking on the rectangle triggers a pop-up window showing the coordinates of the corners of the extent in `epsg:4326`. 
+
+#### Raster* object extent
+```{r, warning=FALSE, message=FALSE, fig.width=9.47}
+viewExtent(poppendorf)
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+viewExtent(poppendorf)@map
+```
+
+#### Spatial* object bbox
+```{r, warning=FALSE, message=FALSE, fig.width=9.47}
+viewExtent(meuse, color = "black")
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+viewExtent(meuse, color = "black")@map
+```
+
+### Overlays
+
+To make `mapview` even more user-friendly, I have defined a `+-method` for combinations of 
+
+* `mapview` + `mapview`
+* `mapview` + `ANY` (ANY here refers to all classes supported by `mapView()`)
+* `leaflet` + `ANY` (so that one can easily pass spatial objects to existing `leaflet` maps)
+
+This means you can easily combine objects by enabling things like
+
+```{r, fig.width=9.47}
+mapView(meuse.grid, zcol = "soil") + meuse
+```
+
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+"+"(mapView(meuse.grid, zcol = "soil"), meuse)@map
+```
+
+Basically, any combination is possible. 
+
+The zoom will be set to the extent of the objected that was added last. Also, layers are overlaid according to the order of calls. Note, however, that `leaflet` will always render vector data on top of raster data, 
+
+```{r, fig.width=9.47}
+data("breweries91")
+mapView(breweries91, color = "red") + viewRGB(poppendorf, 4, 3, 2) + viewExtent(poppendorf)
+```
+
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+m1 <- "+"(mapView(breweries91, color = "red"), viewRGB(poppendorf, 4, 3, 2))
+"+"(m1, viewExtent(poppendorf))@map
+```
+
+So here you have it, 5 breweries within the extent of the RGB image
+
+------
+
+## leaflet integration
+
+Integrating `mapview` and `leaflet` works both ways...
+
+### leaflet + mapview
+
+You can first create a map using `leaflet` and then add spatial objects as you like with `mapview` allowing you to flexibly create maps in whatever way you like.
+
+```{r, fig.width=9.47}
+m <- leaflet() %>%
+  addProviderTiles("Stamen.Toner")
+m + meuse
+```
+
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+"+"(m, meuse)@map
+```
+
+### mapview + leaflet
+
+Given that objects created with `mapView()` contain a slot called `map`, you can first create a map using `mapView()` and then add components provided by `leaflet`. To reproduce the following example you will (at the time of this writing) need to install `leaflet` from the <a href="https://github.com/rstudio/leaflet" target="_blank">GitHub leaflet repository</a> which provides new functionality to measure distances and areas. The following code will then add a control element in the top right corner of the map which lets you interactively create a polygon and will show its perimeter and area. Double-click to finish a measurement.
+
+```{r, fig.width=9.47}
+m <- mapView(breweries91) + viewExtent(poppendorf)
+m@map %>% addMeasure(primaryLengthUnit = "meters", primaryAreaUnit = "sqmeters", 
+                     activeColor = "#3D535D", completedColor = "#7D4479")
+```
+
+So now you can measure the distances between the breweries or figure out how big the area is that is covered by the extent...
+
+------
+
+## Advanced example
+
+As a final, more advanced, example of what can be done with `mapview` we will mimic a common workflow when working with spatial data. We will calculate the mean January temperature for each district of Switzerland using `raster::extract`. Then we will render this on top of the mean January temperatures and also add a hill-shade raster of Switzerland. All data sets are included in `mapview`. They were created following the examples shown in the help pages of `raster::getData` and `raster::hillShade`. This example also highlights a few arguments that can be adjusted which were not mentioned so far.
+
+```{r, fig.width=9.47}
+data("tmeanCHE")
+data("hillshadeCHE")
+data("gadmCHE")
+
+t <- extract(tmeanCHE, gadmCHE, fun = mean, na.rm = TRUE, sp = TRUE)
+t$Jan.mean.T <- round(t$Jan.mean.T, 2)
+
+m1 <- mapView(hillshadeCHE, color = grey.colors(3), 
+              layer.opacity = 1, layer.name = "Hillshade",
+              map.types = "Acetate.hillshading", legend = FALSE)
+m2 <- mapView(tmeanCHE, layer.opacity = 0.6, 
+              map.types = c("OpenStreetMap.BlackAndWhite", 
+                            "OpenStreetMap.HOT"),
+              layer.name = "JanTemp")
+m3 <- mapView(t, zcol = "Jan.mean.T", fillOpacity = 0.9)
+m1 + m2 + m3
+```
+
+Note how we
+
+* render the hill-shade layer in grey.colors
+* do not show the legend for the hill-shade layer
+* supply individual layer names for both raster layers
+* change the layer opacity of the temperature raster layer
+* pass `fillOpacity` to the underlying `leaflet` call for the polygons layer
+* provide different base map types for each layer which are all added to the final rendering
+
+I hope this highlights that despite providing sensible default behaviour for viewing spatial data `mapview` also provides a fair deal of flexibility.
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47, fig.height = 8}
+"+"("+"(m1, m2), m3)@map
+```
+
+------
+
+## And for those who...
+
+... still wonder where exactly the difference between `mapview` and `leaflet` lies, consider the following:
+
+Let's reproduce a simple `mapView()` call using `leaflet()`
+
+Here's the `mapview` version:
+
+```{r, fig.width=9.47}
+mapView(meuse)
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+mapView(meuse)@map
+```
+
+And now let's get the identical result using `leaflet`:
+
+```{r, fig.width=9.47}
+## first we need to reproject meuse to geographic coordinates
+meuse <- spTransform(meuse, 
+                     CRSobj = CRS("+proj=longlat +datum=WGS84 +no_defs"))
+
+## then we need to generate the text for the pop-ups
+df <- as.data.frame(sapply(meuse@data, as.character),
+                    stringsAsFactors = FALSE)
+
+nms <- names(df)
+
+txt_x <- paste0("x: ", round(coordinates(meuse)[, 1], 2))
+txt_y <- paste0("y: ", round(coordinates(meuse)[, 2], 2))
+
+txt <- rbind(sapply(seq(nrow(meuse@data)), function(i) {
+  paste(nms, df[i, ], sep = ": ")
+}), txt_x, txt_y)
+
+txt <- sapply(seq(ncol(txt)), function(j) {
+  paste(txt[, j], collapse = " <br/> ")
+})
+
+## finally we can create our map
+leaflet(meuse) %>% 
+  addProviderTiles("OpenStreetMap", group = "OpenStreetMap") %>% 
+  addProviderTiles("Esri.WorldImagery", group = "Esri.WorldImagery") %>%
+  addCircleMarkers(lng = coordinates(meuse)[, 1],
+                   lat = coordinates(meuse)[, 2],
+                   group = "meuse",
+                   color = mapViewPalette(3)[length(mapViewPalette(3))],
+                   popup = txt) %>%
+  addLayersControl(position = "bottomleft",
+                   baseGroups = c("OpenStreetMap",
+                                 "Esri.WorldImagery"),
+                   overlayGroups = "meuse")
+  
+```
+
+I guess this highlights quite well what `mapview` is intended for. It serves to save you some effort to interactively examine your spatial data by giving you the possibility to render it using a one-liner of code.
+
+------
+
+## Final thoughts
+
+Where to go from here?
+
+Well, there are still a lot of limitations that need addressing:
+
+In future releases I would like to 
+
+* get around the issue that all legends are shown simultaneously
+* enable some sort of mouse action to query Raster* object layers
+* you tell me...
+* ...
+
+I hope that `mapview` will prove useful for some people out there.
+
+If you have any feedback, please don't hesitate to <a href="http://umweltinformatik-marburg.de/mitarbeiterinnen-und-mitarbeiter/tim-appelhans/" target="_blank">contact me</a>.
+
+Bug reports should be filed at <a href="https://github.com/environmentalinformatics-marburg/mapview/issues" target="_blank">https://github.com/environmentalinformatics-marburg/mapview/issues</a>
+
+Best,
+
+Tim
+

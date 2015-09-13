@@ -3,11 +3,8 @@
 \name{addMapLayer}
 \alias{addMapLayer}
 \title{add a layer to a leaflet map using mapView}
-\usage{
-addMapLayer(x, map, ...)
-}
 \arguments{
-\item{x}{an object that can be passed to \code{\link{mapView}}}
+\item{lay}{an object that can be passed to \code{\link{mapView}}}
 
 \item{map}{the map to which the layer should be added}
 
@@ -37,7 +34,7 @@ coordinates(meuse) <- ~x+y
 proj4string(meuse) <- CRS("+init=epsg:28992")
 
 # all layers of meuse
-addMapLayer(meuse, m1)
+addMapLayer(meuse, slot(m1, "map"))
 }
 \author{
 Tim Appelhans
