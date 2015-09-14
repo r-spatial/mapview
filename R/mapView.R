@@ -417,7 +417,9 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
               df <- as.data.frame(sapply(x@data, as.character),
                                   stringsAsFactors = FALSE)
 
-              nms <- names(df)
+              if (nrow(x) == 1) df <- t(df)
+
+              nms <- colnames(df)
               grp <- layer.name
 
               txt_x <- paste0("x: ", round(coordinates(x)[, 1], 2))
