@@ -7,7 +7,7 @@ http://environmentalinformatics-marburg.github.io/web-presentations/20150723_map
 
 for a demo
 
---------
+-------
 
 ### Installation
 
