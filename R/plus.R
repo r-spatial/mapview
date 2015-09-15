@@ -55,15 +55,18 @@ setMethod("+",
             m <- e1@map
             m <- appendMapCallEntries(m, e2@map)
             out_obj <- append(e1@object, e2@object)
-            if (is.ext) ext <- extent(rst) else
-              ext <- extent(projectExtent(out_obj[[length(out_obj)]],
-                                          crs = llcrs))
-            m <- leaflet::fitBounds(map = m,
-                                    lng1 = ext@xmin,
-                                    lat1 = ext@ymin,
-                                    lng2 = ext@xmax,
-                                    lat2 = ext@ymax)
-            #m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+            if (length(e2@object[[length(e2@object)]]) > 1) {
+              if (is.ext) ext <- extent(rst) else
+                ext <- extent(projectExtent(out_obj[[length(out_obj)]],
+                                            crs = llcrs))
+              m <- leaflet::fitBounds(map = m,
+                                      lng1 = ext@xmin,
+                                      lat1 = ext@ymin,
+                                      lng2 = ext@xmax,
+                                      lat2 = ext@ymax)
+              #m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+            }
+
             out <- new('mapview', object = out_obj, map = m)
             return(out)
           }
@@ -82,15 +85,18 @@ setMethod("+",
             nm <- deparse(substitute(e2))
             m <- mapView(e2, map = e1@map, layer.name = nm)
             out_obj <- append(e1@object, m@object)
-            ext <- raster::extent(
-              raster::projectExtent(out_obj[[length(out_obj)]],
-                                    crs = llcrs))
-            m <- leaflet::fitBounds(map = m@map,
-                                    lng1 = ext@xmin,
-                                    lat1 = ext@ymin,
-                                    lng2 = ext@xmax,
-                                    lat2 = ext@ymax)
-            #m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+
+            if (length(e2) > 1) {
+              ext <- raster::extent(
+                raster::projectExtent(out_obj[[length(out_obj)]],
+                                      crs = llcrs))
+              m <- leaflet::fitBounds(map = m@map,
+                                      lng1 = ext@xmin,
+                                      lat1 = ext@ymin,
+                                      lng2 = ext@xmax,
+                                      lat2 = ext@ymax)
+              #m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+            }
 
             out <- new('mapview', object = out_obj, map = m)
             return(out)
@@ -111,13 +117,15 @@ setMethod("+",
             m <- mapView(e2, map = e1, layer.name = nm,
                          map.types = getProviderTileNamesFromMap(e1))
             out_obj <- list(e2)
-            ext <- extent(projectExtent(e2, crs = llcrs))
-            m <- leaflet::fitBounds(map = m@map,
-                                    lng1 = ext@xmin,
-                                    lat1 = ext@ymin,
-                                    lng2 = ext@xmax,
-                                    lat2 = ext@ymax)
-            #m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+            if (length(e2) > 1) {
+              ext <- extent(projectExtent(e2, crs = llcrs))
+              m <- leaflet::fitBounds(map = m@map,
+                                      lng1 = ext@xmin,
+                                      lat1 = ext@ymin,
+                                      lng2 = ext@xmax,
+                                      lat2 = ext@ymax)
+              #m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+            }
             out <- new('mapview', object = out_obj, map = m)
             return(out)
           }
