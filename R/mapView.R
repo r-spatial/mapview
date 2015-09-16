@@ -537,6 +537,8 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
             tst <- sapply(pkgs, "requireNamespace",
                           quietly = TRUE, USE.NAMES = FALSE)
 
+            x <- spCheckObject(x, verbose = verbose)
+
             if(!is.null(zcol)) x <- x[, zcol]
             if(!is.null(zcol)) burst <- TRUE
 

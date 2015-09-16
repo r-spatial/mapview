@@ -425,6 +425,71 @@ circleRadius <- function(x, radius) {
 
 
 
+# check sp objects --------------------------------------------------------
+#' @describeIn mapControls check sp objects
+#' @export spCheckObject
+#'
+spCheckObject <- function(x, verbose) {
+
+  ## check and remove data columns where all NA
+  if (any(methods::slotNames(x) %in% "data")) {
+    all_na_index <- sapply(seq(x@data), function(i) {
+      all(is.na(x@data[, i]))
+    })
+    if(verbose & any(all_na_index)) {
+      cat(paste("columns:",
+                paste(colnames(x@data)[all_na_index],
+                      collapse = "and"),
+                "in attribute table only have NA values and are dropped"))
+    }
+    x <- x[, !all_na_index]
+  }
+  return(x)
+}
+
+
+
+# get the size of objects (nfeatures, ncell) ----------------------------
+#' @describeIn mapControls get the size of objects (nfeatures, ncell)
+#' @export getObjectSize
+#'
+getObjectSize <- function(x) {
+
+  if (attr(class(x), "package") == "sp") out <- length(x) else
+    if (attr(class(x), "package") == "raster") out <- ncell(x)
+
+  return(out)
+}
+
+
+
+# suggest to open QGIS for large objects ----------------------------------
+#' @describeIn mapControls suggest to open QGIS for large objects
+#' @export suggestRunQGIS
+#'
+suggestRunQGIS <- function(x) {
+
+  if(interactive()) {
+    txt <- paste(" The supplied object is likely too big for acceptable rendering in mapview",
+                 "\n", "do you want to open it in QGIS instead?")
+    choice <- utils::menu(c("y", "n"),
+                          title = txt)
+    if(choice == 1) {
+      file <- filename(x)
+      system(paste("qgis", file), wait = FALSE)
+    }
+  }
+}
+
+
+# create a file name for objects to be passed to QGIS ---------------------
+#' @describeIn mapControls create a file name for objects to be passed to QGIS
+#' @export createObjectFileName
+#'
+# createObjectFileName <- function(x) {
+#
+
+
 
 
 
