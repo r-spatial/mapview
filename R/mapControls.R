@@ -449,49 +449,6 @@ spCheckObject <- function(x, verbose) {
 
 
 
-# get the size of objects (nfeatures, ncell) ----------------------------
-#' @describeIn mapControls get the size of objects (nfeatures, ncell)
-#' @export getObjectSize
-#'
-getObjectSize <- function(x) {
-
-  if (attr(class(x), "package") == "sp") out <- length(x) else
-    if (attr(class(x), "package") == "raster") out <- ncell(x)
-
-  return(out)
-}
-
-
-
-# suggest to open QGIS for large objects ----------------------------------
-#' @describeIn mapControls suggest to open QGIS for large objects
-#' @export suggestRunQGIS
-#'
-suggestRunQGIS <- function(x) {
-
-  if(interactive()) {
-    txt <- paste(" The supplied object is likely too big for acceptable rendering in mapview",
-                 "\n", "do you want to open it in QGIS instead?")
-    choice <- utils::menu(c("y", "n"),
-                          title = txt)
-    if(choice == 1) {
-      file <- filename(x)
-      system(paste("qgis", file), wait = FALSE)
-    }
-  }
-}
-
-
-# create a file name for objects to be passed to QGIS ---------------------
-#' @describeIn mapControls create a file name for objects to be passed to QGIS
-#' @export createObjectFileName
-#'
-# createObjectFileName <- function(x) {
-#
-
-
-
-
 
 # extractObjectName <- function(x) {
 #   pipe_splt <- strsplit(x, "%>%")[[1]][-1]
