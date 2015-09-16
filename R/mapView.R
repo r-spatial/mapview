@@ -27,6 +27,8 @@ if ( !isGeneric('mapView') ) {
 #' @param trim should the raster be trimmed in case there are NAs on the egdes
 #' @param verbose should some details be printed during the process
 #' @param layer.name the name of the layer to be shown on the map
+#' @param qgis whether to open layer(s) in QGIS. Set this to \code{TRUE}
+#' for large objects. Note, needs QGIS Desktop installed and in the path.
 #' @param ... additional arguments passed on to repective functions.
 #' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
@@ -124,6 +126,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    verbose = FALSE,
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
+                   qgis,
                    ...) {
 
             pkgs <- c("leaflet", "raster", "magrittr")
@@ -132,10 +135,13 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 
             is.fact <- raster::is.factor(x)
 
-            if (maxpixels >= 1000000) {
-              choice <- suggestQGIS()
-            } else choice <- FALSE
-            if (choice) runQGIS(x) else {
+            if (missing(qgis)) {
+              if (maxpixels > acceptableObjectSize(x)) {
+                qgis <- suggestQGIS()
+              } else qgis <- FALSE
+            } else qgis <- qgis
+
+            if (qgis) runQGIS(x) else {
 
               x <- rasterCheckAdjustProjection(x, maxpixels = maxpixels)
 
@@ -223,29 +229,36 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                    legend.opacity = 1,
                    trim = TRUE,
                    verbose = FALSE,
+                   qgis,
                    ...) {
 
             pkgs <- c("leaflet", "raster", "magrittr")
             tst <- sapply(pkgs, "requireNamespace",
                           quietly = TRUE, USE.NAMES = FALSE)
 
-            if (maxpixels >= 1000000) {
-              choice <- suggestQGIS()
-            } else choice <- FALSE
-            if (choice) runQGIS(x) else {
+            if (missing(qgis)) {
+              if (maxpixels > acceptableObjectSize(x)) {
+                qgis <- suggestQGIS()
+              } else qgis <- FALSE
+            } else qgis <- qgis
+
+            if (qgis) runQGIS(x) else {
 
               m <- initMap(map, map.types, proj4string(x))
 
               if (nlayers(x) == 1) {
                 x <- raster(x, layer = 1)
                 m <- mapView(x, map = m, map.types = map.types,
+                             maxpixels = maxpixels, qgis = qgis,
                              use.layer.names = TRUE, ...)
                 out <- new('mapview', object = list(x), map = m@map)
               } else {
                 m <- mapView(x[[1]], map = m, map.types = map.types,
+                             maxpixels = maxpixels, qgis = qgis,
                              use.layer.names = TRUE, ...)
                 for (i in 2:nlayers(x)) {
                   m <- mapView(x[[i]], map = m@map, map.types = map.types,
+                               maxpixels = maxpixels, qgis = qgis,
                                use.layer.names = TRUE, ...)
                 }
 

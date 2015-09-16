@@ -21,12 +21,13 @@
   use.layer.names = FALSE, values = NULL, map.types = c("OpenStreetMap",
   "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
   legend.opacity = 1, trim = TRUE, verbose = FALSE,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+  layer.name = deparse(substitute(x, env = parent.frame())), qgis, ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL, maxpixels = 5e+05,
   color = mapViewPalette(7), na.color = "transparent", values = NULL,
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  legend = TRUE, legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
+  legend = TRUE, legend.opacity = 1, trim = TRUE, verbose = FALSE, qgis,
+  ...)
 
 \S4method{mapView}{Satellite}(x, ...)
 
@@ -103,6 +104,9 @@ for available options.}
 \item{verbose}{should some details be printed during the process}
 
 \item{layer.name}{the name of the layer to be shown on the map}
+
+\item{qgis}{whether to open layer(s) in QGIS. Set this to \code{TRUE}
+for large objects. Note, needs QGIS Desktop installed and in the path.}
 
 \item{...}{additional arguments passed on to repective functions.
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},

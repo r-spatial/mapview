@@ -159,9 +159,9 @@ llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
 rasterCheckAdjustProjection <- function(x, maxpixels) {
 
   if (maxpixels < ncell(x)) {
-    warning(paste("\n\nmaximum number of pixels for Raster* viewing is",
-                  maxpixels, "the supplied Raster* has", ncell(x), "\n",
-                  "... decreasing Raster* resolution to", maxpixels, "pixels\n",
+    warning(paste("\n\n maximum number of pixels allowed for Raster* viewing is",
+                  maxpixels, "...", "\n the supplied Raster* has", ncell(x), "...\n",
+                  "decreasing Raster* resolution to", maxpixels, "pixels...\n",
                   "to view full resolution adjust 'maxpixels = ...'", "\n\n"))
     x <- sampleRegular(x, maxpixels, asRaster = TRUE, useGDAL = TRUE)
   }
@@ -459,6 +459,20 @@ getObjectSize <- function(x) {
     if (attr(class(x), "package") == "raster") out <- ncell(x)
 
     return(out)
+}
+
+
+
+# the size of objects (nfeatures, ncell) acceptable for mapview -----------
+#' @describeIn mapControls the size of objects (nfeatures, ncell) acceptable for mapview
+#' @export acceptableObjectSize
+#'
+acceptableObjectSize <- function(x) {
+
+  if (attr(class(x), "package") == "raster") out <- 2000000
+  if (attr(class(x), "package") == "sp") out <- 5000
+
+  return(out)
 }
 
 
