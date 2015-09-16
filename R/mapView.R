@@ -132,75 +132,81 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 
             is.fact <- raster::is.factor(x)
 
-            x <- rasterCheckAdjustProjection(x, maxpixels = maxpixels)
+            if (maxpixels >= 1000000) {
+              choice <- suggestQGIS()
+            } else choice <- FALSE
+            if (choice) runQGIS(x) else {
 
-            m <- initMap(map, map.types, proj4string(x))
+              x <- rasterCheckAdjustProjection(x, maxpixels = maxpixels)
 
-            if (trim) x <- trim(x)
+              m <- initMap(map, map.types, proj4string(x))
 
-            if (is.fact) x <- raster::as.factor(x)
+              if (trim) x <- trim(x)
 
-            if (is.null(values)) {
-              if (is.fact) {
-                values <- x@data@attributes[[1]]$ID
+              if (is.fact) x <- raster::as.factor(x)
+
+              if (is.null(values)) {
+                if (is.fact) {
+                  values <- x@data@attributes[[1]]$ID
+                } else {
+                  offset <- diff(range(x[], na.rm = TRUE)) * 0.05
+                  top <- max(x[], na.rm = TRUE) + offset
+                  bot <- min(x[], na.rm = TRUE) - offset
+                  values <- seq(bot, top, length.out = 10)
+                  values <- round(values, 5)
+                }
               } else {
-                offset <- diff(range(x[], na.rm = TRUE)) * 0.05
-                top <- max(x[], na.rm = TRUE) + offset
-                bot <- min(x[], na.rm = TRUE) - offset
-                values <- seq(bot, top, length.out = 10)
                 values <- round(values, 5)
               }
-            } else {
-              values <- round(values, 5)
+
+              if (is.fact) {
+                pal <- leaflet::colorFactor(color,
+                                            domain = NULL,
+                                            na.color = na.color)
+              } else {
+                pal <- leaflet::colorNumeric(color,
+                                             domain = values,
+                                             na.color = na.color)
+              }
+
+              if (use.layer.names) {
+                grp <- names(x)
+              } else {
+                grp <- layer.name
+              }
+
+              ## add layers to base map
+              m <- leaflet::addRasterImage(map = m,
+                                           x = x,
+                                           colors = pal,
+                                           project = FALSE,
+                                           opacity = layer.opacity,
+                                           group = grp,
+                                           ...)
+
+              if (legend) {
+                ## add legend
+                m <- leaflet::addLegend(map = m,
+                                        pal = pal,
+                                        opacity = legend.opacity,
+                                        values = values,
+                                        title = grp)
+              }
+
+              m <- mapViewLayersControl(map = m,
+                                        map.types = map.types,
+                                        names = grp)
+
+              out <- new('mapview', object = list(x), map = m)
+
+              return(out)
+
             }
-
-            if (is.fact) {
-              pal <- leaflet::colorFactor(color,
-                                          domain = NULL,
-                                          na.color = na.color)
-            } else {
-              pal <- leaflet::colorNumeric(color,
-                                           domain = values,
-                                           na.color = na.color)
-            }
-
-            if (use.layer.names) {
-              grp <- names(x)
-            } else {
-              grp <- layer.name
-            }
-
-            ## add layers to base map
-            m <- leaflet::addRasterImage(map = m,
-                                         x = x,
-                                         colors = pal,
-                                         project = FALSE,
-                                         opacity = layer.opacity,
-                                         group = grp,
-                                         ...)
-
-            if (legend) {
-              ## add legend
-              m <- leaflet::addLegend(map = m,
-                                      pal = pal,
-                                      opacity = legend.opacity,
-                                      values = values,
-                                      title = grp)
-            }
-
-            m <- mapViewLayersControl(map = m,
-                                      map.types = map.types,
-                                      names = grp)
-
-            out <- new('mapview', object = list(x), map = m)
-
-            return(out)
-
           }
 
 )
 
-## Raster Stack/Brick ===========================================================
+## Raster Stack/Brick =====================================================
 #' @describeIn mapView \code{\link{stack}} / \code{\link{stack}}
 
 setMethod('mapView', signature(x = 'RasterStackBrick'),
@@ -223,30 +229,36 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
             tst <- sapply(pkgs, "requireNamespace",
                           quietly = TRUE, USE.NAMES = FALSE)
 
-            m <- initMap(map, map.types, proj4string(x))
+            if (maxpixels >= 1000000) {
+              choice <- suggestQGIS()
+            } else choice <- FALSE
+            if (choice) runQGIS(x) else {
 
-            if (nlayers(x) == 1) {
-              x <- raster(x, layer = 1)
-              m <- mapView(x, map = m, map.types = map.types,
-                           use.layer.names = TRUE, ...)
-              out <- new('mapview', object = list(x), map = m@map)
-            } else {
-              m <- mapView(x[[1]], map = m, map.types = map.types,
-                           use.layer.names = TRUE, ...)
-              for (i in 2:nlayers(x)) {
-                m <- mapView(x[[i]], map = m@map, map.types = map.types,
+              m <- initMap(map, map.types, proj4string(x))
+
+              if (nlayers(x) == 1) {
+                x <- raster(x, layer = 1)
+                m <- mapView(x, map = m, map.types = map.types,
                              use.layer.names = TRUE, ...)
+                out <- new('mapview', object = list(x), map = m@map)
+              } else {
+                m <- mapView(x[[1]], map = m, map.types = map.types,
+                             use.layer.names = TRUE, ...)
+                for (i in 2:nlayers(x)) {
+                  m <- mapView(x[[i]], map = m@map, map.types = map.types,
+                               use.layer.names = TRUE, ...)
+                }
+
+                if (length(getLayerNamesFromMap(m@map)) > 1) {
+                  m <- leaflet::hideGroup(map = m@map,
+                                          group = layers2bHidden(m@map))
+                }
+                out <- new('mapview', object = list(x), map = m)
               }
 
-              if (length(getLayerNamesFromMap(m@map)) > 1) {
-                m <- leaflet::hideGroup(map = m@map,
-                                        group = layers2bHidden(m@map))
-              }
-              out <- new('mapview', object = list(x), map = m)
+              return(out)
+
             }
-
-            return(out)
-
           }
 
 )

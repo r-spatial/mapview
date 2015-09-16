@@ -17,12 +17,13 @@
 \alias{mapViewLayersControl}
 \alias{rasterCheckAdjustProjection}
 \alias{removeDuplicatedMapCalls}
+\alias{runQGIS}
 \alias{scaleCoordinates}
 \alias{scaleLinesCoordinates}
 \alias{scalePolygonsCoordinates}
 \alias{spCheckAdjustProjection}
 \alias{spCheckObject}
-\alias{suggestRunQGIS}
+\alias{suggestQGIS}
 \alias{updateLayerControlNames}
 \title{convenience functions for working with spatial objects and leaflet maps}
 \usage{
@@ -68,7 +69,9 @@ spCheckObject(x, verbose)
 
 getObjectSize(x)
 
-suggestRunQGIS(x)
+suggestQGIS()
+
+runQGIS(x)
 }
 \arguments{
 \item{map}{a leaflet map}
@@ -145,7 +148,9 @@ convenience functions for working with spatial objects and leaflet maps
 
 \item \code{getObjectSize}: get the size of objects (nfeatures, ncell)
 
-\item \code{suggestRunQGIS}: suggest to open QGIS for large objects
+\item \code{suggestQGIS}: suggest to open QGIS for large objects
+
+\item \code{runQGIS}: open object in QGIS
 }}
 \author{
 Tim Appelhans

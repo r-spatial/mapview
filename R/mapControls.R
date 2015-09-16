@@ -119,7 +119,7 @@ appendMapCallEntries <- function(map1, map2) {
   mpcalls[[ctrls1[1]]]$args[[2]] <- lyrs
 
   ind <- seq_along(mpcalls)[sapply(mpcalls,
-                                  FUN = function(X) "addLayersControl" %in% X)]
+                                   FUN = function(X) "addLayersControl" %in% X)]
   ind1 <- ind[1]
   ind2 <- ind[-1]
   try({
@@ -159,10 +159,10 @@ llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
 rasterCheckAdjustProjection <- function(x, maxpixels) {
 
   if (maxpixels < ncell(x)) {
-    warning(paste("maximum number of pixels for Raster* viewing is",
+    warning(paste("\n\nmaximum number of pixels for Raster* viewing is",
                   maxpixels, "the supplied Raster* has", ncell(x), "\n",
                   "... decreasing Raster* resolution to", maxpixels, "pixels\n",
-                  "to view full resolution adjust 'maxpixels = ...'"))
+                  "to view full resolution adjust 'maxpixels = ...'", "\n\n"))
     x <- sampleRegular(x, maxpixels, asRaster = TRUE, useGDAL = TRUE)
   }
   is.fact <- raster::is.factor(x)[1]
@@ -191,15 +191,15 @@ initBaseMaps <- function(map.types) {
   ## create base map using specified map types
   if (missing(map.types)) map.types <- c("OpenStreetMap",
                                          "Esri.WorldImagery")
-    m <- leaflet::leaflet()
-    m <- leaflet::addProviderTiles(m, provider = map.types[1],
-                                   group = map.types[1])
-    if (length(map.types) > 1) {
-      for (i in 2:length(map.types)) {
-        m <- leaflet::addProviderTiles(m, provider = map.types[i],
-                                       group = map.types[i])
-      }
+  m <- leaflet::leaflet()
+  m <- leaflet::addProviderTiles(m, provider = map.types[1],
+                                 group = map.types[1])
+  if (length(map.types) > 1) {
+    for (i in 2:length(map.types)) {
+      m <- leaflet::addProviderTiles(m, provider = map.types[i],
+                                     group = map.types[i])
     }
+  }
   return(m)
 }
 
@@ -445,6 +445,58 @@ spCheckObject <- function(x, verbose) {
     x <- x[, !all_na_index]
   }
   return(x)
+}
+
+
+
+# get the size of objects (nfeatures, ncell) ----------------------------
+#' @describeIn mapControls get the size of objects (nfeatures, ncell)
+#' @export getObjectSize
+#'
+getObjectSize <- function(x) {
+
+  if (attr(class(x), "package") == "sp") out <- length(x) else
+    if (attr(class(x), "package") == "raster") out <- ncell(x)
+
+    return(out)
+}
+
+
+
+# suggest to open QGIS for large objects ----------------------------------
+#' @describeIn mapControls suggest to open QGIS for large objects
+#' @export suggestQGIS
+#'
+suggestQGIS <- function() {
+
+  if(interactive()) {
+    txt <- paste(" The supplied object is likely too big for acceptable rendering in mapview",
+                 "\n", "do you want to open it in QGIS instead?")
+    choice <- utils::menu(c("y", "n"),
+                          title = txt)
+    if(choice == 1) TRUE else FALSE
+  }
+}
+
+
+
+# open object in QGIS -----------------------------------------------------
+#' @describeIn mapControls open object in QGIS
+#' @export runQGIS
+#'
+runQGIS <- function(x) {
+
+  if (!class(x) %in% c("RasterLayer", "RasterBrick", "RasterStack")) {
+    stop("runQGIS only works for Raster* objects at the moment")
+  } else {
+    file <- filename(x)
+    if (!file.exists(file)) stop("cannot pass",
+                                 file,
+                                 "to QGIS as file does not seem to exist")
+    else
+      cmd <- paste("qgis", file)
+    system(cmd, wait = FALSE)
+  }
 }
 
 
