@@ -25,8 +25,8 @@
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL, maxpixels = 5e+05,
   color = mapViewPalette(7), na.color = "transparent", values = NULL,
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  legend = TRUE, legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
+  map.types = c("OpenStreetMap", "Esri.WorldImagery"), legend = TRUE,
+  legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
 
 \S4method{mapView}{Satellite}(x, ...)
 
@@ -35,38 +35,33 @@
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
   radius = 10, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
-  layer.opacity = 0.8, legend = TRUE, legend.opacity = 1,
-  verbose = FALSE, layer.name = deparse(substitute(x, env =
-  parent.frame())), ...)
+  legend = TRUE, legend.opacity = 1, verbose = FALSE,
+  layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
 \S4method{mapView}{SpatialPoints}(x, map = NULL, na.color = "transparent",
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  verbose = FALSE, layer.name = deparse(substitute(x, env =
-  parent.frame())), ...)
+  map.types = c("OpenStreetMap", "Esri.WorldImagery"), verbose = FALSE,
+  layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
 \S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
   values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
-  layer.opacity = 0.8, legend = TRUE, legend.opacity = 1, weight = 2,
-  verbose = FALSE, layer.name = deparse(substitute(x, env =
-  parent.frame())), ...)
+  legend = TRUE, legend.opacity = 1, weight = 2, verbose = FALSE,
+  layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
 \S4method{mapView}{SpatialPolygons}(x, map = NULL, na.color = "transparent",
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  weight = 2, verbose = FALSE, layer.name = deparse(substitute(x, env =
+  map.types = c("OpenStreetMap", "Esri.WorldImagery"), weight = 2,
+  verbose = FALSE, layer.name = deparse(substitute(x, env =
   parent.frame())), ...)
 
 \S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
   values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
-  layer.opacity = 0.8, legend = TRUE, legend.opacity = 1, weight = 2,
-  verbose = FALSE, layer.name = deparse(substitute(x, env =
-  parent.frame())), ...)
+  legend = TRUE, legend.opacity = 1, verbose = FALSE,
+  layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
 \S4method{mapView}{SpatialLines}(x, map = NULL, na.color = "transparent",
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), layer.opacity = 0.8,
-  weight = 2, verbose = FALSE, layer.name = deparse(substitute(x, env =
-  parent.frame())), ...)
+  map.types = c("OpenStreetMap", "Esri.WorldImagery"), verbose = FALSE,
+  layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
 \S4method{mapView}{missing}(map.types = c("OpenStreetMap",
   "Esri.WorldImagery"), easter.egg = FALSE)
@@ -92,7 +87,7 @@ Per default these are calculated based on the supplied raster* object.}
 see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
 for available options.}
 
-\item{layer.opacity}{opacity of the layers}
+\item{layer.opacity}{opacity of the raster layer(s)}
 
 \item{legend}{should a legend be plotted}
 

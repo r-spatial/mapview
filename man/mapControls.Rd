@@ -6,7 +6,6 @@
 \alias{getLayerControlEntriesFromMap}
 \alias{getLayerNamesFromMap}
 \alias{getMapCalls}
-\alias{getObjectSize}
 \alias{getProviderTileEntriesFromMap}
 \alias{getProviderTileNamesFromMap}
 \alias{initBaseMaps}
@@ -22,7 +21,6 @@
 \alias{scalePolygonsCoordinates}
 \alias{spCheckAdjustProjection}
 \alias{spCheckObject}
-\alias{suggestRunQGIS}
 \alias{updateLayerControlNames}
 \title{convenience functions for working with spatial objects and leaflet maps}
 \usage{
@@ -65,10 +63,6 @@ layerName()
 circleRadius(x, radius)
 
 spCheckObject(x, verbose)
-
-getObjectSize(x)
-
-suggestRunQGIS(x)
 }
 \arguments{
 \item{map}{a leaflet map}
@@ -142,10 +136,6 @@ convenience functions for working with spatial objects and leaflet maps
 \item \code{circleRadius}: set or calculate circle radius
 
 \item \code{spCheckObject}: check sp objects
-
-\item \code{getObjectSize}: get the size of objects (nfeatures, ncell)
-
-\item \code{suggestRunQGIS}: suggest to open QGIS for large objects
 }}
 \author{
 Tim Appelhans

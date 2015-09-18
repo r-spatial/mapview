@@ -21,7 +21,7 @@ if ( !isGeneric('mapView') ) {
 #' @param map.types character spcifications for the base maps.
 #' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
 #' for available options.
-#' @param layer.opacity opacity of the layers
+#' @param layer.opacity opacity of the raster layer(s)
 #' @param legend should a legend be plotted
 #' @param legend.opacity opacity of the legend
 #' @param trim should the raster be trimmed in case there are NAs on the egdes
@@ -212,7 +212,6 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                    values = NULL,
                    map.types = c("OpenStreetMap",
                                  "Esri.WorldImagery"),
-                   layer.opacity = 0.8,
                    legend = TRUE,
                    legend.opacity = 1,
                    trim = TRUE,
@@ -336,7 +335,6 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    radius = 10,
                    map.types = c("OpenStreetMap",
                                  "Esri.WorldImagery"),
-                   layer.opacity = 0.8,
                    legend = TRUE,
                    legend.opacity = 1,
                    verbose = FALSE,
@@ -467,7 +465,6 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                    na.color = "transparent",
                    map.types = c("OpenStreetMap",
                                  "Esri.WorldImagery"),
-                   layer.opacity = 0.8,
                    verbose = FALSE,
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
@@ -524,7 +521,6 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    values = NULL,
                    map.types = c("OpenStreetMap",
                                  "Esri.WorldImagery"),
-                   layer.opacity = 0.8,
                    legend = TRUE,
                    legend.opacity = 1,
                    weight = 2,
@@ -688,7 +684,6 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                    na.color = "transparent",
                    map.types = c("OpenStreetMap",
                                  "Esri.WorldImagery"),
-                   layer.opacity = 0.8,
                    weight = 2,
                    verbose = FALSE,
                    layer.name = deparse(substitute(x,
@@ -747,10 +742,8 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                    values = NULL,
                    map.types = c("OpenStreetMap",
                                  "Esri.WorldImagery"),
-                   layer.opacity = 0.8,
                    legend = TRUE,
                    legend.opacity = 1,
-                   weight = 2,
                    verbose = FALSE,
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
@@ -811,28 +804,12 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
                 len <- length(m$x$calls)
 
-                coord_lst <- lapply(slot(x, "lines"), function(x) {
-                  lapply(slot(x, "Lines"), function(y) slot(y, "coords"))
-                })
-
-                for (j in seq(coord_lst)) {
-                  for (h in seq(coord_lst[[j]])) {
-                    if (is.na(proj4string(x))) {
-                      x <- scaleLinesCoordinates(x)
-                    }
-                    x_coord <- coordinates(x@lines[[j]]@Lines[[h]])[, 1]
-                    y_coord <- coordinates(x@lines[[j]]@Lines[[h]])[, 2]
-                    clrs <- pal_n[[i]](vals[[i]])
-                    m <- leaflet::addPolylines(m,
-                                               lng = x_coord,
-                                               lat = y_coord,
-                                               weight = weight,
-                                               group = grp,
-                                               color = clrs[j],
-                                               popup = txt[j],
-                                               ...)
-                  }
-                }
+                m <- leaflet::addPolylines(m,
+                                           group = grp,
+                                           color = pal_n[[i]](vals[[i]]),
+                                           popup = txt,
+                                           data = x,
+                                           ...)
 
                 m <- leaflet::addLegend(map = m, position = "topright",
                                         pal = pal_n[[i]], opacity = 1,
@@ -867,27 +844,12 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
               len <- length(m$x$calls)
 
-              coord_lst <- lapply(slot(x, "lines"), function(x) {
-                lapply(slot(x, "Lines"), function(y) slot(y, "coords"))
-              })
-
-              for (j in seq(coord_lst)) {
-                for (h in seq(coord_lst[[j]])) {
-                  if (is.na(proj4string(x))) {
-                    x <- scaleLinesCoordinates(x)
-                  }
-                  x_coord <- coordinates(x@lines[[j]]@Lines[[h]])[, 1]
-                  y_coord <- coordinates(x@lines[[j]]@Lines[[h]])[, 2]
-                  m <- leaflet::addPolylines(m,
-                                             lng = x_coord,
-                                             lat = y_coord,
-                                             weight = weight,
-                                             group = grp,
-                                             color = color[length(color)],
-                                             popup = txt[j],
-                                             ...)
-                }
-              }
+              m <- leaflet::addPolylines(m,
+                                         group = grp,
+                                         color = color[length(color)],
+                                         popup = txt,
+                                         data = x,
+                                         ...)
 
               m <- mapViewLayersControl(map = m,
                                         map.types = map.types,
@@ -914,8 +876,6 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                    na.color = "transparent",
                    map.types = c("OpenStreetMap",
                                  "Esri.WorldImagery"),
-                   layer.opacity = 0.8,
-                   weight = 2,
                    verbose = FALSE,
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
@@ -933,22 +893,10 @@ setMethod('mapView', signature(x = 'SpatialLines'),
 
             grp <- layer.name
 
-            coord_lst <- lapply(slot(x, "lines"), function(x) {
-              lapply(slot(x, "Lines"), function(y) slot(y, "coords"))
-            })
-
-            for (j in seq(coord_lst)) {
-              for (h in seq(coord_lst[[j]])) {
-                x_coord <- coordinates(x@lines[[j]]@Lines[[h]])[, 1]
-                y_coord <- coordinates(x@lines[[j]]@Lines[[h]])[, 2]
-                m <- leaflet::addPolylines(m,
-                                           lng = x_coord,
-                                           lat = y_coord,
-                                           weight = weight,
-                                           group = grp,
-                                           ...)
-              }
-            }
+            m <- leaflet::addPolylines(m,
+                                       group = grp,
+                                       data = x,
+                                       ...)
 
             m <- mapViewLayersControl(map = m,
                                       map.types = map.types,
