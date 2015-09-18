@@ -461,13 +461,13 @@ createPopupTable <- function(x) {
 
   if (nrow(x) == 1) df <- t(df)
 
-  df$x <- round(coordinates(x)[, 1], 2)
-  df$y <- round(coordinates(x)[, 2], 2)
+  df$x <- as.character(round(coordinates(x)[, 1], 2))
+  df$y <- as.character(round(coordinates(x)[, 2], 2))
 
   cols <- colnames(df)
 
   vals <- sapply(seq(nrow(x@data)), function(i) {
-    paste(df[i, ], coordinates(x)[i, 1], coordinates(x)[i, 2])
+    df[i, ]
   })
 
 
@@ -490,13 +490,14 @@ createPopupTable <- function(x) {
 
     popTemplate <- system.file("templates/popup.brew", package = "mapview")
     myCon <- textConnection("outputObj", open = "w")
-    outputObj <- outputObj
     brew::brew(popTemplate, output = myCon)
+    outputObj <- outputObj
     close(myCon)
 
     return(paste(outputObj, collapse = ' '))
   })
   return(txt)
+  print(txt)
 }
 
 
