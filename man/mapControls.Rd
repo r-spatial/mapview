@@ -3,6 +3,9 @@
 \name{mapControls}
 \alias{appendMapCallEntries}
 \alias{circleRadius}
+\alias{createPopupRow}
+\alias{createPopupRowAlt}
+\alias{createPopupTable}
 \alias{getLayerControlEntriesFromMap}
 \alias{getLayerNamesFromMap}
 \alias{getMapCalls}
@@ -63,6 +66,12 @@ layerName()
 circleRadius(x, radius)
 
 spCheckObject(x, verbose)
+
+createPopupTable(x)
+
+createPopupRow(col.name, value)
+
+createPopupRowAlt(col.name, value)
 }
 \arguments{
 \item{map}{a leaflet map}
@@ -91,6 +100,10 @@ If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 \item{radius}{either an integer specifying circle radius or the name
 (character) of one of the columns in the SpatialPointsDataFrame
 (attribute table)}
+
+\item{col.name}{the name of the column of the attribute table}
+
+\item{value}{the corresponding value from the attribute table}
 }
 \description{
 convenience functions for working with spatial objects and leaflet maps
@@ -136,6 +149,12 @@ convenience functions for working with spatial objects and leaflet maps
 \item \code{circleRadius}: set or calculate circle radius
 
 \item \code{spCheckObject}: check sp objects
+
+\item \code{createPopupTable}: create popup table for sp objects
+
+\item \code{createPopupRow}: create popup table odd row for sp objects
+
+\item \code{createPopupRowAlt}: create popup table even row for sp objects
 }}
 \author{
 Tim Appelhans

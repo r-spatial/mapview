@@ -374,16 +374,18 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
               })
 
               for (i in seq(lst)) {
-                pop <- paste(names(lst[[i]]),
-                             as.character(vals[[i]]),
-                             sep = ": ")
+#                 pop <- paste(names(lst[[i]]),
+#                              as.character(vals[[i]]),
+#                              sep = ": ")
+#
+#                 txt_x <- paste0("x: ", round(coordinates(lst[[i]])[, 1], 2))
+#                 txt_y <- paste0("y: ", round(coordinates(lst[[i]])[, 2], 2))
+#
+#                 txt <- sapply(seq(pop), function(j) {
+#                   paste(pop[j], txt_x[j], txt_y[j], sep = "<br/>")
+#                 })
 
-                txt_x <- paste0("x: ", round(coordinates(lst[[i]])[, 1], 2))
-                txt_y <- paste0("y: ", round(coordinates(lst[[i]])[, 2], 2))
-
-                txt <- sapply(seq(pop), function(j) {
-                  paste(pop[j], txt_x[j], txt_y[j], sep = "<br/>")
-                })
+                txt <- createPopupTable(lst[[i]])
 
                 m <- leaflet::addCircleMarkers(m, lng = coordinates(lst[[i]])[, 1],
                                                lat = coordinates(lst[[i]])[, 2],
@@ -412,24 +414,28 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
             } else {
 
-              df <- as.data.frame(sapply(x@data, as.character),
-                                  stringsAsFactors = FALSE)
-
-              if (nrow(x) == 1) df <- t(df)
-
-              nms <- colnames(df)
               grp <- layer.name
+#
+#               df <- as.data.frame(sapply(x@data, as.character),
+#                                   stringsAsFactors = FALSE)
+#
+#               if (nrow(x) == 1) df <- t(df)
+#
+#               nms <- colnames(df)
+#
+#
+#               txt_x <- paste0("x: ", round(coordinates(x)[, 1], 2))
+#               txt_y <- paste0("y: ", round(coordinates(x)[, 2], 2))
+#
+#               txt <- rbind(sapply(seq(nrow(x@data)), function(i) {
+#                 paste(nms, df[i, ], sep = ": ")
+#               }), txt_x, txt_y)
+#
+#               txt <- sapply(seq(ncol(txt)), function(j) {
+#                 paste(txt[, j], collapse = " <br/> ")
+#               })
 
-              txt_x <- paste0("x: ", round(coordinates(x)[, 1], 2))
-              txt_y <- paste0("y: ", round(coordinates(x)[, 2], 2))
-
-              txt <- rbind(sapply(seq(nrow(x@data)), function(i) {
-                paste(nms, df[i, ], sep = ": ")
-              }), txt_x, txt_y)
-
-              txt <- sapply(seq(ncol(txt)), function(j) {
-                paste(txt[, j], collapse = " <br/> ")
-              })
+              txt <- createPopupTable(x)
 
               m <- leaflet::addCircleMarkers(map = m,
                                              lng = coordinates(x)[, 1],

@@ -1,0 +1,60 @@
+<html>
+<head>
+<style>
+#popup {
+font-family: Arial, Helvetica, sans-serif;
+width: 100%;
+border-collapse: collapse;
+}
+
+#popup td {
+font-size: 1em;
+border: 1px solid #595959;
+padding: 3px 7px 3px 7px;
+}
+
+#popup th {
+width = 100%;
+font-size: 1.1em;
+text-align: center;
+padding-top: 3px;
+padding-bottom: 3px;
+background-color: #333333;
+color: #FFFFFF;
+}
+
+#popup tr.alt td {
+color: #000000;
+background-color: #DEDEDE;
+}
+
+div.scrollableContainer {
+max-height: 200px;
+width: auto;
+overflow: auto;
+margin: 0px;
+border: 0px solid #999;
+background: #FFFFFF;
+}
+
+</style>
+</head>
+<body>
+<table id="popup">
+<thead class="header">
+<tr>
+<th>Column</th>
+<th>Value</th>
+</tr>
+</thead>
+</table>
+
+<div class="scrollableContainer">
+<table class="popup scrollable">
+<table id="popup">
+
+<%=pop%>
+
+</table>
+</body>
+</html>

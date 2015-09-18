@@ -13,6 +13,7 @@
 #'
 #' @import leaflet sp raster satellite scales methods
 #' @importFrom grDevices rgb
+#' @importFrom brew brew
 #'
 #' @keywords package
 #'

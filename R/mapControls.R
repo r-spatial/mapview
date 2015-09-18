@@ -450,6 +450,100 @@ spCheckObject <- function(x, verbose) {
 
 
 
+
+# create popup table for sp objects ---------------------------------------
+#' @describeIn mapControls create popup table for sp objects
+#' @export createPopupTable
+#'
+createPopupTable <- function(x) {
+  df <- as.data.frame(sapply(x@data, as.character),
+                      stringsAsFactors = FALSE)
+
+  if (nrow(x) == 1) df <- t(df)
+
+  df$x <- round(coordinates(x)[, 1], 2)
+  df$y <- round(coordinates(x)[, 2], 2)
+
+  cols <- colnames(df)
+
+  vals <- sapply(seq(nrow(x@data)), function(i) {
+    paste(df[i, ], coordinates(x)[i, 1], coordinates(x)[i, 2])
+  })
+
+
+  indodd <- seq(1, ncol(df), by = 2)
+  indeven <- seq(2, ncol(df), by = 2)
+
+  txt <- lapply(seq(nrow(df)), function(j) {
+    odd <- sapply(indodd, function(i) {
+      createPopupRow(cols[i], df[j, i])
+    })
+
+    even <- sapply(indeven, function(i) {
+      createPopupRowAlt(cols[i], df[j, i])
+    })
+
+    pop <- vector("character", length(cols))
+
+    pop[indodd] <- odd
+    pop[indeven] <- even
+
+    popTemplate <- system.file("templates/popup.brew", package = "mapview")
+    myCon <- textConnection("outputObj", open = "w")
+    outputObj <- outputObj
+    brew::brew(popTemplate, output = myCon)
+    close(myCon)
+
+    return(paste(outputObj, collapse = ' '))
+  })
+  return(txt)
+}
+
+
+# create popup table odd row for sp objects ---------------------------------------
+#' @describeIn mapControls create popup table odd row for sp objects
+#' @export createPopupRow
+#'
+#' @param col.name the name of the column of the attribute table
+#' @param value the corresponding value from the attribute table
+#'
+createPopupRow <- function(col.name, value) {
+
+  paste0("<tr>",
+         paste0("<td>",
+                col.name,
+                "</td>"),
+         paste0("<td>",
+                value,
+                "</td>"),
+         "</tr>")
+
+}
+
+
+# create popup table even row for sp objects ---------------------------------------
+#' @describeIn mapControls create popup table even row for sp objects
+#' @export createPopupRowAlt
+#'
+createPopupRowAlt <- function(col.name, value) {
+
+  paste0("<tr class='alt'>",
+         paste0("<td>",
+                col.name,
+                "</td>"),
+         paste0("<td>",
+                value,
+                "</td>"),
+         "</tr>")
+
+}
+
+
+
+
+
+
+
 # extractObjectName <- function(x) {
 #   pipe_splt <- strsplit(x, "%>%")[[1]][-1]
 #

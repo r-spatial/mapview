@@ -11,6 +11,7 @@ LazyData: TRUE
 Depends: leaflet,
     methods
 Imports:
+    brew,
     sp,
     raster,
     satellite,
