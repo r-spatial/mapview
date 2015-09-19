@@ -20,6 +20,7 @@
 \alias{scaleLinesCoordinates}
 \alias{scalePolygonsCoordinates}
 \alias{spCheckAdjustProjection}
+\alias{spCheckObject}
 \alias{updateLayerControlNames}
 \title{convenience functions for working with spatial objects and leaflet maps}
 \usage{
@@ -60,6 +61,8 @@ mapViewLayersControl(map, map.types, names)
 layerName()
 
 circleRadius(x, radius)
+
+spCheckObject(x, verbose)
 }
 \arguments{
 \item{map}{a leaflet map}
@@ -131,6 +134,8 @@ convenience functions for working with spatial objects and leaflet maps
 \item \code{layerName}: create layer name for grouping in map
 
 \item \code{circleRadius}: set or calculate circle radius
+
+\item \code{spCheckObject}: check sp objects
 }}
 \author{
 Tim Appelhans

@@ -425,6 +425,28 @@ circleRadius <- function(x, radius) {
 
 
 
+# check sp objects --------------------------------------------------------
+#' @describeIn mapControls check sp objects
+#' @export spCheckObject
+#'
+spCheckObject <- function(x, verbose) {
+
+  ## check and remove data columns where all NA
+  if (any(methods::slotNames(x) %in% "data")) {
+    all_na_index <- sapply(seq(x@data), function(i) {
+      all(is.na(x@data[, i]))
+    })
+    if(verbose & any(all_na_index)) {
+      cat(paste("columns:",
+                paste(colnames(x@data)[all_na_index],
+                      collapse = "and"),
+                "in attribute table only have NA values and are dropped"))
+    }
+    x <- x[, !all_na_index]
+  }
+  return(x)
+}
+
 
 
 
