@@ -13,7 +13,7 @@
 #'
 #' @import leaflet sp raster satellite scales methods
 #' @importFrom grDevices rgb
-#' @importFrom brew brew
+#' @importFrom whisker whisker.render
 #'
 #' @keywords package
 #'
