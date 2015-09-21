@@ -11,6 +11,7 @@ LazyData: TRUE
 Depends: leaflet,
     methods
 Imports:
+    whisker,
     sp,
     raster,
     satellite,
