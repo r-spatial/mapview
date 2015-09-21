@@ -350,6 +350,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
             if(!is.null(zcol)) x <- x[, zcol]
             if(!is.null(zcol)) burst <- TRUE
 
+            x <- spCheckObject(x, verbose = verbose)
             x <- spCheckAdjustProjection(x, verbose)
             if (is.na(proj4string(x))) {
               slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
@@ -374,16 +375,8 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
               })
 
               for (i in seq(lst)) {
-                pop <- paste(names(lst[[i]]),
-                             as.character(vals[[i]]),
-                             sep = ": ")
 
-                txt_x <- paste0("x: ", round(coordinates(lst[[i]])[, 1], 2))
-                txt_y <- paste0("y: ", round(coordinates(lst[[i]])[, 2], 2))
-
-                txt <- sapply(seq(pop), function(j) {
-                  paste(pop[j], txt_x[j], txt_y[j], sep = "<br/>")
-                })
+                txt <- createPopupTable(lst[[i]])
 
                 m <- leaflet::addCircleMarkers(m, lng = coordinates(lst[[i]])[, 1],
                                                lat = coordinates(lst[[i]])[, 2],
@@ -412,24 +405,9 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
             } else {
 
-              df <- as.data.frame(sapply(x@data, as.character),
-                                  stringsAsFactors = FALSE)
-
-              if (nrow(x) == 1) df <- t(df)
-
-              nms <- colnames(df)
               grp <- layer.name
 
-              txt_x <- paste0("x: ", round(coordinates(x)[, 1], 2))
-              txt_y <- paste0("y: ", round(coordinates(x)[, 2], 2))
-
-              txt <- rbind(sapply(seq(nrow(x@data)), function(i) {
-                paste(nms, df[i, ], sep = ": ")
-              }), txt_x, txt_y)
-
-              txt <- sapply(seq(ncol(txt)), function(j) {
-                paste(txt[, j], collapse = " <br/> ")
-              })
+              txt <- createPopupTable(x)
 
               m <- leaflet::addCircleMarkers(map = m,
                                              lng = coordinates(x)[, 1],
@@ -478,12 +456,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
 
             m <- initMap(map, map.types, proj4string(x))
 
-            txt_x <- paste0("x: ", round(coordinates(x)[, 1], 2))
-            txt_y <- paste0("y: ", round(coordinates(x)[, 2], 2))
-
-            txt <- sapply(seq(txt_x), function(j) {
-              paste(txt_x[j], txt_y[j], sep = "<br/>")
-            })
+            txt <- createPopupTable(x)
 
             grp <- layer.name
 
@@ -578,14 +551,9 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                 df <- as.data.frame(sapply(x@data, as.character),
                                     stringsAsFactors = FALSE)
 
-                nms <- names(df)
-                grp <- nms
+                grp <- names(df)
 
-                txt <- sapply(seq(nrow(x@data)), function(i) {
-                  paste(nms, df[i, ], sep = ": ")
-                })
-
-                len <- length(m$x$calls)
+                txt <- createPopupTable(x)
 
                 for (j in seq(coord_lst)) {
                   for (h in seq(coord_lst[[j]])) {
@@ -626,21 +594,9 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
               df <- as.data.frame(sapply(x@data, as.character),
                                   stringsAsFactors = FALSE)
 
-              nms <- names(df)
-
               grp <- layer.name
 
-              txt <- as.matrix(sapply(seq(nrow(x@data)), function(i) {
-                paste(nms, df[i, ], sep = ": ")
-              }))
-
-              if (length(zcol) == 1) txt <- t(txt)
-
-              txt <- sapply(seq(ncol(txt)), function(j) {
-                paste(txt[, j], collapse = " <br> ")
-              })
-
-              len <- length(m$x$calls)
+              txt <- createPopupTable(x)
 
               for (j in seq(coord_lst)) {
                 for (h in seq(coord_lst[[j]])) {
@@ -756,6 +712,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
             if(!is.null(zcol)) x <- x[, zcol]
             if(!is.null(zcol)) burst <- TRUE
 
+            x <- spCheckObject(x, verbose = verbose)
             x <- spCheckAdjustProjection(x, verbose)
 
             m <- initMap(map, map.types, proj4string(x))
@@ -795,14 +752,9 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                 df <- as.data.frame(sapply(x@data, as.character),
                                     stringsAsFactors = FALSE)
 
-                nms <- names(df)
-                grp <- nms
+                grp <- names(df)
 
-                txt <- sapply(seq(nrow(x@data)), function(i) {
-                  paste(nms, df[i, ], sep = ": ")
-                })
-
-                len <- length(m$x$calls)
+                txt <- createPopupTable(x)
 
                 m <- leaflet::addPolylines(m,
                                            group = grp,
@@ -830,19 +782,9 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
               df <- as.data.frame(sapply(x@data, as.character),
                                   stringsAsFactors = FALSE)
 
-              nms <- names(df)
-
               grp <- layer.name
 
-              txt <- sapply(seq(nrow(x@data)), function(i) {
-                paste(nms, df[i, ], sep = ": ")
-              })
-
-              txt <- sapply(seq(ncol(txt)), function(j) {
-                paste(txt[, j], collapse = " <br> ")
-              })
-
-              len <- length(m$x$calls)
+              txt <- createPopupTable(x)
 
               m <- leaflet::addPolylines(m,
                                          group = grp,

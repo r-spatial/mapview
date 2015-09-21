@@ -417,7 +417,7 @@ layerName <- function() {
 #'
 circleRadius <- function(x, radius) {
   if (is.character(radius)) {
-    rad <- scale(as.numeric(x@data[, radius]), center = FALSE) * 10
+    rad <- scales::rescale(as.numeric(x@data[, radius]), to = c(1,10))
   } else rad <- radius
 
   return(rad)
@@ -446,6 +446,9 @@ spCheckObject <- function(x, verbose) {
   }
   return(x)
 }
+
+
+
 
 
 
