@@ -13,19 +13,24 @@ NULL
 #' @param x a spatial object
 #'
 createPopupTable <- function(x) {
-  df <- as.data.frame(sapply(x@data, as.character),
-                      stringsAsFactors = FALSE)
 
-  if (nrow(x) == 1) df <- as.data.frame(t(df))
+  if (class(x) %in% "SpatialPoints") {
+    df <- data.frame(x = as.character(round(coordinates(x)[, 1], 2)),
+                     y = as.character(round(coordinates(x)[, 2], 2)))
+  } else {
+    df <- as.data.frame(sapply(x@data, as.character),
+                        stringsAsFactors = FALSE)
 
-  if (!class(x) %in% c("SpatialLinesDataFrame", "SpatialLines")) {
-    df$x <- as.character(round(coordinates(x)[, 1], 2))
-    df$y <- as.character(round(coordinates(x)[, 2], 2))
+    if (nrow(x) == 1) df <- as.data.frame(t(df))
+    if (!class(x) %in% c("SpatialLinesDataFrame", "SpatialLines")) {
+      df$x <- as.character(round(coordinates(x)[, 1], 2))
+      df$y <- as.character(round(coordinates(x)[, 2], 2))
+    }
   }
 
   cols <- colnames(df)
 
-  vals <- sapply(seq(nrow(x@data)), function(i) {
+  vals <- sapply(seq(nrow(df)), function(i) {
     df[i, ]
   })
 
@@ -52,7 +57,7 @@ createPopupTable <- function(x) {
 }
 
 
-# create popup table odd row for sp objects ---------------------------------------
+# create popup table odd row for sp objects -------------------------------
 #' @describeIn moControls create popup table odd row for sp objects
 #' @export createPopupRow
 #'
@@ -73,7 +78,7 @@ createPopupRow <- function(col.name, value) {
 }
 
 
-# create popup table even row for sp objects ---------------------------------------
+# create popup table even row for sp objects ------------------------------
 #' @describeIn moControls create popup table even row for sp objects
 #' @export createPopupRowAlt
 #'
