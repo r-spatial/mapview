@@ -3,7 +3,7 @@ if ( !isGeneric('+') ) {
     standardGeneric('+'))
 }
 
-#' add a layer to a mapview or leaflet map
+#' Add a layer to a mapview or leaflet map
 #'
 #' @param e1 the map to which the layer should be added
 #' @param e2 (spatial) object to be added

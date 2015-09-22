@@ -3,7 +3,7 @@ if ( !isGeneric('mapView') ) {
     standardGeneric('mapView'))
 }
 
-#' view spatial objects interactively
+#' View spatial objects interactively
 #'
 #' @description
 #' this function produces an interactive GIS-like view of the specified

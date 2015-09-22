@@ -2,7 +2,7 @@
 % Please edit documentation in R/addMapLayer.R
 \name{addMapLayer}
 \alias{addMapLayer}
-\title{add a layer to a leaflet map using mapView}
+\title{Add a layer to a leaflet map using mapView}
 \arguments{
 \item{lay}{an object that can be passed to \code{\link{mapView}}}
 

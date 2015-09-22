@@ -14,7 +14,7 @@
 \alias{mapView,SpatialPolygons-method}
 \alias{mapView,SpatialPolygonsDataFrame-method}
 \alias{mapView,missing-method}
-\title{view spatial objects interactively}
+\title{View spatial objects interactively}
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL, maxpixels = 5e+05,
   color = mapViewPalette(7), na.color = "transparent",

@@ -1,4 +1,4 @@
-#' mapView colour palette
+#' Default color palette for mapview
 #'
 #' @param n the number of colours to be created
 #'

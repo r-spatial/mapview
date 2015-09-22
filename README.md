@@ -11,7 +11,7 @@ for a demo
 
 ### Installation
 
-install and load the [devtools](http://cran.r-project.org/web/packages/devtools/index.html) package.
+install and load the [devtools](http://cran.r-project.org/package=devtools) package.
 
 For the stable release version of **mapview** use
 
