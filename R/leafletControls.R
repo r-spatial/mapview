@@ -168,18 +168,27 @@ rasterCheckAdjustProjection <- function(x, maxpixels) {
     x <- sampleRegular(x, maxpixels, asRaster = TRUE, useGDAL = TRUE)
   }
   is.fact <- raster::is.factor(x)[1]
-  if (is.fact) {
-    out_rst <- raster::projectRaster(
+
+  non_proj_waning <-
+    paste("supplied", class(x)[1], "has no projection information!", "\n",
+          "scaling coordinates and showing layer without background map")
+
+  if (is.na(raster::projection(x))) {
+    warning(non_proj_waning)
+    extent(x) <- scaleExtent(x)
+    projection(x) <- llcrs
+  } else if (is.fact) {
+    x <- raster::projectRaster(
       x, raster::projectExtent(x, crs = sp::CRS(wmcrs)),
       method = "ngb")
-    out_rst <- raster::as.factor(out_rst)
+    x <- raster::as.factor(x)
   } else {
-    out_rst <- raster::projectRaster(
+    x <- raster::projectRaster(
       x, raster::projectExtent(x, crs = sp::CRS(wmcrs)),
       method = "bilinear")
   }
 
-  return(out_rst)
+  return(x)
 
 }
 
@@ -244,13 +253,24 @@ initMap <- function(map, map.types, proj4str) {
 scaleCoordinates <- function(x.coords, y.coords) {
 
   ratio <- diff(range(y.coords)) / diff(range(x.coords))
-  x_mn <- x.coords - min(x.coords, na.rm = TRUE)
-  x_sc <- x_mn / max(x_mn, na.rm = TRUE)
-  y_mn <- y.coords - min(y.coords, na.rm = TRUE)
-  y_sc <- y_mn / max(y_mn, na.rm = TRUE) * ratio
-
+  x_sc <- scales::rescale(x.coords, to = c(0, 1))
+  y_sc <- scales::rescale(y.coords, to = c(0, 1)) * ratio
   return(cbind(x_sc, y_sc))
 
+}
+
+
+
+# Scale extent ------------------------------------------------------------
+#' @rdname leafletControls
+# @export scaleExtent
+#'
+scaleExtent <- function(x) {
+  ratio <- raster::nrow(x) / raster::ncol(x)
+  x_sc <- scales::rescale(c(x@extent@xmin, x@extent@xmax), c(0, 1))
+  y_sc <- scales::rescale(c(x@extent@ymin, x@extent@ymax), c(0, 1)) * ratio
+
+  return(extent(c(x_sc, y_sc)))
 }
 
 
@@ -345,7 +365,7 @@ scaleLinesCoordinates <- function(x) {
 # @export spCheckAdjustProjection
 #'
 #' @param verbose whether details should be printed to the console
-spCheckAdjustProjection <- function(x, verbose = FALSE) {
+spCheckAdjustProjection <- function(x) {
 
   non_proj_waning <-
     paste("supplied", class(x)[1], "has no projection information!", "\n",
@@ -353,14 +373,40 @@ spCheckAdjustProjection <- function(x, verbose = FALSE) {
 
   if (is.na(raster::projection(x))) {
     warning(non_proj_waning)
+    slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
+                                          coordinates(x)[, 2])
   } else if (!identical(raster::projection(x), llcrs)) {
-    if(verbose) cat("\n", "reprojecting to web mercator", "\n\n")
     x <- sp::spTransform(x, CRSobj = llcrs)
   }
 
   return(x)
 
 }
+
+
+
+# Check and potentially adjust projection of objects to be rendered -------
+#' @rdname leafletControls
+# @export checkAdjustProjection
+#'
+checkAdjustProjection <- function(x, maxpixels) {
+
+  if (class(x)[1] %in% c("RasterLayer", "RasterStack", "RasterBrick")) {
+    rasterCheckAdjustProjection(x, maxpixels)
+  } else if (class(x)[1] %in% c("SpatialPointsDataFrame",
+                                "SpatialPolygonsDataFrame",
+                                "SpatialLinesDataFrame",
+                                "SpatialPoints",
+                                "SpatialPolygons",
+                                "SpatialLines")) {
+    spCheckAdjustProjection(x)
+  }
+
+  return(x)
+}
+
+
+
 
 
 # Add leaflet control button to map ---------------------------------------

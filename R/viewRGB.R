@@ -42,6 +42,24 @@ if ( !isGeneric('viewRGB') ) {
 #' viewRGB(poppendorf, 4, 3, 2) # true-color
 #' viewRGB(poppendorf, 5, 4, 3) # false-color
 #'
+#' \dontrun{
+#' ### displaying images (from authors web space)
+#' ### solution on how to read images from the web found here
+#' ### http://r.789695.n4.nabble.com/readJPEG-function-cannot-open-jpeg-files-td4655487.html
+#' web_image <- "http://umweltinformatik-marburg.de/uploads/pics/portrait_header_tappelhans_01.jpg"
+#'
+#' jpg <- readJPEG(readBin(web_image, "raw", 1e6))
+#'
+#' # Convert imagedata to raster
+#' rst_blue <- raster(jpg[, , 1])
+#' rst_green <- raster(jpg[, , 2])
+#' rst_red <- raster(jpg[, , 3])
+#'
+#' img <- brick(rst_red, rst_green, rst_blue)
+#'
+#' viewRGB(img)
+#' }
+#'
 #' @export
 #' @docType methods
 #' @name viewRGB
@@ -61,6 +79,7 @@ setMethod("viewRGB", signature(x = "RasterStackBrick"),
                                                    env = parent.frame())),
                    ...) {
 
+            m <- initMap(map, map.types, projection(x))
             xout <- rasterCheckAdjustProjection(x, maxpixels)
 
             mat <- cbind(xout[[r]][],
@@ -87,7 +106,6 @@ setMethod("viewRGB", signature(x = "RasterStackBrick"),
             lyrs <- paste(r, g, b, sep = ".")
             grp <- paste(grp, lyrs, sep = "_")
 
-            m <- initMap(map, map.types, projection(xout))
             m <- leaflet::addRasterImage(map = m, x = xout[[r]], colors = p,
                                          group = grp)
             m <- mapViewLayersControl(map = m,

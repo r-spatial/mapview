@@ -2,6 +2,7 @@
 % Please edit documentation in R/leafletControls.R
 \name{leafletControls}
 \alias{appendMapCallEntries}
+\alias{checkAdjustProjection}
 \alias{circleRadius}
 \alias{getLayerControlEntriesFromMap}
 \alias{getLayerNamesFromMap}
@@ -17,6 +18,7 @@
 \alias{rasterCheckAdjustProjection}
 \alias{removeDuplicatedMapCalls}
 \alias{scaleCoordinates}
+\alias{scaleExtent}
 \alias{scaleLinesCoordinates}
 \alias{scalePolygonsCoordinates}
 \alias{spCheckAdjustProjection}
@@ -50,11 +52,15 @@ initMap(map, map.types, proj4str)
 
 scaleCoordinates(x.coords, y.coords)
 
+scaleExtent(x)
+
 scalePolygonsCoordinates(x)
 
 scaleLinesCoordinates(x)
 
-spCheckAdjustProjection(x, verbose = FALSE)
+spCheckAdjustProjection(x)
+
+checkAdjustProjection(x, maxpixels)
 
 mapViewLayersControl(map, map.types, names)
 
@@ -84,13 +90,13 @@ If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
 \item{y.coords}{vector of y coordinates}
 
-\item{verbose}{whether details should be printed to the console}
-
 \item{names}{names of the layer groups to be added to control button}
 
 \item{radius}{either an integer specifying circle radius or the name
 (character) of one of the columns in the SpatialPointsDataFrame
 (attribute table)}
+
+\item{verbose}{whether details should be printed to the console}
 }
 \description{
 Convenience functions for working with spatial objects and leaflet maps
