@@ -43,9 +43,12 @@ if ( !isGeneric('viewRGB') ) {
 #' viewRGB(poppendorf, 5, 4, 3) # false-color
 #'
 #' \dontrun{
-#' ### displaying images (from authors web space)
+#' ### displaying images
 #' ### solution on how to read images from the web found here
 #' ### http://r.789695.n4.nabble.com/readJPEG-function-cannot-open-jpeg-files-td4655487.html
+#' library(jpeg)
+#' library(raster)
+#'
 #' web_image <- "http://umweltinformatik-marburg.de/uploads/pics/portrait_header_tappelhans_01.jpg"
 #'
 #' jpg <- readJPEG(readBin(web_image, "raw", 1e6))
