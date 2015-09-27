@@ -1,7 +1,7 @@
-#' view extent/bbox of spatial objects interactively
+#' View extent/bbox of spatial objects interactively
 #'
 #' @description
-#' this function produces an interactive GIS-like view of the extent/bbox
+#' This function produces an interactive GIS-like view of the extent/bbox
 #' of the supplied spatial object
 #'
 #' @param x either a Raster* object or a Spatial* object
@@ -31,7 +31,7 @@
 #'
 NULL
 
-## view Extent ============================================================
+## View Extent ============================================================
 #' @rdname viewExtent
 viewExtent <- function(x,
                        map = NULL,
@@ -58,7 +58,7 @@ viewExtent <- function(x,
 
 }
 
-## add Extent =============================================================
+## Add Extent =============================================================
 #' @describeIn viewExtent
 
 addExtent <- function(x, map, ...) {

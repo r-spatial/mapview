@@ -3,7 +3,7 @@ if ( !isGeneric('mapView') ) {
     standardGeneric('mapView'))
 }
 
-#' view spatial objects interactively
+#' View spatial objects interactively
 #'
 #' @description
 #' this function produces an interactive GIS-like view of the specified
@@ -132,11 +132,10 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 
             is.fact <- raster::is.factor(x)
 
+            m <- initMap(map, map.types, proj4string(x))
             x <- rasterCheckAdjustProjection(x, maxpixels = maxpixels)
 
-            m <- initMap(map, map.types, proj4string(x))
-
-            if (trim) x <- trim(x)
+            if (!is.na(raster::projection(x)) & trim) x <- trim(x)
 
             if (is.fact) x <- raster::as.factor(x)
 
@@ -351,11 +350,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
             if(!is.null(zcol)) burst <- TRUE
 
             x <- spCheckObject(x, verbose = verbose)
-            x <- spCheckAdjustProjection(x, verbose)
-            if (is.na(proj4string(x))) {
-              slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
-                                                    coordinates(x)[, 2])
-            }
+            x <- spCheckAdjustProjection(x)
 
             m <- initMap(map, map.types, proj4string(x))
 
@@ -452,7 +447,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
             tst <- sapply(pkgs, "requireNamespace",
                           quietly = TRUE, USE.NAMES = FALSE)
 
-            x <- spCheckAdjustProjection(x, verbose)
+            x <- spCheckAdjustProjection(x)
 
             m <- initMap(map, map.types, proj4string(x))
 
@@ -511,7 +506,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
             if(!is.null(zcol)) x <- x[, zcol]
             if(!is.null(zcol)) burst <- TRUE
 
-            x <- spCheckAdjustProjection(x, verbose)
+            x <- spCheckAdjustProjection(x)
 
             m <- initMap(map, map.types, proj4string(x))
 
@@ -650,7 +645,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
             tst <- sapply(pkgs, "requireNamespace",
                           quietly = TRUE, USE.NAMES = FALSE)
 
-            x <- spCheckAdjustProjection(x, verbose)
+            x <- spCheckAdjustProjection(x)
 
             m <- initMap(map, map.types, proj4string(x))
 
@@ -713,7 +708,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
             if(!is.null(zcol)) burst <- TRUE
 
             x <- spCheckObject(x, verbose = verbose)
-            x <- spCheckAdjustProjection(x, verbose)
+            x <- spCheckAdjustProjection(x)
 
             m <- initMap(map, map.types, proj4string(x))
 
@@ -829,7 +824,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
 
             llcrs <- CRS("+init=epsg:4326")@projargs
 
-            x <- spCheckAdjustProjection(x, verbose)
+            x <- spCheckAdjustProjection(x)
 
             m <- initMap(map, map.types, proj4string(x))
 

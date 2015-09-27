@@ -1,4 +1,4 @@
-#' convenience functions for whisker mustache plugin
+#' Convenience functions for whisker mustache plugin
 #'
 #' @author
 #' Tim Appelhans
@@ -6,9 +6,9 @@
 #' @name moControls
 NULL
 
-# create popup table for sp objects ---------------------------------------
+# Create popup table for sp objects ---------------------------------------
 #' @describeIn moControls create popup table for sp objects
-#' @export createPopupTable
+# @export createPopupTable
 #'
 #' @param x a spatial object
 #'
@@ -57,9 +57,9 @@ createPopupTable <- function(x) {
 }
 
 
-# create popup table odd row for sp objects -------------------------------
+# Create popup table odd row for sp objects -------------------------------
 #' @describeIn moControls create popup table odd row for sp objects
-#' @export createPopupRow
+# @export createPopupRow
 #'
 #' @param col.name the name of the column of the attribute table
 #' @param value the corresponding value from the attribute table
@@ -78,9 +78,9 @@ createPopupRow <- function(col.name, value) {
 }
 
 
-# create popup table even row for sp objects ------------------------------
+# Create popup table even row for sp objects ------------------------------
 #' @describeIn moControls create popup table even row for sp objects
-#' @export createPopupRowAlt
+# @export createPopupRowAlt
 #'
 createPopupRowAlt <- function(col.name, value) {
 

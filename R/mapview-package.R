@@ -1,13 +1,15 @@
 #' GIS-like viewing of spatial objects in R
 #'
-#' The package provides functionality to view spatial objects interactively
-#' using leaflet.
+#' The package provides functionality to view spatial objects interactively.
+#' The intention is to provide interactivity for easy and quick visualization
+#' during spatial data analysis. It is not intended for fine-tuned presentation
+#' quality map production.
 #'
 #' @name mapview-package
 #' @aliases mapviewpackage
 #' @docType package
 #' @title GIS-like viewing of spatial objects in R
-#' @author Tim Appelhans \cr
+#' @author Tim Appelhans, Environmental Informatics Marburg \cr
 #' \cr
 #' \emph{Maintainer:} Tim Appelhans \email{tim.appelhans@@gmail.com}
 #'

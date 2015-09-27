@@ -1,16 +1,18 @@
-#' convenience functions for working with spatial objects and leaflet maps
+#' Convenience functions for working with spatial objects and leaflet maps
+#'
+#' @param map a leaflet map
 #'
 #' @author
 #' Tim Appelhans
 #'
-#' @name mapControls
+#' @name leafletControls
 NULL
+#> NULL
 
-# query leaflet map for position of 'addLayersControl' entry --------------
-#' @describeIn mapControls query leaflet map for position of 'addLayersControl' entry
-#' @export getLayerControlEntriesFromMap
-#'
-#' @param map a leaflet map
+# Query leaflet map for position of 'addLayersControl' entry --------------
+#' @rdname leafletControls
+# @export getLayerControlEntriesFromMap
+
 getLayerControlEntriesFromMap <- function(map) {
 
   seq_along(map$x$calls)[sapply(map$x$calls,
@@ -18,9 +20,9 @@ getLayerControlEntriesFromMap <- function(map) {
 
 }
 
-# get layer names of leaflet map ------------------------------------------
-#' @describeIn mapControls get layer names of leaflet map
-#' @export getLayerNamesFromMap
+# Get layer names of leaflet map ------------------------------------------
+#' @rdname leafletControls
+# @export getLayerNamesFromMap
 #'
 getLayerNamesFromMap <- function(map) {
 
@@ -31,9 +33,9 @@ getLayerNamesFromMap <- function(map) {
 }
 
 
-# query leaflet map for position of 'addProviderTiles' entry --------------
-#' @describeIn mapControls query leaflet map for position of 'addProviderTiles' entry
-#' @export getProviderTileEntriesFromMap
+# Query leaflet map for position of 'addProviderTiles' entry --------------
+#' @rdname leafletControls
+# @export getProviderTileEntriesFromMap
 #'
 getProviderTileEntriesFromMap <- function(map) {
 
@@ -43,9 +45,9 @@ getProviderTileEntriesFromMap <- function(map) {
 }
 
 
-# get provider tile names of leaflet map ------------------------------------------
-#' @describeIn mapControls get provider tile names of leaflet map
-#' @export getProviderTileNamesFromMap
+# Get provider tile names of leaflet map ------------------------------------------
+#' @rdname leafletControls
+# @export getProviderTileNamesFromMap
 #'
 getProviderTileNamesFromMap <- function(map) {
 
@@ -55,9 +57,9 @@ getProviderTileNamesFromMap <- function(map) {
 
 }
 
-# update layer names of leaflet map ---------------------------------------
-#' @describeIn mapControls update layer names of leaflet map
-#' @export updateLayerControlNames
+# Update layer names of leaflet map ---------------------------------------
+#' @rdname leafletControls
+# @export updateLayerControlNames
 #'
 #' @param map1 map to be modified
 #' @param map2 map to get modification from
@@ -70,9 +72,9 @@ updateLayerControlNames <- function(map1, map2) {
   return(map1)
 }
 
-# identify layers to be hidden from initial map rendering -----------------
-#' @describeIn mapControls identify layers to be hidden from initial map rendering
-#' @export layers2bHidden
+# Identify layers to be hidden from initial map rendering -----------------
+#' @rdname leafletControls
+# @export layers2bHidden
 #'
 layers2bHidden <- function(map) {
 
@@ -83,9 +85,9 @@ layers2bHidden <- function(map) {
 
 
 
-# get calls from a map ----------------------------------------------------
-#' @describeIn mapControls get calls from a map
-#' @export getMapCalls
+# Get calls from a map ----------------------------------------------------
+#' @rdname leafletControls
+# @export getMapCalls
 #'
 getMapCalls <- function(map) {
   map$x$calls
@@ -93,9 +95,9 @@ getMapCalls <- function(map) {
 
 
 
-# append calls to a map ---------------------------------------------------
-#' @describeIn mapControls append calls to a map
-#' @export appendMapCallEntries
+# Append calls to a map ---------------------------------------------------
+#' @rdname leafletControls
+# @export appendMapCallEntries
 #'
 appendMapCallEntries <- function(map1, map2) {
   ## base map controls
@@ -133,9 +135,9 @@ appendMapCallEntries <- function(map1, map2) {
 
 
 
-# remove duuplicated map calls --------------------------------------------
-#' @describeIn mapControls remove duuplicated map calls
-#' @export removeDuplicatedMapCalls
+# Remove duuplicated map calls --------------------------------------------
+#' @rdname leafletControls
+# @export removeDuplicatedMapCalls
 #'
 removeDuplicatedMapCalls <- function(map) {
   ind <- anyDuplicated(map$x$calls)
@@ -149,9 +151,9 @@ wmcrs <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=
 llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
 
 
-# project Raster* objects for mapView -------------------------------------
-#' @describeIn mapControls check and potentially adjust projection of Raster* objects
-#' @export rasterCheckAdjustProjection
+# Project Raster* objects for mapView -------------------------------------
+#' @rdname leafletControls
+# @export rasterCheckAdjustProjection
 #'
 #' @param x a Raster* or Spatial* object
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
@@ -166,25 +168,34 @@ rasterCheckAdjustProjection <- function(x, maxpixels) {
     x <- sampleRegular(x, maxpixels, asRaster = TRUE, useGDAL = TRUE)
   }
   is.fact <- raster::is.factor(x)[1]
-  if (is.fact) {
-    out_rst <- raster::projectRaster(
+
+  non_proj_waning <-
+    paste("supplied", class(x)[1], "has no projection information!", "\n",
+          "scaling coordinates and showing layer without background map")
+
+  if (is.na(raster::projection(x))) {
+    warning(non_proj_waning)
+    extent(x) <- scaleExtent(x)
+    projection(x) <- llcrs
+  } else if (is.fact) {
+    x <- raster::projectRaster(
       x, raster::projectExtent(x, crs = sp::CRS(wmcrs)),
       method = "ngb")
-    out_rst <- raster::as.factor(out_rst)
+    x <- raster::as.factor(x)
   } else {
-    out_rst <- raster::projectRaster(
+    x <- raster::projectRaster(
       x, raster::projectExtent(x, crs = sp::CRS(wmcrs)),
       method = "bilinear")
   }
 
-  return(out_rst)
+  return(x)
 
 }
 
 
-# initialise mapView base maps --------------------------------------------
-#' @describeIn mapControls initialise mapView base maps
-#' @export initBaseMaps
+# Initialise mapView base maps --------------------------------------------
+#' @rdname leafletControls
+# @export initBaseMaps
 #'
 #' @param map.types map types to be used as backgraound maps
 initBaseMaps <- function(map.types) {
@@ -204,9 +215,9 @@ initBaseMaps <- function(map.types) {
 }
 
 
-# initialise mapView map --------------------------------------------------
-#' @describeIn mapControls initialise mapView map
-#' @export initMap
+# Initialise mapView map --------------------------------------------------
+#' @rdname leafletControls
+# @export initMap
 #'
 #' @param proj4str \code{\link{proj4string}} of the spatial objects to be viewed
 initMap <- function(map, map.types, proj4str) {
@@ -233,28 +244,39 @@ initMap <- function(map, map.types, proj4str) {
 }
 
 
-# scale coordinates for unprojected spatial objects -----------------------
-#' @describeIn mapControls scale coordinates for unprojected spatial objects
-#' @export scaleCoordinates
+# Scale coordinates for unprojected spatial objects -----------------------
+#' @rdname leafletControls
+# @export scaleCoordinates
 #'
 #' @param x.coords vector of x coordinates
 #' @param y.coords vector of y coordinates
 scaleCoordinates <- function(x.coords, y.coords) {
 
   ratio <- diff(range(y.coords)) / diff(range(x.coords))
-  x_mn <- x.coords - min(x.coords, na.rm = TRUE)
-  x_sc <- x_mn / max(x_mn, na.rm = TRUE)
-  y_mn <- y.coords - min(y.coords, na.rm = TRUE)
-  y_sc <- y_mn / max(y_mn, na.rm = TRUE) * ratio
-
+  x_sc <- scales::rescale(x.coords, to = c(0, 1))
+  y_sc <- scales::rescale(y.coords, to = c(0, 1)) * ratio
   return(cbind(x_sc, y_sc))
 
 }
 
 
-# scale unprojected SpatialPolygons* objects ------------------------------
-#' @describeIn mapControls scale unprojected SpatialPolygons* objects
-#' @export scalePolygonsCoordinates
+
+# Scale extent ------------------------------------------------------------
+#' @rdname leafletControls
+# @export scaleExtent
+#'
+scaleExtent <- function(x) {
+  ratio <- raster::nrow(x) / raster::ncol(x)
+  x_sc <- scales::rescale(c(x@extent@xmin, x@extent@xmax), c(0, 1))
+  y_sc <- scales::rescale(c(x@extent@ymin, x@extent@ymax), c(0, 1)) * ratio
+
+  return(extent(c(x_sc, y_sc)))
+}
+
+
+# Scale unprojected SpatialPolygons* objects ------------------------------
+#' @rdname leafletControls
+# @export scalePolygonsCoordinates
 #'
 scalePolygonsCoordinates <- function(x) {
 
@@ -295,9 +317,9 @@ scalePolygonsCoordinates <- function(x) {
 }
 
 
-# scale unprojected SpatialLines* objects ------------------------------
-#' @describeIn mapControls scale unprojected SpatialLines* objects
-#' @export scaleLinesCoordinates
+# Scale unprojected SpatialLines* objects ------------------------------
+#' @rdname leafletControls
+# @export scaleLinesCoordinates
 #'
 scaleLinesCoordinates <- function(x) {
 
@@ -338,12 +360,12 @@ scaleLinesCoordinates <- function(x) {
 }
 
 
-# check and potentially adjust projection of Spatial* objects -------------
-#' @describeIn mapControls check and potentially adjust projection of Spatial* objects
-#' @export spCheckAdjustProjection
+# Check and potentially adjust projection of Spatial* objects -------------
+#' @rdname leafletControls
+# @export spCheckAdjustProjection
 #'
 #' @param verbose whether details should be printed to the console
-spCheckAdjustProjection <- function(x, verbose = FALSE) {
+spCheckAdjustProjection <- function(x) {
 
   non_proj_waning <-
     paste("supplied", class(x)[1], "has no projection information!", "\n",
@@ -351,8 +373,9 @@ spCheckAdjustProjection <- function(x, verbose = FALSE) {
 
   if (is.na(raster::projection(x))) {
     warning(non_proj_waning)
+    slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
+                                          coordinates(x)[, 2])
   } else if (!identical(raster::projection(x), llcrs)) {
-    if(verbose) cat("\n", "reprojecting to web mercator", "\n\n")
     x <- sp::spTransform(x, CRSobj = llcrs)
   }
 
@@ -361,9 +384,34 @@ spCheckAdjustProjection <- function(x, verbose = FALSE) {
 }
 
 
-# add leaflet control button to map ---------------------------------------
-#' @describeIn mapControls add leaflet control button to map
-#' @export mapViewLayersControl
+
+# Check and potentially adjust projection of objects to be rendered -------
+#' @rdname leafletControls
+# @export checkAdjustProjection
+#'
+checkAdjustProjection <- function(x, maxpixels) {
+
+  if (class(x)[1] %in% c("RasterLayer", "RasterStack", "RasterBrick")) {
+    rasterCheckAdjustProjection(x, maxpixels)
+  } else if (class(x)[1] %in% c("SpatialPointsDataFrame",
+                                "SpatialPolygonsDataFrame",
+                                "SpatialLinesDataFrame",
+                                "SpatialPoints",
+                                "SpatialPolygons",
+                                "SpatialLines")) {
+    spCheckAdjustProjection(x)
+  }
+
+  return(x)
+}
+
+
+
+
+
+# Add leaflet control button to map ---------------------------------------
+#' @rdname leafletControls
+# @export mapViewLayersControl
 #'
 #' @param names names of the layer groups to be added to control button
 mapViewLayersControl <- function(map, map.types, names) {
@@ -379,9 +427,9 @@ mapViewLayersControl <- function(map, map.types, names) {
 }
 
 
-# create layer name for grouping in map -----------------------------------
-#' @describeIn mapControls create layer name for grouping in map
-#' @export layerName
+# Create layer name for grouping in map -----------------------------------
+#' @rdname leafletControls
+# @export layerName
 #'
 layerName <- function() {
   mvclss <- c("SpatialPointsDataFrame",
@@ -407,9 +455,9 @@ layerName <- function() {
 }
 
 
-# set or calculate circle radius ------------------------------------------
-#' @describeIn mapControls set or calculate circle radius
-#' @export circleRadius
+# Set or calculate circle radius ------------------------------------------
+#' @rdname leafletControls
+# @export circleRadius
 #'
 #' @param radius either an integer specifying circle radius or the name
 #' (character) of one of the columns in the SpatialPointsDataFrame
@@ -417,7 +465,7 @@ layerName <- function() {
 #'
 circleRadius <- function(x, radius) {
   if (is.character(radius)) {
-    rad <- scales::rescale(as.numeric(x@data[, radius]), to = c(1,10))
+    rad <- scales::rescale(as.numeric(x@data[, radius]), to = c(5,15))
   } else rad <- radius
 
   return(rad)
@@ -425,9 +473,9 @@ circleRadius <- function(x, radius) {
 
 
 
-# check sp objects --------------------------------------------------------
-#' @describeIn mapControls check sp objects
-#' @export spCheckObject
+# Check sp objects --------------------------------------------------------
+#' @rdname leafletControls
+# @export spCheckObject
 #'
 spCheckObject <- function(x, verbose) {
 

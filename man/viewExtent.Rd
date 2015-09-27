@@ -4,7 +4,7 @@
 \alias{addExtent}
 \alias{viewExtent}
 \alias{viewExtent,addExtent}
-\title{view extent/bbox of spatial objects interactively}
+\title{View extent/bbox of spatial objects interactively}
 \usage{
 viewExtent(x, map = NULL, map.types = c("OpenStreetMap",
   "Esri.WorldImagery"), ...)
@@ -22,7 +22,7 @@ standard background layers are cretaed}
 \item{...}{additional arguments passed on to \code{\link{addRectangles}}}
 }
 \description{
-this function produces an interactive GIS-like view of the extent/bbox
+This function produces an interactive GIS-like view of the extent/bbox
 of the supplied spatial object
 }
 \section{Functions}{

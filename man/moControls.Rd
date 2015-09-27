@@ -5,7 +5,7 @@
 \alias{createPopupRowAlt}
 \alias{createPopupTable}
 \alias{moControls}
-\title{convenience functions for whisker mustache plugin}
+\title{Convenience functions for whisker mustache plugin}
 \usage{
 createPopupTable(x)
 
@@ -21,7 +21,7 @@ createPopupRowAlt(col.name, value)
 \item{value}{the corresponding value from the attribute table}
 }
 \description{
-convenience functions for whisker mustache plugin
+Convenience functions for whisker mustache plugin
 }
 \section{Functions}{
 \itemize{

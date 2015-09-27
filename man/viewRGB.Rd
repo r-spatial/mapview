@@ -49,6 +49,28 @@ data(poppendorf)
 
 viewRGB(poppendorf, 4, 3, 2) # true-color
 viewRGB(poppendorf, 5, 4, 3) # false-color
+
+\dontrun{
+### can also be used to view any type of image (here an example of the
+### package author teaching R on the research station at Kilimanjaro)
+### solution on how to read images from the web found here
+### http://r.789695.n4.nabble.com/readJPEG-function-cannot-open-jpeg-files-td4655487.html
+library(jpeg)
+library(raster)
+
+web_image <- "http://umweltinformatik-marburg.de/uploads/tx_rzslider/teaching_header_kili_resized.jpg"
+
+jpg <- readJPEG(readBin(web_image, "raw", 1e6))
+
+# Convert imagedata to raster
+rst_blue <- raster(jpg[, , 1])
+rst_green <- raster(jpg[, , 2])
+rst_red <- raster(jpg[, , 3])
+
+img <- brick(rst_red, rst_green, rst_blue)
+
+viewRGB(img)
+}
 }
 \author{
 Tim Appelhans

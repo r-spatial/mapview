@@ -2,12 +2,12 @@
 % Please edit documentation in R/mapViewPalette.R
 \name{mapViewPalette}
 \alias{mapViewPalette}
-\title{mapView colour palette}
+\title{Default color palette for mapview}
 \arguments{
 \item{n}{the number of colours to be created}
 }
 \description{
-mapView colour palette
+Default color palette for mapview
 }
 \author{
 Tim Appelhans

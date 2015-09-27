@@ -1,4 +1,4 @@
-#' add a layer to a leaflet map using mapView
+#' Add a layer to a leaflet map using mapView
 #'
 #' @description
 #' this function adds a layer to an interactive GIS-like view produced

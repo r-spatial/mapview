@@ -6,7 +6,7 @@
 \alias{+,leaflet,ANY-method}
 \alias{+,mapview,ANY-method}
 \alias{+,mapview,mapview-method}
-\title{add a layer to a mapview or leaflet map}
+\title{Add a layer to a mapview or leaflet map}
 \usage{
 \S4method{+}{mapview,ANY}(e1, e2)
 
@@ -18,7 +18,7 @@
 \item{e2}{(spatial) object to be added}
 }
 \description{
-add a layer to a mapview or leaflet map
+Add a layer to a mapview or leaflet map
 }
 \examples{
 ### raster data ###
