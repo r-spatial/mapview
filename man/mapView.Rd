@@ -36,7 +36,8 @@
   burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
   radius = 10, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
   legend = TRUE, legend.opacity = 1, verbose = FALSE,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+  layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
+  ...)
 
 \S4method{mapView}{SpatialPoints}(x, map = NULL, na.color = "transparent",
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), verbose = FALSE,
@@ -46,7 +47,8 @@
   burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
   values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
   legend = TRUE, legend.opacity = 1, weight = 2, verbose = FALSE,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+  layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
+  ...)
 
 \S4method{mapView}{SpatialPolygons}(x, map = NULL, na.color = "transparent",
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), weight = 2,
@@ -57,7 +59,8 @@
   burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
   values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
   legend = TRUE, legend.opacity = 1, verbose = FALSE,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+  layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
+  ...)
 
 \S4method{mapView}{SpatialLines}(x, map = NULL, na.color = "transparent",
   map.types = c("OpenStreetMap", "Esri.WorldImagery"), verbose = FALSE,
@@ -110,6 +113,9 @@ of the column(s) to be rendered}
 
 \item{radius}{attribute name(s) or column number(s) in attribute table
 of the column(s) to be used for defining the size of circles}
+
+\item{popup}{a character vector of the HTML content for the popups. See
+\code{\link{addControl}} for details.}
 
 \item{weight}{line width (see \code{\link{leaflet}} for details)}
 

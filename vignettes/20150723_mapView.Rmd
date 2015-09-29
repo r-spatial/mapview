@@ -9,7 +9,23 @@ output:
 
 ![](http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png) (CC-BY-NC-SA)
 
-_last edit **`r Sys.Date()`**_
+This document was produced on _`r format(Sys.time(), "%a %b %d %Y")`_ using `mapview` version **`r packageVersion("mapview")`**
+
+------
+
+## Installation
+
+The easiest way to install `mapview` is to use `library("devtools")`. With `devtools` installed and loaded type the following:
+
+For the stable release of `mapview`:
+```{r, eval = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+install_github("environmentalinformatics-marburg/mapview")
+```
+
+For the devolpment version:
+```{r, eval = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+install_github("environmentalinformatics-marburg/mapview", ref = "develop")
+```
 
 ------
 
@@ -60,9 +76,6 @@ In the following I would like to present a few use case scenarios that highlight
 
 ### RasterLayer
 ```{r, warning=FALSE, message=FALSE, fig.width=9.47}
-## to install mapview use 
-# library(devtools)
-# install_github("environmentalinformatics-marburg/mapview")
 library(mapview)
 library(raster)
 
@@ -277,6 +290,68 @@ m1 <- "+"(mapView(breweries91, color = "red"), viewRGB(poppendorf, 4, 3, 2))
 
 So here you have it, 5 breweries within the extent of the RGB image
 
+
+### Non-projected data
+
+It is possible to view objects that are not projected (i.e. have their coordinate reference system - CRS - set to `NA`). If this is the case, coordinates are rescaled to lie between 0 and 1 and then the y-coordinates are multiplied by the ratio of y-extent / x-extent. This means that x-coordinates will always have `min == 0` and `max == 1` while y-coordinates will have `min == 0` but their `max` will depend on the ratio, so that this can be slightly higher or lower than 1.
+
+When we supply non-projected data to `mapView()` a suitable warning will be printed to the console (see below).
+
+Here's an example for point data. For this we load the `meuse` data set once again, but this time we won't set the `CRS`.
+
+```{r, fig.width=9.47}
+data("meuse")
+coordinates(meuse) <- ~x+y
+
+## check coordinate reference system
+proj4string(meuse)
+```
+
+Yet, even though it has no CRS, we can still visulize it. Though we obviously cannot provide any background maps for the visualization.
+
+```{r, fig.width=9.47}
+mapView(meuse)
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+mapView(meuse)@map
+```
+
+Note, how the coordinates have been rescaled.
+
+This is also possible for `Raster*` objects, which allows us to view pretty much any type of raster data, including those that cannot be projected, such as photos. This is quite handy as it enables closer investigation of non-standard spatial data, for example gathered through imaging ground-based remote sensing techniques (e.g. thermal imaging).
+
+Here's a toy example using one of the header images from the Environmental Informtics Marburg web page that shows the author of this package during an R teaching session at our research station at Mt. Kilimanjaro in Tanzania.
+
+```{r, fig.width=9.47}
+## get image from the web page
+library(jpeg)
+
+web_image <- "http://umweltinformatik-marburg.de/uploads/tx_rzslider/teaching_header_kili_resized.jpg"
+
+jpg <- readJPEG(readBin(web_image, "raw", 1e6))
+
+## Convert image data to raster
+rst_blue <- raster(jpg[, , 1])
+rst_green <- raster(jpg[, , 2])
+rst_red <- raster(jpg[, , 3])
+
+img <- brick(rst_red, rst_green, rst_blue)
+
+## visualize image in viewer
+viewRGB(img)
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+viewRGB(img)@map
+```
+
+In case you are interested, under the hood, the rendering of unprojected `Raster*` data works similar to that of `Spatial*` objects. Corner coordinates of the extent are rescaled (y-coordinates are multiplied with the ratio of `nrow / ncol` to preserve dimensions). In this case, however, we need to provide a `CRS` as `leaflet` expects one. Therefore, we set this to standard latitude/longitude `EPSG:4236`. This means, that the rendered image actually does have a spatial reference but `mapview` simply does not provide basemaps. If we were to provide one, we would see that our data lies somewhere in the Gulf of Guinea.
+
+Applications for non-projected data are obviously limited, yet, especially the possibility to view standard images interactively provides a nice tool for checking parts of an image(stack) in more detail. 
+
+Keep in mind that speed and memory limitations for `Raster*` data still applies, though speed will be much less of an issue, as we do not need to reporject the data.
+
 ------
 
 ## leaflet integration
@@ -288,6 +363,9 @@ Integrating `mapview` and `leaflet` works both ways...
 You can first create a map using `leaflet` and then add spatial objects as you like with `mapview` allowing you to flexibly create maps in whatever way you like.
 
 ```{r, fig.width=9.47}
+## first set the CRS again
+proj4string(meuse) <- CRS("+init=epsg:28992")
+
 m <- leaflet() %>%
   addProviderTiles("Stamen.Toner")
 m + meuse

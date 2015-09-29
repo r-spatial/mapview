@@ -52,8 +52,9 @@ createPopupTable <- function(x) {
 
     return(outputObj)
   })
+
   return(txt)
-  print(txt)
+
 }
 
 
