@@ -27,6 +27,8 @@ if ( !isGeneric('mapView') ) {
 #' @param trim should the raster be trimmed in case there are NAs on the egdes
 #' @param verbose should some details be printed during the process
 #' @param layer.name the name of the layer to be shown on the map
+#' @param popup a character vector of the HTML content for the popups. See
+#' \code{\link{addControl}} for details.
 #' @param ... additional arguments passed on to repective functions.
 #' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
@@ -339,6 +341,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    verbose = FALSE,
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
+                   popup = NULL,
                    ...) {
 
             pkgs <- c("leaflet", "sp", "magrittr")
@@ -348,6 +351,8 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
             rad_vals <- circleRadius(x, radius)
             if(!is.null(zcol)) x <- x[, zcol]
             if(!is.null(zcol)) burst <- TRUE
+
+            pop.null <- is.null(popup)
 
             x <- spCheckObject(x, verbose = verbose)
             x <- spCheckAdjustProjection(x)
@@ -371,13 +376,16 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
               for (i in seq(lst)) {
 
-                txt <- createPopupTable(lst[[i]])
+                x <- lst[[i]]
 
-                m <- leaflet::addCircleMarkers(m, lng = coordinates(lst[[i]])[, 1],
-                                               lat = coordinates(lst[[i]])[, 2],
+                if (pop.null) popup <- createPopupTable(x)
+
+                m <- leaflet::addCircleMarkers(m,
+                                               lng = coordinates(x)[, 1],
+                                               lat = coordinates(x)[, 2],
                                                group = names(lst[[i]]),
                                                color = pal_n[[i]](vals[[i]]),
-                                               popup = txt,
+                                               popup = popup,
                                                #data = x,
                                                radius = rad_vals,
                                                ...)
@@ -402,14 +410,14 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
               grp <- layer.name
 
-              txt <- createPopupTable(x)
+              if (pop.null) popup <- createPopupTable(x)
 
               m <- leaflet::addCircleMarkers(map = m,
                                              lng = coordinates(x)[, 1],
                                              lat = coordinates(x)[, 2],
                                              group = grp,
                                              color = color[length(color)],
-                                             popup = txt,
+                                             popup = popup,
                                              #data = x,
                                              radius = rad_vals,
                                              ...)
@@ -495,6 +503,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    verbose = FALSE,
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
+                   popup = NULL,
                    ...) {
 
             pkgs <- c("leaflet", "sp", "magrittr")
@@ -506,13 +515,11 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
             if(!is.null(zcol)) x <- x[, zcol]
             if(!is.null(zcol)) burst <- TRUE
 
+            pop.null <- is.null(popup)
+
             x <- spCheckAdjustProjection(x)
 
             m <- initMap(map, map.types, proj4string(x))
-
-            coord_lst <- lapply(slot(x, "polygons"), function(x) {
-              lapply(slot(x, "Polygons"), function(y) slot(y, "coords"))
-            })
 
             if (burst) {
 
@@ -548,26 +555,16 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
                 grp <- names(df)
 
-                txt <- createPopupTable(x)
+                if (pop.null) popup <- createPopupTable(x)
 
-                for (j in seq(coord_lst)) {
-                  for (h in seq(coord_lst[[j]])) {
-                    if (is.na(proj4string(x))) {
-                      x <- scalePolygonsCoordinates(x)
-                    }
-                    x_coord <- coordinates(x@polygons[[j]]@Polygons[[h]])[, 1]
-                    y_coord <- coordinates(x@polygons[[j]]@Polygons[[h]])[, 2]
-                    clrs <- pal_n[[i]](vals[[i]])
-                    m <- leaflet::addPolygons(m,
-                                              lng = x_coord,
-                                              lat = y_coord,
-                                              weight = weight,
-                                              group = grp,
-                                              color = clrs[j],
-                                              popup = txt[j],
-                                              ...)
-                  }
-                }
+                clrs <- pal_n[[i]](vals[[i]])
+                m <- leaflet::addPolygons(m,
+                                          weight = weight,
+                                          group = grp,
+                                          color = clrs,
+                                          popup = popup,
+                                          data = x,
+                                          ...)
 
                 m <- leaflet::addLegend(map = m, position = "topright",
                                         pal = pal_n[[i]], opacity = 1,
@@ -591,25 +588,15 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
               grp <- layer.name
 
-              txt <- createPopupTable(x)
+              if (pop.null) popup <- createPopupTable(x)
 
-              for (j in seq(coord_lst)) {
-                for (h in seq(coord_lst[[j]])) {
-                  if (is.na(proj4string(x))) {
-                    x <- scalePolygonsCoordinates(x)
-                  }
-                  x_coord <- coordinates(x@polygons[[j]]@Polygons[[h]])[, 1]
-                  y_coord <- coordinates(x@polygons[[j]]@Polygons[[h]])[, 2]
-                  m <- leaflet::addPolygons(m,
-                                            lng = x_coord,
-                                            lat = y_coord,
-                                            weight = weight,
-                                            group = grp,
-                                            color = color[length(color)],
-                                            popup = txt[j],
-                                            ...)
-                }
-              }
+              m <- leaflet::addPolygons(m,
+                                        weight = weight,
+                                        group = grp,
+                                        color = color[length(color)],
+                                        popup = popup,
+                                        data = x,
+                                        ...)
 
               m <- mapViewLayersControl(map = m,
                                         map.types = map.types,
@@ -651,22 +638,11 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
 
             grp <- layer.name
 
-            coord_lst <- lapply(slot(x, "polygons"), function(x) {
-              lapply(slot(x, "Polygons"), function(y) slot(y, "coords"))
-            })
-
-            for (j in seq(coord_lst)) {
-              for (h in seq(coord_lst[[j]])) {
-                x_coord <- coordinates(x@polygons[[j]]@Polygons[[h]])[, 1]
-                y_coord <- coordinates(x@polygons[[j]]@Polygons[[h]])[, 2]
-                m <- leaflet::addPolygons(m,
-                                          lng = x_coord,
-                                          lat = y_coord,
-                                          weight = weight,
-                                          group = grp,
-                                          ...)
-              }
-            }
+            m <- leaflet::addPolygons(m,
+                                      weight = weight,
+                                      group = grp,
+                                      data = x,
+                                      ...)
 
             m <- mapViewLayersControl(map = m,
                                       map.types = map.types,
@@ -698,6 +674,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                    verbose = FALSE,
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
+                   popup = NULL,
                    ...) {
 
             pkgs <- c("leaflet", "sp", "magrittr")
@@ -706,6 +683,8 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
             if(!is.null(zcol)) x <- x[, zcol]
             if(!is.null(zcol)) burst <- TRUE
+
+            pop.null <- is.null(popup)
 
             x <- spCheckObject(x, verbose = verbose)
             x <- spCheckAdjustProjection(x)
@@ -749,12 +728,12 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
                 grp <- names(df)
 
-                txt <- createPopupTable(x)
+                if (pop.null) popup <- createPopupTable(x)
 
                 m <- leaflet::addPolylines(m,
                                            group = grp,
                                            color = pal_n[[i]](vals[[i]]),
-                                           popup = txt,
+                                           popup = popup,
                                            data = x,
                                            ...)
 
@@ -779,12 +758,12 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
               grp <- layer.name
 
-              txt <- createPopupTable(x)
+              if (pop.null) popup <- createPopupTable(x)
 
               m <- leaflet::addPolylines(m,
                                          group = grp,
                                          color = color[length(color)],
-                                         popup = txt,
+                                         popup = popup,
                                          data = x,
                                          ...)
 

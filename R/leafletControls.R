@@ -373,8 +373,13 @@ spCheckAdjustProjection <- function(x) {
 
   if (is.na(raster::projection(x))) {
     warning(non_proj_waning)
-    slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
-                                          coordinates(x)[, 2])
+    if (class(x)[1] %in% c("SpatialPointsDataFrame", "SpatialPoints")) {
+      slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
+                                            coordinates(x)[, 2])
+    } else if (class(x)[1] %in% c("SpatialPolygonsDataFrame",
+                                  "SpatialPolygons")) {
+      x <- scalePolygonsCoordinates(x)
+    }
   } else if (!identical(raster::projection(x), llcrs)) {
     x <- sp::spTransform(x, CRSobj = llcrs)
   }
