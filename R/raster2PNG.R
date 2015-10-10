@@ -1,22 +1,36 @@
 
 
-raster2PNG <- function(x, path = NULL) {
+raster2PNG <- function(x,
+                       colors,
+                       na.color,
+                       maxpixels) {
 
-  x_rsc <- raster::calc(x, fun = function(y) scales::rescale(y, c(0, 1)))
+  x <- rasterCheckSize(x, maxpixels = maxpixels)
+
+  x_rsc <- suppressWarnings(raster::calc(x, fun = function(y) {
+    scales::rescale(y, to = c(0, 1))
+  }))
   mat <- raster::as.matrix(x_rsc)
 
-  fl <- paste0(tempfile(), ".png")
-  png::writePNG(mat, fl)
+  clrs <- leaflet::colorNumeric(colors, domain = NULL,
+                                na.color = na.color, alpha = TRUE)
 
-  return(fl)
+  cols <- clrs(t(mat))
+  png_dat <- as.raw(grDevices::col2rgb(cols, alpha = TRUE))
+  dim(png_dat) <- c(4, ncol(x), nrow(x))
+
+  return(png_dat)
 }
 
 
-stack2RGB <- function(x, r = 3, g = 2, b = 1,
-                      na.color = "transparent",
-                      quantiles = c(0.02, 0.98)) {
+rgbStack2PNG <- function(x, r = 3, g = 2, b = 1,
+                         na.color = "transparent",
+                         quantiles = c(0.02, 0.98),
+                         maxpixels) {
 
-  x3 <- raster::subset(x, subset = c(r, g, b))
+  x <- rasterCheckSize(x, maxpixels = maxpixels)
+
+  x3 <- raster::subset(x, c(r, g, b))
 
   mat <- cbind(x[[r]][],
                x[[g]][],
@@ -36,11 +50,8 @@ stack2RGB <- function(x, r = 3, g = 2, b = 1,
   cols <- mat[, 1]
   cols[na_indx] <- na.color
   cols[!na_indx] <- grDevices::rgb(mat[!na_indx, ], alpha = 1)
-  png_dat <- as.raw(col2rgb(cols, alpha = TRUE))
+  png_dat <- as.raw(grDevices::col2rgb(cols, alpha = TRUE))
   dim(png_dat) <- c(4, ncol(x), nrow(x))
 
-  fl <- paste0(tempfile(), ".png")
-  png::writePNG(png_dat, fl)
-
-  return(fl)
+  return(png_dat)
 }

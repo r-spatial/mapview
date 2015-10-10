@@ -151,15 +151,14 @@ wmcrs <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=
 llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
 
 
-# Project Raster* objects for mapView -------------------------------------
+# Check size of Raster* objects for mapView -------------------------------
 #' @rdname leafletControls
-# @export rasterCheckAdjustProjection
+# @export rasterCheckSize
 #'
 #' @param x a Raster* or Spatial* object
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
-rasterCheckAdjustProjection <- function(x, maxpixels) {
-
+rasterCheckSize <- function(x, maxpixels) {
   if (maxpixels < ncell(x)) {
     warning(paste("maximum number of pixels for Raster* viewing is",
                   maxpixels, "the supplied Raster* has", ncell(x), "\n",
@@ -167,6 +166,17 @@ rasterCheckAdjustProjection <- function(x, maxpixels) {
                   "to view full resolution adjust 'maxpixels = ...'"))
     x <- sampleRegular(x, maxpixels, asRaster = TRUE, useGDAL = TRUE)
   }
+  return(x)
+}
+
+
+
+# Project Raster* objects for mapView -------------------------------------
+#' @rdname leafletControls
+# @export rasterCheckAdjustProjection
+#'
+rasterCheckAdjustProjection <- function(x) {
+
   is.fact <- raster::is.factor(x)[1]
 
   non_proj_waning <-
@@ -394,10 +404,10 @@ spCheckAdjustProjection <- function(x) {
 #' @rdname leafletControls
 # @export checkAdjustProjection
 #'
-checkAdjustProjection <- function(x, maxpixels) {
+checkAdjustProjection <- function(x) {
 
   if (class(x)[1] %in% c("RasterLayer", "RasterStack", "RasterBrick")) {
-    rasterCheckAdjustProjection(x, maxpixels)
+    rasterCheckAdjustProjection(x)
   } else if (class(x)[1] %in% c("SpatialPointsDataFrame",
                                 "SpatialPolygonsDataFrame",
                                 "SpatialLinesDataFrame",

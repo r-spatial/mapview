@@ -1,12 +1,13 @@
 <html>
 <head>
 <style>
-
+/* this template is adapted from http://bl.ocks.org/rfriberg/8327361 */
 /* image slider */
 .photos {
     cursor: ew-resize;
     position:relative;
-    overflow:visible;
+    overflow-x:visible;
+    overflow-y:visible;
     height: 100%;
     width: 100%;
     margin-top: 20px;
@@ -20,12 +21,12 @@
     border-left: 0px solid #000;
     border-right: 0px solid #000;
     height: 100%;
-    left: -1px;
+    left: 0px;
     line-height: 20px;
     overflow: visible;
     position: absolute;
     top: -20px;
-    width: 1px;
+    width: 50px;
     z-index: 2;
 }
 /* right slider name box */
@@ -49,7 +50,7 @@
 /* left slider name box */
 .photos .separator div.before {
     left: -100px;
-    border-left: none;
+    border-left: 200px;
     border-right: 1px solid #fff;
     border-radius: 50px 5px 5px 50px
 }
@@ -58,6 +59,7 @@
     max-width:100%;
     min-width:100%;
     position:absolute;
+    overflow:auto;
     background: url("img1.png") no-repeat;
     background-size:100% auto !important;
 }
@@ -65,6 +67,7 @@
     max-width:100%;
     min-width:100%;
     position:absolute;
+    overflow:auto;
     background: url("img2.png") no-repeat;
     background-size:100% auto !important;
 }
@@ -75,32 +78,22 @@
 
 <div class='photos'>
     <div class="separator">
-        <div class="before">pic1</div>
-        <div class="after">pic2</div>
+        <div class="before">Image1</div>
+        <div class="after">Image2</div>
     </div>
     <div class='layer' id='photo-after'></div>
     <div class='layer' id='photo-before'></div>
 </div>
 
-
-<script src='http://d3js.org/d3.v2.min.js'></script>
-<script src='http://d3js.org/d3.v2.js'></script>
+<script src='d3.min.js'></script>
+<script src='d3.js'></script>
 
 <script>
 /* Update photo urls */
 var updatePhotos = function(b,a) {
-  if(b == 'custom' || a == 'custom') {
-    b = document.getElementById('before_pic').value;
-    a = document.getElementById('after_pic').value;
-    if( !b.length || !a.length) {
-      alert('Enter image URLs');
-      return;
-    }
-  }
   document.getElementById('photo-before').style.background="url("+b+") no-repeat";
   document.getElementById('photo-after').style.background="url("+a+") no-repeat";
 }
-
 
 /* Gettin down to D3 business */
 var beforeLayer = d3.select('#photo-before').node();
@@ -115,8 +108,7 @@ d3.select('.photos')
             return true;
         }, 0);
     });
-
-
 </script>
+
 </body>
 </html>
