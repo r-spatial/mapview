@@ -117,7 +117,7 @@ setMethod("viewRGB", signature(x = "RasterStackBrick"),
                                       map.types = map.types,
                                       names = grp)
 
-            out <- new('mapview', object = list(xout), map = m)
+            out <- methods::new('mapview', object = list(xout), map = m)
 
             return(out)
 

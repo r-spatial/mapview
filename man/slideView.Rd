@@ -8,15 +8,15 @@
 \alias{slideView,character,character-method}
 \title{Compare two images trhough interactive swiping overlay}
 \usage{
-\S4method{slideView}{RasterLayer,RasterLayer}(x, y,
+\S4method{slideView}{RasterLayer,RasterLayer}(img1, img2,
   colors = mapViewPalette(7), na.color = "#00000000", maxpixels = 5e+05)
 
-\S4method{slideView}{character,character}(x, y)
+\S4method{slideView}{character,character}(img1, img2)
 }
 \arguments{
-\item{x}{a RasterStack/Brick, RasterLayer or path to a .png file}
+\item{img1}{a RasterStack/Brick, RasterLayer or path to a .png file}
 
-\item{y}{a RasterStack/Brick, RasterLayer or path to a .png file}
+\item{img2}{a RasterStack/Brick, RasterLayer or path to a .png file}
 
 \item{colors}{the color palette to be used for visualising RasterLayers}
 
@@ -27,8 +27,8 @@ If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 }
 \description{
 Two images are overlaid and a slider is provided to interactively
-compare the two images in a before-after like fashion. \code{x} and
-\code{y} can either be two RasterLayers, two RasterBricks/Stacks or
+compare the two images in a before-after like fashion. \code{img1} and
+\code{img2} can either be two RasterLayers, two RasterBricks/Stacks or
 two character strings. In the latter case it is assumed that these
 point to .png images on the disk.
 
@@ -36,9 +36,9 @@ This is a modified implementation of http://bl.ocks.org/rfriberg/8327361
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{x = RasterLayer,y = RasterLayer}: 
+\item \code{img1 = RasterLayer,img2 = RasterLayer}: 
 
-\item \code{x = character,y = character}: 
+\item \code{img1 = character,img2 = character}: 
 }}
 \examples{
 ### raster data ###

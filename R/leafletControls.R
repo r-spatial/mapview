@@ -121,7 +121,9 @@ appendMapCallEntries <- function(map1, map2) {
   mpcalls[[ctrls1[1]]]$args[[2]] <- lyrs
 
   ind <- seq_along(mpcalls)[sapply(mpcalls,
-                                  FUN = function(X) "addLayersControl" %in% X)]
+                                   FUN = function(X) {
+                                     "addLayersControl" %in% X
+                                     })]
   ind1 <- ind[1]
   ind2 <- ind[-1]
   try({
@@ -159,12 +161,12 @@ llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 rasterCheckSize <- function(x, maxpixels) {
-  if (maxpixels < ncell(x)) {
+  if (maxpixels < raster::ncell(x)) {
     warning(paste("maximum number of pixels for Raster* viewing is",
                   maxpixels, "the supplied Raster* has", ncell(x), "\n",
                   "... decreasing Raster* resolution to", maxpixels, "pixels\n",
                   "to view full resolution adjust 'maxpixels = ...'"))
-    x <- sampleRegular(x, maxpixels, asRaster = TRUE, useGDAL = TRUE)
+    x <- raster::sampleRegular(x, maxpixels, asRaster = TRUE, useGDAL = TRUE)
   }
   return(x)
 }
@@ -185,8 +187,8 @@ rasterCheckAdjustProjection <- function(x) {
 
   if (is.na(raster::projection(x))) {
     warning(non_proj_waning)
-    extent(x) <- scaleExtent(x)
-    projection(x) <- llcrs
+    raster::extent(x) <- scaleExtent(x)
+    raster::projection(x) <- llcrs
   } else if (is.fact) {
     x <- raster::projectRaster(
       x, raster::projectExtent(x, crs = sp::CRS(wmcrs)),
@@ -280,7 +282,7 @@ scaleExtent <- function(x) {
   x_sc <- scales::rescale(c(x@extent@xmin, x@extent@xmax), c(0, 1))
   y_sc <- scales::rescale(c(x@extent@ymin, x@extent@ymax), c(0, 1)) * ratio
 
-  return(extent(c(x_sc, y_sc)))
+  return(raster::extent(c(x_sc, y_sc)))
 }
 
 
@@ -290,8 +292,8 @@ scaleExtent <- function(x) {
 #'
 scalePolygonsCoordinates <- function(x) {
 
-  coord_lst <- lapply(slot(x, "polygons"), function(x) {
-    lapply(slot(x, "Polygons"), function(y) slot(y, "coords"))
+  coord_lst <- lapply(methods::slot(x, "polygons"), function(x) {
+    lapply(methods::slot(x, "Polygons"), function(y) methods::slot(y, "coords"))
   })
 
   xcoords <- do.call("c", do.call("c", lapply(seq(coord_lst), function(i) {
@@ -316,7 +318,7 @@ scalePolygonsCoordinates <- function(x) {
 
   for (j in seq(coord_lst)) {
     for (h in seq(coord_lst[[j]])) {
-      slot(x@polygons[[j]]@Polygons[[h]], "coords") <-
+      methods::slot(x@polygons[[j]]@Polygons[[h]], "coords") <-
         cbind((sp::coordinates(x@polygons[[j]]@Polygons[[h]])[, 1] - x_mn) / x_mx,
               (sp::coordinates(x@polygons[[j]]@Polygons[[h]])[, 2] - y_mn) / y_mx)
     }
@@ -333,8 +335,8 @@ scalePolygonsCoordinates <- function(x) {
 #'
 scaleLinesCoordinates <- function(x) {
 
-  coord_lst <- lapply(slot(x, "lines"), function(x) {
-    lapply(slot(x, "Lines"), function(y) slot(y, "coords"))
+  coord_lst <- lapply(methods::slot(x, "lines"), function(x) {
+    lapply(methods::slot(x, "Lines"), function(y) methods::slot(y, "coords"))
   })
 
   xcoords <- do.call("c", do.call("c", lapply(seq(coord_lst), function(i) {
@@ -359,7 +361,7 @@ scaleLinesCoordinates <- function(x) {
 
   for (j in seq(coord_lst)) {
     for (h in seq(coord_lst[[j]])) {
-      slot(x@lines[[j]]@Lines[[h]], "coords") <-
+      methods::slot(x@lines[[j]]@Lines[[h]], "coords") <-
         cbind((sp::coordinates(x@lines[[j]]@Lines[[h]])[, 1] - x_mn) / x_mx,
               (sp::coordinates(x@lines[[j]]@Lines[[h]])[, 2] - y_mn) / y_mx)
     }
@@ -384,11 +386,14 @@ spCheckAdjustProjection <- function(x) {
   if (is.na(raster::projection(x))) {
     warning(non_proj_waning)
     if (class(x)[1] %in% c("SpatialPointsDataFrame", "SpatialPoints")) {
-      slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
+      methods::slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
                                             coordinates(x)[, 2])
     } else if (class(x)[1] %in% c("SpatialPolygonsDataFrame",
                                   "SpatialPolygons")) {
       x <- scalePolygonsCoordinates(x)
+    } else if (class(x)[1] %in% c("SpatialLinesDataFrame",
+                                  "SpatialLines")) {
+      x <- scaleLinesCoordinates(x)
     }
   } else if (!identical(raster::projection(x), llcrs)) {
     x <- sp::spTransform(x, CRSobj = llcrs)
@@ -446,28 +451,28 @@ mapViewLayersControl <- function(map, map.types, names) {
 #' @rdname leafletControls
 # @export layerName
 #'
-layerName <- function() {
-  mvclss <- c("SpatialPointsDataFrame",
-              "SpatialPolygonsDataFrame",
-              "SpatialLinesDataFrame",
-              "SpatialPoints",
-              "SpatialPolygons",
-              "SpatialLines",
-              "RasterLayer",
-              "RasterStack",
-              "RasterBrick",
-              "mapview",
-              "leaflet")
-  nam <- as.character(sys.calls()[[1]])
-  clss <- sapply(nam, function(i) {
-    try(class(dynGet(i, inherits = TRUE, minframe = 2L,
-                     ifnotfound = NULL)), silent = TRUE)
-  })
-  indx <- which(clss %in% mvclss)
-  grp <- nam[indx]
-  grp <- grp[length(grp)]
-  return(grp)
-}
+# layerName <- function() {
+#   mvclss <- c("SpatialPointsDataFrame",
+#               "SpatialPolygonsDataFrame",
+#               "SpatialLinesDataFrame",
+#               "SpatialPoints",
+#               "SpatialPolygons",
+#               "SpatialLines",
+#               "RasterLayer",
+#               "RasterStack",
+#               "RasterBrick",
+#               "mapview",
+#               "leaflet")
+#   nam <- as.character(sys.calls()[[1]])
+#   clss <- sapply(nam, function(i) {
+#     try(class(dynGet(i, inherits = TRUE, minframe = 2L,
+#                      ifnotfound = NULL)), silent = TRUE)
+#   })
+#   indx <- which(clss %in% mvclss)
+#   grp <- nam[indx]
+#   grp <- grp[length(grp)]
+#   return(grp)
+# }
 
 
 # Set or calculate circle radius ------------------------------------------
@@ -480,7 +485,7 @@ layerName <- function() {
 #'
 circleRadius <- function(x, radius) {
   if (is.character(radius)) {
-    rad <- scales::rescale(as.numeric(x@data[, radius]), to = c(5,15))
+    rad <- scales::rescale(as.numeric(x@data[, radius]), to = c(3, 20))
   } else rad <- radius
 
   return(rad)

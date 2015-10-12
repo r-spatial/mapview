@@ -1,5 +1,5 @@
 if ( !isGeneric('slideView') ) {
-  setGeneric('slideView', function(x, y, ...)
+  setGeneric('slideView', function(img1, img2, ...)
     standardGeneric('slideView'))
 }
 
@@ -7,15 +7,15 @@ if ( !isGeneric('slideView') ) {
 #'
 #' @description
 #' Two images are overlaid and a slider is provided to interactively
-#' compare the two images in a before-after like fashion. \code{x} and
-#' \code{y} can either be two RasterLayers, two RasterBricks/Stacks or
+#' compare the two images in a before-after like fashion. \code{img1} and
+#' \code{img2} can either be two RasterLayers, two RasterBricks/Stacks or
 #' two character strings. In the latter case it is assumed that these
 #' point to .png images on the disk.
 #'
 #' This is a modified implementation of http://bl.ocks.org/rfriberg/8327361
 #'
-#' @param x a RasterStack/Brick, RasterLayer or path to a .png file
-#' @param y a RasterStack/Brick, RasterLayer or path to a .png file
+#' @param img1 a RasterStack/Brick, RasterLayer or path to a .png file
+#' @param img2 a RasterStack/Brick, RasterLayer or path to a .png file
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param colors the color palette to be used for visualising RasterLayers
@@ -41,13 +41,13 @@ if ( !isGeneric('slideView') ) {
 #' @rdname slideView
 #' @aliases slideView,RasterStackBrick,RasterStackBrick-method
 NULL
-setMethod("slideView", signature(x = "RasterStackBrick",
-                                 y = "RasterStackBrick"),
-          function(x, y,
+setMethod("slideView", signature(img1 = "RasterStackBrick",
+                                 img2 = "RasterStackBrick"),
+          function(img1, img2,
                    maxpixels = 500000) {
 
-            png1 <- rgbStack2PNG(x, maxpixels = maxpixels)
-            png2 <- rgbStack2PNG(y, maxpixels = maxpixels)
+            png1 <- rgbStack2PNG(img1, maxpixels = maxpixels)
+            png2 <- rgbStack2PNG(img2, maxpixels = maxpixels)
 
             ## temp dir
             dir <- tempfile()
@@ -76,7 +76,7 @@ setMethod("slideView", signature(x = "RasterStackBrick",
             ## view
             viewer <- getOption("viewer")
             if (!is.null(viewer))
-              viewer(htmlFile)
+              viewer(htmlFile, height = nrow(png1))
             else
               utils::browseURL(htmlFile)
 
@@ -87,18 +87,18 @@ setMethod("slideView", signature(x = "RasterStackBrick",
 ## RasterLayers ===========================================================
 #' @describeIn slideView
 
-setMethod("slideView", signature(x = "RasterLayer",
-                                 y = "RasterLayer"),
-          function(x,
-                   y,
+setMethod("slideView", signature(img1 = "RasterLayer",
+                                 img2 = "RasterLayer"),
+          function(img1,
+                   img2,
                    colors = mapViewPalette(7),
                    na.color = "#00000000",
                    maxpixels = 500000) {
 
-            png1 <- raster2PNG(x, colors = colors,
+            png1 <- raster2PNG(img1, colors = colors,
                                na.color = na.color,
                                maxpixels = maxpixels)
-            png2 <- raster2PNG(y, colors = colors,
+            png2 <- raster2PNG(img2, colors = colors,
                                na.color = na.color,
                                maxpixels = maxpixels)
 
@@ -141,12 +141,12 @@ setMethod("slideView", signature(x = "RasterLayer",
 ## png files ==============================================================
 #' @describeIn slideView
 
-setMethod("slideView", signature(x = "character",
-                                 y = "character"),
-          function(x, y) {
+setMethod("slideView", signature(img1 = "character",
+                                 img2 = "character"),
+          function(img1, img2) {
 
-            png1 <- png::readPNG(x)
-            png2 <- png::readPNG(y)
+            png1 <- png::readPNG(img1)
+            png2 <- png::readPNG(img2)
 
             ## temp dir
             dir <- tempfile()

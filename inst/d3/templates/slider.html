@@ -43,13 +43,13 @@
     left: 0px;
     top: 0px;
     text-align: center;
-    width: 100px;
+    width: 50px;
     z-index: 9;
     border-radius: 5px 50px 50px 5px
 }
 /* left slider name box */
 .photos .separator div.before {
-    left: -100px;
+    left: -50px;
     border-left: 200px;
     border-right: 1px solid #fff;
     border-radius: 50px 5px 5px 50px
@@ -58,6 +58,7 @@
 #photo-before {
     max-width:100%;
     min-width:100%;
+    max-height:100%;
     position:absolute;
     overflow:auto;
     background: url("img1.png") no-repeat;
@@ -66,6 +67,7 @@
 #photo-after {
     max-width:100%;
     min-width:100%;
+    max-height:100%;
     position:absolute;
     overflow:auto;
     background: url("img2.png") no-repeat;
@@ -78,8 +80,8 @@
 
 <div class='photos'>
     <div class="separator">
-        <div class="before">Image1</div>
-        <div class="after">Image2</div>
+        <div class="before">img1</div>
+        <div class="after">img2</div>
     </div>
     <div class='layer' id='photo-after'></div>
     <div class='layer' id='photo-before'></div>

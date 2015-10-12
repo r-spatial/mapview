@@ -11,7 +11,6 @@
 \alias{getProviderTileNamesFromMap}
 \alias{initBaseMaps}
 \alias{initMap}
-\alias{layerName}
 \alias{layers2bHidden}
 \alias{leafletControls}
 \alias{mapViewLayersControl}
@@ -66,8 +65,6 @@ spCheckAdjustProjection(x)
 checkAdjustProjection(x)
 
 mapViewLayersControl(map, map.types, names)
-
-layerName()
 
 circleRadius(x, radius)
 
