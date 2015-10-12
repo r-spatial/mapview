@@ -76,7 +76,7 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
             ## view
             viewer <- getOption("viewer")
             if (!is.null(viewer))
-              viewer(htmlFile, height = nrow(png1))
+              viewer(htmlFile)
             else
               utils::browseURL(htmlFile)
 
