@@ -18,4 +18,6 @@ Imports:
     sp,
     raster,
     satellite,
-    scales (>= 0.2.5)
+    scales (>= 0.2.5),
+    htmlwidgets,
+    htmltools
