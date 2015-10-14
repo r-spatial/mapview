@@ -56,34 +56,11 @@ setMethod("slideView2", signature(img1 = "RasterStackBrick",
             fl1 <- paste0(dir, "/img1", ".png")
             fl2 <- paste0(dir, "/img2", ".png")
 
-            ## d3
-            d3_pth <- system.file("d3", package = "mapview")
-            d3_fls <- list.files(d3_pth, pattern = glob2rx("*.js"),
-                                 full.names = TRUE)
-            tmp <- file.copy(d3_fls, dir)
-
-            ## template
-            tmplt_pth <- system.file("d3/templates", package = "mapview")
-            tmplt_fl <- list.files(tmplt_pth, pattern = "slider.html",
-                                   full.names = TRUE)
-            tmplt <- paste(readLines(tmplt_fl), collapse = "\n")
-            htmlFile <- file.path(dir, "index.html")
-            write(tmplt, htmlFile)
-
             ## pngs
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
-            ## view
-            #viewer <- getOption("viewer")
-            #if (!is.null(viewer))
-            #  viewer(htmlFile)
-            #else
-            #  utils::browseURL(htmlFile)
-
             slideView2internal(list(a="a", b="b"), filename1 = fl1, filename2 = fl2)
-
-
           }
 
 )
@@ -111,33 +88,11 @@ setMethod("slideView2", signature(img1 = "RasterLayer",
             fl1 <- paste0(dir, "/img1", ".png")
             fl2 <- paste0(dir, "/img2", ".png")
 
-            ## d3
-            d3_pth <- system.file("d3", package = "mapview")
-            d3_fls <- list.files(d3_pth, pattern = glob2rx("*.js"),
-                                 full.names = TRUE)
-            tmp <- file.copy(d3_fls, dir)
-
-            ## template
-            tmplt_pth <- system.file("d3/templates", package = "mapview")
-            tmplt_fl <- list.files(tmplt_pth, pattern = "slider.html",
-                                   full.names = TRUE)
-            tmplt <- paste(readLines(tmplt_fl), collapse = "\n")
-            htmlFile <- file.path(dir, "index.html")
-            write(tmplt, htmlFile)
-
             ## pngs
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
-            ## view
-            #viewer <- getOption("viewer")
-            #if (!is.null(viewer))
-            #  viewer(htmlFile)
-            #else
-            #  utils::browseURL(htmlFile)
-
             slideView2internal(list(a="a", b="b"), filename1 = fl1, filename2 = fl2)
-
           }
 
 )
@@ -159,33 +114,11 @@ setMethod("slideView2", signature(img1 = "character",
             fl1 <- paste0(dir, "/img1", ".png")
             fl2 <- paste0(dir, "/img2", ".png")
 
-            ## d3
-            d3_pth <- system.file("d3", package = "mapview")
-            d3_fls <- list.files(d3_pth, pattern = glob2rx("*.js"),
-                                 full.names = TRUE)
-            tmp <- file.copy(d3_fls, dir)
-
-            ## template
-            tmplt_pth <- system.file("d3/templates", package = "mapview")
-            tmplt_fl <- list.files(tmplt_pth, pattern = "slider.html",
-                                   full.names = TRUE)
-            tmplt <- paste(readLines(tmplt_fl), collapse = "\n")
-            htmlFile <- file.path(dir, "index.html")
-            write(tmplt, htmlFile)
-
             ## pngs
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
-            ## view
-            #viewer <- getOption("viewer")
-            #if (!is.null(viewer))
-            #  viewer(htmlFile)
-            #else
-            #  utils::browseURL(htmlFile)
-
             slideView2internal(list(a="a", b="b"), filename1 = fl1, filename2 = fl2)
-
           }
 
 )
