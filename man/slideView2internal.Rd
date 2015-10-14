@@ -4,7 +4,8 @@
 \alias{slideView2internal}
 \title{<Add Title>}
 \usage{
-slideView2internal(message, width = NULL, height = NULL)
+slideView2internal(message, width = NULL, height = NULL, filename1 = NULL,
+  filename2 = NULL)
 }
 \description{
 <Add Description>
