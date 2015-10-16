@@ -51,7 +51,7 @@ HTMLWidgets.widget({
     updatePhotos(filename1, filename2);
 
 
-    el.style.width = "100%";
+    //el.style.width = "100%";
     //el.style.height = "100%";
 
   },
