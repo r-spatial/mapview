@@ -3,62 +3,77 @@
 #' @author
 #' Tim Appelhans, Florian Detsch
 #'
+#' @param x A 'SpatialPointsDataFrame'.
+#' @param use_cpp Logical. If \code{TRUE}, the function makes use of
+#' \strong{Rcpp} functionality which leads to a significant reduction in
+#' computation time, particularly when processing large datasets.
+#'
 #' @name brewControls
 NULL
 
 
 # brew popup table for sp objects -----------------------------------------
 #' @describeIn brewControls create popup table for sp objects
-brewPopupTable <- function(x) {
-  # df <- as.data.frame(sapply(x@data, as.character),
-  #                     stringsAsFactors = FALSE)
-  df <- data.frame(mapview:::df2String(x@data), stringsAsFactors = FALSE)
-  names(df) <- names(x@data)
+brewPopupTable <- function(x, use_cpp = TRUE) {
 
-  if (nrow(x) == 1) df <- t(df)
+  if (!use_cpp) {
+    df <- data.frame(df2String(x@data), stringsAsFactors = FALSE)
+    names(df) <- names(x@data)
 
-  df$x <- as.character(round(coordinates(x)[, 1], 2))
-  df$y <- as.character(round(coordinates(x)[, 2], 2))
+    if (nrow(x) == 1) df <- t(df)
 
-  cols <- colnames(df)
+    df$x <- as.character(round(coordinates(x)[, 1], 2))
+    df$y <- as.character(round(coordinates(x)[, 2], 2))
 
-  # vals <- sapply(seq(nrow(x@data)), function(i) {
-  #   df[i, ]
-  # })
+    cols <- colnames(df)
 
-  indodd <- seq(1, ncol(df), by = 2)
-  indeven <- seq(2, ncol(df), by = 2)
+    vals <- sapply(seq(nrow(x@data)), function(i) {
+      df[i, ]
+    })
 
-  txt <- lapply(seq(nrow(df)), function(j) {
-    #     odd <- sapply(indodd, function(i) {
-    #       brewPopupRow(cols[i], df[j, i])
-    #     })
-    #
-    #     even <- sapply(indeven, function(i) {
-    #       brewPopupRowAlt(cols[i], df[j, i])
-    #     })
-    #
-    #     pop <- vector("character", length(cols))
-    #
-    #     pop[indodd] <- odd
-    #     pop[indeven] <- even
-    #
-    #     mapview:::mergePopupRows(cols, as.character(df[j, ]))
-    #
-    #     popTemplate <- system.file("templates/popup.brew", package = "mapview")
-    #     myCon <- textConnection("outputObj", open = "w")
-    #     brew::brew(popTemplate, output = myCon)
-    #     outputObj <- outputObj
-    #     close(myCon)
-    #
-    #     mapview:::htmlTemplate(cols, unlist(df[j, ]))
-    #
-    #     return(paste(outputObj, collapse = ' '))
+    indodd <- seq(1, ncol(df), by = 2)
+    indeven <- seq(2, ncol(df), by = 2)
 
-    mapview:::htmlTemplate(cols, unlist(df[j, ]))
-  })
-  return(txt)
-  print(txt)
+    lst_html <- lapply(seq(nrow(df)), function(j) {
+      odd <- sapply(indodd, function(i) {
+        brewPopupRow(cols[i], df[j, i])
+      })
+
+      even <- sapply(indeven, function(i) {
+        brewPopupRowAlt(cols[i], df[j, i])
+      })
+
+      pop <- vector("character", length(cols))
+
+      pop[indodd] <- odd
+      pop[indeven] <- even
+
+      popTemplate <- system.file("templates/popup.brew", package = "mapview")
+      myCon <- textConnection("outputObj", open = "w")
+      brew::brew(popTemplate, output = myCon)
+      outputObj <- outputObj
+      close(myCon)
+
+      return(paste(outputObj, collapse = ' '))
+    })
+
+  } else {
+
+    mat <- df2String(x@data)
+    colnames(mat) <- names(x@data)
+
+    if (nrow(x) == 1) mat <- t(mat)
+
+    mat <- cbind(mat, x = as.character(round(coordinates(x)[, 1], 2)))
+    mat <- cbind(mat, y = as.character(round(coordinates(x)[, 2], 2)))
+
+    cols <- colnames(mat)
+
+    ## create list with row-specific html code
+    lst_html <- listPopupTemplates(mat, cols)
+  }
+
+  return(lst_html)
 }
 
 

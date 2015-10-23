@@ -41,6 +41,28 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// createTemplate
+std::string createTemplate();
+RcppExport SEXP mapview_createTemplate() {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    __result = Rcpp::wrap(createTemplate());
+    return __result;
+END_RCPP
+}
+// listPopupTemplates
+List listPopupTemplates(CharacterMatrix x, CharacterVector names);
+RcppExport SEXP mapview_listPopupTemplates(SEXP xSEXP, SEXP namesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< CharacterMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type names(namesSEXP);
+    __result = Rcpp::wrap(listPopupTemplates(x, names));
+    return __result;
+END_RCPP
+}
 // df2String
 CharacterMatrix df2String(DataFrame x);
 RcppExport SEXP mapview_df2String(SEXP xSEXP) {

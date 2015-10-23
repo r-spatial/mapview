@@ -1,6 +1,11 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+#include <string>
+#include <fstream>
+#include <streambuf>
+#include <boost/algorithm/string.hpp>
+
 ////////////////////////////////////////////////////////////////////////////////
 // standard pattern used for odd column indices ////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -79,6 +84,65 @@ std::string mergePopupRows(CharacterVector names, CharacterVector values) {
   return chOut;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// merge alternating string patterns per row ///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+// [[Rcpp::export]]
+std::string createTemplate() {
+  std::ifstream file("inst/templates/popup.brew");
+  std::string line, data;
+
+  std::ostringstream ssLines;
+
+  // import lines iteratively
+  while(std::getline(file, line))
+  {
+    std::stringstream linestream(line);
+    std::getline(linestream, data, '\n');
+
+    ssLines << data;
+  }
+
+  return ssLines.str();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Create list with string patterns per row ////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+// [[Rcpp::export]]
+List listPopupTemplates(CharacterMatrix x, CharacterVector names) {
+
+  // number of rows and columns
+  int nRows = x.nrow();
+  int nCols = x.ncol();
+
+  // intermediary variables
+  CharacterVector chVal(nCols);
+  std::string chStr;
+
+  // output list
+  List lsOut(nRows);
+
+  // import template
+  std::string chTemplate = createTemplate();
+  std::string chTmp = chTemplate;
+
+  // create strings for each single row
+  for (int i = 0; i < nRows; i++) {
+    chVal = x(i, _);
+    chStr = mergePopupRows(names, chVal);
+
+    boost::replace_all(chTmp, "<%=pop%>", chStr);
+    lsOut[i] = chTmp;
+
+    // reset intermediary string
+    chTmp = chTemplate;
+  }
+
+  return lsOut;
+}
 
 // /*** R
 // # odd version

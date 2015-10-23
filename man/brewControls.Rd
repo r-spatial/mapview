@@ -7,13 +7,19 @@
 \alias{brewPopupTable}
 \title{Convenience functions for brew plugin}
 \usage{
-brewPopupTable(x)
+brewPopupTable(x, use_cpp = TRUE)
 
 brewPopupRow(col.name, value)
 
 brewPopupRowAlt(col.name, value)
 }
 \arguments{
+\item{x}{A 'SpatialPointsDataFrame'.}
+
+\item{use_cpp}{Logical. If \code{TRUE}, the function makes use of
+\strong{Rcpp} functionality which leads to a significant reduction in
+computation time, particularly when processing large datasets.}
+
 \item{col.name}{the name of the column of the attribute table}
 
 \item{value}{the corresponding value from the attribute table}
