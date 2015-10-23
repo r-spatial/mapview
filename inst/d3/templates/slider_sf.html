@@ -18,28 +18,26 @@
     overflow-y:visible;
     height: 100%;
     width: 100%;
-    margin-top: 15px;
+    margin-top: 21px;
 }
 /* right slider name box */
-.photos .separator div {
-    font-family: 'Bree Serif', sans-serif;
-    font-size: 11px;
-    font-weight: lighter;
-    line-height: 20px;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    text-align: center;
-    width: 55px;
-    z-index: 9;
-}
+
 .photos .separator .actionB {
-    left:54px;
-    width:120px;
+    float: left;
+    left: -87px;
+    position: relative;
 
 }
 .photos .separator .actionB button {
-    width:20px;
+    background-color: #999999;
+    color: #fff;
+    cursor: pointer;
+    display: block;
+    float: left;
+    margin: 1px;
+    min-width: 20px;
+    padding-left: 2px;
+    padding-right: 2px;
 }
 /* actual vertical image slider */
 .photos .separator {
@@ -49,14 +47,32 @@
     overflow: visible;
     position: absolute;
     top: -20px;
-    width: 50px;
     z-index: 2;
+    font-family: 'Bree Serif', sans-serif;
+    font-size: 11px;
 }
   /* left slider name box */
-.photos .separator div.before {
-    left: -50px;
+.photos .separator div.before, .photos .separator div.after {
+    float: left;
+    position: relative;
+    background: #000000 none repeat scroll 0 0;
+    color: #FFFFFF;
+    padding-left:6px;
+    padding-right:6px;
+    font-weight: bold;
 }
-
+.photos .separator div.before {
+    left: -99px;
+}
+.photos .separator div.after {
+    left: -75px;
+}
+.photos .separator div {
+    cursor: ew-resize;
+    font-family: 'Bree Serif', sans-serif;
+    font-size: 11px;
+    font-weight: lighter;
+}
 #photo-before {
     width:100%;
     position:absolute;
@@ -89,29 +105,36 @@
 </style>
 
 <!-- <button type="button"  id="new">neu</button> -->
-
-<div class='photos' id="svg_area" ondblclick="checkDBclick();">
-	<div class="separator">
-		<div class="before" >img1</div>
-		<div class="after"  >img2</div>
-		<div class="actionB"  >
-			<button type="button"  id="bg"> + </button>
-			<button type="button"  id="sm"> - </button>
-			<button type="button"  id="rotL">L</button>
-			<button type="button"  id="rotR">R</button>
-			<button type="button"  id="start">start</button>
+<div id="htmlwidget_container" style="position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px;">
+<div id="htmlwidget-1538" class="slideView2 html-widget-static-bound" style="width: 100%; height: 100%;">
+	<div class='photos' id="svg_area" ondblclick="checkDBclick();">
+		<div class="separator">
+			<div class="before" >img1</div>
+			<div class="actionB"  >
+				<button type="button"  id="bg"> + </button>
+				<button type="button"  id="sm"> - </button>
+				<button type="button"  id="rotL">L</button>
+				<button type="button"  id="rotR">R</button>
+				<button type="button"  id="start">Home</button>
+			</div>
+			<div class="after"  >img2</div>
 		</div>
+		<svg class='layer' id='photo-after'   ></svg>
+		<svg class='layer' id='photo-before'  ></svg>
 	</div>
-        <svg class='layer' id='photo-after'   ></svg>
-	<svg class='layer' id='photo-before'  ></svg>
+</div>
 </div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
-var startScal1 = [0,0];
+var startScal1 = [0,1];
+var numberDBclick = 0;
+var tRot = false;
+d3.selectAll('.layer').style('height',$(window).height()+"px" );
+d3.selectAll('.layer').style('width',$(window).width()+"px" );
+
 var imagepB = new mainFunction('img1.png');
 var imagepA = new mainFunction('img2.png');
-var numberDBclick = 0;
 //"#photo-before"
 imagepB.init(0,"#photo-before");
 $("#addImage").bind("click",function(d){
@@ -124,26 +147,35 @@ $("#addImage").bind("click",function(d){
     imagepA.init(2,"#photo-after");
     
 });
-
-var tRot = false;
-d3.selectAll('.layer').style('height',$(window).height()+"px" );
-d3.selectAll('.layer').style('width',$(window).width()+"px" );
-
+       
+function on_Drag() {
+	 if (numberDBclick > 0){
+                d3.select("#img1").attr("transform", function(d,i){
+                tempR = d.r
+                d.x += d3.event.dx;
+                d.y += d3.event.dy;
+                if(!tRot) tempR=0;
+                return "translate(" + [ d.x,  d.y] + "),rotate(" + tempR + "  ,160, 160),scale(" + d.scale+"," + d.scale + ")";
+                });
+                d3.select("#img2").attr("transform", function(d){
+                tempR = d.r
+                 d.x += d3.event.dx;
+                d.y += d3.event.dy;
+                if(!tRot) tempR=0;
+                return "translate(" + [ d.x,  d.y ] + "),rotate(" + tempR + "  ,160, 160),scale(" + d.scale+"," + d.scale + ")";
+                });
+               }
+}    
+ 
+d3.behavior.drag()  // mouse drag event
+	.on('drag', on_Drag)
+	.call(d3.selectAll("image"));
+       
 function mainFunction(imgName){
     var instances = {};
     this.init = function(id,baseId){ instances[id] = new Imagep(baseId); };
     function Imagep(id){
-        var drag,dgrop;
-        drag = d3.behavior.drag()
-            .on("drag", function(d,i) {
-                d.x += d3.event.dx;
-                d.y += d3.event.dy;
-                d3.select(this).attr("transform", function(d,i){
-                tempR = d.r
-                if(!tRot) tempR=0;
-                    return "translate(" + [ d.x,d.y ] + "),rotate("+tempR+" ,160 ,160 ),scale("+d.scale+","+d.scale+")";
-                })
-            });
+        var dgrop;
          dgrop = d3.select(id).append("g")
          .data([ {"x":20, "y":20, "r":1 , "scale":1} ])
          .attr("x",0)
@@ -155,8 +187,8 @@ function mainFunction(imgName){
          .attr("width",$(window).width()+"px")
          .attr("height",$(window).height()+"px")
          .attr("xlink:href",imgName)
-         .attr("id",imgName.substr(0,4))
-         .call(drag);
+         .attr("id",imgName.substr(0,4));
+         
         //Rotieren nach Links
         $("#rotL").bind("click",function(){
             tRot = true;
@@ -176,7 +208,6 @@ function mainFunction(imgName){
         });
         //Vergrößen
         $("#bg").bind("click",function(){
-            
             dgrop.attr("transform", function(d,i){
             if(startScal1[0]==0){
             	startScal1[0] = d.scale;
@@ -184,7 +215,7 @@ function mainFunction(imgName){
                 var tempR = d.r
                 if(!tRot) tempR=0;
                 d.scale=d.scale*1.2;
-                return "translate(" + [ d.x,d.y ] + "),rotate(0 160 160),scale("+d.scale+","+d.scale+")";
+                return "translate(" + [0,0 ] + "),rotate(0 160 160),scale("+d.scale+","+d.scale+")";
             });
         });
 
@@ -197,19 +228,16 @@ function mainFunction(imgName){
                 var tempR = d.r
                 if(!tRot) tempR=0;
                 d.scale=d.scale*0.8; var selection = d3.select(this);
-                return "translate(" + [ d.x,d.y ] + "),rotate(0 160 160),scale("+d.scale+","+d.scale+")";
+                return "translate(" + [ 0,0 ] + "),rotate(0 160 160),scale(" + d.scale + "," + d.scale +")";
             });
         });
-        //Start
+        //Home
         $("#start").bind("click",function(){
             tRot = false;
             dgrop.attr("transform", function(d,i){
-                d.r=0;
-                var tScale=startScal1[0];
-                 if(tScale==0){
-            		tScale = startScal1[1];
-            	}
-                return "translate(0,0),rotate(" + d.r + " ,0, 0),scale("+ tScale +"," + tScale + ")";
+                d.r = 0;
+                d.scale = 1;
+                return "translate(0,0),rotate(" + d.r + " ,0, 0),scale(" + d.scale + "," + d.scale +")";
             });
         });
     }

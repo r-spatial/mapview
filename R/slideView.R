@@ -63,7 +63,7 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
 
             ## template
             tmplt_pth <- system.file("d3/templates", package = "mapview")
-            tmplt_fl <- list.files(tmplt_pth, pattern = "slider.html",
+            tmplt_fl <- list.files(tmplt_pth, pattern = "slider_sf.html",
                                    full.names = TRUE)
             tmplt <- paste(readLines(tmplt_fl), collapse = "\n")
             htmlFile <- file.path(dir, "index.html")
