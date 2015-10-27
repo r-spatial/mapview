@@ -390,11 +390,13 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                                radius = rad_vals,
                                                ...)
 
-                m <- leaflet::addLegend(map = m, position = "topright",
-                                        pal = pal_n[[i]],
-                                        opacity = 1, values = vals[[i]],
-                                        title = names(lst[[i]]),
-                                        layerId = names(lst[[i]]))
+                if (legend) {
+                  m <- leaflet::addLegend(map = m, position = "topright",
+                                          pal = pal_n[[i]],
+                                          opacity = 1, values = vals[[i]],
+                                          title = names(lst[[i]]),
+                                          layerId = names(lst[[i]]))
+                }
 
                 m <- mapViewLayersControl(map = m,
                                           map.types = map.types,
