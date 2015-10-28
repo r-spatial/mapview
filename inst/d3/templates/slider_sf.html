@@ -192,8 +192,8 @@ function mainFunction(imgName){
 
         //Rotieren nach Links
         $("#rotL").bind("click",function(){
-           // tRot = true;
-           // tempR = 0;
+            tRot = true;
+            tempR = 0;
             dgrop.attr("transform", function(d,i){
                 d.r=d.r-10;
                 return "translate(" + [ d.x,d.y ] + "),rotate(" + d.r + " ,160, 160),scale(" + d.scale+"," + d.scale + ")";
@@ -202,8 +202,8 @@ function mainFunction(imgName){
         });
         //Rotieren nach Rechts
         $("#rotR").bind("click",function(){
-            //tRot = true;
-            //tempR = 0;
+            tRot = true;
+            tempR = 0;
             dgrop.attr("transform", function(d,i){
                 d.r=d.r+10;
                 return "translate(" + [ d.x,d.y ] + "),rotate(" + d.r + " ,160, 160),scale(" + d.scale + "," + d.scale + ")"
@@ -236,8 +236,8 @@ function mainFunction(imgName){
         });
         //Home
         $("#start").bind("click",function(){
-           // tRot = false;
-           // tempR = 0;
+            tRot = false;
+            tempR = 0;
             dgrop.attr("transform", function(d,i){
                 d.r = 0;
                 d.x = 0;
