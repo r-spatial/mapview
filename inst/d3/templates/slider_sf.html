@@ -50,6 +50,7 @@
     z-index: 2;
     font-family: 'Bree Serif', sans-serif;
     font-size: 11px;
+    width:100%;
 }
   /* left slider name box */
 .photos .separator div.before, .photos .separator div.after {
@@ -138,16 +139,16 @@ var imagepA = new mainFunction('img2.png');
 //"#photo-before"
 imagepB.init(0,"#photo-before");
 $("#addImage").bind("click",function(d){
-    imagepB.init(1,"#photo-before"); 
+    imagepB.init(1,"#photo-before");
 });
 
 //#photo-after"
 imagepA.init(0,"#photo-after");
 $("#addImage").bind("click",function(d){
     imagepA.init(2,"#photo-after");
-    
+
 });
-       
+
 function on_Drag() {
 	 if (numberDBclick > 0){
                 d3.select("#img1").attr("transform", function(d,i){
@@ -165,12 +166,12 @@ function on_Drag() {
                 return "translate(" + [ d.x,  d.y ] + "),rotate(" + tempR + "  ,160, 160),scale(" + d.scale+"," + d.scale + ")";
                 });
                }
-}    
- 
+}
+
 d3.behavior.drag()  // mouse drag event
 	.on('drag', on_Drag)
 	.call(d3.selectAll("image"));
-       
+
 function mainFunction(imgName){
     var instances = {};
     this.init = function(id,baseId){ instances[id] = new Imagep(baseId); };
@@ -188,10 +189,11 @@ function mainFunction(imgName){
          .attr("height",$(window).height()+"px")
          .attr("xlink:href",imgName)
          .attr("id",imgName.substr(0,4));
-         
+
         //Rotieren nach Links
         $("#rotL").bind("click",function(){
-            tRot = true;
+           // tRot = true;
+           // tempR = 0;
             dgrop.attr("transform", function(d,i){
                 d.r=d.r-10;
                 return "translate(" + [ d.x,d.y ] + "),rotate(" + d.r + " ,160, 160),scale(" + d.scale+"," + d.scale + ")";
@@ -200,7 +202,8 @@ function mainFunction(imgName){
         });
         //Rotieren nach Rechts
         $("#rotR").bind("click",function(){
-            tRot = true;
+            //tRot = true;
+            //tempR = 0;
             dgrop.attr("transform", function(d,i){
                 d.r=d.r+10;
                 return "translate(" + [ d.x,d.y ] + "),rotate(" + d.r + " ,160, 160),scale(" + d.scale + "," + d.scale + ")"
@@ -212,10 +215,10 @@ function mainFunction(imgName){
             if(startScal1[0]==0){
             	startScal1[0] = d.scale;
             }
-                var tempR = d.r
-                if(!tRot) tempR=0;
+               // var tempR = d.r
+               // if(!tRot) tempR=0;
                 d.scale=d.scale*1.2;
-                return "translate(" + [0,0 ] + "),rotate(0 160 160),scale("+d.scale+","+d.scale+")";
+                return "translate(" + [0,0 ] + "),rotate(" + d.r + " , 160, 160),scale("+d.scale+","+d.scale+")";
             });
         });
 
@@ -226,16 +229,19 @@ function mainFunction(imgName){
             		startScal1[1] = d.scale;
             	}
                 var tempR = d.r
-                if(!tRot) tempR=0;
+               // if(!tRot) tempR=0;
                 d.scale=d.scale*0.8; var selection = d3.select(this);
-                return "translate(" + [ 0,0 ] + "),rotate(0 160 160),scale(" + d.scale + "," + d.scale +")";
+                return "translate(" + [ 0,0 ] + "),rotate(" + d.r + " , 160, 160),scale(" + d.scale + "," + d.scale +")";
             });
         });
         //Home
         $("#start").bind("click",function(){
-            tRot = false;
+           // tRot = false;
+           // tempR = 0;
             dgrop.attr("transform", function(d,i){
                 d.r = 0;
+                d.x = 0;
+                d.y = 0;
                 d.scale = 1;
                 return "translate(0,0),rotate(" + d.r + " ,0, 0),scale(" + d.scale + "," + d.scale +")";
             });
