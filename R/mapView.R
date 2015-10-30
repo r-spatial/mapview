@@ -461,7 +461,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
 
             m <- initMap(map, map.types, proj4string(x))
 
-            txt <- createPopupTable(x)
+            txt <- brewPopupTable(x)
 
             grp <- layer.name
 
@@ -730,7 +730,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
                 grp <- names(df)
 
-                if (pop.null) popup <- createPopupTable(x)
+                if (pop.null) popup <- brewPopupTable(x)
 
                 m <- leaflet::addPolylines(m,
                                            group = grp,
@@ -760,7 +760,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
               grp <- layer.name
 
-              if (pop.null) popup <- createPopupTable(x)
+              if (pop.null) popup <- brewPopupTable(x)
 
               m <- leaflet::addPolylines(m,
                                          group = grp,
