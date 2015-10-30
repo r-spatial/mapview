@@ -15,7 +15,6 @@ Depends: leaflet,
     Rcpp,
     methods
 Imports:
-    whisker,
     sp,
     raster,
     satellite,
