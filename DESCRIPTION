@@ -12,10 +12,14 @@ Description: Methods to view spatial objects interactively using leaflet.
 License: GPL (>= 3) | file LICENSE
 LazyData: TRUE
 Depends: leaflet,
+    Rcpp,
     methods
 Imports:
     whisker,
     sp,
     raster,
     satellite,
-    scales (>= 0.2.5)
+    scales (>= 0.2.5),
+    brew,
+    png
+LinkingTo: Rcpp

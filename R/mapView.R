@@ -378,7 +378,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
                 x <- lst[[i]]
 
-                if (pop.null) popup <- createPopupTable(x)
+                if (pop.null) popup <- brewPopupTable(x)
 
                 m <- leaflet::addCircleMarkers(m,
                                                lng = coordinates(x)[, 1],
@@ -412,7 +412,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
               grp <- layer.name
 
-              if (pop.null) popup <- createPopupTable(x)
+              if (pop.null) popup <- brewPopupTable(x)
 
               m <- leaflet::addCircleMarkers(map = m,
                                              lng = coordinates(x)[, 1],
@@ -557,7 +557,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
                 grp <- names(df)
 
-                if (pop.null) popup <- createPopupTable(x)
+                if (pop.null) popup <- brewPopupTable(x)
 
                 clrs <- pal_n[[i]](vals[[i]])
                 m <- leaflet::addPolygons(m,
@@ -590,7 +590,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
               grp <- layer.name
 
-              if (pop.null) popup <- createPopupTable(x)
+              if (pop.null) popup <- brewPopupTable(x)
 
               m <- leaflet::addPolygons(m,
                                         weight = weight,

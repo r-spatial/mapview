@@ -13,9 +13,11 @@
 #' \cr
 #' \emph{Maintainer:} Tim Appelhans \email{tim.appelhans@@gmail.com}
 #'
-#' @import leaflet sp raster satellite scales methods
+#' @import leaflet sp raster satellite scales Rcpp methods
 #' @importFrom grDevices rgb
 #' @importFrom whisker whisker.render
+#'
+#' @useDynLib mapview
 #'
 #' @keywords package
 #'

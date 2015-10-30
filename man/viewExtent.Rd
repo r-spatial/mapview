@@ -7,9 +7,9 @@
 \title{View extent/bbox of spatial objects interactively}
 \usage{
 viewExtent(x, map = NULL, map.types = c("OpenStreetMap",
-  "Esri.WorldImagery"), ...)
+  "Esri.WorldImagery"), popup = NULL, ...)
 
-addExtent(x, map, ...)
+addExtent(x, map, popup, ...)
 }
 \arguments{
 \item{x}{either a Raster* object or a Spatial* object}
@@ -18,6 +18,9 @@ addExtent(x, map, ...)
 standard background layers are cretaed}
 
 \item{map.types}{the map types to be used in case map is NULL}
+
+\item{popup}{a character vector of the HTML content for the popups. See
+\code{\link{addControl}} for details.}
 
 \item{...}{additional arguments passed on to \code{\link{addRectangles}}}
 }

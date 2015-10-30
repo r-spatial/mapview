@@ -8,6 +8,8 @@
 #' @param map a leaflet map the extent should be added to. If NULL
 #' standard background layers are cretaed
 #' @param map.types the map types to be used in case map is NULL
+#' @param popup a character vector of the HTML content for the popups. See
+#' \code{\link{addControl}} for details.
 #' @param ... additional arguments passed on to \code{\link{addRectangles}}
 #'
 #' @author
@@ -37,6 +39,7 @@ viewExtent <- function(x,
                        map = NULL,
                        map.types = c("OpenStreetMap",
                                      "Esri.WorldImagery"),
+                       popup = NULL,
                        ...) {
 
   m <- initMap(map, map.types, projection(x))
@@ -44,7 +47,7 @@ viewExtent <- function(x,
   grp <- deparse(substitute(x))
   grp <- paste(grp, "extent", sep = "_")
 
-  addex <- addExtent(x, map = m, group = grp, ...)
+  addex <- addExtent(x, map = m, group = grp, popup = popup, ...)
   m <- addex$map
   out_obj <- list(addex$obj)
 
@@ -61,7 +64,7 @@ viewExtent <- function(x,
 ## Add Extent =============================================================
 #' @describeIn viewExtent
 
-addExtent <- function(x, map, ...) {
+addExtent <- function(x, map, popup, ...) {
 
   llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
 
@@ -78,6 +81,8 @@ addExtent <- function(x, map, ...) {
                "RasterStack",
                "RasterBrick")
   rsttrue <- any(class(x)[1] %in% rstclss)
+
+  pop.null <- is.null(popup)
 
   if (sptrue) {
     if (!identical(projection(x), llcrs)) {
@@ -98,14 +103,15 @@ addExtent <- function(x, map, ...) {
   txt_ymin <- paste0("ymin: ", round(ext@ymin, 5))
   txt_ymax <- paste0("ymax: ", round(ext@ymax, 5))
 
-  txt <- paste(title, txt_xmin, txt_xmax, txt_ymin, txt_ymax, sep = "<br/>")
+  if (pop.null) popup <- paste(title, txt_xmin, txt_xmax,
+                               txt_ymin, txt_ymax, sep = "<br/>")
 
   m <- leaflet::addRectangles(map = map,
                               lng1 = ext@xmin,
                               lat1 = ext@ymin,
                               lng2 = ext@xmax,
                               lat2 = ext@ymax,
-                              popup = txt,
+                              popup = popup,
                               ...)
 
   return(list(obj = ext, map = m))
