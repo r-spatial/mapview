@@ -50,9 +50,9 @@ if ( !isGeneric('viewRGB') ) {
 #' library(jpeg)
 #' library(raster)
 #'
-#' web_image <- "http://umweltinformatik-marburg.de/uploads/tx_rzslider/teaching_header_kili_resized.jpg"
+#' web_img <- "http://umweltinformatik-marburg.de/uploads/tx_rzslider/teaching_header_kili_resized.jpg"
 #'
-#' jpg <- readJPEG(readBin(web_image, "raw", 1e6))
+#' jpg <- readJPEG(readBin(web_img, "raw", 1e6))
 #'
 #' # Convert imagedata to raster
 #' rst_blue <- raster(jpg[, , 1])

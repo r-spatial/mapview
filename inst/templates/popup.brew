@@ -22,7 +22,7 @@ div.scrollableContainer {
 max-height: 200px;
 max-width: 100%;
 overflow-y: auto;
-overflow-x: hidden;
+overflow-x: auto;
 margin: 0px;
 background: #D1E0FF;
 }
