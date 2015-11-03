@@ -11,7 +11,8 @@ Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
 Description: Methods to view spatial objects interactively using leaflet.
 License: GPL (>= 3) | file LICENSE
 LazyData: TRUE
-Depends: leaflet,
+Depends:
+    leaflet,
     Rcpp,
     methods
 Imports:
@@ -22,3 +23,4 @@ Imports:
     brew,
     png
 LinkingTo: Rcpp
+RoxygenNote: 5.0.0
