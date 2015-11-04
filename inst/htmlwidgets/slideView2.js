@@ -42,6 +42,42 @@ HTMLWidgets.widget({
     el.appendChild(div_photos);
 
 
+    //*********************** Action Buttons  *******************************/
+
+    /*var div_actionB = document.createElement("div");
+    div_actionB.className = "actionB";
+
+    var buttonBg = document.createElement("BUTTON");
+    buttonBg.id = "bg";
+    buttonBg.innerHTML = "+";
+    div_actionB.appendChild(buttonBg);
+
+    var buttonSm = document.createElement("BUTTON");
+    buttonSm.id = "sm";
+    buttonSm.innerHTML=" -";
+    div_actionB.appendChild(buttonSm);
+
+    var buttonRotL = document.createElement("BUTTON");
+    buttonRotL.id = "rotL";
+    buttonRotL.innerHTML = "L";
+    div_actionB.appendChild(buttonRotL);
+
+    var buttonRotR = document.createElement("BUTTON");
+    buttonRotR.id = "rotR";
+    buttonRotR.innerHTML = "R";
+    div_actionB.appendChild(buttonRotR);
+
+    var buttonStart= document.createElement("BUTTON");
+    buttonStart.id = "start";
+    buttonStart.innerHTML = "start";
+    div_actionB.appendChild(buttonStart);
+
+    div_separator.appendChild(div_actionB);*/
+
+    //*********************** ************ *******************************/
+
+
+
     filename1 = document.getElementById("test-1-attachment").href;
     filename2 = document.getElementById("test-2-attachment").href;
 
@@ -67,6 +103,17 @@ function updatePhotos(b,a) {
   document.getElementById('photo-after').style.background="url("+a+") no-repeat";
 }
 
+function zoom() { //TODO zoom function
+  var e = d3.event;
+  temp = e;
+  if(e.deltaY<0) {
+    console.log("zoom in "+e.deltaY);
+  } else {
+    console.log("zoom out "+e.deltaY);
+  }
+
+}
+
 function initD3() {
   /* Gettin down to D3 business */
   var beforeLayer = d3.select('#photo-before').node();
@@ -80,4 +127,9 @@ function initD3() {
               return true;
           }, 0);
       });
+
+  d3.select('.photos')
+  .on("wheel", zoom);
+
+
 }

@@ -69,11 +69,8 @@
 
     overflow:auto;
     background: url("img1.png") no-repeat;
-    /*background-size:100% auto !important;*/
-    background-size:100% 100% !important;
-    /*background-size:cover !important;*/
-    /*background-size:100% !important;*/
     background-size:contain !important;
+    -webkit-transform: scale(10);
 }
 #photo-after {
     max-width:100%;
@@ -92,9 +89,6 @@
 
     overflow:auto;
     background: url("img2.png") no-repeat;
-    /*background-size:100% auto !important;*/
-    background-size:100% 100% !important;
-    /*background-size:cover !important;*/
-    /*background-size:100% !important;*/
     background-size:contain !important;
+    -webkit-transform: scale(10);
 }
