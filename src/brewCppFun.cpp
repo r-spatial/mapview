@@ -89,8 +89,8 @@ std::string mergePopupRows(CharacterVector names, CharacterVector values) {
 ////////////////////////////////////////////////////////////////////////////////
 
 // [[Rcpp::export]]
-std::string createTemplate() {
-  std::ifstream file("inst/templates/popup.brew");
+std::string createTemplate(std::string tmpPath) {
+  std::ifstream file(tmpPath.c_str());
   std::string line, data;
 
   std::ostringstream ssLines;
@@ -112,7 +112,8 @@ std::string createTemplate() {
 ////////////////////////////////////////////////////////////////////////////////
 
 // [[Rcpp::export]]
-List listPopupTemplates(CharacterMatrix x, CharacterVector names) {
+List listPopupTemplates(CharacterMatrix x, CharacterVector names,
+                        std::string tmpPath) {
 
   // number of rows and columns
   int nRows = x.nrow();
@@ -126,7 +127,7 @@ List listPopupTemplates(CharacterMatrix x, CharacterVector names) {
   List lsOut(nRows);
 
   // import template
-  std::string chTemplate = createTemplate();
+  std::string chTemplate = createTemplate(tmpPath);
   std::string chTmp = chTemplate;
 
   // create strings for each single row

@@ -13,12 +13,12 @@ mergePopupRows <- function(names, values) {
     .Call('mapview_mergePopupRows', PACKAGE = 'mapview', names, values)
 }
 
-createTemplate <- function() {
-    .Call('mapview_createTemplate', PACKAGE = 'mapview')
+createTemplate <- function(tmpPath) {
+    .Call('mapview_createTemplate', PACKAGE = 'mapview', tmpPath)
 }
 
-listPopupTemplates <- function(x, names) {
-    .Call('mapview_listPopupTemplates', PACKAGE = 'mapview', x, names)
+listPopupTemplates <- function(x, names, tmpPath) {
+    .Call('mapview_listPopupTemplates', PACKAGE = 'mapview', x, names, tmpPath)
 }
 
 df2String <- function(x) {

@@ -70,7 +70,9 @@ brewPopupTable <- function(x, use_cpp = TRUE) {
     cols <- colnames(mat)
 
     ## create list with row-specific html code
-    lst_html <- listPopupTemplates(mat, cols)
+    lst_html <- listPopupTemplates(mat, cols,
+                                   system.file("templates/popup.brew",
+                                               package = "mapview"))
   }
 
   return(lst_html)

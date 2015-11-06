@@ -42,24 +42,26 @@ BEGIN_RCPP
 END_RCPP
 }
 // createTemplate
-std::string createTemplate();
-RcppExport SEXP mapview_createTemplate() {
+std::string createTemplate(std::string tmpPath);
+RcppExport SEXP mapview_createTemplate(SEXP tmpPathSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    __result = Rcpp::wrap(createTemplate());
+    Rcpp::traits::input_parameter< std::string >::type tmpPath(tmpPathSEXP);
+    __result = Rcpp::wrap(createTemplate(tmpPath));
     return __result;
 END_RCPP
 }
 // listPopupTemplates
-List listPopupTemplates(CharacterMatrix x, CharacterVector names);
-RcppExport SEXP mapview_listPopupTemplates(SEXP xSEXP, SEXP namesSEXP) {
+List listPopupTemplates(CharacterMatrix x, CharacterVector names, std::string tmpPath);
+RcppExport SEXP mapview_listPopupTemplates(SEXP xSEXP, SEXP namesSEXP, SEXP tmpPathSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< CharacterMatrix >::type x(xSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type names(namesSEXP);
-    __result = Rcpp::wrap(listPopupTemplates(x, names));
+    Rcpp::traits::input_parameter< std::string >::type tmpPath(tmpPathSEXP);
+    __result = Rcpp::wrap(listPopupTemplates(x, names, tmpPath));
     return __result;
 END_RCPP
 }
