@@ -21,6 +21,7 @@ Imports:
     satellite,
     scales (>= 0.2.5),
     brew,
-    png
+    png,
+    whisker
 LinkingTo: Rcpp
 RoxygenNote: 5.0.0
