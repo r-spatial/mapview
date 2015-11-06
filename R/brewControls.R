@@ -17,7 +17,15 @@ NULL
 brewPopupTable <- function(x, use_cpp = TRUE) {
 
   if (!use_cpp) {
-    df <- data.frame(df2String(x@data), stringsAsFactors = FALSE)
+
+    # data.frame with 1 column
+    if (ncol(x@data) == 1) {
+      df <- data.frame(as.character(x@data[, 1]))
+    # data.frame with multiple columns
+    } else {
+      df <- data.frame(df2String(x@data), stringsAsFactors = FALSE)
+    }
+
     names(df) <- names(x@data)
 
     if (nrow(x) == 1) df <- t(df)
