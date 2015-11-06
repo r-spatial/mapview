@@ -62,7 +62,7 @@ viewExtent <- function(x,
 }
 
 ## Add Extent =============================================================
-#' @describeIn viewExtent
+#' @describeIn viewExtent add extent/bbox of spatial objects interactively
 
 addExtent <- function(x, map, popup, ...) {
 
