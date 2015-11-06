@@ -5,6 +5,7 @@ Version: 0.7.4
 Date: 2015-09-29
 Authors@R: c(
       person("Tim", "Appelhans", email = "tim.appelhans@gmail.com", role = c("aut", "cre")),
+      person("Florian", "Detsch", email = "lorian.detsch@staff.uni-marburg.de", role = c("aut")),
       person("Environmental Informatics Marburg", role = c("ctb"))
     )
 Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
