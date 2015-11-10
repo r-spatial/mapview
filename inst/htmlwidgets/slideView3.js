@@ -13,6 +13,9 @@ var dragY = 0;
 
 var crisp = true;
 
+var divInfo;
+var spanMid;
+
 HTMLWidgets.widget({
 
   name: 'slideView3',
@@ -20,16 +23,32 @@ HTMLWidgets.widget({
   type: 'output',
 
   initialize: function(el, width, height) {
-
-    return {
-      // TODO: add instance fields as required
-    }
-
+    return {}
   },
 
   renderValue: function(el, x, instance) {
 
-    var divDraw = document.createElement("divDraw");
+    divInfo = document.createElement("div");
+    divInfo.id ="divInfo";
+    el.appendChild(divInfo);
+
+    var spanLeft = document.createElement("span");
+    spanLeft.id ="spanLeft";
+    spanMid = document.createElement("span");
+    spanMid.id ="spanMid";
+    var spanRight = document.createElement("span");
+    spanRight.id ="spanRight";
+
+    divInfo.appendChild(spanLeft);
+    divInfo.appendChild(spanMid);
+    divInfo.appendChild(spanRight);
+
+    spanLeft.innerHTML = "img1 &nbsp;&nbsp;&nbsp;";
+    spanRight.innerHTML = "&nbsp;&nbsp;&nbsp; img2";
+
+    spanMid.innerHTML = "?";
+
+    var divDraw = document.createElement("div");
     divDraw.id ="divDraw";
     el.appendChild(divDraw);
 
@@ -37,7 +56,7 @@ HTMLWidgets.widget({
     canvasAfter.id = "canvasAfter";
     divDraw.appendChild(canvasAfter);
 
-    var divBefore = document.createElement("divBefore");
+    var divBefore = document.createElement("div");
     divBefore.id ="divBefore";
     divDraw.appendChild(divBefore);
 
@@ -46,24 +65,18 @@ HTMLWidgets.widget({
     divBefore.appendChild(canvasBefore);
 
 
-    var filename1 = document.getElementById("test-1-attachment").href;
-    var filename2 = document.getElementById("test-2-attachment").href;
-
-
-
-    //initD3();
-    //updatePhotos(filename1, filename2);
-
-
-    //el.style.width = "100%";
-    //el.style.height = "100%";
+    var filename1 = document.getElementById("image-1-attachment").href;
+    var filename2 = document.getElementById("image-2-attachment").href;
 
     init(filename1, filename2);
+
+    //alert(navigator.userAgent);
+    //alert(navigator.product);
+
 
   },
 
   resize: function(el, width, height, instance) {
-
   }
 
 });
@@ -98,6 +111,21 @@ function mousemove(e) {
 	}
 	/*rect (top, right, bottom, left)*/
 	divBefore.style.clip = "rect(0px "+e.layerX+"px auto 0px)";
+
+	var w = 150;
+	var nx = e.layerX - (w / 2);
+	if(nx<0) {
+	  nx=0;
+	}
+	if(nx+w>window.innerWidth) {
+	  nx=window.innerWidth - divInfo.offsetWidth;
+	}
+
+
+
+	//window.innerWidth
+	divInfo.style.marginLeft = nx + "px";
+
 }
 
 function mousedown(e) {
@@ -125,12 +153,19 @@ function keydown(e) {
   t = e;
   console.log(e.which);
   //if(e.key=='+') {
-    //wheel({layerX:0, layerY:0, deltaY:1})
+    // wheel({layerX:0, layerY:0, deltaY:1})
   //}
 
-  if(e.which==32) {
+  if(e.which==32) { // space bar
 	  crisp = !crisp;
 	  draw();
+  }
+
+  if(e.which==13) { // enter key
+    offsetX = 0;
+    offsetY = 0;
+    scale = 1;
+    draw();
   }
 
 }
@@ -158,6 +193,7 @@ function wheel(e) {
 }
 
 function draw() {
+  spanMid.innerHTML = "x"+scale.toFixed(2);
 	var canvasBefore = document.getElementById("canvasBefore");
 	var canvasAfter = document.getElementById("canvasAfter");
 	drawLayer(canvasBefore,imageBefore);

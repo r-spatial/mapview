@@ -1,7 +1,20 @@
+#divInfo {
+  margin-left: 100px;
+}
+
+
+#divDraw {
+  cursor: crosshair;
+}
+
 #divBefore {
 	position:absolute;
 }
 
 #canvasAfter {
 	position:absolute;
+}
+
+#spanLeft, #spanRight {
+  background-color: #D3D3D3;
 }

@@ -11,6 +11,8 @@ data(poppendorf)
 stck1 <- subset(poppendorf, c(3, 4, 5))
 stck2 <- subset(poppendorf, c(2, 3, 4))
 
+slideView3(stck1, stck2)
+
 
 #slideView2(stck1, stck2)
 

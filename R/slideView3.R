@@ -138,12 +138,12 @@ slideView3internal <- function(message, width = NULL, height = NULL, filename1 =
   )
 
   #filename1 and filename2 need to have same directory!
-  test_dir = dirname(filename1)
+  image_dir = dirname(filename1)
 
-  test_file1 = basename(filename1)
-  test_file2 = basename(filename2)
+  image_file1 = basename(filename1)
+  image_file2 = basename(filename2)
 
-  dep1 <- htmltools::htmlDependency(name="test", version="1", src = c(file=test_dir), attachment = list(test_file1, test_file2) )
+  dep1 <- htmltools::htmlDependency(name="image", version="1", src = c(file=image_dir), attachment = list(image_file1, image_file2) )
   deps <- list(dep1)
 
   sizing <- htmlwidgets::sizingPolicy(padding = 0, browser.fill = TRUE)
