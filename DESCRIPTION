@@ -24,4 +24,6 @@ Imports:
     brew,
     png
 LinkingTo: Rcpp
+    htmlwidgets,
+    htmltools
 RoxygenNote: 5.0.0

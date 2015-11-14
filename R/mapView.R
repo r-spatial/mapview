@@ -135,7 +135,8 @@ setMethod('mapView', signature(x = 'RasterLayer'),
             is.fact <- raster::is.factor(x)
 
             m <- initMap(map, map.types, proj4string(x))
-            x <- rasterCheckAdjustProjection(x, maxpixels = maxpixels)
+            x <- rasterCheckSize(x, maxpixels = maxpixels)
+            x <- rasterCheckAdjustProjection(x)
 
             if (!is.na(raster::projection(x)) & trim) x <- trim(x)
 

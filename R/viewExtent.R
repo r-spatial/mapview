@@ -55,7 +55,7 @@ viewExtent <- function(x,
                             map.types = map.types,
                             names = grp)
 
-  out <- new('mapview', object = out_obj, map = m)
+  out <- methods::new('mapview', object = out_obj, map = m)
 
   return(out)
 

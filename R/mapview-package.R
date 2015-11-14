@@ -17,7 +17,6 @@
 #' @importFrom grDevices rgb
 #'
 #' @useDynLib mapview
-#'
 #' @keywords package
 #'
 NULL

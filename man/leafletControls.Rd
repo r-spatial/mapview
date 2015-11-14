@@ -11,11 +11,11 @@
 \alias{getProviderTileNamesFromMap}
 \alias{initBaseMaps}
 \alias{initMap}
-\alias{layerName}
 \alias{layers2bHidden}
 \alias{leafletControls}
 \alias{mapViewLayersControl}
 \alias{rasterCheckAdjustProjection}
+\alias{rasterCheckSize}
 \alias{removeDuplicatedMapCalls}
 \alias{scaleCoordinates}
 \alias{scaleExtent}
@@ -44,7 +44,9 @@ appendMapCallEntries(map1, map2)
 
 removeDuplicatedMapCalls(map)
 
-rasterCheckAdjustProjection(x, maxpixels)
+rasterCheckSize(x, maxpixels)
+
+rasterCheckAdjustProjection(x)
 
 initBaseMaps(map.types)
 
@@ -60,11 +62,9 @@ scaleLinesCoordinates(x)
 
 spCheckAdjustProjection(x)
 
-checkAdjustProjection(x, maxpixels)
+checkAdjustProjection(x)
 
 mapViewLayersControl(map, map.types, names)
-
-layerName()
 
 circleRadius(x, radius)
 

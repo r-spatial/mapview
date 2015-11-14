@@ -84,7 +84,8 @@ setMethod("viewRGB", signature(x = "RasterStackBrick"),
                    ...) {
 
             m <- initMap(map, map.types, projection(x))
-            xout <- rasterCheckAdjustProjection(x, maxpixels)
+            x <- rasterCheckSize(x, maxpixels)
+            xout <- rasterCheckAdjustProjection(x)
 
             mat <- cbind(xout[[r]][],
                          xout[[g]][],
@@ -116,7 +117,7 @@ setMethod("viewRGB", signature(x = "RasterStackBrick"),
                                       map.types = map.types,
                                       names = grp)
 
-            out <- new('mapview', object = list(xout), map = m)
+            out <- methods::new('mapview', object = list(xout), map = m)
 
             return(out)
 
