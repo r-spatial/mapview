@@ -1,3 +1,8 @@
+if ( !isGeneric('slideView') ) {
+  setGeneric('slideView', function(img1, img2, ...)
+    standardGeneric('slideView'))
+}
+
 #' Compare two images trough interactive swiping overlay
 #'
 #' @title slideView
@@ -39,10 +44,6 @@
 #' @rdname slideView
 #' @aliases slideView,RasterStackBrick,RasterStackBrick-method
 NULL
-if ( !isGeneric('slideView') ) {
-  setGeneric('slideView', function(img1, img2, ...)
-    standardGeneric('slideView'))
-}
 
 setMethod("slideView", signature(img1 = "RasterStackBrick",
                                  img2 = "RasterStackBrick"),
@@ -134,6 +135,14 @@ setMethod("slideView", signature(img1 = "character",
 
 
 ### internal functions
+
+#' <Add Title>
+#'
+#' <Add Description>
+#'
+#' @import htmlwidgets
+#'
+#' @export
 slideViewInternal <- function(message,
                               width = NULL,
                               height = NULL,
@@ -173,12 +182,17 @@ slideViewInternal <- function(message,
 }
 
 
+#' Widget output function for use in Shiny
+#'
+#' @export
 slideViewOutput <- function(outputId, width = '100%', height = '400px'){
   shinyWidgetOutput(outputId, 'slideView',
                     width, height, package = 'mapview')
 }
 
-
+#' Widget render function for use in Shiny
+#'
+#' @export
 renderslideView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
   shinyRenderWidget(expr, slideViewOutput, env, quoted = TRUE)
