@@ -8,6 +8,9 @@
 \alias{slideView,character,character-method}
 \title{slideView}
 \usage{
+\S4method{slideView}{RasterStackBrick,RasterStackBrick}(img1, img2,
+  maxpixels = 5e+05)
+
 \S4method{slideView}{RasterLayer,RasterLayer}(img1, img2,
   colors = mapViewPalette(7), na.color = "#00000000", maxpixels = 5e+05)
 
@@ -18,12 +21,12 @@
 
 \item{img2}{a RasterStack/Brick, RasterLayer or path to a .png file}
 
+\item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
+If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
+
 \item{colors}{the color palette to be used for visualising RasterLayers}
 
 \item{na.color}{the color to be used for NA pixels}
-
-\item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
-If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 }
 \description{
 Two images are overlaid and a slider is provided to interactively

@@ -43,12 +43,10 @@ if ( !isGeneric('slideView') ) {
 #' @name slideView
 #' @rdname slideView
 #' @aliases slideView,RasterStackBrick,RasterStackBrick-method
-NULL
 
 setMethod("slideView", signature(img1 = "RasterStackBrick",
                                  img2 = "RasterStackBrick"),
-          function(img1, img2,
-                   maxpixels = 500000) {
+          function(img1, img2, maxpixels = 500000) {
 
             png1 <- rgbStack2PNG(img1, maxpixels = maxpixels)
             png2 <- rgbStack2PNG(img2, maxpixels = maxpixels)
