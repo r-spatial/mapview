@@ -175,12 +175,12 @@ slideViewInternal <- function(message,
 
 
 slideViewOutput <- function(outputId, width = '100%', height = '400px'){
-  shinyWidgetOutput(outputId, 'slideView',
-                    width, height, package = 'mapview')
+  htmlwidgets::shinyWidgetOutput(outputId, 'slideView',
+                                 width, height, package = 'mapview')
 }
 
 
 renderslideView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
-  shinyRenderWidget(expr, slideViewOutput, env, quoted = TRUE)
+  htmlwidgets::shinyRenderWidget(expr, slideViewOutput, env, quoted = TRUE)
 }

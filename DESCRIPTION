@@ -5,11 +5,12 @@ Version: 0.7.4
 Date: 2015-09-29
 Authors@R: c(
       person("Tim", "Appelhans", email = "tim.appelhans@gmail.com", role = c("aut", "cre")),
-      person("Florian", "Detsch", email = "lorian.detsch@staff.uni-marburg.de", role = c("aut")),
+      person("Florian", "Detsch", email = "florian.detsch@staff.uni-marburg.de", role = c("aut")),
+      person("Stefan", "Woellauer", email = "stephan.woellauer@geo.uni-marburg.de", role = c("aut")),
       person("Environmental Informatics Marburg", role = c("ctb"))
     )
 Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
-Description: Methods to view spatial objects interactively using leaflet.
+Description: Methods to view spatial objects interactively.
 License: GPL (>= 3) | file LICENSE
 LazyData: TRUE
 Depends:
@@ -22,8 +23,8 @@ Imports:
     satellite,
     scales (>= 0.2.5),
     brew,
+    htmlwidgets,
+    htmltools,
     png
 LinkingTo: Rcpp
-    htmlwidgets,
-    htmltools
 RoxygenNote: 5.0.0
