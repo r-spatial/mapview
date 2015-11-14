@@ -18,7 +18,7 @@ var spanMid;
 
 HTMLWidgets.widget({
 
-  name: 'slideView3',
+  name: 'slideView',
 
   type: 'output',
 
