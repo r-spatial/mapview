@@ -1,9 +1,6 @@
-if ( !isGeneric('slideView3') ) {
-  setGeneric('slideView3', function(img1, img2, ...)
-    standardGeneric('slideView3'))
-}
-
-#' TODO Compare two images trough interactive swiping overlay
+#' Compare two images trough interactive swiping overlay
+#'
+#' @title slideView
 #'
 #' @description
 #' Two images are overlaid and a slider is provided to interactively
@@ -34,16 +31,21 @@ if ( !isGeneric('slideView3') ) {
 #'
 #' stck1 <- subset(poppendorf, c(3, 4, 5))
 #' stck2 <- subset(poppendorf, c(2, 3, 4))
-#' slideView3(stck1, stck2)
+#' slideView(stck1, stck2)
 #'
 #' @export
 #' @docType methods
-#' @name slideView3
-#' @rdname slideView3
-#' @aliases slideView3,RasterStackBrick,RasterStackBrick-method
+#' @name slideView
+#' @rdname slideView
+#' @aliases slideView,RasterStackBrick,RasterStackBrick-method
 NULL
-setMethod("slideView3", signature(img1 = "RasterStackBrick",
-                                  img2 = "RasterStackBrick"),
+if ( !isGeneric('slideView') ) {
+  setGeneric('slideView', function(img1, img2, ...)
+    standardGeneric('slideView'))
+}
+
+setMethod("slideView", signature(img1 = "RasterStackBrick",
+                                 img2 = "RasterStackBrick"),
           function(img1, img2,
                    maxpixels = 500000) {
 
@@ -60,21 +62,24 @@ setMethod("slideView3", signature(img1 = "RasterStackBrick",
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
-            slideView3internal(list(a="a", b="b"), filename1 = fl1, filename2 = fl2)
+            slideViewInternal(list(a="a", b="b"),
+                              filename1 = fl1,
+                              filename2 = fl2)
           }
 
 )
 
 ## RasterLayers ===========================================================
-#' @describeIn slideView3
-
-setMethod("slideView3", signature(img1 = "RasterLayer",
-                                  img2 = "RasterLayer"),
+#' @describeIn slideView for RasterLayers
+#'
+setMethod("slideView", signature(img1 = "RasterLayer",
+                                 img2 = "RasterLayer"),
           function(img1,
                    img2,
                    colors = mapViewPalette(7),
                    na.color = "#00000000",
                    maxpixels = 500000) {
+
             png1 <- raster2PNG(img1, colors = colors,
                                na.color = na.color,
                                maxpixels = maxpixels)
@@ -92,17 +97,19 @@ setMethod("slideView3", signature(img1 = "RasterLayer",
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
-            slideView3internal(list(a="a", b="b"), filename1 = fl1, filename2 = fl2)
+            slideViewInternal(list(a="a", b="b"),
+                              filename1 = fl1,
+                              filename2 = fl2)
           }
 
 )
 
 
 ## png files ==============================================================
-#' @describeIn slideView3
+#' @describeIn slideView for png files
 
-setMethod("slideView3", signature(img1 = "character",
-                                  img2 = "character"),
+setMethod("slideView", signature(img1 = "character",
+                                 img2 = "character"),
           function(img1, img2) {
 
             png1 <- png::readPNG(img1)
@@ -118,39 +125,44 @@ setMethod("slideView3", signature(img1 = "character",
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
-            slideView3internal(list(a="a", b="b"), filename1 = fl1, filename2 = fl2)
+            slideViewInternal(list(a="a", b="b"),
+                              filename1 = fl1,
+                              filename2 = fl2)
           }
 
 )
 
-#' <Add Title>
-#'
-#' <Add Description>
-#'
-#' @import htmlwidgets
-#'
-#' @export
-slideView3internal <- function(message, width = NULL, height = NULL, filename1 = NULL, filename2 = NULL) {
+
+### internal functions
+slideViewInternal <- function(message,
+                              width = NULL,
+                              height = NULL,
+                              filename1 = NULL,
+                              filename2 = NULL) {
 
   # forward options using x
-  x = list(
+  x <- list(
     message = message
   )
 
   #filename1 and filename2 need to have same directory!
-  image_dir = dirname(filename1)
+  image_dir <- dirname(filename1)
 
-  image_file1 = basename(filename1)
-  image_file2 = basename(filename2)
+  image_file1 <- basename(filename1)
+  image_file2 <- basename(filename2)
 
-  dep1 <- htmltools::htmlDependency(name="image", version="1", src = c(file=image_dir), attachment = list(image_file1, image_file2) )
+  dep1 <- htmltools::htmlDependency(name = "image",
+                                    version = "1",
+                                    src = c(file = image_dir),
+                                    attachment = list(image_file1,
+                                                      image_file2))
   deps <- list(dep1)
 
   sizing <- htmlwidgets::sizingPolicy(padding = 0, browser.fill = TRUE)
 
   # create widget
   htmlwidgets::createWidget(
-    name = 'slideView3',
+    name = 'slideView',
     x,
     width = width,
     height = height,
@@ -160,17 +172,14 @@ slideView3internal <- function(message, width = NULL, height = NULL, filename1 =
   )
 }
 
-#' Widget output function for use in Shiny
-#'
-#' @export
-slideView3Output <- function(outputId, width = '100%', height = '400px'){
-  shinyWidgetOutput(outputId, 'slideView3', width, height, package = 'mapview')
+
+slideViewOutput <- function(outputId, width = '100%', height = '400px'){
+  shinyWidgetOutput(outputId, 'slideView',
+                    width, height, package = 'mapview')
 }
 
-#' Widget render function for use in Shiny
-#'
-#' @export
-renderslideView3 <- function(expr, env = parent.frame(), quoted = FALSE) {
+
+renderslideView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
-  shinyRenderWidget(expr, slideView3Output, env, quoted = TRUE)
+  shinyRenderWidget(expr, slideViewOutput, env, quoted = TRUE)
 }
