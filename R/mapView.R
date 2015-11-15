@@ -134,7 +134,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 
             is.fact <- raster::is.factor(x)
 
-            m <- initMap(map, map.types, proj4string(x))
+            m <- initMap(map, map.types, sp::proj4string(x))
             x <- rasterCheckSize(x, maxpixels = maxpixels)
             x <- rasterCheckAdjustProjection(x)
 
@@ -224,7 +224,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
             tst <- sapply(pkgs, "requireNamespace",
                           quietly = TRUE, USE.NAMES = FALSE)
 
-            m <- initMap(map, map.types, proj4string(x))
+            m <- initMap(map, map.types, sp::proj4string(x))
 
             if (nlayers(x) == 1) {
               x <- raster(x, layer = 1)
@@ -358,7 +358,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
             x <- spCheckObject(x, verbose = verbose)
             x <- spCheckAdjustProjection(x)
 
-            m <- initMap(map, map.types, proj4string(x))
+            m <- initMap(map, map.types, sp::proj4string(x))
 
             if (burst) {
               lst <- lapply(names(x), function(j) x[j])
@@ -460,7 +460,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
 
             x <- spCheckAdjustProjection(x)
 
-            m <- initMap(map, map.types, proj4string(x))
+            m <- initMap(map, map.types, sp::proj4string(x))
 
             txt <- brewPopupTable(x)
 
@@ -522,7 +522,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
             x <- spCheckAdjustProjection(x)
 
-            m <- initMap(map, map.types, proj4string(x))
+            m <- initMap(map, map.types, sp::proj4string(x))
 
             if (burst) {
 
@@ -589,6 +589,10 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
               df <- as.data.frame(sapply(x@data, as.character),
                                   stringsAsFactors = FALSE)
 
+              if (nrow(x) == 1) df <- t(df)
+
+              print(df)
+
               grp <- layer.name
 
               if (pop.null) popup <- brewPopupTable(x)
@@ -637,7 +641,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
 
             x <- spCheckAdjustProjection(x)
 
-            m <- initMap(map, map.types, proj4string(x))
+            m <- initMap(map, map.types, sp::proj4string(x))
 
             grp <- layer.name
 
@@ -692,7 +696,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
             x <- spCheckObject(x, verbose = verbose)
             x <- spCheckAdjustProjection(x)
 
-            m <- initMap(map, map.types, proj4string(x))
+            m <- initMap(map, map.types, sp::proj4string(x))
 
             if (burst) {
 
@@ -808,7 +812,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
 
             x <- spCheckAdjustProjection(x)
 
-            m <- initMap(map, map.types, proj4string(x))
+            m <- initMap(map, map.types, sp::proj4string(x))
 
             grp <- layer.name
 
@@ -843,8 +847,8 @@ setMethod('mapView', signature(x = 'missing'),
               envinMR <- data.frame(x = 8.771676,
                                     y = 50.814891,
                                     envinMR = "envinMR")
-              coordinates(envinMR) <- ~x+y
-              proj4string(envinMR) <- sp::CRS(llcrs)
+              sp::coordinates(envinMR) <- ~x+y
+              sp::proj4string(envinMR) <- sp::CRS(llcrs)
               m <- initBaseMaps(map.types)
 
               pop <- paste("<center>", "<b>", "mapview", "</b>", "<br>", " was created at",
