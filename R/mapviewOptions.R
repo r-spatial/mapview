@@ -117,13 +117,15 @@ mapviewOptions <- function(platform,
               nacolor = .nacolor())
 
 
-  if (cnt == 0) {
-    cat('platform      :', lst$platform, '\n' )
-    cat('basemaps      :', lst$basemaps, '\n')
-    cat('rastersize    :', lst$rastersize, '\n')
-    cat('maxpixels     :', lst$maxpixels, '\n')
-    cat('verbose       :', lst$verbose, '\n')
-    cat('nacolor       :', lst$nacolor, '\n')
+  if (print.console) {
+    if (cnt == 0) {
+      cat('platform      :', lst$platform, '\n' )
+      cat('basemaps      :', lst$basemaps, '\n')
+      cat('rastersize    :', lst$rastersize, '\n')
+      cat('maxpixels     :', lst$maxpixels, '\n')
+      cat('verbose       :', lst$verbose, '\n')
+      cat('nacolor       :', lst$nacolor, '\n')
+    }
   }
 
   invisible(lst)
