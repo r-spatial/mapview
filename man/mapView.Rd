@@ -129,7 +129,7 @@ spatial object(s) on top of the specified base maps.
 \itemize{
 \item \code{RasterLayer}: \code{\link{raster}}
 
-\item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{stack}}
+\item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{brick}}
 
 \item \code{Satellite}: \code{\link{satellite}}
 

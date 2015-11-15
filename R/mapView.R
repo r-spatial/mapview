@@ -203,7 +203,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 )
 
 ## Raster Stack/Brick ===========================================================
-#' @describeIn mapView \code{\link{stack}} / \code{\link{stack}}
+#' @describeIn mapView \code{\link{stack}} / \code{\link{brick}}
 
 setMethod('mapView', signature(x = 'RasterStackBrick'),
           function(x,
