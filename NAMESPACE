@@ -3,6 +3,7 @@
 export(addMapLayer)
 export(mapView)
 export(mapViewPalette)
+export(mapviewOptions)
 export(viewExtent)
 export(viewRGB)
 exportClasses(mapview)
