@@ -13,8 +13,9 @@
 #' \cr
 #' \emph{Maintainer:} Tim Appelhans \email{tim.appelhans@@gmail.com}
 #'
-#' @import leaflet sp raster satellite scales Rcpp methods png
+#' @import leaflet sp raster satellite scales methods png
 #' @importFrom grDevices rgb
+#' @importFrom Rcpp sourceCpp
 #'
 #' @useDynLib mapview
 #' @keywords package

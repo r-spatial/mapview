@@ -4,7 +4,23 @@ using namespace Rcpp;
 #include <string>
 #include <fstream>
 #include <streambuf>
-#include <boost/algorithm/string.hpp>
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Replace string with another string (function taken from /////////////////////
+// https://stackoverflow.com/questions/2896600/how-to-replace-all-occurrences-of-a-character-in-string) ////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+// [[Rcpp::export]]
+std::string gsubC(const std::string& pattern, const std::string& replacement,
+                  std::string x) {
+  size_t start_pos = 0;
+  while((start_pos = x.find(pattern, start_pos)) != std::string::npos) {
+    x.replace(start_pos, pattern.length(), replacement);
+    start_pos += replacement.length();
+  }
+  return x;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // standard pattern used for odd column indices ////////////////////////////////
@@ -135,7 +151,7 @@ List listPopupTemplates(CharacterMatrix x, CharacterVector names,
     chVal = x(i, _);
     chStr = mergePopupRows(names, chVal);
 
-    boost::replace_all(chTmp, "<%=pop%>", chStr);
+    chTmp = gsubC("<%=pop%>", chStr, chTmp);
     lsOut[i] = chTmp;
 
     // reset intermediary string

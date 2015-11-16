@@ -5,6 +5,19 @@
 
 using namespace Rcpp;
 
+// gsubC
+std::string gsubC(const std::string& pattern, const std::string& replacement, std::string x);
+RcppExport SEXP mapview_gsubC(SEXP patternSEXP, SEXP replacementSEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const std::string& >::type pattern(patternSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type replacement(replacementSEXP);
+    Rcpp::traits::input_parameter< std::string >::type x(xSEXP);
+    __result = Rcpp::wrap(gsubC(pattern, replacement, x));
+    return __result;
+END_RCPP
+}
 // brewPopupRowC
 std::string brewPopupRowC(std::string colname, std::string value);
 RcppExport SEXP mapview_brewPopupRowC(SEXP colnameSEXP, SEXP valueSEXP) {

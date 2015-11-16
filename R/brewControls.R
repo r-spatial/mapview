@@ -30,8 +30,8 @@ brewPopupTable <- function(x, use_cpp = TRUE) {
 
     if (nrow(x) == 1) df <- t(df)
 
-    df$x <- as.character(round(coordinates(x)[, 1], 2))
-    df$y <- as.character(round(coordinates(x)[, 2], 2))
+    df$x <- as.character(round(sp::coordinates(x)[, 1], 2))
+    df$y <- as.character(round(sp::coordinates(x)[, 2], 2))
 
     cols <- colnames(df)
 
@@ -67,13 +67,33 @@ brewPopupTable <- function(x, use_cpp = TRUE) {
 
   } else {
 
-    mat <- df2String(x@data)
+    cls <- class(x)[1]
+    if (cls == "SpatialPoints") {
+      x <- SpatialPointsDataFrame(x, data = data.frame(x = coordinates(x)[, 1],
+                                                       y = coordinates(x)[, 2]))
+
+    } else if (cls == "SpatialLines") {
+      x_pts <- sp::getSpatialLinesMidPoints(x)
+      x <- SpatialLinesDataFrame(x, data = data.frame(x = coordinates(x_pts)[, 1],
+                                                      y = coordinates(x_pts)[, 2]))
+    }
+
+    # data.frame with 1 column
+    if (ncol(x@data) == 1) {
+      mat <- matrix(as.character(x@data[, 1]))
+    # data.frame with multiple columns
+    } else {
+      mat <- df2String(x@data)
+    }
+
     colnames(mat) <- names(x@data)
 
-    if (nrow(x) == 1) mat <- t(mat)
+    # if (nrow(x) == 1) mat <- t(mat)
 
-    mat <- cbind(mat, x = as.character(round(coordinates(x)[, 1], 2)))
-    mat <- cbind(mat, y = as.character(round(coordinates(x)[, 2], 2)))
+    if (!class(x)[1] %in% c("SpatialLines", "SpatialLinesDataFrame")) {
+      mat <- cbind(mat, x = as.character(round(sp::coordinates(x)[, 1], 2)))
+      mat <- cbind(mat, y = as.character(round(sp::coordinates(x)[, 2], 2)))
+    }
 
     cols <- colnames(mat)
 
