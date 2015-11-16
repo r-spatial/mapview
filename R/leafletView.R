@@ -377,14 +377,13 @@ leafletPolygonsDF <- function(x,
 
     for (i in seq(lst)) {
 
-      x <- lst[[i]]
+      # x <- lst[[i]]
 
-      df <- as.data.frame(sapply(x@data, as.character),
-                          stringsAsFactors = FALSE)
+      #df <- sapply(x@data, as.character)
 
-      grp <- names(df)
+      grp <- names(lst[[i]]) #colnames(sapply(x@data, as.character))
 
-      if (pop.null) popup <- brewPopupTable(x)
+      if (pop.null) popup <- brewPopupTable(lst[[i]])
 
       clrs <- pal_n[[i]](vals[[i]])
       m <- leaflet::addPolygons(m,
@@ -392,7 +391,7 @@ leafletPolygonsDF <- function(x,
                                 group = grp,
                                 color = clrs,
                                 popup = popup,
-                                data = x,
+                                data = lst[[i]],
                                 ...)
 
       m <- leaflet::addLegend(map = m, position = "topright",
@@ -400,22 +399,27 @@ leafletPolygonsDF <- function(x,
                               values = vals[[i]],
                               title = grp)
 
-      m <- mapViewLayersControl(map = m,
-                                map.types = map.types,
-                                names = grp)
+#       m <- mapViewLayersControl(map = m,
+#                                 map.types = map.types,
+#                                 names = grp)
 
     }
 
-    if (length(getLayerNamesFromMap(m)) > 1) {
-      m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+    m <- leaflet::addLayersControl(map = m,
+                                   position = "bottomleft",
+                                   baseGroups = map.types,
+                                   overlayGroups = names(x))
+
+    if (length(names(x)) > 1) {
+      m <- leaflet::hideGroup(map = m, group = names(x)[2:length(names(x))])
     }
 
   } else {
 
-    df <- as.data.frame(sapply(x@data, as.character),
-                        stringsAsFactors = FALSE)
-
-    if (nrow(x) == 1) df <- t(df)
+#     df <- as.data.frame(sapply(x@data, as.character),
+#                         stringsAsFactors = FALSE)
+#
+#     if (nrow(x) == 1) df <- t(df)
 
     grp <- layer.name
 

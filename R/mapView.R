@@ -104,11 +104,10 @@ if ( !isGeneric('mapView') ) {
 #' @export mapView
 #' @name mapView
 #' @rdname mapView
-#' @aliases mapView
-NULL
+#' @aliases mapView,RasterLayer-method
 
 ## RasterLayer ============================================================
-#' @describeIn mapView \code{\link{raster}}
+
 setMethod('mapView', signature(x = 'RasterLayer'),
           function(x,
                    map = NULL,
@@ -497,3 +496,9 @@ setMethod('mapView', signature(x = 'missing'),
 
           }
 )
+
+
+## mapview ================================================================
+#' @export mapview
+#'
+mapview <- function(...) mapView(...)
