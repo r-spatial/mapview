@@ -1,7 +1,7 @@
 Package: mapview
 Type: Package
 Title: GIS-Like Viewing of Spatial Objects in R
-Version: 0.8.6
+Version: 0.8.7
 Date: 2015-11-16
 Authors@R: c(
       person("Tim", "Appelhans", email = "tim.appelhans@gmail.com", role = c("aut", "cre")),
