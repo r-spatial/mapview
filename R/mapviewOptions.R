@@ -23,7 +23,7 @@
 #' @param nacolor character. The default color to be used for NA values.
 #' This is relevant for Raster* objects
 #' @param default logical. If TRUE all options are set to their default values
-#' @param print.console logical. Should the options be printed to the console
+#' @param console logical. Should the options be printed to the console
 #'
 #' @author
 #' Tim Appelhans
@@ -55,11 +55,16 @@ mapviewOptions <- function(platform,
                            verbose,
                            nacolor,
                            default = FALSE,
-                           print.console = TRUE) {
+                           console = TRUE) {
 
   ## platform
   setPlatform <- function(platform) {
-    options(mapviewPlatform = platform)
+    if (!platform %in% c("leaflet")) {
+      warning("currently only platform leaflet is allowed")
+      options(mapviewPlatform = "leaflet")
+    } else {
+      options(mapviewPlatform = platform)
+    }
   }
 
   ## basemaps
@@ -117,7 +122,8 @@ mapviewOptions <- function(platform,
               nacolor = .nacolor())
 
 
-  if (print.console) {
+
+  if (console) {
     if (cnt == 0) {
       cat('platform      :', lst$platform, '\n' )
       cat('basemaps      :', lst$basemaps, '\n')

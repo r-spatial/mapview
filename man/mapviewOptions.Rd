@@ -5,7 +5,7 @@
 \title{Global options for the mapview package}
 \usage{
 mapviewOptions(platform, basemaps, rastersize, maxpixels, verbose, nacolor,
-  default = FALSE, print.console = TRUE)
+  default = FALSE, console = TRUE)
 }
 \arguments{
 \item{platform}{character. The platform to be used (currently only "leaflet"
@@ -29,7 +29,7 @@ This is relevant for Raster* objects}
 
 \item{default}{logical. If TRUE all options are set to their default values}
 
-\item{print.console}{logical. Should the options be printed to the console}
+\item{console}{logical. Should the options be printed to the console}
 }
 \value{
 list of the current options (invisibly).
