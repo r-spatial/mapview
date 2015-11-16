@@ -11,7 +11,8 @@ Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
 Description: Methods to view spatial objects interactively using leaflet.
 License: GPL (>= 3) | file LICENSE
 LazyData: TRUE
-Depends: leaflet,
+Depends:
+    leaflet,
     methods
 Imports:
     whisker,
@@ -19,3 +20,4 @@ Imports:
     raster,
     satellite,
     scales (>= 0.2.5)
+RoxygenNote: 5.0.1
