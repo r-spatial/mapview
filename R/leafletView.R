@@ -635,7 +635,7 @@ leafletLines <- function(x,
   tst <- sapply(pkgs, "requireNamespace",
                 quietly = TRUE, USE.NAMES = FALSE)
 
-  llcrs <- CRS("+init=epsg:4326")@projargs
+  #llcrs <- CRS("+init=epsg:4326")@projargs
 
   x <- spCheckAdjustProjection(x)
 
@@ -657,6 +657,45 @@ leafletLines <- function(x,
   return(out)
 
 }
+
+
+
+### leaflet w ppp =========================================================
+
+# leafletPPP <- function(x,
+#                        map,
+#                        na.color,
+#                        map.types,
+#                        verbose,
+#                        layer.name,
+#                        ...) {
+#
+#   pkgs <- c("leaflet", "sp", "magrittr")
+#   tst <- sapply(pkgs, "requireNamespace",
+#                 quietly = TRUE, USE.NAMES = FALSE)
+#
+#   marks_exist <- if (x$markformat == "none") FALSE else TRUE
+#
+#   if (marks_exist) {
+#     sp_ppp <- as(x, "SpatialPointsDataFrame")
+#     mat <- rbind(x$window$xrange, x$window$yrange)
+#     rownames(mat) <- c("x", "y")
+#     colnames(mat) <- c("min", "max")
+#     sp_ppp@bbox <- mat
+#   } else {
+#     sp_ppp <- as(x, "SpatialPoints")
+#     mat <- rbind(x$window$xrange, x$window$yrange)
+#     rownames(mat) <- c("x", "y")
+#     colnames(mat) <- c("min", "max")
+#     sp_ppp@bbox <- mat
+#   }
+#
+#   sp_ppp <- checkAdjustProjection(sp_ppp)
+#   out <- viewExtent(sp_ppp) + sp_ppp
+#
+#   return(out)
+#
+# }
 
 
 
@@ -719,3 +758,295 @@ leafletMissing <- function(map.types,
   return(out)
 
 }
+
+
+###########################################################################
+############################ PLAIN ########################################
+###########################################################################
+
+
+### plain w RasterLayer ===================================================
+
+leafletPlainRL <- function(x,
+                           map,
+                           maxpixels,
+                           color,
+                           na.color,
+                           use.layer.names,
+                           values,
+                           layer.opacity,
+                           legend,
+                           legend.opacity,
+                           trim,
+                           verbose,
+                           layer.name,
+                           ...) {
+
+  pkgs <- c("leaflet", "raster", "magrittr")
+  tst <- sapply(pkgs, "requireNamespace",
+                quietly = TRUE, USE.NAMES = FALSE)
+
+  is.fact <- raster::is.factor(x)
+
+  if (is.null(map)) m <- leaflet::leaflet() else m <- map
+  x <- rasterCheckSize(x, maxpixels = maxpixels)
+
+  if (trim) x <- trim(x)
+
+  if (is.fact) x <- raster::as.factor(x)
+
+  if (is.null(values)) {
+    if (is.fact) {
+      values <- x@data@attributes[[1]]$ID
+    } else {
+      offset <- diff(range(x[], na.rm = TRUE)) * 0.05
+      top <- max(x[], na.rm = TRUE) + offset
+      bot <- min(x[], na.rm = TRUE) - offset
+      values <- seq(bot, top, length.out = 10)
+      values <- round(values, 5)
+    }
+  } else {
+    values <- round(values, 5)
+  }
+
+  if (is.fact) {
+    pal <- leaflet::colorFactor(color,
+                                domain = NULL,
+                                na.color = na.color)
+  } else {
+    pal <- leaflet::colorNumeric(color,
+                                 domain = values,
+                                 na.color = na.color)
+  }
+
+  if (use.layer.names) {
+    grp <- names(x)
+  } else {
+    grp <- layer.name
+  }
+
+  ## add layers to base map
+  m <- leaflet::addRasterImage(map = m,
+                               x = x,
+                               colors = pal,
+                               project = FALSE,
+                               opacity = layer.opacity,
+                               group = grp,
+                               ...)
+
+  if (legend) {
+    ## add legend
+    m <- leaflet::addLegend(map = m,
+                            pal = pal,
+                            opacity = legend.opacity,
+                            values = values,
+                            title = grp)
+  }
+
+  m <- mapViewLayersControl(map = m,
+                            map.types = "",
+                            names = grp)
+
+  out <- new('mapview', object = list(x), map = m)
+
+  return(out)
+
+}
+
+
+
+### plain w RasterStackBrick ==============================================
+
+leafletPlainRSB <- function(x,
+                            map,
+                            maxpixels,
+                            color,
+                            na.color,
+                            values,
+                            legend,
+                            legend.opacity,
+                            trim,
+                            verbose,
+                            ...) {
+
+  pkgs <- c("leaflet", "raster", "magrittr")
+  tst <- sapply(pkgs, "requireNamespace",
+                quietly = TRUE, USE.NAMES = FALSE)
+
+  if (is.null(map)) m <- leaflet::leaflet() else m <- map
+
+  if (nlayers(x) == 1) {
+    x <- raster(x, layer = 1)
+    m <- plainView(x, map = m,
+                   use.layer.names = TRUE, ...)
+    out <- new('mapview', object = list(x), map = m@map)
+  } else {
+    m <- plainView(x[[1]], map = m,
+                 use.layer.names = TRUE, ...)
+    for (i in 2:nlayers(x)) {
+      m <- plainView(x[[i]], map = m@map,
+                   use.layer.names = TRUE, ...)
+    }
+
+    if (length(getLayerNamesFromMap(m@map)) > 1) {
+      m <- leaflet::hideGroup(map = m@map,
+                              group = layers2bHidden(m@map))
+    }
+    out <- new('mapview', object = list(x), map = m)
+  }
+
+  return(out)
+
+}
+
+
+
+### plain w SpatialPixelsDataFrame ========================================
+
+leafletPlainPixelsDF <- function(x,
+                                 zcol,
+                                 ...) {
+
+  pkgs <- c("leaflet", "sp", "magrittr")
+  tst <- sapply(pkgs, "requireNamespace",
+                quietly = TRUE, USE.NAMES = FALSE)
+
+  if(!is.null(zcol)) x <- x[, zcol]
+
+  stck <- do.call("stack", lapply(seq(ncol(x)), function(i) {
+    r <- raster::raster(x[, i])
+    if (is.factor(x[, i])) r <- raster::as.factor(r)
+    return(r)
+  }))
+
+  m <- plainView(stck, ...)
+
+  out <- new('mapview', object = list(x), map = m@map)
+
+  return(out)
+
+}
+
+
+
+### plain w SpatialPointsDataFrame ========================================
+
+# leafletPlainPointsDF <- function(x,
+#                                  zcol,
+#                                  map,
+#                                  burst,
+#                                  color,
+#                                  na.color,
+#                                  radius,
+#                                  legend,
+#                                  legend.opacity,
+#                                  verbose,
+#                                  layer.name,
+#                                  popup,
+#                                  ...) {
+#
+#   pkgs <- c("leaflet", "sp", "magrittr")
+#   tst <- sapply(pkgs, "requireNamespace",
+#                 quietly = TRUE, USE.NAMES = FALSE)
+#
+#   rad_vals <- circleRadius(x, radius)
+#   if(!is.null(zcol)) x <- x[, zcol]
+#   if(!is.null(zcol)) burst <- TRUE
+#
+#   pop.null <- is.null(popup)
+#
+#   x <- spCheckObject(x, verbose = verbose)
+#   x <- spCheckAdjustProjection(x)
+#
+#   m <- initMap(map, map.types, sp::proj4string(x))
+#
+#   if (burst) {
+#     lst <- lapply(names(x), function(j) x[j])
+#
+#     vals <- lapply(seq(lst), function(i) lst[[i]]@data[, 1])
+#
+#     pal_n <- lapply(seq(lst), function(i) {
+#       if (is.factor(lst[[i]]@data[, 1])) {
+#         leaflet::colorFactor(color, lst[[i]]@data[, 1],
+#                              levels = levels(lst[[i]]@data[, 1]))
+#       } else {
+#         leaflet::colorNumeric(color, vals[[i]],
+#                               na.color = na.color)
+#       }
+#     })
+#
+#     for (i in seq(lst)) {
+#
+#       #x <- lst[[i]]
+#
+#       if (pop.null) popup <- brewPopupTable(lst[[i]])
+#
+#       m <- leaflet::addCircleMarkers(m,
+#                                      lng = coordinates(lst[[i]])[, 1],
+#                                      lat = coordinates(lst[[i]])[, 2],
+#                                      group = names(lst[[i]]),
+#                                      color = pal_n[[i]](vals[[i]]),
+#                                      popup = popup,
+#                                      #data = lst[[i]],
+#                                      radius = rad_vals,
+#                                      ...)
+#
+#       if (legend) {
+#         m <- leaflet::addLegend(map = m, position = "topright",
+#                                 pal = pal_n[[i]],
+#                                 opacity = 1, values = vals[[i]],
+#                                 title = names(lst[[i]]),
+#                                 layerId = names(lst[[i]]))
+#       }
+#
+#     }
+#
+#     m <- mapViewLayersControl(map = m,
+#                               map.types = map.types,
+#                               names = names(x))
+#
+#     #     m <- leaflet::addLayersControl(map = m,
+#     #                                    position = mapviewOptions(
+#     #                                      console = FALSE)$layerscontrolpos,
+#     #                                    baseGroups = map.types,
+#     #                                    overlayGroups = names(x))
+#
+#
+#     if (length(getLayerNamesFromMap(m)) > 1) {
+#       m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+#     }
+#
+#   } else {
+#
+#     grp <- layer.name
+#
+#     if (pop.null) popup <- brewPopupTable(x)
+#
+#     m <- leaflet::addCircleMarkers(map = m,
+#                                    lng = coordinates(x)[, 1],
+#                                    lat = coordinates(x)[, 2],
+#                                    group = grp,
+#                                    color = color[length(color)],
+#                                    popup = popup,
+#                                    #data = x,
+#                                    radius = rad_vals,
+#                                    ...)
+#
+#     m <- mapViewLayersControl(map = m,
+#                               map.types = map.types,
+#                               names = grp)
+#
+#     #     m <- leaflet::addLayersControl(map = m,
+#     #                                    position = mapviewOptions(
+#     #                                      console = FALSE)$layerscontrolpos,
+#     #                                    baseGroups = map.types,
+#     #                                    overlayGroups = grp)
+#   }
+#
+#   out <- new('mapview', object = list(x), map = m)
+#
+#   return(out)
+#
+# }
+#
+#

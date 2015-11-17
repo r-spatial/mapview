@@ -117,3 +117,28 @@ addExtent <- function(x, map, popup, ...) {
   return(list(obj = ext, map = m))
 }
 
+
+
+### extent without crs ====================================================
+
+viewExtentNoRef <- function(x,
+                            popup = NULL,
+                            ...) {
+
+  ext <- raster::extent(x)
+
+  m <- leaflet::leaflet()
+  m <- leaflet::addRectangles(map = m,
+                              lng1 = ext@xmin,
+                              lat1 = ext@ymin,
+                              lng2 = ext@xmax,
+                              lat2 = ext@ymax,
+                              popup = popup,
+                              ...)
+
+  out <- methods::new('mapview', object = list(ext), map = m)
+
+  return(out)
+}
+
+

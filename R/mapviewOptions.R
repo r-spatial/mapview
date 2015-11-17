@@ -24,6 +24,8 @@
 #' This is relevant for Raster* objects
 #' @param default logical. If TRUE all options are set to their default values
 #' @param console logical. Should the options be printed to the console
+#' @param layerscontrolpos character. Where should the layer control be
+#' placed? One of "topleft", "topright", "bottomleft", "bottomright".
 #'
 #' @author
 #' Tim Appelhans

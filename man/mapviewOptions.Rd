@@ -27,6 +27,9 @@ behaviour. Set this to TRUE if you want to see these printed to the console}
 \item{nacolor}{character. The default color to be used for NA values.
 This is relevant for Raster* objects}
 
+\item{layerscontrolpos}{character. Where should the layer control be
+placed? One of "topleft", "topright", "bottomleft", "bottomright".}
+
 \item{default}{logical. If TRUE all options are set to their default values}
 
 \item{console}{logical. Should the options be printed to the console}

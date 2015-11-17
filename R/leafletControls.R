@@ -387,7 +387,7 @@ spCheckAdjustProjection <- function(x) {
     warning(non_proj_waning)
     if (class(x)[1] %in% c("SpatialPointsDataFrame", "SpatialPoints")) {
       methods::slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
-                                            coordinates(x)[, 2])
+                                                     coordinates(x)[, 2])
     } else if (class(x)[1] %in% c("SpatialPolygonsDataFrame",
                                   "SpatialPolygons")) {
       x <- scalePolygonsCoordinates(x)
@@ -412,14 +412,14 @@ spCheckAdjustProjection <- function(x) {
 checkAdjustProjection <- function(x) {
 
   if (class(x)[1] %in% c("RasterLayer", "RasterStack", "RasterBrick")) {
-    rasterCheckAdjustProjection(x)
+    x <- rasterCheckAdjustProjection(x)
   } else if (class(x)[1] %in% c("SpatialPointsDataFrame",
                                 "SpatialPolygonsDataFrame",
                                 "SpatialLinesDataFrame",
                                 "SpatialPoints",
                                 "SpatialPolygons",
                                 "SpatialLines")) {
-    spCheckAdjustProjection(x)
+    x <- spCheckAdjustProjection(x)
   }
 
   return(x)

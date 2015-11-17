@@ -29,7 +29,7 @@
   maxpixels = mapviewOptions(console = FALSE)$maxpixels,
   color = mapViewPalette(7), na.color = mapviewOptions(console =
   FALSE)$nacolor, values = NULL, map.types = mapviewOptions(console =
-  FALSE)$basemaps, legend = TRUE, legend.opacity = 1, trim = TRUE,
+  FALSE)$basemaps, legend = FALSE, legend.opacity = 1, trim = TRUE,
   verbose = mapviewOptions(console = FALSE)$verbose, ...)
 
 \S4method{mapView}{Satellite}(x, ...)
@@ -39,7 +39,7 @@
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapViewPalette(7),
   na.color = mapviewOptions(console = FALSE)$nacolor, radius = 10,
-  map.types = mapviewOptions(console = FALSE)$basemaps, legend = TRUE,
+  map.types = mapviewOptions(console = FALSE)$basemaps, legend = FALSE,
   legend.opacity = 1, verbose = mapviewOptions(console = FALSE)$verbose,
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
@@ -53,7 +53,7 @@
 \S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapViewPalette(7),
   na.color = mapviewOptions(console = FALSE)$nacolor, values = NULL,
-  map.types = mapviewOptions(console = FALSE)$basemaps, legend = TRUE,
+  map.types = mapviewOptions(console = FALSE)$basemaps, legend = FALSE,
   legend.opacity = 1, weight = 2, verbose = mapviewOptions(console =
   FALSE)$verbose, layer.name = deparse(substitute(x, env = parent.frame())),
   popup = NULL, ...)
@@ -67,7 +67,7 @@
 \S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapViewPalette(7),
   na.color = mapviewOptions(console = FALSE)$nacolor, values = NULL,
-  map.types = mapviewOptions(console = FALSE)$basemaps, legend = TRUE,
+  map.types = mapviewOptions(console = FALSE)$basemaps, legend = FALSE,
   legend.opacity = 1, verbose = mapviewOptions(console = FALSE)$verbose,
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
