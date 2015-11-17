@@ -14,7 +14,15 @@ var dragY = 0;
 var crisp = true;
 
 var divInfo;
+var divDraw;
+var divBefore;
+
+var spanLeft;
 var spanMid;
+var spanRight;
+
+var canvasBefore;
+var canvasAfter;
 
 HTMLWidgets.widget({
 
@@ -32,11 +40,11 @@ HTMLWidgets.widget({
     divInfo.id ="divInfo";
     el.appendChild(divInfo);
 
-    var spanLeft = document.createElement("span");
+    spanLeft = document.createElement("span");
     spanLeft.id ="spanLeft";
     spanMid = document.createElement("span");
     spanMid.id ="spanMid";
-    var spanRight = document.createElement("span");
+    spanRight = document.createElement("span");
     spanRight.id ="spanRight";
 
     divInfo.appendChild(spanLeft);
@@ -48,19 +56,20 @@ HTMLWidgets.widget({
 
     spanMid.innerHTML = "?";
 
-    var divDraw = document.createElement("div");
+    divDraw = document.createElement("div");
     divDraw.id ="divDraw";
+    divDraw.style.cursor = "ew-resize";
     el.appendChild(divDraw);
 
-    var canvasAfter = document.createElement("canvas");
+    canvasAfter = document.createElement("canvas");
     canvasAfter.id = "canvasAfter";
     divDraw.appendChild(canvasAfter);
 
-    var divBefore = document.createElement("div");
+    divBefore = document.createElement("div");
     divBefore.id ="divBefore";
     divDraw.appendChild(divBefore);
 
-    var canvasBefore = document.createElement("canvas");
+    canvasBefore = document.createElement("canvas");
     canvasBefore.id = "canvasBefore";
     divBefore.appendChild(canvasBefore);
 
@@ -69,11 +78,6 @@ HTMLWidgets.widget({
     var filename2 = document.getElementById("image-2-attachment").href;
 
     init(filename1, filename2);
-
-    //alert(navigator.userAgent);
-    //alert(navigator.product);
-
-
   },
 
   resize: function(el, width, height, instance) {
@@ -82,7 +86,6 @@ HTMLWidgets.widget({
 });
 
 function init(filename1, filename2) {
-	var divDraw = document.getElementById("divDraw");
 	divDraw.onmousemove = mousemove;
 	divDraw.onmousedown = mousedown;
 	divDraw.onmouseenter = mouseenter;
@@ -99,7 +102,6 @@ function init(filename1, filename2) {
 }
 
 function mousemove(e) {
-	var divBefore = document.getElementById("divBefore");
 	if(drag) {
 		var x = e.layerX;
 		var y = e.layerY;
@@ -108,32 +110,31 @@ function mousemove(e) {
 		dragX = x;
 		dragY = y;
 		draw();
+    divDraw.style.cursor = "pointer";
+	} else {
+	  divDraw.style.cursor = "ew-resize";
 	}
-	/*rect (top, right, bottom, left)*/
+	/*rect (top right bottom left)*/
 	divBefore.style.clip = "rect(0px "+e.layerX+"px auto 0px)";
 
-	var w = 150;
+	var w = spanLeft.offsetWidth + spanMid.offsetWidth + spanRight.offsetWidth;
 	var nx = e.layerX - (w / 2);
 	if(nx<0) {
-	  nx=0;
+	  nx = 0;
 	}
 	if(nx+w>window.innerWidth) {
-	  nx=window.innerWidth - divInfo.offsetWidth;
+	  nx = window.innerWidth - w;
 	}
 
-
-
-	//window.innerWidth
 	divInfo.style.marginLeft = nx + "px";
-
 }
 
 function mousedown(e) {
-	//if(e.buttons>0 || e.button!=undefined) {
 	if(e.which>0) {
 		dragX = e.layerX;
 		dragY = e.layerY;
 		drag = true;
+    divDraw.style.cursor = "pointer";
 	}
 }
 
@@ -143,6 +144,7 @@ function mouseenter(e) {
 
 function mouseup(e) {
 	drag = false;
+	divDraw.style.cursor = "ew-resize";
 }
 
 function mouseleave(e) {
@@ -150,18 +152,21 @@ function mouseleave(e) {
 }
 
 function keydown(e) {
-  t = e;
-  console.log(e.which);
-  //if(e.key=='+') {
-    // wheel({layerX:0, layerY:0, deltaY:1})
-  //}
+
+  if(e.which==109 || e.which==173 || e.which==189) { // minus key
+    wheel({layerX:0, layerY:0, deltaY:+1})
+  }
+
+  if(e.which==107 || e.which==171 || e.which==187) { // plus key
+    wheel({layerX:0, layerY:0, deltaY:-1})
+  }
 
   if(e.which==32) { // space bar
 	  crisp = !crisp;
 	  draw();
   }
 
-  if(e.which==13) { // enter key
+  if(e.which==27 || e.which==13) { // escape or enter key
     offsetX = 0;
     offsetY = 0;
     scale = 1;
@@ -171,7 +176,7 @@ function keydown(e) {
 }
 
 function mousewheel(e) {  // RStudio
-  e.deltaY = e.wheelDelta;
+  e.deltaY = -e.wheelDelta;
   wheel(e);
 }
 
@@ -180,9 +185,9 @@ function wheel(e) {
 	var y = e.layerY;
 	var offX = x/scale;
 	var offY = y/scale;
-	if(e.deltaY<0) {
+	if(e.deltaY>0) {
 		scale /= 1.25;
-	} else if(e.deltaY>0) {
+	} else if(e.deltaY<0) {
 		scale *= 1.25;
 	}
 	var newX = x/scale;
@@ -194,8 +199,6 @@ function wheel(e) {
 
 function draw() {
   spanMid.innerHTML = "x"+scale.toFixed(2);
-	var canvasBefore = document.getElementById("canvasBefore");
-	var canvasAfter = document.getElementById("canvasAfter");
 	drawLayer(canvasBefore,imageBefore);
 	drawLayer(canvasAfter,imageAfter);
 }
