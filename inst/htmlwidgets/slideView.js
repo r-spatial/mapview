@@ -58,7 +58,7 @@ HTMLWidgets.widget({
 
     divDraw = document.createElement("div");
     divDraw.id ="divDraw";
-    divDraw.style.cursor = "ew-resize";
+    divDraw.style.cursor = "col-resize";
     el.appendChild(divDraw);
 
     canvasAfter = document.createElement("canvas");
@@ -110,9 +110,9 @@ function mousemove(e) {
 		dragX = x;
 		dragY = y;
 		draw();
-    divDraw.style.cursor = "pointer";
+    divDraw.style.cursor = "grabbing";
 	} else {
-	  divDraw.style.cursor = "ew-resize";
+	  divDraw.style.cursor = "col-resize";
 	}
 	/*rect (top right bottom left)*/
 	divBefore.style.clip = "rect(0px "+e.layerX+"px auto 0px)";
@@ -134,7 +134,7 @@ function mousedown(e) {
 		dragX = e.layerX;
 		dragY = e.layerY;
 		drag = true;
-    divDraw.style.cursor = "pointer";
+    divDraw.style.cursor = "move";
 	}
 }
 
@@ -144,7 +144,7 @@ function mouseenter(e) {
 
 function mouseup(e) {
 	drag = false;
-	divDraw.style.cursor = "ew-resize";
+	divDraw.style.cursor = "col-resize";
 }
 
 function mouseleave(e) {
