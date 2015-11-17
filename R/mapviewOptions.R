@@ -54,6 +54,7 @@ mapviewOptions <- function(platform,
                            maxpixels,
                            verbose,
                            nacolor,
+                           layerscontrolpos,
                            default = FALSE,
                            console = TRUE) {
 
@@ -92,6 +93,9 @@ mapviewOptions <- function(platform,
     options(mapviewNAColor = nacolor)
   }
 
+  setLayersControlPos <- function(layerscontrolpos) {
+    options(layersControlPos = layerscontrolpos)
+  }
 
   cnt <- 0
 
@@ -103,6 +107,7 @@ mapviewOptions <- function(platform,
     options(mapviewMaxPixels = 500000)
     options(mapviewVerbose = FALSE)
     options(mapviewNAColor = "transparent")
+    options(layersControlPos = "topleft")
   }
 
 
@@ -112,6 +117,7 @@ mapviewOptions <- function(platform,
   if (!missing(maxpixels)) { setMaxPixels(maxpixels); cnt <- cnt+1 }
   if (!missing(verbose)) { setVerbose(verbose); cnt <- cnt+1 }
   if (!missing(nacolor)) { setNAColor(nacolor); cnt <- cnt+1 }
+  if (!missing(layerscontrolpos)) { setNAColor(layerscontrolpos); cnt <- cnt+1 }
 
 
   lst <- list(platform = .platform(),
@@ -119,18 +125,20 @@ mapviewOptions <- function(platform,
               rastersize = .rastersize(),
               maxpixels = .maxpixels(),
               verbose = .verbose(),
-              nacolor = .nacolor())
+              nacolor = .nacolor(),
+              layerscontrolpos = .layerscontrolpos())
 
 
 
   if (console) {
     if (cnt == 0) {
-      cat('platform      :', lst$platform, '\n' )
-      cat('basemaps      :', lst$basemaps, '\n')
-      cat('rastersize    :', lst$rastersize, '\n')
-      cat('maxpixels     :', lst$maxpixels, '\n')
-      cat('verbose       :', lst$verbose, '\n')
-      cat('nacolor       :', lst$nacolor, '\n')
+      cat('platform           :', lst$platform, '\n' )
+      cat('basemaps           :', lst$basemaps, '\n')
+      cat('rastersize         :', lst$rastersize, '\n')
+      cat('maxpixels          :', lst$maxpixels, '\n')
+      cat('verbose            :', lst$verbose, '\n')
+      cat('nacolor            :', lst$nacolor, '\n')
+      cat('layerscontrolpos   :', lst$layerscontrolpos, '\n')
     }
   }
 
@@ -205,3 +213,12 @@ mapviewOptions <- function(platform,
 }
 
 
+.layerscontrolpos <- function() {
+  default <- "topleft"
+  lcp <- getOption('layersControlPos')
+  if (is.null(lcp)) {
+    return(default)
+  } else {
+    return(lcp)
+  }
+}

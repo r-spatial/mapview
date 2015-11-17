@@ -5,7 +5,7 @@
 \title{Global options for the mapview package}
 \usage{
 mapviewOptions(platform, basemaps, rastersize, maxpixels, verbose, nacolor,
-  default = FALSE, console = TRUE)
+  layerscontrolpos, default = FALSE, console = TRUE)
 }
 \arguments{
 \item{platform}{character. The platform to be used (currently only "leaflet"

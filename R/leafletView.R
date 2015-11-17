@@ -216,17 +216,17 @@ leafletPointsDF <- function(x,
 
     for (i in seq(lst)) {
 
-      x <- lst[[i]]
+      #x <- lst[[i]]
 
-      if (pop.null) popup <- brewPopupTable(x)
+      if (pop.null) popup <- brewPopupTable(lst[[i]])
 
       m <- leaflet::addCircleMarkers(m,
-                                     lng = coordinates(x)[, 1],
-                                     lat = coordinates(x)[, 2],
+                                     lng = coordinates(lst[[i]])[, 1],
+                                     lat = coordinates(lst[[i]])[, 2],
                                      group = names(lst[[i]]),
                                      color = pal_n[[i]](vals[[i]]),
                                      popup = popup,
-                                     #data = x,
+                                     #data = lst[[i]],
                                      radius = rad_vals,
                                      ...)
 
@@ -238,11 +238,18 @@ leafletPointsDF <- function(x,
                                 layerId = names(lst[[i]]))
       }
 
-      m <- mapViewLayersControl(map = m,
-                                map.types = map.types,
-                                names = names(lst[[i]]))
-
     }
+
+    m <- mapViewLayersControl(map = m,
+                              map.types = map.types,
+                              names = names(x))
+
+    #     m <- leaflet::addLayersControl(map = m,
+    #                                    position = mapviewOptions(
+    #                                      console = FALSE)$layerscontrolpos,
+    #                                    baseGroups = map.types,
+    #                                    overlayGroups = names(x))
+
 
     if (length(getLayerNamesFromMap(m)) > 1) {
       m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
@@ -267,6 +274,12 @@ leafletPointsDF <- function(x,
     m <- mapViewLayersControl(map = m,
                               map.types = map.types,
                               names = grp)
+
+    #     m <- leaflet::addLayersControl(map = m,
+    #                                    position = mapviewOptions(
+    #                                      console = FALSE)$layerscontrolpos,
+    #                                    baseGroups = map.types,
+    #                                    overlayGroups = grp)
   }
 
   out <- new('mapview', object = list(x), map = m)
@@ -377,11 +390,7 @@ leafletPolygonsDF <- function(x,
 
     for (i in seq(lst)) {
 
-      # x <- lst[[i]]
-
-      #df <- sapply(x@data, as.character)
-
-      grp <- names(lst[[i]]) #colnames(sapply(x@data, as.character))
+      grp <- names(lst[[i]])
 
       if (pop.null) popup <- brewPopupTable(lst[[i]])
 
@@ -399,27 +408,24 @@ leafletPolygonsDF <- function(x,
                               values = vals[[i]],
                               title = grp)
 
-#       m <- mapViewLayersControl(map = m,
-#                                 map.types = map.types,
-#                                 names = grp)
-
     }
 
-    m <- leaflet::addLayersControl(map = m,
-                                   position = "bottomleft",
-                                   baseGroups = map.types,
-                                   overlayGroups = names(x))
+    m <- mapViewLayersControl(map = m,
+                              map.types = map.types,
+                              names = names(x))
+
+
+    #     m <- leaflet::addLayersControl(map = m,
+    #                                    position = mapviewOptions(
+    #                                      console = FALSE)$layerscontrolpos,
+    #                                    baseGroups = map.types,
+    #                                    overlayGroups = names(x))
 
     if (length(names(x)) > 1) {
-      m <- leaflet::hideGroup(map = m, group = names(x)[2:length(names(x))])
+      m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
     }
 
   } else {
-
-#     df <- as.data.frame(sapply(x@data, as.character),
-#                         stringsAsFactors = FALSE)
-#
-#     if (nrow(x) == 1) df <- t(df)
 
     grp <- layer.name
 
@@ -432,6 +438,12 @@ leafletPolygonsDF <- function(x,
                               popup = popup,
                               data = x,
                               ...)
+
+    #     m <- leaflet::addLayersControl(map = m,
+    #                                    position = mapviewOptions(
+    #                                      console = FALSE)$layerscontrolpos,
+    #                                    baseGroups = map.types,
+    #                                    overlayGroups = grp)
 
     m <- mapViewLayersControl(map = m,
                               map.types = map.types,
@@ -546,31 +558,35 @@ leafletLinesDF <- function(x,
 
     for (i in seq(lst)) {
 
-      x <- lst[[i]]
+      #x <- lst[[i]]
 
       df <- as.data.frame(sapply(x@data, as.character),
                           stringsAsFactors = FALSE)
 
       grp <- names(df)
 
-      if (pop.null) popup <- brewPopupTable(x)
+      if (pop.null) popup <- brewPopupTable(lst[[i]])
 
       m <- leaflet::addPolylines(m,
                                  group = grp,
                                  color = pal_n[[i]](vals[[i]]),
                                  popup = popup,
-                                 data = x,
+                                 data = lst[[i]],
                                  ...)
 
       m <- leaflet::addLegend(map = m, position = "topright",
                               pal = pal_n[[i]], opacity = 1,
                               values = vals[[i]], title = grp)
-
-      m <- mapViewLayersControl(map = m,
-                                map.types = map.types,
-                                names = grp)
+#
+#       m <- mapViewLayersControl(map = m,
+#                                 map.types = map.types,
+#                                 names = grp)
 
     }
+
+    m <- mapViewLayersControl(map = m,
+                              map.types = map.types,
+                              names = names(x))
 
     if (length(getLayerNamesFromMap(m)) > 1) {
       m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
@@ -696,7 +712,8 @@ leafletMissing <- function(map.types,
     m <- initBaseMaps(map.types)
     m <- leaflet::setView(map = m, 8.770862, 50.814772, zoom = 18)
     m <- leaflet::addLayersControl(map = m, baseGroups = map.types,
-                                   position = "bottomleft")
+                                   position = mapviewOptions(
+                                     console = FALSE)$layerscontrolpos)
     out <- new('mapview', object = list(NULL), map = m)
   }
   return(out)

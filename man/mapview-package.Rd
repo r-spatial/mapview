@@ -15,7 +15,9 @@ during spatial data analysis. It is not intended for fine-tuned presentation
 quality map production.
 }
 \author{
-Tim Appelhans, Environmental Informatics Marburg \cr
+Tim Appelhans, Florian Detsch, Chris Reudenbach,
+Stephan Woellauer, Spaska Forteva, Thomas Nauss,
+Environmental Informatics Marburg \cr
 \cr
 \emph{Maintainer:} Tim Appelhans \email{tim.appelhans@gmail.com}
 }

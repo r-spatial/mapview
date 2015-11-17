@@ -4,9 +4,12 @@ Title: GIS-Like Viewing of Spatial Objects in R
 Version: 0.8.7
 Date: 2015-11-16
 Authors@R: c(
-      person("Tim", "Appelhans", email = "tim.appelhans@gmail.com", role = c("aut", "cre")),
+      person("Tim", "Appelhans", email = "tim.appelhans@gmail.com", role = c("cre", "aut")),
       person("Florian", "Detsch", email = "florian.detsch@staff.uni-marburg.de", role = c("aut")),
+      person("Christoph", "Reudenbach", email = "reudenbach@geo.uni-marburg.de", role = c("aut")),
       person("Stefan", "Woellauer", email = "stephan.woellauer@geo.uni-marburg.de", role = c("aut")),
+      person("Spaska", "Forteva", email = "spaska.forteva@geo.uni-marburg.de", role = c("ctb")),
+      person("Thomas", "Nauss", email = "nauss@staff.uni-marburg.de", role = c("ctb")),
       person("Environmental Informatics Marburg", role = c("ctb"))
     )
 Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
