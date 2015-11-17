@@ -93,7 +93,12 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
+            img1nm <- deparse(substitute(img1, env = parent.frame()))
+            img2nm <- deparse(substitute(img2, env = parent.frame()))
+
             slideViewInternal(list(a="a", b="b"),
+                              img1nm = img1nm,
+                              img2nm = img2nm,
                               filename1 = fl1,
                               filename2 = fl2)
           }
@@ -128,7 +133,12 @@ setMethod("slideView", signature(img1 = "RasterLayer",
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
+            img1nm <- deparse(substitute(img1, env = parent.frame()))
+            img2nm <- deparse(substitute(img2, env = parent.frame()))
+
             slideViewInternal(list(a="a", b="b"),
+                              img1nm = img1nm,
+                              img2nm = img2nm,
                               filename1 = fl1,
                               filename2 = fl2)
           }
@@ -156,7 +166,12 @@ setMethod("slideView", signature(img1 = "character",
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
+            img1nm <- deparse(substitute(img1, env = parent.frame()))
+            img2nm <- deparse(substitute(img2, env = parent.frame()))
+
             slideViewInternal(list(a="a", b="b"),
+                              img1nm = img1nm,
+                              img2nm = img2nm,
                               filename1 = fl1,
                               filename2 = fl2)
           }
@@ -167,6 +182,8 @@ setMethod("slideView", signature(img1 = "character",
 ### internal functions
 
 slideViewInternal <- function(message,
+                              img1nm = NULL,
+                              img2nm = NULL,
                               width = NULL,
                               height = NULL,
                               filename1 = NULL,
@@ -174,7 +191,9 @@ slideViewInternal <- function(message,
 
   # forward options using x
   x <- list(
-    message = message
+    message = message,
+    img1 = img1nm,
+    img2 = img2nm
   )
 
   #filename1 and filename2 need to have same directory!
