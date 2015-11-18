@@ -51,8 +51,8 @@ HTMLWidgets.widget({
     divInfo.appendChild(spanMid);
     divInfo.appendChild(spanRight);
 
-    spanLeft.innerHTML = "img1 &nbsp;&nbsp;&nbsp;";
-    spanRight.innerHTML = "&nbsp;&nbsp;&nbsp; img2";
+    spanLeft.innerHTML = x.img1+"&nbsp;&nbsp;&nbsp;";
+    spanRight.innerHTML = "&nbsp;&nbsp;&nbsp;"+x.img2;
 
     spanMid.innerHTML = "?";
 
@@ -118,7 +118,8 @@ function mousemove(e) {
 	divBefore.style.clip = "rect(0px "+e.layerX+"px auto 0px)";
 
 	var w = spanLeft.offsetWidth + spanMid.offsetWidth + spanRight.offsetWidth;
-	var nx = e.layerX - (w / 2);
+	var m = spanLeft.offsetWidth + (spanMid.offsetWidth/2);
+	var nx = e.layerX - m;
 	if(nx<0) {
 	  nx = 0;
 	}
