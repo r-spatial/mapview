@@ -3,7 +3,7 @@ if ( !isGeneric('plainView') ) {
     standardGeneric('plainView'))
 }
 
-#' View spatial objects interactively withour backgreound map but in any CRS
+#' View spatial objects interactively without background map but in any CRS
 #'
 #' @description
 #' this function produces an interactive GIS-like view of the specified
@@ -110,142 +110,132 @@ if ( !isGeneric('plainView') ) {
 
 setMethod('plainView', signature(x = 'RasterLayer'),
           function(x,
-                   map = NULL,
                    maxpixels = mapviewOptions(console = FALSE)$maxpixels,
                    color = mapViewPalette(7),
                    na.color = mapviewOptions(console = FALSE)$nacolor,
-                   use.layer.names = FALSE,
-                   values = NULL,
-                   layer.opacity = 0.8,
-                   legend = TRUE,
-                   legend.opacity = 1,
-                   trim = TRUE,
                    verbose = mapviewOptions(console = FALSE)$verbose,
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    ...) {
 
-            if (mapviewOptions(console = FALSE)$platform == "leaflet") {
-              leafletPlainRL(x,
-                             map,
-                             maxpixels,
-                             color,
-                             na.color,
-                             use.layer.names,
-                             values,
-                             layer.opacity,
-                             legend,
-                             legend.opacity,
-                             trim,
-                             verbose,
-                             layer.name,
-                             ...)
-            } else {
-              NULL
-            }
+            png <- raster2PNG(x, color = color,
+                              na.color = na.color,
+                              maxpixels = maxpixels)
+
+            ## temp dir
+            dir <- tempfile()
+            dir.create(dir)
+            fl <- paste0(dir, "/img", ".png")
+
+            png::writePNG(png, fl)
+
+            imgnm <- deparse(substitute(img, env = parent.frame()))
+
+            plainViewInternal(filename = fl,
+                              imgnm = layer.name)
 
           }
 
 )
 
-## Raster Stack/Brick ===========================================================
-#' @describeIn plainView \code{\link{stack}} / \code{\link{brick}}
-
-setMethod('plainView', signature(x = 'RasterStackBrick'),
-          function(x,
-                   map = NULL,
-                   maxpixels = mapviewOptions(console = FALSE)$maxpixels,
-                   color = mapViewPalette(7),
-                   na.color = mapviewOptions(console = FALSE)$nacolor,
-                   values = NULL,
-                   legend = FALSE,
-                   legend.opacity = 1,
-                   trim = TRUE,
-                   verbose = mapviewOptions(console = FALSE)$verbose,
-                   ...) {
-
-            if (mapviewOptions(console = FALSE)$platform == "leaflet") {
-              leafletPlainRSB(x,
-                              map,
-                              maxpixels,
-                              color,
-                              na.color,
-                              values,
-                              legend,
-                              legend.opacity,
-                              trim,
-                              verbose,
-                              ...)
-            } else {
-              NULL
-            }
-
-          }
-)
-
-
-
-## Satellite object =======================================================
-#' @describeIn plainView \code{\link{satellite}}
-
-setMethod('plainView', signature(x = 'Satellite'),
-          function(x,
-                   ...) {
-
-            pkgs <- c("leaflet", "satellite", "magrittr")
-            tst <- sapply(pkgs, "requireNamespace",
-                          quietly = TRUE, USE.NAMES = FALSE)
-
-            lyrs <- x@layers
-
-            m <- plainView(lyrs[[1]], ...)
-
-            if (length(lyrs) > 1) {
-              for (i in 2:length(lyrs)) {
-                m <- plainView(lyrs[[i]], m, ...)
-              }
-            }
-
-            if (length(getLayerNamesFromMap(m)) > 1) {
-              m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
-            }
-
-            out <- new('mapview', object = list(x), map = m)
-
-            return(out)
-
-          }
-
-)
-
-
-## SpatialPixelsDataFrame =================================================
-#' @describeIn plainView \code{\link{SpatialPixelsDataFrame}}
-#'
-setMethod('plainView', signature(x = 'SpatialPixelsDataFrame'),
-          function(x,
-                   zcol = NULL,
-                   ...) {
-
-            if (mapviewOptions(console = FALSE)$platform == "leaflet") {
-              leafletPlainPixelsDF(x,
-                                   zcol,
-                                   ...)
-            } else {
-              NULL
-            }
-
-          }
-)
-
-
-#' <Add Title>
-#'
-#' <Add Description>
-#'
-#' @import htmlwidgets
-#'
-#' @export
+# ## Raster Stack/Brick ===========================================================
+# #' @describeIn plainView \code{\link{stack}} / \code{\link{brick}}
+#
+# setMethod('plainView', signature(x = 'RasterStackBrick'),
+#           function(x,
+#                    map = NULL,
+#                    maxpixels = mapviewOptions(console = FALSE)$maxpixels,
+#                    color = mapViewPalette(7),
+#                    na.color = mapviewOptions(console = FALSE)$nacolor,
+#                    values = NULL,
+#                    legend = FALSE,
+#                    legend.opacity = 1,
+#                    trim = TRUE,
+#                    verbose = mapviewOptions(console = FALSE)$verbose,
+#                    ...) {
+#
+#             if (mapviewOptions(console = FALSE)$platform == "leaflet") {
+#               leafletPlainRSB(x,
+#                               map,
+#                               maxpixels,
+#                               color,
+#                               na.color,
+#                               values,
+#                               legend,
+#                               legend.opacity,
+#                               trim,
+#                               verbose,
+#                               ...)
+#             } else {
+#               NULL
+#             }
+#
+#           }
+# )
+#
+#
+#
+# ## Satellite object =======================================================
+# #' @describeIn plainView \code{\link{satellite}}
+#
+# setMethod('plainView', signature(x = 'Satellite'),
+#           function(x,
+#                    ...) {
+#
+#             pkgs <- c("leaflet", "satellite", "magrittr")
+#             tst <- sapply(pkgs, "requireNamespace",
+#                           quietly = TRUE, USE.NAMES = FALSE)
+#
+#             lyrs <- x@layers
+#
+#             m <- plainView(lyrs[[1]], ...)
+#
+#             if (length(lyrs) > 1) {
+#               for (i in 2:length(lyrs)) {
+#                 m <- plainView(lyrs[[i]], m, ...)
+#               }
+#             }
+#
+#             if (length(getLayerNamesFromMap(m)) > 1) {
+#               m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+#             }
+#
+#             out <- new('mapview', object = list(x), map = m)
+#
+#             return(out)
+#
+#           }
+#
+# )
+#
+#
+# ## SpatialPixelsDataFrame =================================================
+# #' @describeIn plainView \code{\link{SpatialPixelsDataFrame}}
+# #'
+# setMethod('plainView', signature(x = 'SpatialPixelsDataFrame'),
+#           function(x,
+#                    zcol = NULL,
+#                    ...) {
+#
+#             if (mapviewOptions(console = FALSE)$platform == "leaflet") {
+#               leafletPlainPixelsDF(x,
+#                                    zcol,
+#                                    ...)
+#             } else {
+#               NULL
+#             }
+#
+#           }
+# )
+#
+#
+# #' <Add Title>
+# #'
+# #' <Add Description>
+# #'
+# #' @import htmlwidgets
+# #'
+# #' @export
 plainViewInternal <- function(filename, imgnm) {
 
   x <- list(imgnm = imgnm)
@@ -270,16 +260,12 @@ plainViewInternal <- function(filename, imgnm) {
   )
 }
 
-#' Widget output function for use in Shiny
-#'
-#' @export
+
 plainViewOutput <- function(outputId, width = '100%', height = '400px'){
   shinyWidgetOutput(outputId, 'plainView', width, height, package = 'mapview')
 }
 
-#' Widget render function for use in Shiny
-#'
-#' @export
+
 renderPlainView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
   shinyRenderWidget(expr, plainViewOutput, env, quoted = TRUE)

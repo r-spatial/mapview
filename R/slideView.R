@@ -20,7 +20,7 @@ if ( !isGeneric('slideView') ) {
 #' @param img2 a RasterStack/Brick, RasterLayer or path to a .png file
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
-#' @param colors the color palette to be used for visualising RasterLayers
+#' @param color the color palette to be used for visualising RasterLayers
 #' @param na.color the color to be used for NA pixels
 #'
 #' @author
@@ -112,14 +112,14 @@ setMethod("slideView", signature(img1 = "RasterLayer",
                                  img2 = "RasterLayer"),
           function(img1,
                    img2,
-                   colors = mapViewPalette(7),
+                   color = mapViewPalette(7),
                    na.color = "#00000000",
                    maxpixels = 500000) {
 
-            png1 <- raster2PNG(img1, colors = colors,
+            png1 <- raster2PNG(img1, color = color,
                                na.color = na.color,
                                maxpixels = maxpixels)
-            png2 <- raster2PNG(img2, colors = colors,
+            png2 <- raster2PNG(img2, color = color,
                                na.color = na.color,
                                maxpixels = maxpixels)
 

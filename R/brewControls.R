@@ -1,19 +1,5 @@
-#' Convenience functions for brew plugin
-#'
-#' @author
-#' Tim Appelhans, Florian Detsch
-#'
-#' @param x A 'SpatialPointsDataFrame'.
-#' @param use_cpp Logical. If \code{TRUE}, the function makes use of
-#' \strong{Rcpp} functionality which leads to a significant reduction in
-#' computation time, particularly when processing large datasets.
-#'
-#' @name brewControls
-NULL
+# create popup table of attributes
 
-
-# brew popup table for sp objects -----------------------------------------
-#' @describeIn brewControls create popup table for sp objects
 brewPopupTable <- function(x, use_cpp = TRUE) {
 
   if (!use_cpp) {
@@ -108,11 +94,7 @@ brewPopupTable <- function(x, use_cpp = TRUE) {
 
 
 # create popup table odd row for sp objects ---------------------------------------
-#' @describeIn brewControls create popup table odd row for sp objects
-#'
-#' @param col.name the name of the column of the attribute table
-#' @param value the corresponding value from the attribute table
-#'
+
 brewPopupRow <- function(col.name, value) {
 
   paste0("<tr>",
@@ -128,8 +110,7 @@ brewPopupRow <- function(col.name, value) {
 
 
 # create popup table even row for sp objects ---------------------------------------
-#' @describeIn brewControls create popup table even row for sp objects
-#'
+
 brewPopupRowAlt <- function(col.name, value) {
 
   paste0("<tr class='alt'>",
