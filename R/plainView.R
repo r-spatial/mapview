@@ -238,3 +238,50 @@ setMethod('plainView', signature(x = 'SpatialPixelsDataFrame'),
           }
 )
 
+
+#' <Add Title>
+#'
+#' <Add Description>
+#'
+#' @import htmlwidgets
+#'
+#' @export
+plainViewInternal <- function(filename, imgnm) {
+
+  x <- list(imgnm = imgnm)
+
+  image_dir <- dirname(filename)
+  image_file <- basename(filename)
+
+  dep1 <- htmltools::htmlDependency(name = "image",
+                                    version = "1",
+                                    src = c(file = image_dir),
+                                    attachment = list(image_file))
+  deps <- list(dep1)
+
+  sizing <- htmlwidgets::sizingPolicy(padding = 0, browser.fill = TRUE)
+
+  htmlwidgets::createWidget(
+    name = 'plainView',
+    x = x,
+    package = 'mapview',
+    dependencies = deps,
+    sizingPolicy = sizing
+  )
+}
+
+#' Widget output function for use in Shiny
+#'
+#' @export
+plainViewOutput <- function(outputId, width = '100%', height = '400px'){
+  shinyWidgetOutput(outputId, 'plainView', width, height, package = 'mapview')
+}
+
+#' Widget render function for use in Shiny
+#'
+#' @export
+renderPlainView <- function(expr, env = parent.frame(), quoted = FALSE) {
+  if (!quoted) { expr <- substitute(expr) } # force quoted
+  shinyRenderWidget(expr, plainViewOutput, env, quoted = TRUE)
+}
+
