@@ -1,5 +1,6 @@
+# Convert RasterLayers to png or RasterStacks/Bricks to RGB png
 
-
+## raster layer -----------------------------------------------------------
 raster2PNG <- function(x,
                        colors,
                        na.color,
@@ -23,8 +24,10 @@ raster2PNG <- function(x,
 }
 
 
+## raster tsack/brick -----------------------------------------------------
+
 rgbStack2PNG <- function(x, r = 3, g = 2, b = 1,
-                         na.color = "transparent",
+                         na.color,
                          quantiles = c(0.02, 0.98),
                          maxpixels) {
 

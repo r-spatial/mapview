@@ -78,10 +78,14 @@ if ( !isGeneric('slideView') ) {
 
 setMethod("slideView", signature(img1 = "RasterStackBrick",
                                  img2 = "RasterStackBrick"),
-          function(img1, img2, maxpixels = 500000) {
+          function(img1, img2,
+                   na.color = mapviewOptions(console = FALSE)$nacolor,
+                   maxpixels = 500000) {
 
-            png1 <- rgbStack2PNG(img1, maxpixels = maxpixels)
-            png2 <- rgbStack2PNG(img2, maxpixels = maxpixels)
+            png1 <- rgbStack2PNG(img1, na.color = na.color,
+                                 maxpixels = maxpixels)
+            png2 <- rgbStack2PNG(img2, na.color = na.color,
+                                 maxpixels = maxpixels)
 
             ## temp dir
             dir <- tempfile()
@@ -113,7 +117,7 @@ setMethod("slideView", signature(img1 = "RasterLayer",
           function(img1,
                    img2,
                    color = mapViewPalette(7),
-                   na.color = "#00000000",
+                   na.color = mapviewOptions(console = FALSE)$nacolor,
                    maxpixels = 500000) {
 
             png1 <- raster2PNG(img1, color = color,
