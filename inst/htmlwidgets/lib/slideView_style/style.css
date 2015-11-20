@@ -1,5 +1,6 @@
 #htmlwidget_container {
-  background-color: #3D3D3D;
+  background-color: #0c0c0c;
+  color: #f7f7f7;
 }
 
 #divInfo {
@@ -15,5 +16,9 @@
 }
 
 #spanLeft, #spanRight {
-  background-color: #D3D3D3;
+  background-color: #3d3d3d;
+}
+
+#spanMid {
+  background-color: #787878;
 }
