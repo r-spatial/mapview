@@ -50,9 +50,9 @@ if ( !isGeneric('viewRGB') ) {
 #' library(jpeg)
 #' library(raster)
 #'
-#' web_image <- "http://umweltinformatik-marburg.de/uploads/tx_rzslider/teaching_header_kili_resized.jpg"
+#' web_img <- "http://umweltinformatik-marburg.de/uploads/tx_rzslider/teaching_header_kili_resized.jpg"
 #'
-#' jpg <- readJPEG(readBin(web_image, "raw", 1e6))
+#' jpg <- readJPEG(readBin(web_img, "raw", 1e6))
 #'
 #' # Convert imagedata to raster
 #' rst_blue <- raster(jpg[, , 1])
@@ -84,7 +84,8 @@ setMethod("viewRGB", signature(x = "RasterStackBrick"),
                    ...) {
 
             m <- initMap(map, map.types, projection(x))
-            xout <- rasterCheckAdjustProjection(x, maxpixels)
+            x <- rasterCheckSize(x, maxpixels)
+            xout <- rasterCheckAdjustProjection(x)
 
             mat <- cbind(xout[[r]][],
                          xout[[g]][],
@@ -116,7 +117,7 @@ setMethod("viewRGB", signature(x = "RasterStackBrick"),
                                       map.types = map.types,
                                       names = grp)
 
-            out <- new('mapview', object = list(xout), map = m)
+            out <- methods::new('mapview', object = list(xout), map = m)
 
             return(out)
 

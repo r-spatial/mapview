@@ -3,6 +3,9 @@
 \name{mapViewPalette}
 \alias{mapViewPalette}
 \title{Default color palette for mapview}
+\usage{
+mapViewPalette(n)
+}
 \arguments{
 \item{n}{the number of colours to be created}
 }

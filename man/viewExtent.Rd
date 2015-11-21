@@ -6,7 +6,13 @@
 \title{View extent/bbox of spatial objects interactively}
 \usage{
 viewExtent(x, map = NULL, map.types = c("OpenStreetMap",
+<<<<<<< HEAD
   "Esri.WorldImagery"), ...)
+=======
+  "Esri.WorldImagery"), popup = NULL, ...)
+
+addExtent(x, map, popup, ...)
+>>>>>>> a3fb3541499da6b6eb6807acf796d976f3f512cc
 }
 \arguments{
 \item{x}{either a Raster* object or a Spatial* object}
@@ -16,12 +22,22 @@ standard background layers are cretaed}
 
 \item{map.types}{the map types to be used in case map is NULL}
 
+\item{popup}{a character vector of the HTML content for the popups. See
+\code{\link{addControl}} for details.}
+
 \item{...}{additional arguments passed on to \code{\link{addRectangles}}}
 }
 \description{
 This function produces an interactive GIS-like view of the extent/bbox
 of the supplied spatial object
 }
+<<<<<<< HEAD
+=======
+\section{Functions}{
+\itemize{
+\item \code{addExtent}: add extent/bbox of spatial objects interactively
+}}
+>>>>>>> a3fb3541499da6b6eb6807acf796d976f3f512cc
 \examples{
 ### raster data ###
 library(sp)
