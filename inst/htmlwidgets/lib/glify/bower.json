@@ -1,0 +1,32 @@
+{
+  "name": "Leaflet.glify",
+  "version": "0.0.0",
+  "homepage": "https://github.com/robertleeplummerjr/Leaflet.glify",
+  "authors": [
+    "Robert Plummer <robertleeplummerjr@gmail.com>"
+  ],
+  "description": "web gl renderer plugin for leaflet",
+  "main": "leaflet.glify.js",
+  "keywords": [
+    "leaflet",
+    "gpu",
+    "webgl",
+    "web-gl",
+    "web",
+    "gl",
+    "icon",
+    "point",
+    "fast"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "leaflet": "~0.7.5"
+  }
+}

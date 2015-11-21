@@ -236,6 +236,7 @@ setMethod('plainView', signature(x = 'RasterLayer'),
 # #' @import htmlwidgets
 # #'
 # #' @export
+
 plainViewInternal <- function(filename, imgnm) {
 
   x <- list(imgnm = imgnm)
