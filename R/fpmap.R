@@ -26,6 +26,8 @@ if (!isGeneric('fpmap')) {
 #' ### we need sp and raster ###
 #'  library(sp)
 #'  library(raster)
+#'  library(ggplot2)
+#'  library(profvis)
 #'
 #' # take the meuse data
 #'  data(meuse)
@@ -44,8 +46,6 @@ if (!isGeneric('fpmap')) {
 #'  system.time(fpmap(data = meuse, col = "random",zcol = 'cadmium'))
 #'
 #' ### Now we go a bit bigger
-#'  library(ggplot2)
-#'  library(profvis)
 #'
 #' # get the diamonds data
 #'  big <- diamonds[rep(seq_len(nrow(diamonds)), 1),]
@@ -69,8 +69,8 @@ if (!isGeneric('fpmap')) {
 #'  system.time(mapview(big, color='blue'))
 #'  system.time(fpmap(data = big, col = "blue"))
 #'
-#' ### now getting even bigger
-#'  big <- diamonds[rep(seq_len(nrow(diamonds)), 30),]
+#' ### up to about 5 mio points
+#'  big <- diamonds[rep(seq_len(nrow(diamonds)), 94),]
 #'  big$cut <- as.character(big$cut)
 #'  big$color <- as.character(big$color)
 #'  big$clarity <- as.character(big$clarity)
@@ -82,7 +82,7 @@ if (!isGeneric('fpmap')) {
 #'  proj4string(big) <- CRS("+init=epsg:4326")
 #'
 #' # map it NOT with leaflet but with fpmap
-#'  fpmap(data = big, col = "random")
+#'  fpmap(data = big, col = "blue")
 #'
 #' ### some benchmarks
 #' # random point colors is slower
