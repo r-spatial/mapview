@@ -2,7 +2,7 @@
 
 HTMLWidgets.widget({
 
-  name: 'fwmap',
+  name: 'fpmap',
 
   type: 'output',
 
@@ -16,7 +16,7 @@ HTMLWidgets.widget({
     // is no way for htmlwidgets to pass initial params to initialize()
     var map = new L.map(el, {
       center: [47, 10],
-      zoom: 4
+      zoom: 7
     });
 
 
@@ -42,9 +42,8 @@ HTMLWidgets.widget({
 
 
    // we add some base layers using the plugin L.tileLayer.provider
-    var defaultLayer = L.tileLayer.provider(x[1][1]).addTo(map);
-
-    var layerOne = L.tileLayer.provider(x[1][0]).addTo(map);
+    var defaultLayer = L.tileLayer.provider(x[1][0]).addTo(map);
+    var layerOne = L.tileLayer.provider(x[1][1]).addTo(map);
     var layerTwo = L.tileLayer.provider(x[1][2]).addTo(map);
     var hillshade =  L.tileLayer.wms("http://129.206.228.72/cached/hillshade", {
       layers: 'europe_wms:hs_srtm_europa',
@@ -55,17 +54,17 @@ HTMLWidgets.widget({
       crs: L.CRS.EPSG900913}).addTo(map);
 
 		var baseLayers = {
-			defaultLayer: defaultLayer
+			"OpenStreetMap" : defaultLayer
 		};
 		var overlays = {
-			layerOne: layerOne,
-			layerTwo: layerTwo,
-			hillshade: hillshade
+			 "Esri.WorldImagery": layerOne,
+			"Thunderforest Landscape" : layerTwo,
+			"Hillshade": hillshade
 		};
 
     // adding all together and the layer control
 		var layerControl = L.control.layers(baseLayers, overlays, {collapsed: true}).addTo(map);
-		map.setView([47, 10], 0);
+		map.setView([52, 7.5], 6);
 
 
   // get the file locations from the shaders and the static external file
@@ -88,7 +87,7 @@ HTMLWidgets.widget({
                         //set up a standalone popup (use a popup as a layer)
                         L.popup()
                           .setLatLng(point)
-                          .setContent("<table><tr><td>Longitude</td><td>" + point.lng + "</td></tr><tr><td>Latitude</td><td>" + point.lat + "</td></tr><tr><td>Value 1</td><td>" + point.v1 + "</td></tr><tr><td></td><td></td></tr></table>")
+                          .setContent("<table><tr><td>Longitude</td><td>" + point.lng + "</td></tr><tr><td>Latitude</td><td>" + point.lat + "</td></tr><tr><td>" + x[3][0] + "</td><td>" + point.v1 + "</td></tr><tr><td>" + x[3][1] + "</td><td>" + point.v2 + "</td></tr><tr><td>" + x[3][2] + "</td><td>" + point.v3 + "</td></tr><tr><td>" + x[3][3] + "</td><td>" + point.v4 + "</td></tr><tr><td>" + x[3][4] + "</td><td>" + point.v5 + "</td></tr></table>")
 
                               .openOn(map);
                               console.log(point);

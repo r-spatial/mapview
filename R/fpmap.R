@@ -1,16 +1,17 @@
-if (!isGeneric('fwmap')) {
-  setGeneric('fwmap', function(data , extjson ,color  ,width , height, ...)
-    standardGeneric('fwmap'))
+if (!isGeneric('fpmap')) {
+  setGeneric('fpmap', function(data,col,width,height,zcol,map,burst,radius,map.types,legend,legend.opacity,verbose,layer.name,popup , ...)
+    standardGeneric('fpmap'))
 }
+
+
 
 #' Generates an htmlwidget for a fast webGl leaflet map usable for real big data
 #'
-#' @description fwmap ist a first prototype to render big vector data on base of a leaflet map. It uses webGL and htmlwidgets.
+#' @description fpmap ist a first prototype to render big vector data on base of a leaflet map. It uses webGL and htmlwidgets.
 #'
 #' This is a modified and adapted implementation of https://github.com/robertleeplummerjr/Leaflet.glify
 #'
-#' @param data a \code{\link{sp}} SpatialPointDataframe object (currently only)
-#' @param extjson path and filename of an external json file providing coordinats in lon lat as: [[11.5922235,46.5435654],[11.5986949,46.5361959]]
+#' @param spData a \code{\link{sp}} SpatialPointDataframe object (currently only)
 #' @param color colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines
 #' @param width	a valid CSS width
 #' @param height	a valid CSS width
@@ -32,12 +33,17 @@ if (!isGeneric('fwmap')) {
 #'  data(meuse)
 #'  coordinates(meuse) <- ~x+y
 #'  proj4string(meuse) <- CRS("+init=epsg:28992")
+#'  meuse <- spTransform(meuse,CRS("+init=epsg:3857"))
 #'
-#' # map it with pure leaflet
-#' leaflet(meuse) %>% addTiles() %>% addCircleMarkers(popup = meuse@data$cut)
+#' # map it with mapview
+#'  mapview(meuse, zcol = 'cadmium')
 #'
-#' # map it with fwmap
-#'  fwmap(data=meuse,color = "random")
+#' # map it with fpmap
+#'  fpmap(data = meuse,col = "random",zcol = 'cadmium')
+#'
+#' ### some benchmarks
+#'  system.time(mapview(meuse, zcol = 'cadmium'))
+#'  system.time(fpmap(data = meuse, col = "random",zcol = 'cadmium'))
 #'
 #' ### Now we go a bit bigger
 #'  library(ggplot2)
@@ -50,16 +56,20 @@ if (!isGeneric('fwmap')) {
 #'  big$clarity <- as.character(big$clarity)
 #' # provide some random positions
 #'  big$x <- rnorm(nrow(big), 10, 3)
-#'  big$y <- rnorm(nrow(big), 30, 3)
+#'  big$y <- rnorm(nrow(big), 50, 3)
 #'
 #'  coordinates(big) <- ~x+y
 #'  proj4string(big) <- CRS("+init=epsg:4326")
 #'
-#' # map it with pure leaflet
-#'  leaflet(big) %>% addTiles() %>% addCircleMarkers(popup = big@data$cut)
+#' # map it with pure mapview
+#'  mapview(big, color='blue')
 #'
 #' # map it with fastmap
-#'  fwmap(big)
+#'  fpmap(data = big, col='blue')
+#'
+#' ### some benchmarks
+#'  system.time(mapview(big, color='blue'))
+#'  system.time(fpmap(data = big, col = "blue"))
 #'
 #' ### now getting even bigger
 #'  big <- diamonds[rep(seq_len(nrow(diamonds)), 30),]
@@ -73,21 +83,21 @@ if (!isGeneric('fwmap')) {
 #'  coordinates(big) <- ~x+y
 #'  proj4string(big) <- CRS("+init=epsg:4326")
 #'
-#' # map it NOT with leaflet but with fwmap
-#'  fwmap(extdata = big, color = "random")
+#' # map it NOT with leaflet but with fpmap
+#'  fpmap(data = big, col = "random")
 #'
 #' ### some benchmarks
 #' # random point colors is slower
-#'  system.time(fwmap(extdata = big, color = "random"))
+#'  system.time(fpmap(data = big, col = "random"))
 #' # than unique colors
-#'  system.time(fwmap(extdata = big, color = "blue"))
+#'  system.time(fpmap(data = big, col = "blue"))
 #' # profVising it
-#'  profvis(fwmap(extdata = big, color = "blue"))
+#'  profvis(fpmap(data = big, col = "blue"))
 #'
 #' @export
-#' @docType fwmap
-#' @name fwmap
-#' @rdname fwmap
+#' @docType fpmap
+#' @name fpmap
+#' @rdname fpmap
 #'
 #' @import htmlwidgets
 #'
@@ -95,9 +105,8 @@ if (!isGeneric('fwmap')) {
 
 
 
-fwmap <- function(extdata = NULL,
-                  extjson = NULL,
-                  color = 'blue'  ,
+fpmap <- function(data,
+                  col = 'blue'  ,
                   width = NULL,
                   height = NULL,
                   zcol = NULL,
@@ -110,64 +119,33 @@ fwmap <- function(extdata = NULL,
                   layer.name = deparse(substitute(data,
                                                   env = parent.frame())),
                   popup = NULL,  ...) {
-  # up to know we need to access local data sources passing htmlwidget
-  # https://github.com/ramnathv/htmlwidgets/issues/71
-  # https://github.com/ramnathv/htmlwidgets/issues/141
-  # The data is copied to the current temporary directory
-  # Workflow
-  # A) usecase SpatialPointObject:
-  # 1) de-project it to epsg:4326 (necessary for the opengl rendering )
-  # 2) convert it to a basic json format
-  # 3) write it to the temp/library path
-  # 4) read it by the browser (start chrome with:   --allow-file-access-from-files )
-  # B) Existing json file in epsg:4326 and correct format can be used by applying step 4 & 5
 
-  libpath <- .libPaths()
-  dataToLibPath <-
-    paste0(libpath[1],"/mapview/htmlwidgets/lib/data")
-
-  if (!is.null(extdata)) {
-    data.latlon <- spTransform(extdata,CRS("+init=epsg:4326"))
+  # check if a sp object exist
+  if (!is.null(data)) {
+    data.latlon <- spTransform(data,CRS("+init=epsg:4326"))
     df <- as.data.frame(data.latlon)
-    df.xyz <- df[c('x','y','depth')]
-    out.matrix = t(t(df.xyz))
-
-    #   microbenchmark(
-    #     data.json.old<-jsonlite::toJSON(out.matrix),
-    #     data.json <- coords2JSON(out.matrix),
-    #     times = 10L
-    #   )
+    numbs <- sapply(df, is.numeric)
+    df.xyz<-df[ , numbs]
+    drops <- c("x","y","dist.m")
+    df.cols<- df.xyz[,!(names(df.xyz) %in% drops)]
+    cnames<- colnames(df.cols)
+    if (!is.null(zcol)) {cnames<-zcol}
+    df.sort<-df.xyz[,c("x","y",cnames)]
+    out.matrix = t(t(df.sort))
     data.json <- coords2JSON(out.matrix)
-
-    file.create("data.json")
-    fileConn <- file("data.json")
-    write(data.json, fileConn)
-    close(fileConn)
-
-    file.copy("data.json",dataToLibPath,overwrite = TRUE)
-    file.remove("data.json")
-
   } else {
-    if (!is.null(extjson))
-    {
-      file.copy(extjson,dataToLibPath
-                ,recursive = TRUE)
-      file.rename(paste0(dataToLibPath,'/',basename(extjson)) , paste0(dataToLibPath,"/data.json"))
-    }
+    NULL
   }
 
-
   # create list of user data that is passed to the widget
-
-
-  x = list(color <- color,
+  x = list(color <- col,
            layer <- map.types,
-           data  <- data.json)
-
+           data  <- data.json,
+           cnames <- cnames)
 
   # create widget
   htmlwidgets::createWidget(
-    name = 'fwmap',
+    name = 'fpmap',
     x,
     sizingPolicy = htmlwidgets::sizingPolicy(
       browser.fill = TRUE,
@@ -183,16 +161,16 @@ fwmap <- function(extdata = NULL,
 #' Widget output function for use in Shiny
 #'
 #' @export
-fwmapOutput <- function(outputId, width = '100%', height = '400px') {
-  shinyWidgetOutput(outputId, 'fwmap', width, height, package = 'mapview')
+fpmapOutput <- function(outputId, width = '100%', height = '400px') {
+  shinyWidgetOutput(outputId, 'fpmap', width, height, package = 'mapview')
 }
 
 #' Widget render function for use in Shiny
 #'
 #' @export
-renderFwmap <- function(expr, env = parent.frame(), quoted = FALSE) {
+renderfpmap <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) {
     expr <- substitute(expr)
   } # force quoted
-  shinyRenderWidget(expr, fwmapOutput, env, quoted = TRUE)
+  shinyRenderWidget(expr, fpmapOutput, env, quoted = TRUE)
 }

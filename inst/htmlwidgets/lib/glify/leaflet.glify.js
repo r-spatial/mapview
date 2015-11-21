@@ -143,7 +143,7 @@
                 colorFn = colorKey;
 
                 this.settings.data.map(function (latLng, i) {
-                    var pixel = this.latLngToPixelXY(latLng[1], latLng[0], latLng[2],latLng[3],latLng[4],latLng[5],latLng[6]),
+                    var pixel = this.latLngToPixelXY(latLng[1], latLng[0], latLng[2],latLng[3],latLng[4],latLng[5],latLng[6],latLng[7],latLng[8],latLng[9],latLng[10],latLng[11],latLng[12]),
                         color = colorFn(10);
 
                     //-- 2 coord, 3 rgb colors interleaved buffer
@@ -151,7 +151,7 @@
                 }.bind(this));
             } else {
                 this.settings.data.map(function (latLng, i) {
-                    var pixel = this.latLngToPixelXY(latLng[1], latLng[0], latLng[2],latLng[3],latLng[4],latLng[5],latLng[6]);
+                    var pixel = this.latLngToPixelXY(latLng[1], latLng[0], latLng[2],latLng[3],latLng[4],latLng[5],latLng[6],latLng[7],latLng[8],latLng[9],latLng[10],latLng[11],latLng[12]);
 
                     //-- 2 coord, 3 rgb colors interleaved buffer
                     this.verts.push(pixel.x, pixel.y, color.r, color.g, color.b,'$$$$$');
@@ -302,7 +302,7 @@
          * @param longitude
          * @returns {{x: number, y: number}}
          */
-        latLngToPixelXY: function(latitude, longitude, v1,v2,v3,v4,v5) {
+        latLngToPixelXY: function(latitude, longitude, v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12) {
             var pi180 = Math.PI / 180.0,
                 pi4 = Math.PI * 4,
                 sinLatitude = Math.sin(latitude * pi180),
@@ -320,6 +320,13 @@
                 v3: v3,
                 v4: v4,
                 v5: v5,
+                v6: v6,
+                v7: v7,
+                v8: v8,
+                v9: v9,
+                v10: v10,
+                v11: v11,
+                v12: v12,
                 x: pixelX,
                 y: pixelY,
                 key: key
