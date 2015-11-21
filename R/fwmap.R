@@ -93,7 +93,7 @@ if (!isGeneric('fwmap')) {
 
 
 
-fwmap <- function(exdata = NULL,
+fwmap <- function(extdata = NULL,
                   extjson = NULL,
                   color = 'blue'  ,
                   width = NULL,
@@ -124,8 +124,8 @@ fwmap <- function(exdata = NULL,
   dataToLibPath <-
     paste0(libpath[1],"/mapview/htmlwidgets/lib/data")
 
-  if (!is.null(exdata)) {
-    data.latlon <- spTransform(exdata,CRS("+init=epsg:4326"))
+  if (!is.null(extdata)) {
+    data.latlon <- spTransform(extdata,CRS("+init=epsg:4326"))
     df <- as.data.frame(data.latlon)
     df.xyz <- df[c('x','y','depth')]
     out.matrix = t(t(df.xyz))

@@ -5,7 +5,7 @@
 \alias{fwmap}
 \title{Generates an htmlwidget for a fast webGl leaflet map usable for real big data}
 \usage{
-fwmap(exdata = NULL, extjson = NULL, color = "blue", width = NULL,
+fwmap(extdata = NULL, extjson = NULL, color = "blue", width = NULL,
   height = NULL, zcol = NULL, map = NULL, burst = FALSE, radius = 10,
   map.types = c("OpenStreetMap", "Esri.WorldImagery",
   "Thunderforest.Landscape"), legend = FALSE, legend.opacity = 1,
