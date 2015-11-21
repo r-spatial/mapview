@@ -5,13 +5,13 @@ if (!isGeneric('fpmap')) {
 
 
 
-#' Generates an htmlwidget for a fast webGl leaflet map usable for real big data
+#' Fast webGl leaflet maps usable for real big data
 #'
-#' @description fpmap ist a first prototype to render big vector data on base of a leaflet map. It uses webGL and htmlwidgets.
+#' @description fpmap ist a first prototype to render big vector data on base of leaflet maps. It uses webGL and htmlwidgets.
 #'
-#' This is a modified and adapted implementation of https://github.com/robertleeplummerjr/Leaflet.glify
+#' This is a modified and adapted implementation of \link{https://github.com/robertleeplummerjr/Leaflet.glify}
 #'
-#' @param spData a \code{\link{sp}} SpatialPointDataframe object (currently only)
+#' @param data a \code{\link{sp}} SpatialPointDataframe object (currently only)
 #' @param color colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines
 #' @param width	a valid CSS width
 #' @param height	a valid CSS width

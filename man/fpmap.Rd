@@ -3,7 +3,7 @@
 \docType{fpmap}
 \name{fpmap}
 \alias{fpmap}
-\title{Generates an htmlwidget for a fast webGl leaflet map usable for real big data}
+\title{Fast webGl leaflet maps usable for real big data}
 \usage{
 fpmap(data, col = "blue", width = NULL, height = NULL, zcol = NULL,
   map = NULL, burst = FALSE, radius = 10, map.types = c("OpenStreetMap",
@@ -13,6 +13,8 @@ fpmap(data, col = "blue", width = NULL, height = NULL, zcol = NULL,
   popup = NULL, ...)
 }
 \arguments{
+\item{data}{a \code{\link{sp}} SpatialPointDataframe object (currently only)}
+
 \item{width}{a valid CSS width}
 
 \item{height}{a valid CSS width}
@@ -25,14 +27,12 @@ of the column(s) to be rendered (up to now only numeric is supported)}
 \item{radius}{attribute name(s) or column number(s) in attribute table
 of the column(s) to be used for defining the size of circles}
 
-\item{spData}{a \code{\link{sp}} SpatialPointDataframe object (currently only)}
-
 \item{color}{colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines}
 }
 \description{
-fpmap ist a first prototype to render big vector data on base of a leaflet map. It uses webGL and htmlwidgets.
+fpmap ist a first prototype to render big vector data on base of leaflet maps. It uses webGL and htmlwidgets.
 
-This is a modified and adapted implementation of https://github.com/robertleeplummerjr/Leaflet.glify
+This is a modified and adapted implementation of \link{https://github.com/robertleeplummerjr/Leaflet.glify}
 }
 \examples{
 
