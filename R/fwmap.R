@@ -16,71 +16,73 @@ if (!isGeneric('fwmap')) {
 #' @param height	a valid CSS width
 #' @param burst whether to show all (TRUE) or only one (FALSE) layers
 #' @param zcol attribute name(s) or column number(s) in attribute table
-#' of the column(s) to be rendered
+#' of the column(s) to be rendered (up to now only numeric is supported)
 #' @param radius attribute name(s) or column number(s) in attribute table
 #' of the column(s) to be used for defining the size of circles
 #'
 #' @author
 #' Chris Reudenbach
 #' @examples
-#' ### raster data ###
-#' library(sp)
-#' library(raster)
 #'
+#' ### we need sp and raster ###
+#'  library(sp)
+#'  library(raster)
+#'
+#' # take the meuse data
 #'  data(meuse)
 #'  coordinates(meuse) <- ~x+y
 #'  proj4string(meuse) <- CRS("+init=epsg:28992")
 #'
+#' # map it with pure leaflet
+#' leaflet(meuse) %>% addTiles() %>% addCircleMarkers(popup = meuse@data$cut)
+#'
+#' # map it with fwmap
 #'  fwmap(data=meuse,color = "random")
 #'
-#'  ## Now we try to get a bigger amount of online data
-#'library(ggplot2)
-#'library(sp)
-#'library(rgdal)
-#'library(mapview)
-#'library(profvis)
-
-#'## profvis of 50000 rows
-#'big <- diamonds[rep(seq_len(nrow(diamonds)), 1),]
-#'big$cut <- as.character(big$cut)
-#'big$color <- as.character(big$color)
-#'big$clarity <- as.character(big$clarity)
+#' ### Now we go a bit bigger
+#'  library(ggplot2)
+#'  library(profvis)
 #'
-#'big$x <- rnorm(nrow(big), 10, 3)
-#'big$y <- rnorm(nrow(big), 30, 3)
+#' # get the diamonds data
+#'  big <- diamonds[rep(seq_len(nrow(diamonds)), 1),]
+#'  big$cut <- as.character(big$cut)
+#'  big$color <- as.character(big$color)
+#'  big$clarity <- as.character(big$clarity)
+#' # provide some random positions
+#'  big$x <- rnorm(nrow(big), 10, 3)
+#'  big$y <- rnorm(nrow(big), 30, 3)
 #'
-#'coordinates(big) <- ~x+y
-#'proj4string(big) <- CRS("+init=epsg:4326")
+#'  coordinates(big) <- ~x+y
+#'  proj4string(big) <- CRS("+init=epsg:4326")
 #'
-#' # do it with pure leaflet
-#'leaflet(big) %>% addTiles() %>% addCircleMarkers(popup = big@data$cut)
+#' # map it with pure leaflet
+#'  leaflet(big) %>% addTiles() %>% addCircleMarkers(popup = big@data$cut)
 #'
-#'# do it with fastmap
-#'fwmap(big)
+#' # map it with fastmap
+#'  fwmap(big)
 #'
-#'## now get bigger
-#'big <- diamonds[rep(seq_len(nrow(diamonds)), 30),]
-#'big$cut <- as.character(big$cut)
-#'big$color <- as.character(big$color)
-#'big$clarity <- as.character(big$clarity)
+#' ### now getting even bigger
+#'  big <- diamonds[rep(seq_len(nrow(diamonds)), 30),]
+#'  big$cut <- as.character(big$cut)
+#'  big$color <- as.character(big$color)
+#'  big$clarity <- as.character(big$clarity)
 #'
-#'big$x <- rnorm(nrow(big), 10, 3)
-#'big$y <- rnorm(nrow(big), 50, 3)
+#'  big$x <- rnorm(nrow(big), 10, 3)
+#'  big$y <- rnorm(nrow(big), 50, 3)
 #'
-#'coordinates(big) <- ~x+y
-#'proj4string(big) <- CRS("+init=epsg:4326")
+#'  coordinates(big) <- ~x+y
+#'  proj4string(big) <- CRS("+init=epsg:4326")
 #'
-#'# map it now
-#'fwmap(extdata = big, color = "random")
+#' # map it NOT with leaflet but with fwmap
+#'  fwmap(extdata = big, color = "random")
 #'
-#'# BENCHMARK
-#'system.time(fwmap(extdata = big, color = "random"))
-#'
-#'profvis(fwmap(extdata = big, color = "random"))
-
-
-
-
+#' ### some benchmarks
+#' # random point colors is slower
+#'  system.time(fwmap(extdata = big, color = "random"))
+#' # than unique colors
+#'  system.time(fwmap(extdata = big, color = "blue"))
+#' # profVising it
+#'  profvis(fwmap(extdata = big, color = "blue"))
 #'
 #' @export
 #' @docType fwmap
