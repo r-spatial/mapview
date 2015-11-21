@@ -3,8 +3,6 @@ if (!isGeneric('fpmap')) {
     standardGeneric('fpmap'))
 }
 
-
-
 #' Fast webGl leaflet maps usable for real big data
 #'
 #' @description fpmap ist a first prototype to render big vector data on base of leaflet maps. It uses webGL and htmlwidgets.
@@ -119,23 +117,39 @@ fpmap <- function(data,
                   layer.name = deparse(substitute(data,
                                                   env = parent.frame())),
                   popup = NULL,  ...) {
-
   # check if a sp object exist
   if (!is.null(data)) {
     data.latlon <- spTransform(data,CRS("+init=epsg:4326"))
     df <- as.data.frame(data.latlon)
     numbs <- sapply(df, is.numeric)
-    df.xyz<-df[ , numbs]
+    df.xyz <- df[, numbs]
     drops <- c("x","y","dist.m")
-    df.cols<- df.xyz[,!(names(df.xyz) %in% drops)]
-    cnames<- colnames(df.cols)
-    if (!is.null(zcol)) {cnames<-zcol}
-    df.sort<-df.xyz[,c("x","y",cnames)]
+    df.cols <- df.xyz[,!(names(df.xyz) %in% drops)]
+    cnames <- colnames(df.cols)
+    if (!is.null(zcol)) {
+      cnames <- zcol
+    }
+    df.sort <- df.xyz[,c("x","y",cnames)]
     out.matrix = t(t(df.sort))
     data.json <- coords2JSON(out.matrix)
+
   } else {
     NULL
   }
+
+  if (nrow(df.sort) > 1.5E06) {
+    libpath<- .libPaths()
+    dataToLibPath<- paste0(libpath[1],"/mapview/htmlwidgets/lib/data")
+    file.create("data.json")
+    fileConn <- file("data.json")
+    write(data.json, fileConn)
+    close(fileConn)
+    file.copy("data.json",dataToLibPath,overwrite = TRUE)
+    file.remove("data.json")
+    data.json <- 'undefined'
+  }
+
+
 
   # create list of user data that is passed to the widget
   x = list(color <- col,
