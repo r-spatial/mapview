@@ -28,6 +28,7 @@ Imports:
     htmlwidgets,
     htmltools,
     png,
+    lattice,
     Rcpp (>= 0.11.3)
 LinkingTo: Rcpp
 RoxygenNote: 5.0.1

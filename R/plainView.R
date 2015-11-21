@@ -111,26 +111,35 @@ if ( !isGeneric('plainView') ) {
 setMethod('plainView', signature(x = 'RasterLayer'),
           function(x,
                    maxpixels = mapviewOptions(console = FALSE)$maxpixels,
-                   color = mapViewPalette(7),
+                   color = mapViewPalette(256),
                    na.color = mapviewOptions(console = FALSE)$nacolor,
                    verbose = mapviewOptions(console = FALSE)$verbose,
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    ...) {
 
-            png <- raster2PNG(x, color = color,
-                              na.color = na.color,
-                              maxpixels = maxpixels)
+            x <- rasterCheckSize(x, maxpixels)
 
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
             fl <- paste0(dir, "/img", ".png")
 
-            png::writePNG(png, fl)
+#             if (raster::filename(x) != "") {
+#               gdalUtils::gdal_translate(src_dataset = filename(x),
+#                                         dst_dataset = fl,
+#                                         of = "PNG",
+#                                         verbose = TRUE)
+#             } else {
+              png <- raster2PNG(x, color = color,
+                                na.color = na.color,
+                                maxpixels = maxpixels)
+              cat("write png\n")
+              png::writePNG(png, fl)
+            #}
 
-            imgnm <- deparse(substitute(img, env = parent.frame()))
-
+            layer.name <- deparse(substitute(img, env = parent.frame()))
+cat("plainViewInternal\n")
             plainViewInternal(filename = fl,
                               imgnm = layer.name)
 
@@ -262,12 +271,17 @@ plainViewInternal <- function(filename, imgnm) {
 
 
 plainViewOutput <- function(outputId, width = '100%', height = '400px'){
-  shinyWidgetOutput(outputId, 'plainView', width, height, package = 'mapview')
+  htmlwidgets::shinyWidgetOutput(outputId, 'plainView',
+                                 width, height, package = 'mapview')
 }
 
 
 renderPlainView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
-  shinyRenderWidget(expr, plainViewOutput, env, quoted = TRUE)
+  htmlwidgets::shinyRenderWidget(expr, plainViewOutput, env, quoted = TRUE)
 }
 
+
+
+## plainview
+plainview <- function(...) plainView(...)

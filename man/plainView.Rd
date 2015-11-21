@@ -7,7 +7,7 @@
 \title{View spatial objects interactively without background map but in any CRS}
 \usage{
 \S4method{plainView}{RasterLayer}(x, maxpixels = mapviewOptions(console =
-  FALSE)$maxpixels, color = mapViewPalette(7),
+  FALSE)$maxpixels, color = mapViewPalette(256),
   na.color = mapviewOptions(console = FALSE)$nacolor,
   verbose = mapviewOptions(console = FALSE)$verbose,
   layer.name = deparse(substitute(x, env = parent.frame())), ...)
