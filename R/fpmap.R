@@ -138,6 +138,7 @@ fpmap <- function(data,
     ext <- extent(df.sort)
     yc <- ext@ymax-ext@ymin+ext@ymin
     xc <- ext@xmax-ext@xmin+ext@xmin
+    #http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Resolution_and_Scale
     zoomlevel <- 0
     repeat{
       # res in m zoomlev is 2 ^ x
