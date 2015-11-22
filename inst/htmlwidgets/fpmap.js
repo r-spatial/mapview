@@ -43,22 +43,23 @@ HTMLWidgets.widget({
 
    // we add some base layers using the plugin L.tileLayer.provider
     var defaultLayer = L.tileLayer.provider(x[1][0]).addTo(map);
-    var layerOne = L.tileLayer.provider(x[1][1]).addTo(map);
-    var layerTwo = L.tileLayer.provider(x[1][2]).addTo(map);
+    var layerOne = L.tileLayer.provider(x[1][1]);
+    var layerTwo = L.tileLayer.provider(x[1][2]);
     var hillshade =  L.tileLayer.wms("http://129.206.228.72/cached/hillshade", {
       layers: 'europe_wms:hs_srtm_europa',
       format: 'image/png',
       opacity: 0.45,
       transparent: true,
       attribution: 'Hillshade layer by GIScience http://www.osm-wms.de',
-      crs: L.CRS.EPSG900913}).addTo(map);
+      crs: L.CRS.EPSG900913});
 
 		var baseLayers = {
-			"OpenStreetMap" : defaultLayer
+			"OpenStreetMap" : defaultLayer,
+			"Esri WorldImagery": layerOne,
+			"Thunderforest Landscape" : layerTwo,
 		};
 		var overlays = {
-			 "Esri WorldImagery": layerOne,
-			"Thunderforest Landscape" : layerTwo,
+
 			"Hillshade": hillshade
 		};
 
