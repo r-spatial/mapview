@@ -35,7 +35,7 @@
         canvas.width = canvas.clientWidth;
         canvas.height = canvas.clientHeight;
 
-        this.gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        this.gl = canvas.getContext('webgl',{ antialias: true }) || canvas.getContext('experimental-webgl',{ antialias: true });
 
         this.pixelsToWebGLMatrix = new Float32Array(16);
         this.mapMatrix = new Float32Array(16);
@@ -147,14 +147,14 @@
                         color = colorFn(10);
 
                     //-- 2 coord, 3 rgb colors interleaved buffer
-                    this.verts.push(pixel.x, pixel.y, color.r, color.g, color.b,'9999');
+                    this.verts.push(pixel.x, pixel.y, color.r, color.g, color.b);
                 }.bind(this));
             } else {
                 this.settings.data.map(function (latLng, i) {
                     var pixel = this.latLngToPixelXY(latLng[1], latLng[0], latLng[2],latLng[3],latLng[4],latLng[5],latLng[6],latLng[7],latLng[8],latLng[9],latLng[10],latLng[11],latLng[12]);
 
                     //-- 2 coord, 3 rgb colors interleaved buffer
-                    this.verts.push(pixel.x, pixel.y, color.r, color.g, color.b,'$$$$$');
+                    this.verts.push(pixel.x, pixel.y, color.r, color.g, color.b);
                 }.bind(this));
             }
 
@@ -181,7 +181,7 @@
             gl.uniformMatrix4fv(uMatrix, false, this.pixelsToWebGLMatrix);
             gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, vertexArray, gl.STATIC_DRAW);
-            gl.vertexAttribPointer(vertexLocation, 2, gl.FLOAT, false, fsize * 5 ,0);
+            gl.vertexAttribPointer(vertexLocation, 2, gl.FLOAT, false, fsize *5  ,0);
             gl.enableVertexAttribArray(vertexLocation);
 
             //offset for color buffer
@@ -273,7 +273,7 @@
                 offset = this.latLngToPixelXY(topLeft.lat, topLeft.lng),
                 // -- Scale to current zoom
                 scale = Math.pow(2, zoom),
-                pointSize = Math.max(zoom - 4.0, 1.0);
+                pointSize = Math.max(zoom - 5.0, 1.0);
 
             gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -309,7 +309,7 @@
                 pixelY = (0.5 - Math.log((1 + sinLatitude) / (1 - sinLatitude)) / (pi4)) * 256,
                 pixelX = ((longitude + 180) / 360) * 256,
                 pixel,
-                key = latitude.toFixed(2) + 'x' + longitude.toFixed(2),
+                key = latitude.toFixed(4) + 'x' + longitude.toFixed(4),
                 lookup = this.latLngLookup[key];
 
             pixel = {
@@ -397,11 +397,11 @@
          * @returns {*}
          */
         lookup: function(coords) {
-            var x = coords.lat - 0.03,
+            var x = coords.lat - 0.003,
                 y,
 
-                xMax = coords.lat + 0.03,
-                yMax = coords.lng + 0.03,
+                xMax = coords.lat + 0.003,
+                yMax = coords.lng + 0.003,
 
                 foundI,
                 foundMax,
@@ -410,10 +410,10 @@
                 found,
                 key;
 
-            for (; x <= xMax; x+=0.01) {
-                y = coords.lng - 0.03;
-                for (; y <= yMax; y+=0.01) {
-                    key = x.toFixed(2) + 'x' + y.toFixed(2);
+            for (; x <= xMax; x+=0.0001) {
+                y = coords.lng - 0.0003;
+                for (; y <= yMax; y+=0.0001) {
+                    key = x.toFixed(4) + 'x' + y.toFixed(4);
                     found = this.latLngLookup[key];
                     if (found) {
                         foundI = 0;
@@ -461,8 +461,8 @@
 
             s.left = x + 'px';
             s.top = y + 'px';
-            s.width = '10px';
-            s.height = '10px';
+            s.width = '100px';
+            s.height = '100px';
             s.position = 'absolute';
             s.backgroundColor = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
 

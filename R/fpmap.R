@@ -151,7 +151,7 @@ fpmap <- function(data,
       res <- 156543.03  * cos(yc) / (2 ^ zoomlevel)
       #calculating screen scale assuming screen 96 dpi in/m 1000/25.4
       scale = (96 * 39.37 * res)
-      if(scale < lonextent){
+      if(scale < lonextent+lonextent*0.5){
         break
       }
       zoomlevel <- zoomlevel + 1
