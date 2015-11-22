@@ -83,10 +83,11 @@ setMethod("coords2JSON",
 
             ## convert to 'character'
             if (class(x[1, ]) != "character") {
-              lst_x <- lapply(1:ncol(x), function(i) {
-                as.character(x[, i])
-              })
-              x <- do.call("cbind", lst_x)
+#               lst_x <- lapply(1:ncol(x), function(i) {
+#                 as.character(x[, i])
+#               })
+#               x <- do.call("cbind", lst_x)
+              x <- apply(x, 2, "as.character")
             }
 
             ## create list with JSON entries
