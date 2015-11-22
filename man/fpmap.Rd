@@ -3,7 +3,7 @@
 \docType{fpmap}
 \name{fpmap}
 \alias{fpmap}
-\title{Fast webGl leaflet maps usable for real big data}
+\title{Leaflet maps for big data}
 \usage{
 fpmap(data, col = "blue", width = NULL, height = NULL, zcol = NULL,
   map = NULL, burst = FALSE, radius = 10, map.types = c("OpenStreetMap",
@@ -30,15 +30,17 @@ of the column(s) to be used for defining the size of circles}
 \item{color}{colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines}
 }
 \description{
-fpmap ist a first prototype to render big vector data on base of leaflet maps. It uses webGL and htmlwidgets.
+fpmap is a first prototype for rendering big data (points) on base of leaflet maps utilizing webGL and htmlwidgets.
 
-This is a modified and adapted implementation of \link{https://github.com/robertleeplummerjr/Leaflet.glify}
+This is a modified and adapted implementation of \url{https://github.com/robertleeplummerjr/Leaflet.glify}
 }
 \examples{
 
 ### we need sp and raster ###
  library(sp)
  library(raster)
+ library(ggplot2)
+ library(profvis)
 
 # take the meuse data
  data(meuse)
@@ -57,8 +59,6 @@ This is a modified and adapted implementation of \link{https://github.com/robert
  system.time(fpmap(data = meuse, col = "random",zcol = 'cadmium'))
 
 ### Now we go a bit bigger
- library(ggplot2)
- library(profvis)
 
 # get the diamonds data
  big <- diamonds[rep(seq_len(nrow(diamonds)), 1),]
@@ -82,8 +82,8 @@ This is a modified and adapted implementation of \link{https://github.com/robert
  system.time(mapview(big, color='blue'))
  system.time(fpmap(data = big, col = "blue"))
 
-### now getting even bigger
- big <- diamonds[rep(seq_len(nrow(diamonds)), 30),]
+### up to about 5 mio points
+ big <- diamonds[rep(seq_len(nrow(diamonds)), 94),]
  big$cut <- as.character(big$cut)
  big$color <- as.character(big$color)
  big$clarity <- as.character(big$clarity)
@@ -95,7 +95,7 @@ This is a modified and adapted implementation of \link{https://github.com/robert
  proj4string(big) <- CRS("+init=epsg:4326")
 
 # map it NOT with leaflet but with fpmap
- fpmap(data = big, col = "random")
+ fpmap(data = big, col = "blue")
 
 ### some benchmarks
 # random point colors is slower

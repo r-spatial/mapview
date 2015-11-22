@@ -3,13 +3,11 @@ if (!isGeneric('fpmap')) {
     standardGeneric('fpmap'))
 }
 
-
-
-#' Fast webGl leaflet maps usable for real big data
+#' Leaflet maps for big data
 #'
-#' @description fpmap ist a first prototype to render big vector data on base of leaflet maps. It uses webGL and htmlwidgets.
+#' @description fpmap is a first prototype for rendering big data (points) on base of leaflet maps utilizing webGL and htmlwidgets.
 #'
-#' This is a modified and adapted implementation of \link{https://github.com/robertleeplummerjr/Leaflet.glify}
+#' This is a modified and adapted implementation of \url{https://github.com/robertleeplummerjr/Leaflet.glify}
 #'
 #' @param data a \code{\link{sp}} SpatialPointDataframe object (currently only)
 #' @param color colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines
@@ -28,6 +26,8 @@ if (!isGeneric('fpmap')) {
 #' ### we need sp and raster ###
 #'  library(sp)
 #'  library(raster)
+#'  library(ggplot2)
+#'  library(profvis)
 #'
 #' # take the meuse data
 #'  data(meuse)
@@ -46,8 +46,6 @@ if (!isGeneric('fpmap')) {
 #'  system.time(fpmap(data = meuse, col = "random",zcol = 'cadmium'))
 #'
 #' ### Now we go a bit bigger
-#'  library(ggplot2)
-#'  library(profvis)
 #'
 #' # get the diamonds data
 #'  big <- diamonds[rep(seq_len(nrow(diamonds)), 1),]
@@ -71,8 +69,8 @@ if (!isGeneric('fpmap')) {
 #'  system.time(mapview(big, color='blue'))
 #'  system.time(fpmap(data = big, col = "blue"))
 #'
-#' ### now getting even bigger
-#'  big <- diamonds[rep(seq_len(nrow(diamonds)), 30),]
+#' ### up to about 5 mio points
+#'  big <- diamonds[rep(seq_len(nrow(diamonds)), 94),]
 #'  big$cut <- as.character(big$cut)
 #'  big$color <- as.character(big$color)
 #'  big$clarity <- as.character(big$clarity)
@@ -84,7 +82,7 @@ if (!isGeneric('fpmap')) {
 #'  proj4string(big) <- CRS("+init=epsg:4326")
 #'
 #' # map it NOT with leaflet but with fpmap
-#'  fpmap(data = big, col = "random")
+#'  fpmap(data = big, col = "blue")
 #'
 #' ### some benchmarks
 #' # random point colors is slower
@@ -119,29 +117,71 @@ fpmap <- function(data,
                   layer.name = deparse(substitute(data,
                                                   env = parent.frame())),
                   popup = NULL,  ...) {
-
   # check if a sp object exist
   if (!is.null(data)) {
     data.latlon <- spTransform(data,CRS("+init=epsg:4326"))
     df <- as.data.frame(data.latlon)
     numbs <- sapply(df, is.numeric)
-    df.xyz<-df[ , numbs]
-    drops <- c("x","y","dist.m")
-    df.cols<- df.xyz[,!(names(df.xyz) %in% drops)]
-    cnames<- colnames(df.cols)
-    if (!is.null(zcol)) {cnames<-zcol}
-    df.sort<-df.xyz[,c("x","y",cnames)]
+    df.xyz <- df[, numbs]
+    drops <- c("x","y")
+    df.cols <- df.xyz[,!(names(df.xyz) %in% drops)]
+    cnames <- colnames(df.cols)
+    if (!is.null(zcol)) {
+      cnames <- zcol
+    }
+    df.sort <- df.xyz[,c("x","y",cnames)]
     out.matrix = t(t(df.sort))
     data.json <- coords2JSON(out.matrix)
+    # we need scale and zoom so we approximate the area and zoom factor
+    ext <- extent(df.sort)
+    yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
+    xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
+
+    rad.cof=3.1459/180
+    lat.1deg=110540
+    lon.1deg=111320*cos(rad.cof*yc)
+    # calculate stepsize
+    latextent=(lat.1deg*(ext@ymax-ext@ymin))*10
+    lonextent=(lon.1deg*(ext@xmax-ext@xmin))*10
+
+    #http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Resolution_and_Scale
+    zoomlevel <- 0
+    repeat{
+      # res in m zoomlev is 2 ^ x
+      res <- 156543.03  * cos(yc) / (2 ^ zoomlevel)
+      #calculating screen scale assuming screen 96 dpi in/m 1000/25.4
+      scale = (96 * 39.37 * res)
+      if(scale < lonextent){
+        break
+      }
+      zoomlevel <- zoomlevel + 1
+    }
   } else {
     NULL
   }
+
+  if (nrow(df.sort) > 1.5E06) {
+    libpath<- .libPaths()
+    dataToLibPath<- paste0(libpath[1],"/mapview/htmlwidgets/lib/data")
+    file.create("data.json")
+    fileConn <- file("data.json")
+    write(data.json, fileConn)
+    close(fileConn)
+    file.copy("data.json",dataToLibPath,overwrite = TRUE)
+    file.remove("data.json")
+    data.json <- 'undefined'
+  }
+
+
 
   # create list of user data that is passed to the widget
   x = list(color <- col,
            layer <- map.types,
            data  <- data.json,
-           cnames <- cnames)
+           cnames <- cnames,
+           centerLat <- yc,
+           centerLon <- xc,
+           zoom <- zoomlevel)
 
   # create widget
   htmlwidgets::createWidget(

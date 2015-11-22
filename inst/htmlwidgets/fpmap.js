@@ -43,42 +43,49 @@ HTMLWidgets.widget({
 
    // we add some base layers using the plugin L.tileLayer.provider
     var defaultLayer = L.tileLayer.provider(x[1][0]).addTo(map);
-    var layerOne = L.tileLayer.provider(x[1][1]).addTo(map);
-    var layerTwo = L.tileLayer.provider(x[1][2]).addTo(map);
+    var layerOne = L.tileLayer.provider(x[1][1]);
+    var layerTwo = L.tileLayer.provider(x[1][2]);
     var hillshade =  L.tileLayer.wms("http://129.206.228.72/cached/hillshade", {
       layers: 'europe_wms:hs_srtm_europa',
       format: 'image/png',
       opacity: 0.45,
       transparent: true,
       attribution: 'Hillshade layer by GIScience http://www.osm-wms.de',
-      crs: L.CRS.EPSG900913}).addTo(map);
+      crs: L.CRS.EPSG900913});
 
 		var baseLayers = {
-			"OpenStreetMap" : defaultLayer
+			"OpenStreetMap" : defaultLayer,
+			"Esri WorldImagery": layerOne,
+			"Thunderforest Landscape" : layerTwo,
 		};
 		var overlays = {
-			 "Esri.WorldImagery": layerOne,
-			"Thunderforest Landscape" : layerTwo,
+
 			"Hillshade": hillshade
 		};
 
     // adding all together and the layer control
 		var layerControl = L.control.layers(baseLayers, overlays, {collapsed: true}).addTo(map);
-		map.setView([52, 7.5], 6);
+		map.setView([x[4], x[5]], x[6]);
 
 
   // get the file locations from the shaders and the static external file
   var vertexshader = HTMLWidgets.getAttachmentUrl('vertex-shader', 'vertex-shader');
   var fragmentshader = HTMLWidgets.getAttachmentUrl('fragment-shader', 'fragment-shader');
-  //var data = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
-  var data = x[2];
   var color = x[0];
+
 
   // no it is getting tricky after wget-ing all files the text contet of it
   // is passed to the  L.Glify extension of leaflet that handles the webGL shading process
   // big thanks for this to Robert's version of the web gl renderer and his plugin for
   // leaflet https://robertleeplummerjr.github.io/Leaflet.glifyand the popups
-  wget([fragmentshader, vertexshader],function(fragmentshader, vertexshader) {
+  // no it is getting tricky after wget-ing all files the text contet of it
+  // is passed to the  L.Glify extension of leaflet that handles the webGL shading process
+  // big thanks for this to Robert's version of the web gl renderer and his plugin for
+  // leaflet https://robertleeplummerjr.github.io/Leaflet.glifyand the popups
+
+  if (x[2] === 'undefined') {
+    var data = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
+     wget([fragmentshader, vertexshader, data],function(fragmentshader, vertexshader, data) {
                     L.glify({
                         map: map,
                         vertexShader: vertexshader,
@@ -108,7 +115,42 @@ HTMLWidgets.widget({
                 + " | Longitude: " + (e.latlng.lng).toFixed(5)
                 + " | Zoom: " + map.getZoom() + " ";
   });
+  } else
+  {
+    var data = x[2];
+     wget([fragmentshader, vertexshader],function(fragmentshader, vertexshader) {
+                    L.glify({
+                        map: map,
+                        vertexShader: vertexshader,
+                        fragmentShader: fragmentshader,
+                        clickPoint: function (point) {
+                        //set up a standalone popup (use a popup as a layer)
+                        L.popup()
+                          .setLatLng(point)
+                          .setContent("<table><tr><td>Longitude</td><td>" + point.lng + "</td></tr><tr><td>Latitude</td><td>" + point.lat + "</td></tr><tr><td>" + x[3][0] + "</td><td>" + point.v1 + "</td></tr><tr><td>" + x[3][1] + "</td><td>" + point.v2 + "</td></tr><tr><td>" + x[3][2] + "</td><td>" + point.v3 + "</td></tr><tr><td>" + x[3][3] + "</td><td>" + point.v4 + "</td></tr><tr><td>" + x[3][4] + "</td><td>" + point.v5 + "</td></tr></table>")
+
+                              .openOn(map);
+                              console.log(point);
+                        },
+                        data: JSON.parse(data),
+                        color: color
+                    });
+  })
+  }
+
+
+
+  // grab the special div we generated in the beginning
+  // and put the mousmove output there
+  lnlt = document.getElementById('lnlt');
+  map.on('mousemove', function (e) {
+        lnlt.textContent =
+                " Latitude: " + (e.latlng.lat).toFixed(5)
+                + " | Longitude: " + (e.latlng.lng).toFixed(5)
+                + " | Zoom: " + map.getZoom() + " ";
+  });
 },
+
 
 resize: function(el, width, height, instance) {
 }
