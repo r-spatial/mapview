@@ -5,18 +5,15 @@
 \alias{fpmap}
 \title{Leaflet maps for big data}
 \usage{
-fpmap(data, col = "blue", minscale = 250000, width = NULL,
-  height = NULL, zcol = NULL, map = NULL, burst = FALSE, radius = 10,
-  map.types = c("OpenStreetMap", "Esri.WorldImagery",
-  "Thunderforest.Landscape"), legend = FALSE, legend.opacity = 1,
-  verbose = mapviewOptions(console = FALSE)$verbose,
+fpmap(data, col = "blue", width = NULL, height = NULL, zcol = NULL,
+  map = NULL, burst = FALSE, radius = 10, map.types = c("OpenStreetMap",
+  "Esri.WorldImagery", "Thunderforest.Landscape"), legend = FALSE,
+  legend.opacity = 1, verbose = mapviewOptions(console = FALSE)$verbose,
   layer.name = deparse(substitute(data, env = parent.frame())),
   popup = NULL, ...)
 }
 \arguments{
 \item{data}{a \code{\link{sp}} SpatialPointDataframe object (currently only)}
-
-\item{minscale}{scale to approximate. default is 250000}
 
 \item{width}{a valid CSS width}
 

@@ -1,5 +1,5 @@
 if (!isGeneric('fpmap')) {
-  setGeneric('fpmap', function(data,col,minscale,width,height,zcol,map,burst,radius,map.types,legend,legend.opacity,verbose,layer.name,popup , ...)
+  setGeneric('fpmap', function(data,col,width,height,zcol,map,burst,radius,map.types,legend,legend.opacity,verbose,layer.name,popup , ...)
     standardGeneric('fpmap'))
 }
 
@@ -13,7 +13,6 @@ if (!isGeneric('fpmap')) {
 #' @param color colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines
 #' @param width	a valid CSS width
 #' @param height	a valid CSS width
-#' @param minscale	scale to approximate. default is 250000
 #' @param burst whether to show all (TRUE) or only one (FALSE) layers
 #' @param zcol attribute name(s) or column number(s) in attribute table
 #' of the column(s) to be rendered (up to now only numeric is supported)
@@ -106,7 +105,6 @@ if (!isGeneric('fpmap')) {
 
 fpmap <- function(data,
                   col = 'blue'  ,
-                  minscale = 250000,
                   width = NULL,
                   height = NULL,
                   zcol = NULL,
@@ -136,8 +134,16 @@ fpmap <- function(data,
     data.json <- coords2JSON(out.matrix)
     # we need scale and zoom so we approximate the area and zoom factor
     ext <- extent(df.sort)
-    yc <- ext@ymax-ext@ymin+ext@ymin
-    xc <- ext@xmax-ext@xmin+ext@xmin
+    yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
+    xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
+
+    rad.cof=3.1459/180
+    lat.1deg=110540
+    lon.1deg=111320*cos(rad.cof*yc)
+    # calculate stepsize
+    latextent=(lat.1deg*(ext@ymax-ext@ymin))*10
+    lonextent=(lon.1deg*(ext@xmax-ext@xmin))*10
+
     #http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Resolution_and_Scale
     zoomlevel <- 0
     repeat{
@@ -145,7 +151,7 @@ fpmap <- function(data,
       res <- 156543.03  * cos(yc) / (2 ^ zoomlevel)
       #calculating screen scale assuming screen 96 dpi in/m 1000/25.4
       scale = (96 * 39.37 * res)
-      if(scale < minscale){
+      if(scale < lonextent){
         break
       }
       zoomlevel <- zoomlevel + 1
