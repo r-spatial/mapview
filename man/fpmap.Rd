@@ -3,12 +3,13 @@
 \docType{fpmap}
 \name{fpmap}
 \alias{fpmap}
-\title{Fast webGl leaflet maps usable for real big data}
+\title{Leaflet maps for big data}
 \usage{
-fpmap(data, col = "blue", width = NULL, height = NULL, zcol = NULL,
-  map = NULL, burst = FALSE, radius = 10, map.types = c("OpenStreetMap",
-  "Esri.WorldImagery", "Thunderforest.Landscape"), legend = FALSE,
-  legend.opacity = 1, verbose = mapviewOptions(console = FALSE)$verbose,
+fpmap(data, col = "blue", minscale = 250000, width = NULL,
+  height = NULL, zcol = NULL, map = NULL, burst = FALSE, radius = 10,
+  map.types = c("OpenStreetMap", "Esri.WorldImagery",
+  "Thunderforest.Landscape"), legend = FALSE, legend.opacity = 1,
+  verbose = mapviewOptions(console = FALSE)$verbose,
   layer.name = deparse(substitute(data, env = parent.frame())),
   popup = NULL, ...)
 }
@@ -30,7 +31,7 @@ of the column(s) to be used for defining the size of circles}
 \item{color}{colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines}
 }
 \description{
-fpmap ist a first prototype to render big vector data on base of leaflet maps. It uses webGL and htmlwidgets.
+fpmap ist a first prototype for rendering big point data on base of leaflet maps utilizing webGL and htmlwidgets.
 
 This is a modified and adapted implementation of \link{https://github.com/robertleeplummerjr/Leaflet.glify}
 }

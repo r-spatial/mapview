@@ -64,7 +64,7 @@ HTMLWidgets.widget({
 
     // adding all together and the layer control
 		var layerControl = L.control.layers(baseLayers, overlays, {collapsed: true}).addTo(map);
-		map.setView([52, 7.5], 6);
+		map.setView([x[4], x[5]], x[6]);
 
 
   // get the file locations from the shaders and the static external file

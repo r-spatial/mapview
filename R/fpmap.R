@@ -1,11 +1,11 @@
 if (!isGeneric('fpmap')) {
-  setGeneric('fpmap', function(data,col,width,height,zcol,map,burst,radius,map.types,legend,legend.opacity,verbose,layer.name,popup , ...)
+  setGeneric('fpmap', function(data,col,minscale,width,height,zcol,map,burst,radius,map.types,legend,legend.opacity,verbose,layer.name,popup , ...)
     standardGeneric('fpmap'))
 }
 
-#' Fast webGl leaflet maps usable for real big data
+#' Leaflet maps for big data
 #'
-#' @description fpmap ist a first prototype to render big vector data on base of leaflet maps. It uses webGL and htmlwidgets.
+#' @description fpmap ist a first prototype for rendering big point data on base of leaflet maps utilizing webGL and htmlwidgets.
 #'
 #' This is a modified and adapted implementation of \link{https://github.com/robertleeplummerjr/Leaflet.glify}
 #'
@@ -105,6 +105,7 @@ if (!isGeneric('fpmap')) {
 
 fpmap <- function(data,
                   col = 'blue'  ,
+                  minscale = 250000,
                   width = NULL,
                   height = NULL,
                   zcol = NULL,
@@ -123,7 +124,7 @@ fpmap <- function(data,
     df <- as.data.frame(data.latlon)
     numbs <- sapply(df, is.numeric)
     df.xyz <- df[, numbs]
-    drops <- c("x","y","dist.m")
+    drops <- c("x","y")
     df.cols <- df.xyz[,!(names(df.xyz) %in% drops)]
     cnames <- colnames(df.cols)
     if (!is.null(zcol)) {
@@ -132,7 +133,21 @@ fpmap <- function(data,
     df.sort <- df.xyz[,c("x","y",cnames)]
     out.matrix = t(t(df.sort))
     data.json <- coords2JSON(out.matrix)
-
+    # we need scale and zoom so we approximate the area and zoom factor
+    ext <- extent(df.sort)
+    yc <- ext@ymax-ext@ymin+ext@ymin
+    xc <- ext@xmax-ext@xmin+ext@xmin
+    zoomlevel <- 0
+    repeat{
+      # res in m zoomlev is 2 ^ x
+      res <- 156543.03  * cos(yc) / (2 ^ zoomlevel)
+      #calculating screen scale assuming screen 96 dpi in/m 1000/25.4
+      scale = (96 * 39.37 * res)
+      if(scale < minscale){
+        break
+      }
+      zoomlevel <- zoomlevel + 1
+    }
   } else {
     NULL
   }
@@ -155,7 +170,10 @@ fpmap <- function(data,
   x = list(color <- col,
            layer <- map.types,
            data  <- data.json,
-           cnames <- cnames)
+           cnames <- cnames,
+           centerLat <- yc,
+           centerLon <- xc,
+           zoom <- zoomlevel)
 
   # create widget
   htmlwidgets::createWidget(
