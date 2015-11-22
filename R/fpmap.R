@@ -5,14 +5,15 @@ if (!isGeneric('fpmap')) {
 
 #' Leaflet maps for big data
 #'
-#' @description fpmap ist a first prototype for rendering big point data on base of leaflet maps utilizing webGL and htmlwidgets.
+#' @description fpmap is a first prototype for rendering big data (points) on base of leaflet maps utilizing webGL and htmlwidgets.
 #'
-#' This is a modified and adapted implementation of \link{https://github.com/robertleeplummerjr/Leaflet.glify}
+#' This is a modified and adapted implementation of \url{https://github.com/robertleeplummerjr/Leaflet.glify}
 #'
 #' @param data a \code{\link{sp}} SpatialPointDataframe object (currently only)
 #' @param color colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines
 #' @param width	a valid CSS width
 #' @param height	a valid CSS width
+#' @param minscale	scale to approximate. default is 250000
 #' @param burst whether to show all (TRUE) or only one (FALSE) layers
 #' @param zcol attribute name(s) or column number(s) in attribute table
 #' of the column(s) to be rendered (up to now only numeric is supported)

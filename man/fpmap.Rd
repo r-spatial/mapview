@@ -16,6 +16,8 @@ fpmap(data, col = "blue", minscale = 250000, width = NULL,
 \arguments{
 \item{data}{a \code{\link{sp}} SpatialPointDataframe object (currently only)}
 
+\item{minscale}{scale to approximate. default is 250000}
+
 \item{width}{a valid CSS width}
 
 \item{height}{a valid CSS width}
@@ -31,9 +33,9 @@ of the column(s) to be used for defining the size of circles}
 \item{color}{colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines}
 }
 \description{
-fpmap ist a first prototype for rendering big point data on base of leaflet maps utilizing webGL and htmlwidgets.
+fpmap is a first prototype for rendering big data (points) on base of leaflet maps utilizing webGL and htmlwidgets.
 
-This is a modified and adapted implementation of \link{https://github.com/robertleeplummerjr/Leaflet.glify}
+This is a modified and adapted implementation of \url{https://github.com/robertleeplummerjr/Leaflet.glify}
 }
 \examples{
 
