@@ -12,6 +12,8 @@
 \item{x}{A 'numeric' vector with a single pair of coordinates or a matrix
 with multiple pairs of input coordinates, typically projected in EPSG:4326
 (\url{http://spatialreference.org/ref/epsg/wgs-84/}).}
+
+\item{xy}{An 'integer' vector specifying the coordinate columns.}
 }
 \value{
 A single 'character' object in JSON format.

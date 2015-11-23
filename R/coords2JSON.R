@@ -1,5 +1,5 @@
 if ( !isGeneric('coords2JSON') ) {
-  setGeneric('coords2JSON', function(x)
+  setGeneric('coords2JSON', function(x, xy = c(1, 2))
     standardGeneric('coords2JSON'))
 }
 #' Convert a vector/matrix of coordinates to JSON format
@@ -13,6 +13,7 @@ if ( !isGeneric('coords2JSON') ) {
 #' @param x A 'numeric' vector with a single pair of coordinates or a matrix
 #' with multiple pairs of input coordinates, typically projected in EPSG:4326
 #' (\url{http://spatialreference.org/ref/epsg/wgs-84/}).
+#' @param xy An 'integer' vector specifying the coordinate columns.
 #'
 #' @return A single 'character' object in JSON format.
 #'
@@ -50,6 +51,9 @@ setMethod("coords2JSON",
           signature(x = "numeric"),
           function(x) {
 
+            ## round to 7 decimal places
+            x <- round(x, 7)
+
             ## convert to 'character'
             x <- as.character(x)
 
@@ -62,10 +66,13 @@ setMethod("coords2JSON",
 
 ################################################################################
 ### function using numeric input (i.e., single x and y coordinates) ############
-#' @aliases coords2JSON,numeric-method
+#' @aliases coords2JSON,character-method
 setMethod("coords2JSON",
           signature(x = "character"),
-          function(x) {
+          function(x, xy = c(1, 2)) {
+
+            ## round to 7 decimal places
+            x[xy] <- as.character(round(as.numeric(x[xy]), 7))
 
             ## create JSON string
             chr_json <- mapview:::one2JSON(x)
@@ -79,16 +86,17 @@ setMethod("coords2JSON",
 #' @aliases coords2JSON,matrix-method
 setMethod("coords2JSON",
           signature(x = "matrix"),
-          function(x) {
+          function(x, xy = c(1, 2)) {
 
             ## convert to 'character'
             if (class(x[1, ]) != "character") {
-#               lst_x <- lapply(1:ncol(x), function(i) {
-#                 as.character(x[, i])
-#               })
-#               x <- do.call("cbind", lst_x)
               x <- apply(x, 2, "as.character")
             }
+
+            ## round to 7 decimal places
+            x[, xy] <- apply(x[, xy], 2, FUN = function(i) {
+              as.character(round(as.numeric(i), 7))
+            })
 
             ## create list with JSON entries
             lst_json <- mapview:::all2JSONlist(x)
