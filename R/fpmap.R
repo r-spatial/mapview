@@ -144,17 +144,17 @@ fpmap <- function(data,
     lat.1deg=110540
     lon.1deg=111320*cos(rad.cof*yc)
     # calculate stepsize
-    latextent=(lat.1deg*(ext@ymax-ext@ymin))*10
-    lonextent=(lon.1deg*(ext@xmax-ext@xmin))*10
+    latextent=(lat.1deg*(ext@ymax-ext@ymin))
+    lonextent=(lon.1deg*(ext@xmax-ext@xmin))
 
     #http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Resolution_and_Scale
-    zoomlevel <- 0
+    zoomlevel <- 3
     repeat{
       # res in m zoomlev is 2 ^ x
       res <- 156543.03  * cos(yc) / (2 ^ zoomlevel)
       #calculating screen scale assuming screen 96 dpi in/m 1000/25.4
       scale = (96 * 39.37 * res)
-      if(scale < lonextent+lonextent*0.5){
+      if(scale < lonextent || scale < 75000){
         break
       }
       zoomlevel <- zoomlevel + 1
