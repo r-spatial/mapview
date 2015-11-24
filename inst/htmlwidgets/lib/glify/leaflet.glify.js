@@ -61,13 +61,14 @@
         clickPoint: null,
         color: ''
     };
+     Glify.color = {
 
-    Glify.color = {
         green : {r: 0, g: 1, b: 0},
         red   : {r: 1, g: 0, b: 0},
         blue  : {r: 0, g: 0, b: 1},
         teal  : {r: 0, g: 1, b: 1},
         yellow: {r: 1, g: 1, b: 0},
+
         random: function() {
             return {
                 r: Math.random(),
@@ -75,6 +76,7 @@
                 b: Math.random()
             };
         },
+
         pallet : function() {
             switch (Math.round(Math.random() * 4)) {
                 case 0: return Glify.color.green;
@@ -83,6 +85,7 @@
                 case 3: return Glify.color.teal;
                 case 4: return Glify.color.yellow;
                 case 5: return Glify.color.random;
+                case 6: return Glify.color.random;
             }
         }
     };
@@ -247,7 +250,9 @@
             gl.attachShader(program, this.fragmentShader);
             gl.linkProgram(program);
             gl.useProgram(program);
-            gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+            //gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+            gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
+            //gl.BlendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
             gl.enable(gl.BLEND);
 
             this.program = program;
@@ -272,7 +277,7 @@
                 offset = this.latLngToPixelXY(topLeft.lat, topLeft.lng),
                 // -- Scale to current zoom
                 scale = Math.pow(2, zoom),
-                pointSize = Math.max(zoom - 5.0, 1.0);
+                pointSize = Math.max(zoom - 4.0, 2.0);
 
             gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -398,11 +403,11 @@
          * @returns {*}
          */
         lookup: function(coords) {
-            var x = coords.lat - 0.003,
+            var x = coords.lat - 0.03,
                 y,
 
-                xMax = coords.lat + 0.003,
-                yMax = coords.lng + 0.003,
+                xMax = coords.lat + 0.03,
+                yMax = coords.lng + 0.03,
 
                 foundI,
                 foundMax,
@@ -411,9 +416,9 @@
                 found,
                 key;
 
-            for (; x <= xMax; x+=0.0001) {
-                y = coords.lng - 0.0003;
-                for (; y <= yMax; y+=0.0001) {
+            for (; x <= xMax; x+=0.01) {
+                y = coords.lng - 0.03;
+                for (; y <= yMax; y+=0.01) {
                     key = x.toFixed(4) + 'x' + y.toFixed(4);
                     found = this.latLngLookup[key];
                     if (found) {

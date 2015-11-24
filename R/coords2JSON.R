@@ -78,10 +78,10 @@ setMethod("coords2JSON",
             ## round to 7 decimal places
             x[xy] <- as.character(round(as.numeric(x[xy]), 7))
 
-            ## integer-formatted 'character' to float
-            id_flt <- grep("\\.", x[xy])
-            id_int <- xy[!xy %in% id_flt]
-            x[id_int] <- paste0(x[id_int], ".0")
+#            ## integer-formatted 'character' to float
+#            id_flt <- grep("\\.", x[xy])
+#            id_int <- xy[!xy %in% id_flt]
+#            x[id_int] <- paste0(x[id_int], ".0")
 
             ## create JSON string
             chr_json <- mapview:::one2JSON(x)
@@ -110,10 +110,10 @@ setMethod("coords2JSON",
             })
 
             ## integer-formatted 'character' to float
-            crd <- x[, xy]
-            id_flt <- grep("\\.", crd)
-            crd[-id_flt] <- paste0(crd[-id_flt], ".0")
-            x[, xy] <- crd
+#            crd <- x[, xy]
+#            id_flt <- grep("\\.", crd)
+#            crd[-id_flt] <- paste0(crd[-id_flt], ".0")
+#            x[, xy] <- crd
 
             ## create list with JSON entries
             lst_json <- mapview:::all2JSONlist(x)
