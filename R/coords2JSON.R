@@ -99,7 +99,9 @@ setMethod("coords2JSON",
 
             ## convert to 'character'
             if (class(x[1, ]) != "character") {
-              x <- apply(x, 2, "as.character")
+               #x <- sprintf("%s",x)
+               x <- apply(x, 2, "as.character")
+
             }
 
             ## round to 7 decimal places

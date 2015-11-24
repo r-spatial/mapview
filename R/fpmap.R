@@ -36,14 +36,14 @@ if (!isGeneric('fpmap')) {
 #'  meuse <- spTransform(meuse,CRS("+init=epsg:3857"))
 #'
 #' # map it with mapview
-#'  mapview(meuse, zcol = 'cadmium')
+#'  mapview(meuse)
 #'
 #' # map it with fpmap
-#'  fpmap(data = meuse,col = "random",zcol = 'cadmium')
+#'  fpmap(data = meuse,col = "random")
 #'
 #' ### some benchmarks
-#'  system.time(mapview(meuse, zcol = 'cadmium'))
-#'  system.time(fpmap(data = meuse, col = "random",zcol = 'cadmium'))
+#'  system.time(mapview(meuse))
+#'  system.time(fpmap(data = meuse, col = "random"))
 #'
 #' ### Now we go a bit bigger
 #'
@@ -121,16 +121,19 @@ fpmap <- function(data,
   if (!is.null(data)) {
     data.latlon <- spTransform(data,CRS("+init=epsg:4326"))
     df <- as.data.frame(data.latlon)
-    numbs <- sapply(df, is.numeric)
-    df.xyz <- df[, numbs]
+#    numbs <- sapply(df, is.numeric)
+#    df.xyz <- df[, numbs]
     drops <- c("x","y")
-    df.cols <- df.xyz[,!(names(df.xyz) %in% drops)]
+    df.cols <- df[,!(names(df) %in% drops)]
     cnames <- colnames(df.cols)
     if (!is.null(zcol)) {
       cnames <- zcol
     }
-    df.sort <- df.xyz[,c("x","y",cnames)]
+    df.cols <- lapply(df.cols, as.character)
+    df.sort <- df[,c("x","y",cnames)]
+    #df.sort[is.na(df.sort)] <- -9999
     out.matrix = t(t(df.sort))
+    #out.matrix[,3:ncol(out.matrix)]<-sprintf("%.1f",out.matrix[,3:ncol(out.matrix)])
     data.json <- coords2JSON(out.matrix)
     # we need scale and zoom so we approximate the area and zoom factor
     ext <- extent(df.sort)
@@ -141,17 +144,17 @@ fpmap <- function(data,
     lat.1deg=110540
     lon.1deg=111320*cos(rad.cof*yc)
     # calculate stepsize
-    latextent=(lat.1deg*(ext@ymax-ext@ymin))*10
-    lonextent=(lon.1deg*(ext@xmax-ext@xmin))*10
+    latextent=(lat.1deg*(ext@ymax-ext@ymin))
+    lonextent=(lon.1deg*(ext@xmax-ext@xmin))
 
     #http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Resolution_and_Scale
-    zoomlevel <- 0
+    zoomlevel <- 3
     repeat{
       # res in m zoomlev is 2 ^ x
       res <- 156543.03  * cos(yc) / (2 ^ zoomlevel)
       #calculating screen scale assuming screen 96 dpi in/m 1000/25.4
       scale = (96 * 39.37 * res)
-      if(scale < lonextent+lonextent*0.5){
+      if(scale < lonextent || scale < 75000){
         break
       }
       zoomlevel <- zoomlevel + 1

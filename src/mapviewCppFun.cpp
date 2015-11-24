@@ -13,16 +13,20 @@ std::string one2JSON(CharacterVector x) {
   // loop over single entries in 'x'
   std::ostringstream chContent;
   for (int i = 0; i < nSize; i++) {
-    if (i < (nSize - 1)) {
+    if (i == 0) {
       chContent << x[i] << ",";
+    } else if (i == 1) {
+      chContent << x[i] << ','<<'"';
+    } else if (i > 1  && i < (nSize - 1)) {
+      chContent << x[i] <<'"'<<','<<'"' ;
     } else {
-      chContent << x[i];
+      chContent << x[i] << '"';
     }
   }
 
   // create string
   std::string chOut;
-  chOut = std::string("[") + chContent.str() + "]";
+  chOut = std::string("[") +   chContent.str() + "]";
 
   return chOut;
 }
