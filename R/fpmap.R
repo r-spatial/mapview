@@ -36,14 +36,14 @@ if (!isGeneric('fpmap')) {
 #'  meuse <- spTransform(meuse,CRS("+init=epsg:3857"))
 #'
 #' # map it with mapview
-#'  mapview(meuse, zcol = 'cadmium')
+#'  mapview(meuse)
 #'
 #' # map it with fpmap
-#'  fpmap(data = meuse,col = "random",zcol = 'cadmium')
+#'  fpmap(data = meuse,col = "random")
 #'
 #' ### some benchmarks
-#'  system.time(mapview(meuse, zcol = 'cadmium'))
-#'  system.time(fpmap(data = meuse, col = "random",zcol = 'cadmium'))
+#'  system.time(mapview(meuse))
+#'  system.time(fpmap(data = meuse, col = "random"))
 #'
 #' ### Now we go a bit bigger
 #'
