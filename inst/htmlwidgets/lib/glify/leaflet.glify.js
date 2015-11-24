@@ -313,7 +313,7 @@
                 pixelY = (0.5 - Math.log((1 + sinLatitude) / (1 - sinLatitude)) / (pi4)) * 256,
                 pixelX = ((longitude + 180) / 360) * 256,
                 pixel,
-                key = latitude.toFixed(4) + 'x' + longitude.toFixed(4),
+                key = latitude.toFixed(5) + 'x' + longitude.toFixed(5),
                 lookup = this.latLngLookup[key];
 
             pixel = {
@@ -403,11 +403,11 @@
          * @returns {*}
          */
         lookup: function(coords) {
-            var x = coords.lat - 0.03,
+            var x = coords.lat - 0.0003,
                 y,
 
-                xMax = coords.lat + 0.03,
-                yMax = coords.lng + 0.03,
+                xMax = coords.lat + 0.0003,
+                yMax = coords.lng + 0.0003,
 
                 foundI,
                 foundMax,
@@ -416,10 +416,10 @@
                 found,
                 key;
 
-            for (; x <= xMax; x+=0.01) {
-                y = coords.lng - 0.03;
-                for (; y <= yMax; y+=0.01) {
-                    key = x.toFixed(4) + 'x' + y.toFixed(4);
+            for (; x <= xMax; x+=0.00001) {
+                y = coords.lng -0.0003;
+                for (; y <= yMax; y+=0.00001) {
+                    key = x.toFixed(5) + 'x' + y.toFixed(5);
                     found = this.latLngLookup[key];
                     if (found) {
                         foundI = 0;

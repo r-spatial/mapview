@@ -97,7 +97,6 @@ if (!isGeneric('fpmap')) {
 #' @name fpmap
 #' @rdname fpmap
 #'
-#' @import htmlwidgets
 #'
 ## SpatialPointsDataFrame =================================================
 
