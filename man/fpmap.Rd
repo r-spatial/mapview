@@ -5,7 +5,7 @@
 \alias{fpmap}
 \title{Leaflet maps for big data}
 \usage{
-fpmap(data, col = "blue", width = NULL, height = NULL, zcol = NULL,
+fpmap(data, col = "rgb", width = NULL, height = NULL, zcol = NULL,
   map = NULL, burst = FALSE, radius = 10, map.types = c("OpenStreetMap",
   "Esri.WorldImagery", "Thunderforest.Landscape"), legend = FALSE,
   legend.opacity = 1, verbose = mapviewOptions(console = FALSE)$verbose,

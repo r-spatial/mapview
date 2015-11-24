@@ -72,6 +72,7 @@ HTMLWidgets.widget({
   var vertexshader = HTMLWidgets.getAttachmentUrl('vertex-shader', 'vertex-shader');
   var fragmentshader = HTMLWidgets.getAttachmentUrl('fragment-shader', 'fragment-shader');
   var color = x[0];
+  var rgbcode = x[7];
 
 
   // no it is getting tricky after wget-ing all files the text contet of it
@@ -100,7 +101,7 @@ HTMLWidgets.widget({
                               console.log(point);
                         },
                         data: JSON.parse(data),
-                        color: color
+                        color: color,
                     });
   })
 

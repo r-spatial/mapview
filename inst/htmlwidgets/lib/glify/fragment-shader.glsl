@@ -3,7 +3,7 @@ varying vec4 vColor;
 
 void main() {
 
-    float border = 0.0;
+    float border = 0.01;
     float radius = 0.5;
     vec4 color0 = vec4(0.0, 0.0, 0.0, 0.0);
     vec4 color1 = vec4(vColor[0], vColor[1], vColor[2], 1);

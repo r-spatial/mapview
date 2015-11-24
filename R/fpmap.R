@@ -104,7 +104,7 @@ if (!isGeneric('fpmap')) {
 
 
 fpmap <- function(data,
-                  col = 'blue'  ,
+                  col = 'rgb',
                   width = NULL,
                   height = NULL,
                   zcol = NULL,
@@ -121,8 +121,6 @@ fpmap <- function(data,
   if (!is.null(data)) {
     data.latlon <- spTransform(data,CRS("+init=epsg:4326"))
     df <- as.data.frame(data.latlon)
-#    numbs <- sapply(df, is.numeric)
-#    df.xyz <- df[, numbs]
     drops <- c("x","y")
     df.cols <- df[,!(names(df) %in% drops)]
     cnames <- colnames(df.cols)
@@ -133,7 +131,6 @@ fpmap <- function(data,
     df.sort <- df[,c("x","y",cnames)]
     #df.sort[is.na(df.sort)] <- -9999
     out.matrix = t(t(df.sort))
-    #out.matrix[,3:ncol(out.matrix)]<-sprintf("%.1f",out.matrix[,3:ncol(out.matrix)])
     data.json <- coords2JSON(out.matrix)
     # we need scale and zoom so we approximate the area and zoom factor
     ext <- extent(df.sort)
