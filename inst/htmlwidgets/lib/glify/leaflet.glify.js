@@ -143,7 +143,7 @@
                 colorFn = colorKey;
 
                 this.settings.data.map(function (latLng, i) {
-                    var pixel = this.latLngToPixelXY(latLng[1], latLng[0], latLng[2],latLng[3],latLng[4],latLng[5],latLng[6],latLng[7],latLng[8],latLng[9],latLng[10],latLng[11],latLng[12]),
+                    var pixel = this.latLngToPixelXY(latLng[1], latLng[0], latLng[2],latLng[3],latLng[4],latLng[5],latLng[6],latLng[7],latLng[8],latLng[9],latLng[10],latLng[11],latLng[12],latLng[13],latLng[14],latLng[15],latLng[16],latLng[17],latLng[18],latLng[19],latLng[20]),
                         color = colorFn(10);
 
                     //-- 2 coord, 3 rgb colors interleaved buffer
@@ -151,8 +151,7 @@
                 }.bind(this));
             } else {
                 this.settings.data.map(function (latLng, i) {
-                    var pixel = this.latLngToPixelXY(latLng[1], latLng[0], latLng[2],latLng[3],latLng[4],latLng[5],latLng[6],latLng[7],latLng[8],latLng[9],latLng[10],latLng[11],latLng[12]);
-
+                    var pixel = this.latLngToPixelXY(latLng[1], latLng[0], latLng[2],latLng[3],latLng[4],latLng[5],latLng[6],latLng[7],latLng[8],latLng[9],latLng[10],latLng[11],latLng[12],latLng[13],latLng[14],latLng[15],latLng[16],latLng[17],latLng[18],latLng[19],latLng[20]);
                     //-- 2 coord, 3 rgb colors interleaved buffer
                     this.verts.push(pixel.x, pixel.y, color.r, color.g, color.b);
                 }.bind(this));
@@ -302,7 +301,7 @@
          * @param longitude
          * @returns {{x: number, y: number}}
          */
-        latLngToPixelXY: function(latitude, longitude, v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12) {
+        latLngToPixelXY: function(latitude, longitude, v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14){
             var pi180 = Math.PI / 180.0,
                 pi4 = Math.PI * 4,
                 sinLatitude = Math.sin(latitude * pi180),
@@ -327,6 +326,8 @@
                 v10: v10,
                 v11: v11,
                 v12: v12,
+                v13: v13,
+                v14: v14,
                 x: pixelX,
                 y: pixelY,
                 key: key

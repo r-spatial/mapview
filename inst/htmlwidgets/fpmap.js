@@ -94,7 +94,7 @@ HTMLWidgets.widget({
                         //set up a standalone popup (use a popup as a layer)
                         L.popup()
                           .setLatLng(point)
-                          .setContent("<table><tr><td>Longitude</td><td>" + point.lng + "</td></tr><tr><td>Latitude</td><td>" + point.lat + "</td></tr><tr><td>" + x[3][0] + "</td><td>" + point.v1 + "</td></tr><tr><td>" + x[3][1] + "</td><td>" + point.v2 + "</td></tr><tr><td>" + x[3][2] + "</td><td>" + point.v3 + "</td></tr><tr><td>" + x[3][3] + "</td><td>" + point.v4 + "</td></tr><tr><td>" + x[3][4] + "</td><td>" + point.v5 + "</td></tr></table>")
+                          .setContent("<table><tr><td>Longitude</td><td>" + point.lng + "</td></tr><tr><td>Latitude</td><td>" + point.lat + "</td></tr><tr><td>" + x[3][0] + "</td><td>" + point.v1 + "</td></tr><tr><td>" + x[3][1] + "</td><td>" + point.v2 + "</td></tr><tr><td>" + x[3][2] + "</td><td>" + point.v3 + "</td></tr><tr><td>" + x[3][3] + "</td><td>" + point.v4 + "</td></tr><tr><td>" + x[3][4] + "</td><td>" + point.v5 + "</td></tr><tr><td>" + x[3][5] + "</td><td>" + point.v6 + "</td></tr><tr><td>" + x[3][6] + "</td><td>" + point.v7 + "</td></tr><tr><td>" + x[3][7] + "</td><td>" + point.v8 + "</td></tr></table>")
 
                               .openOn(map);
                               console.log(point);
@@ -127,7 +127,7 @@ HTMLWidgets.widget({
                         //set up a standalone popup (use a popup as a layer)
                         L.popup()
                           .setLatLng(point)
-                          .setContent("<table><tr><td>Longitude</td><td>" + point.lng + "</td></tr><tr><td>Latitude</td><td>" + point.lat + "</td></tr><tr><td>" + x[3][0] + "</td><td>" + point.v1 + "</td></tr><tr><td>" + x[3][1] + "</td><td>" + point.v2 + "</td></tr><tr><td>" + x[3][2] + "</td><td>" + point.v3 + "</td></tr><tr><td>" + x[3][3] + "</td><td>" + point.v4 + "</td></tr><tr><td>" + x[3][4] + "</td><td>" + point.v5 + "</td></tr></table>")
+                          .setContent("<table><tr><td>Longitude</td><td>" + point.lng + "</td></tr><tr><td>Latitude</td><td>" + point.lat + "</td></tr><tr><td>" + x[3][0] + "</td><td>" + point.v1 + "</td></tr><tr><td>" + x[3][1] + "</td><td>" + point.v2 + "</td></tr><tr><td>" + x[3][2] + "</td><td>" + point.v3 + "</td></tr><tr><td>" + x[3][3] + "</td><td>" + point.v4 + "</td></tr><tr><td>" + x[3][4] + "</td><td>" + point.v5 + "</td></tr><tr><td>" + x[3][5] + "</td><td>" + point.v6 + "</td></tr><tr><td>" + x[3][6] + "</td><td>" + point.v7 + "</td></tr><tr><td>" + x[3][7] + "</td><td>" + point.v8 + "</td></tr><tr><td>" + x[3][8] + "</td><td>" + point.v9 + "</td></tr><tr><td>" + x[3][9] + "</td><td>" + point.v10 + "</td></tr><tr><td>" + x[3][10] + "</td><td>" + point.v11 + "</td></tr><tr><td>" + x[3][11] + "</td><td>" + point.v12 + "</td></tr><tr><td>" + x[3][12] + "</td><td>" + point.v13 + "</td></tr><tr><td>" + x[3][13] + "</td><td>" + point.v14 + "</td></tr><tr></table>")
 
                               .openOn(map);
                               console.log(point);
