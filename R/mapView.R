@@ -9,6 +9,7 @@ if ( !isGeneric('mapView') ) {
 #' this function produces an interactive GIS-like view of the specified
 #' spatial object(s) on top of the specified base maps.
 #'
+#'
 #' @param x a \code{\link{raster}}* object
 #' @param map an optional existing map to be updated/added to
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.

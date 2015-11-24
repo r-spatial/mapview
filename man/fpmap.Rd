@@ -34,6 +34,11 @@ fpmap is a first prototype for rendering big data (points) on base of leaflet ma
 
 This is a modified and adapted implementation of \url{https://github.com/robertleeplummerjr/Leaflet.glify}
 }
+\note{
+It is import to understand that the accurracy of the rendering is about
+ 1.1 m at the equator up to 20 cm around 75°. You will get an arbitrary result if the
+  accurracy of your points requires more than 5 decimal digits.
+}
 \examples{
 
 ### we need sp and raster ###

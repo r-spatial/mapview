@@ -9,6 +9,10 @@ if (!isGeneric('fpmap')) {
 #'
 #' This is a modified and adapted implementation of \url{https://github.com/robertleeplummerjr/Leaflet.glify}
 #'
+#'@note It is import to understand that the accurracy of the rendering is about
+#'  1.1 m at the equator up to 20 cm around 75°. You will get an arbitrary result if the
+#'   accurracy of your points requires more than 5 decimal digits.
+#'
 #' @param data a \code{\link{sp}} SpatialPointDataframe object (currently only)
 #' @param color colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines
 #' @param width	a valid CSS width
