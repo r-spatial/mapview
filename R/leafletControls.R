@@ -2,8 +2,12 @@
 
 getLayerControlEntriesFromMap <- function(map) {
 
-  seq_along(map$x$calls)[sapply(map$x$calls,
-                                FUN = function(X) "addLayersControl" %in% X)]
+#   seq_along(map$x$calls)[sapply(map$x$calls,
+#                                 FUN = function(X) "addLayersControl" %in% X)]
+  tst <- which(sapply(map$x$calls, function(i) {
+    i$method == "addLayersControl"
+  }))
+  return(tst)
 
 }
 
