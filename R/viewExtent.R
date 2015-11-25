@@ -37,8 +37,7 @@ NULL
 #' @rdname viewExtent
 viewExtent <- function(x,
                        map = NULL,
-                       map.types = c("OpenStreetMap",
-                                     "Esri.WorldImagery"),
+                       map.types = mapviewOptions(console = FALSE)$basemaps,
                        popup = NULL,
                        ...) {
 

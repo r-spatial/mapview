@@ -104,7 +104,9 @@ mapviewOptions <- function(platform,
   if (default) {
     cnt <- 1
     options(mapviewPlatform = "leaflet")
-    options(mapviewBasemaps = c("OpenStreetMap", "Esri.WorldImagery"))
+    options(mapviewBasemaps = c("OpenStreetMap",
+                                "Esri.WorldImagery",
+                                "Thunderforest.Landscape"))
     options(mapviewRasterSize = 8 * 1024 * 1024)
     options(mapviewMaxPixels = 500000)
     options(mapviewVerbose = FALSE)
@@ -161,7 +163,9 @@ mapviewOptions <- function(platform,
 
 
 .basemaps <- function() {
-  default <- c("OpenStreetMap", "Esri.WorldImagery")
+  default <- c("OpenStreetMap",
+               "Esri.WorldImagery",
+               "Thunderforest.Landscape")
   bm <- getOption('mapviewBasemaps')
   if (is.null(bm)) {
     return(default)
