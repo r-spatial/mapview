@@ -18,7 +18,9 @@ cat("colors\n")
 #                                 na.color = na.color, alpha = TRUE)
 
   cols <- lattice::level.colors(mat,
-                                at = lattice::do.breaks(range(mat), 256),
+                                at = lattice::do.breaks(range(mat,
+                                                              na.rm = TRUE),
+                                                        256),
                                 col.regions = colors)
 
   #cols <- clrs(t(mat))
