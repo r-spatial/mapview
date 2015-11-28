@@ -2,7 +2,6 @@
 % Please edit documentation in R/mapview-package.R
 \docType{package}
 \name{mapview-package}
-\alias{mapview}
 \alias{mapview-package}
 \title{GIS-like viewing of spatial objects in R}
 \description{

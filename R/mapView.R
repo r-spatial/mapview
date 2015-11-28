@@ -499,7 +499,19 @@ setMethod('mapView', signature(x = 'missing'),
 )
 
 
+
 ## mapview ================================================================
+
+if ( !isGeneric('mapview') ) {
+  setGeneric('mapview', function(...)
+    standardGeneric('mapview'))
+}
+
+
+#' @describeIn mapView alias for ease of typing
+#' @aliases mapview
 #' @export mapview
 #'
-mapview <- function(...) mapView(...)
+setMethod('mapview', signature('ANY'),
+          function(...) mapView(...))
+

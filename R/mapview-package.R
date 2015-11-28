@@ -6,7 +6,6 @@
 #' quality map production.
 #'
 #' @name mapview-package
-#' @aliases mapview
 #' @docType package
 #' @title GIS-like viewing of spatial objects in R
 #' @author Tim Appelhans, Florian Detsch, Chris Reudenbach,

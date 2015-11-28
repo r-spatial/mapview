@@ -14,6 +14,8 @@
 \alias{mapView,SpatialPolygons-method}
 \alias{mapView,SpatialPolygonsDataFrame-method}
 \alias{mapView,missing-method}
+\alias{mapview}
+\alias{mapview,ANY-method}
 \title{View spatial objects interactively}
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL,
@@ -79,6 +81,8 @@
 
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
   easter.egg = FALSE)
+
+\S4method{mapview}{ANY}(...)
 }
 \arguments{
 \item{x}{a \code{\link{raster}}* object}
@@ -157,6 +161,8 @@ spatial object(s) on top of the specified base maps.
 \item \code{SpatialLines}: \code{\link{SpatialLines}}
 
 \item \code{missing}: initiate a map without an object
+
+\item \code{ANY}: alias for ease of typing
 }}
 \examples{
 \dontrun{

@@ -283,7 +283,16 @@ renderPlainView <- function(expr, env = parent.frame(), quoted = FALSE) {
 
 
 
-## plainview ================================================================
+## plainview ==============================================================
+
+if ( !isGeneric('plainview') ) {
+  setGeneric('plainview', function(...)
+    standardGeneric('plainview'))
+}
+
+#' @describeIn plainView alias for ease of typing
+#' @aliases plainview
 #' @export plainview
-#'
-plainview <- function(...) plainView(...)
+
+setMethod('plainview', signature('ANY'),
+          function(...) plainView(...))

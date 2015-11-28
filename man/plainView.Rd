@@ -4,6 +4,8 @@
 \name{plainView}
 \alias{plainView}
 \alias{plainView,RasterLayer-method}
+\alias{plainview}
+\alias{plainview,ANY-method}
 \title{View spatial objects interactively without background map but in any CRS}
 \usage{
 \S4method{plainView}{RasterLayer}(x,
@@ -11,6 +13,8 @@
   na.color = mapviewGetOption("nacolor"),
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), ...)
+
+\S4method{plainview}{ANY}(...)
 }
 \arguments{
 \item{x}{a \code{\link{raster}}* object}
@@ -56,6 +60,10 @@ for available options.}
 this function produces an interactive GIS-like view of the specified
 spatial object(s) on a plain grey background but for any CRS.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{ANY}: alias for ease of typing
+}}
 \examples{
 \dontrun{
 plainView()
