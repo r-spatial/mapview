@@ -17,20 +17,19 @@
 \title{View spatial objects interactively}
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL,
-  maxpixels = mapviewOptions(console = FALSE)$maxpixels,
-  color = mapViewPalette(7), na.color = mapviewOptions(console =
-  FALSE)$nacolor, use.layer.names = FALSE, values = NULL,
-  map.types = mapviewOptions(console = FALSE)$basemaps, layer.opacity = 0.8,
-  legend = TRUE, legend.opacity = 1, trim = TRUE,
-  verbose = mapviewOptions(console = FALSE)$verbose,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+  maxpixels = mapviewGetOption("maxpixels"), color = mapViewPalette(7),
+  na.color = mapviewGetOption("nacolor"), use.layer.names = FALSE,
+  values = NULL, map.types = mapviewGetOption("basemaps"),
+  layer.opacity = 0.8, legend = TRUE, legend.opacity = 1, trim = TRUE,
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
-  maxpixels = mapviewOptions(console = FALSE)$maxpixels,
-  color = mapViewPalette(7), na.color = mapviewOptions(console =
-  FALSE)$nacolor, values = NULL, map.types = mapviewOptions(console =
-  FALSE)$basemaps, legend = FALSE, legend.opacity = 1, trim = TRUE,
-  verbose = mapviewOptions(console = FALSE)$verbose, ...)
+  maxpixels = mapviewGetOption("maxpixels"), color = mapViewPalette(7),
+  na.color = mapviewGetOption("nacolor"), values = NULL,
+  map.types = mapviewGetOption("basemaps"), legend = FALSE,
+  legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
+  ...)
 
 \S4method{mapView}{Satellite}(x, ...)
 
@@ -38,48 +37,48 @@
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapViewPalette(7),
-  na.color = mapviewOptions(console = FALSE)$nacolor, radius = 10,
-  map.types = mapviewOptions(console = FALSE)$basemaps, legend = FALSE,
-  legend.opacity = 1, verbose = mapviewOptions(console = FALSE)$verbose,
+  na.color = mapviewGetOption("nacolor"), radius = 10,
+  map.types = mapviewGetOption("basemaps"), legend = FALSE,
+  legend.opacity = 1, verbose = mapviewGetOption("verbose"),
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
 
 \S4method{mapView}{SpatialPoints}(x, map = NULL,
-  na.color = mapviewOptions(console = FALSE)$nacolor,
-  map.types = mapviewOptions(console = FALSE)$basemaps,
-  verbose = mapviewOptions(console = FALSE)$verbose,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+  na.color = mapviewGetOption("nacolor"),
+  map.types = mapviewGetOption("basemaps"),
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), ...)
 
 \S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapViewPalette(7),
-  na.color = mapviewOptions(console = FALSE)$nacolor, values = NULL,
-  map.types = mapviewOptions(console = FALSE)$basemaps, legend = FALSE,
-  legend.opacity = 1, weight = 2, verbose = mapviewOptions(console =
-  FALSE)$verbose, layer.name = deparse(substitute(x, env = parent.frame())),
-  popup = NULL, ...)
+  na.color = mapviewGetOption("nacolor"), values = NULL,
+  map.types = mapviewGetOption("basemaps"), legend = FALSE,
+  legend.opacity = 1, weight = 2, verbose = mapviewGetOption("verbose"),
+  layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
+  ...)
 
 \S4method{mapView}{SpatialPolygons}(x, map = NULL,
-  na.color = mapviewOptions(console = FALSE)$nacolor,
-  map.types = mapviewOptions(console = FALSE)$basemaps, weight = 2,
-  verbose = mapviewOptions(console = FALSE)$verbose,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+  na.color = mapviewGetOption("nacolor"),
+  map.types = mapviewGetOption("basemaps"), weight = 2,
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), ...)
 
 \S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapViewPalette(7),
-  na.color = mapviewOptions(console = FALSE)$nacolor, values = NULL,
-  map.types = mapviewOptions(console = FALSE)$basemaps, legend = FALSE,
-  legend.opacity = 1, verbose = mapviewOptions(console = FALSE)$verbose,
+  na.color = mapviewGetOption("nacolor"), values = NULL,
+  map.types = mapviewGetOption("basemaps"), legend = FALSE,
+  legend.opacity = 1, verbose = mapviewGetOption("verbose"),
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
 
 \S4method{mapView}{SpatialLines}(x, map = NULL,
-  na.color = mapviewOptions(console = FALSE)$nacolor,
-  map.types = mapviewOptions(console = FALSE)$basemaps,
-  verbose = mapviewOptions(console = FALSE)$verbose,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+  na.color = mapviewGetOption("nacolor"),
+  map.types = mapviewGetOption("basemaps"),
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), ...)
 
-\S4method{mapView}{missing}(map.types = mapviewOptions(console =
-  FALSE)$basemaps, easter.egg = FALSE)
+\S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
+  easter.egg = FALSE)
 }
 \arguments{
 \item{x}{a \code{\link{raster}}* object}

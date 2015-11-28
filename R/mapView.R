@@ -9,6 +9,7 @@ if ( !isGeneric('mapView') ) {
 #' this function produces an interactive GIS-like view of the specified
 #' spatial object(s) on top of the specified base maps.
 #'
+#'
 #' @param x a \code{\link{raster}}* object
 #' @param map an optional existing map to be updated/added to
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
@@ -111,22 +112,22 @@ if ( !isGeneric('mapView') ) {
 setMethod('mapView', signature(x = 'RasterLayer'),
           function(x,
                    map = NULL,
-                   maxpixels = mapviewOptions(console = FALSE)$maxpixels,
+                   maxpixels = mapviewGetOption("maxpixels"),
                    color = mapViewPalette(7),
-                   na.color = mapviewOptions(console = FALSE)$nacolor,
+                   na.color = mapviewGetOption("nacolor"),
                    use.layer.names = FALSE,
                    values = NULL,
-                   map.types = mapviewOptions(console = FALSE)$basemaps,
+                   map.types = mapviewGetOption("basemaps"),
                    layer.opacity = 0.8,
                    legend = TRUE,
                    legend.opacity = 1,
                    trim = TRUE,
-                   verbose = mapviewOptions(console = FALSE)$verbose,
+                   verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    ...) {
 
-            if (mapviewOptions(console = FALSE)$platform == "leaflet") {
+            if (mapviewGetOption("platform") == "leaflet") {
               leafletRL(x,
                         map,
                         maxpixels,
@@ -156,18 +157,18 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 setMethod('mapView', signature(x = 'RasterStackBrick'),
           function(x,
                    map = NULL,
-                   maxpixels = mapviewOptions(console = FALSE)$maxpixels,
+                   maxpixels = mapviewGetOption("maxpixels"),
                    color = mapViewPalette(7),
-                   na.color = mapviewOptions(console = FALSE)$nacolor,
+                   na.color = mapviewGetOption("nacolor"),
                    values = NULL,
-                   map.types = mapviewOptions(console = FALSE)$basemaps,
+                   map.types = mapviewGetOption("basemaps"),
                    legend = FALSE,
                    legend.opacity = 1,
                    trim = TRUE,
-                   verbose = mapviewOptions(console = FALSE)$verbose,
+                   verbose = mapviewGetOption("verbose"),
                    ...) {
 
-            if (mapviewOptions(console = FALSE)$platform == "leaflet") {
+            if (mapviewGetOption("platform") == "leaflet") {
               leafletRSB(x,
                          map,
                          maxpixels,
@@ -231,7 +232,7 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                    zcol = NULL,
                    ...) {
 
-            if (mapviewOptions(console = FALSE)$platform == "leaflet") {
+            if (mapviewGetOption("platform") == "leaflet") {
               leafletPixelsDF(x,
                               zcol,
                               ...)
@@ -257,18 +258,18 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    map = NULL,
                    burst = FALSE,
                    color = mapViewPalette(7),
-                   na.color = mapviewOptions(console = FALSE)$nacolor,
+                   na.color = mapviewGetOption("nacolor"),
                    radius = 10,
-                   map.types = mapviewOptions(console = FALSE)$basemaps,
+                   map.types = mapviewGetOption("basemaps"),
                    legend = FALSE,
                    legend.opacity = 1,
-                   verbose = mapviewOptions(console = FALSE)$verbose,
+                   verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    popup = NULL,
                    ...) {
 
-            if (mapviewOptions(console = FALSE)$platform == "leaflet") {
+            if (mapviewGetOption("platform") == "leaflet") {
               leafletPointsDF(x,
                               zcol,
                               map,
@@ -299,14 +300,14 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 setMethod('mapView', signature(x = 'SpatialPoints'),
           function(x,
                    map = NULL,
-                   na.color = mapviewOptions(console = FALSE)$nacolor,
-                   map.types = mapviewOptions(console = FALSE)$basemaps,
-                   verbose = mapviewOptions(console = FALSE)$verbose,
+                   na.color = mapviewGetOption("nacolor"),
+                   map.types = mapviewGetOption("basemaps"),
+                   verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    ...) {
 
-            if (mapviewOptions(console = FALSE)$platform == "leaflet") {
+            if (mapviewGetOption("platform") == "leaflet") {
               leafletPoints(x,
                             map,
                             na.color,
@@ -334,19 +335,19 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    map = NULL,
                    burst = FALSE,
                    color = mapViewPalette(7),
-                   na.color = mapviewOptions(console = FALSE)$nacolor,
+                   na.color = mapviewGetOption("nacolor"),
                    values = NULL,
-                   map.types = mapviewOptions(console = FALSE)$basemaps,
+                   map.types = mapviewGetOption("basemaps"),
                    legend = FALSE,
                    legend.opacity = 1,
                    weight = 2,
-                   verbose = mapviewOptions(console = FALSE)$verbose,
+                   verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    popup = NULL,
                    ...) {
 
-            if (mapviewOptions(console = FALSE)$platform == "leaflet") {
+            if (mapviewGetOption("platform") == "leaflet") {
               leafletPolygonsDF(x,
                                 zcol,
                                 map,
@@ -378,15 +379,15 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 setMethod('mapView', signature(x = 'SpatialPolygons'),
           function(x,
                    map = NULL,
-                   na.color = mapviewOptions(console = FALSE)$nacolor,
-                   map.types = mapviewOptions(console = FALSE)$basemaps,
+                   na.color = mapviewGetOption("nacolor"),
+                   map.types = mapviewGetOption("basemaps"),
                    weight = 2,
-                   verbose = mapviewOptions(console = FALSE)$verbose,
+                   verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    ...) {
 
-            if (mapviewOptions(console = FALSE)$platform == "leaflet") {
+            if (mapviewGetOption("platform") == "leaflet") {
               leafletPolygons(x,
                               map,
                               na.color,
@@ -412,18 +413,18 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                    map = NULL,
                    burst = FALSE,
                    color = mapViewPalette(7),
-                   na.color = mapviewOptions(console = FALSE)$nacolor,
+                   na.color = mapviewGetOption("nacolor"),
                    values = NULL,
-                   map.types = mapviewOptions(console = FALSE)$basemaps,
+                   map.types = mapviewGetOption("basemaps"),
                    legend = FALSE,
                    legend.opacity = 1,
-                   verbose = mapviewOptions(console = FALSE)$verbose,
+                   verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    popup = NULL,
                    ...) {
 
-            if (mapviewOptions(console = FALSE)$platform == "leaflet") {
+            if (mapviewGetOption("platform") == "leaflet") {
               leafletLinesDF(x,
                              zcol,
                              map,
@@ -455,14 +456,14 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 setMethod('mapView', signature(x = 'SpatialLines'),
           function(x,
                    map = NULL,
-                   na.color = mapviewOptions(console = FALSE)$nacolor,
-                   map.types = mapviewOptions(console = FALSE)$basemaps,
-                   verbose = mapviewOptions(console = FALSE)$verbose,
+                   na.color = mapviewGetOption("nacolor"),
+                   map.types = mapviewGetOption("basemaps"),
+                   verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    ...) {
 
-            if (mapviewOptions(console = FALSE)$platform == "leaflet") {
+            if (mapviewGetOption("platform") == "leaflet") {
               leafletLines(x,
                            map,
                            na.color,
@@ -484,10 +485,10 @@ setMethod('mapView', signature(x = 'SpatialLines'),
 #'
 #' @param easter.egg well, you might find out if you set this to TRUE
 setMethod('mapView', signature(x = 'missing'),
-          function(map.types = mapviewOptions(console = FALSE)$basemaps,
+          function(map.types = mapviewGetOption("basemaps"),
                    easter.egg = FALSE) {
 
-            if (mapviewOptions(console = FALSE)$platform == "leaflet") {
+            if (mapviewGetOption("platform") == "leaflet") {
               leafletMissing(map.types,
                              easter.egg)
             } else {

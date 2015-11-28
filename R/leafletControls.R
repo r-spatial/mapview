@@ -2,8 +2,12 @@
 
 getLayerControlEntriesFromMap <- function(map) {
 
-  seq_along(map$x$calls)[sapply(map$x$calls,
-                                FUN = function(X) "addLayersControl" %in% X)]
+#   seq_along(map$x$calls)[sapply(map$x$calls,
+#                                 FUN = function(X) "addLayersControl" %in% X)]
+  tst <- which(sapply(map$x$calls, function(i) {
+    i$method == "addLayersControl"
+  }))
+  return(tst)
 
 }
 
@@ -22,8 +26,12 @@ getLayerNamesFromMap <- function(map) {
 
 getProviderTileEntriesFromMap <- function(map) {
 
-  seq_along(map$x$calls)[sapply(map$x$calls,
-                                FUN = function(X) "addProviderTiles" %in% X)]
+#   seq_along(map$x$calls)[sapply(map$x$calls,
+#                                 FUN = function(X) "addProviderTiles" %in% X)]
+  tst <- which(sapply(map$x$calls, function(i) {
+    i$method == "addProviderTiles"
+  }))
+  return(tst)
 
 }
 

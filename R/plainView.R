@@ -110,10 +110,10 @@ if ( !isGeneric('plainView') ) {
 
 setMethod('plainView', signature(x = 'RasterLayer'),
           function(x,
-                   maxpixels = mapviewOptions(console = FALSE)$maxpixels,
+                   maxpixels = mapviewGetOption("maxpixels"),
                    color = mapViewPalette(256),
-                   na.color = mapviewOptions(console = FALSE)$nacolor,
-                   verbose = mapviewOptions(console = FALSE)$verbose,
+                   na.color = mapviewGetOption("nacolor"),
+                   verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    ...) {

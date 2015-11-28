@@ -79,8 +79,8 @@ if ( !isGeneric('slideView') ) {
 setMethod("slideView", signature(img1 = "RasterStackBrick",
                                  img2 = "RasterStackBrick"),
           function(img1, img2,
-                   na.color = mapviewOptions(console = FALSE)$nacolor,
-                   maxpixels = 500000) {
+                   na.color = mapviewGetOption("nacolor"),
+                   maxpixels = mapviewGetOption("maxpixels")) {
 
             png1 <- rgbStack2PNG(img1, na.color = na.color,
                                  maxpixels = maxpixels)
@@ -117,8 +117,8 @@ setMethod("slideView", signature(img1 = "RasterLayer",
           function(img1,
                    img2,
                    color = mapViewPalette(7),
-                   na.color = mapviewOptions(console = FALSE)$nacolor,
-                   maxpixels = 500000) {
+                   na.color = mapviewGetOption("nacolor"),
+                   maxpixels = mapviewGetOption("maxpixels")) {
 
             png1 <- raster2PNG(img1, color = color,
                                na.color = na.color,

@@ -9,11 +9,12 @@
 \title{slideView}
 \usage{
 \S4method{slideView}{RasterStackBrick,RasterStackBrick}(img1, img2,
-  na.color = mapviewOptions(console = FALSE)$nacolor, maxpixels = 5e+05)
+  na.color = mapviewGetOption("nacolor"),
+  maxpixels = mapviewGetOption("maxpixels"))
 
 \S4method{slideView}{RasterLayer,RasterLayer}(img1, img2,
-  color = mapViewPalette(7), na.color = mapviewOptions(console =
-  FALSE)$nacolor, maxpixels = 5e+05)
+  color = mapViewPalette(7), na.color = mapviewGetOption("nacolor"),
+  maxpixels = mapviewGetOption("maxpixels"))
 
 \S4method{slideView}{character,character}(img1, img2)
 }

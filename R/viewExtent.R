@@ -37,8 +37,7 @@ NULL
 #' @rdname viewExtent
 viewExtent <- function(x,
                        map = NULL,
-                       map.types = c("OpenStreetMap",
-                                     "Esri.WorldImagery"),
+                       map.types = mapviewGetOption("basemaps"),
                        popup = NULL,
                        ...) {
 
@@ -97,14 +96,18 @@ addExtent <- function(x, map, popup, ...) {
 
   ext <- raster::extent(x)
 
-  title <- "EXTENT (EPSG:4326):"
-  txt_xmin <- paste0("xmin: ", round(ext@xmin, 5))
-  txt_xmax <- paste0("xmax: ", round(ext@xmax, 5))
-  txt_ymin <- paste0("ymin: ", round(ext@ymin, 5))
-  txt_ymax <- paste0("ymax: ", round(ext@ymax, 5))
+  df <- data.frame(xmin = round(ext@xmin, 7),
+                   xmax = round(ext@xmax, 7),
+                   ymin = round(ext@ymin, 7),
+                   ymax = round(ext@ymax, 7))
 
-  if (pop.null) popup <- paste(title, txt_xmin, txt_xmax,
-                               txt_ymin, txt_ymax, sep = "<br/>")
+  mat <- df2String(df)
+  cols <- colnames(df)
+
+  ## create list with row-specific html code
+  if (pop.null) popup <- listPopupTemplates(mat, cols,
+                                            system.file("templates/popup.brew",
+                                                        package = "mapview"))
 
   m <- leaflet::addRectangles(map = map,
                               lng1 = ext@xmin,

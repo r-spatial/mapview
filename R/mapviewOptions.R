@@ -42,6 +42,8 @@
 #' mapviewOptions()
 #' mapviewOptions(nacolor = "pink")
 #' mapviewOptions()
+#'
+#' mapviewGetOption("platform")
 #' }
 #'
 #'
@@ -104,7 +106,10 @@ mapviewOptions <- function(platform,
   if (default) {
     cnt <- 1
     options(mapviewPlatform = "leaflet")
-    options(mapviewBasemaps = c("OpenStreetMap", "Esri.WorldImagery"))
+    options(mapviewBasemaps = c("OpenStreetMap",
+                                "Esri.WorldImagery",
+                                "Thunderforest.Landscape",
+                                "OpenTopoMap"))
     options(mapviewRasterSize = 8 * 1024 * 1024)
     options(mapviewMaxPixels = 500000)
     options(mapviewVerbose = FALSE)
@@ -161,7 +166,10 @@ mapviewOptions <- function(platform,
 
 
 .basemaps <- function() {
-  default <- c("OpenStreetMap", "Esri.WorldImagery")
+  default <- c("OpenStreetMap",
+               "Esri.WorldImagery",
+               "Thunderforest.Landscape",
+               "OpenTopoMap")
   bm <- getOption('mapviewBasemaps')
   if (is.null(bm)) {
     return(default)
@@ -224,3 +232,13 @@ mapviewOptions <- function(platform,
     return(lcp)
   }
 }
+
+
+#' query single mapviewOption parameters
+#' @describeIn mapviewOptions query single mapviewOption parameters
+#' @param param character. parameter to be queried.
+#' @export mapviewGetOption
+mapviewGetOption <- function(param) {
+  mapviewOptions(console = FALSE)[[param]]
+}
+

@@ -6,8 +6,8 @@
 \alias{viewExtent,addExtent}
 \title{View extent/bbox of spatial objects interactively}
 \usage{
-viewExtent(x, map = NULL, map.types = c("OpenStreetMap",
-  "Esri.WorldImagery"), popup = NULL, ...)
+viewExtent(x, map = NULL, map.types = mapviewGetOption("basemaps"),
+  popup = NULL, ...)
 
 addExtent(x, map, popup, ...)
 }

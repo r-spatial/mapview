@@ -6,11 +6,11 @@
 \alias{plainView,RasterLayer-method}
 \title{View spatial objects interactively without background map but in any CRS}
 \usage{
-\S4method{plainView}{RasterLayer}(x, maxpixels = mapviewOptions(console =
-  FALSE)$maxpixels, color = mapViewPalette(256),
-  na.color = mapviewOptions(console = FALSE)$nacolor,
-  verbose = mapviewOptions(console = FALSE)$verbose,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+\S4method{plainView}{RasterLayer}(x,
+  maxpixels = mapviewGetOption("maxpixels"), color = mapViewPalette(256),
+  na.color = mapviewGetOption("nacolor"),
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), ...)
 }
 \arguments{
 \item{x}{a \code{\link{raster}}* object}
