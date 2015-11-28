@@ -283,5 +283,7 @@ renderPlainView <- function(expr, env = parent.frame(), quoted = FALSE) {
 
 
 
-## plainview
+## plainview ================================================================
+#' @export plainview
+#'
 plainview <- function(...) plainView(...)
