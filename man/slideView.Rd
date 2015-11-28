@@ -6,6 +6,8 @@
 \alias{slideView,RasterLayer,RasterLayer-method}
 \alias{slideView,RasterStackBrick,RasterStackBrick-method}
 \alias{slideView,character,character-method}
+\alias{slideview}
+\alias{slideview,ANY-method}
 \title{slideView}
 \usage{
 \S4method{slideView}{RasterStackBrick,RasterStackBrick}(img1, img2,
@@ -17,6 +19,8 @@
   maxpixels = mapviewGetOption("maxpixels"))
 
 \S4method{slideView}{character,character}(img1, img2)
+
+\S4method{slideview}{ANY}(...)
 }
 \arguments{
 \item{img1}{a RasterStack/Brick, RasterLayer or path to a .png file}
@@ -47,6 +51,8 @@ Compare two images trough interactive swiping overlay
 \item \code{img1 = RasterLayer,img2 = RasterLayer}: for RasterLayers
 
 \item \code{img1 = character,img2 = character}: for png files
+
+\item \code{ANY}: alias for ease of typing
 }}
 \examples{
 ### raster data ###
@@ -61,8 +67,9 @@ slideView(stck1, stck2)
 
 \dontrun{
 ### example taken from
-http://www.news.com.au/technology/environment/nasa-images-reveal-
-aral-sea-is-shrinking-before-our-eyes/story-e6frflp0-1227074133835
+### http://www.news.com.au/technology/environment/nasa-images-reveal-
+### aral-sea-is-shrinking-before-our-eyes/story-e6frflp0-1227074133835
+
 library(jpeg)
 library(raster)
 

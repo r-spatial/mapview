@@ -40,8 +40,9 @@ if ( !isGeneric('slideView') ) {
 #'
 #' \dontrun{
 #' ### example taken from
-#' http://www.news.com.au/technology/environment/nasa-images-reveal-
-#' aral-sea-is-shrinking-before-our-eyes/story-e6frflp0-1227074133835
+#' ### http://www.news.com.au/technology/environment/nasa-images-reveal-
+#' ### aral-sea-is-shrinking-before-our-eyes/story-e6frflp0-1227074133835
+#'
 #' library(jpeg)
 #' library(raster)
 #'
@@ -239,3 +240,19 @@ renderslideView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
   htmlwidgets::shinyRenderWidget(expr, slideViewOutput, env, quoted = TRUE)
 }
+
+
+## slideview ==============================================================
+
+if ( !isGeneric('slideview') ) {
+  setGeneric('slideview', function(...)
+    standardGeneric('slideview'))
+}
+
+#' @describeIn slideView alias for ease of typing
+#' @aliases slideview
+#' @export slideview
+
+setMethod('slideview', signature('ANY'),
+          function(...) slideView(...))
+
