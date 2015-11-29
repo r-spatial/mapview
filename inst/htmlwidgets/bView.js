@@ -64,8 +64,8 @@ addCanvas();
     //var data = x[2];
 //    var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
     //var data = $.parseJSON(HTMLWidgets.getAttachmentUrl('data', 'jsondata'));
-    var baseZ = x[6] ;
-    var maxZ = x[6]  ;
+    var baseZ = x[6] + 3;
+    var maxZ = x[6]  + 3;
 
         var tileOptions = {
 	    baseZoom: baseZ,           // max zoom to preserve detail on

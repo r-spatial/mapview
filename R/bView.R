@@ -141,7 +141,7 @@ bView <- function(data,
       res <- 156543.03  * cos(rad.cof*yc) / (2 ^ zoomlevel)
       #calculating screen scale assuming screen 96 dpi in/m 1000/25.4
       scale = 96 * 39.37 * res
-      if(scale < max(latextent, 250000)){
+      if(scale < max(latextent, 2000000)){
         break
       }
       zoomlevel <- zoomlevel + 1
