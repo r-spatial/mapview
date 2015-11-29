@@ -9,7 +9,7 @@
 \title{View spatial objects interactively without background map but in any CRS}
 \usage{
 \S4method{plainView}{RasterLayer}(x,
-  maxpixels = mapviewGetOption("maxpixels"), color = mapViewPalette(256),
+  maxpixels = mapviewGetOption("maxpixels"), colors = mapviewPalette(256),
   na.color = mapviewGetOption("nacolor"),
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), ...)
@@ -22,8 +22,6 @@
 \item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
 If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
-\item{color}{color (palette) of the points/polygons/lines/pixels}
-
 \item{na.color}{color for missing values}
 
 \item{verbose}{should some details be printed during the process}
@@ -35,6 +33,8 @@ See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
 
 \item{map}{an optional existing map to be updated/added to}
+
+\item{color}{color (palette) of the points/polygons/lines/pixels}
 
 \item{use.layer.names}{should layer names of the Raster* object be used?}
 

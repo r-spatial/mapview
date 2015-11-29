@@ -44,71 +44,53 @@ It is import to understand that the accurracy of the rendering is about
 ### we need sp and raster ###
  library(sp)
  library(raster)
- library(ggplot2)
+ library("rgdal")
+ library("gdalUtils")
+ library(downloader)
  library(profvis)
 
-# take the meuse data
- data(meuse)
- coordinates(meuse) <- ~x+y
- proj4string(meuse) <- CRS("+init=epsg:28992")
- meuse <- spTransform(meuse,CRS("+init=epsg:3857"))
+# take gadm data
+ data(gadmCHE)
 
 # map it with mapview
- mapview(meuse)
+ mapview(gadmCHE)
 
 # map it with bView
- bView(data = meuse,col = "random")
+ bView(gadmCHE)
 
+ # for even  more suisse data we use geofabrik
+ download("http://download.geofabrik.de/europe/switzerland-latest.shp.zip",dest="switzerland.zip", mode = "wb")
+ unzip ("switzerland.zip",exdir = "./")
+
+ # get information of landuse
+ ogrInfo(".", "landuse")
+
+ # read it to a sp object
+ landuseCH<- readOGR(".","landuse")
+
+# map it with mapview
+ mapview(landuseCH)
+
+# map it with bView
+ bView(landuseCH)
+
+ # get information of roads
+ ogrInfo(".", "roads")
+
+ # read it to a sp object
+ roadsCH<- readOGR(".","roads")
+
+# map it with mapview
+ mapview(roadsCH)
+
+# map it with bView
+ bView(roadsCH)
 ### some benchmarks
- system.time(mapview(meuse))
- system.time(bView(data = meuse, col = "random"))
+ system.time(mapview(landuseCH))
+ system.time(bView(landuseCH))
+ system.time(mapview(roadsCH))
+ system.time(bView(roadsCH))
 
-### Now we go a bit bigger
-
-# get the diamonds data
- big <- diamonds[rep(seq_len(nrow(diamonds)), 1),]
- big$cut <- as.character(big$cut)
- big$color <- as.character(big$color)
- big$clarity <- as.character(big$clarity)
-# provide some random positions
- big$x <- rnorm(nrow(big), 10, 3)
- big$y <- rnorm(nrow(big), 50, 3)
-
- coordinates(big) <- ~x+y
- proj4string(big) <- CRS("+init=epsg:4326")
-
-# map it with pure mapview
- mapview(big, color='blue')
-
-# map it with fastmap
- bView(data = big, col='blue')
-
-### some benchmarks
- system.time(mapview(big, color='blue'))
- system.time(bView(data = big, col = "blue"))
-
-### up to about 5 mio points
- big <- diamonds[rep(seq_len(nrow(diamonds)), 94),]
- big$cut <- as.character(big$cut)
- big$color <- as.character(big$color)
- big$clarity <- as.character(big$clarity)
-
- big$x <- rnorm(nrow(big), 10, 3)
- big$y <- rnorm(nrow(big), 50, 3)
-
- coordinates(big) <- ~x+y
- proj4string(big) <- CRS("+init=epsg:4326")
-
-# map it NOT with leaflet but with bView
- bView(data = big, col = "blue")
-
-### some benchmarks
-# random point colors is slower
- system.time(bView(data = big, col = "random"))
-# than unique colors
- system.time(bView(data = big, col = "blue"))
-# profVising it
- profvis(bView(data = big, col = "blue"))
 
 }
 \author{
