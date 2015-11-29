@@ -108,8 +108,12 @@ mapviewOptions <- function(platform,
     options(mapviewPlatform = "leaflet")
     options(mapviewBasemaps = c("OpenStreetMap",
                                 "Esri.WorldImagery",
+<<<<<<< HEAD
                                 "Thunderforest.Landscape",
                                 "OpenTopoMap"))
+=======
+                                "Thunderforest.Landscape"))
+>>>>>>> 698828d8e8d794953de77451f8b39d132271918e
     options(mapviewRasterSize = 8 * 1024 * 1024)
     options(mapviewMaxPixels = 500000)
     options(mapviewVerbose = FALSE)
@@ -168,8 +172,12 @@ mapviewOptions <- function(platform,
 .basemaps <- function() {
   default <- c("OpenStreetMap",
                "Esri.WorldImagery",
+<<<<<<< HEAD
                "Thunderforest.Landscape",
                "OpenTopoMap")
+=======
+               "Thunderforest.Landscape")
+>>>>>>> 698828d8e8d794953de77451f8b39d132271918e
   bm <- getOption('mapviewBasemaps')
   if (is.null(bm)) {
     return(default)

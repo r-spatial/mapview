@@ -37,7 +37,11 @@ NULL
 #' @rdname viewExtent
 viewExtent <- function(x,
                        map = NULL,
+<<<<<<< HEAD
                        map.types = mapviewGetOption("basemaps"),
+=======
+                       map.types = mapviewOptions(console = FALSE)$basemaps,
+>>>>>>> 698828d8e8d794953de77451f8b39d132271918e
                        popup = NULL,
                        ...) {
 

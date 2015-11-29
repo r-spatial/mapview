@@ -1,0 +1,55 @@
+# (uncomment to add a dependency)
+# dependencies:
+#  - name:
+#    version:
+#    src:
+#    script:
+#    stylesheet:
+
+dependencies:
+  - name: require
+    version: 2.1.22
+    src: "htmlwidgets/lib/require"
+    script: require.js
+  - name: jquery
+    version: 1.11.1
+    src: "htmlwidgets/lib/jquery"
+    script: jquery.min.js
+  - name: leaflet
+    version: 0.7.3
+    src: "htmlwidgets/lib/leaflet"
+    script:
+         - leaflet.js
+         - leaflet-providers.js
+    stylesheet:
+          - leaflet.css
+          - leafletfix.css
+          - leaflet.label.css
+          - gh-fork-ribbon.css
+          - gh-fork-ribbon.ie.css
+  - name: glify
+    version: 0.0.1
+    src: "htmlwidgets/lib/glify"
+    script:
+      - leaflet.glify.js
+      - leaflet.canvasoverlay.js
+      - gl.js
+  - name: "fragment-shader"
+    version: 0.1.0
+    src: "htmlwidgets/lib/glify"
+    attachment: {"fragment-shader": "fragment-shader.glsl"}
+  - name: "vertex-shader"
+    version: 0.1.0
+    src: "htmlwidgets/lib/glify"
+    attachment: {"vertex-shader": "vertex-shader.glsl"}
+  - name: 'data'
+    version: 0.1.0
+    src: 'htmlwidgets/lib/data'
+    attachment: {'jsondata': 'data.json'}
+meta:
+ - name: "viewport"
+ - content:
+        - {"width": "device-width" }
+        - {"initial-scale": "1.0"}
+        - {"maximum-scale": "1.0"}
+        - {"user-scalable": "no"}
