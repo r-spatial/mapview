@@ -23,13 +23,6 @@ Imports:
     sp,
     raster,
     satellite,
-<<<<<<< HEAD
-<<<<<<< HEAD
-    scales (>= 0.2.5)
-RoxygenNote: 5.0.1
-=======
-=======
->>>>>>> 698828d8e8d794953de77451f8b39d132271918e
     scales (>= 0.2.5),
     brew,
     htmlwidgets,
@@ -39,9 +32,4 @@ RoxygenNote: 5.0.1
     Rcpp (>= 0.11.3)
 LinkingTo: Rcpp
 RoxygenNote: 5.0.1
-<<<<<<< HEAD
 SystemRequirements: GNU make
->>>>>>> ffd477df8d34d2039f58c0cf3d71162755aa2310
-=======
-SystemRequirements: GNU make
->>>>>>> 698828d8e8d794953de77451f8b39d132271918e

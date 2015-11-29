@@ -13,13 +13,10 @@ export(mapviewGetOption)
 export(mapviewOptions)
 export(mapviewPalette)
 export(plainView)
-<<<<<<< HEAD
 export(plainview)
 export(slideview)
-=======
 export(renderbView)
 export(renderfpView)
->>>>>>> 698828d8e8d794953de77451f8b39d132271918e
 export(viewExtent)
 export(viewRGB)
 exportClasses(mapview)

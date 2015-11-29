@@ -54,25 +54,24 @@ addCanvas();
 			"Thunderforest Landscape" : layerTwo,
 		};
 
-    var myLayer = L.geoJson(undefined).addTo(map);
+    var myLayer = L.geoJson(undefined,{style:style,onEachFeature:onEachFeature}).addTo(map);
 		var overlays = {
 			"Overlay": myLayer
 		};
 
-    // adding all together and the layer control
-		var layerControl = L.control.layers(baseLayers, overlays, {collapsed: true}).addTo(map);
-		map.setView([x[4], x[5]], x[6]);
+
+
     //var data = x[2];
 //    var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
     //var data = $.parseJSON(HTMLWidgets.getAttachmentUrl('data', 'jsondata'));
-    var baseZ = x[6];
-    var maxZ = x[6] ;
+    var baseZ = x[6] ;
+    var maxZ = x[6]  ;
 
         var tileOptions = {
 	    baseZoom: baseZ,           // max zoom to preserve detail on
 	    maxZoom: maxZ,            // zoom to slice down to on first pass
 	    maxPoints: 100,         // stop slicing each tile below this number of points
-            tolerance: 1,           // simplification tolerance (higher means simpler)
+            tolerance: 3,           // simplification tolerance (higher means simpler)
             extent: 4096,           // tile extent (both width and height)
             buffer: 64,   	    // tile buffer on each side
             debug: 0,     	    // logging level (0 to disable, 1 or 2)
@@ -85,8 +84,16 @@ addCanvas();
 
 	//var myLayer = L.geoJson(undefined, { style: style, onEachFeature: onEachFeature/*, filter: filter*/}).addTo(map);
 	// The onEachFeature
+
 	function onEachFeature(feature, layer) {
-	        layer.bindPopup('Altitude ' + feature.properties.ELEV );
+	  var outdata = "";
+	  for (var key in data.features[1].properties) {
+   outdata = "<tr><td>" + key + ":</td><td> " + data.features[1].properties[key] + "</td></tr>" + outdata;
+
+   // do some more stuff with obj[key]
+}
+outdata = "<table>" + outdata + "</table>"
+	        layer.bindPopup(outdata);
 	    }
 	// The styles of the layer
 	function style(feature) {
@@ -112,9 +119,9 @@ addCanvas();
 	            }
 	        } else {
 	            return {
-	                color: "black",
-	                weight: 1,
-	                opacity: 0.9
+	                color: "magenta",
+	                weight: 2,
+	                opacity: 0.8
 	            }
 	        }
 	    }
@@ -199,29 +206,22 @@ addCanvas();
 	    showLayer();
 	});
 
-	//L.Util.ajax('100.geojson'
-	//L.Util.ajax('75.json', function(data) {
-
 	 // Add to the r-tree
 	 rt.geoJSON(data);
+
 	 // Add to the GeoJson Vector Tiles
-	 var tileIndex = geojsonvt(data,tileOptions);
+  var tileIndex = geojsonvt(data,tileOptions);
 
 	// The canvas tile layer for low zoom level
-	 var canvasTiles = L.tileLayer.canvas().addTo(map);
+ var canvasTiles = L.tileLayer.canvas().addTo(map);
 
+  var overlayLayers = {"Overlay":(canvasTiles).addTo(map)};
+  // ADD LAYER CONTRLS
+  var layerControl = L.control.layers(baseLayers, overlayLayers, {collapsed: true}).addTo(map);
+        map.setView([x[4], x[5]], x[6]);
 
-
-
-
-        var overlayLayers = {"Overlay":(canvasTiles).addTo(map)};
-
-
-        var layerControl = L.control.layers(baseLayers, overlayLayers, {collapsed: true}).addTo(map);
-
-	    // Draw the canvas tiles
-
-	    canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
+	 // Draw the canvas tiles
+  canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 	        var ctx = canvas.getContext('2d');
 	        extent = 4096;
 	        padding = 0;
@@ -237,10 +237,13 @@ addCanvas();
 	        if (typeof tile != "undefined") {
 	            var features = tile.features;
                // color to the lines
+		var grdp = ctx.createRadialGradient(75,50,5,90,60,100);
 		var grd = ctx.createLinearGradient(0, 0, 170, 0);
+		ctx.globalAlpha=0.3 ;
 		grd.addColorStop(0, "green");
 		grd.addColorStop(1, "brown");
-    ctx.lineWidth = 0.61;
+    ctx.lineWidth = 2;
+    ctx.fillStyle="brown";
 
 	            for (var i = 0; i < features.length; i++) {
 	                var feature = features[i],
@@ -253,12 +256,12 @@ addCanvas();
 	                    } else if (feature.tags.ELEV == "2000") {
 	                        ctx.strokeStyle = "#00FF00";
 	                    } else {
-	                        ctx.strokeStyle = grd;
+	                        ctx.strokeStyle = "black";
 	                    }
 	                } else {
-	                    ctx.strokeStyle = "#magenta";
+	                    ctx.strokeStyle = "magenta";
 	                }
-	                ctx.lineWidth = 0.61;
+	                ctx.lineWidth = 2;
 
 	                ctx.beginPath();
 
