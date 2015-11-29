@@ -14,60 +14,76 @@
 \alias{mapView,SpatialPolygons-method}
 \alias{mapView,SpatialPolygonsDataFrame-method}
 \alias{mapView,missing-method}
+\alias{mapview}
+\alias{mapview,ANY-method}
 \title{View spatial objects interactively}
 \usage{
-\S4method{mapView}{RasterLayer}(x, map = NULL, maxpixels = 5e+05,
-  color = mapViewPalette(7), na.color = "transparent",
-  use.layer.names = FALSE, values = NULL, map.types = c("OpenStreetMap",
-  "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
-  legend.opacity = 1, trim = TRUE, verbose = FALSE,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+\S4method{mapView}{RasterLayer}(x, map = NULL,
+  maxpixels = mapviewGetOption("maxpixels"), color = mapViewPalette(11,
+  "mapviewSpectralColors"), na.color = mapviewGetOption("nacolor"),
+  use.layer.names = FALSE, values = NULL,
+  map.types = mapviewGetOption("basemaps"), layer.opacity = 0.8,
+  legend = TRUE, legend.opacity = 1, trim = TRUE,
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), ...)
 
-\S4method{mapView}{RasterStackBrick}(x, map = NULL, maxpixels = 5e+05,
-  color = mapViewPalette(7), na.color = "transparent", values = NULL,
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), legend = TRUE,
-  legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
+\S4method{mapView}{RasterStackBrick}(x, map = NULL,
+  maxpixels = mapviewGetOption("maxpixels"), color = mapViewPalette(7),
+  na.color = mapviewGetOption("nacolor"), values = NULL,
+  map.types = mapviewGetOption("basemaps"), legend = FALSE,
+  legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
+  ...)
 
 \S4method{mapView}{Satellite}(x, ...)
 
 \S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL, ...)
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
-  radius = 10, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
-  legend = TRUE, legend.opacity = 1, verbose = FALSE,
+  burst = FALSE, color = mapViewPalette(7),
+  na.color = mapviewGetOption("nacolor"), radius = 10,
+  map.types = mapviewGetOption("basemaps"), legend = FALSE,
+  legend.opacity = 1, verbose = mapviewGetOption("verbose"),
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
 
-\S4method{mapView}{SpatialPoints}(x, map = NULL, na.color = "transparent",
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), verbose = FALSE,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+\S4method{mapView}{SpatialPoints}(x, map = NULL,
+  na.color = mapviewGetOption("nacolor"),
+  map.types = mapviewGetOption("basemaps"),
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), ...)
 
 \S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
-  values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
-  legend = TRUE, legend.opacity = 1, weight = 2, verbose = FALSE,
+  burst = FALSE, color = mapViewPalette(7),
+  na.color = mapviewGetOption("nacolor"), values = NULL,
+  map.types = mapviewGetOption("basemaps"), legend = FALSE,
+  legend.opacity = 1, weight = 2, verbose = mapviewGetOption("verbose"),
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
 
-\S4method{mapView}{SpatialPolygons}(x, map = NULL, na.color = "transparent",
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), weight = 2,
-  verbose = FALSE, layer.name = deparse(substitute(x, env =
-  parent.frame())), ...)
+\S4method{mapView}{SpatialPolygons}(x, map = NULL,
+  na.color = mapviewGetOption("nacolor"),
+  map.types = mapviewGetOption("basemaps"), weight = 2,
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), ...)
 
 \S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
-  values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
-  legend = TRUE, legend.opacity = 1, verbose = FALSE,
+  burst = FALSE, color = mapViewPalette(7),
+  na.color = mapviewGetOption("nacolor"), values = NULL,
+  map.types = mapviewGetOption("basemaps"), legend = FALSE,
+  legend.opacity = 1, verbose = mapviewGetOption("verbose"),
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
 
-\S4method{mapView}{SpatialLines}(x, map = NULL, na.color = "transparent",
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), verbose = FALSE,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+\S4method{mapView}{SpatialLines}(x, map = NULL,
+  na.color = mapviewGetOption("nacolor"),
+  map.types = mapviewGetOption("basemaps"),
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), ...)
 
-\S4method{mapView}{missing}(map.types = c("OpenStreetMap",
-  "Esri.WorldImagery"), easter.egg = FALSE)
+\S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
+  easter.egg = FALSE)
+
+\S4method{mapview}{ANY}(...)
 }
 \arguments{
 \item{x}{a \code{\link{raster}}* object}
@@ -127,9 +143,7 @@ spatial object(s) on top of the specified base maps.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{RasterLayer}: \code{\link{raster}}
-
-\item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{stack}}
+\item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{brick}}
 
 \item \code{Satellite}: \code{\link{satellite}}
 
@@ -148,6 +162,8 @@ spatial object(s) on top of the specified base maps.
 \item \code{SpatialLines}: \code{\link{SpatialLines}}
 
 \item \code{missing}: initiate a map without an object
+
+\item \code{ANY}: alias for ease of typing
 }}
 \examples{
 \dontrun{

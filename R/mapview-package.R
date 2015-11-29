@@ -6,17 +6,18 @@
 #' quality map production.
 #'
 #' @name mapview-package
-#' @aliases mapviewpackage
 #' @docType package
 #' @title GIS-like viewing of spatial objects in R
-#' @author Tim Appelhans, Environmental Informatics Marburg \cr
+#' @author Tim Appelhans, Florian Detsch, Chris Reudenbach,
+#' Stephan Woellauer, Spaska Forteva, Thomas Nauss,
+#' Environmental Informatics Marburg \cr
 #' \cr
 #' \emph{Maintainer:} Tim Appelhans \email{tim.appelhans@@gmail.com}
 #'
-#' @import leaflet sp raster satellite scales methods
+#' @import leaflet sp raster satellite scales Rcpp methods png lattice
 #' @importFrom grDevices rgb
-#' @importFrom whisker whisker.render
 #'
+#' @useDynLib mapview
 #' @keywords package
 #'
 NULL
