@@ -126,35 +126,19 @@ library("rgdal")
 library("jsonlite")
   libpath<- .libPaths()
   dataToLibPath<- paste0(libpath[1],"/mapview/htmlwidgets/lib/data")
-  jsonFileName <- paste0(dataToLibPath,"/data.json")
-  shapeFileName <- paste0(dataToLibPath,"/data.shp")
+  jsonFn <- paste0(dataToLibPath,"/data.json")
+  shpFn <- paste0(dataToLibPath,"/data.shp")
   if (!is.null(data)) {
     data.latlon <- spTransform(data,CRS("+init=epsg:4326"))
 
     writeOGR(data.latlon, dsn = dataToLibPath, layer = "data", driver="ESRI Shapefile", overwrite_layer = TRUE)
-    ogr2ogr(src_datasource_name = shapeFileName, dst_datasource_name = jsonFileName, f = "GeoJSON", overwrite = TRUE)
-
-    lns <- readLines(jsonFileName)
+    ogr2ogr(src_datasource_name = shpFn, dst_datasource_name = jsonFn, f = "GeoJSON", overwrite = TRUE)
+    # wrap it with var data = {};
+    lns <- readLines(jsonFn)
     lns[1] <- 'var data = {'
     lns[length(lns)]<- '};'
-    writeLines(lns, jsonFileName)
+    writeLines(lns, jsonFn)
 
-   # df <- as.data.frame(data.latlon)
-  #  drops <- c("x","y")
-  #  df.cols <- df[,!(names(df) %in% drops)]
-  #  cnames <- colnames(df.cols)
-  #  if (!is.null(zcol)) {
-  #    cnames <- zcol
-  #  }
-  #  df.cols <- lapply(df.cols, as.character)
-  #  df.sort <- df[,c("x","y",cnames)]
-    #df.sort[is.na(df.sort)] <- -9999
-  #  out.matrix = t(t(df.sort))
-
-
-
-
-   # data.json <- coords2JSON(out.matrix)
     # we need scale and zoom so we approximate the area and zoom factor
     ext <- extent(data.latlon)
     yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
