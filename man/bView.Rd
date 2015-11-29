@@ -3,7 +3,7 @@
 \docType{bView}
 \name{bView}
 \alias{bView}
-\title{Leaflet maps for big data}
+\title{Leaflet maps for big line and polygon data}
 \usage{
 bView(data, col = "rgb", width = NULL, height = NULL, zcol = NULL,
   map = NULL, burst = FALSE, radius = 10, map.types = c("OpenStreetMap",
@@ -13,26 +13,12 @@ bView(data, col = "rgb", width = NULL, height = NULL, zcol = NULL,
   popup = NULL, ...)
 }
 \arguments{
-\item{data}{a \code{\link{sp}} SpatialPointDataframe object (currently only)}
-
-\item{width}{a valid CSS width}
-
-\item{height}{a valid CSS width}
-
-\item{zcol}{attribute name(s) or column number(s) in attribute table
-of the column(s) to be rendered (up to now only numeric is supported)}
-
-\item{burst}{whether to show all (TRUE) or only one (FALSE) layers}
-
-\item{radius}{attribute name(s) or column number(s) in attribute table
-of the column(s) to be used for defining the size of circles}
-
-\item{color}{colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines}
+\item{data}{a \code{\link{sp}} SpatialPolyDataframe object}
 }
 \description{
-bView is a first prototype for rendering big data (points) on base of leaflet maps utilizing webGL and htmlwidgets.
+bView is a first prototype for rendering big data (lines and polygons) on base of leaflet maps utilizing rtree, HTML5 canvas and htmlwidgets.
 
-This is a modified and adapted implementation of \url{https://github.com/robertleeplummerjr/Leaflet.glify}
+This is a modified and adapted implementation that uses the concepts and code of Sumbera \url{https://gist.github.com/Sumbera/c67e5551b21c68dc8299} and Oscar Hidalgo \url{http://www.cyoarte.com/i+d/cphp/}
 }
 \note{
 It is import to understand that the accurracy of the rendering is about

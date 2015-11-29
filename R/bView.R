@@ -3,25 +3,18 @@ if (!isGeneric('bView')) {
     standardGeneric('bView'))
 }
 
-#' Leaflet maps for big data
+#' Leaflet maps for big line and polygon data
 #'
-#' @description bView is a first prototype for rendering big data (points) on base of leaflet maps utilizing webGL and htmlwidgets.
+#' @description bView is a first prototype for rendering big data (lines and polygons) on base of leaflet maps utilizing rtree, HTML5 canvas and htmlwidgets.
 #'
-#' This is a modified and adapted implementation of \url{https://github.com/robertleeplummerjr/Leaflet.glify}
+#' This is a modified and adapted implementation that uses the concepts and code of Sumbera \url{https://gist.github.com/Sumbera/c67e5551b21c68dc8299} and Oscar Hidalgo \url{http://www.cyoarte.com/i+d/cphp/}
 #'
 #'@note It is import to understand that the accurracy of the rendering is about
 #'  1.1 m at the equator up to 20 cm around 75°. You will get an arbitrary result if the
 #'   accurracy of your points requires more than 5 decimal digits.
 #'
-#' @param data a \code{\link{sp}} SpatialPointDataframe object (currently only)
-#' @param color colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines
-#' @param width	a valid CSS width
-#' @param height	a valid CSS width
-#' @param burst whether to show all (TRUE) or only one (FALSE) layers
-#' @param zcol attribute name(s) or column number(s) in attribute table
-#' of the column(s) to be rendered (up to now only numeric is supported)
-#' @param radius attribute name(s) or column number(s) in attribute table
-#' of the column(s) to be used for defining the size of circles
+#' @param data a \code{\link{sp}} SpatialPolyDataframe object
+
 #'
 #' @author
 #' Chris Reudenbach
