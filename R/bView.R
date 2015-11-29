@@ -1,11 +1,11 @@
-if (!isGeneric('fpmap')) {
-  setGeneric('fpmap', function(data,col,width,height,zcol,map,burst,radius,map.types,legend,legend.opacity,verbose,layer.name,popup , ...)
-    standardGeneric('fpmap'))
+if (!isGeneric('bView')) {
+  setGeneric('bView', function(data,col,width,height,zcol,map,burst,radius,map.types,legend,legend.opacity,verbose,layer.name,popup , ...)
+    standardGeneric('bView'))
 }
 
 #' Leaflet maps for big data
 #'
-#' @description fpmap is a first prototype for rendering big data (points) on base of leaflet maps utilizing webGL and htmlwidgets.
+#' @description bView is a first prototype for rendering big data (points) on base of leaflet maps utilizing webGL and htmlwidgets.
 #'
 #' This is a modified and adapted implementation of \url{https://github.com/robertleeplummerjr/Leaflet.glify}
 #'
@@ -42,12 +42,12 @@ if (!isGeneric('fpmap')) {
 #' # map it with mapview
 #'  mapview(meuse)
 #'
-#' # map it with fpmap
-#'  fpmap(data = meuse,col = "random")
+#' # map it with bView
+#'  bView(data = meuse,col = "random")
 #'
 #' ### some benchmarks
 #'  system.time(mapview(meuse))
-#'  system.time(fpmap(data = meuse, col = "random"))
+#'  system.time(bView(data = meuse, col = "random"))
 #'
 #' ### Now we go a bit bigger
 #'
@@ -67,11 +67,11 @@ if (!isGeneric('fpmap')) {
 #'  mapview(big, color='blue')
 #'
 #' # map it with fastmap
-#'  fpmap(data = big, col='blue')
+#'  bView(data = big, col='blue')
 #'
 #' ### some benchmarks
 #'  system.time(mapview(big, color='blue'))
-#'  system.time(fpmap(data = big, col = "blue"))
+#'  system.time(bView(data = big, col = "blue"))
 #'
 #' ### up to about 5 mio points
 #'  big <- diamonds[rep(seq_len(nrow(diamonds)), 94),]
@@ -85,28 +85,28 @@ if (!isGeneric('fpmap')) {
 #'  coordinates(big) <- ~x+y
 #'  proj4string(big) <- CRS("+init=epsg:4326")
 #'
-#' # map it NOT with leaflet but with fpmap
-#'  fpmap(data = big, col = "blue")
+#' # map it NOT with leaflet but with bView
+#'  bView(data = big, col = "blue")
 #'
 #' ### some benchmarks
 #' # random point colors is slower
-#'  system.time(fpmap(data = big, col = "random"))
+#'  system.time(bView(data = big, col = "random"))
 #' # than unique colors
-#'  system.time(fpmap(data = big, col = "blue"))
+#'  system.time(bView(data = big, col = "blue"))
 #' # profVising it
-#'  profvis(fpmap(data = big, col = "blue"))
+#'  profvis(bView(data = big, col = "blue"))
 #'
 #' @export
-#' @docType fpmap
-#' @name fpmap
-#' @rdname fpmap
+#' @docType bView
+#' @name bView
+#' @rdname bView
 #'
 #'
 ## SpatialPointsDataFrame =================================================
 
 
 
-fpmap <- function(data,
+bView <- function(data,
                   col = 'rgb',
                   width = NULL,
                   height = NULL,
@@ -121,22 +121,42 @@ fpmap <- function(data,
                                                   env = parent.frame())),
                   popup = NULL,  ...) {
   # check if a sp object exist
+library("gdalUtils")
+library("rgdal")
+library("jsonlite")
+  libpath<- .libPaths()
+  dataToLibPath<- paste0(libpath[1],"/mapview/htmlwidgets/lib/data")
+  jsonFileName <- paste0(dataToLibPath,"/data.json")
+  shapeFileName <- paste0(dataToLibPath,"/data.shp")
   if (!is.null(data)) {
     data.latlon <- spTransform(data,CRS("+init=epsg:4326"))
-    df <- as.data.frame(data.latlon)
-    drops <- c("x","y")
-    df.cols <- df[,!(names(df) %in% drops)]
-    cnames <- colnames(df.cols)
-    if (!is.null(zcol)) {
-      cnames <- zcol
-    }
-    df.cols <- lapply(df.cols, as.character)
-    df.sort <- df[,c("x","y",cnames)]
+
+    writeOGR(data.latlon, dsn = dataToLibPath, layer = "data", driver="ESRI Shapefile", overwrite_layer = TRUE)
+    ogr2ogr(src_datasource_name = shapeFileName, dst_datasource_name = jsonFileName, f = "GeoJSON", overwrite = TRUE)
+
+    lns <- readLines(jsonFileName)
+    lns[1] <- 'var data = {'
+    lns[length(lns)]<- '};'
+    writeLines(lns, jsonFileName)
+
+   # df <- as.data.frame(data.latlon)
+  #  drops <- c("x","y")
+  #  df.cols <- df[,!(names(df) %in% drops)]
+  #  cnames <- colnames(df.cols)
+  #  if (!is.null(zcol)) {
+  #    cnames <- zcol
+  #  }
+  #  df.cols <- lapply(df.cols, as.character)
+  #  df.sort <- df[,c("x","y",cnames)]
     #df.sort[is.na(df.sort)] <- -9999
-    out.matrix = t(t(df.sort))
-    data.json <- coords2JSON(out.matrix)
+  #  out.matrix = t(t(df.sort))
+
+
+
+
+   # data.json <- coords2JSON(out.matrix)
     # we need scale and zoom so we approximate the area and zoom factor
-    ext <- extent(df.sort)
+    ext <- extent(data.latlon)
     yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
     xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
 
@@ -154,7 +174,7 @@ fpmap <- function(data,
       res <- 156543.03  * cos(yc) / (2 ^ zoomlevel)
       #calculating screen scale assuming screen 96 dpi in/m 1000/25.4
       scale = (96 * 39.37 * res)
-      if(scale < lonextent || scale < 75000){
+      if(scale < lonextent || scale < 100000){
         break
       }
       zoomlevel <- zoomlevel + 1
@@ -163,32 +183,20 @@ fpmap <- function(data,
     NULL
   }
 
-  if (nrow(df.sort) > 1.5E06) {
-    libpath<- .libPaths()
-    dataToLibPath<- paste0(libpath[1],"/mapview/htmlwidgets/lib/data")
-    file.create("data.json")
-    fileConn <- file("data.json")
-    write(data.json, fileConn)
-    close(fileConn)
-    file.copy("data.json",dataToLibPath,overwrite = TRUE)
-    file.remove("data.json")
-    data.json <- 'undefined'
-  }
-
 
 
   # create list of user data that is passed to the widget
   x = list(color <- col,
            layer <- map.types,
-           data  <- data.json,
-           cnames <- cnames,
+           data  <- 'undefined',
+           cnames <- 'undefined',
            centerLat <- yc,
            centerLon <- xc,
            zoom <- zoomlevel)
 
   # create widget
   htmlwidgets::createWidget(
-    name = 'fpmap',
+    name = 'bView',
     x,
     sizingPolicy = htmlwidgets::sizingPolicy(
       browser.fill = TRUE,
@@ -204,16 +212,16 @@ fpmap <- function(data,
 #' Widget output function for use in Shiny
 #'
 #' @export
-fpmapOutput <- function(outputId, width = '100%', height = '400px') {
-  shinyWidgetOutput(outputId, 'fpmap', width, height, package = 'mapview')
+bViewOutput <- function(outputId, width = '100%', height = '400px') {
+  shinyWidgetOutput(outputId, 'bView', width, height, package = 'mapview')
 }
 
 #' Widget render function for use in Shiny
 #'
 #' @export
-renderfpmap <- function(expr, env = parent.frame(), quoted = FALSE) {
+renderbView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) {
     expr <- substitute(expr)
   } # force quoted
-  shinyRenderWidget(expr, fpmapOutput, env, quoted = TRUE)
+  shinyRenderWidget(expr, bViewOutput, env, quoted = TRUE)
 }

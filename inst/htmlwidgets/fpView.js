@@ -2,7 +2,7 @@
 
 HTMLWidgets.widget({
 
-  name: 'fpmap',
+  name: 'fpView',
 
   type: 'output',
 
@@ -45,26 +45,18 @@ HTMLWidgets.widget({
     var defaultLayer = L.tileLayer.provider(x[1][0]).addTo(map);
     var layerOne = L.tileLayer.provider(x[1][1]);
     var layerTwo = L.tileLayer.provider(x[1][2]);
-    var hillshade =  L.tileLayer.wms("http://129.206.228.72/cached/hillshade", {
-      layers: 'europe_wms:hs_srtm_europa',
-      format: 'image/png',
-      opacity: 0.45,
-      transparent: true,
-      attribution: 'Hillshade layer by GIScience http://www.osm-wms.de',
-      crs: L.CRS.EPSG900913});
-
 		var baseLayers = {
 			"OpenStreetMap" : defaultLayer,
 			"Esri WorldImagery": layerOne,
 			"Thunderforest Landscape" : layerTwo,
 		};
-		var overlays = {
-
-			"Hillshade": hillshade
-		};
+//    var myLayer = L.geoJson(undefined).addTo(map);
+//		var overlays = {
+//			"Overlay": myLayer
+//		};
 
     // adding all together and the layer control
-		var layerControl = L.control.layers(baseLayers, overlays, {collapsed: true}).addTo(map);
+		var layerControl = L.control.layers(baseLayers, {collapsed: true}).addTo(map);
 		map.setView([x[4], x[5]], x[6]);
 
 
@@ -87,6 +79,7 @@ HTMLWidgets.widget({
   if (x[2] === 'undefined') {
     var data = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
      wget([fragmentshader, vertexshader, data],function(fragmentshader, vertexshader, data) {
+
                     L.glify({
                         map: map,
                         vertexShader: vertexshader,
@@ -189,5 +182,8 @@ function addElement () {
   document.body.insertBefore(newDiv, null);
       //provide ID and style
       newDiv.id = 'lnlt';
-      newDiv.style.cssText = 'position: relative; left:  0px; color:black;font-size: x-small;" background: rgba(255,255,255,0.4);></div>;';
+      newDiv.style.cssText = 'position: relative; bottomleft:  0px; background-color: rgba(255, 255, 255, 0.7);box-shadow: 0 0 2px #bbb; background-clip: padding-box; margin:0; color: #333; font: 9px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif; ></div>;';
+
+
+
 }

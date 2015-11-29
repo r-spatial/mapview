@@ -1,5 +1,16 @@
-#
+# (uncomment to add a dependency)
+# dependencies:
+#  - name:
+#    version:
+#    src:
+#    script:
+#    stylesheet:
+
 dependencies:
+  - name: require
+    version: 2.1.22
+    src: "htmlwidgets/lib/require"
+    script: require.js
   - name: jquery
     version: 1.11.1
     src: "htmlwidgets/lib/jquery"
@@ -7,17 +18,15 @@ dependencies:
   - name: leaflet
     version: 0.7.3
     src: "htmlwidgets/lib/leaflet"
-    script: leaflet.js
-    stylesheet: leaflet.css
-  - name: leafletfix
-    version: 1.0.0
-    src: "htmlwidgets/lib/leafletfix"
-    stylesheet: leafletfix.css
-  - name: leaflet-label
-    version: 0.2.2
-    src: "htmlwidgets/lib/Leaflet.label"
-    script: leaflet.label.js
-    stylesheet: leaflet.label.css
+    script:
+         - leaflet.js
+         - leaflet-providers.js
+    stylesheet:
+          - leaflet.css
+          - leafletfix.css
+          - leaflet.label.css
+          - gh-fork-ribbon.css
+          - gh-fork-ribbon.ie.css
   - name: glify
     version: 0.0.1
     src: "htmlwidgets/lib/glify"
@@ -25,13 +34,6 @@ dependencies:
       - leaflet.glify.js
       - leaflet.canvasoverlay.js
       - gl.js
-  - name: leaflet-providers
-    version: 1.0.27
-    src: "htmlwidgets/lib/leaflet-providers"
-    script: leaflet-providers.js
-    stylesheet:
-      - gh-fork-ribbon.css
-      - gh-fork-ribbon.ie.css
   - name: "fragment-shader"
     version: 0.1.0
     src: "htmlwidgets/lib/glify"
@@ -44,4 +46,10 @@ dependencies:
     version: 0.1.0
     src: 'htmlwidgets/lib/data'
     attachment: {'jsondata': 'data.json'}
-
+meta:
+ - name: "viewport"
+ - content:
+        - {"width": "device-width" }
+        - {"initial-scale": "1.0"}
+        - {"maximum-scale": "1.0"}
+        - {"user-scalable": "no"}
