@@ -5,10 +5,11 @@
 \alias{bView}
 \title{Leaflet maps for big line and polygon data}
 \usage{
-bView(data, col = "rgb", width = NULL, height = NULL, zcol = NULL,
-  map = NULL, burst = FALSE, radius = 10, map.types = c("OpenStreetMap",
-  "Esri.WorldImagery", "Thunderforest.Landscape"), legend = FALSE,
-  legend.opacity = 1, verbose = mapviewOptions(console = FALSE)$verbose,
+bView(data = NULL, shp = "", col = "rgb", width = NULL, height = NULL,
+  zcol = NULL, map = NULL, burst = FALSE, radius = 10,
+  map.types = c("OpenStreetMap", "Esri.WorldImagery",
+  "Thunderforest.Landscape"), legend = FALSE, legend.opacity = 1,
+  verbose = mapviewOptions(console = FALSE)$verbose,
   layer.name = deparse(substitute(data, env = parent.frame())),
   popup = NULL, ...)
 }
@@ -21,57 +22,55 @@ bView is a first prototype for rendering big data (lines and polygons) on base o
 This is a modified and adapted implementation that uses the concepts and code of Sumbera \url{https://gist.github.com/Sumbera/c67e5551b21c68dc8299} and Oscar Hidalgo \url{http://www.cyoarte.com/i+d/cphp/}
 }
 \note{
-It is import to understand that the accurracy of the rendering is about
- 1.1 m at the equator up to 20 cm around 75°. You will get an arbitrary result if the
-  accurracy of your points requires more than 5 decimal digits.
+It is somehow important to understand the rendering concept. Due to the huge data sets the data is rendered using the canvas concept of HTML5. This is very effective and fast but the data is not responsive (maybe this will be implemented in a second step). For getting informations by click on the features you usually have to zoom in until the features turn to magenta. At this point you have full access to the vectors as they are provided by an rtree concept. Not perfect but it works fully on the client side of the browser. The most time consuming part is the conversion of the data to the geojson format.
 }
 \examples{
 
-### we need sp and raster ###
+### we need sp, raster, gdalUtils and rgdal ###
  library(sp)
  library(raster)
  library("rgdal")
  library("gdalUtils")
+### for downloading and benchmarking
  library(downloader)
  library(profvis)
 
-# take gadm data
+## load gadmCHE example data
  data(gadmCHE)
 
-# map it with mapview
+## map it with mapview
  mapview(gadmCHE)
-
-# map it with bView
+## map it with bView
  bView(gadmCHE)
 
- # for even  more suisse data we use geofabrik
+###  to get more suisse data we use OSM as provided by geofabrik
  download("http://download.geofabrik.de/europe/switzerland-latest.shp.zip",dest="switzerland.zip", mode = "wb")
  unzip ("switzerland.zip",exdir = "./")
 
- # get information of landuse
+## get information of landuse
  ogrInfo(".", "landuse")
 
- # read it to a sp object
+## put it in sp object (doesn't matter what type)
  landuseCH<- readOGR(".","landuse")
 
-# map it with mapview
+## map it with mapview
  mapview(landuseCH)
-
-# map it with bView
+## map it with bView
  bView(landuseCH)
 
- # get information of roads
+## get information of roads
  ogrInfo(".", "roads")
 
- # read it to a sp object
+## read it to a sp object
  roadsCH<- readOGR(".","roads")
 
-# map it with mapview
+## map it with mapview
  mapview(roadsCH)
-
-# map it with bView
+## map it with bView
  bView(roadsCH)
 ### some benchmarks
+ system.time(mapview(gadmCHE))
+ system.time(bView(gadmCHE))
  system.time(mapview(landuseCH))
  system.time(bView(landuseCH))
  system.time(mapview(roadsCH))
