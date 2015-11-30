@@ -5,11 +5,10 @@
 \alias{bView}
 \title{Leaflet maps for big line and polygon data}
 \usage{
-bView(data = NULL, shp = "", col = "rgb", width = NULL, height = NULL,
-  zcol = NULL, map = NULL, burst = FALSE, radius = 10,
-  map.types = c("OpenStreetMap", "Esri.WorldImagery",
-  "Thunderforest.Landscape"), legend = FALSE, legend.opacity = 1,
-  verbose = mapviewOptions(console = FALSE)$verbose,
+bView(data, col = "rgb", width = NULL, height = NULL, zcol = NULL,
+  map = NULL, burst = FALSE, radius = 10, map.types = c("OpenStreetMap",
+  "Esri.WorldImagery", "Thunderforest.Landscape"), legend = FALSE,
+  legend.opacity = 1, verbose = mapviewOptions(console = FALSE)$verbose,
   layer.name = deparse(substitute(data, env = parent.frame())),
   popup = NULL, ...)
 }
