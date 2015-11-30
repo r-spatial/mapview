@@ -20,7 +20,7 @@
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL,
   maxpixels = mapviewGetOption("maxpixels"), color = mapViewPalette(11,
-  "mapviewSpectralColors"), na.color = mapviewGetOption("nacolor"),
+  "mapviewSpectralColors"), at, na.color = mapviewGetOption("nacolor"),
   use.layer.names = FALSE, values = NULL,
   map.types = mapviewGetOption("basemaps"), layer.opacity = 0.8,
   legend = TRUE, legend.opacity = 1, trim = TRUE,

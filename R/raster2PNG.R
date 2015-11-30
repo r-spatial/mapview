@@ -2,27 +2,22 @@
 
 ## raster layer -----------------------------------------------------------
 raster2PNG <- function(x,
-                       colors,
+                       col.regions,
+                       at,
                        na.color,
                        maxpixels) {
 cat("size\n")
   x <- rasterCheckSize(x, maxpixels = maxpixels)
 
-#   x_rsc <- suppressWarnings(raster::calc(x, fun = function(y) {
-#     scales::rescale(y, to = c(0, 1))
-#   }))
   cat("matrix\n")
   mat <- t(raster::as.matrix(x))
-cat("colors\n")
-#   clrs <- leaflet::colorNumeric(colors, domain = NULL,
-#                                 na.color = na.color, alpha = TRUE)
+  cat("colors\n")
+
+  if (missing(at)) at <- lattice::do.breaks(range(mat, na.rm = TRUE), 256)
 
   cols <- lattice::level.colors(mat,
-                                at = lattice::do.breaks(range(mat,
-                                                              na.rm = TRUE),
-                                                        256),
-                                col.regions = colors)
-
+                                at = at,
+                                col.regions = col.regions)
   #cols <- clrs(t(mat))
   cat("raw png\n")
   png_dat <- as.raw(grDevices::col2rgb(cols, alpha = TRUE))

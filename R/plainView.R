@@ -111,7 +111,8 @@ if ( !isGeneric('plainView') ) {
 setMethod('plainView', signature(x = 'RasterLayer'),
           function(x,
                    maxpixels = mapviewGetOption("maxpixels"),
-                   colors = mapviewPalette(256),
+                   col.regions = mapviewPalette(256),
+                   at,
                    na.color = mapviewGetOption("nacolor"),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
@@ -131,7 +132,9 @@ setMethod('plainView', signature(x = 'RasterLayer'),
 #                                         of = "PNG",
 #                                         verbose = TRUE)
 #             } else {
-              png <- raster2PNG(x, colors = color,
+              png <- raster2PNG(x,
+                                col.regions = col.regions,
+                                at = at,
                                 na.color = na.color,
                                 maxpixels = maxpixels)
               cat("write png\n")

@@ -6,6 +6,7 @@ leafletRL <- function(x,
                       map,
                       maxpixels,
                       color,
+                      at,
                       na.color,
                       use.layer.names,
                       values,
@@ -46,14 +47,22 @@ leafletRL <- function(x,
     values <- round(values, 5)
   }
 
+  if (missing(at)) at <- lattice::do.breaks(range(x[], na.rm = TRUE), 256)
+
   if (is.fact) {
     pal <- leaflet::colorFactor(color,
                                 domain = NULL,
                                 na.color = na.color)
   } else {
-    pal <- leaflet::colorNumeric(color,
-                                 domain = values,
-                                 na.color = na.color)
+    pal <- mapviewColors(color,
+                         at = at,
+                         na.color = na.color)
+
+    pal2 <- leaflet::colorBin(color,
+                              bins = length(at),
+                                  domain = values,
+                                  na.color = na.color)
+
   }
 
   if (use.layer.names) {
@@ -76,7 +85,7 @@ leafletRL <- function(x,
     m <- leaflet::addLegend(map = m,
                             pal = pal,
                             opacity = legend.opacity,
-                            values = values,
+                            values = at,
                             title = grp)
   }
 
