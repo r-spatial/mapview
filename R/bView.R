@@ -102,16 +102,17 @@ bView <- function(data = NULL,
   dataToLibPath<- paste0(libpath[1],"/mapview/htmlwidgets/lib/data")
   jsonFn <- paste0(dataToLibPath,"/data.json")
   shpFn <- paste0(dataToLibPath,"/data.shp")
-  if (!is.null(data)) {
+
+  if (!is.null(shp)){
+    ogr2ogr(src_datasource_name = shp, dst_datasource_name = jsonFn, f = "GeoJSON", overwrite = TRUE)
+
+  } else {
+    writeOGR(data.latlon, dsn = dataToLibPath, layer = "data", driver="ESRI Shapefile", overwrite_layer = TRUE)
+    ogr2ogr(src_datasource_name = shpFn, dst_datasource_name = jsonFn, f = "GeoJSON", overwrite = TRUE)
+  }
+
+   if (!is.null(data)) {
     data.latlon <- spTransform(data,CRS("+init=epsg:4326"))
-    if (!is.null(shp)){
-      ogr2ogr(src_datasource_name = shp, dst_datasource_name = jsonFn, f = "GeoJSON", overwrite = TRUE)
-    } else {
-      writeOGR(data.latlon, dsn = dataToLibPath, layer = "data", driver="ESRI Shapefile", overwrite_layer = TRUE)
-      ogr2ogr(src_datasource_name = shpFn, dst_datasource_name = jsonFn, f = "GeoJSON", overwrite = TRUE)
-    }
-
-
     # wrap it with var data = {};
     lns <- readLines(jsonFn)
     lns[1] <- 'var data = {'
