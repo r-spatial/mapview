@@ -52,24 +52,24 @@ if (!isGeneric('bView')) {
 #' ## map it with bView
 #'  bView(landuseCH)
 #'
-#' ## get information of roads
-#'  ogrInfo(".", "roads")
+#' ## get information of waterways
+#'  ogrInfo(".", "waterways")
 #'
 #' ## read it to a sp object
-#'  roadsCH<- readOGR(".","roads")
+#'  waterwaysCH<- readOGR(".","waterways")
 #'
 #' ## map it with mapview
-#'  mapview(roadsCH)
+#'  mapview(waterwaysCH)
 #' ## map it with bView
-#'  bView(roadsCH)
+#'  bView(waterwaysCH)
 
 #' ### some benchmarks
 #'  system.time(mapview(gadmCHE))
 #'  system.time(bView(gadmCHE))
 #'  system.time(mapview(landuseCH))
 #'  system.time(bView(landuseCH))
-#'  system.time(mapview(roadsCH))
-#'  system.time(bView(roadsCH))
+#'  system.time(mapview(waterwaysCH))
+#'  system.time(bView(waterwaysCH))
 #'
 
 #'
