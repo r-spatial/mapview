@@ -7,10 +7,6 @@
 #    stylesheet:
 
 dependencies:
-  - name: require
-    version: 2.1.22
-    src: "htmlwidgets/lib/require"
-    script: require.js
   - name: jquery
     version: 1.11.1
     src: "htmlwidgets/lib/jquery"
@@ -42,14 +38,3 @@ dependencies:
     version: 0.1.0
     src: "htmlwidgets/lib/glify"
     attachment: {"vertex-shader": "vertex-shader.glsl"}
-  - name: 'data'
-    version: 0.1.0
-    src: 'htmlwidgets/lib/data'
-    attachment: {'jsondata': 'data.json'}
-meta:
- - name: "viewport"
- - content:
-        - {"width": "device-width" }
-        - {"initial-scale": "1.0"}
-        - {"maximum-scale": "1.0"}
-        - {"user-scalable": "no"}

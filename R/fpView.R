@@ -120,7 +120,16 @@ fpView <- function(data,
                   layer.name = deparse(substitute(data,
                                                   env = parent.frame())),
                   popup = NULL,  ...) {
-  # check if a sp object exist
+  # tmp dir
+  tmpPath <- tempfile()
+  dir.create(tmpPath)
+  baseFn <- "data"
+  extFn <- "json"
+  jsonFn <- paste0(baseFn,".",extFn)
+  pathJsonFn <- paste0(tmpPath,"/",jsonFn)
+
+
+    # check if a sp object exist
   if (!is.null(data)) {
     data.latlon <- spTransform(data,CRS("+init=epsg:4326"))
     df <- as.data.frame(data.latlon)
@@ -135,6 +144,8 @@ fpView <- function(data,
     #df.sort[is.na(df.sort)] <- -9999
     out.matrix = t(t(df.sort))
     data.json <- coords2JSON(out.matrix)
+
+
     # we need scale and zoom so we approximate the area and zoom factor
     ext <- extent(df.sort)
     yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
@@ -164,14 +175,13 @@ fpView <- function(data,
   }
 
   if (nrow(df.sort) > 1.5E06) {
-    libpath<- .libPaths()
-    dataToLibPath<- paste0(libpath[1],"/mapview/htmlwidgets/lib/data")
-    file.create("data.json")
-    fileConn <- file("data.json")
+    #data.json <- paste('var data = {' , data.json , '};')
+    file.create(pathJsonFn)
+    fileConn <- file(pathJsonFn)
     write(data.json, fileConn)
     close(fileConn)
-    file.copy("data.json",dataToLibPath,overwrite = TRUE)
-    file.remove("data.json")
+#    file.copy("data.json",dataToLibPath,overwrite = TRUE)
+#    file.remove("data.json")
     data.json <- 'undefined'
   }
 
@@ -186,20 +196,40 @@ fpView <- function(data,
            centerLon <- xc,
            zoom <- zoomlevel)
 
+  fpViewInternal(jFn = pathJsonFn,  args = x)
+
+}
+
+fpViewInternal <- function(jFn = NULL, args = NULL) {
+
+  x <- list(args = args)
+  data_dir <- dirname(jFn)
+  data_file <- basename(jFn)
+  dep1 <- htmltools::htmlDependency(name = "data",
+                                    version = "1",
+                                    src = c(file = data_dir),
+                                    attachment = list(data_file))
+  deps <- list(dep1)
+
+  sizing = htmlwidgets::sizingPolicy(
+    browser.fill = TRUE,
+    viewer.fill = TRUE,
+    viewer.padding = 5
+  )
+
+
+
   # create widget
   htmlwidgets::createWidget(
     name = 'fpView',
     x,
-    sizingPolicy = htmlwidgets::sizingPolicy(
-      browser.fill = TRUE,
-      viewer.fill = TRUE,
-      viewer.padding = 20
-
-    ),
+    dependencies = deps,
+    sizingPolicy = sizing,
     package = 'mapview'
   )
 
 }
+
 
 #' Widget output function for use in Shiny
 #'

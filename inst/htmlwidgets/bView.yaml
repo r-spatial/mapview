@@ -35,10 +35,10 @@ dependencies:
       - leaflet.glify.js
       - leaflet.canvasoverlay.js
       - gl.js
-  - name: 'data'
-    version: 0.1.0
-    src: 'htmlwidgets/lib/data'
-    script: data.json
+#  - name: 'data'
+#    version: 0.1.0
+#    src: 'htmlwidgets/lib/data'
+#    script: data.json
 
 
 

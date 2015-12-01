@@ -9,7 +9,7 @@ if (!isGeneric('bView')) {
 #'
 #' This is a modified and adapted implementation that uses the concepts and code of Sumbera \url{https://gist.github.com/Sumbera/c67e5551b21c68dc8299} and Oscar Hidalgo \url{http://www.cyoarte.com/i+d/cphp/}
 #'
-#'@note It is somehow important to understand the rendering concept. Due to the huge data sets the data is rendered using the canvas concept of HTML5. This is very effective and fast but the data is not responsive (maybe this will be implemented in a second step). For getting informations by click on the features you usually have to zoom in until the features turn to magenta. At this point you have full access to the vectors as they are provided by an rtree concept. Not perfect but it works fully on the client side of the browser. The most time consuming part is the conversion of the data to the geojson format.
+#'@note It is somehow important to understand the rendering concept. Due to the huge data sets the data is rendered using the canvas concept of HTML5. This is very effecient and fast but the data is not easy to make responsive (maybe this will be implemented in a second step using only canvas concepts). For getting informations by click on the features one has usually to zoom into the map until the features turn to magenta. At this point you have full access to the vectors as they are provided by an rtree concept. Not perfect but it works fully on the client side of the browser. The most time consuming part is the conversion of the data to the geojson format.
 #'
 #'
 #'
@@ -101,19 +101,27 @@ bView <- function(data,
   library("gdalUtils")
   library("rgdal")
 
-  libpath<- .libPaths()
-  dataToLibPath<- paste0(libpath[1],"/mapview/htmlwidgets/lib/data")
-  jsonFn <- paste0(dataToLibPath,"/data.json")
-  shpFn <- paste0(dataToLibPath,"/data.shp")
+
+
+  ## temp dir
+  tmpPath <- tempfile()
+  dir.create(tmpPath)
+  baseFn <- "data"
+  extFn <- "json"
+  jsonFn <- paste0(baseFn,".",extFn)
+  pathJsonFn <- paste0(tmpPath,"/",jsonFn)
+
+
   if (!is.null(data)) {
     data.latlon <- spTransform(data,CRS("+init=epsg:4326"))
-    writeOGR(data.latlon, dsn = dataToLibPath, layer = "data", driver="ESRI Shapefile", overwrite_layer = TRUE)
-    ogr2ogr(src_datasource_name = shpFn, dst_datasource_name = jsonFn, f = "GeoJSON", overwrite = TRUE)
+    writeOGR(data.latlon, dsn = tmpPath, layer = "shape", driver="ESRI Shapefile", overwrite_layer = TRUE)
+    ogr2ogr(src_datasource_name = paste0(tmpPath,"/shape.shp"), dst_datasource_name = pathJsonFn, f = "GeoJSON", overwrite = TRUE)
+    file.remove(paste0(tmpPath,"/",dir(path = tmpPath, pattern = "shape")))
     # wrap it with var data = {};
-    lns <- readLines(jsonFn)
+    lns <- readLines(pathJsonFn)
     lns[1] <- 'var data = {'
     lns[length(lns)]<- '};'
-    writeLines(lns, jsonFn)
+    writeLines(lns, pathJsonFn)
 
     # we need scale and zoom so we approximate the area and zoom factor
     ext <- extent(data.latlon)
@@ -142,9 +150,6 @@ bView <- function(data,
   } else {
     NULL
   }
-
-
-
   # create list of user data that is passed to the widget
   x = list(color <- col,
            layer <- map.types,
@@ -154,16 +159,35 @@ bView <- function(data,
            centerLon <- xc,
            zoom <- zoomlevel)
 
+  bViewInternal(jFn = pathJsonFn,  args = x)
+
+}
+
+  bViewInternal <- function(jFn = NULL, args = NULL) {
+
+  x <- list(args = args)
+  data_dir <- dirname(jFn)
+  data_file <- basename(jFn)
+  dep1 <- htmltools::htmlDependency(name = "data",
+                                    version = "1",
+                                    src = c(file = data_dir),
+                                    script = list(data_file))
+  deps <- list(dep1)
+
+  sizing = htmlwidgets::sizingPolicy(
+    browser.fill = TRUE,
+    viewer.fill = TRUE,
+    viewer.padding = 5
+    )
+
+
+
   # create widget
   htmlwidgets::createWidget(
     name = 'bView',
     x,
-    sizingPolicy = htmlwidgets::sizingPolicy(
-      browser.fill = TRUE,
-      viewer.fill = TRUE,
-      viewer.padding = 20
-
-    ),
+    dependencies = deps,
+    sizingPolicy = sizing,
     package = 'mapview'
   )
 

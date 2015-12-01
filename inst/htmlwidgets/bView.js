@@ -45,9 +45,9 @@ HTMLWidgets.widget({
 addCanvas();
 
    // we add some base layers using the plugin L.tileLayer.provider
-    var defaultLayer = L.tileLayer.provider(x[1][0]).addTo(map);
-    var layerOne = L.tileLayer.provider(x[1][1]);
-    var layerTwo = L.tileLayer.provider(x[1][2]);
+    var defaultLayer = L.tileLayer.provider(x.args[1][0]).addTo(map);
+    var layerOne = L.tileLayer.provider(x.args[1][1]);
+    var layerTwo = L.tileLayer.provider(x.args[1][2]);
 		var baseLayers = {
 			"OpenStreetMap" : defaultLayer,
 			"Esri WorldImagery": layerOne,
@@ -61,11 +61,11 @@ addCanvas();
 
 
 
-    //var data = x[2];
+    //var data = x.args[2];
 //    var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
     //var data = $.parseJSON(HTMLWidgets.getAttachmentUrl('data', 'jsondata'));
-    var baseZ = x[6] + 5;
-    var maxZ = x[6]  + 5;
+    var baseZ = x.args[6] + 5;
+    var maxZ = x.args[6]  + 5;
 
         var tileOptions = {
 	    baseZoom: baseZ,           // max zoom to preserve detail on
@@ -218,7 +218,7 @@ outdata = "<table>" + outdata + "</table>"
   var overlayLayers = {"Overlay":(canvasTiles).addTo(map)};
   // ADD LAYER CONTRLS
   var layerControl = L.control.layers(baseLayers, overlayLayers, {collapsed: true}).addTo(map);
-        map.setView([x[4], x[5]], x[6]);
+        map.setView([x.args[4], x.args[5]], x.args[6]);
 
 	 // Draw the canvas tiles
   canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
@@ -287,9 +287,17 @@ outdata = "<table>" + outdata + "</table>"
 
 
 //###########################################################
-
-
+  // grab the special div we generated in the beginning
+  // and put the mousmove output there
+  lnlt = document.getElementById('lnlt');
+  map.on('mousemove', function (e) {
+        lnlt.textContent =
+                " Latitude: " + (e.latlng.lat).toFixed(5)
+                + " | Longitude: " + (e.latlng.lng).toFixed(5)
+                + " | Zoom: " + map.getZoom() + " ";
+  });
 },
+
 
 
 resize: function(el, width, height, instance) {
