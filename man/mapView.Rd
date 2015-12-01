@@ -19,7 +19,7 @@
 \title{View spatial objects interactively}
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL,
-  maxpixels = mapviewGetOption("maxpixels"), color = mapViewPalette(11,
+  maxpixels = mapviewGetOption("maxpixels"), color = mapViewPalette(256,
   "mapviewSpectralColors"), at, na.color = mapviewGetOption("nacolor"),
   use.layer.names = FALSE, values = NULL,
   map.types = mapviewGetOption("basemaps"), layer.opacity = 0.8,
