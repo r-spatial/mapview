@@ -406,8 +406,8 @@
             var x = coords.lat - 0.0003,
                 y,
 
-                xMax = coords.lat + 0.0003,
-                yMax = coords.lng + 0.0003,
+                xMax = coords.lat + 0.003,
+                yMax = coords.lng + 0.003,
 
                 foundI,
                 foundMax,
@@ -417,7 +417,7 @@
                 key;
 
             for (; x <= xMax; x+=0.00001) {
-                y = coords.lng -0.0003;
+                y = coords.lng -0.003;
                 for (; y <= yMax; y+=0.00001) {
                     key = x.toFixed(5) + 'x' + y.toFixed(5);
                     found = this.latLngLookup[key];
