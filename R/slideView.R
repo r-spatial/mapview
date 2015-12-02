@@ -122,10 +122,10 @@ setMethod("slideView", signature(img1 = "RasterLayer",
                    na.color = mapviewGetOption("nacolor"),
                    maxpixels = mapviewGetOption("maxpixels")) {
 
-            png1 <- raster2PNG(img1, color = color,
+            png1 <- raster2PNG(img1, col.regions = color,
                                na.color = na.color,
                                maxpixels = maxpixels)
-            png2 <- raster2PNG(img2, color = color,
+            png2 <- raster2PNG(img2, col.regions = color,
                                na.color = na.color,
                                maxpixels = maxpixels)
 
