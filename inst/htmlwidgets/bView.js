@@ -64,8 +64,8 @@ addCanvas();
     //var data = x.args[2];
 //    var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
     //var data = $.parseJSON(HTMLWidgets.getAttachmentUrl('data', 'jsondata'));
-    var baseZ = x.args[6] + 5;
-    var maxZ = x.args[6]  + 5;
+    var baseZ = x.args[6][0] + 5;
+    var maxZ = x.args[6][0]  + 5;
 
         var tileOptions = {
 	    baseZoom: baseZ,           // max zoom to preserve detail on
@@ -218,7 +218,7 @@ outdata = "<table>" + outdata + "</table>"
   var overlayLayers = {"Overlay":(canvasTiles).addTo(map)};
   // ADD LAYER CONTRLS
   var layerControl = L.control.layers(baseLayers, overlayLayers, {collapsed: true}).addTo(map);
-        map.setView([x.args[4], x.args[5]], x.args[6]);
+        map.setView([x.args[4][0], x.args[5][0]], x.args[6][0]);
 
 	 // Draw the canvas tiles
   canvasTiles.drawTile = function(canvas, tilePoint, zoom) {

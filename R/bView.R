@@ -122,31 +122,8 @@ bView <- function(data,
     lns[1] <- 'var data = {'
     lns[length(lns)]<- '};'
     writeLines(lns, pathJsonFn)
+    zoom<- getZoomLevel(data.latlon)
 
-    # we need scale and zoom so we approximate the area and zoom factor
-    ext <- extent(data.latlon)
-    yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
-    xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
-
-    rad.cof=3.1459/180
-    lat.1deg=110540
-    lon.1deg=111320*cos(rad.cof*yc)
-    # calculate stepsize
-    latextent=(lat.1deg*(ext@ymax-ext@ymin))
-    lonextent=(lon.1deg*(ext@xmax-ext@xmin))
-
-    #http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Resolution_and_Scale
-    zoomlevel <- 3
-    repeat{
-      # res in m zoomlev is 2 ^ x
-      res <- 156543.03  * cos(rad.cof*yc) / (2 ^ zoomlevel)
-      #calculating screen scale assuming screen 96 dpi in/m 1000/25.4
-      scale = 96 * 39.37 * res
-      if(scale < max(latextent, 2500000)){
-        break
-      }
-      zoomlevel <- zoomlevel + 1
-    }
   } else {
     NULL
   }
@@ -155,9 +132,9 @@ bView <- function(data,
            layer <- map.types,
            data  <- 'undefined',
            cnames <- 'undefined',
-           centerLat <- yc,
-           centerLon <- xc,
-           zoom <- zoomlevel)
+           centerLat <- zoom[3],
+           centerLon <- zoom[2],
+           zoom <- zoom[1])
 
   bViewInternal(jFn = pathJsonFn,  args = x)
 
@@ -208,4 +185,33 @@ renderbView <- function(expr, env = parent.frame(), quoted = FALSE) {
     expr <- substitute(expr)
   } # force quoted
   shinyRenderWidget(expr, bViewOutput, env, quoted = TRUE)
+}
+
+getZoomLevel <- function (x = data.latlon){
+  # we need scale and zoom so we approximate the area and zoom factor
+  ext <- extent(x)
+  yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
+  xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
+
+  rad.cof=3.1459/180
+  lat.1deg=110540
+  lon.1deg=111320*cos(rad.cof*yc)
+  # calculate stepsize
+  latextent=(lat.1deg*(ext@ymax-ext@ymin))
+  lonextent=(lon.1deg*(ext@xmax-ext@xmin))
+
+  #http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Resolution_and_Scale
+  zoomlevel <- 3
+  repeat{
+    # res in m zoomlev is 2 ^ x
+    res <- 156543.03  * cos(rad.cof*yc) / (2 ^ zoomlevel)
+    #calculating screen scale assuming screen 96 dpi in/m 1000/25.4
+    scale = 96 * 39.37 * res
+    if(scale < max(latextent, 2500000)){
+      break
+    }
+    zoomlevel <- zoomlevel + 1
+  }
+  param = list(zoomlevel,xc,yc)
+  return(param)
 }

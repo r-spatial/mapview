@@ -33,16 +33,16 @@ if (!isGeneric('fpView')) {
 #'  library(ggplot2)
 #'  library(profvis)
 #'
-#' # take the meuse data
+#' ### take the meuse data
 #'  data(meuse)
 #'  coordinates(meuse) <- ~x+y
 #'  proj4string(meuse) <- CRS("+init=epsg:28992")
 #'  meuse <- spTransform(meuse,CRS("+init=epsg:3857"))
 #'
-#' # map it with mapview
+#' ### map it with mapview
 #'  mapview(meuse)
 #'
-#' # map it with fpView
+#' ### map it with fpView
 #'  fpView(data = meuse,col = "random")
 #'
 #' ### some benchmarks
@@ -51,22 +51,22 @@ if (!isGeneric('fpView')) {
 #'
 #' ### Now we go a bit bigger
 #'
-#' # get the diamonds data
+#' ### get the diamonds data
 #'  big <- diamonds[rep(seq_len(nrow(diamonds)), 1),]
 #'  big$cut <- as.character(big$cut)
 #'  big$color <- as.character(big$color)
 #'  big$clarity <- as.character(big$clarity)
-#' # provide some random positions
+#'
+#' ### provide some random positions
 #'  big$x <- rnorm(nrow(big), 10, 3)
 #'  big$y <- rnorm(nrow(big), 50, 3)
-#'
 #'  coordinates(big) <- ~x+y
 #'  proj4string(big) <- CRS("+init=epsg:4326")
 #'
-#' # map it with pure mapview
+#' ### map it with pure mapview
 #'  mapview(big, color='blue')
 #'
-#' # map it with fastmap
+#' ### map it with fastmap
 #'  fpView(data = big, col='blue')
 #'
 #' ### some benchmarks
@@ -78,14 +78,12 @@ if (!isGeneric('fpView')) {
 #'  big$cut <- as.character(big$cut)
 #'  big$color <- as.character(big$color)
 #'  big$clarity <- as.character(big$clarity)
-#'
 #'  big$x <- rnorm(nrow(big), 10, 3)
 #'  big$y <- rnorm(nrow(big), 50, 3)
-#'
 #'  coordinates(big) <- ~x+y
 #'  proj4string(big) <- CRS("+init=epsg:4326")
 #'
-#' # map it NOT with leaflet but with fpView
+#' ### map it with fpView
 #'  fpView(data = big, col = "blue")
 #'
 #' ### some benchmarks
@@ -107,22 +105,20 @@ if (!isGeneric('fpView')) {
 
 
 fpView <- function(data,
-                  col = 'rgb',
-                  width = NULL,
-                  height = NULL,
-                  zcol = NULL,
-                  map = NULL,
-                  burst = FALSE,
-                  radius = 10,
-                  map.types = c("OpenStreetMap", "Esri.WorldImagery",'Thunderforest.Landscape'),
-                  legend = FALSE,
-                  legend.opacity = 1,  verbose = mapviewOptions(console = FALSE)$verbose,
-                  layer.name = deparse(substitute(data,
-                                                  env = parent.frame())),
-                  popup = NULL,  ...) {
-
-
-  # tmp dir
+                   col = 'rgb',
+                   width = NULL,
+                   height = NULL,
+                   zcol = NULL,
+                   map = NULL,
+                   burst = FALSE,
+                   radius = 10,
+                   map.types = c("OpenStreetMap", "Esri.WorldImagery",'Thunderforest.Landscape'),
+                   legend = FALSE,
+                   legend.opacity = 1,  verbose = mapviewOptions(console = FALSE)$verbose,
+                   layer.name = deparse(substitute(data,
+                                                   env = parent.frame())),
+                   popup = NULL,  ...) {
+  # create tmp dir for data
   tmpPath <- tempfile()
   dir.create(tmpPath)
   baseFn <- "data"
@@ -131,7 +127,7 @@ fpView <- function(data,
   pathJsonFn <- paste0(tmpPath,"/",jsonFn)
 
 
-    # check if a sp object exist
+  # check if a sp object exist
   if (!is.null(data)) {
     data.latlon <- spTransform(data,CRS("+init=epsg:4326"))
     df <- as.data.frame(data.latlon)
@@ -150,24 +146,26 @@ fpView <- function(data,
 
     # we need scale and zoom so we approximate the area and zoom factor
     ext <- extent(df.sort)
-    yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
-    xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
+    yc <- (ext@ymax - ext@ymin) * 0.5  + ext@ymin
+    xc <- (ext@xmax - ext@xmin) * 0.5 + ext@xmin
+    # calculate extent of 1° in m
+    rad.cof = 3.1459 / 180
+    lat.1deg = 110540
+    lon.1deg = 111320 * cos(rad.cof * yc)
+    # calculate extent of lat and lon in meter
+    latextent = (lat.1deg * (ext@ymax - ext@ymin))
+    lonextent = (lon.1deg * (ext@xmax - ext@xmin))
 
-    rad.cof=3.1459/180
-    lat.1deg=110540
-    lon.1deg=111320*cos(rad.cof*yc)
-    # calculate stepsize
-    latextent=(lat.1deg*(ext@ymax-ext@ymin))
-    lonextent=(lon.1deg*(ext@xmax-ext@xmin))
-
-    #http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Resolution_and_Scale
+    # try to find an adequate zoomrange
+    # http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Resolution_and_Scale
+    # start with zoomlevel 3
     zoomlevel <- 3
-    repeat{
+    repeat {
       # res in m zoomlev is 2 ^ x
       res <- 156543.03  * cos(yc) / (2 ^ zoomlevel)
       #calculating screen scale assuming screen 96 dpi in/m 1000/25.4
       scale = (96 * 39.37 * res)
-      if(scale < lonextent || scale < 75000){
+      if (scale < lonextent || scale < 75000) {
         break
       }
       zoomlevel <- zoomlevel + 1
@@ -177,65 +175,68 @@ fpView <- function(data,
   }
 
 
-    # write data file to temp dir
-    file.create(pathJsonFn)
-    fileConn <- file(pathJsonFn)
-    write(data.json, fileConn)
-    close(fileConn)
+  # write data file to temp dir
+  file.create(pathJsonFn)
+  fileConn <- file(pathJsonFn)
+  write(data.json, fileConn)
+  close(fileConn)
+  # create popup style and header content
 
-htmlTemplate<- paste(
-          "<html>",
-          "<head>",
-          "<style>",
-          "#popup",
-          "{font-family: Arial, Helvetica, sans-serif;width: 20%;border-collapse: collapse;}",
-          "#popup td {font-size: 1em;border: 0px solid #85ADFF;padding: 3px 20px 3px 3px;}",
-          "#popup tr.alt td {color: #000000;background-color: #F0F5FF;}",
-          "#popup tr.coord td {color: #000000;background-color: #A8E6A8;}",
-          "div.scrollableContainer {max-height: 200px;max-width: 100%;overflow-y: auto;overflow-x: auto;margin: 0px;background: #D1E0FF;}",
-          "</style>",
-          "</head>",
-          "<body>",
-          "<div class='scrollableContainer'>",
-          "<table class='popup scrollable'>",
-          "<table id='popup'>"
-          )
-cHelp<- list()
-cHelp[1]<- "<tr class='coord'><td>Longitude</td><td>"
-cHelp[2]<- "<tr class='coord'><td>Latitude</td><td>"
-for (i in 1:length(cnames)) {
-    if (i%%2 == 1 ){
-    cHelp[i+2]<-paste0("<tr><td> ",cnames[i]," </td><td>")
-  } else {
-    cHelp[i+2]<-paste0("<tr class='alt'><td> ",cnames[i]," </td><td>")
-  }
+  htmlTemplate <- paste(
+    "<html>",
+    "<head>",
+    "<style>",
+    "#popup",
+    "{font-family: Arial, Helvetica, sans-serif;width: 20%;border-collapse: collapse;}",
+    "#popup td {font-size: 1em;border: 0px solid #85ADFF;padding: 3px 20px 3px 3px;}",
+    "#popup tr.alt td {color: #000000;background-color: #F0F5FF;}",
+    "#popup tr.coord td {color: #000000;background-color: #A8E6A8;}",
+    "div.scrollableContainer {max-height: 200px;max-width: 100%;overflow-y: auto;overflow-x: auto;margin: 0px;background: #D1E0FF;}",
+    "</style>",
+    "</head>",
+    "<body>",
+    "<div class='scrollableContainer'>",
+    "<table class='popup scrollable'>",
+    "<table id='popup'>"
+  )
+  cHelp <- list()
+  cHelp[1] <- "<tr class='coord'><td>Longitude</td><td>"
+  cHelp[2] <- "<tr class='coord'><td>Latitude</td><td>"
+  for (i in 1:length(cnames)) {
+    if (i %% 2 == 1) {
+      cHelp[i + 2] <- paste0("<tr><td> ",cnames[i]," </td><td>")
+    } else {
+      cHelp[i + 2] <- paste0("<tr class='alt'><td> ",cnames[i]," </td><td>")
+    }
   }
 
   # create list of user data that is passed to the widget
-  x = list(color <- col,
-           layer <- map.types,
-           data  <- "undefined",
-           cnames <- cnames,
-           centerLat <- yc,
-           centerLon <- xc,
-           zoom <- zoomlevel,
-           popTemplate <- htmlTemplate,
-           cHelp<- cHelp
-           )
+  x = list(
+    color <- col,
+    layer <- map.types,
+    data  <- "undefined",
+    cnames <- cnames,
+    centerLat <- yc,
+    centerLon <- xc,
+    zoom <- zoomlevel,
+    popTemplate <- htmlTemplate,
+    cHelp <- cHelp
+  )
 
   fpViewInternal(jFn = pathJsonFn,  args = x)
 
 }
 
 fpViewInternal <- function(jFn = NULL, args = NULL) {
-
   x <- list(args = args)
   data_dir <- dirname(jFn)
   data_file <- basename(jFn)
-  dep1 <- htmltools::htmlDependency(name = "data",
-                                    version = "1",
-                                    src = c(file = data_dir),
-                                    attachment = list(data_file))
+  dep1 <- htmltools::htmlDependency(
+    name = "data",
+    version = "1",
+    src = c(file = data_dir),
+    attachment = list(data_file)
+  )
   deps <- list(dep1)
 
   sizing = htmlwidgets::sizingPolicy(

@@ -47,16 +47,16 @@ It is import to understand that the accurracy of the rendering is about
  library(ggplot2)
  library(profvis)
 
-# take the meuse data
+### take the meuse data
  data(meuse)
  coordinates(meuse) <- ~x+y
  proj4string(meuse) <- CRS("+init=epsg:28992")
  meuse <- spTransform(meuse,CRS("+init=epsg:3857"))
 
-# map it with mapview
+### map it with mapview
  mapview(meuse)
 
-# map it with fpView
+### map it with fpView
  fpView(data = meuse,col = "random")
 
 ### some benchmarks
@@ -65,22 +65,22 @@ It is import to understand that the accurracy of the rendering is about
 
 ### Now we go a bit bigger
 
-# get the diamonds data
+### get the diamonds data
  big <- diamonds[rep(seq_len(nrow(diamonds)), 1),]
  big$cut <- as.character(big$cut)
  big$color <- as.character(big$color)
  big$clarity <- as.character(big$clarity)
-# provide some random positions
+
+### provide some random positions
  big$x <- rnorm(nrow(big), 10, 3)
  big$y <- rnorm(nrow(big), 50, 3)
-
  coordinates(big) <- ~x+y
  proj4string(big) <- CRS("+init=epsg:4326")
 
-# map it with pure mapview
+### map it with pure mapview
  mapview(big, color='blue')
 
-# map it with fastmap
+### map it with fastmap
  fpView(data = big, col='blue')
 
 ### some benchmarks
@@ -92,14 +92,12 @@ It is import to understand that the accurracy of the rendering is about
  big$cut <- as.character(big$cut)
  big$color <- as.character(big$color)
  big$clarity <- as.character(big$clarity)
-
  big$x <- rnorm(nrow(big), 10, 3)
  big$y <- rnorm(nrow(big), 50, 3)
-
  coordinates(big) <- ~x+y
  proj4string(big) <- CRS("+init=epsg:4326")
 
-# map it NOT with leaflet but with fpView
+### map it with fpView
  fpView(data = big, col = "blue")
 
 ### some benchmarks

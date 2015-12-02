@@ -59,19 +59,13 @@ HTMLWidgets.widget({
   var color = x.args[0];
 
 
-  // no it is getting tricky after wget-ing all files the text contet of it
-  // is passed to the  L.Glify extension of leaflet that handles the webGL shading process
-  // big thanks for this to Robert's version of the web gl renderer and his plugin for
-  // leaflet https://robertleeplummerjr.github.io/Leaflet.glifyand the popups
-  // no it is getting tricky after wget-ing all files the text contet of it
-  // is passed to the  L.Glify extension of leaflet that handles the webGL shading process
-  // big thanks for this to Robert's version of the web gl renderer and his plugin for
-  // leaflet https://robertleeplummerjr.github.io/Leaflet.glifyand the popups
-
+  // after reading the shader files data, popuptemplates and shaders are passed to the
+  // L.Glify leaflet extension that handles the webGL shading process
+  // big thanks for this to Robert Plummers version of the web gl renderer and his plugin for
+  // leaflet https://robertleeplummerjr.github.io/Leaflet.glify
   if (x.args[2] === 'undefined') {
     var data = HTMLWidgets.getAttachmentUrl('data');
      wget([fragmentshader, vertexshader, data],function(fragmentshader, vertexshader, data) {
-
                     L.glify({
                         map: map,
                         vertexShader: vertexshader,
@@ -94,16 +88,13 @@ HTMLWidgets.widget({
                         L.popup()
                           .setLatLng(point)
                           .setContent(contentToHtml)
-
-                              .openOn(map);
-                              console.log(point);
+                          .openOn(map);
+                          console.log(point);
                         },
                         data: JSON.parse(data),
                         color: color,
                     });
   })
-
-
 
   // grab the special div we generated in the beginning
   // and put the mousmove output there
@@ -118,8 +109,6 @@ HTMLWidgets.widget({
   {
     var data = x.args[2];
   }
-
-
 
   // grab the special div we generated in the beginning
   // and put the mousmove output there
@@ -170,7 +159,4 @@ function addElement () {
       //provide ID and style
       newDiv.id = 'lnlt';
       newDiv.style.cssText = 'position: relative; bottomleft:  0px; background-color: rgba(255, 255, 255, 0.7);box-shadow: 0 0 2px #bbb; background-clip: padding-box; margin:0; color: #333; font: 9px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif; ></div>;';
-
-
-
 }
