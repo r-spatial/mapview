@@ -4,7 +4,23 @@
 }
 
 #divInfo {
-  margin-left: 100px;
+  position:absolute;
+  /*margin-left: 100px;*/
+  opacity:0.75;
+  z-index: 1;
+}
+
+.image_name {
+  background-color: #3d3d3d;
+}
+
+.zoom_factor {
+  background-color: #787878;
+}
+
+#divDraw {
+	position:absolute;
+	z-index: 0;
 }
 
 #divBefore {
@@ -15,10 +31,5 @@
 	position:absolute;
 }
 
-#spanLeft, #spanRight {
-  background-color: #3d3d3d;
-}
 
-#spanMid {
-  background-color: #787878;
-}
+

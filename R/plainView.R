@@ -35,6 +35,8 @@ if ( !isGeneric('plainView') ) {
 #'
 #' @author
 #' Tim Appelhans
+#' @author
+#' Stephan Woellauer
 #'
 #' @examples
 #' \dontrun{
@@ -150,6 +152,59 @@ cat("plainViewInternal\n")
 
 )
 
+plainViewInternal <- function(filename, imgnm) {
+
+  x <- list(imgnm = imgnm)
+
+  image_dir <- dirname(filename)
+  image_file <- basename(filename)
+
+  dep1 <- htmltools::htmlDependency(name = "image",
+                                    version = "1",
+                                    src = c(file = image_dir),
+                                    attachment = list(image_file))
+  deps <- list(dep1)
+
+  sizing <- htmlwidgets::sizingPolicy(padding = 0, browser.fill = TRUE)
+
+  htmlwidgets::createWidget(
+    name = 'plainView',
+    x = x,
+    package = 'mapview',
+    dependencies = deps,
+    sizingPolicy = sizing
+  )
+}
+
+
+plainViewOutput <- function(outputId, width = '100%', height = '400px'){
+  htmlwidgets::shinyWidgetOutput(outputId, 'plainView',
+                                 width, height, package = 'mapview')
+}
+
+
+renderPlainView <- function(expr, env = parent.frame(), quoted = FALSE) {
+  if (!quoted) { expr <- substitute(expr) } # force quoted
+  htmlwidgets::shinyRenderWidget(expr, plainViewOutput, env, quoted = TRUE)
+}
+
+
+
+## plainview ==============================================================
+
+if ( !isGeneric('plainview') ) {
+  setGeneric('plainview', function(...)
+    standardGeneric('plainview'))
+}
+
+#' @describeIn plainView alias for ease of typing
+#' @aliases plainview
+#' @export plainview
+
+setMethod('plainview', signature('ANY'),
+          function(...) plainView(...))
+
+
 # ## Raster Stack/Brick ===========================================================
 # #' @describeIn plainView \code{\link{stack}} / \code{\link{brick}}
 #
@@ -241,61 +296,3 @@ cat("plainViewInternal\n")
 # )
 #
 #
-# #' <Add Title>
-# #'
-# #' <Add Description>
-# #'
-# #' @import htmlwidgets
-# #'
-# #' @export
-plainViewInternal <- function(filename, imgnm) {
-
-  x <- list(imgnm = imgnm)
-
-  image_dir <- dirname(filename)
-  image_file <- basename(filename)
-
-  dep1 <- htmltools::htmlDependency(name = "image",
-                                    version = "1",
-                                    src = c(file = image_dir),
-                                    attachment = list(image_file))
-  deps <- list(dep1)
-
-  sizing <- htmlwidgets::sizingPolicy(padding = 0, browser.fill = TRUE)
-
-  htmlwidgets::createWidget(
-    name = 'plainView',
-    x = x,
-    package = 'mapview',
-    dependencies = deps,
-    sizingPolicy = sizing
-  )
-}
-
-
-plainViewOutput <- function(outputId, width = '100%', height = '400px'){
-  htmlwidgets::shinyWidgetOutput(outputId, 'plainView',
-                                 width, height, package = 'mapview')
-}
-
-
-renderPlainView <- function(expr, env = parent.frame(), quoted = FALSE) {
-  if (!quoted) { expr <- substitute(expr) } # force quoted
-  htmlwidgets::shinyRenderWidget(expr, plainViewOutput, env, quoted = TRUE)
-}
-
-
-
-## plainview ==============================================================
-
-if ( !isGeneric('plainview') ) {
-  setGeneric('plainview', function(...)
-    standardGeneric('plainview'))
-}
-
-#' @describeIn plainView alias for ease of typing
-#' @aliases plainview
-#' @export plainview
-
-setMethod('plainview', signature('ANY'),
-          function(...) plainView(...))

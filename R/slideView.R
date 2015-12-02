@@ -25,6 +25,7 @@ if ( !isGeneric('slideView') ) {
 #'
 #' @author
 #' Tim Appelhans
+#' @author
 #' Stephan Woellauer
 #'
 #' @examples

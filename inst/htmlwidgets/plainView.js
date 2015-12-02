@@ -36,10 +36,13 @@ function ca(root, name, text) {
 
 function init(root, filename, name) {
   var divInfo = ca(root, "div");
-  ca(divInfo, "span", "x");
+  divInfo.id = "divInfo";
+  ca(divInfo, "span", "x").className = "zoom_factor";
   spanFactor = ca(divInfo, "span", "?");
+  spanFactor.className = "zoom_factor";
   ca(divInfo, "span", "&nbsp;&nbsp;");
   var spanName = ca(divInfo, "span", name);
+  spanName.className = "image_name";
   canvas = ca(root, "canvas");
 
   image = new Image();

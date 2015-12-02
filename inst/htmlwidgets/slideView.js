@@ -42,10 +42,13 @@ HTMLWidgets.widget({
 
     spanLeft = document.createElement("span");
     spanLeft.id ="spanLeft";
+    spanLeft.className = "image_name";
     spanMid = document.createElement("span");
     spanMid.id ="spanMid";
+    spanMid.className ="zoom_factor";
     spanRight = document.createElement("span");
     spanRight.id ="spanRight";
+    spanRight.className = "image_name";
 
     divInfo.appendChild(spanLeft);
     divInfo.appendChild(spanMid);
