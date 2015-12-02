@@ -120,6 +120,8 @@ fpView <- function(data,
                   layer.name = deparse(substitute(data,
                                                   env = parent.frame())),
                   popup = NULL,  ...) {
+
+
   # tmp dir
   tmpPath <- tempfile()
   dir.create(tmpPath)
@@ -174,27 +176,52 @@ fpView <- function(data,
     NULL
   }
 
-  if (nrow(df.sort) > 1.5E06) {
-    #data.json <- paste('var data = {' , data.json , '};')
+
+    # write data file to temp dir
     file.create(pathJsonFn)
     fileConn <- file(pathJsonFn)
     write(data.json, fileConn)
     close(fileConn)
-#    file.copy("data.json",dataToLibPath,overwrite = TRUE)
-#    file.remove("data.json")
-    data.json <- 'undefined'
+
+htmlTemplate<- paste(
+          "<html>",
+          "<head>",
+          "<style>",
+          "#popup",
+          "{font-family: Arial, Helvetica, sans-serif;width: 20%;border-collapse: collapse;}",
+          "#popup td {font-size: 1em;border: 0px solid #85ADFF;padding: 3px 20px 3px 3px;}",
+          "#popup tr.alt td {color: #000000;background-color: #F0F5FF;}",
+          "#popup tr.coord td {color: #000000;background-color: #A8E6A8;}",
+          "div.scrollableContainer {max-height: 200px;max-width: 100%;overflow-y: auto;overflow-x: auto;margin: 0px;background: #D1E0FF;}",
+          "</style>",
+          "</head>",
+          "<body>",
+          "<div class='scrollableContainer'>",
+          "<table class='popup scrollable'>",
+          "<table id='popup'>"
+          )
+cHelp<- list()
+cHelp[1]<- "<tr class='coord'><td>Longitude</td><td>"
+cHelp[2]<- "<tr class='coord'><td>Latitude</td><td>"
+for (i in 1:length(cnames)) {
+    if (i%%2 == 1 ){
+    cHelp[i+2]<-paste0("<tr><td> ",cnames[i]," </td><td>")
+  } else {
+    cHelp[i+2]<-paste0("<tr class='alt'><td> ",cnames[i]," </td><td>")
   }
-
-
+  }
 
   # create list of user data that is passed to the widget
   x = list(color <- col,
            layer <- map.types,
-           data  <- data.json,
+           data  <- "undefined",
            cnames <- cnames,
            centerLat <- yc,
            centerLon <- xc,
-           zoom <- zoomlevel)
+           zoom <- zoomlevel,
+           popTemplate <- htmlTemplate,
+           cHelp<- cHelp
+           )
 
   fpViewInternal(jFn = pathJsonFn,  args = x)
 

@@ -40,20 +40,13 @@ HTMLWidgets.widget({
 
   doRenderValue: function(el, x, map) {
 
-
    // we add some base layers using the plugin L.tileLayer.provider
     var defaultLayer = L.tileLayer.provider(x.args[1][0]).addTo(map);
-    var layerOne = L.tileLayer.provider(x.args[1][1]);
-    var layerTwo = L.tileLayer.provider(x.args[1][2]);
-		var baseLayers = {
-			"OpenStreetMap" : defaultLayer,
-			"Esri WorldImagery": layerOne,
-			"Thunderforest Landscape" : layerTwo,
-		};
-//    var myLayer = L.geoJson(undefined).addTo(map);
-//		var overlays = {
-//			"Overlay": myLayer
-//		};
+
+    var baseLayers = {};
+    for (var i = 0; i < x.args[1].length;  i++) {
+    baseLayers[x.args[1][i] ] = L.tileLayer.provider(x.args[1][i]);
+    }
 
     // adding all together and the layer control
 		var layerControl = L.control.layers(baseLayers, {collapsed: true}).addTo(map);
@@ -64,7 +57,6 @@ HTMLWidgets.widget({
   var vertexshader = HTMLWidgets.getAttachmentUrl('vertex-shader', 'vertex-shader');
   var fragmentshader = HTMLWidgets.getAttachmentUrl('fragment-shader', 'fragment-shader');
   var color = x.args[0];
-  var rgbcode = x.args[7];
 
 
   // no it is getting tricky after wget-ing all files the text contet of it
@@ -86,9 +78,22 @@ HTMLWidgets.widget({
                         fragmentShader: fragmentshader,
                         clickPoint: function (point) {
                         //set up a standalone popup (use a popup as a layer)
+                        contentToHtml = x.args[7];
+                            for (var i = 0; i < x.args[8].length;  i++) {
+                              if (i == 0) {
+                                contentToHtml += x.args[8][i] +  point.lng + "</td></tr>" ;
+                              }
+                              if (i == 1) {
+                                contentToHtml += x.args[8][i] +  point.lat + "</td></tr>" ;
+                              }
+                              if (i > 1)  {
+                                contentToHtml += x.args[8][i] +  point.a[i-2] + "</td></tr>" ;
+                              }
+                              }
+                        contentToHtml += "</table></body></html>";
                         L.popup()
                           .setLatLng(point)
-                          .setContent("<table><tr><td>Longitude</td><td>" + point.lng + "</td></tr><tr><td>Latitude</td><td>" + point.lat + "</td></tr><tr><td>" + x.args[3][0] + "</td><td>" + point.v1 + "</td></tr><tr><td>" + x.args[3][1] + "</td><td>" + point.v2 + "</td></tr><tr><td>" + x.args[3][2] + "</td><td>" + point.v3 + "</td></tr><tr><td>" + x.args[3][3] + "</td><td>" + point.v4 + "</td></tr><tr><td>" + x.args[3][4] + "</td><td>" + point.v5 + "</td></tr><tr><td>" + x.args[3][5] + "</td><td>" + point.v6 + "</td></tr><tr><td>" + x.args[3][6] + "</td><td>" + point.v7 + "</td></tr><tr><td>" + x.args[3][7] + "</td><td>" + point.v8 + "</td></tr></table>")
+                          .setContent(contentToHtml)
 
                               .openOn(map);
                               console.log(point);
@@ -112,24 +117,6 @@ HTMLWidgets.widget({
   } else
   {
     var data = x.args[2];
-     wget([fragmentshader, vertexshader],function(fragmentshader, vertexshader) {
-                    L.glify({
-                        map: map,
-                        vertexShader: vertexshader,
-                        fragmentShader: fragmentshader,
-                        clickPoint: function (point) {
-                        //set up a standalone popup (use a popup as a layer)
-                        L.popup()
-                          .setLatLng(point)
-                          .setContent("<table><tr><td>Longitude</td><td>" + point.lng + "</td></tr><tr><td>Latitude</td><td>" + point.lat + "</td></tr><tr><td>" + x.args[3][0] + "</td><td>" + point.v1 + "</td></tr><tr><td>" + x.args[3][1] + "</td><td>" + point.v2 + "</td></tr><tr><td>" + x.args[3][2] + "</td><td>" + point.v3 + "</td></tr><tr><td>" + x.args[3][3] + "</td><td>" + point.v4 + "</td></tr><tr><td>" + x.args[3][4] + "</td><td>" + point.v5 + "</td></tr><tr><td>" + x.args[3][5] + "</td><td>" + point.v6 + "</td></tr><tr><td>" + x.args[3][6] + "</td><td>" + point.v7 + "</td></tr><tr><td>" + x.args[3][7] + "</td><td>" + point.v8 + "</td></tr><tr><td>" + x.args[3][8] + "</td><td>" + point.v9 + "</td></tr><tr><td>" + x.args[3][9] + "</td><td>" + point.v10 + "</td></tr><tr><td>" + x.args[3][10] + "</td><td>" + point.v11 + "</td></tr><tr><td>" + x.args[3][11] + "</td><td>" + point.v12 + "</td></tr><tr><td>" + x.args[3][12] + "</td><td>" + point.v13 + "</td></tr><tr><td>" + x.args[3][13] + "</td><td>" + point.v14 + "</td></tr><tr></table>")
-
-                              .openOn(map);
-                              console.log(point);
-                        },
-                        data: JSON.parse(data),
-                        color: color
-                    });
-  })
   }
 
 

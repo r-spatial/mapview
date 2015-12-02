@@ -146,7 +146,12 @@
                 colorFn = colorKey;
 
                 this.settings.data.map(function (latLng, i) {
-                    var pixel = this.latLngToPixelXY(latLng[1], latLng[0], latLng[2],latLng[3],latLng[4],latLng[5],latLng[6],latLng[7],latLng[8],latLng[9],latLng[10],latLng[11],latLng[12],latLng[13],latLng[14],latLng[15],latLng[16],latLng[17],latLng[18],latLng[19],latLng[20]),
+
+                  var a = [];
+                  for (var z = 2; z < latLng.length; z++) {
+                    a[z-2] = latLng[z];
+                  }
+                    var pixel = this.latLngToPixelXY(latLng[1], latLng[0], a),
                         color = colorFn(10);
 
                     //-- 2 coord, 3 rgb colors interleaved buffer
@@ -323,7 +328,7 @@
             pixel = {
                 lat: latitude,
                 lng: longitude,
-                a: a,
+                a:a,
                 x: pixelX,
                 y: pixelY,
                 key: key
@@ -383,7 +388,9 @@
          * @returns {Glify}
          */
         addTo: function(map) {
-            this.glLayer.addTo(map);
+            //this.glLayer.addTo(map);
+            newLayer = {"Points":this.glLayer}
+            L.control.layers(newLayer).addTo(map);
 
             return this;
         },
