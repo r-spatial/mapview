@@ -10,9 +10,11 @@ var scale = 1;
 var drag = false;
 var dragX = 0;
 var dragY = 0;
+var speed = 1;
 
 var crisp = true;
 
+var rootNode;
 var divInfo;
 var divDraw;
 var divBefore;
@@ -35,6 +37,7 @@ HTMLWidgets.widget({
   },
 
   renderValue: function(el, x, instance) {
+    rootNode = el;
 
     divInfo = document.createElement("div");
     divInfo.id ="divInfo";
@@ -98,7 +101,7 @@ function init(filename1, filename2) {
 	divDraw.onmousewheel =  mousewheel; // RStudio
 	window.addEventListener("keydown", keydown, true);
 
-	imageBefore.onload = draw;
+	imageBefore.onload = init_image;
 	imageAfter.onload = draw;
 	imageBefore.src = filename1;
 	imageAfter.src = filename2;
@@ -108,8 +111,8 @@ function mousemove(e) {
 	if(drag) {
 		var x = e.layerX;
 		var y = e.layerY;
-		offsetX += (x - dragX) / scale;
-		offsetY += (y - dragY) / scale;
+		offsetX += (x - dragX)*speed / scale;
+		offsetY += (y - dragY)*speed / scale;
 		dragX = x;
 		dragY = y;
 		draw();
@@ -158,11 +161,15 @@ function mouseleave(e) {
 function keydown(e) {
 
   if(e.which==109 || e.which==173 || e.which==189) { // minus key
-    wheel({layerX:0, layerY:0, deltaY:+1})
+    var cw = rootNode.clientWidth;
+    var ch = rootNode.clientHeight;
+    onzoom(cw/2, ch/2, false);
   }
 
   if(e.which==107 || e.which==171 || e.which==187) { // plus key
-    wheel({layerX:0, layerY:0, deltaY:-1})
+    var cw = rootNode.clientWidth;
+    var ch = rootNode.clientHeight;
+    onzoom(cw/2, ch/2, true);
   }
 
   if(e.which==32) { // space bar
@@ -170,11 +177,19 @@ function keydown(e) {
 	  draw();
   }
 
-  if(e.which==27 || e.which==13) { // escape or enter key
+  if(e.which==27) { // escape
+    init_image();
+  }
+
+  if(e.which==13) { // enter key
     offsetX = 0;
     offsetY = 0;
     scale = 1;
     draw();
+  }
+
+  if(e.which==17) { // control key
+    speed=speed==1?10:1;
   }
 
 }
@@ -199,6 +214,21 @@ function wheel(e) {
 	offsetX -= offX - newX;
 	offsetY -= offY - newY;
 	draw();
+}
+
+function init_image() {
+  var iw = imageBefore.width;
+  var ih = imageBefore.height;
+  var cw = rootNode.clientWidth;
+  var ch = rootNode.clientHeight;
+  var fw = cw/iw;
+  var fh = ch/ih;
+  scale = fw<fh?fw:fh;
+  var sw = iw*scale;
+  var sh = ih*scale;
+  offsetX = sw<cw?(cw-sw)/scale/2:0;
+  offsetY = sh<ch?(ch-sh)/scale/2:0;
+  draw();
 }
 
 function draw() {

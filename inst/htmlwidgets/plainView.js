@@ -13,6 +13,7 @@ HTMLWidgets.widget({
   resize: function(el, width, height, instance) {}
 });
 
+var rootNode;
 var spanFactor;
 var image;
 var canvas;
@@ -35,6 +36,7 @@ function ca(root, name, text) {
 }
 
 function init(root, filename, name) {
+  rootNode = root;
   var divInfo = ca(root, "div");
   divInfo.id = "divInfo";
   ca(divInfo, "span", "x").className = "zoom_factor";
@@ -46,7 +48,7 @@ function init(root, filename, name) {
   canvas = ca(root, "canvas");
 
   image = new Image();
-  image.onload = draw;
+  image.onload = init_image;
 	image.src = filename;
 
 	canvas.onmousedown = onmousedown;
@@ -56,6 +58,21 @@ function init(root, filename, name) {
 	canvas.onmousewheel =  onmousewheel;
 
 	window.addEventListener("keydown", onkeydown, true);
+}
+
+function init_image() {
+  var iw = image.width;
+  var ih = image.height;
+  var cw = rootNode.clientWidth;
+  var ch = rootNode.clientHeight;
+  var fw = cw/iw;
+  var fh = ch/ih;
+  scale = fw<fh?fw:fh;
+  var sw = iw*scale;
+  var sh = ih*scale;
+  offsetX = sw<cw?(cw-sw)/scale/2:0;
+  offsetY = sh<ch?(ch-sh)/scale/2:0;
+  draw();
 }
 
 function draw() {
@@ -144,11 +161,15 @@ function onmousewheel(e) {
 function onkeydown(e) {
 
   if(e.which==109 || e.which==173 || e.which==189) { // minus key
-    onzoom(0, 0, false);
+    var cw = rootNode.clientWidth;
+    var ch = rootNode.clientHeight;
+    onzoom(cw/2, ch/2, false);
   }
 
   if(e.which==107 || e.which==171 || e.which==187) { // plus key
-    onzoom(0, 0, true);
+    var cw = rootNode.clientWidth;
+    var ch = rootNode.clientHeight;
+    onzoom(cw/2, ch/2, true);
   }
 
   if(e.which==32) { // space bar
@@ -156,11 +177,19 @@ function onkeydown(e) {
 	  draw();
   }
 
-  if(e.which==27 || e.which==13) { // escape or enter key
+  if(e.which==27) { // escape
+    init_image();
+  }
+
+  if(e.which==13) { // enter key
     offsetX = 0;
     offsetY = 0;
     scale = 1;
     draw();
+  }
+
+  if(e.which==17) { // control key
+    speed=speed==1?10:1;
   }
 
 }

@@ -143,7 +143,7 @@ setMethod('plainView', signature(x = 'RasterLayer'),
               png::writePNG(png, fl)
             #}
 
-            layer.name <- deparse(substitute(img, env = parent.frame()))
+            layer.name <- deparse(substitute(x, env = parent.frame()))
 cat("plainViewInternal\n")
             plainViewInternal(filename = fl,
                               imgnm = layer.name)
