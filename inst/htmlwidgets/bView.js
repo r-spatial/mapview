@@ -64,8 +64,8 @@ addCanvas();
     //var data = x.args[2];
 //    var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
     //var data = $.parseJSON(HTMLWidgets.getAttachmentUrl('data', 'jsondata'));
-    var baseZ = x.args[6][0] + 3;
-    var maxZ = x.args[6][0]  + 3;
+    var baseZ = x.args[6][0] + 2;
+    var maxZ = x.args[6][0]  + 2;
 
         var tileOptions = {
 	    baseZoom: baseZ,           // max zoom to preserve detail on
@@ -130,8 +130,8 @@ addCanvas();
 	        } else {
 	            return {
 	                color: "magenta",
-	                weight: 2,
-	                opacity: 0.8
+	                weight: 1.5,
+	                opacity: 0.9
 	            }
 	        }
 	    }
