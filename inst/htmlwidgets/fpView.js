@@ -7,23 +7,21 @@ HTMLWidgets.widget({
   type: 'output',
 
   initialize: function(el, width, height) {
-    // we need some kind of "own" div  in this widget container
-    // so we generate it
+
+    // we need a not htmlwidget div in the widget container
     addElement ();
 
-    // initialize the leaflet map rendered staticly at the "el" object
+    // initialize the leaflet map staticly at the "el" object
     // hard-coding center/zoom here for a non-empty initial view, since there
     // is no way for htmlwidgets to pass initial params to initialize()
     var map = new L.map(el, {
       center: [47, 10],
       zoom: 7
     });
-
-
-    // we even could add more leaflet stuff here ;)
+    // we even could add more (static) leaflet stuff here ;-)
 
     // The map is rendered staticly => so there would be no output binding
-    // for the further handling to aoboid it we generate the binding to el this.getId(el)
+    // for the further handling we generate the binding to el this.getId(el)
     if (typeof this.getId === 'undefined') return map;
     map.id = this.getId(el);
 
@@ -40,7 +38,7 @@ HTMLWidgets.widget({
 
   doRenderValue: function(el, x, map) {
 
-   // we add some base layers using the plugin L.tileLayer.provider
+   // we define the first layer of the list to be the default one
     var defaultLayer = L.tileLayer.provider(x.args[1][0]).addTo(map);
 
         var baseLayers = {};
