@@ -64,8 +64,8 @@ addCanvas();
     //var data = x.args[2];
 //    var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
     //var data = $.parseJSON(HTMLWidgets.getAttachmentUrl('data', 'jsondata'));
-    var baseZ = x.args[6][0] + 5;
-    var maxZ = x.args[6][0]  + 5;
+    var baseZ = x.args[6][0] + 3;
+    var maxZ = x.args[6][0]  + 3;
 
         var tileOptions = {
 	    baseZoom: baseZ,           // max zoom to preserve detail on
@@ -86,19 +86,27 @@ addCanvas();
 	// The onEachFeature
 
 	function onEachFeature(feature, layer) {
-	  var outdata = "";
-	  for (var key in data.features[1].properties) {
-   outdata = "<tr><td>" + key + ":</td><td> " + data.features[1].properties[key] + "</td></tr>" + outdata;
-
-   // do some more stuff with obj[key]
-}
-outdata = "<table>" + outdata + "</table>"
-	        layer.bindPopup(outdata);
-	    }
+    var i = 1;
+    var content = '';
+    // does this feature have a property named popupContent?
+    if (feature.properties) {
+        for (var key in feature.properties) {
+          if (isEven(i)) {
+            content += "<tr><td> " +  key + " </td><td>" + feature.properties[key] +" </td></tr>";
+          } else {
+            content += "<tr class='alt'><td> " +  key + " </td><td>" + feature.properties[key] +" </td></tr>";
+          }
+          i = i + 1;
+        };
+        var popupContent = x.args[3] + content + "</table></body></html>";
+        console.log(popupContent);
+        layer.bindPopup(popupContent);
+    }
+  }
 	// The styles of the layer
 	function style(feature) {
 	        if (feature.properties.ELEV != "" && feature.properties.ELEV != "<Null>" && feature.properties.ELEV != null) {
-	            if (feature.properties.ELEV == "1000") {
+	           /* if (feature.properties.ELEV == "1000") {
 	                return {
 	                    color: "green",
 	                    weight: 4,
@@ -110,6 +118,7 @@ outdata = "<table>" + outdata + "</table>"
 	                    weight: 4,
 	                    opacity: 0.9
 	                }
+
 	            } else {
 	                return {
 	                    color: "red",
@@ -117,6 +126,7 @@ outdata = "<table>" + outdata + "</table>"
 	                    opacity: 0.9
 	                }
 	            }
+	        */
 	        } else {
 	            return {
 	                color: "magenta",
@@ -125,20 +135,20 @@ outdata = "<table>" + outdata + "</table>"
 	            }
 	        }
 	    }
-	    // If you want to filter the layer, if not delete the function here and on the var myLayer
-//	function filter(feature, layer) {
-//	    if (theFilter != "none") {
-//	        layerFilter = feature.height;
-//	        if (layerFilter == theFilter) {
-//	            return true;
-//	        } else {
-//	            return false;
-//	        }
-//	    } else {
-//	        return true;
-//	    }
-//	}
-
+/*	//   If you want to filter the layer, if not delete the function here and on the var myLayer
+	function filter(feature, layer) {
+	    if (theFilter != "none") {
+	        layerFilter = feature.height;
+	        if (layerFilter == theFilter) {
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    } else {
+	        return true;
+	    }
+	}
+*/
 	var BoxSelect = L.Map.BoxZoom.extend({
 	    _onMouseUp: function(e) {
 	        this._pane.removeChild(this._box);
@@ -206,19 +216,20 @@ outdata = "<table>" + outdata + "</table>"
 	    showLayer();
 	});
 
-	 // Add to the r-tree
-	 rt.geoJSON(data);
+	// Add to the r-tree
+	rt.geoJSON(data);
 
-	 // Add to the GeoJson Vector Tiles
+	// Add to the GeoJson Vector Tiles
   var tileIndex = geojsonvt(data,tileOptions);
 
 	// The canvas tile layer for low zoom level
- var canvasTiles = L.tileLayer.canvas().addTo(map);
+  var canvasTiles = L.tileLayer.canvas().addTo(map);
 
   var overlayLayers = {"Overlay":(canvasTiles).addTo(map)};
+
   // ADD LAYER CONTRLS
   var layerControl = L.control.layers(baseLayers, overlayLayers, {collapsed: true}).addTo(map);
-        map.setView([x.args[4][0], x.args[5][0]], x.args[6][0]);
+  map.setView([x.args[4][0], x.args[5][0]], x.args[6][0]);
 
 	 // Draw the canvas tiles
   canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
@@ -331,3 +342,6 @@ resize: function(el, width, height, instance) {
                               '></div>;';
       }
 
+function isEven(n) {
+   return n % 2 == 0;
+}

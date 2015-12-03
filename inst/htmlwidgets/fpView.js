@@ -43,14 +43,14 @@ HTMLWidgets.widget({
    // we add some base layers using the plugin L.tileLayer.provider
     var defaultLayer = L.tileLayer.provider(x.args[1][0]).addTo(map);
 
-    var baseLayers = {};
-    for (var i = 0; i < x.args[1].length;  i++) {
-    baseLayers[x.args[1][i] ] = L.tileLayer.provider(x.args[1][i]);
-    }
+        var baseLayers = {};
+        for (var i = 0; i < x.args[1].length;  i++) {
+        baseLayers[x.args[1][i] ] = L.tileLayer.provider(x.args[1][i]);
+        }
 
     // adding all together and the layer control
 		var layerControl = L.control.layers(baseLayers, {collapsed: true}).addTo(map);
-		map.setView([x.args[4], x.args[5]], x.args[6]);
+		map.setView([x.args[4][0], x.args[5][0]], x.args[6][0]);
 
 
   // get the file locations from the shaders and the static external file
