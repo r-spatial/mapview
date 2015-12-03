@@ -3,7 +3,7 @@
 \docType{fpView}
 \name{fpView}
 \alias{fpView}
-\title{Leaflet maps for big data}
+\title{Leaflet maps for big point data}
 \usage{
 fpView(x, zcol = NULL, map = NULL, burst = FALSE,
   color = mapViewPalette(7), na.color = mapviewGetOption("nacolor"),
@@ -13,26 +13,30 @@ fpView(x, zcol = NULL, map = NULL, burst = FALSE,
   ...)
 }
 \arguments{
-\item{zcol}{attribute name(s) or column number(s) in attribute table
-of the column(s) to be rendered (up to now only numeric is supported)}
-
-\item{burst}{whether to show all (TRUE) or only one (FALSE) layers}
+\item{x}{\code{\link{sp}} SpatialPointDataframe object}
 
 \item{color}{colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines}
 
-\item{data}{a \code{\link{sp}} SpatialPointDataframe object (currently only)}
+\item{map.types}{character spcifications for the base maps.
+see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
+for available options.}
 
-\item{width}{a valid CSS width}
+\item{legend}{should a legend be plotted (not implemented yet)}
 
-\item{height}{a valid CSS width}
+\item{legend.opacity}{opacity of the legend (not implemented yet)}
 
-\item{radius}{attribute name(s) or column number(s) in attribute table
-of the column(s) to be used for defining the size of circles}
+\item{...}{additional arguments passed on to repective functions.
+See \code{\link{addRasterImage}}, \code{\link{addCircles}},
+\code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
+
+\item{x}{a \code{\link{raster}}* object}
+
+\item{color}{color (palette) of the points/polygons/lines/pixels}
+
+\item{layer.opacity}{opacity of the raster layer(s) (not implemented yet)}
 }
 \description{
-fpView is a first prototype for rendering big data (points) on base of leaflet maps utilizing webGL and htmlwidgets.
-
-This is a modified and adapted implementation of \url{https://github.com/robertleeplummerjr/Leaflet.glify}
+fpView is designed for rendering fairly big point vector data sets on base of leaflet maps without suffering the typical tough response times of the common leaflet maps. It utilises HTML5 canvas and webGL technics.
 }
 \note{
 It is import to understand that the accurracy of the rendering is about
@@ -40,7 +44,6 @@ It is import to understand that the accurracy of the rendering is about
   accurracy of your points requires more than 5 decimal digits.
 }
 \examples{
-
 ### we need sp and raster ###
  library(sp)
  library(raster)
@@ -111,5 +114,8 @@ It is import to understand that the accurracy of the rendering is about
 }
 \author{
 Chris Reudenbach
+}
+\references{
+fpView is using a modified and adapted implementation of : \url{https://github.com/robertleeplummerjr/Leaflet.glify}
 }
 

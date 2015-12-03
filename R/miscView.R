@@ -2,31 +2,33 @@ if (!isGeneric('miscView')) {
   setGeneric('miscView', function(x, ...)
     standardGeneric('miscView'))
 }
-
-#' Leaflet maps for big data
+#' Leaflet maps for big point data
 #'
-#' @description fpView is a first prototype for rendering big data (points) on base of leaflet maps utilizing webGL and htmlwidgets.
+#' @description fpView is designed for rendering fairly big point vector data sets on base of leaflet maps without suffering the typical tough response times of the common leaflet maps. It utilises HTML5 canvas and webGL technics.
 #'
-#' This is a modified and adapted implementation of \url{https://github.com/robertleeplummerjr/Leaflet.glify}
+#'@references  fpView is using a modified and adapted implementation of : \url{https://github.com/robertleeplummerjr/Leaflet.glify}
+#'
 #'
 #'@note It is import to understand that the accurracy of the rendering is about
 #'  1.1 m at the equator up to 20 cm around 75°. You will get an arbitrary result if the
 #'   accurracy of your points requires more than 5 decimal digits.
 #'
-#' @param data a \code{\link{sp}} SpatialPointDataframe object (currently only)
+#' @param x  \code{\link{sp}} SpatialPointDataframe object
 #' @param color colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines
-#' @param width	a valid CSS width
-#' @param height	a valid CSS width
-#' @param burst whether to show all (TRUE) or only one (FALSE) layers
-#' @param zcol attribute name(s) or column number(s) in attribute table
-#' of the column(s) to be rendered (up to now only numeric is supported)
-#' @param radius attribute name(s) or column number(s) in attribute table
-#' of the column(s) to be used for defining the size of circles
-#'
+#' @param x a \code{\link{raster}}* object
+#' @param color color (palette) of the points/polygons/lines/pixels
+#' @param map.types character spcifications for the base maps.
+#' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
+#' for available options.
+#' @param layer.opacity opacity of the raster layer(s) (not implemented yet)
+#' @param legend should a legend be plotted (not implemented yet)
+#' @param legend.opacity opacity of the legend (not implemented yet)
+#' @param ... additional arguments passed on to repective functions.
+#' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
+#' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
 #' @author
 #' Chris Reudenbach
 #' @examples
-#'
 #' ### we need sp and raster ###
 #'  library(sp)
 #'  library(raster)
@@ -228,19 +230,27 @@ renderfpView <- function(expr, env = parent.frame(), quoted = FALSE) {
 }
 
 
-#' Leaflet maps for big line and polygon data
+#' Leaflet maps for big line and polygon data sets
 #'
-#' @description miscView is a first prototype for rendering big data (lines and polygons) on base of leaflet maps utilizing rtree, HTML5 canvas and htmlwidgets.
+#' @description bView is designed for rendering fairly big line and polyline vector data sets on base of leaflet maps without suffering the typical tough response times of the common leaflet maps. or points it is better to use \code{fpView}. It is utilising rtree, HTML5 canvas.
 #'
-#' This is a modified and adapted implementation that uses the concepts and code of Sumbera \url{https://gist.github.com/Sumbera/c67e5551b21c68dc8299} and Oscar Hidalgo \url{http://www.cyoarte.com/i+d/cphp/}
+#'@references  bView is using concepts and code of Sumbera \url{https://gist.github.com/Sumbera/c67e5551b21c68dc8299} and Oscar Hidalgo \url{http://www.cyoarte.com/i+d/cphp/}
 #'
-#'@note It is somehow important to understand the rendering concept. Due to the huge data sets the data is rendered using the canvas concept of HTML5. This is very effecient and fast but the data is not easy to make responsive (maybe this will be implemented in a second step using only canvas concepts). For getting informations by click on the features one has usually to zoom into the map until the features turn to magenta. At this point you have full access to the vectors as they are provided by an rtree concept. Not perfect but it works fully on the client side of the browser. The most time consuming part is the conversion of the data to the geojson format.
+#'@note It is somehow important to understand the rendering concept. Due to the huge data sets the data is rendered using the canvas concept of HTML5. This is in questions of rendering speed very effecient but it is not easy to make the data responsive ( future plan is to implement canvas only concepts). For getting informations by click on the features one has  to zoom into the map until the features can be recognized and turn to magenta. At this point you have full access to the vectors. This is provided by using a rtree implementation. Not perfect but it works fully on the client side of the browser. The most time consuming part is the conversion of the data to the geojson format.
 #'
-#'
-#'
-#' @param data a \code{\link{sp}} SpatialPolyDataframe object
-
-#'
+#' @param x  \code{\link{sp}} an object one of : SpatialPointDataframe,SpatialPolygonsDataFrame,SpatialPolygons, SpatialLinesDataFrame, SpatialLines
+#' @param color colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines
+#' @param x a \code{\link{sp}} object
+#' @param color color (palette) of the points/polygons/lines/pixels
+#' @param map.types character spcifications for the base maps.
+#' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
+#' for available options.
+#' @param layer.opacity opacity of the raster layer(s) (not implemented yet)
+#' @param legend should a legend be plotted (not implemented yet)
+#' @param legend.opacity opacity of the legend (not implemented yet)
+#' @param ... additional arguments passed on to repective functions.
+#' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
+#' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
 #' @author
 #' Chris Reudenbach
 #' @examples
@@ -300,7 +310,6 @@ renderfpView <- function(expr, env = parent.frame(), quoted = FALSE) {
 #'
 
 #' @export bView
-
 #' @docType bView
 #' @name bView
 #' @rdname bView

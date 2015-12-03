@@ -3,7 +3,7 @@
 \docType{bView}
 \name{bView}
 \alias{bView}
-\title{Leaflet maps for big line and polygon data}
+\title{Leaflet maps for big line and polygon data sets}
 \usage{
 bView(x, zcol = NULL, map = NULL, burst = FALSE,
   color = mapViewPalette(7), na.color = mapviewGetOption("nacolor"),
@@ -13,15 +13,33 @@ bView(x, zcol = NULL, map = NULL, burst = FALSE,
   ...)
 }
 \arguments{
-\item{data}{a \code{\link{sp}} SpatialPolyDataframe object}
+\item{x}{\code{\link{sp}} an object one of : SpatialPointDataframe,SpatialPolygonsDataFrame,SpatialPolygons, SpatialLinesDataFrame, SpatialLines}
+
+\item{color}{colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines}
+
+\item{map.types}{character spcifications for the base maps.
+see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
+for available options.}
+
+\item{legend}{should a legend be plotted (not implemented yet)}
+
+\item{legend.opacity}{opacity of the legend (not implemented yet)}
+
+\item{...}{additional arguments passed on to repective functions.
+See \code{\link{addRasterImage}}, \code{\link{addCircles}},
+\code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
+
+\item{x}{a \code{\link{sp}} object}
+
+\item{color}{color (palette) of the points/polygons/lines/pixels}
+
+\item{layer.opacity}{opacity of the raster layer(s) (not implemented yet)}
 }
 \description{
-miscView is a first prototype for rendering big data (lines and polygons) on base of leaflet maps utilizing rtree, HTML5 canvas and htmlwidgets.
-
-This is a modified and adapted implementation that uses the concepts and code of Sumbera \url{https://gist.github.com/Sumbera/c67e5551b21c68dc8299} and Oscar Hidalgo \url{http://www.cyoarte.com/i+d/cphp/}
+bView is designed for rendering fairly big line and polyline vector data sets on base of leaflet maps without suffering the typical tough response times of the common leaflet maps. or points it is better to use \code{fpView}. It is utilising rtree, HTML5 canvas.
 }
 \note{
-It is somehow important to understand the rendering concept. Due to the huge data sets the data is rendered using the canvas concept of HTML5. This is very effecient and fast but the data is not easy to make responsive (maybe this will be implemented in a second step using only canvas concepts). For getting informations by click on the features one has usually to zoom into the map until the features turn to magenta. At this point you have full access to the vectors as they are provided by an rtree concept. Not perfect but it works fully on the client side of the browser. The most time consuming part is the conversion of the data to the geojson format.
+It is somehow important to understand the rendering concept. Due to the huge data sets the data is rendered using the canvas concept of HTML5. This is in questions of rendering speed very effecient but it is not easy to make the data responsive ( future plan is to implement canvas only concepts). For getting informations by click on the features one has  to zoom into the map until the features can be recognized and turn to magenta. At this point you have full access to the vectors. This is provided by using a rtree implementation. Not perfect but it works fully on the client side of the browser. The most time consuming part is the conversion of the data to the geojson format.
 }
 \examples{
 
@@ -79,5 +97,8 @@ It is somehow important to understand the rendering concept. Due to the huge dat
 }
 \author{
 Chris Reudenbach
+}
+\references{
+bView is using concepts and code of Sumbera \url{https://gist.github.com/Sumbera/c67e5551b21c68dc8299} and Oscar Hidalgo \url{http://www.cyoarte.com/i+d/cphp/}
 }
 
