@@ -58,9 +58,7 @@ addCanvas();
 
 
     var myLayer = L.geoJson(undefined,{style:style,onEachFeature:onEachFeature}).addTo(map);
-		var overlays = {
-			"Overlay": myLayer
-		};
+
 
 
 
@@ -231,12 +229,14 @@ addCanvas();
 	// The canvas tile layer for low zoom level
   var canvasTiles = L.tileLayer.canvas().addTo(map);
 
-  var overlayLayers = {"Overlay":(canvasTiles).addTo(map)};
+  // create overlay Layers varibles
+  var overlayLayers = {};
+  overlayLayers[x.args[9][0] + " zoom" ] = myLayer;
+  overlayLayers[x.args[9][0] ] = (canvasTiles).addTo(map);
 
   // ADD LAYER CONTRLS
   var layerControl = L.control.layers(baseLayers, overlayLayers, {collapsed: true}).addTo(map);
   map.setView([x.args[4][0], x.args[5][0]], x.args[6][0]);
-
 
   // Draw the canvas tiles
   canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
@@ -255,13 +255,19 @@ addCanvas();
 	        if (typeof tile != "undefined") {
 	          var features = tile.features;
            // color to the lines
+           // create gradients
 		      var grdp = ctx.createRadialGradient(75,50,5,90,60,100);
 		      var grd = ctx.createLinearGradient(0, 0, 170, 0);
+		      // define opacity
 		      ctx.globalAlpha=opacity ;
+		      // apply gradient to colors
 		      grd.addColorStop(0, color[0]);
 		      grd.addColorStop(1, color[color.length-1]);
+		      //define line width
 		      ctx.lineWidth = lnWidth;
+		      // define line color
           ctx.strokeStyle = "#660C0C";
+          //define fill color
           ctx.fillStyle=color[0];
 
           for (var i = 0; i < features.length; i++) {
@@ -280,51 +286,39 @@ addCanvas();
                  for (var j = 0; j < feature.geometry.length; j++) {
 	                    var ring = feature.geometry[j];
                       ctx.arc(ring[0] * ratio + pad, ring[1] * ratio + pad, 4- 1/zoom*10,0,2*Math.PI);
-
 	                   }
               }
-	               // lines
-
-              /*    if (feature.tags.ELEV != "") {
-                    if (feature.tags.ELEV == "1000") {
-                      ctx.strokeStyle = grd;
-                    } else if (feature.tags.ELEV == "2000") {
-                      ctx.strokeStyle = "#00FF00";
-                    } else {
-                      ctx.globalAlpha=0.3 ;
-                      ctx.strokeStyle = "brown";
-                    }
+	           // lines
+             /* if (feature.tags.ELEV != "") {
+                  if (feature.tags.ELEV == "1000") {
+                    ctx.strokeStyle = grd;
+                  } else if (feature.tags.ELEV == "2000") {
+                    ctx.strokeStyle = "#00FF00";
                   } else {
-	                    ctx.strokeStyle = "black";
-	                }
-	                */
-	                // lines
-	                for (var j = 0; j < feature.geometry.length; j++) {
-	                    var ring = feature.geometry[j];
-
-	                    for (var k = 0; k < ring.length; k++) {
-	                        var p = ring[k];
-
-	                        if (k) ctx.lineTo(p[0] * ratio + pad, p[1] * ratio + pad);
-	                        else ctx.moveTo(p[0] * ratio + pad, p[1] * ratio + pad);
-	                    }
-	                }
-	                        // polygons
-	                if (type === 3) {ctx.fill("evenodd");}
-	                ctx.stroke();
-
+                    ctx.globalAlpha=0.3 ;
+                    ctx.strokeStyle = "brown";
                   }
+                } else {
+	                   ctx.strokeStyle = "black";
+	              }
+             */
+	           for (var j = 0; j < feature.geometry.length; j++) {
+	              var ring = feature.geometry[j];
 
+	                for (var k = 0; k < ring.length; k++) {
+	                    var p = ring[k];
 
-
-	            }
-
-
-	        };
-showLayer();
-
-//	});
-
+	                    if (k) ctx.lineTo(p[0] * ratio + pad, p[1] * ratio + pad);
+	                    else ctx.moveTo(p[0] * ratio + pad, p[1] * ratio + pad);
+	                }
+	           }
+	           // polygons
+	           if (type === 3) {ctx.fill("evenodd");}
+	              ctx.stroke();
+          }
+          }
+          };
+    showLayer();
 
 //###########################################################
   // grab the special div we generated in the beginning

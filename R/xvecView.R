@@ -174,7 +174,8 @@ if (!is.null(data)) {
     zoom <- zoom[1],
     popTemplate <- getStyle(),
     cHelp <- cHelp,
-    layer.opacity <- layer.opacity
+    layer.opacity <- layer.opacity,
+    layer.name<- layer.name
   )
 }
   # creating the widget
@@ -375,7 +376,8 @@ bView <- function(x,
            centerLon <- zoom[2],
            zoom <- zoom[1],
            opacity <- layer.opacity,
-           weight <- weight)
+           weight <- weight,
+           layer.name<-layer.name)
 
   # creating the widget
   bViewInternal(jFn = pathJsonFn,  args = x)
