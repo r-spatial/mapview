@@ -8,9 +8,9 @@
 fpView(x, zcol = NULL, map = NULL, burst = FALSE,
   color = mapViewPalette(7), na.color = mapviewGetOption("nacolor"),
   values = NULL, map.types = mapviewGetOption("basemaps"), legend = FALSE,
-  legend.opacity = 1, weight = 2, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
-  ...)
+  layer.opacity = 0.8, legend.opacity = 1, weight = 2,
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), popup = NULL, ...)
 }
 \arguments{
 \item{x}{\code{\link{sp}} SpatialPointDataframe object}
@@ -23,6 +23,8 @@ for available options.}
 
 \item{legend}{should a legend be plotted (not implemented yet)}
 
+\item{layer.opacity}{opacity of the raster layer(s) (not implemented yet)}
+
 \item{legend.opacity}{opacity of the legend (not implemented yet)}
 
 \item{...}{additional arguments passed on to repective functions.
@@ -32,8 +34,6 @@ See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \item{x}{a \code{\link{raster}}* object}
 
 \item{color}{color (palette) of the points/polygons/lines/pixels}
-
-\item{layer.opacity}{opacity of the raster layer(s) (not implemented yet)}
 }
 \description{
 fpView is designed for rendering fairly big point vector data sets on base of leaflet maps without suffering the typical tough response times of the common leaflet maps. It utilises HTML5 canvas and webGL technics.

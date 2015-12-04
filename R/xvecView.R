@@ -111,6 +111,7 @@ fpView <- function(x,
                   values = NULL,
                   map.types = mapviewGetOption("basemaps"),
                   legend = FALSE,
+                  layer.opacity = 0.8,
                   legend.opacity = 1,
                   weight = 2,
                   verbose = mapviewGetOption("verbose"),
@@ -172,7 +173,8 @@ if (!is.null(data)) {
     centerLon <- zoom[2],
     zoom <- zoom[1],
     popTemplate <- getStyle(),
-    cHelp <- cHelp
+    cHelp <- cHelp,
+    layer.opacity <- layer.opacity
   )
 }
   # creating the widget
@@ -325,6 +327,7 @@ bView <- function(x,
                   values = NULL,
                   map.types = mapviewGetOption("basemaps"),
                   legend = FALSE,
+                  layer.opacity = 0.4,
                   legend.opacity = 1,
                   weight = 2,
                   verbose = mapviewGetOption("verbose"),
@@ -370,7 +373,9 @@ bView <- function(x,
            html <- getStyle(),
            centerLat <- zoom[3],
            centerLon <- zoom[2],
-           zoom <- zoom[1])
+           zoom <- zoom[1],
+           opacity <- layer.opacity,
+           weight <- weight)
 
   # creating the widget
   bViewInternal(jFn = pathJsonFn,  args = x)

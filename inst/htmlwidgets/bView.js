@@ -45,14 +45,17 @@ HTMLWidgets.widget({
 addCanvas();
 
    // we add some base layers using the plugin L.tileLayer.provider
+// we define the first layer of the list to be the default one
     var defaultLayer = L.tileLayer.provider(x.args[1][0]).addTo(map);
-    var layerOne = L.tileLayer.provider(x.args[1][1]);
-    var layerTwo = L.tileLayer.provider(x.args[1][2]);
-		var baseLayers = {
-			"OpenStreetMap" : defaultLayer,
-			"Esri WorldImagery": layerOne,
-			"Thunderforest Landscape" : layerTwo,
-		};
+
+        var baseLayers = {};
+        for (var i = 0; i < x.args[1].length;  i++) {
+        baseLayers[x.args[1][i] ] = L.tileLayer.provider(x.args[1][i]);
+        }
+
+    // adding all together and the layer control
+
+
 
     var myLayer = L.geoJson(undefined,{style:style,onEachFeature:onEachFeature}).addTo(map);
 		var overlays = {
@@ -64,30 +67,32 @@ addCanvas();
     //var data = x.args[2];
 //    var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
     //var data = $.parseJSON(HTMLWidgets.getAttachmentUrl('data', 'jsondata'));
-    var baseZ = x.args[6][0] + 2;
-    var maxZ = x.args[6][0]  + 2;
-
-        var tileOptions = {
-	    baseZoom: baseZ,           // max zoom to preserve detail on
-	    maxZoom: maxZ,            // zoom to slice down to on first pass
-	    maxPoints: 100,         // stop slicing each tile below this number of points
-            tolerance: 3,           // simplification tolerance (higher means simpler)
-            extent: 4096,           // tile extent (both width and height)
-            buffer: 64,   	    // tile buffer on each side
-            debug: 0,     	    // logging level (0 to disable, 1 or 2)
-	    indexMaxZoom: 0,        // max zoom in the initial tile index
-            indexMaxPoints: 100000, // max number of points per tile in the index
+    var baseZ = x.args[6][0] + 4;
+    var maxZ = x.args[6][0]  + 4;
+    var color = x.args[0];
+    var opacity = x.args[7];
+    var lnWidth = x.args[8];
+    var tileOptions = {
+	        baseZoom: baseZ,           // max zoom to preserve detail on
+	        maxZoom: maxZ,            // zoom to slice down to on first pass
+	        maxPoints: 100,         // stop slicing each tile below this number of points
+          tolerance: 3,           // simplification tolerance (higher means simpler)
+          extent: 4096,           // tile extent (both width and height)
+          buffer: 64,   	    // tile buffer on each side
+          debug: 0,     	    // logging level (0 to disable, 1 or 2)
+	        indexMaxZoom: 0,        // max zoom in the initial tile index
+          indexMaxPoints: 100000, // max number of points per tile in the index
         };
 
-	var rt = RTree();
-	var bd;
+	  var rt = RTree();
+	  var bd;
 
-	//var myLayer = L.geoJson(undefined, { style: style, onEachFeature: onEachFeature/*, filter: filter*/}).addTo(map);
+	  //var myLayer = L.geoJson(undefined, { style: style, onEachFeature: onEachFeature/*, filter: filter*/}).addTo(map);
 	// The onEachFeature
 
-	function onEachFeature(feature, layer) {
-    var i = 1;
-    var content = '';
+	  function onEachFeature(feature, layer) {
+      var i = 1;
+      var content = '';
     // does this feature have a property named popupContent?
     if (feature.properties) {
         for (var key in feature.properties) {
@@ -130,8 +135,8 @@ addCanvas();
 	        } else {
 	            return {
 	                color: "magenta",
-	                weight: 1.5,
-	                opacity: 0.9
+	                weight: lnWidth,
+	                opacity: opacity
 	            }
 	        }
 	    }
@@ -179,6 +184,7 @@ addCanvas();
 
 	map.on("boxselected", function(e) {
 	    // Define here the zoom level of change
+
 	    if (map.getZoom() > maxZ) {
 	        if (layerType == "vectortiles") {
 	            map.removeLayer(canvasTiles);
@@ -231,7 +237,8 @@ addCanvas();
   var layerControl = L.control.layers(baseLayers, overlayLayers, {collapsed: true}).addTo(map);
   map.setView([x.args[4][0], x.args[5][0]], x.args[6][0]);
 
-	 // Draw the canvas tiles
+
+  // Draw the canvas tiles
   canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 	        var ctx = canvas.getContext('2d');
 	        extent = 4096;
@@ -246,54 +253,76 @@ addCanvas();
 	        var z = zoom;
 	        var tile = tileIndex.getTile(z, x, y);
 	        if (typeof tile != "undefined") {
-	            var features = tile.features;
-               // color to the lines
-		var grdp = ctx.createRadialGradient(75,50,5,90,60,100);
-		var grd = ctx.createLinearGradient(0, 0, 170, 0);
-		ctx.globalAlpha=0.3 ;
-		grd.addColorStop(0, "green");
-		grd.addColorStop(1, "brown");
-    ctx.lineWidth = 2;
-    ctx.fillStyle="brown";
+	          var features = tile.features;
+           // color to the lines
+		      var grdp = ctx.createRadialGradient(75,50,5,90,60,100);
+		      var grd = ctx.createLinearGradient(0, 0, 170, 0);
+		      ctx.globalAlpha=opacity ;
+		      grd.addColorStop(0, color[0]);
+		      grd.addColorStop(1, color[color.length-1]);
+		      ctx.lineWidth = lnWidth;
+          ctx.strokeStyle = "#660C0C";
+          ctx.fillStyle=color[0];
 
-	            for (var i = 0; i < features.length; i++) {
-	                var feature = features[i],
-	                    typeChanged = type !== feature.type,
-	                    type = feature.type;
+          for (var i = 0; i < features.length; i++) {
+            var feature = features[i],
+            typeChanged = type !== feature.type,
+            type = feature.type;
 
-	                if (feature.tags.ELEV != "") {
-	                    if (feature.tags.ELEV == "1000") {
-	                        ctx.strokeStyle = grd;
-	                    } else if (feature.tags.ELEV == "2000") {
-	                        ctx.strokeStyle = "#00FF00";
-	                    } else {
-	                        ctx.strokeStyle = "black";
-	                    }
-	                } else {
-	                    ctx.strokeStyle = "magenta";
+            ctx.beginPath();
+              // points
+              if (type === 1){
+                      /*ctx.globalAlpha=0.7 ;
+                      ctx.lineWidth = 0.0;
+                      ctx.strokeStyle = "black";
+                      ctx.fillStyle="brown";
+                      */
+                 for (var j = 0; j < feature.geometry.length; j++) {
+	                    var ring = feature.geometry[j];
+                      ctx.arc(ring[0] * ratio + pad, ring[1] * ratio + pad, 4- 1/zoom*10,0,2*Math.PI);
+
+	                   }
+              }
+	               // lines
+
+              /*    if (feature.tags.ELEV != "") {
+                    if (feature.tags.ELEV == "1000") {
+                      ctx.strokeStyle = grd;
+                    } else if (feature.tags.ELEV == "2000") {
+                      ctx.strokeStyle = "#00FF00";
+                    } else {
+                      ctx.globalAlpha=0.3 ;
+                      ctx.strokeStyle = "brown";
+                    }
+                  } else {
+	                    ctx.strokeStyle = "black";
 	                }
-	                ctx.lineWidth = 2;
-
-	                ctx.beginPath();
-
+	                */
+	                // lines
 	                for (var j = 0; j < feature.geometry.length; j++) {
 	                    var ring = feature.geometry[j];
 
 	                    for (var k = 0; k < ring.length; k++) {
 	                        var p = ring[k];
+
 	                        if (k) ctx.lineTo(p[0] * ratio + pad, p[1] * ratio + pad);
 	                        else ctx.moveTo(p[0] * ratio + pad, p[1] * ratio + pad);
 	                    }
 	                }
-
-	                if (type === 3) ctx.fill('evenodd');
+	                        // polygons
+	                if (type === 3) {ctx.fill("evenodd");}
 	                ctx.stroke();
+
+                  }
+
+
+
 	            }
-	        }
 
-	    };
 
-		showLayer();
+	        };
+showLayer();
+
 //	});
 
 
@@ -302,6 +331,7 @@ addCanvas();
   // and put the mousmove output there
   lnlt = document.getElementById('lnlt');
   map.on('mousemove', function (e) {
+
         lnlt.textContent =
                 " Latitude: " + (e.latlng.lat).toFixed(5)
                 + " | Longitude: " + (e.latlng.lng).toFixed(5)
