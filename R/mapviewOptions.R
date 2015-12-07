@@ -86,8 +86,8 @@ mapviewOptions <- function(platform,
   }
 
   ## raster.size
-  setraster.size <- function(raster.size) {
-    options(mapviewraster.size = raster.size)
+  setRasterSize <- function(raster.size) {
+    options(mapviewRasterSize = raster.size)
   }
 
   ## maxpixels
@@ -115,8 +115,9 @@ mapviewOptions <- function(platform,
     options(mapviewNAColor = na.color)
   }
 
-  setlayersControlPos <- function(layers.control.pos) {
-    options(layersControlPos = layers.control.pos)
+  ## layers control position
+  setLayersControlPos <- function(layers.control.pos) {
+    options(mapviewLayersControlPos = layers.control.pos)
   }
 
   cnt <- 0
@@ -134,13 +135,13 @@ mapviewOptions <- function(platform,
     options(mapviewVectorPalette = mapviewPalette)
     options(mapviewVerbose = FALSE)
     options(mapviewNAColor = "transparent")
-    options(layersControlPos = "topleft")
+    options(mapviewLayersControlPos = "topleft")
   }
 
 
   if (!missing(platform)) { setPlatform(platform); cnt <- cnt + 1 }
   if (!missing(basemaps)) { setBasemaps(basemaps); cnt <- cnt + 1 }
-  if (!missing(raster.size)) { setraster.size(raster.size); cnt <- cnt + 1 }
+  if (!missing(raster.size)) { setRasterSize(raster.size); cnt <- cnt + 1 }
   if (!missing(maxpixels)) { setMaxPixels(maxpixels); cnt <- cnt + 1 }
   if (!missing(raster.palette)) {
     setRasterPalette(raster.palette); cnt <- cnt + 1 }
@@ -214,7 +215,7 @@ mapviewOptions <- function(platform,
 
 .rasterSize <- function() {
   default <- 8 * 1024 * 1024
-  rs <- getOption('mapviewraster.size')
+  rs <- getOption('mapviewRasterSize')
   if (is.null(rs)) {
     return(default)
   } else {
@@ -269,7 +270,7 @@ mapviewOptions <- function(platform,
 
 .naColor <- function() {
   default <- "transparent"
-  nc <- getOption('mapviewna.color')
+  nc <- getOption('mapviewNAColor')
   if (is.null(nc)) {
     return(default)
   } else {
@@ -280,7 +281,7 @@ mapviewOptions <- function(platform,
 
 .layersControlPos <- function() {
   default <- "topleft"
-  lcp <- getOption('layers.control.pos')
+  lcp <- getOption('mapviewLayersControlPos')
   if (is.null(lcp)) {
     return(default)
   } else {

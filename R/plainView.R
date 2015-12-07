@@ -13,22 +13,12 @@ if ( !isGeneric('plainView') ) {
 #' @param map an optional existing map to be updated/added to
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
-#' @param color color (palette) of the points/polygons/lines/pixels
+#' @param col.regions color (palette).See \code{\link{levelplot}} for details.
+#' @param at the breakpoints used for the visualisation. See
+#' \code{\link{levelplot}} for details.
 #' @param na.color color for missing values
-#' @param use.layer.names should layer names of the Raster* object be used?
-#' @param values a vector of values for the visualisation of the layers.
-#' Per default these are calculated based on the supplied raster* object.
-#' @param map.types character spcifications for the base maps.
-#' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
-#' for available options.
-#' @param layer.opacity opacity of the raster layer(s)
-#' @param legend should a legend be plotted
-#' @param legend.opacity opacity of the legend
-#' @param trim should the raster be trimmed in case there are NAs on the egdes
 #' @param verbose should some details be printed during the process
 #' @param layer.name the name of the layer to be shown on the map
-#' @param popup a character vector of the HTML content for the popups. See
-#' \code{\link{addControl}} for details.
 #' @param ... additional arguments passed on to repective functions.
 #' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
@@ -225,8 +215,6 @@ setMethod('plainView', signature(x = 'RasterStackBrick'),
             #                                         verbose = TRUE)
             #             } else {
             png <- rgbStack2PNG(x, r = r, g = g, b = b,
-                                col.regions = col.regions,
-                                at = at,
                                 na.color = na.color,
                                 maxpixels = maxpixels,
                                 ...)

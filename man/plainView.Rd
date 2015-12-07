@@ -32,6 +32,11 @@
 \item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
 If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
+\item{col.regions}{color (palette).See \code{\link{levelplot}} for details.}
+
+\item{at}{the breakpoints used for the visualisation. See
+\code{\link{levelplot}} for details.}
+
 \item{na.color}{color for missing values}
 
 \item{verbose}{should some details be printed during the process}
@@ -43,28 +48,6 @@ See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
 
 \item{map}{an optional existing map to be updated/added to}
-
-\item{color}{color (palette) of the points/polygons/lines/pixels}
-
-\item{use.layer.names}{should layer names of the Raster* object be used?}
-
-\item{values}{a vector of values for the visualisation of the layers.
-Per default these are calculated based on the supplied raster* object.}
-
-\item{map.types}{character spcifications for the base maps.
-see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
-for available options.}
-
-\item{layer.opacity}{opacity of the raster layer(s)}
-
-\item{legend}{should a legend be plotted}
-
-\item{legend.opacity}{opacity of the legend}
-
-\item{trim}{should the raster be trimmed in case there are NAs on the egdes}
-
-\item{popup}{a character vector of the HTML content for the popups. See
-\code{\link{addControl}} for details.}
 }
 \description{
 this function produces an interactive GIS-like view of the specified
