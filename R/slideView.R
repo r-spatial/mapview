@@ -80,14 +80,19 @@ if ( !isGeneric('slideView') ) {
 
 setMethod("slideView", signature(img1 = "RasterStackBrick",
                                  img2 = "RasterStackBrick"),
-          function(img1, img2,
-                   na.color = mapviewGetOption("nacolor"),
-                   maxpixels = mapviewGetOption("maxpixels")) {
+          function(img1, img2, r = 3, g = 2, b = 1,
+                   na.color = mapviewGetOption("na.color"),
+                   maxpixels = mapviewGetOption("maxpixels"),
+                   ...) {
 
-            png1 <- rgbStack2PNG(img1, na.color = na.color,
-                                 maxpixels = maxpixels)
-            png2 <- rgbStack2PNG(img2, na.color = na.color,
-                                 maxpixels = maxpixels)
+            png1 <- rgbStack2PNG(img1, r = r, g = g, b = b,
+                                 na.color = na.color,
+                                 maxpixels = maxpixels,
+                                 ...)
+            png2 <- rgbStack2PNG(img2, , r = r, g = g, b = b,
+                                 na.color = na.color,
+                                 maxpixels = maxpixels,
+                                 ...)
 
             ## temp dir
             dir <- tempfile()
@@ -118,14 +123,14 @@ setMethod("slideView", signature(img1 = "RasterLayer",
                                  img2 = "RasterLayer"),
           function(img1,
                    img2,
-                   color = mapViewPalette(7),
-                   na.color = mapviewGetOption("nacolor"),
+                   col.regions = mapviewGetOption("raster.palette")(256),
+                   na.color = mapviewGetOption("na.color"),
                    maxpixels = mapviewGetOption("maxpixels")) {
 
-            png1 <- raster2PNG(img1, col.regions = color,
+            png1 <- raster2PNG(img1, col.regions = col.regions,
                                na.color = na.color,
                                maxpixels = maxpixels)
-            png2 <- raster2PNG(img2, col.regions = color,
+            png2 <- raster2PNG(img2, col.regions = col.regions,
                                na.color = na.color,
                                maxpixels = maxpixels)
 

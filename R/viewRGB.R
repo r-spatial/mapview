@@ -77,7 +77,7 @@ setMethod("viewRGB", signature(x = "RasterStackBrick"),
                    map = NULL,
                    maxpixels = mapviewGetOption("maxpixels"),
                    map.types = mapviewGetOption("basemaps"),
-                   na.color = mapviewGetOption("nacolor"),
+                   na.color = mapviewGetOption("na.color"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    ...) {

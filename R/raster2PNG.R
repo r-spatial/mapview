@@ -27,12 +27,13 @@ cat("size\n")
 }
 
 
-## raster tsack/brick -----------------------------------------------------
+## raster stack/brick -----------------------------------------------------
 
-rgbStack2PNG <- function(x, r = 3, g = 2, b = 1,
+rgbStack2PNG <- function(x, r, g, b,
                          na.color,
                          quantiles = c(0.02, 0.98),
-                         maxpixels) {
+                         maxpixels,
+                         ...) {
 
   x <- rasterCheckSize(x, maxpixels = maxpixels)
 

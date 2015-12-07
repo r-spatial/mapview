@@ -113,15 +113,13 @@ if ( !isGeneric('plainView') ) {
 setMethod('plainView', signature(x = 'RasterLayer'),
           function(x,
                    maxpixels = mapviewGetOption("maxpixels"),
-                   col.regions = mapviewPalette(256),
+                   col.regions = mapviewGetOption("raster.palette")(256),
                    at,
-                   na.color = mapviewGetOption("nacolor"),
+                   na.color = mapviewGetOption("na.color"),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    ...) {
-
-            x <- rasterCheckSize(x, maxpixels)
 
             ## temp dir
             dir <- tempfile()
@@ -143,7 +141,6 @@ setMethod('plainView', signature(x = 'RasterLayer'),
               png::writePNG(png, fl)
             #}
 
-            layer.name <- deparse(substitute(x, env = parent.frame()))
 cat("plainViewInternal\n")
             plainViewInternal(filename = fl,
                               imgnm = layer.name)
@@ -205,41 +202,47 @@ setMethod('plainview', signature('ANY'),
           function(...) plainView(...))
 
 
-# ## Raster Stack/Brick ===========================================================
-# #' @describeIn plainView \code{\link{stack}} / \code{\link{brick}}
-#
-# setMethod('plainView', signature(x = 'RasterStackBrick'),
-#           function(x,
-#                    map = NULL,
-#                    maxpixels = mapviewOptions(console = FALSE)$maxpixels,
-#                    color = mapViewPalette(7),
-#                    na.color = mapviewOptions(console = FALSE)$nacolor,
-#                    values = NULL,
-#                    legend = FALSE,
-#                    legend.opacity = 1,
-#                    trim = TRUE,
-#                    verbose = mapviewOptions(console = FALSE)$verbose,
-#                    ...) {
-#
-#             if (mapviewOptions(console = FALSE)$platform == "leaflet") {
-#               leafletPlainRSB(x,
-#                               map,
-#                               maxpixels,
-#                               color,
-#                               na.color,
-#                               values,
-#                               legend,
-#                               legend.opacity,
-#                               trim,
-#                               verbose,
-#                               ...)
-#             } else {
-#               NULL
-#             }
-#
-#           }
-# )
-#
+## Raster Stack/Brick ===========================================================
+#' @describeIn plainView \code{\link{stack}} / \code{\link{brick}}
+
+setMethod('plainView', signature(x = 'RasterStackBrick'),
+          function(x, r = 3, g = 2, b = 1,
+                   na.color = mapviewGetOption("na.color"),
+                   maxpixels = mapviewGetOption("maxpixels"),
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
+                   ...) {
+
+            ## temp dir
+            dir <- tempfile()
+            dir.create(dir)
+            fl <- paste0(dir, "/img", ".png")
+
+            #             if (raster::filename(x) != "") {
+            #               gdalUtils::gdal_translate(src_dataset = filename(x),
+            #                                         dst_dataset = fl,
+            #                                         of = "PNG",
+            #                                         verbose = TRUE)
+            #             } else {
+            png <- rgbStack2PNG(x, r = r, g = g, b = b,
+                                col.regions = col.regions,
+                                at = at,
+                                na.color = na.color,
+                                maxpixels = maxpixels,
+                                ...)
+            cat("write png\n")
+            png::writePNG(png, fl)
+            #}
+
+            layer.name <- paste0(layer.name, "_", r, ".", g, ".", b)
+            cat("plainViewInternal\n")
+            plainViewInternal(filename = fl,
+                              imgnm = layer.name)
+
+          }
+
+)
+
 #
 #
 # ## Satellite object =======================================================
@@ -276,23 +279,20 @@ setMethod('plainview', signature('ANY'),
 # )
 #
 #
-# ## SpatialPixelsDataFrame =================================================
-# #' @describeIn plainView \code{\link{SpatialPixelsDataFrame}}
-# #'
-# setMethod('plainView', signature(x = 'SpatialPixelsDataFrame'),
-#           function(x,
-#                    zcol = NULL,
-#                    ...) {
-#
-#             if (mapviewOptions(console = FALSE)$platform == "leaflet") {
-#               leafletPlainPixelsDF(x,
-#                                    zcol,
-#                                    ...)
-#             } else {
-#               NULL
-#             }
-#
-#           }
-# )
-#
-#
+## SpatialPixelsDataFrame =================================================
+#' @describeIn plainView \code{\link{SpatialPixelsDataFrame}}
+#'
+setMethod('plainView', signature(x = 'SpatialPixelsDataFrame'),
+          function(x,
+                   zcol = 1,
+                   ...) {
+
+            if (is.character(zcol)) nm <- zcol else  nm <- names(x)[zcol]
+            x <- raster(x[zcol])
+
+            plainView(x, layer.name = nm, ...)
+
+          }
+)
+
+

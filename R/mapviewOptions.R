@@ -14,17 +14,23 @@
 #' @param basemaps character. The basemaps to be used for rendering data. See
 #' \url{http://leaflet-extras.github.io/leaflet-providers/preview/} for possible
 #' values
-#' @param rastersize numeric. see the maxBytes argument in \code{\link{addRasterImage}}
+#' @param raster.size numeric. see the maxBytes argument in \code{\link{addRasterImage}}
 #' @param maxpixels numeric. The maximum amount of pixels allowed for Raster*
 #' objects to be rendered. Defaults to 500000. Set this higher if you have a
 #' potent machine or are patient enough to wait a little
+#' @param raster.palette a color palette function for raster visualisation.
+#' Should be a function that takes an integer as input and returns a vector of colors.
+#' See \code{\link{colorRampPalette}} for details.
+#' @param vector.palette a color palette function for vector visualisation.
+#' Should be a function that takes an integer as input and returns a vector of colors.
+#' See \code{\link{colorRampPalette}} for details.
 #' @param verbose logical. Many functions in mapview provide details about their
 #' behaviour. Set this to TRUE if you want to see these printed to the console
-#' @param nacolor character. The default color to be used for NA values.
+#' @param na.color character. The default color to be used for NA values.
 #' This is relevant for Raster* objects
 #' @param default logical. If TRUE all options are set to their default values
 #' @param console logical. Should the options be printed to the console
-#' @param layerscontrolpos character. Where should the layer control be
+#' @param layers.control.pos character. Where should the layer control be
 #' placed? One of "topleft", "topright", "bottomleft", "bottomright".
 #'
 #' @author
@@ -40,7 +46,7 @@
 #' @examples
 #' \dontrun{
 #' mapviewOptions()
-#' mapviewOptions(nacolor = "pink")
+#' mapviewOptions(na.color = "pink")
 #' mapviewOptions()
 #'
 #' mapviewGetOption("platform")
@@ -54,11 +60,13 @@
 
 mapviewOptions <- function(platform,
                            basemaps,
-                           rastersize,
+                           raster.size,
                            maxpixels,
+                           raster.palette,
+                           vector.palette,
                            verbose,
-                           nacolor,
-                           layerscontrolpos,
+                           na.color,
+                           layers.control.pos,
                            default = FALSE,
                            console = TRUE) {
 
@@ -77,9 +85,9 @@ mapviewOptions <- function(platform,
     options(mapviewBasemaps = basemaps)
   }
 
-  ## rastersize
-  setRasterSize <- function(rastersize) {
-    options(mapviewRasterSize = rastersize)
+  ## raster.size
+  setraster.size <- function(raster.size) {
+    options(mapviewraster.size = raster.size)
   }
 
   ## maxpixels
@@ -87,18 +95,28 @@ mapviewOptions <- function(platform,
     options(mapviewMaxPixels = maxpixels)
   }
 
+  ## raster.palette
+  setRasterPalette <- function(raster.palette) {
+    options(mapviewRasterPalette = raster.palette)
+  }
+
+  ## vector.palette
+  setVectorPalette <- function(vector.palette) {
+    options(mapviewVectorPalette = vector.palette)
+  }
+
   ## verbose
   setVerbose <- function(verbose) {
     options(mapviewVerbose = verbose)
   }
 
-  ## nacolor
-  setNAColor <- function(nacolor) {
-    options(mapviewNAColor = nacolor)
+  ## na.color
+  setNAColor <- function(na.color) {
+    options(mapviewNAColor = na.color)
   }
 
-  setLayersControlPos <- function(layerscontrolpos) {
-    options(layersControlPos = layerscontrolpos)
+  setlayersControlPos <- function(layers.control.pos) {
+    options(layersControlPos = layers.control.pos)
   }
 
   cnt <- 0
@@ -110,42 +128,57 @@ mapviewOptions <- function(platform,
                                 "Esri.WorldImagery",
                                 "Thunderforest.Landscape",
                                 "OpenTopoMap"))
-    options(mapviewRasterSize = 8 * 1024 * 1024)
+    options(mapviewraster.size = 8 * 1024 * 1024)
     options(mapviewMaxPixels = 500000)
+    options(mapviewRasterPalette = mapviewPalette)
+    options(mapviewVectorPalette = mapviewPalette)
     options(mapviewVerbose = FALSE)
     options(mapviewNAColor = "transparent")
     options(layersControlPos = "topleft")
   }
 
 
-  if (!missing(platform)) { setPlatform(platform); cnt <- cnt+1 }
-  if (!missing(basemaps)) { setBasemaps(basemaps); cnt <- cnt+1 }
-  if (!missing(rastersize)) { setRasterSize(rastersize); cnt <- cnt+1 }
-  if (!missing(maxpixels)) { setMaxPixels(maxpixels); cnt <- cnt+1 }
-  if (!missing(verbose)) { setVerbose(verbose); cnt <- cnt+1 }
-  if (!missing(nacolor)) { setNAColor(nacolor); cnt <- cnt+1 }
-  if (!missing(layerscontrolpos)) { setNAColor(layerscontrolpos); cnt <- cnt+1 }
+  if (!missing(platform)) { setPlatform(platform); cnt <- cnt + 1 }
+  if (!missing(basemaps)) { setBasemaps(basemaps); cnt <- cnt + 1 }
+  if (!missing(raster.size)) { setraster.size(raster.size); cnt <- cnt + 1 }
+  if (!missing(maxpixels)) { setMaxPixels(maxpixels); cnt <- cnt + 1 }
+  if (!missing(raster.palette)) {
+    setRasterPalette(raster.palette); cnt <- cnt + 1 }
+  if (!missing(vector.palette)) {
+    setVectorPalette(vector.palette); cnt <- cnt + 1 }
+  if (!missing(verbose)) { setVerbose(verbose); cnt <- cnt + 1 }
+  if (!missing(na.color)) { setNAColor(na.color); cnt <- cnt + 1 }
+  if (!missing(layers.control.pos)) {
+    setLayersControlPos(layers.control.pos); cnt <- cnt + 1 }
 
 
   lst <- list(platform = .platform(),
               basemaps = .basemaps(),
-              rastersize = .rastersize(),
+              raster.size = .rasterSize(),
               maxpixels = .maxpixels(),
+              raster.palette = .rasterPalette(),
+              vector.palette = .vectorPalette(),
               verbose = .verbose(),
-              nacolor = .nacolor(),
-              layerscontrolpos = .layerscontrolpos())
+              na.color = .naColor(),
+              layers.control.pos = .layersControlPos())
 
 
 
   if (console) {
     if (cnt == 0) {
-      cat('platform           :', lst$platform, '\n' )
-      cat('basemaps           :', lst$basemaps, '\n')
-      cat('rastersize         :', lst$rastersize, '\n')
-      cat('maxpixels          :', lst$maxpixels, '\n')
-      cat('verbose            :', lst$verbose, '\n')
-      cat('nacolor            :', lst$nacolor, '\n')
-      cat('layerscontrolpos   :', lst$layerscontrolpos, '\n')
+      cat('platform            :', lst$platform, '\n' )
+      cat('basemaps            :', lst$basemaps, '\n')
+      cat('raster.size         :', lst$raster.size, '\n')
+      cat('maxpixels           :', lst$maxpixels, '\n')
+      cat('raster.palette      : \n')
+      print(.rasterPalette())
+      cat("\n")
+      cat('vector.palette      : \n')
+      print(.vectorPalette())
+      cat("\n")
+      cat('verbose             :', lst$verbose, '\n')
+      cat('na.color            :', lst$na.color, '\n')
+      cat('layers.control.pos  :', lst$layers.control.pos, '\n')
     }
   }
 
@@ -179,9 +212,9 @@ mapviewOptions <- function(platform,
 }
 
 
-.rastersize <- function() {
+.rasterSize <- function() {
   default <- 8 * 1024 * 1024
-  rs <- getOption('mapviewRasterSize')
+  rs <- getOption('mapviewraster.size')
   if (is.null(rs)) {
     return(default)
   } else {
@@ -201,6 +234,28 @@ mapviewOptions <- function(platform,
 }
 
 
+.rasterPalette <- function() {
+  default <- mapviewPalette
+  rp <- getOption('mapviewRasterPalette')
+  if (is.null(rp)) {
+    return(default)
+  } else {
+    return(rp)
+  }
+}
+
+
+.vectorPalette <- function() {
+  default <- mapviewPalette
+  rp <- getOption('mapviewVectorPalette')
+  if (is.null(rp)) {
+    return(default)
+  } else {
+    return(rp)
+  }
+}
+
+
 .verbose <- function() {
   default <- FALSE
   vb <- getOption('mapviewVerbose')
@@ -212,9 +267,9 @@ mapviewOptions <- function(platform,
 }
 
 
-.nacolor <- function() {
+.naColor <- function() {
   default <- "transparent"
-  nc <- getOption('mapviewNAColor')
+  nc <- getOption('mapviewna.color')
   if (is.null(nc)) {
     return(default)
   } else {
@@ -223,9 +278,9 @@ mapviewOptions <- function(platform,
 }
 
 
-.layerscontrolpos <- function() {
+.layersControlPos <- function() {
   default <- "topleft"
-  lcp <- getOption('layersControlPos')
+  lcp <- getOption('layers.control.pos')
   if (is.null(lcp)) {
     return(default)
   } else {
