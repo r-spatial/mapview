@@ -10,7 +10,6 @@ if ( !isGeneric('plainView') ) {
 #' spatial object(s) on a plain grey background but for any CRS.
 #'
 #' @param x a \code{\link{raster}}* object
-#' @param map an optional existing map to be updated/added to
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param col.regions color (palette).See \code{\link{levelplot}} for details.
@@ -177,23 +176,12 @@ renderPlainView <- function(expr, env = parent.frame(), quoted = FALSE) {
 
 
 
-## plainview ==============================================================
-
-if ( !isGeneric('plainview') ) {
-  setGeneric('plainview', function(...)
-    standardGeneric('plainview'))
-}
-
-#' @describeIn plainView alias for ease of typing
-#' @aliases plainview
-#' @export plainview
-
-setMethod('plainview', signature('ANY'),
-          function(...) plainView(...))
-
-
 ## Raster Stack/Brick ===========================================================
 #' @describeIn plainView \code{\link{stack}} / \code{\link{brick}}
+#'
+#' @param r integer. Index of the Red channel, between 1 and nlayers(x)
+#' @param g integer. Index of the Green channel, between 1 and nlayers(x)
+#' @param b integer. Index of the Blue channel, between 1 and nlayers(x)
 
 setMethod('plainView', signature(x = 'RasterStackBrick'),
           function(x, r = 3, g = 2, b = 1,
@@ -231,6 +219,57 @@ setMethod('plainView', signature(x = 'RasterStackBrick'),
 
 )
 
+
+
+## SpatialPixelsDataFrame =================================================
+#' @describeIn plainView \code{\link{SpatialPixelsDataFrame}}
+#'
+#' @param zcol attribute name or column number in attribute table
+#' of the column to be rendered
+#'
+setMethod('plainView', signature(x = 'SpatialPixelsDataFrame'),
+          function(x,
+                   zcol = 1,
+                   ...) {
+
+            if (is.character(zcol)) nm <- zcol else  nm <- names(x)[zcol]
+            x <- raster(x[zcol])
+
+            plainView(x, layer.name = nm, ...)
+
+          }
+)
+
+
+
+
+
+
+
+## plainview ==============================================================
+
+if ( !isGeneric('plainview') ) {
+  setGeneric('plainview', function(...)
+    standardGeneric('plainview'))
+}
+
+#' @describeIn plainView alias for ease of typing
+#' @aliases plainview
+#' @export plainview
+
+setMethod('plainview', signature('ANY'),
+          function(...) plainView(...))
+
+
+
+
+
+
+
+
+
+
+
 #
 #
 # ## Satellite object =======================================================
@@ -267,20 +306,5 @@ setMethod('plainView', signature(x = 'RasterStackBrick'),
 # )
 #
 #
-## SpatialPixelsDataFrame =================================================
-#' @describeIn plainView \code{\link{SpatialPixelsDataFrame}}
-#'
-setMethod('plainView', signature(x = 'SpatialPixelsDataFrame'),
-          function(x,
-                   zcol = 1,
-                   ...) {
-
-            if (is.character(zcol)) nm <- zcol else  nm <- names(x)[zcol]
-            x <- raster(x[zcol])
-
-            plainView(x, layer.name = nm, ...)
-
-          }
-)
 
 

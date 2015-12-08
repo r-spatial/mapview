@@ -28,10 +28,20 @@
 
 \item{img2}{a RasterStack/Brick, RasterLayer or path to a .png file}
 
+\item{r}{integer. Index of the Red channel, between 1 and nlayers(x)}
+
+\item{g}{integer. Index of the Green channel, between 1 and nlayers(x)}
+
+\item{b}{integer. Index of the Blue channel, between 1 and nlayers(x)}
+
 \item{na.color}{the color to be used for NA pixels}
 
 \item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
 If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
+
+\item{...}{additional arguments passed on to repective functions.}
+
+\item{col.regions}{color (palette).See \code{\link{levelplot}} for details.}
 
 \item{color}{the color palette to be used for visualising RasterLayers}
 }

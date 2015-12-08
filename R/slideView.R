@@ -18,10 +18,14 @@ if ( !isGeneric('slideView') ) {
 #'
 #' @param img1 a RasterStack/Brick, RasterLayer or path to a .png file
 #' @param img2 a RasterStack/Brick, RasterLayer or path to a .png file
+#' @param r integer. Index of the Red channel, between 1 and nlayers(x)
+#' @param g integer. Index of the Green channel, between 1 and nlayers(x)
+#' @param b integer. Index of the Blue channel, between 1 and nlayers(x)
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color the color palette to be used for visualising RasterLayers
 #' @param na.color the color to be used for NA pixels
+#' @param ... additional arguments passed on to repective functions.
 #'
 #' @author
 #' Tim Appelhans
@@ -118,6 +122,8 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
 
 ## RasterLayers ===========================================================
 #' @describeIn slideView for RasterLayers
+#'
+#' @param col.regions color (palette).See \code{\link{levelplot}} for details.
 #'
 setMethod("slideView", signature(img1 = "RasterLayer",
                                  img2 = "RasterLayer"),

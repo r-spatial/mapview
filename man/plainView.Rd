@@ -17,14 +17,14 @@
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), ...)
 
-\S4method{plainview}{ANY}(...)
-
 \S4method{plainView}{RasterStackBrick}(x, r = 3, g = 2, b = 1,
   na.color = mapviewGetOption("na.color"),
   maxpixels = mapviewGetOption("maxpixels"),
   layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
 \S4method{plainView}{SpatialPixelsDataFrame}(x, zcol = 1, ...)
+
+\S4method{plainview}{ANY}(...)
 }
 \arguments{
 \item{x}{a \code{\link{raster}}* object}
@@ -47,7 +47,14 @@ If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
 
-\item{map}{an optional existing map to be updated/added to}
+\item{r}{integer. Index of the Red channel, between 1 and nlayers(x)}
+
+\item{g}{integer. Index of the Green channel, between 1 and nlayers(x)}
+
+\item{b}{integer. Index of the Blue channel, between 1 and nlayers(x)}
+
+\item{zcol}{attribute name or column number in attribute table
+of the column to be rendered}
 }
 \description{
 this function produces an interactive GIS-like view of the specified
@@ -55,11 +62,11 @@ spatial object(s) on a plain grey background but for any CRS.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{ANY}: alias for ease of typing
-
 \item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{brick}}
 
 \item \code{SpatialPixelsDataFrame}: \code{\link{SpatialPixelsDataFrame}}
+
+\item \code{ANY}: alias for ease of typing
 }}
 \examples{
 \dontrun{
