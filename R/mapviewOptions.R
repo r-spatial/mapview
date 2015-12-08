@@ -204,6 +204,7 @@ mapviewOptions <- function(platform,
                "Esri.WorldImagery",
                "Thunderforest.Landscape",
                "OpenTopoMap")
+
   bm <- getOption('mapviewBasemaps')
   if (is.null(bm)) {
     return(default)

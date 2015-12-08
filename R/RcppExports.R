@@ -29,3 +29,11 @@ df2String <- function(x) {
     .Call('mapview_df2String', PACKAGE = 'mapview', x)
 }
 
+one2JSON <- function(x) {
+    .Call('mapview_one2JSON', PACKAGE = 'mapview', x)
+}
+
+all2JSONlist <- function(x) {
+    .Call('mapview_all2JSONlist', PACKAGE = 'mapview', x)
+}
+

@@ -1,3 +1,8 @@
 .Rproj.user
 .Rhistory
 .RData
+data.json
+test.dbf
+test.shp
+test.shx
+test2.shp.geojson

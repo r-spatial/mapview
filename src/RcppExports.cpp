@@ -89,3 +89,25 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// one2JSON
+std::string one2JSON(CharacterVector x);
+RcppExport SEXP mapview_one2JSON(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
+    __result = Rcpp::wrap(one2JSON(x));
+    return __result;
+END_RCPP
+}
+// all2JSONlist
+List all2JSONlist(CharacterMatrix x);
+RcppExport SEXP mapview_all2JSONlist(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< CharacterMatrix >::type x(xSEXP);
+    __result = Rcpp::wrap(all2JSONlist(x));
+    return __result;
+END_RCPP
+}
