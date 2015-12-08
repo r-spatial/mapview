@@ -402,7 +402,7 @@ data("gadmCHE")
 t <- extract(tmeanCHE, gadmCHE, fun = mean, na.rm = TRUE, sp = TRUE)
 t$Jan.mean.T <- round(t$Jan.mean.T, 2)
 
-m1 <- mapView(hillshadeCHE, color = grey.colors(3), 
+m1 <- mapView(hillshadeCHE, col.regions = grey.colors(10000), 
               layer.opacity = 1, layer.name = "Hillshade",
               map.types = "Acetate.hillshading", legend = FALSE)
 m2 <- mapView(tmeanCHE, layer.opacity = 0.6, 
