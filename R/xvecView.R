@@ -2,104 +2,104 @@ if (!isGeneric('xVecView')) {
   setGeneric('xVecView', function(x, ...)
     standardGeneric('xVecView'))
 }
-#' Leaflet maps for big point data
-#'
-#' @description fpView is designed for rendering fairly big point vector data sets on base of leaflet maps without suffering the typical tough response times of the common leaflet maps. It utilises HTML5 canvas and webGL technics.
-#'
-#'@references  fpView is using a modified and adapted implementation of : \url{https://github.com/robertleeplummerjr/Leaflet.glify}
-#'
-#'
-#'@note It is import to understand that the accurracy of the rendering is about
-#'  1.1 m at the equator up to 20 cm around 75 degree latitude. You will get an arbitrary result if the
-#'   accurracy of your points requires more than 5 decimal digits.
-#'
-#' @param x  \code{\link{sp}} SpatialPointDataframe object
-#' @param color colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines
-#' @param x a \code{\link{raster}}* object
-#' @param color color (palette) of the points/polygons/lines/pixels
-#' @param map.types character spcifications for the base maps.
-#' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
-#' for available options.
-#' @param layer.opacity opacity of the raster layer(s) (not implemented yet)
-#' @param legend should a legend be plotted (not implemented yet)
-#' @param legend.opacity opacity of the legend (not implemented yet)
-#' @param ... additional arguments passed on to repective functions.
-#' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
-#' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
-#' @author
-#' Chris Reudenbach
-#' @examples
-#' \dontrun{
-#' ### we need sp and raster ###
-#'  library(sp)
-#'  library(raster)
-#'  library(ggplot2)
-#'  library(profvis)
-#'
-#' ### take the meuse data
-#'  data(meuse)
-#'  coordinates(meuse) <- ~x+y
-#'  proj4string(meuse) <- CRS("+init=epsg:28992")
-#'  meuse <- spTransform(meuse,CRS("+init=epsg:3857"))
-#'
-#' ### map it with mapview
-#'  mapview(meuse)
-#'
-#' ### map it with fpView
-#'  fpView(meuse,color = "random")
-#'
-#' ### some benchmarks
-#'  system.time(mapview(meuse))
-#'  system.time(fpView(meuse, color = "random"))
-#'
-#' ### Now we go a bit bigger
-#'
-#' ### get the diamonds data
-#'  big <- diamonds[rep(seq_len(nrow(diamonds)), 1),]
-#'  big$cut <- as.character(big$cut)
-#'  big$color <- as.character(big$color)
-#'  big$clarity <- as.character(big$clarity)
-#'
-#' ### provide some random positions
-#'  big$x <- rnorm(nrow(big), 10, 3)
-#'  big$y <- rnorm(nrow(big), 50, 3)
-#'  coordinates(big) <- ~x+y
-#'  proj4string(big) <- CRS("+init=epsg:4326")
-#'
-#' ### map it with pure mapview
-#'  mapview(big, color = 'blue')
-#'
-#' ### map it with fastmap
-#'  fpView(big, color = 'blue')
-#'
-#' ### some benchmarks
-#'  system.time(mapview(big, color = 'blue'))
-#'  system.time(fpView(big, color = 'blue'))
-#'
-#' ### up to about 5 mio points
-#'  big <- diamonds[rep(seq_len(nrow(diamonds)), 94),]
-#'  big$cut <- as.character(big$cut)
-#'  big$color <- as.character(big$color)
-#'  big$clarity <- as.character(big$clarity)
-#'  big$x <- rnorm(nrow(big), 10, 3)
-#'  big$y <- rnorm(nrow(big), 50, 3)
-#'  coordinates(big) <- ~x+y
-#'  proj4string(big) <- CRS("+init=epsg:4326")
-#'
-#' ### map it with fpView
-#'  fpView(big, color = "blue")
-#'
-#' ### some benchmarks
-#' # random point colors is slower
-#'  system.time(fpView(big, color = "random"))
-#' # than unique colors
-#'  system.time(fpView(big, color = "blue"))
-#' # profVising it
-#'  profvis(fpView(big, color = "blue"))
-#'  }
-#'
-#' @keywords internal
-#'
+# Leaflet maps for big point data
+#
+# @description fpView is designed for rendering fairly big point vector data sets on base of leaflet maps without suffering the typical tough response times of the common leaflet maps. It utilises HTML5 canvas and webGL technics.
+#
+# @references  fpView is using a modified and adapted implementation of : \url{https://github.com/robertleeplummerjr/Leaflet.glify}
+#
+#
+# @note It is import to understand that the accurracy of the rendering is about
+#  1.1 m at the equator up to 20 cm around 75 degree latitude. You will get an arbitrary result if the
+#   accurracy of your points requires more than 5 decimal digits.
+#
+# @param x  \code{\link{sp}} SpatialPointDataframe object
+# @param color colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines
+# @param x a \code{\link{raster}}* object
+# @param color color (palette) of the points/polygons/lines/pixels
+# @param map.types character spcifications for the base maps.
+# see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
+# for available options.
+# @param layer.opacity opacity of the raster layer(s) (not implemented yet)
+# @param legend should a legend be plotted (not implemented yet)
+# @param legend.opacity opacity of the legend (not implemented yet)
+# @param ... additional arguments passed on to repective functions.
+# See \code{\link{addRasterImage}}, \code{\link{addCircles}},
+# \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
+# @author
+# Chris Reudenbach
+# @examples
+# \dontrun{
+# ### we need sp and raster ###
+#  library(sp)
+#  library(raster)
+#  library(ggplot2)
+#  library(profvis)
+#
+# ### take the meuse data
+#  data(meuse)
+#  coordinates(meuse) <- ~x+y
+#  proj4string(meuse) <- CRS("+init=epsg:28992")
+#  meuse <- spTransform(meuse,CRS("+init=epsg:3857"))
+#
+# ### map it with mapview
+#  mapview(meuse)
+#
+# ### map it with fpView
+#  fpView(meuse,color = "random")
+#
+# ### some benchmarks
+#  system.time(mapview(meuse))
+#  system.time(fpView(meuse, color = "random"))
+#
+# ### Now we go a bit bigger
+#
+# ### get the diamonds data
+#  big <- diamonds[rep(seq_len(nrow(diamonds)), 1),]
+#  big$cut <- as.character(big$cut)
+#  big$color <- as.character(big$color)
+#  big$clarity <- as.character(big$clarity)
+#
+# ### provide some random positions
+#  big$x <- rnorm(nrow(big), 10, 3)
+#  big$y <- rnorm(nrow(big), 50, 3)
+#  coordinates(big) <- ~x+y
+#  proj4string(big) <- CRS("+init=epsg:4326")
+#
+# ### map it with pure mapview
+#  mapview(big, color = 'blue')
+#
+# ### map it with fastmap
+#  fpView(big, color = 'blue')
+#
+# ### some benchmarks
+#  system.time(mapview(big, color = 'blue'))
+#  system.time(fpView(big, color = 'blue'))
+#
+# ### up to about 5 mio points
+#  big <- diamonds[rep(seq_len(nrow(diamonds)), 94),]
+#  big$cut <- as.character(big$cut)
+#  big$color <- as.character(big$color)
+#  big$clarity <- as.character(big$clarity)
+#  big$x <- rnorm(nrow(big), 10, 3)
+#  big$y <- rnorm(nrow(big), 50, 3)
+#  coordinates(big) <- ~x+y
+#  proj4string(big) <- CRS("+init=epsg:4326")
+#
+# ### map it with fpView
+#  fpView(big, color = "blue")
+#
+# ### some benchmarks
+# # random point colors is slower
+#  system.time(fpView(big, color = "random"))
+# # than unique colors
+#  system.time(fpView(big, color = "blue"))
+# # profVising it
+#  profvis(fpView(big, color = "blue"))
+#  }
+#
+# @keywords internal
+#
 fpView <- function(x,
                   zcol = NULL,
                   map = NULL,
@@ -213,100 +213,99 @@ fpViewInternal <- function(jFn = NULL, args = NULL) {
 }
 
 
-#' Widget output function for use in Shiny
-#'
+# Widget output function for use in Shiny
+#
 fpViewOutput <- function(outputId, width = '100%', height = '400px') {
-  shinyWidgetOutput(outputId, 'fpView', width, height, package = 'mapview')
+  htmlwidgets::shinyWidgetOutput(outputId, 'fpView', width, height, package = 'mapview')
 }
 
-#' Widget render function for use in Shiny
-#'
+# Widget render function for use in Shiny
+#
 renderfpView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) {
     expr <- substitute(expr)
   } # force quoted
-  shinyRenderWidget(expr, fpViewOutput, env, quoted = TRUE)
+  htmlwidgets::shinyRenderWidget(expr, fpViewOutput, env, quoted = TRUE)
 }
 
 
-#' Leaflet maps for big line and polygon data sets
-#'
-#' @description bView is designed for rendering fairly big line and polyline vector data sets on base of leaflet maps without suffering the typical tough response times of the common leaflet maps. or points it is better to use \code{fpView}. It is utilising rtree, HTML5 canvas.
-#'
-#'@references  bView is using concepts and code of Sumbera \url{https://gist.github.com/Sumbera/c67e5551b21c68dc8299} and Oscar Hidalgo \url{http://www.cyoarte.com/i+d/cphp/}
-#'
-#'@note It is somehow important to understand the rendering concept. Due to the huge data sets the data is rendered using the canvas concept of HTML5. This is in questions of rendering speed very effecient but it is not easy to make the data responsive ( future plan is to implement canvas only concepts). For getting informations by click on the features one has  to zoom into the map until the features can be recognized and turn to magenta. At this point you have full access to the vectors. This is provided by using a rtree implementation. Not perfect but it works fully on the client side of the browser. The most time consuming part is the conversion of the data to the geojson format.
-#'
-#' @param x  \code{\link{sp}} an object one of : SpatialPointDataframe,SpatialPolygonsDataFrame,SpatialPolygons, SpatialLinesDataFrame, SpatialLines
-#' @param color colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines
-#' @param x a \code{\link{sp}} object
-#' @param color color (palette) of the points/polygons/lines/pixels
-#' @param map.types character spcifications for the base maps.
-#' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
-#' for available options.
-#' @param layer.opacity opacity of the raster layer(s) (not implemented yet)
-#' @param legend should a legend be plotted (not implemented yet)
-#' @param legend.opacity opacity of the legend (not implemented yet)
-#' @param ... additional arguments passed on to repective functions.
-#' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
-#' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
-#' @author
-#' Chris Reudenbach
-#' @examples
-#' \dontrun{
-#' ### we need sp, raster, gdalUtils and rgdal ###
-#'  library(sp)
-#'  library(raster)
-#'  library("rgdal")
-#'  library("gdalUtils")
-#' ### for downloading and benchmarking
-#'  library(downloader)
-#'  library(profvis)
-#'
-#' ## load gadmCHE example data
-#'  data(gadmCHE)
-#'
-#' ## map it with mapview
-#'  mapview(gadmCHE)
-#' ## map it with bView
-#'  bView(gadmCHE)
-#'
-#' ###  to get more suisse data we use OSM as provided by geofabrik
-#'  download("http://download.geofabrik.de/europe/switzerland-latest.shp.zip",dest="switzerland.zip", mode = "wb")
-#'  unzip ("switzerland.zip",exdir = "./")
-#'
-#' ## get information of landuse
-#'  ogrInfo(".", "landuse")
-#'
-#' ## put it in sp object (doesn't matter what type)
-#'  landuseCH<- readOGR(".","landuse")
-#'
-#' ## map it with mapview
-#'  mapview(landuseCH)
-#' ## map it with bView
-#'  bView(landuseCH)
-#'
-#' ## get information of waterways
-#'  ogrInfo(".", "waterways")
-#'
-#' ## read it to a sp object
-#'  waterwaysCH<- readOGR(".","waterways")
-#'
-#' ## map it with mapview
-#'  mapview(waterwaysCH)
-#' ## map it with bView
-#'  bView(waterwaysCH)
+# Leaflet maps for big line and polygon data sets
+#
+# @description bView is designed for rendering fairly big line and polyline vector data sets on base of leaflet maps without suffering the typical tough response times of the common leaflet maps. or points it is better to use \code{fpView}. It is utilising rtree, HTML5 canvas.
+#
+#@references  bView is using concepts and code of Sumbera \url{https://gist.github.com/Sumbera/c67e5551b21c68dc8299} and Oscar Hidalgo \url{http://www.cyoarte.com/i+d/cphp/}
+#
+#@note It is somehow important to understand the rendering concept. Due to the huge data sets the data is rendered using the canvas concept of HTML5. This is in questions of rendering speed very effecient but it is not easy to make the data responsive ( future plan is to implement canvas only concepts). For getting informations by click on the features one has  to zoom into the map until the features can be recognized and turn to magenta. At this point you have full access to the vectors. This is provided by using a rtree implementation. Not perfect but it works fully on the client side of the browser. The most time consuming part is the conversion of the data to the geojson format.
+#
+# @param x  \code{\link{sp}} an object one of : SpatialPointDataframe,SpatialPolygonsDataFrame,SpatialPolygons, SpatialLinesDataFrame, SpatialLines
+# @param color colors as:  (green,red,blue,teal,yellow,random) for the points/polygons/lines
+# @param x a \code{\link{sp}} object
+# @param color color (palette) of the points/polygons/lines/pixels
+# @param map.types character spcifications for the base maps.
+# see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
+# for available options.
+# @param layer.opacity opacity of the raster layer(s) (not implemented yet)
+# @param legend should a legend be plotted (not implemented yet)
+# @param legend.opacity opacity of the legend (not implemented yet)
+# @param ... additional arguments passed on to repective functions.
+# See \code{\link{addRasterImage}}, \code{\link{addCircles}},
+# \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
+# @author
+# Chris Reudenbach
+# @examples
+# \dontrun{
+# ### we need sp, raster, gdalUtils and rgdal ###
+#  library(sp)
+#  library(raster)
+#  library("rgdal")
+#  library("gdalUtils")
+# ### for downloading and benchmarking
+#  library(downloader)
+#  library(profvis)
+#
+# ## load gadmCHE example data
+#  data(gadmCHE)
+#
+# ## map it with mapview
+#  mapview(gadmCHE)
+# ## map it with bView
+#  bView(gadmCHE)
+#
+# ###  to get more suisse data we use OSM as provided by geofabrik
+#  download("http://download.geofabrik.de/europe/switzerland-latest.shp.zip",dest="switzerland.zip", mode = "wb")
+#  unzip ("switzerland.zip",exdir = "./")
+#
+# ## get information of landuse
+#  ogrInfo(".", "landuse")
+#
+# ## put it in sp object (doesn't matter what type)
+#  landuseCH<- readOGR(".","landuse")
+#
+# ## map it with mapview
+#  mapview(landuseCH)
+# ## map it with bView
+#  bView(landuseCH)
+#
+# ## get information of waterways
+#  ogrInfo(".", "waterways")
+#
+# ## read it to a sp object
+#  waterwaysCH<- readOGR(".","waterways")
+#
+# ## map it with mapview
+#  mapview(waterwaysCH)
+# ## map it with bView
+#  bView(waterwaysCH)
 
-#' ### some benchmarks
-#'  system.time(mapview(gadmCHE))
-#'  system.time(bView(gadmCHE))
-#'  system.time(mapview(landuseCH))
-#'  system.time(bView(landuseCH))
-#'  system.time(mapview(waterwaysCH))
-#'  system.time(bView(waterwaysCH))
-#'}
-
-#'
+# ### some benchmarks
+#  system.time(mapview(gadmCHE))
+#  system.time(bView(gadmCHE))
+#  system.time(mapview(landuseCH))
+#  system.time(bView(landuseCH))
+#  system.time(mapview(waterwaysCH))
+#  system.time(bView(waterwaysCH))
+#}
+#
 
 ### bview -
 bView <- function(x,
@@ -402,22 +401,22 @@ bView <- function(x,
   )
 }
 
-#' Widget output function for use in Shiny
-#'
+# Widget output function for use in Shiny
+#
 bViewOutput <- function(outputId, width = '100%', height = '400px') {
-  shinyWidgetOutput(outputId, 'bView', width, height, package = 'mapview')
+  htmlwidgets::shinyWidgetOutput(outputId, 'bView', width, height, package = 'mapview')
 }
 
-#' Widget render function for use in Shiny
-#'
+# Widget render function for use in Shiny
+#
 renderbView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) {
     expr <- substitute(expr)
   } # force quoted
-  shinyRenderWidget(expr, bViewOutput, env, quoted = TRUE)
+  htmlwidgets::shinyRenderWidget(expr, bViewOutput, env, quoted = TRUE)
 }
 
-getZoomLevel <- function (x = data.latlon){
+getZoomLevel <- function(x) {
   # we need scale and zoom so we approximate the area and zoom factor
   ext <- extent(x)
   yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
