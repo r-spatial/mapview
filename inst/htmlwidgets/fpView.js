@@ -39,29 +39,27 @@ HTMLWidgets.widget({
   doRenderValue: function(el, x, map) {
 
    // we define the first layer of the list to be the default one
-    var defaultLayer = L.tileLayer.provider(x.args[1][0]).addTo(map);
+    var defaultLayer = L.tileLayer.provider(x.layer[0]).addTo(map);
 
         var baseLayers = {};
-        for (var i = 0; i < x.args[1].length;  i++) {
-        baseLayers[x.args[1][i] ] = L.tileLayer.provider(x.args[1][i]);
+        for (var i = 0; i < x.layer.length;  i++) {
+        baseLayers[x.layer[i] ] = L.tileLayer.provider(x.layer[i]);
         }
 
     // adding all together and the layer control
 		var layerControl = L.control.layers(baseLayers, {collapsed: true}).addTo(map);
-		map.setView([x.args[4][0], x.args[5][0]], x.args[6][0]);
-
+    map.setView([x.centerLat[0], x.centerLon[0], x.zoom[0]]);
 
   // get the file locations from the shaders and the static external file
   var vertexshader = HTMLWidgets.getAttachmentUrl('vertex-shader', 'vertex-shader');
   var fragmentshader = HTMLWidgets.getAttachmentUrl('fragment-shader', 'fragment-shader');
-  var color = x.args[0];
-
+  var color = x.color;
 
   // after reading the shader files data, popuptemplates and shaders are passed to the
   // L.Glify leaflet extension that handles the webGL shading process
   // big thanks for this to Robert Plummers version of the web gl renderer and his plugin for
   // leaflet https://robertleeplummerjr.github.io/Leaflet.glify
-  if (x.args[2] === 'undefined') {
+  if (x.data === 'undefined') {
     var data = HTMLWidgets.getAttachmentUrl('data');
      wget([fragmentshader, vertexshader, data],function(fragmentshader, vertexshader, data) {
                     L.glify({
@@ -70,16 +68,16 @@ HTMLWidgets.widget({
                         fragmentShader: fragmentshader,
                         clickPoint: function (point) {
                         //set up a standalone popup (use a popup as a layer)
-                        contentToHtml = x.args[7];
-                            for (var i = 0; i < x.args[8].length;  i++) {
+                        contentToHtml = x.popTemplate;
+                            for (var i = 0; i < x.cnames.length;  i++) {
                               if (i == 0) {
-                                contentToHtml += x.args[8][i] +  point.lng + "</td></tr>" ;
+                                contentToHtml += x.cnames[i] +  point.lng + "</td></tr>" ;
                               }
                               if (i == 1) {
-                                contentToHtml += x.args[8][i] +  point.lat + "</td></tr>" ;
+                                contentToHtml += x.cnames[i] +  point.lat + "</td></tr>" ;
                               }
                               if (i > 1)  {
-                                contentToHtml += x.args[8][i] +  point.a[i-2] + "</td></tr>" ;
+                                contentToHtml += x.cnames[i] +  point.a[i-2] + "</td></tr>" ;
                               }
                               }
                         contentToHtml += "</table></body></html>";
@@ -105,7 +103,7 @@ HTMLWidgets.widget({
   });
   } else
   {
-    var data = x.args[2];
+    var data = x.data;
   }
 
   // grab the special div we generated in the beginning

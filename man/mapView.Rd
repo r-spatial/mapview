@@ -61,14 +61,15 @@
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
 
-\S4method{mapView}{SpatialPolygons}(x, map = NULL,
+\S4method{mapView}{SpatialPolygons}(x, map = NULL, color = "blue",
   na.color = mapviewGetOption("na.color"),
   map.types = mapviewGetOption("basemaps"), weight = 2,
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), ...)
 
-\S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapviewGetOption("vector.palette")(256),
+\S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, weight = 2,
+  map = NULL, burst = FALSE,
+  color = mapviewGetOption("vector.palette")(256),
   na.color = mapviewGetOption("na.color"), values = NULL,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
   legend.opacity = 1, verbose = mapviewGetOption("verbose"),

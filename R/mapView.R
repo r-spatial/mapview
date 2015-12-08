@@ -280,23 +280,39 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    popup = NULL,
                    ...) {
 
-            if (mapviewGetOption("platform") == "leaflet") {
-              leafletPointsDF(x,
-                              zcol,
-                              map,
-                              burst,
-                              color,
-                              na.color,
-                              radius,
-                              map.types,
-                              legend,
-                              legend.opacity,
-                              verbose,
-                              layer.name,
-                              popup,
-                              ...)
+            if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
+              if (mapviewGetOption("platform") == "leaflet") {
+                leafletPointsDF(x,
+                                zcol,
+                                map,
+                                burst,
+                                color,
+                                na.color,
+                                radius,
+                                map.types,
+                                legend,
+                                legend.opacity,
+                                verbose,
+                                layer.name,
+                                popup,
+                                ...)
+              } else {
+                NULL
+              }
             } else {
-              NULL
+              fpView(x,
+                     zcol,
+                     color,
+                     na.color,
+                     values,
+                     map.types,
+                     legend,
+                     layer.opacity = 0.4,
+                     legend.opacity,
+                     weight,
+                     verbose,
+                     layer.name,
+                     popup)
             }
 
           }
@@ -318,17 +334,34 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                                                    env = parent.frame())),
                    ...) {
 
-            if (mapviewGetOption("platform") == "leaflet") {
-              leafletPoints(x,
-                            map,
-                            na.color,
-                            map.types,
-                            verbose,
-                            layer.name,
-                            ...)
+            if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
+              if (mapviewGetOption("platform") == "leaflet") {
+                leafletPoints(x,
+                              map,
+                              na.color,
+                              map.types,
+                              verbose,
+                              layer.name,
+                              ...)
+              } else {
+                NULL
+              }
             } else {
-              NULL
+              fpView(x,
+                     zcol,
+                     color,
+                     na.color,
+                     values,
+                     map.types,
+                     legend,
+                     layer.opacity = 0.4,
+                     legend.opacity,
+                     weight,
+                     verbose,
+                     layer.name,
+                     popup)
             }
+
 
           }
 )
@@ -358,24 +391,40 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    popup = NULL,
                    ...) {
 
-            if (mapviewGetOption("platform") == "leaflet") {
-              leafletPolygonsDF(x,
-                                zcol,
-                                map,
-                                burst,
-                                color,
-                                na.color,
-                                values,
-                                map.types,
-                                legend,
-                                legend.opacity,
-                                weight,
-                                verbose,
-                                layer.name,
-                                popup,
-                                ...)
+            if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
+              if (mapviewGetOption("platform") == "leaflet") {
+                leafletPolygonsDF(x,
+                                  zcol,
+                                  map,
+                                  burst,
+                                  color,
+                                  na.color,
+                                  values,
+                                  map.types,
+                                  legend,
+                                  legend.opacity,
+                                  weight,
+                                  verbose,
+                                  layer.name,
+                                  popup,
+                                  ...)
+              } else {
+                NULL
+              }
             } else {
-              NULL
+              bView(x,
+                    zcol,
+                    color,
+                    na.color,
+                    values,
+                    map.types,
+                    legend,
+                    layer.opacity = 0.4,
+                    legend.opacity,
+                    weight,
+                    verbose,
+                    layer.name,
+                    popup)
             }
 
           }
@@ -390,6 +439,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 setMethod('mapView', signature(x = 'SpatialPolygons'),
           function(x,
                    map = NULL,
+                   color = "blue",
                    na.color = mapviewGetOption("na.color"),
                    map.types = mapviewGetOption("basemaps"),
                    weight = 2,
@@ -398,17 +448,33 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                                                    env = parent.frame())),
                    ...) {
 
-            if (mapviewGetOption("platform") == "leaflet") {
-              leafletPolygons(x,
-                              map,
-                              na.color,
-                              map.types,
-                              weight,
-                              verbose,
-                              layer.name,
-                              ...)
+            if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
+              if (mapviewGetOption("platform") == "leaflet") {
+                leafletPolygons(x,
+                                map,
+                                na.color,
+                                map.types,
+                                weight,
+                                verbose,
+                                layer.name,
+                                ...)
+              } else {
+                NULL
+              }
             } else {
-              NULL
+              bView(x,
+                    zcol,
+                    color,
+                    na.color,
+                    values,
+                    map.types,
+                    legend,
+                    layer.opacity = 0.4,
+                    legend.opacity,
+                    weight,
+                    verbose,
+                    layer.name,
+                    popup)
             }
 
           }
@@ -421,6 +487,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
 setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
           function(x,
                    zcol = NULL,
+                   weight = 2,
                    map = NULL,
                    burst = FALSE,
                    color = mapviewGetOption("vector.palette")(256),
@@ -435,23 +502,39 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                    popup = NULL,
                    ...) {
 
-            if (mapviewGetOption("platform") == "leaflet") {
-              leafletLinesDF(x,
-                             zcol,
-                             map,
-                             burst,
-                             color,
-                             na.color,
-                             values,
-                             map.types,
-                             legend,
-                             legend.opacity,
-                             verbose,
-                             layer.name,
-                             popup,
-                             ...)
+            if (length(x@lines) < mapviewGetOption("maxlines")) {
+              if (mapviewGetOption("platform") == "leaflet") {
+                leafletLinesDF(x,
+                               zcol,
+                               map,
+                               burst,
+                               color,
+                               na.color,
+                               values,
+                               map.types,
+                               legend,
+                               legend.opacity,
+                               verbose,
+                               layer.name,
+                               popup,
+                               ...)
+              } else {
+                NULL
+              }
             } else {
-              NULL
+              bView(x,
+                    zcol,
+                    color,
+                    na.color,
+                    values,
+                    map.types,
+                    legend,
+                    layer.opacity = 0.4,
+                    legend.opacity,
+                    weight,
+                    verbose,
+                    layer.name,
+                    popup)
             }
 
           }
@@ -474,16 +557,32 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                                                    env = parent.frame())),
                    ...) {
 
-            if (mapviewGetOption("platform") == "leaflet") {
-              leafletLines(x,
-                           map,
-                           na.color,
-                           map.types,
-                           verbose,
-                           layer.name,
-                           ...)
+            if (length(x@lines) < mapviewGetOption("maxlines")) {
+              if (mapviewGetOption("platform") == "leaflet") {
+                leafletLines(x,
+                             map,
+                             na.color,
+                             map.types,
+                             verbose,
+                             layer.name,
+                             ...)
+              } else {
+                NULL
+              }
             } else {
-              NULL
+              bView(x,
+                    zcol,
+                    color,
+                    na.color,
+                    values,
+                    map.types,
+                    legend,
+                    layer.opacity = 0.4,
+                    legend.opacity,
+                    weight,
+                    verbose,
+                    layer.name,
+                    popup)
             }
 
           }

@@ -18,6 +18,21 @@
 #' @param maxpixels numeric. The maximum amount of pixels allowed for Raster*
 #' objects to be rendered. Defaults to 500000. Set this higher if you have a
 #' potent machine or are patient enough to wait a little
+#' @param maxpolygons numeric. Maximum number of polygons allowed for leaflet overlay
+#' rendering. If this number is exceeded rendering will be done
+#' using special functionality which will provide much more speed and better handling.
+#' This means that standard functionality is reduced.
+#' For example adding layers via "+" is not possible anymore.
+#' @param maxpooints numeric. Maximum number of points allowed for leaflet overlay
+#' rendering. If this number is exceeded rendering will be done
+#' using special functionality which will provide much more speed and better handling.
+#' This means that standard functionality is reduced.
+#' For example adding layers via "+" is not possible anymore.
+#' @param maxlines numeric. Maximum number of lines allowed for leaflet overlay
+#' rendering. If this number is exceeded rendering will be done
+#' using special functionality which will provide much more speed and better handling.
+#' This means that standard functionality is reduced.
+#' For example adding layers via "+" is not possible anymore.
 #' @param raster.palette a color palette function for raster visualisation.
 #' Should be a function that takes an integer as input and returns a vector of colors.
 #' See \code{\link{colorRampPalette}} for details.
@@ -62,6 +77,9 @@ mapviewOptions <- function(platform,
                            basemaps,
                            raster.size,
                            maxpixels,
+                           maxpoints,
+                           maxpolygons,
+                           maxlines,
                            raster.palette,
                            vector.palette,
                            verbose,
@@ -93,6 +111,21 @@ mapviewOptions <- function(platform,
   ## maxpixels
   setMaxPixels <- function(maxpixels) {
     options(mapviewMaxPixels = maxpixels)
+  }
+
+  ## maxpolygons
+  setMaxPolygons <- function(maxpolygons) {
+    options(mapviewMaxPolygons = maxpolygons)
+  }
+
+  ## maxpoints
+  setMaxPoints <- function(maxpoints) {
+    options(mapviewMaxPoints = maxpoints)
+  }
+
+  ## maxlines
+  setMaxLines <- function(maxlines) {
+    options(mapviewMaxLines = maxlines)
   }
 
   ## raster.palette
@@ -131,6 +164,9 @@ mapviewOptions <- function(platform,
                                 "OpenTopoMap"))
     options(mapviewraster.size = 8 * 1024 * 1024)
     options(mapviewMaxPixels = 500000)
+    options(mapviewMaxPolygons = 30000)
+    options(mapviewMaxPoints = 20000)
+    options(mapviewMaxLines = 30000)
     options(mapviewRasterPalette = mapviewPalette)
     options(mapviewVectorPalette = mapviewPalette)
     options(mapviewVerbose = FALSE)
@@ -143,6 +179,9 @@ mapviewOptions <- function(platform,
   if (!missing(basemaps)) { setBasemaps(basemaps); cnt <- cnt + 1 }
   if (!missing(raster.size)) { setRasterSize(raster.size); cnt <- cnt + 1 }
   if (!missing(maxpixels)) { setMaxPixels(maxpixels); cnt <- cnt + 1 }
+  if (!missing(maxpolygons)) { setMaxPolygons(maxpolygons); cnt <- cnt + 1 }
+  if (!missing(maxpoints)) { setMaxPoints(maxpoints); cnt <- cnt + 1 }
+  if (!missing(maxlines)) { setMaxLines(maxlines); cnt <- cnt + 1 }
   if (!missing(raster.palette)) {
     setRasterPalette(raster.palette); cnt <- cnt + 1 }
   if (!missing(vector.palette)) {
@@ -157,6 +196,9 @@ mapviewOptions <- function(platform,
               basemaps = .basemaps(),
               raster.size = .rasterSize(),
               maxpixels = .maxpixels(),
+              maxpolygons = .maxpolygons(),
+              maxpoints = .maxpoints(),
+              maxlines = .maxlines(),
               raster.palette = .rasterPalette(),
               vector.palette = .vectorPalette(),
               verbose = .verbose(),
@@ -171,6 +213,9 @@ mapviewOptions <- function(platform,
       cat('basemaps            :', lst$basemaps, '\n')
       cat('raster.size         :', lst$raster.size, '\n')
       cat('maxpixels           :', lst$maxpixels, '\n')
+      cat('maxpolygons         :', lst$maxpolygons, '\n')
+      cat('maxpoints           :', lst$maxpoints, '\n')
+      cat('maxlines            :', lst$maxlines, '\n')
       cat('raster.palette      : \n')
       print(.rasterPalette())
       cat("\n")
@@ -235,6 +280,38 @@ mapviewOptions <- function(platform,
   }
 }
 
+
+.maxpolygons <- function() {
+  default <- 30000
+  mp <- getOption('mapviewMaxPolygons')
+  if (is.null(mp)) {
+    return(default)
+  } else {
+    return(mp)
+  }
+}
+
+
+.maxpoints <- function() {
+  default <- 20000
+  mp <- getOption('mapviewMaxPoints')
+  if (is.null(mp)) {
+    return(default)
+  } else {
+    return(mp)
+  }
+}
+
+
+.maxlines <- function() {
+  default <- 30000
+  ml <- getOption('mapviewMaxLines')
+  if (is.null(ml)) {
+    return(default)
+  } else {
+    return(ml)
+  }
+}
 
 .rasterPalette <- function() {
   default <- mapviewPalette

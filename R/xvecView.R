@@ -28,13 +28,13 @@ if (!isGeneric('xVecView')) {
 # \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
 # @author
 # Chris Reudenbach
+#
 # @examples
 # \dontrun{
 # ### we need sp and raster ###
 #  library(sp)
 #  library(raster)
 #  library(ggplot2)
-#  library(profvis)
 #
 # ### take the meuse data
 #  data(meuse)
@@ -66,11 +66,11 @@ if (!isGeneric('xVecView')) {
 #  coordinates(big) <- ~x+y
 #  proj4string(big) <- CRS("+init=epsg:4326")
 #
-# ### map it with pure mapview
-#  mapview(big, color = 'blue')
-#
-# ### map it with fastmap
-#  fpView(big, color = 'blue')
+# # ### map it with pure mapview
+# #  mapview(big, color = 'blue')
+# #
+# # ### map it with fastmap
+#  mapview:::fpView(big, color = 'blue')
 #
 # ### some benchmarks
 #  system.time(mapview(big, color = 'blue'))
@@ -101,34 +101,31 @@ if (!isGeneric('xVecView')) {
 # @keywords internal
 #
 fpView <- function(x,
-                  zcol = NULL,
-                  map = NULL,
-                  burst = FALSE,
-                  color = mapViewPalette(7),
-                  na.color = mapviewGetOption("nacolor"),
-                  values = NULL,
-                  map.types = mapviewGetOption("basemaps"),
-                  legend = FALSE,
-                  layer.opacity = 0.8,
-                  legend.opacity = 1,
-                  weight = 2,
-                  verbose = mapviewGetOption("verbose"),
-                  layer.name = deparse(substitute(x,
-                                                  env = parent.frame())),
-                  popup = NULL,
-                  ...) {
+                   zcol = NULL,
+                   color = mapviewGetOption("vector.palette")(256),
+                   na.color = mapviewGetOption("na.color"),
+                   values = NULL,
+                   map.types = mapviewGetOption("basemaps"),
+                   legend = FALSE,
+                   layer.opacity = 0.8,
+                   legend.opacity = 1,
+                   weight = 2,
+                   verbose = mapviewGetOption("verbose"),
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
+                   popup = NULL,
+                   ...) {
 
 
-   data<- x
   ## temp dir
   tmpPath <- makepath()[[1]][1]
   pathJsonFn <- makepath()[[2]][1]
   jsonFn <- makepath()[[3]][1]
 
 # check if a sp object exist
-if (!is.null(data)) {
-  data.latlon <- spTransform(data,CRS("+init=epsg:4326"))
-  df <- as.data.frame(data.latlon)
+if (!is.null(x)) {
+  x.latlon <- spTransform(x,CRS("+init=epsg:4326"))
+  df <- as.data.frame(x.latlon)
   drops <- c("x","y")
   df.cols <- df[,!(names(df) %in% drops)]
   cnames <- colnames(df.cols)
@@ -147,7 +144,7 @@ if (!is.null(data)) {
   close(fileConn)
 
   # estimating the zoomlevel and center point of the map
-  zoom<- getZoomLevel(data.latlon)
+  zoom<- getZoomLevel(x.latlon)
 
   # creating the popup names
   cHelp <- list()
@@ -162,27 +159,27 @@ if (!is.null(data)) {
   }
 
   # create list of user data that is passed to the widget
-  x = list(
-    color <- color,
-    layer <- map.types,
-    data  <- "undefined",
-    cnames <- cnames,
-    centerLat <- zoom[3],
-    centerLon <- zoom[2],
-    zoom <- zoom[1],
-    popTemplate <- getStyle(),
-    cHelp <- cHelp,
-    layer.opacity <- layer.opacity,
-    layer.name<- layer.name
+  lst_x = list(
+    color = color,
+    layer = map.types,
+    data  = "undefined",
+    cnames = cnames,
+    centerLat = zoom[3],
+    centerLon = zoom[2],
+    zoom = zoom[1],
+    popTemplate = getStyle(),
+    cHelp = cHelp,
+    layer.opacity = layer.opacity,
+    layername = layer.name
   )
 }
   # creating the widget
-  fpViewInternal(jFn = pathJsonFn,  args = x)
+  fpViewInternal(jFn = pathJsonFn,  x = lst_x)
 }
 
 
-fpViewInternal <- function(jFn = NULL, args = NULL) {
-  x <- list(args = args)
+fpViewInternal <- function(jFn = NULL, x = NULL) {
+
   data_dir <- dirname(jFn)
   data_file <- basename(jFn)
   dep1 <- htmltools::htmlDependency(
@@ -309,42 +306,37 @@ renderfpView <- function(expr, env = parent.frame(), quoted = FALSE) {
 
 ### bview -
 bView <- function(x,
-                  zcol = NULL,
-                  map = NULL,
-                  burst = FALSE,
-                  color = mapViewPalette(7),
-                  na.color = mapviewGetOption("nacolor"),
-                  values = NULL,
-                  map.types = mapviewGetOption("basemaps"),
-                  legend = FALSE,
-                  layer.opacity = 0.4,
-                  legend.opacity = 1,
-                  weight = 2,
-                  verbose = mapviewGetOption("verbose"),
-                  layer.name = deparse(substitute(x,
-                                                  env = parent.frame())),
-                  popup = NULL,
-                  ...) {
+                  zcol,
+                  color,
+                  na.color,
+                  values,
+                  map.types,
+                  legend,
+                  layer.opacity,
+                  legend.opacity,
+                  weight,
+                  verbose,
+                  layer.name,
+                  popup) {
   # check if a sp object exist
   # pkgs <- c("leaflet", "raster", "magrittr")
   # tst <- sapply(pkgs, "requireNamespace",
   #              quietly = TRUE, USE.NAMES = FALSE)
 
-  data <- x
-
-
   ## temp dir
-  tmpPath <- makepath()[[1]][1]
-  pathJsonFn <- makepath()[[2]][1]
-  jsonFn <- makepath()[[3]][1]
+  tmp <- makepath()
+  tmpPath <- tmp[[1]][1]
+  pathJsonFn <- tmp[[2]][1]
+  jsonFn <- tmp[[3]][1]
 
-  if (!is.null(data)) {
-    # first we have  to deproject any data
-    data.latlon <- sp::spTransform(data,CRS("+init=epsg:4326"))
+  if (!is.null(x)) {
+    x <- toSPDF(x)
+    # first we have  to deproject any x
+    x.latlon <- sp::spTransform(x,CRS("+init=epsg:4326"))
     # write to a file to be able to use ogr2ogr
-    rgdal::writeOGR(data.latlon, dsn = tmpPath, layer = "shape", driver="ESRI Shapefile", overwrite_layer = TRUE)
+    rgdal::writeOGR(x.latlon, dsn = tmpPath, layer = "shape", driver="ESRI Shapefile", overwrite_layer = TRUE)
     # convert it to geojson with ogr2ogr
-    gdalUtils::ogr2ogr(src_datasource_name = paste0(tmpPath,"/shape.shp"), dst_datasource_name = pathJsonFn, f = "GeoJSON", overwrite = TRUE)
+    gdalUtils::ogr2ogr(src_datasource_name = paste0(tmpPath,"/shape.shp"), dst_datasource_name = pathJsonFn, f = "GeoJSON")
     # get rid of tmp file
     file.remove(paste0(tmpPath,"/",dir(path = tmpPath, pattern = "shape")))
     # for fastet json read in a html document we wrap it with var data = {};
@@ -353,31 +345,31 @@ bView <- function(x,
     lns[length(lns)]<- '};'
     writeLines(lns, pathJsonFn)
     # estimating the zommlevel and center point of the map
-    zoom<- getZoomLevel(data.latlon)
+    zoom<- getZoomLevel(x.latlon)
   } else {
     NULL
   }
 
   # create list of user data that is passed to the widget
-  x = list(color <- color,
-           layer <- map.types,
-           data  <- 'undefined',
-           html <- getStyle(),
-           centerLat <- zoom[3],
-           centerLon <- zoom[2],
-           zoom <- zoom[1],
-           opacity <- layer.opacity,
-           weight <- weight,
-           layer.name<-layer.name)
+  lst_x <- list(color = color,
+                layer = map.types,
+                data  = 'undefined',
+                html = getStyle(),
+                centerLat = zoom[3],
+                centerLon = zoom[2],
+                zoom = zoom[1],
+                opacity = layer.opacity,
+                weight = weight,
+                layername = layer.name)
 
   # creating the widget
-  bViewInternal(jFn = pathJsonFn,  args = x)
+  bViewInternal(jFn = pathJsonFn,  x = lst_x)
 
 }
 
-  bViewInternal <- function(jFn = NULL, args = NULL) {
+bViewInternal <- function(jFn = NULL, x = NULL) {
 
-  x <- list(args = args)
+
   data_dir <- dirname(jFn)
   data_file <- basename(jFn)
   dep1 <- htmltools::htmlDependency(name = "data",

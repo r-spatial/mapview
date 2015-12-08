@@ -46,11 +46,11 @@ addCanvas();
 
    // we add some base layers using the plugin L.tileLayer.provider
 // we define the first layer of the list to be the default one
-    var defaultLayer = L.tileLayer.provider(x.args[1][0]).addTo(map);
+    var defaultLayer = L.tileLayer.provider(x.layer[0]).addTo(map);
 
         var baseLayers = {};
-        for (var i = 0; i < x.args[1].length;  i++) {
-        baseLayers[x.args[1][i] ] = L.tileLayer.provider(x.args[1][i]);
+        for (var i = 0; i < x.layer.length;  i++) {
+        baseLayers[x.layer[i] ] = L.tileLayer.provider(x.layer[i]);
         }
 
     // adding all together and the layer control
@@ -62,14 +62,14 @@ addCanvas();
 
 
 
-    //var data = x.args[2];
+    //var data = x[2];
 //    var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
     //var data = $.parseJSON(HTMLWidgets.getAttachmentUrl('data', 'jsondata'));
-    var baseZ = x.args[6][0] + 4;
-    var maxZ = x.args[6][0]  + 4;
-    var color = x.args[0];
-    var opacity = x.args[7];
-    var lnWidth = x.args[8];
+    var baseZ = x.zoom[0] + 4;
+    var maxZ = x.zoom[0]  + 4;
+    var color = x.color[255];
+    var opacity = x.opacity;
+    var lnWidth = x.weight;
     var tileOptions = {
 	        baseZoom: baseZ,           // max zoom to preserve detail on
 	        maxZoom: maxZ,            // zoom to slice down to on first pass
@@ -101,7 +101,7 @@ addCanvas();
           }
           i = i + 1;
         };
-        var popupContent = x.args[3] + content + "</table></body></html>";
+        var popupContent = x.html + content + "</table></body></html>";
         console.log(popupContent);
         layer.bindPopup(popupContent);
     }
@@ -231,12 +231,12 @@ addCanvas();
 
   // create overlay Layers varibles
   var overlayLayers = {};
-  overlayLayers[x.args[9][0] + " zoom" ] = myLayer;
-  overlayLayers[x.args[9][0] ] = (canvasTiles).addTo(map);
+  overlayLayers[x.layername] = myLayer;
+  overlayLayers[x.layername + "_static" ] = (canvasTiles).addTo(map);
 
   // ADD LAYER CONTRLS
   var layerControl = L.control.layers(baseLayers, overlayLayers, {collapsed: true}).addTo(map);
-  map.setView([x.args[4][0], x.args[5][0]], x.args[6][0]);
+  map.setView([x.centerLat[0], x.centerLon[0], x.zoom[0]]);
 
   // Draw the canvas tiles
   canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
@@ -256,19 +256,19 @@ addCanvas();
 	          var features = tile.features;
            // color to the lines
            // create gradients
-		      var grdp = ctx.createRadialGradient(75,50,5,90,60,100);
-		      var grd = ctx.createLinearGradient(0, 0, 170, 0);
+		      //var grdp = ctx.createRadialGradient(75,50,5,90,60,100);
+		      //var grd = ctx.createLinearGradient(0, 0, 170, 0);
 		      // define opacity
 		      ctx.globalAlpha=opacity ;
 		      // apply gradient to colors
-		      grd.addColorStop(0, color[0]);
-		      grd.addColorStop(1, color[color.length-1]);
+		      //grd.addColorStop(0, color[0]);
+		      //grd.addColorStop(1, color[color.length-1]);
 		      //define line width
 		      ctx.lineWidth = lnWidth;
 		      // define line color
           ctx.strokeStyle = "#660C0C";
           //define fill color
-          ctx.fillStyle=color[0];
+          ctx.fillStyle=color;
 
           for (var i = 0; i < features.length; i++) {
             var feature = features[i],
@@ -288,6 +288,7 @@ addCanvas();
                       ctx.arc(ring[0] * ratio + pad, ring[1] * ratio + pad, 4- 1/zoom*10,0,2*Math.PI);
 	                   }
               }
+              //
 	           // lines
              /* if (feature.tags.ELEV != "") {
                   if (feature.tags.ELEV == "1000") {
@@ -313,8 +314,9 @@ addCanvas();
 	                }
 	           }
 	           // polygons
-	           if (type === 3) {ctx.fill("evenodd");}
+            if (type === 3) { ctx.fill(); }
 	              ctx.stroke();
+
           }
           }
           };
