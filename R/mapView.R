@@ -14,7 +14,11 @@ if ( !isGeneric('mapView') ) {
 #' @param map an optional existing map to be updated/added to
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
-#' @param color color (palette) of the points/polygons/lines/pixels
+#' @param color color (palette) for points/polygons/lines
+#' @param col.regions color (palette) pixels.
+#' See \code{\link{levelplot}} for details.
+#' @param at the breakpoints used for the visualisation.
+#' See \code{\link{levelplot}} for details.
 #' @param na.color color for missing values
 #' @param use.layer.names should layer names of the Raster* object be used?
 #' @param values a vector of values for the visualisation of the layers.
@@ -113,7 +117,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
           function(x,
                    map = NULL,
                    maxpixels = mapviewGetOption("maxpixels"),
-                   color = mapViewPalette(256, "mapviewSpectralColors"),
+                   col.regions = mapviewGetOption("raster.palette")(256),
                    at,
                    na.color = mapviewGetOption("na.color"),
                    use.layer.names = FALSE,
@@ -128,11 +132,14 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                                                    env = parent.frame())),
                    ...) {
 
+            if (missing(at)) at <- lattice::do.breaks(
+              lattice:::extend.limits(range(x[], na.rm = TRUE)), 256)
+
             if (mapviewGetOption("platform") == "leaflet") {
               leafletRL(x,
                         map,
                         maxpixels,
-                        color,
+                        col.regions,
                         at,
                         na.color,
                         use.layer.names,
@@ -160,7 +167,8 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
           function(x,
                    map = NULL,
                    maxpixels = mapviewGetOption("maxpixels"),
-                   color = mapViewPalette(7),
+                   col.regions = mapviewGetOption("raster.palette")(256),
+                   at,
                    na.color = mapviewGetOption("na.color"),
                    values = NULL,
                    map.types = mapviewGetOption("basemaps"),
@@ -174,7 +182,8 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
               leafletRSB(x,
                          map,
                          maxpixels,
-                         color,
+                         col.regions,
+                         at,
                          na.color,
                          values,
                          map.types,
@@ -259,7 +268,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    zcol = NULL,
                    map = NULL,
                    burst = FALSE,
-                   color = mapViewPalette(7),
+                   color = mapviewGetOption("vector.palette")(256),
                    na.color = mapviewGetOption("na.color"),
                    radius = 10,
                    map.types = mapviewGetOption("basemaps"),
@@ -336,7 +345,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    zcol = NULL,
                    map = NULL,
                    burst = FALSE,
-                   color = mapViewPalette(7),
+                   color = mapviewGetOption("vector.palette")(256),
                    na.color = mapviewGetOption("na.color"),
                    values = NULL,
                    map.types = mapviewGetOption("basemaps"),
@@ -414,7 +423,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                    zcol = NULL,
                    map = NULL,
                    burst = FALSE,
-                   color = mapViewPalette(7),
+                   color = mapviewGetOption("vector.palette")(256),
                    na.color = mapviewGetOption("na.color"),
                    values = NULL,
                    map.types = mapviewGetOption("basemaps"),

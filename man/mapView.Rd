@@ -19,16 +19,17 @@
 \title{View spatial objects interactively}
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL,
-  maxpixels = mapviewGetOption("maxpixels"), color = mapViewPalette(256,
-  "mapviewSpectralColors"), at, na.color = mapviewGetOption("na.color"),
-  use.layer.names = FALSE, values = NULL,
-  map.types = mapviewGetOption("basemaps"), layer.opacity = 0.8,
-  legend = TRUE, legend.opacity = 1, trim = TRUE,
+  maxpixels = mapviewGetOption("maxpixels"),
+  col.regions = mapviewGetOption("raster.palette")(256), at,
+  na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
+  values = NULL, map.types = mapviewGetOption("basemaps"),
+  layer.opacity = 0.8, legend = TRUE, legend.opacity = 1, trim = TRUE,
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
-  maxpixels = mapviewGetOption("maxpixels"), color = mapViewPalette(7),
+  maxpixels = mapviewGetOption("maxpixels"),
+  col.regions = mapviewGetOption("raster.palette")(256), at,
   na.color = mapviewGetOption("na.color"), values = NULL,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
@@ -39,7 +40,7 @@
 \S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL, ...)
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapViewPalette(7),
+  burst = FALSE, color = mapviewGetOption("vector.palette")(256),
   na.color = mapviewGetOption("na.color"), radius = 10,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
   legend.opacity = 1, verbose = mapviewGetOption("verbose"),
@@ -53,7 +54,7 @@
   env = parent.frame())), ...)
 
 \S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapViewPalette(7),
+  burst = FALSE, color = mapviewGetOption("vector.palette")(256),
   na.color = mapviewGetOption("na.color"), values = NULL,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
   legend.opacity = 1, weight = 2, verbose = mapviewGetOption("verbose"),
@@ -67,7 +68,7 @@
   env = parent.frame())), ...)
 
 \S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapViewPalette(7),
+  burst = FALSE, color = mapviewGetOption("vector.palette")(256),
   na.color = mapviewGetOption("na.color"), values = NULL,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
   legend.opacity = 1, verbose = mapviewGetOption("verbose"),
@@ -93,7 +94,11 @@
 \item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
 If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
-\item{color}{color (palette) of the points/polygons/lines/pixels}
+\item{col.regions}{color (palette) pixels.
+See \code{\link{levelplot}} for details.}
+
+\item{at}{the breakpoints used for the visualisation.
+See \code{\link{levelplot}} for details.}
 
 \item{na.color}{color for missing values}
 
@@ -126,6 +131,8 @@ See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 of the column(s) to be rendered}
 
 \item{burst}{whether to show all (TRUE) or only one (FALSE) layers}
+
+\item{color}{color (palette) for points/polygons/lines}
 
 \item{radius}{attribute name(s) or column number(s) in attribute table
 of the column(s) to be used for defining the size of circles}

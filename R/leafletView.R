@@ -5,7 +5,7 @@
 leafletRL <- function(x,
                       map,
                       maxpixels,
-                      color,
+                      col.regions,
                       at,
                       na.color,
                       use.layer.names,
@@ -35,7 +35,7 @@ leafletRL <- function(x,
 
   if (is.null(values)) {
     if (is.fact) {
-      values <- x@data@attributes[[1]]$ID
+      at <- x@data@attributes[[1]]$ID
     } else {
       offset <- diff(range(x[], na.rm = TRUE)) * 0.05
       top <- max(x[], na.rm = TRUE) + offset
@@ -47,21 +47,26 @@ leafletRL <- function(x,
     values <- round(values, 5)
   }
 
-  if (missing(at)) at <- lattice::do.breaks(range(x[], na.rm = TRUE), 256)
-
   if (is.fact) {
-    pal <- leaflet::colorFactor(color,
-                                domain = NULL,
+    pal <- leaflet::colorFactor(palette = col.regions,
+                                domain = values,
                                 na.color = na.color)
+    pal2 <- pal
   } else {
-    pal <- mapviewColors(color,
+    pal <- mapviewColors(col.regions,
                          at = at,
                          na.color = na.color)
 
-    pal2 <- leaflet::colorBin(color,
-                              bins = length(at),
-                                  domain = values,
-                                  na.color = na.color)
+    if (length(at) > 11) {
+      pal2 <- leaflet::colorNumeric(palette = col.regions,
+                                    domain = at,
+                                    na.color = na.color)
+    } else {
+      pal2 <- leaflet::colorBin(palette = col.regions,
+                                bins = length(at),
+                                domain = at,
+                                na.color = na.color)
+    }
 
   }
 
@@ -83,7 +88,7 @@ leafletRL <- function(x,
   if (legend) {
     ## add legend
     m <- leaflet::addLegend(map = m,
-                            pal = pal,
+                            pal = pal2,
                             opacity = legend.opacity,
                             values = at,
                             title = grp)
@@ -106,7 +111,8 @@ leafletRL <- function(x,
 leafletRSB <- function(x,
                        map,
                        maxpixels,
-                       color,
+                       col.regions,
+                       at,
                        na.color,
                        values,
                        map.types,
@@ -124,15 +130,15 @@ leafletRSB <- function(x,
 
   if (nlayers(x) == 1) {
     x <- raster(x, layer = 1)
-    m <- mapView(x, map = m, map.types = map.types,
-                 use.layer.names = TRUE, ...)
+    m <- mapView(x, map = m, maxpixels = maxpixels, map.types = map.types,
+                 use.layer.names = TRUE, at = at, col.regions, ...)
     out <- new('mapview', object = list(x), map = m@map)
   } else {
-    m <- mapView(x[[1]], map = m, map.types = map.types,
-                 use.layer.names = TRUE, ...)
+    m <- mapView(x[[1]], map = m, maxpixels = maxpixels, map.types = map.types,
+                 use.layer.names = TRUE, at = at, col.regions, ...)
     for (i in 2:nlayers(x)) {
-      m <- mapView(x[[i]], map = m@map, map.types = map.types,
-                   use.layer.names = TRUE, ...)
+      m <- mapView(x[[i]], map = m@map, maxpixels = maxpixels, map.types = map.types,
+                   use.layer.names = TRUE, at = at, col.regions, ...)
     }
 
     if (length(getLayerNamesFromMap(m@map)) > 1) {

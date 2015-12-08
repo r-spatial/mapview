@@ -386,8 +386,8 @@ checkAdjustProjection <- function(x) {
 mapViewLayersControl <- function(map, map.types, names) {
 
   m <- leaflet::addLayersControl(map = map,
-                                 position = mapviewOptions(
-                                   console = FALSE)$layerscontrolpos,
+                                 position = mapviewGetOption(
+                                   "layers.control.pos"),
                                  baseGroups = map.types,
                                  overlayGroups = c(
                                    getLayerNamesFromMap(map),
