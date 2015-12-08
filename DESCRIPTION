@@ -28,8 +28,10 @@ Imports:
     htmlwidgets,
     htmltools,
     png,
+    Rcpp (>= 0.11.3),
     lattice,
-    Rcpp (>= 0.11.3)
+    rgdal,
+    gdalUtils
 LinkingTo: Rcpp
 RoxygenNote: 5.0.1
 SystemRequirements: GNU make

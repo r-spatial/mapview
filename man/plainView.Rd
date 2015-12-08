@@ -11,14 +11,9 @@
 \title{View spatial objects interactively without background map but in any CRS}
 \usage{
 \S4method{plainView}{RasterLayer}(x,
-<<<<<<< HEAD
   maxpixels = mapviewGetOption("maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at,
   na.color = mapviewGetOption("na.color"),
-=======
-  maxpixels = mapviewGetOption("maxpixels"), colors = mapviewPalette(256),
-  na.color = mapviewGetOption("nacolor"),
->>>>>>> fast
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), ...)
 
@@ -37,14 +32,11 @@
 \item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
 If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
-<<<<<<< HEAD
 \item{col.regions}{color (palette).See \code{\link{levelplot}} for details.}
 
 \item{at}{the breakpoints used for the visualisation. See
 \code{\link{levelplot}} for details.}
 
-=======
->>>>>>> fast
 \item{na.color}{color for missing values}
 
 \item{verbose}{should some details be printed during the process}
@@ -55,22 +47,7 @@ If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
 
-<<<<<<< HEAD
 \item{r}{integer. Index of the Red channel, between 1 and nlayers(x)}
-=======
-\item{map}{an optional existing map to be updated/added to}
-
-\item{color}{color (palette) of the points/polygons/lines/pixels}
-
-\item{use.layer.names}{should layer names of the Raster* object be used?}
-
-\item{values}{a vector of values for the visualisation of the layers.
-Per default these are calculated based on the supplied raster* object.}
-
-\item{map.types}{character spcifications for the base maps.
-see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
-for available options.}
->>>>>>> fast
 
 \item{g}{integer. Index of the Green channel, between 1 and nlayers(x)}
 

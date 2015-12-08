@@ -5,7 +5,7 @@ if ( !isGeneric('coords2JSON') ) {
 #' Convert a vector/matrix of coordinates to JSON format
 #'
 #' @description
-#' Similar to \code{\link{toJSON}} from \strong{jsonlite}, this function takes a
+#' Similar to \code{\link[jsonlite]{toJSON}}, this function takes a
 #' set of coordinates as input and converts them to proper JSON format. Note
 #' that the function is powered by \strong{Rcpp} which makes it a convenient
 #' alternative to existing methods when it comes to processing big datasets.
@@ -42,11 +42,12 @@ if ( !isGeneric('coords2JSON') ) {
 #'
 #' @export coords2JSON
 #' @name coords2JSON
-#' @rdname coords2JSON
 
 ################################################################################
 ### function using numeric input (i.e., single x and y coordinates) ############
 #' @aliases coords2JSON,numeric-method
+#' @rdname coords2JSON
+
 setMethod("coords2JSON",
           signature(x = "numeric"),
           function(x) {
@@ -62,7 +63,7 @@ setMethod("coords2JSON",
             x[-id_flt] <- paste0(x[-id_flt], ".0")
 
             ## create JSON string
-            chr_json <- mapview:::one2JSON(x)
+            chr_json <- one2JSON(x)
 
             return(chr_json)
           })
@@ -71,6 +72,8 @@ setMethod("coords2JSON",
 ################################################################################
 ### function using numeric input (i.e., single x and y coordinates) ############
 #' @aliases coords2JSON,character-method
+#' @rdname coords2JSON
+
 setMethod("coords2JSON",
           signature(x = "character"),
           function(x, xy = c(1, 2)) {
@@ -84,7 +87,7 @@ setMethod("coords2JSON",
 #            x[id_int] <- paste0(x[id_int], ".0")
 
             ## create JSON string
-            chr_json <- mapview:::one2JSON(x)
+            chr_json <- one2JSON(x)
 
             return(chr_json)
           })
@@ -93,6 +96,8 @@ setMethod("coords2JSON",
 ################################################################################
 ### function using matrix input (i.e., multiple x and y coordinates) ###########
 #' @aliases coords2JSON,matrix-method
+#' @rdname coords2JSON
+
 setMethod("coords2JSON",
           signature(x = "matrix"),
           function(x, xy = c(1, 2)) {
@@ -116,7 +121,7 @@ setMethod("coords2JSON",
 #            x[, xy] <- crd
 
             ## create list with JSON entries
-            lst_json <- mapview:::all2JSONlist(x)
+            lst_json <- all2JSONlist(x)
 
             ## concatenate single list entries
             if (length(lst_json) == 1) {

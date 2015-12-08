@@ -3,10 +3,16 @@
 \docType{methods}
 \name{coords2JSON}
 \alias{coords2JSON}
+\alias{coords2JSON,character-method}
+\alias{coords2JSON,matrix-method}
 \alias{coords2JSON,numeric-method}
 \title{Convert a vector/matrix of coordinates to JSON format}
 \usage{
 \S4method{coords2JSON}{numeric}(x)
+
+\S4method{coords2JSON}{character}(x, xy = c(1, 2))
+
+\S4method{coords2JSON}{matrix}(x, xy = c(1, 2))
 }
 \arguments{
 \item{x}{A 'numeric' vector with a single pair of coordinates or a matrix
@@ -19,7 +25,7 @@ with multiple pairs of input coordinates, typically projected in EPSG:4326
 A single 'character' object in JSON format.
 }
 \description{
-Similar to \code{\link{toJSON}} from \strong{jsonlite}, this function takes a
+Similar to \code{\link[jsonlite]{toJSON}}, this function takes a
 set of coordinates as input and converts them to proper JSON format. Note
 that the function is powered by \strong{Rcpp} which makes it a convenient
 alternative to existing methods when it comes to processing big datasets.

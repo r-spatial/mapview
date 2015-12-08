@@ -10,7 +10,7 @@ if (!isGeneric('xVecView')) {
 #'
 #'
 #'@note It is import to understand that the accurracy of the rendering is about
-#'  1.1 m at the equator up to 20 cm around 75°. You will get an arbitrary result if the
+#'  1.1 m at the equator up to 20 cm around 75 degree latitude. You will get an arbitrary result if the
 #'   accurracy of your points requires more than 5 decimal digits.
 #'
 #' @param x  \code{\link{sp}} SpatialPointDataframe object
@@ -29,6 +29,7 @@ if (!isGeneric('xVecView')) {
 #' @author
 #' Chris Reudenbach
 #' @examples
+#' \dontrun{
 #' ### we need sp and raster ###
 #'  library(sp)
 #'  library(raster)
@@ -95,12 +96,9 @@ if (!isGeneric('xVecView')) {
 #'  system.time(fpView(big, color = "blue"))
 #' # profVising it
 #'  profvis(fpView(big, color = "blue"))
+#'  }
 #'
-#' @export fpView
-#' @docType fpView
-#' @name fpView
-#' @rdname fpView
-#'
+#' @keywords internal
 #'
 fpView <- function(x,
                   zcol = NULL,
@@ -217,14 +215,12 @@ fpViewInternal <- function(jFn = NULL, args = NULL) {
 
 #' Widget output function for use in Shiny
 #'
-#' @export
 fpViewOutput <- function(outputId, width = '100%', height = '400px') {
   shinyWidgetOutput(outputId, 'fpView', width, height, package = 'mapview')
 }
 
 #' Widget render function for use in Shiny
 #'
-#' @export
 renderfpView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) {
     expr <- substitute(expr)
@@ -257,7 +253,7 @@ renderfpView <- function(expr, env = parent.frame(), quoted = FALSE) {
 #' @author
 #' Chris Reudenbach
 #' @examples
-#'
+#' \dontrun{
 #' ### we need sp, raster, gdalUtils and rgdal ###
 #'  library(sp)
 #'  library(raster)
@@ -308,16 +304,10 @@ renderfpView <- function(expr, env = parent.frame(), quoted = FALSE) {
 #'  system.time(bView(landuseCH))
 #'  system.time(mapview(waterwaysCH))
 #'  system.time(bView(waterwaysCH))
-#'
+#'}
 
 #'
 
-#' @export bView
-#' @docType bView
-#' @name bView
-#' @rdname bView
-#'
-#'
 ### bview -
 bView <- function(x,
                   zcol = NULL,
@@ -337,9 +327,11 @@ bView <- function(x,
                   popup = NULL,
                   ...) {
   # check if a sp object exist
-  library("gdalUtils")
-  library("rgdal")
-  data<- x
+  # pkgs <- c("leaflet", "raster", "magrittr")
+  # tst <- sapply(pkgs, "requireNamespace",
+  #              quietly = TRUE, USE.NAMES = FALSE)
+
+  data <- x
 
 
   ## temp dir
@@ -349,11 +341,11 @@ bView <- function(x,
 
   if (!is.null(data)) {
     # first we have  to deproject any data
-    data.latlon <- spTransform(data,CRS("+init=epsg:4326"))
+    data.latlon <- sp::spTransform(data,CRS("+init=epsg:4326"))
     # write to a file to be able to use ogr2ogr
-    writeOGR(data.latlon, dsn = tmpPath, layer = "shape", driver="ESRI Shapefile", overwrite_layer = TRUE)
+    rgdal::writeOGR(data.latlon, dsn = tmpPath, layer = "shape", driver="ESRI Shapefile", overwrite_layer = TRUE)
     # convert it to geojson with ogr2ogr
-    ogr2ogr(src_datasource_name = paste0(tmpPath,"/shape.shp"), dst_datasource_name = pathJsonFn, f = "GeoJSON", overwrite = TRUE)
+    gdalUtils::ogr2ogr(src_datasource_name = paste0(tmpPath,"/shape.shp"), dst_datasource_name = pathJsonFn, f = "GeoJSON", overwrite = TRUE)
     # get rid of tmp file
     file.remove(paste0(tmpPath,"/",dir(path = tmpPath, pattern = "shape")))
     # for fastet json read in a html document we wrap it with var data = {};
@@ -412,14 +404,12 @@ bView <- function(x,
 
 #' Widget output function for use in Shiny
 #'
-#' @export
 bViewOutput <- function(outputId, width = '100%', height = '400px') {
   shinyWidgetOutput(outputId, 'bView', width, height, package = 'mapview')
 }
 
 #' Widget render function for use in Shiny
 #'
-#' @export
 renderbView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) {
     expr <- substitute(expr)
