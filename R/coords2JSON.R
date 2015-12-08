@@ -5,7 +5,7 @@ if ( !isGeneric('coords2JSON') ) {
 #' Convert a vector/matrix of coordinates to JSON format
 #'
 #' @description
-#' Similar to \code{\link[jsonlite]{toJSON}}, this function takes a
+#' Similar to \code{toJSON} from \strong{jsonlite}, this function takes a
 #' set of coordinates as input and converts them to proper JSON format. Note
 #' that the function is powered by \strong{Rcpp} which makes it a convenient
 #' alternative to existing methods when it comes to processing big datasets.
