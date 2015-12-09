@@ -110,9 +110,12 @@
             this.verts = [];
             this.latLngLookup = {};
             // -- data
-            if (this.settings.color.substring(0, 1) == "#" ) {
-            var col =  hexToRgb(this.settings.color);
-            } else {
+            if (this.settings.color.length <= 7 ) {
+              if (this.settings.color[1].substring(0,1) != "#" ) {
+                var col =  hexToRgb(this.settings.color);
+              }
+            }
+            else {
             var col =  hexToRgb(this.settings.color[this.settings.color.length-1]);
             }
             var settings = this.settings,
