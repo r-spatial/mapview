@@ -59,36 +59,19 @@
         fragmentShader: '',
         pointThreshold: 10,
         clickPoint: null,
-        color: ''
+        color: []
     };
-     Glify.color = {
 
-        green : {r: 0, g: 1, b: 0},
-        red   : {r: 1, g: 0, b: 0},
-        blue  : {r: 0, g: 0, b: 1},
-        teal  : {r: 0, g: 1, b: 1},
-        yellow: {r: 1, g: 1, b: 0},
 
-        random: function() {
-            return {
-                r: Math.random(),
-                g: Math.random(),
-                b: Math.random()
-            };
-        },
+    function hexToRgb(hex) {
+                var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                                r: parseInt(result[1], 16),
+                                g: parseInt(result[2], 16),
+                                b: parseInt(result[3], 16)
+                                } : null;
+              };
 
-        pallet : function() {
-            switch (Math.round(Math.random() * 4)) {
-                case 0: return Glify.color.green;
-                case 1: return Glify.color.red;
-                case 2: return Glify.color.blue;
-                case 3: return Glify.color.teal;
-                case 4: return Glify.color.yellow;
-                case 5: return Glify.color.random;
-                case 6: return Glify.color.random;
-            }
-        }
-    };
 
     Glify.prototype = {
         /**
@@ -118,7 +101,6 @@
                 .setupFragmentShader()
                 .setupProgram();
         },
-
         /**
          *
          * @returns {Glify}
@@ -130,8 +112,8 @@
             // -- data
             var settings = this.settings,
                 colorKey = settings.color,
-                colorFn,
-                color = Glify.color[ colorKey ];
+                colorFn  = "#460000",
+                color =  hexToRgb(this.settings.color[this.settings.color.length-1]); //Glify.color[ colorKey ];
 
             if (color === undefined) {
                 color = colorKey;
@@ -286,7 +268,7 @@
                 offset = this.latLngToPixelXY(topLeft.lat, topLeft.lng),
                 // -- Scale to current zoom
                 scale = Math.pow(2, zoom),
-                pointSize = Math.max(zoom - 4.0, 2.0);
+                pointSize = Math.max(zoom , 3.0);
 
             gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -401,7 +383,7 @@
          * @returns {*}
          */
         lookup: function(coords) {
-            var x = coords.lat - 0.0003,
+            var x = coords.lat - 0.0004,
                 y,
 
                 xMax = coords.lat + 0.003,
@@ -415,7 +397,7 @@
                 key;
 
             for (; x <= xMax; x+=0.00001) {
-                y = coords.lng -0.003;
+                y = coords.lng -0.0004;
                 for (; y <= yMax; y+=0.00001) {
                     key = x.toFixed(5) + 'x' + y.toFixed(5);
                     found = this.latLngLookup[key];

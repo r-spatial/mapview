@@ -69,15 +69,15 @@ HTMLWidgets.widget({
                         clickPoint: function (point) {
                         //set up a standalone popup (use a popup as a layer)
                         contentToHtml = x.popTemplate;
-                            for (var i = 0; i < x.cnames.length;  i++) {
+                            for (var i = 0; i < x.cHelp.length;  i++) {
                               if (i == 0) {
-                                contentToHtml += x.cnames[i] +  point.lng + "</td></tr>" ;
+                                contentToHtml += x.cHelp[i] +  point.lng + "</td></tr>" ;
                               }
                               if (i == 1) {
-                                contentToHtml += x.cnames[i] +  point.lat + "</td></tr>" ;
+                                contentToHtml += x.cHelp[i] +  point.lat + "</td></tr>" ;
                               }
                               if (i > 1)  {
-                                contentToHtml += x.cnames[i] +  point.a[i-2] + "</td></tr>" ;
+                                contentToHtml += x.cHelp[i] +  point.a[i-2] + "</td></tr>" ;
                               }
                               }
                         contentToHtml += "</table></body></html>";
@@ -89,6 +89,7 @@ HTMLWidgets.widget({
                         },
                         data: JSON.parse(data),
                         color: color,
+                        Color: color
                     });
   })
 

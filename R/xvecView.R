@@ -54,21 +54,21 @@ if (!isGeneric('xVecView')) {
 #
 # ### Now we go a bit bigger
 #
-# ### get the diamonds data
-#  big <- diamonds[rep(seq_len(nrow(diamonds)), 1),]
-#  big$cut <- as.character(big$cut)
-#  big$color <- as.character(big$color)
-#  big$clarity <- as.character(big$clarity)
-#
-# ### provide some random positions
-#  big$x <- rnorm(nrow(big), 10, 3)
-#  big$y <- rnorm(nrow(big), 50, 3)
-#  coordinates(big) <- ~x+y
-#  proj4string(big) <- CRS("+init=epsg:4326")
-#
-# # ### map it with pure mapview
-# #  mapview(big, color = 'blue')
+# # ### get the diamonds data
+#   big <- diamonds[rep(seq_len(nrow(diamonds)), 1),]
+#   big$cut <- as.character(big$cut)
+#   big$color <- as.character(big$color)
+#   big$clarity <- as.character(big$clarity)
 # #
+# # ### provide some random positions
+#   big$x <- rnorm(nrow(big), 10, 3)
+#   big$y <- rnorm(nrow(big), 50, 3)
+#   coordinates(big) <- ~x+y
+#   proj4string(big) <- CRS("+init=epsg:4326")
+# #
+# # # ### map it with pure mapview
+# # #  mapview(big, color = 'blue')
+# # #
 # # ### map it with fastmap
 #  mapview:::fpView(big, color = 'blue')
 #
