@@ -66,9 +66,9 @@
     function hexToRgb(hex) {
                 var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
                 return result ? {
-                                r: parseInt(result[1], 16),
-                                g: parseInt(result[2], 16),
-                                b: parseInt(result[3], 16)
+                                r: parseInt(result[1], 16)/255,
+                                g: parseInt(result[2], 16)/255,
+                                b: parseInt(result[3], 16)/255
                                 } : null;
               };
 
@@ -110,10 +110,15 @@
             this.verts = [];
             this.latLngLookup = {};
             // -- data
+            if (this.settings.color.substring(0, 1) == "#" ) {
+            var col =  hexToRgb(this.settings.color);
+            } else {
+            var col =  hexToRgb(this.settings.color[this.settings.color.length-1]);
+            }
             var settings = this.settings,
                 colorKey = settings.color,
                 colorFn  = "#460000",
-                color =  hexToRgb(this.settings.color[this.settings.color.length-1]); //Glify.color[ colorKey ];
+                color =  col //Glify.color[ colorKey ];
 
             if (color === undefined) {
                 color = colorKey;
