@@ -1,6 +1,7 @@
 if (!isGeneric('xVecView')) {
   setGeneric('xVecView', function(x, ...)
     standardGeneric('xVecView'))
+
 }
 # Leaflet maps for big point data
 #

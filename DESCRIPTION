@@ -31,7 +31,8 @@ Imports:
     Rcpp (>= 0.11.3),
     lattice,
     rgdal,
-    gdalUtils
+    gdalUtils,
+    data.table
 LinkingTo: Rcpp
 RoxygenNote: 5.0.1
 SystemRequirements: GNU make
