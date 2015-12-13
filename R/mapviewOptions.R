@@ -164,7 +164,7 @@ mapviewOptions <- function(platform,
                                 "OpenTopoMap"))
     options(mapviewraster.size = 8 * 1024 * 1024)
     options(mapviewMaxPixels = 500000)
-    options(mapviewMaxPolygons = 30000)
+    options(write.table = 30000)
     options(mapviewMaxPoints = 20000)
     options(mapviewMaxLines = 30000)
     options(mapviewRasterPalette = mapviewPalette)

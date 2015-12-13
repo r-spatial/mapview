@@ -16,7 +16,7 @@ HTMLWidgets.widget({
     // is no way for htmlwidgets to pass initial params to initialize()
     var map = new L.map(el, {
       center: [47, 10],
-      zoom: 7
+      zoom: 10
     });
     // we even could add more (static) leaflet stuff here ;-)
 
@@ -45,10 +45,15 @@ HTMLWidgets.widget({
         for (var i = 0; i < x.layer.length;  i++) {
         baseLayers[x.layer[i] ] = L.tileLayer.provider(x.layer[i]);
         }
-
+    var mincorner = L.marker([x.ymin, x.xmin]);
+    var maxcorner = L.marker([x.ymax, x.xmax]);
+    var group = new L.featureGroup([maxcorner, mincorner]);
+    map.fitBounds(group.getBounds());
     // adding all together and the layer control
-		var layerControl = L.control.layers(baseLayers, {collapsed: true}).addTo(map);
-    map.setView([x.centerLat[0], x.centerLon[0], x.zoom[0]]);
+
+     //  var layerControl = L.control.layers(baseLayers).addTo(map);
+    //map.setView([x.centerLat, x.centerLon]);
+
 
   // get the file locations from the shaders and the static external file
   var vertexshader = HTMLWidgets.getAttachmentUrl('vertex-shader', 'vertex-shader');
@@ -89,7 +94,8 @@ HTMLWidgets.widget({
                         },
                         data: JSON.parse(data),
                         color: color,
-                        Color: color
+                        baseLayers: baseLayers
+                       // layerControl:layerControl
                     });
   })
 

@@ -357,6 +357,36 @@ spCheckAdjustProjection <- function(x) {
 
 }
 
+# Check projection of objects according to their keywords -------
+
+compareProjCode <- function (x){
+  llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
+  allWGS84<- as.vector(c("+init=epsg:4326", "+proj=longlat", "+datum=WGS84", "+no_defs", "+ellps=WGS84", "+towgs84=0,0,0"))
+
+  for (comp in allWGS84) {
+
+    if (comp %in% x[[1]]) {
+        if (comp == "+init=epsg:4326") {
+          proj <- datum <- nodefs <- "TRUE"
+        }
+        if (comp == "+proj=longlat") {
+         proj<- "TRUE"
+        }
+        if (comp == "+no_defs") {
+        nodefs<-"TRUE"
+        }
+        if (comp == "+datum=WGS84") {
+        datum<-"TRUE"
+        }
+    }
+  }
+  if (proj == "TRUE" & nodefs == "TRUE" &  datum == "TRUE") {
+    x<-llcrs
+  } else {
+    x<- paste(x[[1]], collapse = ' ')
+  }
+  return(x)
+  }
 
 
 # Check and potentially adjust projection of objects to be rendered -------

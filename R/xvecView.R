@@ -116,63 +116,78 @@ fpView <- function(x,
                    popup = NULL,
                    ...) {
 
-
   ## temp dir
-  tmpPath <- makepath()[[1]][1]
-  pathJsonFn <- makepath()[[2]][1]
-  jsonFn <- makepath()[[3]][1]
+  ## temp dir
+  tmp <- makepath()
+  tmpPath <- tmp[[1]][1]
+  pathJsonFn <- tmp[[2]][1]
+  jsonFn <- tmp[[3]][1]
 
-# check if a sp object exist
-if (!is.null(x)) {
-  x.latlon <- spTransform(x,CRS("+init=epsg:4326"))
-  df <- as.data.frame(x.latlon)
-  drops <- c("x","y")
-  df.cols <- df[,!(names(df) %in% drops)]
-  cnames <- colnames(df.cols)
-  if (!is.null(zcol)) {
-    cnames <- zcol
-  }
-  df.cols <- lapply(df.cols, as.character)
-  df.sort <- df[,c("x","y",cnames)]
-  #df.sort[is.na(df.sort)] <- -9999
-  out.matrix = t(t(df.sort))
-  data.json <- coords2JSON(out.matrix)
-  # write data file to temp dir
-  file.create(pathJsonFn)
-  fileConn <- file(pathJsonFn)
-  write(data.json, fileConn)
-  close(fileConn)
 
-  # estimating the zoomlevel and center point of the map
-  zoom<- getZoomLevel(x.latlon)
+  # check if a sp object exist
+  if (!is.null(x)) {
+    x@proj4string@projargs<-compareProjCode(strsplit(x@proj4string@projargs,split = " "))
 
-  # creating the popup names
-  cHelp <- list()
-  cHelp[1] <- "<tr class='coord'><td>Longitude</td><td>"
-  cHelp[2] <- "<tr class='coord'><td>Latitude</td><td>"
-  for (i in 1:length(cnames)) {
-    if (i %% 2 == 1) {
-      cHelp[i + 2] <- paste0("<tr><td> ",cnames[i]," </td><td>")
-    } else {
-      cHelp[i + 2] <- paste0("<tr class='alt'><td> ",cnames[i]," </td><td>")
+    x <- spCheckAdjustProjection(x)
+
+    cnames <- colnames(x@data)
+
+    # if zcol
+    if (!is.null(zcol)) {
+      cnames <- zcol
     }
-  }
+    # integrate the coordinates
+    x@data$x<-x@coords[,1]
+    x@data$y<-x@coords[,2]
 
-  # create list of user data that is passed to the widget
-  lst_x = list(
-    color = color,
-    layer = map.types,
-    data  = "undefined",
-    cnames = cnames,
-    centerLat = zoom[3],
-    centerLon = zoom[2],
-    zoom = zoom[1],
-    popTemplate = getStyle(),
-    cHelp = cHelp,
-    layer.opacity = layer.opacity,
-    layername = layer.name
-  )
-}
+    x@data <- x@data[,c("x","y",cnames)]
+
+    data.json <- coords2JSON(as.matrix(x@data))
+
+    # write data file to temp dir
+    file.create(pathJsonFn)
+    fileConn <- file(pathJsonFn)
+    write(data.json, fileConn)
+    close(fileConn)
+
+
+    ext <- extent(x)
+    yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
+    xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
+
+    # estimating the zoomlevel and center point of the map
+    #zoom<- getZoomLevel(x)
+
+    # creating the popup names
+    cHelp <- list()
+    cHelp[1] <- "<tr class='coord'><td>Longitude</td><td>"
+    cHelp[2] <- "<tr class='coord'><td>Latitude</td><td>"
+    for (i in 1:length(cnames)) {
+      if (i %% 2 == 1) {
+        cHelp[i + 2] <- paste0("<tr><td> ",cnames[i]," </td><td>")
+      } else {
+        cHelp[i + 2] <- paste0("<tr class='alt'><td> ",cnames[i]," </td><td>")
+      }
+    }
+
+    # create list of user data that is passed to the widget
+    lst_x = list(
+      color = color,
+      layer = map.types,
+      data  = "undefined",
+      cnames = cnames,
+      centerLat = yc,
+      centerLon = xc,
+      popTemplate = getStyle(),
+      cHelp = cHelp,
+      layer.opacity = layer.opacity,
+      layername = layer.name,
+      xmax = ext@xmax,
+      ymax = ext@ymax,
+      xmin = ext@xmin,
+      ymin = ext@ymin
+    )
+  }
   # creating the widget
   fpViewInternal(jFn = pathJsonFn,  x = lst_x)
 }
@@ -331,10 +346,13 @@ bView <- function(x,
 
   if (!is.null(x)) {
     x <- toSPDF(x)
-    # first we have  to deproject any x
-    x.latlon <- sp::spTransform(x,CRS("+init=epsg:4326"))
+
+    x@proj4string@projargs<-compareProjCode(strsplit(x@proj4string@projargs,split = " "))
+
+    x <- spCheckAdjustProjection(x)
+
     # write to a file to be able to use ogr2ogr
-    rgdal::writeOGR(x.latlon, dsn = tmpPath, layer = "shape", driver="ESRI Shapefile", overwrite_layer = TRUE)
+    rgdal::writeOGR(x, dsn = tmpPath, layer = "shape", driver="ESRI Shapefile", overwrite_layer = TRUE)
     # convert it to geojson with ogr2ogr
     gdalUtils::ogr2ogr(src_datasource_name = paste0(tmpPath,"/shape.shp"), dst_datasource_name = pathJsonFn, f = "GeoJSON")
     # get rid of tmp file
@@ -345,7 +363,11 @@ bView <- function(x,
     lns[length(lns)]<- '};'
     writeLines(lns, pathJsonFn)
     # estimating the zommlevel and center point of the map
-    zoom<- getZoomLevel(x.latlon)
+    ext <- extent(x)
+    yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
+    xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
+
+
   } else {
     NULL
   }
@@ -355,12 +377,15 @@ bView <- function(x,
                 layer = map.types,
                 data  = 'undefined',
                 html = getStyle(),
-                centerLat = zoom[3],
-                centerLon = zoom[2],
-                zoom = zoom[1],
+                centerLat = yc,
+                centerLon = xc,
                 opacity = layer.opacity,
                 weight = weight,
-                layername = layer.name)
+                layername = layer.name,
+                xmax = ext@xmax,
+                ymax = ext@ymax,
+                xmin = ext@xmin,
+                ymin = ext@ymin)
 
   # creating the widget
   bViewInternal(jFn = pathJsonFn,  x = lst_x)
@@ -382,7 +407,7 @@ bViewInternal <- function(jFn = NULL, x = NULL) {
     browser.fill = TRUE,
     viewer.fill = TRUE,
     viewer.padding = 5
-    )
+  )
   # create widget
   htmlwidgets::createWidget(
     name = 'bView',

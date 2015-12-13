@@ -31,11 +31,25 @@
                 }.bind(this))
                 .addTo(settings.map),
             canvas = this.canvas = glLayer.canvas();
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+//            newLayer = {"Points":this.glLayer};
+//            var bounds = L.latLngBounds(glLayer._map);
+//            settings.map.fitBounds(bounds);//works!
+            //settings.map.fitBounds(glLayer._map.getBounds());
 
-        canvas.width = canvas.clientWidth;
-        canvas.height = canvas.clientHeight;
+        if (!window.WebGLRenderingContext) {
+        // the browser doesn't even know what WebGL is
+            window.location = "http://get.webgl.org";
+        } else {
+        canvas = this.canvas = glLayer.canvas();
 
-        this.gl = canvas.getContext('webgl',{ antialias: true }) || canvas.getContext('experimental-webgl',{ antialias: true });
+        this.gl  = this.canvas.getContext('webgl',{ antialias: true }) || canvas.getContext('experimental-webgl',{ antialias: true });
+          if (!this.gl) {
+            // browser supports WebGL but initialization failed.
+            window.location = "http://get.webgl.org/troubleshooting";
+        }
+        }
 
         this.pixelsToWebGLMatrix = new Float32Array(16);
         this.mapMatrix = new Float32Array(16);
@@ -59,9 +73,14 @@
         fragmentShader: '',
         pointThreshold: 10,
         clickPoint: null,
-        color: []
+        toggleLayer: null,
+        color: [],
+        baseLayers: []
     };
 
+      function switchLayer() {
+         this.glLayer.clearLayers();
+       };
 
     function hexToRgb(hex) {
                 var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -81,6 +100,17 @@
         setup: function () {
             var self = this,
                 settings = this.settings;
+
+            if (settings.toggleLayer){
+               settings.map.on('viewreset', function (e) {
+                   if(!toggle) {
+                              map.removeLayer(glLayer);
+                    } else {
+                    map.addLayer(glLayer);
+                  }
+                  toggle = !toggle;
+                  }
+            )};
 
             if (settings.clickPoint) {
                 settings.map.on('click', function(e) {
@@ -106,18 +136,34 @@
          * @returns {Glify}
          */
         render: function() {
+
+            this.layerControl = L.control.layers(this.settings.baseLayers).addTo(this.settings.map);
+            //this.layerControl.addOverlay(this.glLayer,"points");
+      var txt2 = $("<div id='lnlt'></div>").text('<button onclick="switchLayer()">Append text</button>');
+      $('lnlt').append(txt2);
+
+
+
+
+
+
+
+
+
             //empty verts and repopulate
             this.verts = [];
             this.latLngLookup = {};
             // -- data
+            // check if an array of colors (palette) or a single color is provided
             if (this.settings.color.length <= 7 ) {
               if (this.settings.color[1].substring(0,1) != "#" ) {
                 var col =  hexToRgb(this.settings.color);
               }
             }
             else {
-            var col =  hexToRgb(this.settings.color[this.settings.color.length-1]);
+              var col =  hexToRgb(this.settings.color[this.settings.color.length-1]);
             }
+
             var settings = this.settings,
                 colorKey = settings.color,
                 colorFn  = "#460000",
@@ -188,6 +234,8 @@
             //offset for color buffer
             gl.vertexAttribPointer(colorLocation, 3, gl.FLOAT, false, fsize * 5, fsize * 2);
             gl.enableVertexAttribArray(colorLocation);
+
+
 
             glLayer.redraw();
 
@@ -276,7 +324,7 @@
                 offset = this.latLngToPixelXY(topLeft.lat, topLeft.lng),
                 // -- Scale to current zoom
                 scale = Math.pow(2, zoom),
-                pointSize = Math.max(zoom , 3.0);
+                pointSize = zoom / 10 * zoom   ;
 
             gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -294,6 +342,7 @@
             // -- attach matrix value to 'mapMatrix' uniform in shader
             gl.uniformMatrix4fv(this.uMatrix, false, this.mapMatrix);
             gl.drawArrays(gl.POINTS, 0, this.settings.data.length);
+
 
             return this;
         },
@@ -378,9 +427,10 @@
          * @returns {Glify}
          */
         addTo: function(map) {
-            //this.glLayer.addTo(map);
-            newLayer = {"Points":this.glLayer}
-            L.control.layers(newLayer).addTo(map);
+            this.glLayer.addTo(map);
+            this.layerControl.addOverlay(this.glLayer,"points");
+
+            //L.control.layers(newLayer).addTo(map);
 
             return this;
         },

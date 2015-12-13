@@ -59,20 +59,23 @@ addCanvas();
 
     var myLayer = L.geoJson(undefined,{style:style,onEachFeature:onEachFeature}).addTo(map);
 
-
+    var mincorner = L.marker([x.ymin, x.xmin]);
+    var maxcorner = L.marker([x.ymax, x.xmax]);
+    var group = new L.featureGroup([maxcorner, mincorner]);
+    map.fitBounds(group.getBounds());
 
 
     //var data = x[2];
 //    var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
     //var data = $.parseJSON(HTMLWidgets.getAttachmentUrl('data', 'jsondata'));
-    var baseZ = x.zoom[0] + 4;
-    var maxZ = x.zoom[0]  + 4;
+    var baseZ = 10 //  x.zoom[0] + 4;
+    var maxZ = 10 //x.zoom[0]  + 4;
     var color = x.color[255];
     var opacity = x.opacity;
     var lnWidth = x.weight;
     var tileOptions = {
-	        baseZoom: baseZ,           // max zoom to preserve detail on
-	        maxZoom: maxZ,            // zoom to slice down to on first pass
+	        baseZoom: 10,           // max zoom to preserve detail on
+	        maxZoom: 10,            // zoom to slice down to on first pass
 	        maxPoints: 100,         // stop slicing each tile below this number of points
           tolerance: 3,           // simplification tolerance (higher means simpler)
           extent: 4096,           // tile extent (both width and height)
@@ -236,7 +239,7 @@ addCanvas();
 
   // ADD LAYER CONTRLS
   var layerControl = L.control.layers(baseLayers, overlayLayers, {collapsed: true}).addTo(map);
-  map.setView([x.centerLat[0], x.centerLon[0], x.zoom[0]]);
+ // map.setView([x.centerLat[0], x.centerLon[0], x.zoom[0]]);
 
   // Draw the canvas tiles
   canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
