@@ -222,6 +222,16 @@ addCanvas();
 	map.on("moveend", function(e) {
 	    showLayer();
 	});
+	map.on('zoomend', function() {
+      showLayer();
+    });
+
+    map.on('dragend', function() {
+        showLayer();
+    });
+  map.on('idle', function() {
+        showLayer();
+    });
 
 	// Add to the r-tree
 	rt.geoJSON(data);
@@ -230,16 +240,8 @@ addCanvas();
   var tileIndex = geojsonvt(data,tileOptions);
 
 	// The canvas tile layer for low zoom level
-  var canvasTiles = L.tileLayer.canvas().addTo(map);
+  var canvasTiles = L.tileLayer.canvas();
 
-  // create overlay Layers varibles
-  var overlayLayers = {};
-  overlayLayers[x.layername] = myLayer;
-  overlayLayers[x.layername + "_static" ] = (canvasTiles).addTo(map);
-
-  // ADD LAYER CONTRLS
-  var layerControl = L.control.layers(baseLayers, overlayLayers, {collapsed: true}).addTo(map);
- // map.setView([x.centerLat[0], x.centerLon[0], x.zoom[0]]);
 
   // Draw the canvas tiles
   canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
@@ -323,6 +325,15 @@ addCanvas();
           }
           }
           };
+  // create overlay Layers varibles
+  var overlayLayers = {};
+  overlayLayers[x.layername] = myLayer;
+  overlayLayers[x.layername + "_static" ] = (canvasTiles).addTo(map);
+
+  // ADD LAYER CONTRLS
+  var layerControl = L.control.layers(baseLayers, overlayLayers, {collapsed: true}).addTo(map);
+ // map.setView([x.centerLat[0], x.centerLon[0], x.zoom[0]]);
+
     showLayer();
 
 //###########################################################

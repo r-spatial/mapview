@@ -357,12 +357,17 @@ bView <- function(x,
     gdalUtils::ogr2ogr(src_datasource_name = paste0(tmpPath,"/shape.shp"), dst_datasource_name = pathJsonFn, f = "GeoJSON")
     # get rid of tmp file
     file.remove(paste0(tmpPath,"/",dir(path = tmpPath, pattern = "shape")))
+
     # for fastet json read in a html document we wrap it with var data = {};
-    lns <- readLines(pathJsonFn)
-    lns[1] <- 'var data = {'
-    lns[length(lns)]<- '};'
-    writeLines(lns, pathJsonFn)
-    # estimating the zommlevel and center point of the map
+    lns <- fread(pathJsonFn, header = FALSE, sep = "\n", data.table = FALSE)
+    lns[1,] <- 'var data = {'
+    lns[length(lns[,1]),]<- '};'
+    write.table(lns, pathJsonFn, sep="\n", row.names=FALSE, col.names=FALSE, quote = FALSE)
+
+    # getting the extent and map center
+    #length(x@polygons)
+    #length(x@lines)
+    #nrow(coordinates(x)
     ext <- extent(x)
     yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
     xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
@@ -433,34 +438,6 @@ renderbView <- function(expr, env = parent.frame(), quoted = FALSE) {
   htmlwidgets::shinyRenderWidget(expr, bViewOutput, env, quoted = TRUE)
 }
 
-getZoomLevel <- function(x) {
-  # we need scale and zoom so we approximate the area and zoom factor
-  ext <- extent(x)
-  yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
-  xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
-
-  rad.cof=3.1459/180
-  lat.1deg=110540
-  lon.1deg=111320*cos(rad.cof*yc)
-  # calculate stepsize
-  latextent=(lat.1deg*(ext@ymax-ext@ymin))
-  lonextent=(lon.1deg*(ext@xmax-ext@xmin))
-
-  #http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Resolution_and_Scale
-  zoomlevel <- 3
-  repeat{
-    # res in m zoomlev is 2 ^ x
-    res <- 156543.03  * cos(rad.cof*yc) / (2 ^ zoomlevel)
-    #calculating screen scale assuming screen 96 dpi in/m 1000/25.4
-    scale = 96 * 39.37 * res
-    if(scale < max(latextent, 2500000)){
-      break
-    }
-    zoomlevel <- zoomlevel + 1
-  }
-  param = list(zoomlevel,xc,yc)
-  return(param)
-}
 
 makepath <- function (){
   tmpPath <- tempfile()
