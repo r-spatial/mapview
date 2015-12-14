@@ -90,7 +90,7 @@ HTMLWidgets.widget({
                           .setLatLng(point)
                           .setContent(contentToHtml)
                           .openOn(map);
-                          console.log(point);
+                          //console.log(point);
                         },
                         data: JSON.parse(data),
                         color: color,

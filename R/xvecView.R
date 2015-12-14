@@ -151,7 +151,7 @@ fpView <- function(x,
       cnames = cnames,
       centerLat = yc,
       centerLon = xc,
-      popTemplate = getStyle(),
+      popTemplate = getPopupStyle(),
       cHelp = cHelp,
       layer.opacity = layer.opacity,
       layername = layer.name,
@@ -326,8 +326,6 @@ bView <- function(x,
     }
     x@data <- x@data[(names(x@data) %in% keep)]
 
-
-
     # write to a file to be able to use ogr2ogr
     rgdal::writeOGR(x, dsn = tmpPath, layer = "shape", driver="ESRI Shapefile", overwrite_layer = TRUE)
 
@@ -364,7 +362,7 @@ bView <- function(x,
   lst_x <- list(color = color,
                 layer = map.types,
                 data  = 'undefined',
-                html = getStyle(),
+                html = getPopupStyle(),
                 centerLat = yc,
                 centerLon = xc,
                 opacity = layer.opacity,
@@ -434,8 +432,8 @@ makepath <- function (){
   return(list(tmpPath,pathJsonFn,jsonFn))
 }
 
-### getStyle creates popup style =================================================
-getStyle <- function(){
+### getPopupStyle creates popup style =================================================
+getPopupStyle <- function(){
   htmlTemplate <- paste(
     "<html>",
     "<head>",

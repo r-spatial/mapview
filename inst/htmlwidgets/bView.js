@@ -105,7 +105,7 @@ addCanvas();
           i = i + 1;
         };
         var popupContent = x.html + content + "</table></body></html>";
-        console.log(popupContent);
+        //console.log(popupContent);
         layer.bindPopup(popupContent);
     }
   }
