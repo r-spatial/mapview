@@ -317,6 +317,17 @@ bView <- function(x,
     # check and transform projection
     x <- spCheckAdjustProjection(x)
 
+    # get the variable names
+    cnames <- colnames(x@data)
+
+    # apply zcol
+    if (!is.null(zcol)) {
+      keep <- c(zcol)
+    }
+    x@data <- x@data[(names(x@data) %in% keep)]
+
+
+
     # write to a file to be able to use ogr2ogr
     rgdal::writeOGR(x, dsn = tmpPath, layer = "shape", driver="ESRI Shapefile", overwrite_layer = TRUE)
 
