@@ -6,16 +6,13 @@ library(fastshp)
 spy_ch <- read.shp("buildings.shp")
 
 ## convert list entries to 'SpatialPolygons' objects
-list2Polygons <- function(x, spatial = FALSE, ...) {
+list2SpatialPolygons <- function(x, ...) {
   spy <- sp::Polygons(list(sp::Polygon(coords = cbind(x$x, x$y))), ID = x$id)
-
-  if (spatial)
-    spy <- sp::SpatialPolygons(list(spy), ...)
+  spy <- sp::SpatialPolygons(list(spy), ...)
 
   return(spy)
 }
 
-lst_pys <- lapply(spy_ch[1:10], function(i) {
-  list2Polygons(i, spatial = TRUE, proj4string = CRS("+init=epsg:4326"))
+lst_pys <- lapply(spy_ch, function(i) {
+  list2SpatialPolygons(i, proj4string = CRS("+init=epsg:4326"))
 })
-
