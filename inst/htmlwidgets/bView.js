@@ -40,25 +40,23 @@ HTMLWidgets.widget({
     },
 
   doRenderValue: function(el, x, map) {
+
 //#########################################################
 
-addCanvas();
+    addCanvas();
 
-   // we add some base layers using the plugin L.tileLayer.provider
-// we define the first layer of the list to be the default one
+    // add  base layers as derived
+    // define the first layer of the list to be the default one
     var defaultLayer = L.tileLayer.provider(x.layer[0]).addTo(map);
+    var baseLayers = {};
+    for (var i = 0; i < x.layer.length;  i++) {
+      baseLayers[x.layer[i] ] = L.tileLayer.provider(x.layer[i]);
+      }
 
-        var baseLayers = {};
-        for (var i = 0; i < x.layer.length;  i++) {
-        baseLayers[x.layer[i] ] = L.tileLayer.provider(x.layer[i]);
-        }
-
-    // adding all together and the layer control
-
-
-
+    // define a dummy layer for the geojson data
     var myLayer = L.geoJson(undefined,{style:style,onEachFeature:onEachFeature}).addTo(map);
 
+    // create a pseudo layer for applying fitBounds
     var mincorner = L.marker([x.ymin, x.xmin]);
     var maxcorner = L.marker([x.ymax, x.xmax]);
     var group = new L.featureGroup([maxcorner, mincorner]);
@@ -222,16 +220,6 @@ addCanvas();
 	map.on("moveend", function(e) {
 	    showLayer();
 	});
-	map.on('zoomend', function() {
-      showLayer();
-    });
-
-    map.on('dragend', function() {
-        showLayer();
-    });
-  map.on('idle', function() {
-        showLayer();
-    });
 
 	// Add to the r-tree
 	rt.geoJSON(data);
@@ -271,7 +259,7 @@ addCanvas();
 		      //define line width
 		      ctx.lineWidth = lnWidth;
 		      // define line color
-          ctx.strokeStyle = "#660C0C";
+          ctx.strokeStyle = color;
           //define fill color
           ctx.fillStyle=color;
 
@@ -325,7 +313,8 @@ addCanvas();
           }
           }
           };
-  // create overlay Layers varibles
+
+  // create overlay Layers variables
   var overlayLayers = {};
   overlayLayers[x.layername] = myLayer;
   overlayLayers[x.layername + "_static" ] = (canvasTiles).addTo(map);

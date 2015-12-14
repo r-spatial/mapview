@@ -318,7 +318,7 @@ bView <- function(x,
     x <- spCheckAdjustProjection(x)
 
     # get the variable names
-    cnames <- colnames(x@data)
+    keep <- colnames(x@data)
 
     # apply zcol
     if (!is.null(zcol)) {
