@@ -36,68 +36,34 @@ if (!isGeneric('xVecView')) {
 #  library(sp)
 #  library(raster)
 #  library(ggplot2)
-#
+
 # ### take the meuse data
 #  data(meuse)
 #  coordinates(meuse) <- ~x+y
 #  proj4string(meuse) <- CRS("+init=epsg:28992")
 #  meuse <- spTransform(meuse,CRS("+init=epsg:3857"))
-#
-# ### map it with mapview
+
 #  mapview(meuse)
-#
-# ### map it with fpView
-#  fpView(meuse,color = "random")
-#
-# ### some benchmarks
-#  system.time(mapview(meuse))
-#  system.time(fpView(meuse, color = "random"))
-#
-# ### Now we go a bit bigger
-#
-# # ### get the diamonds data
-#   big <- diamonds[rep(seq_len(nrow(diamonds)), 1),]
+
+# ### Now we go  bigger
+# ### get the diamonds data
+#   big <- diamonds[rep(seq_len(nrow(diamonds)), 50),]
 #   big$cut <- as.character(big$cut)
 #   big$color <- as.character(big$color)
 #   big$clarity <- as.character(big$clarity)
-# #
-# # ### provide some random positions
+
+# ### provide some random positions
 #   big$x <- rnorm(nrow(big), 10, 3)
 #   big$y <- rnorm(nrow(big), 50, 3)
 #   coordinates(big) <- ~x+y
 #   proj4string(big) <- CRS("+init=epsg:4326")
-# #
-# # # ### map it with pure mapview
-# # #  mapview(big, color = 'blue')
-# # #
-# # ### map it with fastmap
-#  mapview:::fpView(big, color = 'blue')
-#
-# ### some benchmarks
-#  system.time(mapview(big, color = 'blue'))
-#  system.time(fpView(big, color = 'blue'))
-#
-# ### up to about 5 mio points
-#  big <- diamonds[rep(seq_len(nrow(diamonds)), 94),]
-#  big$cut <- as.character(big$cut)
-#  big$color <- as.character(big$color)
-#  big$clarity <- as.character(big$clarity)
-#  big$x <- rnorm(nrow(big), 10, 3)
-#  big$y <- rnorm(nrow(big), 50, 3)
-#  coordinates(big) <- ~x+y
-#  proj4string(big) <- CRS("+init=epsg:4326")
-#
-# ### map it with fpView
-#  fpView(big, color = "blue")
-#
+
+#   mapview:::fpView(big, color = 'blue')
+
+
 # ### some benchmarks
 # # random point colors is slower
-#  system.time(fpView(big, color = "random"))
-# # than unique colors
-#  system.time(fpView(big, color = "blue"))
-# # profVising it
-#  profvis(fpView(big, color = "blue"))
-#  }
+#  system.time(fpView(big))
 #
 # @keywords internal
 #
@@ -127,39 +93,45 @@ fpView <- function(x,
 
   # check if a sp object exist
   if (!is.null(x)) {
+
+    # check if  x is a dataframe
+    x <- toSPDF(x)
+
+    # check if data has a correct latlong WGS84 proj4 string
     x@proj4string@projargs<-compareProjCode(strsplit(x@proj4string@projargs,split = " "))
 
+    # check projection
     x <- spCheckAdjustProjection(x)
 
+    # get the variable names
     cnames <- colnames(x@data)
 
-    # if zcol
+    # apply zcol
     if (!is.null(zcol)) {
       cnames <- zcol
     }
+
     # integrate the coordinates
     x@data$x<-x@coords[,1]
     x@data$y<-x@coords[,2]
-
     x@data <- x@data[,c("x","y",cnames)]
 
+    # generate reduced geojson string
     data.json <- coords2JSON(as.matrix(x@data))
 
-    # write data file to temp dir
+    # write geojson file to temp dir
     file.create(pathJsonFn)
     fileConn <- file(pathJsonFn)
     write(data.json, fileConn)
     close(fileConn)
 
-
+    # get extent and center of area
     ext <- extent(x)
     yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
     xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
 
-    # estimating the zoomlevel and center point of the map
-    #zoom<- getZoomLevel(x)
 
-    # creating the popup names
+    # create the popups
     cHelp <- list()
     cHelp[1] <- "<tr class='coord'><td>Longitude</td><td>"
     cHelp[2] <- "<tr class='coord'><td>Latitude</td><td>"
@@ -189,11 +161,12 @@ fpView <- function(x,
       ymin = ext@ymin
     )
   }
-  # creating the widget
+
+  # now creating the widget
   fpViewInternal(jFn = pathJsonFn,  x = lst_x)
 }
 
-
+### fpViewInternal creates fpView widget =================================================
 fpViewInternal <- function(jFn = NULL, x = NULL) {
 
   data_dir <- dirname(jFn)
@@ -225,14 +198,13 @@ fpViewInternal <- function(jFn = NULL, x = NULL) {
 
 }
 
-
-# Widget output function for use in Shiny
+### fpViewOutput Widget output function for use in Shiny =================================================
 #
 fpViewOutput <- function(outputId, width = '100%', height = '400px') {
   htmlwidgets::shinyWidgetOutput(outputId, 'fpView', width, height, package = 'mapview')
 }
 
-# Widget render function for use in Shiny
+### renderfpView Widget render function for use in Shiny =================================================
 #
 renderfpView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) {
@@ -275,52 +247,45 @@ renderfpView <- function(expr, env = parent.frame(), quoted = FALSE) {
 # ### for downloading and benchmarking
 #  library(downloader)
 #  library(profvis)
-#
+
 # ## load gadmCHE example data
 #  data(gadmCHE)
-#
-# ## map it with mapview
+
 #  mapview(gadmCHE)
-# ## map it with bView
-#  bView(gadmCHE)
+
 #
 # ###  to get more suisse data we use OSM as provided by geofabrik
 #  download("http://download.geofabrik.de/europe/switzerland-latest.shp.zip",dest="switzerland.zip", mode = "wb")
 #  unzip ("switzerland.zip",exdir = "./")
-#
+
 # ## get information of landuse
 #  ogrInfo(".", "landuse")
-#
+
 # ## put it in sp object (doesn't matter what type)
 #  landuseCH<- readOGR(".","landuse")
-#
+
 # ## map it with mapview
 #  mapview(landuseCH)
-# ## map it with bView
-#  bView(landuseCH)
-#
+
 # ## get information of waterways
 #  ogrInfo(".", "waterways")
-#
+
 # ## read it to a sp object
 #  waterwaysCH<- readOGR(".","waterways")
-#
+
 # ## map it with mapview
 #  mapview(waterwaysCH)
-# ## map it with bView
-#  bView(waterwaysCH)
 
 # ### some benchmarks
 #  system.time(mapview(gadmCHE))
-#  system.time(bView(gadmCHE))
 #  system.time(mapview(landuseCH))
-#  system.time(bView(landuseCH))
 #  system.time(mapview(waterwaysCH))
-#  system.time(bView(waterwaysCH))
+
 #}
 #
 
-### bview -
+### bView  function Leaflet maps for big line and polygon data sets =================================================
+
 bView <- function(x,
                   zcol,
                   color,
@@ -334,10 +299,7 @@ bView <- function(x,
                   verbose,
                   layer.name,
                   popup) {
-  # check if a sp object exist
-  # pkgs <- c("leaflet", "raster", "magrittr")
-  # tst <- sapply(pkgs, "requireNamespace",
-  #              quietly = TRUE, USE.NAMES = FALSE)
+
 
   ## temp dir
   tmp <- makepath()
@@ -346,19 +308,26 @@ bView <- function(x,
   jsonFn <- tmp[[3]][1]
 
   if (!is.null(x)) {
+    # check and correct if sp object is of type dataframe
     x <- toSPDF(x)
 
+    # check if a correct WGSS84 proj4 string exist
     x@proj4string@projargs<-compareProjCode(strsplit(x@proj4string@projargs,split = " "))
 
+    # check and transform projection
     x <- spCheckAdjustProjection(x)
 
     # write to a file to be able to use ogr2ogr
     rgdal::writeOGR(x, dsn = tmpPath, layer = "shape", driver="ESRI Shapefile", overwrite_layer = TRUE)
+
     # convert it to geojson with ogr2ogr
     gdalUtils::ogr2ogr(src_datasource_name = paste0(tmpPath,"/shape.shp"), dst_datasource_name = pathJsonFn, f = "GeoJSON")
+
+    # alternative way needs about the same time because it engage the same tools
     #geojsonio::geojson_write(x,file = pathJsonFn, precision = 5)
+
     # get rid of tmp file
-    #file.remove(paste0(tmpPath,"/",dir(path = tmpPath, pattern = "shape")))
+    file.remove(paste0(tmpPath,"/",dir(path = tmpPath, pattern = "shape")))
 
     # for fastet json read in a html document we wrap it with var data = {};
     lns <- fread(pathJsonFn, header = FALSE, sep = "\n", data.table = FALSE)
@@ -366,14 +335,15 @@ bView <- function(x,
     lns[length(lns[,1]),]<- '};'
     write.table(lns, pathJsonFn, sep="\n", row.names=FALSE, col.names=FALSE, quote = FALSE)
 
-    # getting the extent and map center
+    # to be done
     #length(x@polygons)
     #length(x@lines)
     #nrow(coordinates(x)
+
+    # getting the extent and map center
     ext <- extent(x)
     yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
     xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
-
 
   } else {
     NULL
@@ -398,6 +368,8 @@ bView <- function(x,
   bViewInternal(jFn = pathJsonFn,  x = lst_x)
 
 }
+
+### bViewInternal creates fpView widget =================================================
 
 bViewInternal <- function(jFn = NULL, x = NULL) {
 
@@ -425,13 +397,13 @@ bViewInternal <- function(jFn = NULL, x = NULL) {
   )
 }
 
-# Widget output function for use in Shiny
+### Widget output function for use in Shiny =================================================
 #
 bViewOutput <- function(outputId, width = '100%', height = '400px') {
   htmlwidgets::shinyWidgetOutput(outputId, 'bView', width, height, package = 'mapview')
 }
 
-# Widget render function for use in Shiny
+### Widget render function for use in Shiny =================================================
 #
 renderbView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) {
@@ -440,7 +412,7 @@ renderbView <- function(expr, env = parent.frame(), quoted = FALSE) {
   htmlwidgets::shinyRenderWidget(expr, bViewOutput, env, quoted = TRUE)
 }
 
-
+### makepath creates temp paths and filenames =================================================
 makepath <- function (){
   tmpPath <- tempfile()
   dir.create(tmpPath)
@@ -451,6 +423,7 @@ makepath <- function (){
   return(list(tmpPath,pathJsonFn,jsonFn))
 }
 
+### getStyle creates popup style =================================================
 getStyle <- function(){
   htmlTemplate <- paste(
     "<html>",
