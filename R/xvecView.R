@@ -356,8 +356,9 @@ bView <- function(x,
     rgdal::writeOGR(x, dsn = tmpPath, layer = "shape", driver="ESRI Shapefile", overwrite_layer = TRUE)
     # convert it to geojson with ogr2ogr
     gdalUtils::ogr2ogr(src_datasource_name = paste0(tmpPath,"/shape.shp"), dst_datasource_name = pathJsonFn, f = "GeoJSON")
+    #geojsonio::geojson_write(x,file = pathJsonFn, precision = 5)
     # get rid of tmp file
-    file.remove(paste0(tmpPath,"/",dir(path = tmpPath, pattern = "shape")))
+    #file.remove(paste0(tmpPath,"/",dir(path = tmpPath, pattern = "shape")))
 
     # for fastet json read in a html document we wrap it with var data = {};
     lns <- fread(pathJsonFn, header = FALSE, sep = "\n", data.table = FALSE)
@@ -444,7 +445,7 @@ makepath <- function (){
   tmpPath <- tempfile()
   dir.create(tmpPath)
   baseFn <- "data"
-  extFn <- "json"
+  extFn <- "geojson"
   jsonFn <- paste0(baseFn,".",extFn)
   pathJsonFn <- paste0(tmpPath,"/",jsonFn)
   return(list(tmpPath,pathJsonFn,jsonFn))
