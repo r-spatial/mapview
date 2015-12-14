@@ -5,8 +5,8 @@ Version: 0.8.9
 Date: 2015-11-28
 Authors@R: c(
       person("Tim", "Appelhans", email = "tim.appelhans@gmail.com", role = c("cre", "aut")),
-      person("Florian", "Detsch", email = "florian.detsch@staff.uni-marburg.de", role = c("aut")),
       person("Christoph", "Reudenbach", email = "reudenbach@geo.uni-marburg.de", role = c("aut")),
+      person("Florian", "Detsch", email = "florian.detsch@staff.uni-marburg.de", role = c("aut")),
       person("Stefan", "Woellauer", email = "stephan.woellauer@geo.uni-marburg.de", role = c("aut")),
       person("Spaska", "Forteva", email = "spaska.forteva@geo.uni-marburg.de", role = c("ctb")),
       person("Thomas", "Nauss", email = "nauss@staff.uni-marburg.de", role = c("ctb")),

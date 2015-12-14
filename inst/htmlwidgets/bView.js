@@ -66,8 +66,8 @@ HTMLWidgets.widget({
     //var data = x[2];
 //    var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
     //var data = $.parseJSON(HTMLWidgets.getAttachmentUrl('data', 'jsondata'));
-    var baseZ = 10 //  x.zoom[0] + 4;
-    var maxZ = 10 //x.zoom[0]  + 4;
+    var baseZ = 9 //  x.zoom[0] + 4;
+    var maxZ = 9 //x.zoom[0]  + 4;
     var color = x.color[255];
     var opacity = x.opacity;
     var lnWidth = x.weight;

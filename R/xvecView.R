@@ -145,7 +145,7 @@ fpView <- function(x,
 
     # create list of user data that is passed to the widget
     lst_x = list(
-      color = color,
+      color = col2Hex(color),
       layer = map.types,
       data  = "undefined",
       cnames = cnames,
@@ -339,7 +339,7 @@ bView <- function(x,
     file.remove(paste0(tmpPath,"/",dir(path = tmpPath, pattern = "shape")))
 
     # for fastet json read in a html document we wrap it with var data = {};
-    lns <- fread(pathJsonFn, header = FALSE, sep = "\n", data.table = FALSE)
+    lns <- data.table::fread(pathJsonFn, header = FALSE, sep = "\n", data.table = FALSE)
     lns[1,] <- 'var data = {'
     lns[length(lns[,1]),]<- '};'
     write.table(lns, pathJsonFn, sep="\n", row.names=FALSE, col.names=FALSE, quote = FALSE)
@@ -351,7 +351,7 @@ bView <- function(x,
 
     # getting the extent and map center
     ext <- extent(x)
-    yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
+    yc <- (ext@ymax-ext@ymin) * 0.5 + ext@ymin
     xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
 
   } else {
@@ -359,7 +359,7 @@ bView <- function(x,
   }
 
   # create list of user data that is passed to the widget
-  lst_x <- list(color = color,
+  lst_x <- list(color = col2Hex(color),
                 layer = map.types,
                 data  = 'undefined',
                 html = getPopupStyle(),
