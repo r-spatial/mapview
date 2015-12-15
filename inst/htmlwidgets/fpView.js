@@ -19,9 +19,10 @@ HTMLWidgets.widget({
     northEast = L.latLng(90, 180),
     bounds = L.latLngBounds(southWest, northEast);
     var map = new L.map(el, {
-      center: [47, 10],
-      zoom: 10
+      center: [0, 0],
+      maxBounds: bounds
     });
+
     // we could add more (static) leaflet stuff here ;-)
 
     // The map is rendered staticly => so there would be no output binding
