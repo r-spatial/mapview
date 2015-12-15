@@ -397,7 +397,7 @@ bView <- function(x,
                 ymin = ext@ymin,
                 zoom = zoom,
                 legend = legend,
-                values = x@data )
+                values = x@data)
 
   # creating the widget
   bViewInternal(jFn = pathJsonFn,  x = lst_x)
