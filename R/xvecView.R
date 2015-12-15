@@ -21,7 +21,7 @@ if (!isGeneric('xVecView')) {
 # @param map.types character spcifications for the base maps.
 # see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
 # for available options.
-# @param layer.opacity opacity of the raster layer(s) (not implemented yet)
+# @param alpha opacity of the raster layer(s) (not implemented yet)
 # @param legend should a legend be plotted (not implemented yet)
 # @param legend.opacity opacity of the legend (not implemented yet)
 # @param ... additional arguments passed on to repective functions.
@@ -74,7 +74,7 @@ fpView <- function(x,
                    values = NULL,
                    map.types = mapviewGetOption("basemaps"),
                    legend = FALSE,
-                   layer.opacity = 0.8,
+                   alpha = 0.8,
                    legend.opacity = 1,
                    weight = 2,
                    verbose = mapviewGetOption("verbose"),
@@ -154,7 +154,7 @@ fpView <- function(x,
       centerLon = xc,
       popTemplate = getPopupStyle(),
       cHelp = cHelp,
-      layer.opacity = layer.opacity,
+      layer.opacity = alpha,
       layername = layer.name,
       xmax = ext@xmax,
       ymax = ext@ymax,
@@ -230,7 +230,7 @@ renderfpView <- function(expr, env = parent.frame(), quoted = FALSE) {
 # @param map.types character spcifications for the base maps.
 # see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
 # for available options.
-# @param layer.opacity opacity of the raster layer(s) (not implemented yet)
+# @param alpha opacity of the raster layer(s) (not implemented yet)
 # @param legend should a legend be plotted (not implemented yet)
 # @param legend.opacity opacity of the legend (not implemented yet)
 # @param ... additional arguments passed on to repective functions.
@@ -294,9 +294,9 @@ bView <- function(x,
                   values,
                   map.types,
                   legend,
-                  layer.opacity,
+                  alpha.regions,
                   legend.opacity,
-                  weight,
+                  lwd,
                   verbose,
                   layer.name,
                   popup) {
@@ -388,8 +388,8 @@ bView <- function(x,
                 html = getPopupStyle(),
                 centerLat = yc,
                 centerLon = xc,
-                opacity = layer.opacity,
-                weight = weight,
+                opacity = alpha.regions,
+                weight = lwd,
                 layername = layer.name,
                 xmax = ext@xmax,
                 ymax = ext@ymax,

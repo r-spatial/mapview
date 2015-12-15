@@ -11,7 +11,7 @@ leafletRL <- function(x,
                       use.layer.names,
                       values,
                       map.types,
-                      layer.opacity,
+                      alpha,
                       legend,
                       legend.opacity,
                       trim,
@@ -81,7 +81,7 @@ leafletRL <- function(x,
                                x = x,
                                colors = pal,
                                project = FALSE,
-                               opacity = layer.opacity,
+                               opacity = alpha,
                                group = grp,
                                ...)
 
@@ -190,7 +190,10 @@ leafletPointsDF <- function(x,
                             burst,
                             color,
                             na.color,
-                            radius,
+                            cex,
+                            lwd,
+                            alpha,
+                            alpha.regions,
                             map.types,
                             legend,
                             legend.opacity,
@@ -203,7 +206,7 @@ leafletPointsDF <- function(x,
   tst <- sapply(pkgs, "requireNamespace",
                 quietly = TRUE, USE.NAMES = FALSE)
 
-  rad_vals <- circleRadius(x, radius)
+  rad_vals <- circleRadius(x, cex)
   if(!is.null(zcol)) x <- x[, zcol]
   if(!is.null(zcol)) burst <- TRUE
 
@@ -240,6 +243,10 @@ leafletPointsDF <- function(x,
                                      lat = coordinates(lst[[i]])[, 2],
                                      group = names(lst[[i]]),
                                      color = pal_n[[i]](vals[[i]]),
+                                     #radius = cex,
+                                     weight = lwd,
+                                     opacity = alpha,
+                                     fillOpacity = alpha.regions,
                                      popup = popup,
                                      #data = lst[[i]],
                                      radius = rad_vals,
@@ -281,6 +288,10 @@ leafletPointsDF <- function(x,
                                    lat = coordinates(x)[, 2],
                                    group = grp,
                                    color = color[length(color)],
+                                   #radius = cex,
+                                   weight = lwd,
+                                   opacity = alpha,
+                                   fillOpacity = alpha.regions,
                                    popup = popup,
                                    #data = x,
                                    radius = rad_vals,
@@ -309,6 +320,10 @@ leafletPointsDF <- function(x,
 
 leafletPoints <- function(x,
                           map,
+                          cex,
+                          lwd,
+                          alpha,
+                          alpha.regions,
                           na.color,
                           map.types,
                           verbose,
@@ -327,8 +342,13 @@ leafletPoints <- function(x,
 
   grp <- layer.name
 
-  m <- leaflet::addCircleMarkers(m, lng = coordinates(x)[, 1],
+  m <- leaflet::addCircleMarkers(m,
+                                 lng = coordinates(x)[, 1],
                                  lat = coordinates(x)[, 2],
+                                 radius = cex,
+                                 weight = lwd,
+                                 opacity = alpha,
+                                 fillOpacity = alpha.regions,
                                  group = grp,
                                  popup = txt,
                                  ...)
@@ -357,7 +377,9 @@ leafletPolygonsDF <- function(x,
                               map.types,
                               legend,
                               legend.opacity,
-                              weight,
+                              lwd,
+                              alpha,
+                              alpha.regions,
                               verbose,
                               layer.name,
                               popup,
@@ -411,7 +433,9 @@ leafletPolygonsDF <- function(x,
 
       clrs <- pal_n[[i]](vals[[i]])
       m <- leaflet::addPolygons(m,
-                                weight = weight,
+                                weight = lwd,
+                                opacity = alpha,
+                                fillOpacity = alpha.regions,
                                 group = grp,
                                 color = clrs,
                                 popup = popup,
@@ -447,7 +471,9 @@ leafletPolygonsDF <- function(x,
     if (pop.null) popup <- brewPopupTable(x)
 
     m <- leaflet::addPolygons(m,
-                              weight = weight,
+                              weight = lwd,
+                              opacity = alpha,
+                              fillOpacity = alpha.regions,
                               group = grp,
                               color = color[length(color)],
                               popup = popup,
@@ -479,7 +505,9 @@ leafletPolygons <- function(x,
                             map,
                             na.color,
                             map.types,
-                            weight,
+                            lwd,
+                            alpha,
+                            alpha.regions,
                             verbose,
                             layer.name,
                             ...) {
@@ -495,9 +523,11 @@ leafletPolygons <- function(x,
   grp <- layer.name
 
   m <- leaflet::addPolygons(m,
-                            weight = weight,
+                            weight = lwd,
                             group = grp,
                             data = x,
+                            opacity = alpha,
+                            fillOpacity = alpha.regions,
                             ...)
 
   m <- mapViewLayersControl(map = m,
@@ -522,6 +552,8 @@ leafletLinesDF <- function(x,
                            na.color,
                            values,
                            map.types,
+                           lwd,
+                           alpha,
                            legend,
                            legend.opacity,
                            verbose,
@@ -578,7 +610,7 @@ leafletLinesDF <- function(x,
       df <- as.data.frame(sapply(x@data, as.character),
                           stringsAsFactors = FALSE)
 
-      grp <- names(df)
+      grp <- names(df)[i]
 
       if (pop.null) popup <- brewPopupTable(lst[[i]])
 
@@ -587,15 +619,13 @@ leafletLinesDF <- function(x,
                                  color = pal_n[[i]](vals[[i]]),
                                  popup = popup,
                                  data = lst[[i]],
+                                 weight = lwd,
+                                 opacity = alpha,
                                  ...)
 
       m <- leaflet::addLegend(map = m, position = "topright",
                               pal = pal_n[[i]], opacity = 1,
                               values = vals[[i]], title = grp)
-#
-#       m <- mapViewLayersControl(map = m,
-#                                 map.types = map.types,
-#                                 names = grp)
 
     }
 
@@ -621,6 +651,8 @@ leafletLinesDF <- function(x,
                                color = color[length(color)],
                                popup = popup,
                                data = x,
+                               weight = lwd,
+                               opacity = alpha,
                                ...)
 
     m <- mapViewLayersControl(map = m,
@@ -642,6 +674,8 @@ leafletLines <- function(x,
                          map,
                          na.color,
                          map.types,
+                         lwd,
+                         alpha,
                          verbose,
                          layer.name,
                          ...) {
@@ -661,6 +695,8 @@ leafletLines <- function(x,
   m <- leaflet::addPolylines(m,
                              group = grp,
                              data = x,
+                             weight = lwd,
+                             opacity = alpha,
                              ...)
 
   m <- mapViewLayersControl(map = m,
@@ -789,7 +825,7 @@ leafletMissing <- function(map.types,
 #                            na.color,
 #                            use.layer.names,
 #                            values,
-#                            layer.opacity,
+#                            alpha,
 #                            legend,
 #                            legend.opacity,
 #                            trim,
@@ -845,7 +881,7 @@ leafletMissing <- function(map.types,
 #                                x = x,
 #                                colors = pal,
 #                                project = FALSE,
-#                                opacity = layer.opacity,
+#                                opacity = alpha,
 #                                group = grp,
 #                                ...)
 #

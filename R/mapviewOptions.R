@@ -23,7 +23,7 @@
 #' using special functionality which will provide much more speed and better handling.
 #' This means that standard functionality is reduced.
 #' For example adding layers via "+" is not possible anymore.
-#' @param maxpooints numeric. Maximum number of points allowed for leaflet overlay
+#' @param maxpoints numeric. Maximum number of points allowed for leaflet overlay
 #' rendering. If this number is exceeded rendering will be done
 #' using special functionality which will provide much more speed and better handling.
 #' This means that standard functionality is reduced.
