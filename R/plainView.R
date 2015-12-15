@@ -6,7 +6,7 @@ if ( !isGeneric('plainView') ) {
 #' View spatial objects interactively without background map but in any CRS
 #'
 #' @description
-#' this function produces an interactive GIS-like view of the specified
+#' this function produces an interactive view of the specified
 #' spatial object(s) on a plain grey background but for any CRS.
 #'
 #' @param x a \code{\link{raster}}* object

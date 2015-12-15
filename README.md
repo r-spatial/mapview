@@ -1,5 +1,5 @@
 # mapview
-GIS-like viewing of spatial objects in R
+Interactive viewing of spatial objects in R
 
 See 
 

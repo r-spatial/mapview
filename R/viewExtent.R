@@ -1,7 +1,7 @@
 #' View extent/bbox of spatial objects interactively
 #'
 #' @description
-#' This function produces an interactive GIS-like view of the extent/bbox
+#' This function produces an interactive view of the extent/bbox
 #' of the supplied spatial object
 #'
 #' @param x either a Raster* object or a Spatial* object

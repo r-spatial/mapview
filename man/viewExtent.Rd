@@ -25,7 +25,7 @@ standard background layers are cretaed}
 \item{...}{additional arguments passed on to \code{\link{addRectangles}}}
 }
 \description{
-This function produces an interactive GIS-like view of the extent/bbox
+This function produces an interactive view of the extent/bbox
 of the supplied spatial object
 }
 \section{Functions}{

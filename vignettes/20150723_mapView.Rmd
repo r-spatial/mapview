@@ -1,5 +1,5 @@
 ---
-title: "mapview - basic interactive viewing of spatial data in R"
+title: "mapview - interactive viewing of spatial data in R"
 author: "Tim Appelhans"
 date: "July 23, 2015"
 output: 
@@ -38,9 +38,9 @@ Working with spatial data in R I find myself quite often in the need to quickly 
 
 Both these approaches are semi-optimal. Where option 1. is fine for a quick glance at a coarse patterns, it lacks the possibility to have a closer look into the results via zooming and panning. While option 2. provides the interactivity, the detour via the hard disk is annoying (at best), especially when fine-tuning and checking regularly.
 
-I attended this years useR2015! conference in Aalborg (which was marvelous!) and attended the session on interactive graphics in R where Joe Cheng from <a href="https://www.rstudio.com/" target="_blank">RStudio</a> presented the <a href="https://rstudio.github.io/leaflet/" target="_blank">leaflet package</a>. leaflet is great as it gives you a great deal of control over the individual map components. This, however, also means that in order to get some useful visualization of spatial objects, we need to do a fair bit of coding for the map components to show what we want (e.g. we would need to provide popup-text manually for each object that we want to map). What a GIS-like functionality would need is some default behaviour for different objects from the spatial universe.
+I attended this years useR2015! conference in Aalborg (which was marvelous!) and attended the session on interactive graphics in R where Joe Cheng from <a href="https://www.rstudio.com/" target="_blank">RStudio</a> presented the <a href="https://rstudio.github.io/leaflet/" target="_blank">leaflet package</a>. leaflet is great as it gives you a great deal of control over the individual map components. This, however, also means that in order to get some useful visualization of spatial objects, we need to do a fair bit of coding for the map components to show what we want (e.g. we would need to provide popup-text manually for each object that we want to map). What an interactive functionality would need is some default behaviour for different objects from the spatial universe.
 
-This got me thinking and sparked my enthusiasm to write some wrapper functions for leaflet to provide at least very basic GIS-like interactive graphing capabilities that are directly accessible within RStudio (or the web browser, if you're not using RStudio). 
+This got me thinking and sparked my enthusiasm to write some wrapper functions for leaflet to provide at least very basic interactive graphing capabilities that are directly accessible within RStudio (or the web browser, if you're not using RStudio). 
 
 ------
 

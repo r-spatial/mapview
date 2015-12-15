@@ -150,7 +150,7 @@ of the column(s) to be used for defining the size of circles}
 \item{easter.egg}{well, you might find out if you set this to TRUE}
 }
 \description{
-this function produces an interactive GIS-like view of the specified
+this function produces an interactive view of the specified
 spatial object(s) on top of the specified base maps.
 }
 \section{Methods (by class)}{

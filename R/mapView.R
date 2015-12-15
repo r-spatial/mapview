@@ -6,7 +6,7 @@ if ( !isGeneric('mapView') ) {
 #' View spatial objects interactively
 #'
 #' @description
-#' this function produces an interactive GIS-like view of the specified
+#' this function produces an interactive view of the specified
 #' spatial object(s) on top of the specified base maps.
 #'
 #'

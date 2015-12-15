@@ -57,7 +57,7 @@ See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 of the column to be rendered}
 }
 \description{
-this function produces an interactive GIS-like view of the specified
+this function produces an interactive view of the specified
 spatial object(s) on a plain grey background but for any CRS.
 }
 \section{Methods (by class)}{
