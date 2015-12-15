@@ -75,7 +75,6 @@ fpView <- function(x,
                    map.types = mapviewGetOption("basemaps"),
                    legend = FALSE,
                    alpha = 0.8,
-                   legend.opacity = 1,
                    weight = 2,
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
@@ -159,7 +158,9 @@ fpView <- function(x,
       xmax = ext@xmax,
       ymax = ext@ymax,
       xmin = ext@xmin,
-      ymin = ext@ymin
+      ymin = ext@ymin,
+      legend = legend,
+      values = values
     )
   }
 
@@ -295,7 +296,6 @@ bView <- function(x,
                   map.types,
                   legend,
                   alpha.regions,
-                  legend.opacity,
                   lwd,
                   verbose,
                   layer.name,
@@ -395,7 +395,9 @@ bView <- function(x,
                 ymax = ext@ymax,
                 xmin = ext@xmin,
                 ymin = ext@ymin,
-                zoom = zoom)
+                zoom = zoom,
+                legend = legend,
+                values = x@data )
 
   # creating the widget
   bViewInternal(jFn = pathJsonFn,  x = lst_x)
