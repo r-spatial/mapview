@@ -77,8 +77,9 @@ brewPopupTable <- function(x, use_cpp = TRUE) {
     }
 
     if (!class(x)[1] %in% c("SpatialLines", "SpatialLinesDataFrame")) {
-      mat <- cbind(mat, x = as.character(round(sp::coordinates(x)[, 1], 2)))
-      mat <- cbind(mat, y = as.character(round(sp::coordinates(x)[, 2], 2)))
+      mat <- cbind(Longitude = as.character(round(sp::coordinates(x)[, 1], 2)),
+                   Latitude = as.character(round(sp::coordinates(x)[, 2], 2)),
+                   mat)
     }
 
     cols <- colnames(mat)

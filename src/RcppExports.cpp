@@ -42,6 +42,18 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// brewPopupCoords
+std::string brewPopupCoords(std::string colname, std::string value);
+RcppExport SEXP mapview_brewPopupCoords(SEXP colnameSEXP, SEXP valueSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::string >::type colname(colnameSEXP);
+    Rcpp::traits::input_parameter< std::string >::type value(valueSEXP);
+    __result = Rcpp::wrap(brewPopupCoords(colname, value));
+    return __result;
+END_RCPP
+}
 // mergePopupRows
 std::string mergePopupRows(CharacterVector names, CharacterVector values);
 RcppExport SEXP mapview_mergePopupRows(SEXP namesSEXP, SEXP valuesSEXP) {

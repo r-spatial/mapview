@@ -18,6 +18,11 @@ color: #000000;
 background-color: #F0F5FF;
 }
 
+#popup tr.coord td {
+color: #000000;
+background-color: #A8E6A8;
+}
+
 div.scrollableContainer {
 max-height: 200px;
 max-width: 100%;

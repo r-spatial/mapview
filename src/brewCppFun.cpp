@@ -67,6 +67,28 @@ std::string brewPopupRowAltC(std::string colname, std::string value) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// standard pattern used for coordinates ///////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+// [[Rcpp::export]]
+std::string brewPopupCoords(std::string colname, std::string value) {
+
+  std::string chColString;
+  chColString = std::string("<td>") + colname + "</td>";
+
+  std::ostringstream ssVal;
+  ssVal << value;
+
+  std::string chValString;
+  chValString = std::string("<td>") + ssVal.str() + "</td>";
+
+  std::string chOutString;
+  chOutString = std::string("<tr class=\'coord\'>" + chColString + chValString + "</tr>");
+
+  return chOutString;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // merge alternating string patterns per row ///////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -84,13 +106,20 @@ std::string mergePopupRows(CharacterVector names, CharacterVector values) {
     ssName << names[i];
     ssValue << values[i];
 
-    // odd
-    if (i%2 == 0) {
-      chOut = chOut + brewPopupRowC(ssName.str(), ssValue.str());
-
-    // even
+    // coords
+    if (names[i] == "Longitude" | names[i] == "Latitude") {
+      chOut = chOut + brewPopupCoords(ssName.str(), ssValue.str());
     } else {
-      chOut = chOut + brewPopupRowAltC(ssName.str(), ssValue.str());
+
+      // even variable columns
+      if (i%2 == 0) {
+        chOut = chOut + brewPopupRowC(ssName.str(), ssValue.str());
+
+      // odd variable columns
+      } else {
+        chOut = chOut + brewPopupRowAltC(ssName.str(), ssValue.str());
+      }
+
     }
 
     ssName.str(std::string());
