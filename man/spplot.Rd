@@ -6,10 +6,17 @@
 \alias{spplot,mapview-method}
 \title{spplot method for objects of class 'mapview'}
 \usage{
-\S4method{spplot}{mapview}(obj, ...)
+\S4method{spplot}{mapview}(obj, zoom = NULL,
+  col.regions = mapviewPalette(256), alpha.regions = 0.8, ...)
 }
 \arguments{
-\item{x}{an object of class 'mapview'}
+\item{obj}{an object of class 'mapview'}
+
+\item{zoom}{Zoom level, see \code{\link{openmap}}.}
+
+\item{col.regions, alpha.regions}{See \code{\link[sp]{spplot}}.}
+
+\item{...}{Further arguments passed on to \code{\link[sp]{spplot}}.}
 }
 \description{
 this function attempts to produce a static version of the specified
@@ -27,6 +34,6 @@ spplot(m2)
 
 }
 \author{
-Tim Appelhans
+Tim Appelhans, Florian Detsch
 }
 

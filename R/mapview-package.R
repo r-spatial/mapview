@@ -14,7 +14,7 @@
 #' \cr
 #' \emph{Maintainer:} Tim Appelhans \email{tim.appelhans@@gmail.com}
 #'
-#' @import leaflet sp raster satellite scales Rcpp methods png lattice rgdal gdalUtils
+#' @import leaflet sp raster satellite scales Rcpp methods png lattice rgdal gdalUtils latticeExtra rasterVis OpenStreetMap
 #' @importFrom grDevices rgb
 #'
 #' @useDynLib mapview
