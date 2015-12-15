@@ -14,11 +14,15 @@ HTMLWidgets.widget({
     // initialize the leaflet map staticly at the "el" object
     // hard-coding center/zoom here for a non-empty initial view, since there
     // is no way for htmlwidgets to pass initial params to initialize()
+    // so we set maxbounds to the world and center somewhat at 0 Lat 0 Lon
+    var southWest = L.latLng(-90, -180),
+    northEast = L.latLng(90, 180),
+    bounds = L.latLngBounds(southWest, northEast);
     var map = new L.map(el, {
       center: [47, 10],
       zoom: 10
     });
-    // we even could add more (static) leaflet stuff here ;-)
+    // we could add more (static) leaflet stuff here ;-)
 
     // The map is rendered staticly => so there would be no output binding
     // for the further handling we generate the binding to el this.getId(el)
@@ -40,25 +44,21 @@ HTMLWidgets.widget({
 
    // we define the first layer of the list to be the default one
     var defaultLayer = L.tileLayer.provider(x.layer[0]).addTo(map);
+    var baseLayers = {};
+    for (var i = 0; i < x.layer.length;  i++) {
+      baseLayers[x.layer[i] ] = L.tileLayer.provider(x.layer[i]);
+      }
 
-        var baseLayers = {};
-        for (var i = 0; i < x.layer.length;  i++) {
-        baseLayers[x.layer[i] ] = L.tileLayer.provider(x.layer[i]);
-        }
+    //focus on the bounds of the input data extent using a virtual marker layer
     var mincorner = L.marker([x.ymin, x.xmin]);
     var maxcorner = L.marker([x.ymax, x.xmax]);
     var group = new L.featureGroup([maxcorner, mincorner]);
     map.fitBounds(group.getBounds());
-    // adding all together and the layer control
 
-     //  var layerControl = L.control.layers(baseLayers).addTo(map);
-    //map.setView([x.centerLat, x.centerLon]);
-
-
-  // get the file locations from the shaders and the static external file
-  var vertexshader = HTMLWidgets.getAttachmentUrl('vertex-shader', 'vertex-shader');
-  var fragmentshader = HTMLWidgets.getAttachmentUrl('fragment-shader', 'fragment-shader');
-  var color = x.color;
+    // get the file locations from the shaders and the static external file
+    var vertexshader = HTMLWidgets.getAttachmentUrl('vertex-shader', 'vertex-shader');
+    var fragmentshader = HTMLWidgets.getAttachmentUrl('fragment-shader', 'fragment-shader');
+    var color = x.color;
 
   // after reading the shader files data, popuptemplates and shaders are passed to the
   // L.Glify leaflet extension that handles the webGL shading process
@@ -67,37 +67,35 @@ HTMLWidgets.widget({
   if (x.data === 'undefined') {
     var data = HTMLWidgets.getAttachmentUrl('data');
      wget([fragmentshader, vertexshader, data],function(fragmentshader, vertexshader, data) {
-                    L.glify({
-                        map: map,
-                        vertexShader: vertexshader,
-                        fragmentShader: fragmentshader,
-                        clickPoint: function (point) {
-                        //set up a standalone popup (use a popup as a layer)
-                        contentToHtml = x.popTemplate;
-                            for (var i = 0; i < x.cHelp.length;  i++) {
-                              if (i == 0) {
-                                contentToHtml += x.cHelp[i] +  point.lng + "</td></tr>" ;
-                              }
-                              if (i == 1) {
-                                contentToHtml += x.cHelp[i] +  point.lat + "</td></tr>" ;
-                              }
-                              if (i > 1)  {
-                                contentToHtml += x.cHelp[i] +  point.a[i-2] + "</td></tr>" ;
-                              }
-                              }
-                        contentToHtml += "</table></body></html>";
-                        L.popup()
-                          .setLatLng(point)
-                          .setContent(contentToHtml)
-                          .openOn(map);
-                          //console.log(point);
+            L.glify({
+                    map: map,
+                    vertexShader: vertexshader,
+                    fragmentShader: fragmentshader,
+                    clickPoint: function (point) {
+                    //set up a standalone popup (use a popup as a layer)
+                    contentToHtml = x.popTemplate;
+                    for (var i = 0; i < x.cHelp.length;  i++) {
+                      if (i == 0) {
+                          contentToHtml += x.cHelp[i] +  point.lng + "</td></tr>"                           }
+                      if (i == 1) {
+                          contentToHtml += x.cHelp[i] +  point.lat + "</td></tr>"                           }
+                      if (i > 1)  {
+                          contentToHtml += x.cHelp[i] +  point.a[i-2] + "</td></tr>" ;
+                          }
+                      }
+                      contentToHtml += "</table></body></html>";
+                      L.popup()
+                              .setLatLng(point)
+                              .setContent(contentToHtml)
+                              .openOn(map);
+                              //console.log(point);
                         },
-                        data: JSON.parse(data),
-                        color: color,
-                        baseLayers: baseLayers
-                       // layerControl:layerControl
+                      data: JSON.parse(data),
+                      color: color,
+                      baseLayers: baseLayers
+
                     });
-  })
+      })
 
   // grab the special div we generated in the beginning
   // and put the mousmove output there
@@ -113,15 +111,6 @@ HTMLWidgets.widget({
     var data = x.data;
   }
 
-  // grab the special div we generated in the beginning
-  // and put the mousmove output there
-  lnlt = document.getElementById('lnlt');
-  map.on('mousemove', function (e) {
-        lnlt.textContent =
-                " Latitude: " + (e.latlng.lat).toFixed(5)
-                + " | Longitude: " + (e.latlng.lng).toFixed(5)
-                + " | Zoom: " + map.getZoom() + " ";
-  });
 },
 
 

@@ -441,8 +441,8 @@
          * @returns {*}
          */
         lookup: function(coords) {
-            var x = coords.lat - 0.0004,
-                y,
+            var x = coords.lat - 0.004,
+                y ,
 
                 xMax = coords.lat + 0.003,
                 yMax = coords.lng + 0.003,
@@ -455,7 +455,7 @@
                 key;
 
             for (; x <= xMax; x+=0.00001) {
-                y = coords.lng -0.0004;
+                y = coords.lng - 0.004;
                 for (; y <= yMax; y+=0.00001) {
                     key = x.toFixed(5) + 'x' + y.toFixed(5);
                     found = this.latLngLookup[key];
