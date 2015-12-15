@@ -35,3 +35,13 @@ mapviewColors <- function(col.regions,
   return(f)
 
 }
+
+
+col2Hex <- function(col) {
+
+  mat <- grDevices::col2rgb(col)
+  hx <- grDevices::rgb(mat[1, ]/255, mat[2, ]/255, mat[3, ]/255)
+  return(hx)
+
+}
+

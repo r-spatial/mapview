@@ -68,8 +68,6 @@ HTMLWidgets.widget({
     map.fitBounds(group.getBounds());
 
 
-
-
     // var data = x[2];
     // var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
     // var data = $.parseJSON(HTMLWidgets.getAttachmentUrl('data', 'jsondata'));

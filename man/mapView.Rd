@@ -47,8 +47,8 @@
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
 
-\S4method{mapView}{SpatialPoints}(x, map = NULL,
-  na.color = mapviewGetOption("na.color"),
+\S4method{mapView}{SpatialPoints}(x, map = NULL, zcol = NULL,
+  color = "#460000", na.color = mapviewGetOption("na.color"),
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), ...)
@@ -61,7 +61,7 @@
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
 
-\S4method{mapView}{SpatialPolygons}(x, map = NULL, color = "blue",
+\S4method{mapView}{SpatialPolygons}(x, map = NULL, color = "#460000",
   na.color = mapviewGetOption("na.color"),
   map.types = mapviewGetOption("basemaps"), weight = 2,
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
@@ -76,8 +76,8 @@
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
 
-\S4method{mapView}{SpatialLines}(x, map = NULL,
-  na.color = mapviewGetOption("na.color"),
+\S4method{mapView}{SpatialLines}(x, map = NULL, zcol = NULL,
+  color = "#460000", na.color = mapviewGetOption("na.color"),
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), ...)
