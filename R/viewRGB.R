@@ -18,7 +18,7 @@ if ( !isGeneric('viewRGB') ) {
 #' @param r integer. Index of the Red channel, between 1 and nlayers(x)
 #' @param g integer. Index of the Green channel, between 1 and nlayers(x)
 #' @param b integer. Index of the Blue channel, between 1 and nlayers(x)
-#' @param quantiles the upper and lower quantiles used for streching
+#' @param quantiles the upper and lower quantiles used for color stretching
 #' @param map the map to which the layer should be added
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.

@@ -30,9 +30,12 @@ Imports:
     png,
     Rcpp (>= 0.11.3),
     lattice,
+    latticeExtra,
     rgdal,
     gdalUtils,
-    data.table
+    data.table,
+    rasterVis,
+    OpenStreetMap
 LinkingTo: Rcpp
 RoxygenNote: 5.0.1
 SystemRequirements: GNU make
