@@ -6,12 +6,10 @@ raster2PNG <- function(x,
                        at,
                        na.color,
                        maxpixels) {
-cat("size\n")
+
   x <- rasterCheckSize(x, maxpixels = maxpixels)
 
-  cat("matrix\n")
   mat <- t(raster::as.matrix(x))
-  cat("colors\n")
 
   if (missing(at)) at <- lattice::do.breaks(range(mat, na.rm = TRUE), 256)
 
@@ -19,7 +17,6 @@ cat("size\n")
                                 at = at,
                                 col.regions = col.regions)
   #cols <- clrs(t(mat))
-  cat("raw png\n")
   png_dat <- as.raw(grDevices::col2rgb(cols, alpha = TRUE))
   dim(png_dat) <- c(4, ncol(x), nrow(x))
 

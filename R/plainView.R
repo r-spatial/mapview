@@ -122,11 +122,10 @@ setMethod('plainView', signature(x = 'RasterLayer'),
                                 at = at,
                                 na.color = na.color,
                                 maxpixels = maxpixels)
-              cat("write png\n")
+
               png::writePNG(png, fl)
             #}
 
-cat("plainViewInternal\n")
             plainViewInternal(filename = fl,
                               imgnm = layer.name)
 
@@ -301,12 +300,10 @@ setMethod('plainView', signature(x = 'RasterStackBrick'),
                                 na.color = na.color,
                                 maxpixels = maxpixels,
                                 ...)
-            cat("write png\n")
             png::writePNG(png, fl)
             #}
 
             layer.name <- paste0(layer.name, "_", r, ".", g, ".", b)
-            cat("plainViewInternal\n")
             plainViewInternal(filename = fl,
                               imgnm = layer.name)
 

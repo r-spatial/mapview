@@ -79,32 +79,12 @@ In the following I would like to present a few use case scenarios that highlight
 library(mapview)
 library(raster)
 
-data(meuse.grid)
-coordinates(meuse.grid) = ~x+y
-proj4string(meuse.grid) <- CRS("+init=epsg:28992")
-gridded(meuse.grid) = TRUE
-
-## convert to RasterStack
-meuse_rst <- stack(meuse.grid)
-
-mapView(meuse_rst[[4]])
+mapView(poppendorf[[10]])
 ```
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(meuse_rst[[4]])@map
+mapView(poppendorf[[10]])@map
 ```
-
-Actually, in the original meuse.grid data frame the 4th column is a factor with 3 levels. So when we convert the RasterLayer to a factor, we will see that we get a proper factorial layer with a suitable legend.
-
-```{r, warning=FALSE, message=FALSE, fig.width=9.47}
-meuse_rst[[4]] <- as.factor(meuse_rst[[4]])
-mapView(meuse_rst[[4]])
-```
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(meuse_rst[[4]])@map
-```
-
 
 ------
 
@@ -112,11 +92,11 @@ mapView(meuse_rst[[4]])@map
 If you pass a RasterStack/Brick to `mapView()` this will create one map layer + legend for each RasterLayer. This is likely to cause problems for larger Stacks as there is currently no way to tell `mapView()` to only show the legend of the highlighted layer. This means that some of the legends won't show in the viewer. 
 
 ```{r, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(meuse_rst)
+mapView(poppendorf)
 ```
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(meuse_rst)@map
+mapView(poppendorf)@map
 ```
 
 There is (to my knowledge) currently no way to provide this functionality in the leaflet package, though I have seen <a href="http://gis.stackexchange.com/questions/68941/how-to-add-remove-legend-with-leaflet-layers-control" target="_blank">solutions for this</a> in JavaScript which means that this will likely be available in the future. 
@@ -128,11 +108,18 @@ There is (to my knowledge) currently no way to provide this functionality in the
 Given that a SpatialPixelsDataFrame has an attribute table we can use argument `zcol = "column_name"` to plot specific columns of the table. The `zcol` argument can be used with the ...DataFrame versions of all Spatial* objects that are currently supported (see below).
 
 ```{r, eval = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(meuse.grid, zcol = "dist")
+library(sp)
+
+data(meuse.grid)
+coordinates(meuse.grid) <- ~x+y
+proj4string(meuse.grid) <- CRS("+init=epsg:28992")
+gridded(meuse.grid) <- TRUE
+
+mapView(meuse.grid, zcol = "soil")
 ```
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(meuse.grid, zcol = "dist")@map
+mapView(meuse.grid, zcol = "soil")@map
 ```
 
 ------
@@ -159,19 +146,19 @@ mapView(meuse)
 mapView(meuse)@map
 ```
 
-Another argument you can use with SpatialPointsDataFrame is `radius` which takes either an integer value (default is 10) or the character name of one of the columns in the attribute table. If the latter is provided, circles are scaled relative to the respective values in the column provided.
+Another argument you can use with SpatialPointsDataFrame is `cex` which takes either an integer value (default is 10) or the character name of one of the columns in the attribute table. If the latter is provided, circles are scaled relative to the respective values in the column provided.
 
 ```{r, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(meuse, radius = "lead")
+mapView(meuse, cex = "lead")
 ```
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(meuse, radius = "lead")@map
+mapView(meuse, cex = "lead")@map
 ```
 
 ------
 
-Apart from the `radius` argument, the same functionality is implemented for 
+Apart from the `cex` argument, the same functionality is implemented for 
 
 ### SpatialPolygons(DataFrame)
 ```{r, warning=FALSE, message=FALSE, fig.width=9.47}
@@ -403,13 +390,13 @@ t <- extract(tmeanCHE, gadmCHE, fun = mean, na.rm = TRUE, sp = TRUE)
 t$Jan.mean.T <- round(t$Jan.mean.T, 2)
 
 m1 <- mapView(hillshadeCHE, col.regions = grey.colors(10000), 
-              layer.opacity = 1, layer.name = "Hillshade",
+              alpha.regions = 1, layer.name = "Hillshade",
               map.types = "Acetate.hillshading", legend = FALSE)
-m2 <- mapView(tmeanCHE, layer.opacity = 0.6, 
+m2 <- mapView(tmeanCHE, alpha.regions = 0.6, 
               map.types = c("OpenStreetMap.BlackAndWhite", 
                             "OpenStreetMap.HOT"),
               layer.name = "JanTemp")
-m3 <- mapView(t, zcol = "Jan.mean.T", fillOpacity = 0.9)
+m3 <- mapView(t, zcol = "Jan.mean.T", alpha.regions = 0.9)
 m1 + m2 + m3
 ```
 
