@@ -131,6 +131,7 @@ fpView <- function(x,
     xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
 
 
+
     # create the popups
     cHelp <- list()
     cHelp[1] <- "<tr class='coord'><td>Longitude</td><td>"
@@ -344,16 +345,37 @@ bView <- function(x,
     lns[length(lns[,1]),]<- '};'
     write.table(lns, pathJsonFn, sep="\n", row.names=FALSE, col.names=FALSE, quote = FALSE)
 
+    if (class(x)[1] == 'SpatialPolygonsDataFrame'){
+      noFeature <- length(x@polygons)
+    } else if (class(x)[1] == 'SpatialLinesDataFrame'){
+      noFeature <- length(x@lines)
+    } else {
+      # nrow(coordinates(x)
+    }
     # to be done
-    #length(x@polygons)
-    #length(x@lines)
-    #nrow(coordinates(x)
 
     # getting the extent and map center
     ext <- extent(x)
+    xArea <- (ext@ymax-ext@ymin)*(ext@xmax-ext@xmin)
     yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
     xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
 
+    tmp <- (noFeature / xArea)
+    if (tmp > 15000) {
+      zoom <- 14
+    } else if (tmp <= 15000 & tmp > 12500){
+      zoom<- 13
+    } else if (tmp <= 12500 & tmp > 10000){
+      zoom<- 12
+    }else if (tmp <= 10000 & tmp > 7500){
+      zoom<- 11
+    } else if (tmp <= 7500 & tmp > 5000 ){
+      zoom<- 10
+    } else if (tmp <= 5000 & tmp > 2000 ){
+      zoom<- 9
+    } else if (tmp <= 2000 ){
+      zoom<- 8
+    }
   } else {
     NULL
   }
@@ -371,7 +393,8 @@ bView <- function(x,
                 xmax = ext@xmax,
                 ymax = ext@ymax,
                 xmin = ext@xmin,
-                ymin = ext@ymin)
+                ymin = ext@ymin,
+                zoom = zoom)
 
   # creating the widget
   bViewInternal(jFn = pathJsonFn,  x = lst_x)

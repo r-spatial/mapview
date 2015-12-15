@@ -360,7 +360,7 @@ spCheckAdjustProjection <- function(x) {
 # Check projection of objects according to their keywords -------
 
 compareProjCode <- function (x){
-  llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
+  proj <- datum <- nodefs <- "FALSE"
   allWGS84<- as.vector(c("+init=epsg:4326", "+proj=longlat", "+datum=WGS84", "+no_defs", "+ellps=WGS84", "+towgs84=0,0,0"))
 
   for (comp in allWGS84) {

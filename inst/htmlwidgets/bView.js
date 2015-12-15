@@ -15,9 +15,14 @@ HTMLWidgets.widget({
     // initialize the leaflet map rendered staticly at the "el" object
     // hard-coding center/zoom here for a non-empty initial view, since there
     // is no way for htmlwidgets to pass initial params to initialize()
+    // so we set maxbounds to the world and center somewhat at 0 Lat 0 Lon
+    var southWest = L.latLng(-90, -180),
+    northEast = L.latLng(90, 180),
+    bounds = L.latLngBounds(southWest, northEast);
+
     var map = new L.map(el, {
-      center: [47, 10],
-      zoom: 7
+      center: [0, 0],
+      maxBounds: bounds
     });
 
 
@@ -63,30 +68,32 @@ HTMLWidgets.widget({
     map.fitBounds(group.getBounds());
 
 
-    //var data = x[2];
-//    var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
-    //var data = $.parseJSON(HTMLWidgets.getAttachmentUrl('data', 'jsondata'));
-    var baseZ = 10 //  x.zoom[0] + 4;
-    var maxZ = 10 //x.zoom[0]  + 4;
+
+
+    // var data = x[2];
+    // var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
+    // var data = $.parseJSON(HTMLWidgets.getAttachmentUrl('data', 'jsondata'));
+
+    var baseZ =  x.zoom-1 ;
+    var maxZ =  x.zoom-1  ;
     var color = x.color[255];
     var opacity = x.opacity;
     var lnWidth = x.weight;
     var tileOptions = {
-	        baseZoom: 10,           // max zoom to preserve detail on
-	        maxZoom: 10,            // zoom to slice down to on first pass
-	        maxPoints: 100,         // stop slicing each tile below this number of points
-          tolerance: 3,           // simplification tolerance (higher means simpler)
-          extent: 4096,           // tile extent (both width and height)
-          buffer: 64,   	    // tile buffer on each side
-          debug: 0,     	    // logging level (0 to disable, 1 or 2)
-	        indexMaxZoom: 0,        // max zoom in the initial tile index
+	        baseZoom: x.zoom,   // max zoom to preserve detail on
+	        maxZoom: x.zoom,    // zoom to slice down to on first pass
+	        maxPoints: 100, // stop slicing each tile below this number of points
+          tolerance: 3,   // simplification tolerance (higher means simpler)
+          extent: 4096,   // tile extent (both width and height)
+          buffer: 64,   	// tile buffer on each sidey
+          debug: 0,     	// logging level (0 to disable, 1 or 2)
+	        indexMaxZoom: 0,// max zoom in the initial tile index
           indexMaxPoints: 100000, // max number of points per tile in the index
         };
 
 	  var rt = RTree();
 	  var bd;
 
-	  //var myLayer = L.geoJson(undefined, { style: style, onEachFeature: onEachFeature/*, filter: filter*/}).addTo(map);
 	// The onEachFeature
 
 	  function onEachFeature(feature, layer) {
