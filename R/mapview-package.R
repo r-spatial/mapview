@@ -16,6 +16,7 @@
 #'
 #' @import leaflet sp raster satellite scales Rcpp methods png lattice rgdal gdalUtils latticeExtra rasterVis OpenStreetMap
 #' @importFrom grDevices rgb
+#' @importFrom utils write.table
 #'
 #' @useDynLib mapview
 #' @keywords package

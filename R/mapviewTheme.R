@@ -64,7 +64,7 @@ mapviewTheme <- function (win.fontfamily = NULL,
                 box.umbrella = list(col = "#00526D", lty = 1, lwd = 1.75))
 
   if (.Platform$OS.type == "windows" && !is.null(win.fontfamily)) {
-    windowsFonts(TheEconomistLike = win.fontfamily)
+    grDevices::windowsFonts(TheEconomistLike = win.fontfamily)
     theme$grid.pars$fontfamily <- "TheEconomistLike"
   }
   else {

@@ -73,7 +73,6 @@ fpView <- function(x,
                    na.color = mapviewGetOption("na.color"),
                    values = NULL,
                    map.types = mapviewGetOption("basemaps"),
-                   legend = FALSE,
                    alpha = 0.8,
                    weight = 2,
                    verbose = mapviewGetOption("verbose"),
@@ -159,7 +158,6 @@ fpView <- function(x,
       ymax = ext@ymax,
       xmin = ext@xmin,
       ymin = ext@ymin,
-      legend = legend,
       values = values
     )
   }
@@ -294,7 +292,6 @@ bView <- function(x,
                   na.color,
                   values,
                   map.types,
-                  legend,
                   alpha.regions,
                   lwd,
                   verbose,
@@ -396,7 +393,6 @@ bView <- function(x,
                 xmin = ext@xmin,
                 ymin = ext@ymin,
                 zoom = zoom,
-                legend = legend,
                 values = x@data)
 
   # creating the widget
