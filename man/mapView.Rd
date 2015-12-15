@@ -23,7 +23,7 @@
   col.regions = mapviewGetOption("raster.palette")(256), at,
   na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
   values = NULL, map.types = mapviewGetOption("basemaps"),
-  layer.opacity = 0.8, legend = TRUE, legend.opacity = 1, trim = TRUE,
+  alpha.regions = 0.8, legend = TRUE, legend.opacity = 1, trim = TRUE,
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), ...)
 
@@ -41,44 +41,46 @@
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapviewGetOption("vector.palette")(256),
-  na.color = mapviewGetOption("na.color"), radius = 10,
+  na.color = mapviewGetOption("na.color"), cex = 10, lwd = 2,
+  alpha = 0.6, alpha.regions = 0.2,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
   legend.opacity = 1, verbose = mapviewGetOption("verbose"),
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
 
 \S4method{mapView}{SpatialPoints}(x, map = NULL, zcol = NULL,
-  color = "#460000", na.color = mapviewGetOption("na.color"),
+  color = "#460000", na.color = mapviewGetOption("na.color"), cex = 10,
+  lwd = 2, alpha = 0.6, alpha.regions = 0.2,
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), ...)
 
 \S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapviewGetOption("vector.palette")(256),
-  na.color = mapviewGetOption("na.color"), values = NULL,
-  map.types = mapviewGetOption("basemaps"), legend = FALSE,
-  legend.opacity = 1, weight = 2, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
-  ...)
-
-\S4method{mapView}{SpatialPolygons}(x, map = NULL, color = "#460000",
-  na.color = mapviewGetOption("na.color"),
-  map.types = mapviewGetOption("basemaps"), weight = 2,
-  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), ...)
-
-\S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, weight = 2,
-  map = NULL, burst = FALSE,
-  color = mapviewGetOption("vector.palette")(256),
-  na.color = mapviewGetOption("na.color"), values = NULL,
+  na.color = mapviewGetOption("na.color"), lwd = 2, alpha = 0.8,
+  alpha.regions = 0.2, values = NULL,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
   legend.opacity = 1, verbose = mapviewGetOption("verbose"),
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
 
+\S4method{mapView}{SpatialPolygons}(x, map = NULL, color = "#460000",
+  na.color = mapviewGetOption("na.color"),
+  map.types = mapviewGetOption("basemaps"), lwd = 2, alpha.regions = 0.8,
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), ...)
+
+\S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
+  burst = FALSE, color = mapviewGetOption("vector.palette")(256),
+  na.color = mapviewGetOption("na.color"), lwd = 2, alpha = 0.8,
+  values = NULL, map.types = mapviewGetOption("basemaps"), legend = FALSE,
+  legend.opacity = 1, verbose = mapviewGetOption("verbose"),
+  layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
+  ...)
+
 \S4method{mapView}{SpatialLines}(x, map = NULL, zcol = NULL,
-  color = "#460000", na.color = mapviewGetOption("na.color"),
-  map.types = mapviewGetOption("basemaps"),
+  color = "#460000", na.color = mapviewGetOption("na.color"), lwd = 2,
+  alpha = 0.8, map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), ...)
 
@@ -112,7 +114,7 @@ Per default these are calculated based on the supplied raster* object.}
 see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
 for available options.}
 
-\item{layer.opacity}{opacity of the raster layer(s)}
+\item{alpha.regions}{opacity of the fills or the raster layer(s)}
 
 \item{legend}{should a legend be plotted}
 
@@ -135,13 +137,15 @@ of the column(s) to be rendered}
 
 \item{color}{color (palette) for points/polygons/lines}
 
-\item{radius}{attribute name(s) or column number(s) in attribute table
+\item{cex}{attribute name(s) or column number(s) in attribute table
 of the column(s) to be used for defining the size of circles}
+
+\item{lwd}{line width}
+
+\item{alpha}{opacity of the lines or points}
 
 \item{popup}{a character vector of the HTML content for the popups. See
 \code{\link{addControl}} for details.}
-
-\item{weight}{line width (see \code{\link{leaflet}} for details)}
 
 \item{easter.egg}{well, you might find out if you set this to TRUE}
 }

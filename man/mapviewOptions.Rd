@@ -25,6 +25,12 @@ values}
 objects to be rendered. Defaults to 500000. Set this higher if you have a
 potent machine or are patient enough to wait a little}
 
+\item{maxpoints}{numeric. Maximum number of points allowed for leaflet overlay
+rendering. If this number is exceeded rendering will be done
+using special functionality which will provide much more speed and better handling.
+This means that standard functionality is reduced.
+For example adding layers via "+" is not possible anymore.}
+
 \item{maxpolygons}{numeric. Maximum number of polygons allowed for leaflet overlay
 rendering. If this number is exceeded rendering will be done
 using special functionality which will provide much more speed and better handling.
@@ -59,12 +65,6 @@ placed? One of "topleft", "topright", "bottomleft", "bottomright".}
 \item{console}{logical. Should the options be printed to the console}
 
 \item{param}{character. parameter to be queried.}
-
-\item{maxpooints}{numeric. Maximum number of points allowed for leaflet overlay
-rendering. If this number is exceeded rendering will be done
-using special functionality which will provide much more speed and better handling.
-This means that standard functionality is reduced.
-For example adding layers via "+" is not possible anymore.}
 }
 \value{
 list of the current options (invisibly).
