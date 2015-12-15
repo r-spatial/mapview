@@ -11,6 +11,19 @@ getLayerControlEntriesFromMap <- function(map) {
 
 }
 
+
+getCallEntryFromMap <- function(map, call) {
+
+  #   seq_along(map$x$calls)[sapply(map$x$calls,
+  #                                 FUN = function(X) "addLayersControl" %in% X)]
+  tst <- which(sapply(map$x$calls, function(i) {
+    i$method == call
+  }))
+  return(tst)
+
+}
+
+
 # Get layer names of leaflet map ------------------------------------------
 
 getLayerNamesFromMap <- function(map) {
