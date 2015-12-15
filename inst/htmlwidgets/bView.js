@@ -74,7 +74,7 @@ HTMLWidgets.widget({
 
     var baseZ =  x.zoom-1 ;
     var maxZ =  x.zoom-1  ;
-    var color = x.color[255];
+    var color = x.color[x.color.length-1];
     var opacity = x.opacity;
     var lnWidth = x.weight;
     var tileOptions = {
