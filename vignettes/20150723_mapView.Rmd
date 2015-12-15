@@ -119,6 +119,13 @@ mapView(meuse.grid, zcol = "soil")
 ```
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+library(sp)
+
+data(meuse.grid)
+coordinates(meuse.grid) <- ~x+y
+proj4string(meuse.grid) <- CRS("+init=epsg:28992")
+gridded(meuse.grid) <- TRUE
+
 mapView(meuse.grid, zcol = "soil")@map
 ```
 
