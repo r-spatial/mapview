@@ -25,28 +25,14 @@ Add a layer to a mapview or leaflet map
 library(sp)
 library(raster)
 
-data(meuse.grid)
-coordinates(meuse.grid) = ~x+y
-proj4string(meuse.grid) <- CRS("+init=epsg:28992")
-gridded(meuse.grid) = TRUE
-meuse_rst <- stack(meuse.grid)
-
-m1 <- mapView(meuse_rst[[3]])
+m1 <- mapView(poppendorf[[10]])
 
 ### point vector data ###
-data(meuse)
-coordinates(meuse) <- ~x+y
-proj4string(meuse) <- CRS("+init=epsg:28992")
-
-m2 <- mapView(meuse)
+m2 <- mapView(breweries91)
 
 ### add two mapview objects
-m1 + m2
-'+'(m1, m2)
-
-### add spatial object to mapview object
-m1 + meuse
-'+'(m1, meuse)
+m1 + m2 # final zoom level based on m2
+'+'(m2, m1) # final zoom level based on m1
 
 }
 

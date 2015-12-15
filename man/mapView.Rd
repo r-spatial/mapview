@@ -179,29 +179,23 @@ spatial object(s) on top of the specified base maps.
 }}
 \examples{
 \dontrun{
-mapView()
+mapview()
 
 ### raster data ###
 library(sp)
 library(raster)
 
-data(meuse.grid)
-coordinates(meuse.grid) = ~x+y
-proj4string(meuse.grid) <- CRS("+init=epsg:28992")
-gridded(meuse.grid) = TRUE
-meuse_rst <- stack(meuse.grid)
-
-# raster stack
-m1 <- mapView(meuse_rst)
-m1
-
-# factorial RasterLayer
-m2 <- mapView(raster::as.factor(meuse_rst[[4]]))
-m2
-
 # SpatialPixelsDataFrame
+data(meuse.grid)
+coordinates(meuse.grid) <- ~x+y
+proj4string(meuse.grid) <- CRS("+init=epsg:28992")
+gridded(meuse.grid) <- TRUE
+
 mapView(meuse.grid, zcol = "soil")
 
+# raster stack
+m1 <- mapview(poppendorf[[10]])
+m1
 
 ### point vector data ###
 ## SpatialPointsDataFrame ##
@@ -210,23 +204,23 @@ coordinates(meuse) <- ~x+y
 proj4string(meuse) <- CRS("+init=epsg:28992")
 
 # all layers of meuse
-mapView(meuse, burst = TRUE)
+mapview(meuse, burst = TRUE)
 
 # only one layer, all info in popups
-mapView(meuse)
+mapview(meuse)
 
 ## SpatialPoints ##
 meuse_pts <- as(meuse, "SpatialPoints")
-mapView(meuse_pts)
+mapview(meuse_pts)
 
 
 
 ### overlay vector on top of raster ###
-mapView(meuse.grid, zcol = "ffreq") + meuse
+mapview(meuse.grid, zcol = "ffreq") + meuse
 
 ### polygon vector data ###
 data("gadmCHE")
-m <- mapView(gadmCHE)
+m <- mapview(gadmCHE)
 m
 
 ## points on polygons ##
@@ -238,8 +232,8 @@ m + centres
 
 ### lines vector data
 data("atlStorms2005")
-mapView(atlStorms2005)
-mapView(atlStorms2005, burst = TRUE)
+mapview(atlStorms2005)
+mapview(atlStorms2005, burst = TRUE)
 }
 
 }

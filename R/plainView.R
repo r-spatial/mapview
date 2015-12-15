@@ -42,12 +42,8 @@ if ( !isGeneric('plainView') ) {
 #' meuse_rst <- stack(meuse.grid)
 #'
 #' # raster stack
-#' m1 <- plainView(meuse_rst)
+#' m1 <- plainView(poppendorf[[10]])
 #' m1
-#'
-#' # factorial RasterLayer
-#' m2 <- plainView(raster::as.factor(meuse_rst[[4]]))
-#' m2
 #'
 #' # SpatialPixelsDataFrame
 #' plainView(meuse.grid, zcol = "soil")
