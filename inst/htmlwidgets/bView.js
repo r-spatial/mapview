@@ -66,31 +66,26 @@ HTMLWidgets.widget({
     var maxcorner = L.marker([x.ymax, x.xmax]);
     var group = new L.featureGroup([maxcorner, mincorner]);
     map.fitBounds(group.getBounds());
-var Legend = L.Control.extend({
-  options: {
-    position: 'bottomright'
-  },
-
-  onAdd: function (map) {
-    var legend = L.DomUtil.create('div', 'map-legend', L.DomUtil.get('map'));
-
-    // here we can fill the legend with colors, strings and whatever
-
-    return legend;
-  }
-});
-
-map.addControl(new Legend());
 
     //legend.addToMap( pal = x.color, values = x.values.name, opacity = legend.opacity)
 
     // var data = x[2];
     // var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
     // var data = $.parseJSON(HTMLWidgets.getAttachmentUrl('data', 'jsondata'));
+            // check if an array of colors (palette) or a single color is provided
+            if (x.color.length <= 7 ) {
+              if (x.color[1].substring(0,1) != "#" ) {
+                var col =  x.color;
+              }
+            }
+            else {
+              var col =  x.color[x.color.length-1];
+            }
+
 
     var baseZ =  x.zoom-1 ;
     var maxZ =  x.zoom-1  ;
-    var color = x.color[x.color.length-1];
+    var color = col;
     var opacity = x.opacity;
     var lnWidth = x.weight;
     var tileOptions = {

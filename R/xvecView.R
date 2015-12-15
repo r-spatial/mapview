@@ -75,7 +75,6 @@ fpView <- function(x,
                    map.types = mapviewGetOption("basemaps"),
                    legend = FALSE,
                    alpha = 0.8,
-                   legend.opacity = 1,
                    weight = 2,
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
@@ -161,7 +160,6 @@ fpView <- function(x,
       xmin = ext@xmin,
       ymin = ext@ymin,
       legend = legend,
-      legend.opacity = legend.opacity,
       values = values
     )
   }
@@ -298,7 +296,6 @@ bView <- function(x,
                   map.types,
                   legend,
                   alpha.regions,
-                  legend.opacity,
                   lwd,
                   verbose,
                   layer.name,
@@ -400,7 +397,6 @@ bView <- function(x,
                 ymin = ext@ymin,
                 zoom = zoom,
                 legend = legend,
-                legend.opacity = legend.opacity,
                 values = x@data )
 
   # creating the widget
