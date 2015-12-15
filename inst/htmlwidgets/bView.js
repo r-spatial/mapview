@@ -66,7 +66,23 @@ HTMLWidgets.widget({
     var maxcorner = L.marker([x.ymax, x.xmax]);
     var group = new L.featureGroup([maxcorner, mincorner]);
     map.fitBounds(group.getBounds());
+var Legend = L.Control.extend({
+  options: {
+    position: 'bottomright'
+  },
 
+  onAdd: function (map) {
+    var legend = L.DomUtil.create('div', 'map-legend', L.DomUtil.get('map'));
+
+    // here we can fill the legend with colors, strings and whatever
+
+    return legend;
+  }
+});
+
+map.addControl(new Legend());
+
+    //legend.addToMap( pal = x.color, values = x.values.name, opacity = legend.opacity)
 
     // var data = x[2];
     // var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');

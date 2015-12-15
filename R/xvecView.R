@@ -159,7 +159,10 @@ fpView <- function(x,
       xmax = ext@xmax,
       ymax = ext@ymax,
       xmin = ext@xmin,
-      ymin = ext@ymin
+      ymin = ext@ymin,
+      legend = legend,
+      legend.opacity = legend.opacity,
+      values = values
     )
   }
 
@@ -395,7 +398,10 @@ bView <- function(x,
                 ymax = ext@ymax,
                 xmin = ext@xmin,
                 ymin = ext@ymin,
-                zoom = zoom)
+                zoom = zoom,
+                legend = legend,
+                legend.opacity = legend.opacity,
+                values = x@data )
 
   # creating the widget
   bViewInternal(jFn = pathJsonFn,  x = lst_x)
