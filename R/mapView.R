@@ -8,7 +8,8 @@ if ( !isGeneric('mapView') ) {
 #' @description
 #' this function produces an interactive view of the specified
 #' spatial object(s) on top of the specified base maps.
-#'
+#' @details The usage of big data sets is performed by loading local copies of json files from temporary storage.
+#' This works fine for the most of the current browsers. If you use Google's chrome browser you have to start the browser with the flag \code{-allow-file-access-from-files} (i.e for windows: \code{path_to_your_chrome_installation\\chrome.exe --allow-file-access-from-files}; for linux: \code{/usr/bin/google-chrome --allow-access-from-files}) .
 #'
 #' @param x a \code{\link{raster}}* object
 #' @param map an optional existing map to be updated/added to
