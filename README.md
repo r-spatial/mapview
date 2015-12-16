@@ -1,3 +1,12 @@
+#### Package downloads from the [RStudio CRAN Mirror](http://cran-logs.rstudio.com/)</b>
+
+This month      | In total
+--------------- | -----------
+![month](http://cranlogs.r-pkg.org/badges/mapview) | ![total](http://cranlogs.r-pkg.org/badges/grand-total/mapview)
+
+<hr>
+
+
 # mapview
 Interactive viewing of spatial objects in R
 
@@ -11,18 +20,15 @@ for a demo
 
 ### Installation
 
-install and load the [devtools](http://cran.r-project.org/package=devtools) package.
-
-For the stable release version of **mapview** use
+For CRAN release version of **mapview** use
 
 
 ```S
-install_github("environmentalinformatics-marburg/mapview")
+install.packages("mapview")
 ```
 
 
-To install the development version use
-
+To install the development version install and load the [devtools](http://cran.r-project.org/package=devtools) package.
 
 ```S
 install_github("environmentalinformatics-marburg/mapview", ref = "develop")
