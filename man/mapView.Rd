@@ -14,60 +14,80 @@
 \alias{mapView,SpatialPolygons-method}
 \alias{mapView,SpatialPolygonsDataFrame-method}
 \alias{mapView,missing-method}
+\alias{mapview}
+\alias{mapview,ANY-method}
 \title{View spatial objects interactively}
 \usage{
-\S4method{mapView}{RasterLayer}(x, map = NULL, maxpixels = 5e+05,
-  color = mapViewPalette(7), na.color = "transparent",
-  use.layer.names = FALSE, values = NULL, map.types = c("OpenStreetMap",
-  "Esri.WorldImagery"), layer.opacity = 0.8, legend = TRUE,
-  legend.opacity = 1, trim = TRUE, verbose = FALSE,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+\S4method{mapView}{RasterLayer}(x, map = NULL,
+  maxpixels = mapviewGetOption("maxpixels"),
+  col.regions = mapviewGetOption("raster.palette")(256), at,
+  na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
+  values = NULL, map.types = mapviewGetOption("basemaps"),
+  alpha.regions = 0.8, legend = TRUE, legend.opacity = 1, trim = TRUE,
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), ...)
 
-\S4method{mapView}{RasterStackBrick}(x, map = NULL, maxpixels = 5e+05,
-  color = mapViewPalette(7), na.color = "transparent", values = NULL,
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), legend = TRUE,
-  legend.opacity = 1, trim = TRUE, verbose = FALSE, ...)
+\S4method{mapView}{RasterStackBrick}(x, map = NULL,
+  maxpixels = mapviewGetOption("maxpixels"),
+  col.regions = mapviewGetOption("raster.palette")(256), at,
+  na.color = mapviewGetOption("na.color"), values = NULL,
+  map.types = mapviewGetOption("basemaps"), legend = FALSE,
+  legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
+  ...)
 
 \S4method{mapView}{Satellite}(x, ...)
 
 \S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL, ...)
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
-  radius = 10, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
-  legend = TRUE, legend.opacity = 1, verbose = FALSE,
+  burst = FALSE, color = mapviewGetOption("vector.palette")(256),
+  na.color = mapviewGetOption("na.color"), cex = 10, lwd = 2,
+  alpha = 0.6, alpha.regions = 0.2,
+  map.types = mapviewGetOption("basemaps"), legend = FALSE,
+  legend.opacity = 1, verbose = mapviewGetOption("verbose"),
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
 
-\S4method{mapView}{SpatialPoints}(x, map = NULL, na.color = "transparent",
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), verbose = FALSE,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+\S4method{mapView}{SpatialPoints}(x, map = NULL, zcol = NULL,
+  color = "#460000", na.color = mapviewGetOption("na.color"), cex = 10,
+  lwd = 2, alpha = 0.6, alpha.regions = 0.2,
+  map.types = mapviewGetOption("basemaps"),
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), ...)
 
 \S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
-  values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
-  legend = TRUE, legend.opacity = 1, weight = 2, verbose = FALSE,
+  burst = FALSE, color = mapviewGetOption("vector.palette")(256),
+  na.color = mapviewGetOption("na.color"), lwd = 2, alpha = 0.8,
+  alpha.regions = 0.2, values = NULL,
+  map.types = mapviewGetOption("basemaps"), legend = FALSE,
+  legend.opacity = 1, verbose = mapviewGetOption("verbose"),
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
 
-\S4method{mapView}{SpatialPolygons}(x, map = NULL, na.color = "transparent",
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), weight = 2,
-  verbose = FALSE, layer.name = deparse(substitute(x, env =
-  parent.frame())), ...)
+\S4method{mapView}{SpatialPolygons}(x, map = NULL, color = "#460000",
+  na.color = mapviewGetOption("na.color"),
+  map.types = mapviewGetOption("basemaps"), lwd = 2, alpha.regions = 0.8,
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), ...)
 
 \S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapViewPalette(7), na.color = "transparent",
-  values = NULL, map.types = c("OpenStreetMap", "Esri.WorldImagery"),
-  legend = TRUE, legend.opacity = 1, verbose = FALSE,
+  burst = FALSE, color = mapviewGetOption("vector.palette")(256),
+  na.color = mapviewGetOption("na.color"), lwd = 2, alpha = 0.8,
+  values = NULL, map.types = mapviewGetOption("basemaps"), legend = FALSE,
+  legend.opacity = 1, verbose = mapviewGetOption("verbose"),
   layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
   ...)
 
-\S4method{mapView}{SpatialLines}(x, map = NULL, na.color = "transparent",
-  map.types = c("OpenStreetMap", "Esri.WorldImagery"), verbose = FALSE,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+\S4method{mapView}{SpatialLines}(x, map = NULL, zcol = NULL,
+  color = "#460000", na.color = mapviewGetOption("na.color"), lwd = 2,
+  alpha = 0.8, map.types = mapviewGetOption("basemaps"),
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), ...)
 
-\S4method{mapView}{missing}(map.types = c("OpenStreetMap",
-  "Esri.WorldImagery"), easter.egg = FALSE)
+\S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
+  easter.egg = FALSE)
+
+\S4method{mapview}{ANY}(...)
 }
 \arguments{
 \item{x}{a \code{\link{raster}}* object}
@@ -77,7 +97,11 @@
 \item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
 If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
-\item{color}{color (palette) of the points/polygons/lines/pixels}
+\item{col.regions}{color (palette) pixels.
+See \code{\link{levelplot}} for details.}
+
+\item{at}{the breakpoints used for the visualisation.
+See \code{\link{levelplot}} for details.}
 
 \item{na.color}{color for missing values}
 
@@ -90,7 +114,7 @@ Per default these are calculated based on the supplied raster* object.}
 see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
 for available options.}
 
-\item{layer.opacity}{opacity of the raster layer(s)}
+\item{alpha.regions}{opacity of the fills or the raster layer(s)}
 
 \item{legend}{should a legend be plotted}
 
@@ -111,25 +135,27 @@ of the column(s) to be rendered}
 
 \item{burst}{whether to show all (TRUE) or only one (FALSE) layers}
 
-\item{radius}{attribute name(s) or column number(s) in attribute table
+\item{color}{color (palette) for points/polygons/lines}
+
+\item{cex}{attribute name(s) or column number(s) in attribute table
 of the column(s) to be used for defining the size of circles}
+
+\item{lwd}{line width}
+
+\item{alpha}{opacity of the lines or points}
 
 \item{popup}{a character vector of the HTML content for the popups. See
 \code{\link{addControl}} for details.}
 
-\item{weight}{line width (see \code{\link{leaflet}} for details)}
-
 \item{easter.egg}{well, you might find out if you set this to TRUE}
 }
 \description{
-this function produces an interactive GIS-like view of the specified
+this function produces an interactive view of the specified
 spatial object(s) on top of the specified base maps.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{RasterLayer}: \code{\link{raster}}
-
-\item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{stack}}
+\item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{brick}}
 
 \item \code{Satellite}: \code{\link{satellite}}
 
@@ -148,32 +174,28 @@ spatial object(s) on top of the specified base maps.
 \item \code{SpatialLines}: \code{\link{SpatialLines}}
 
 \item \code{missing}: initiate a map without an object
+
+\item \code{ANY}: alias for ease of typing
 }}
 \examples{
 \dontrun{
-mapView()
+mapview()
 
 ### raster data ###
 library(sp)
 library(raster)
 
-data(meuse.grid)
-coordinates(meuse.grid) = ~x+y
-proj4string(meuse.grid) <- CRS("+init=epsg:28992")
-gridded(meuse.grid) = TRUE
-meuse_rst <- stack(meuse.grid)
-
-# raster stack
-m1 <- mapView(meuse_rst)
-m1
-
-# factorial RasterLayer
-m2 <- mapView(raster::as.factor(meuse_rst[[4]]))
-m2
-
 # SpatialPixelsDataFrame
+data(meuse.grid)
+coordinates(meuse.grid) <- ~x+y
+proj4string(meuse.grid) <- CRS("+init=epsg:28992")
+gridded(meuse.grid) <- TRUE
+
 mapView(meuse.grid, zcol = "soil")
 
+# raster stack
+m1 <- mapview(poppendorf[[10]])
+m1
 
 ### point vector data ###
 ## SpatialPointsDataFrame ##
@@ -182,23 +204,23 @@ coordinates(meuse) <- ~x+y
 proj4string(meuse) <- CRS("+init=epsg:28992")
 
 # all layers of meuse
-mapView(meuse, burst = TRUE)
+mapview(meuse, burst = TRUE)
 
 # only one layer, all info in popups
-mapView(meuse)
+mapview(meuse)
 
 ## SpatialPoints ##
 meuse_pts <- as(meuse, "SpatialPoints")
-mapView(meuse_pts)
+mapview(meuse_pts)
 
 
 
 ### overlay vector on top of raster ###
-mapView(meuse.grid, zcol = "ffreq") + meuse
+mapview(meuse.grid, zcol = "ffreq") + meuse
 
 ### polygon vector data ###
 data("gadmCHE")
-m <- mapView(gadmCHE)
+m <- mapview(gadmCHE)
 m
 
 ## points on polygons ##
@@ -210,8 +232,8 @@ m + centres
 
 ### lines vector data
 data("atlStorms2005")
-mapView(atlStorms2005)
-mapView(atlStorms2005, burst = TRUE)
+mapview(atlStorms2005)
+mapview(atlStorms2005, burst = TRUE)
 }
 
 }

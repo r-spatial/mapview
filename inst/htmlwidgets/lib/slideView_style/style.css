@@ -1,0 +1,35 @@
+#htmlwidget_container {
+  background-color: #0c0c0c;
+  color: #f7f7f7;
+}
+
+#divInfo {
+  position:absolute;
+  /*margin-left: 100px;*/
+  opacity:0.75;
+  z-index: 1;
+}
+
+.image_name {
+  background-color: #3d3d3d;
+}
+
+.zoom_factor {
+  background-color: #787878;
+}
+
+#divDraw {
+	position:absolute;
+	z-index: 0;
+}
+
+#divBefore {
+	position:absolute;
+}
+
+#canvasAfter {
+	position:absolute;
+}
+
+
+

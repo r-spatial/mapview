@@ -1,4 +1,4 @@
-#' GIS-like viewing of spatial objects in R
+#' Interactive viewing of spatial objects in R
 #'
 #' The package provides functionality to view spatial objects interactively.
 #' The intention is to provide interactivity for easy and quick visualization
@@ -6,17 +6,19 @@
 #' quality map production.
 #'
 #' @name mapview-package
-#' @aliases mapviewpackage
 #' @docType package
-#' @title GIS-like viewing of spatial objects in R
-#' @author Tim Appelhans, Environmental Informatics Marburg \cr
+#' @title Interactive viewing of spatial objects in R
+#' @author Tim Appelhans, Florian Detsch, Chris Reudenbach,
+#' Stephan Woellauer, Spaska Forteva, Thomas Nauss,
+#' Environmental Informatics Marburg \cr
 #' \cr
-#' \emph{Maintainer:} Tim Appelhans \email{tim.appelhans@@gmail.com}
+#' \emph{Maintainer:} Tim Appelhans \email{admin@@environmentalinformatics-marburg.de}
 #'
-#' @import leaflet sp raster satellite scales methods
+#' @import leaflet sp raster satellite scales Rcpp methods png lattice rgdal gdalUtils latticeExtra rasterVis OpenStreetMap
 #' @importFrom grDevices rgb
-#' @importFrom whisker whisker.render
+#' @importFrom utils write.table
 #'
+#' @useDynLib mapview
 #' @keywords package
 #'
 NULL
