@@ -87,8 +87,8 @@ mapviewOptions <- function(platform,
                            layers.control.pos,
                            default = FALSE,
                            console = TRUE,
-                           leafletHeight,
-                           leafletWidth) {
+                           leafletWidth,
+                           leafletHeight) {
 
   ## platform
   setPlatform <- function(platform) {
@@ -156,13 +156,13 @@ mapviewOptions <- function(platform,
   }
 
   ## leaflet() height
-  setLayersleafletWidths <- function(leafletHeight) {
-    options(mapviewleafletHeight = leafletHeight)
+  setleafletHeight <- function(leafletHeight) {
+    options(leafletHeight = leafletHeight)
   }
 
-  ## leaflet() height
-  setLayersleafletWidth <- function(leafletWidth) {
-    options(mapviewleafletWidth = leafletWidth)
+  ## leaflet() width
+  setleafletWidth <- function(leafletWidth) {
+    options(leafletWidth = leafletWidth)
   }
 
   cnt <- 0
@@ -205,7 +205,7 @@ mapviewOptions <- function(platform,
   if (!missing(layers.control.pos)) {
     setLayersControlPos(layers.control.pos); cnt <- cnt + 1 }
   if (!missing(leafletWidth)) { setleafletWidth(leafletWidth); cnt <- cnt + 1 }
-  if (!missing(leafletHeight)) { setleafletWidth(leafletHeight); cnt <- cnt + 1 }
+  if (!missing(leafletHeight)) { setleafletHeight(leafletHeight); cnt <- cnt + 1 }
 
   lst <- list(platform = .platform(),
               basemaps = .basemaps(),

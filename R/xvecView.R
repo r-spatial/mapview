@@ -182,7 +182,10 @@ fpViewInternal <- function(jFn = NULL, x = NULL) {
   sizing = htmlwidgets::sizingPolicy(
     browser.fill = TRUE,
     viewer.fill = TRUE,
-    viewer.padding = 5
+    viewer.padding = 5,
+    defaultWidth =  mapviewGetOption("leafletWidth"),
+    defaultHeight = mapviewGetOption("leafletHeight")
+
   )
 
 
@@ -200,7 +203,7 @@ fpViewInternal <- function(jFn = NULL, x = NULL) {
 
 ### fpViewOutput Widget output function for use in Shiny =================================================
 #
-fpViewOutput <- function(outputId, width = '100%', height = '400px') {
+fpViewOutput <- function(outputId, width = mapviewGetOption("leafletWidth"), height = mapviewGetOption("leafletHeight")) {
   htmlwidgets::shinyWidgetOutput(outputId, 'fpView', width, height, package = 'mapview')
 }
 
@@ -296,7 +299,8 @@ bView <- function(x,
                   lwd,
                   verbose,
                   layer.name,
-                  popup) {
+                  popup)
+  {
 
 
   ## temp dir
@@ -416,7 +420,11 @@ bViewInternal <- function(jFn = NULL, x = NULL) {
   sizing = htmlwidgets::sizingPolicy(
     browser.fill = TRUE,
     viewer.fill = TRUE,
-    viewer.padding = 5
+    viewer.padding = 5,
+    defaultWidth =  mapviewGetOption("leafletWidth"),
+    defaultHeight = mapviewGetOption("leafletHeight")
+
+
   )
   # create widget
   htmlwidgets::createWidget(
@@ -430,7 +438,7 @@ bViewInternal <- function(jFn = NULL, x = NULL) {
 
 ### Widget output function for use in Shiny =================================================
 #
-bViewOutput <- function(outputId, width = '100%', height = '400px') {
+bViewOutput <- function(outputId, width = mapviewGetOption("leafletWidth"), height = mapviewGetOption("leafletHeight")) {
   htmlwidgets::shinyWidgetOutput(outputId, 'bView', width, height, package = 'mapview')
 }
 

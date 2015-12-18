@@ -134,8 +134,6 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   height = mapviewGetOption("leafletWidth"),
-                   width = mapviewGetOption("leafletHeight"),
                    ...) {
 
             if (missing(at)) at <- lattice::do.breaks(
@@ -157,8 +155,6 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                         trim,
                         verbose,
                         layer.name,
-                        leafletWidth,
-                        leafletHeight,
                         ...)
             } else {
               NULL
@@ -184,8 +180,6 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                    legend.opacity = 1,
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
-                   height = mapviewGetOption("leafletWidth"),
-                   width = mapviewGetOption("leafletHeight"),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -201,8 +195,6 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                          legend.opacity,
                          trim,
                          verbose,
-                         leafletWidth,
-                         leafletHeight,
                          ...)
             } else {
               NULL
@@ -218,9 +210,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
 
 setMethod('mapView', signature(x = 'Satellite'),
           function(x,
-                   height = mapviewGetOption("leafletWidth"),
-                   width = mapviewGetOption("leafletHeight"),
-                   ...) {
+                    ...) {
 
             pkgs <- c("leaflet", "satellite", "magrittr")
             tst <- sapply(pkgs, "requireNamespace",
@@ -255,15 +245,11 @@ setMethod('mapView', signature(x = 'Satellite'),
 setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
           function(x,
                    zcol = NULL,
-                   height = mapviewGetOption("leafletWidth"),
-                   width = mapviewGetOption("leafletHeight"),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
               leafletPixelsDF(x,
                               zcol,
-                              leafletWidth,
-                              leafletHeight,
                               ...)
             } else {
               NULL
@@ -300,8 +286,6 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    popup = NULL,
-                   height = mapviewGetOption("leafletWidth"),
-                   width = mapviewGetOption("leafletHeight"),
                    ...) {
 
             if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
@@ -322,8 +306,6 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                 verbose = verbose,
                                 layer.name = layer.name,
                                 popup = popup,
-                                leafletWidth,
-                                leafletHeight,
                                 ...)
               } else {
                 NULL
@@ -340,8 +322,6 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                      verbose = verbose,
                      layer.name = layer.name,
                      popup = popup,
-                     leafletWidth = leafletWidth,
-                     leafletHeight = leafletHeight
                      )
             }
 
@@ -368,9 +348,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   height = mapviewGetOption("leafletWidth"),
-                   width = mapviewGetOption("leafletHeight"),
-                   ...) {
+                  ...) {
 
             if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
               if (mapviewGetOption("platform") == "leaflet") {
@@ -381,9 +359,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                               map.types = map.types,
                               verbose = verbose,
                               layer.name = layer.name,
-                              leafletWidth = leafletWidth,
-                              leafletHeight = leafletHeight,
-                              ...)
+                             ...)
               } else {
                 NULL
               }
@@ -398,10 +374,8 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                      weight = cex,
                      verbose = verbose,
                      layer.name = layer.name,
-                     popup = NULL,
-                     leafletWidth = leafletWidth,
-                     leafletHeight = leafletHeight
-                     )
+                     popup = NULL
+                    )
             }
 
 
@@ -432,8 +406,6 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    popup = NULL,
-                   height = mapviewGetOption("leafletWidth"),
-                   width = mapviewGetOption("leafletHeight"),
                    ...) {
 
             if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
@@ -452,10 +424,6 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                                   legend = legend,
                                   legend.opacity = legend.opacity,
                                   verbose = verbose,
-                                  layer.name = layer.name,
-                                  popup = popup,
-                                  leafletWidth = leafletWidth,
-                                  leafletHeight = leafletHeight,
                                   ...)
               } else {
                 NULL
@@ -471,10 +439,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                     lwd = lwd,
                     verbose = verbose,
                     layer.name = layer.name,
-                    popup = NULL,
-                    leafletWidth = leafletWidth,
-                    leafletHeight = leafletHeight
-                    )
+                    popup = NULL)
             }
 
           }
@@ -497,9 +462,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   height = mapviewGetOption("leafletWidth"),
-                   width = mapviewGetOption("leafletHeight"),
-                   ...) {
+                  ...) {
 
             if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
               if (mapviewGetOption("platform") == "leaflet") {
@@ -513,9 +476,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                                 map.types = map.types,
                                 verbose = verbose,
                                 layer.name = layer.name,
-                                leafletWidth = leafletWidth,
-                                leafletHeight = leafletHeight,
-                                ...)
+                               ...)
               } else {
                 NULL
               }
@@ -530,9 +491,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                     lwd = lwd,
                     verbose = verbose,
                     layer.name = layer.name,
-                    popup = NULL,
-                    leafletWidth = leafletWidth,
-                    leafletHeight = leafletHeight)
+                    popup = NULL)
             }
 
           }
@@ -559,8 +518,6 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    popup = NULL,
-                   height = mapviewGetOption("leafletWidth"),
-                   width = mapviewGetOption("leafletHeight"),
                    ...) {
 
             if (length(x@lines) < mapviewGetOption("maxlines")) {
@@ -580,8 +537,6 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                                verbose = verbose,
                                layer.name = layer.name,
                                popup = popup,
-                               leafletWidth = leafletWidth,
-                               leafletHeight = leafletHeight,
                                ...)
               } else {
                 NULL
@@ -597,9 +552,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                     lwd = lwd,
                     verbose = verbose,
                     layer.name = layer.name,
-                    popup = NULL,
-                    leafletWidth = leafletWidth,
-                    leafletHeight = leafletHeight)
+                    popup = NULL)
             }
 
           }
@@ -624,9 +577,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   height = mapviewGetOption("leafletWidth"),
-                   width = mapviewGetOption("leafletHeight"),
-                   ...) {
+                  ...) {
 
             if (length(x@lines) < mapviewGetOption("maxlines")) {
               if (mapviewGetOption("platform") == "leaflet") {
@@ -639,9 +590,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                              map.types = map.types,
                              verbose = verbose,
                              layer.name = layer.name,
-                             leafletWidth = leafletwidth,
-                             leafletHeight = leafletheight,
-                             ...)
+                            ...)
               } else {
                 NULL
               }
@@ -656,9 +605,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                     lwd = lwd,
                     verbose = verbose,
                     layer.name = layer.name,
-                    popup = NULL,
-                    leafletWidth = leafletWidth,
-                    leafletHeight = leafletHeight)
+                    popup = NULL)
             }
 
           }

@@ -17,8 +17,6 @@ leafletRL <- function(x,
                       trim,
                       verbose,
                       layer.name,
-                      leafletWidth,
-                      leafletHeight,
                       ...) {
 
   pkgs <- c("leaflet", "raster", "magrittr")
@@ -122,8 +120,6 @@ leafletRSB <- function(x,
                        legend.opacity,
                        trim,
                        verbose,
-                       leafletWidth,
-                       leafletHeight,
                        ...) {
 
   pkgs <- c("leaflet", "raster", "magrittr")
@@ -162,8 +158,6 @@ leafletRSB <- function(x,
 
 leafletPixelsDF <- function(x,
                             zcol,
-                            leafletWidth,
-                            leafletHeight,
                             ...) {
 
   pkgs <- c("leaflet", "sp", "magrittr")
@@ -206,8 +200,6 @@ leafletPointsDF <- function(x,
                             verbose,
                             layer.name,
                             popup,
-                            leafletWidth,
-                            leafletHeight,
                             ...) {
 
   pkgs <- c("leaflet", "sp", "magrittr")
@@ -336,8 +328,6 @@ leafletPoints <- function(x,
                           map.types,
                           verbose,
                           layer.name,
-                          leafletWidth,
-                          leafletHeight,
                           ...) {
 
   pkgs <- c("leaflet", "sp", "magrittr")
@@ -393,8 +383,6 @@ leafletPolygonsDF <- function(x,
                               verbose,
                               layer.name,
                               popup,
-                              leafletWidth,
-                              leafletHeight,
                               ...) {
 
   pkgs <- c("leaflet", "sp", "magrittr")
@@ -522,8 +510,6 @@ leafletPolygons <- function(x,
                             alpha.regions,
                             verbose,
                             layer.name,
-                            leafletWidth,
-                            leafletHeight,
                             ...) {
 
   pkgs <- c("leaflet", "sp", "magrittr")
@@ -573,8 +559,6 @@ leafletLinesDF <- function(x,
                            verbose,
                            layer.name,
                            popup,
-                           leafletWidth,
-                           leafletHeight,
                            ...) {
 
   pkgs <- c("leaflet", "sp", "magrittr")
@@ -694,8 +678,6 @@ leafletLines <- function(x,
                          alpha,
                          verbose,
                          layer.name,
-                         leafletWidth,
-                         leafletHeight,
                          ...) {
 
   pkgs <- c("leaflet", "sp", "magrittr")

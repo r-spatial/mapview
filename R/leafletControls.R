@@ -193,12 +193,12 @@ rasterCheckAdjustProjection <- function(x) {
 
 # Initialise mapView base maps --------------------------------------------
 
-initBaseMaps <- function(map.types,leafletHeight,leafletWidth) {
+initBaseMaps <- function(map.types) {
   ## create base map using specified map types
   if (missing(map.types)) map.types <- c("OpenStreetMap",
                                          "Esri.WorldImagery")
-  if (missing(leafletHeight)) leafletHeight <- mapviewGetOption("leafletHeight")
-  if (missing(leafletWidth)) leafletWidth <- mapviewGetOption("leafletWidth")
+  leafletHeight <- mapviewGetOption("leafletHeight")
+  leafletWidth <- mapviewGetOption("leafletWidth")
     m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth)
     m <- leaflet::addProviderTiles(m, provider = map.types[1],
                                    group = map.types[1])
@@ -214,7 +214,7 @@ initBaseMaps <- function(map.types,leafletHeight,leafletWidth) {
 
 # Initialise mapView map --------------------------------------------------
 
-initMap <- function(map, map.types, proj4str,leafletHeight,leafletWidth) {
+initMap <- function(map, map.types, proj4str) {
 
   if (missing(map.types)) map.types <- c("OpenStreetMap",
                                          "Esri.WorldImagery")
@@ -224,8 +224,8 @@ initMap <- function(map, map.types, proj4str,leafletHeight,leafletWidth) {
                    "Esri.WorldImagery")
   }
 
-  if (missing(leafletHeight)) leafletHeight <- mapviewGetOption("leafletHeight")
-  if (missing(leafletWidth)) leafletWidth <- mapviewGetOption("leafletWidth")
+  leafletHeight <- mapviewGetOption("leafletHeight")
+  leafletWidth <- mapviewGetOption("leafletWidth")
 
   if (missing(proj4str)) proj4str <- NA
   ## create base map using specified map types
@@ -233,7 +233,7 @@ initMap <- function(map, map.types, proj4str,leafletHeight,leafletWidth) {
     if (is.na(proj4str)) {
       m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth)
     } else {
-      m <- initBaseMaps(map.types,leafletHeight,leafletWidth)
+      m <- initBaseMaps(map.types)
     }
   } else {
     m <- map
@@ -504,8 +504,20 @@ spCheckObject <- function(x, verbose) {
   return(x)
 }
 
+### print.saveas --------------------------------------------------------
 
+#print.saveas <- function(x, ...){
+#  class(x) = class(x)[class(x)!="saveas"]
+#  htmltools::save_html(x, file=attr(x,"filesave"))
+#}
 
+### print.saveas --------------------------------------------------------
+
+#saveas <- function(map, file){
+#  class(map) <- c("saveas",class(map))
+#  attr(map,"filesave")=file
+#  map
+#}
 
 
 
