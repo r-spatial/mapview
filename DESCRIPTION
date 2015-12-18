@@ -37,5 +37,5 @@ Imports:
     rasterVis,
     OpenStreetMap (>= 0.3.2)
 LinkingTo: Rcpp
-RoxygenNote: 5.0.0
+RoxygenNote: 5.0.1
 SystemRequirements: GNU make
