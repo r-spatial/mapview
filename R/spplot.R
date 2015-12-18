@@ -12,6 +12,7 @@ if ( !isGeneric('spplot') ) {
 #' @param zoom Zoom level, see \code{\link{openmap}}.
 #' @param col.regions,alpha.regions See \code{\link[sp]{spplot}}.
 #' @param ... Further arguments passed on to \code{\link[sp]{spplot}}.
+#' @param sp.layout (list with) layout elements, see \code{\link[sp]{spplot}}
 #'
 #' @author
 #' Tim Appelhans, Florian Detsch
@@ -24,6 +25,10 @@ if ( !isGeneric('spplot') ) {
 #'
 #' m2 <- mapview(gadmCHE, zcol = "NAME_1")
 #' spplot(m2)
+#'
+#' demo(meuse,ask=F,echo=FALSE)
+#' m = spTransform(meuse.area, CRS("+init=epsg:4326"))
+#' spplot(mapView(meuse["zinc"]), sp.layout = m)
 #' }
 #'
 #' @export spplot
@@ -34,7 +39,7 @@ if ( !isGeneric('spplot') ) {
 setMethod('spplot',
           signature('mapview'),
           function(obj, zoom = NULL, col.regions = mapviewPalette(256),
-                   alpha.regions = 0.8, ...) {
+                   alpha.regions = 0.8, ..., sp.layout = NULL) {
 
             if (length(obj@object) == 1) {
 
@@ -93,13 +98,14 @@ setMethod('spplot',
                   latticeExtra::as.layer(spplot(obj_bg, colorkey = FALSE,
                                                 col.regions = "transparent",
                                                 alpha.regions = alpha.regions,
-                                                sp.layout = rgb), under = TRUE)
+                                                sp.layout = append(list(rgb), sp.layout)), 
+												under = TRUE)
 
               # all other objects
               } else {
                 sp::spplot(obj@object[[1]], col.regions = col.regions,
                            alpha.regions = alpha.regions,
-                           sp.layout = rgb, ...)
+                           sp.layout = append(list(rgb), sp.layout), ...)
               }
 
 

@@ -35,7 +35,7 @@ Imports:
     gdalUtils,
     data.table,
     rasterVis,
-    OpenStreetMap
+    OpenStreetMap (>= 0.3.2)
 LinkingTo: Rcpp
-RoxygenNote: 5.0.1
+RoxygenNote: 5.0.0
 SystemRequirements: GNU make
