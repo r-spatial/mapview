@@ -193,11 +193,13 @@ rasterCheckAdjustProjection <- function(x) {
 
 # Initialise mapView base maps --------------------------------------------
 
-initBaseMaps <- function(map.types) {
+initBaseMaps <- function(map.types,leafletHeight,leafletWidth) {
   ## create base map using specified map types
   if (missing(map.types)) map.types <- c("OpenStreetMap",
                                          "Esri.WorldImagery")
-    m <- leaflet::leaflet()
+  if (missing(leafletHeight)) leafletHeight <- mapviewGetOption("leafletHeight")
+  if (missing(leafletWidth)) leafletWidth <- mapviewGetOption("leafletWidth")
+    m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth)
     m <- leaflet::addProviderTiles(m, provider = map.types[1],
                                    group = map.types[1])
     if (length(map.types) > 1) {
@@ -212,7 +214,7 @@ initBaseMaps <- function(map.types) {
 
 # Initialise mapView map --------------------------------------------------
 
-initMap <- function(map, map.types, proj4str) {
+initMap <- function(map, map.types, proj4str,leafletHeight,leafletWidth) {
 
   if (missing(map.types)) map.types <- c("OpenStreetMap",
                                          "Esri.WorldImagery")
@@ -221,13 +223,17 @@ initMap <- function(map, map.types, proj4str) {
     map.types <- c("OpenStreetMap",
                    "Esri.WorldImagery")
   }
+
+  if (missing(leafletHeight)) leafletHeight <- mapviewGetOption("leafletHeight")
+  if (missing(leafletWidth)) leafletWidth <- mapviewGetOption("leafletWidth")
+
   if (missing(proj4str)) proj4str <- NA
   ## create base map using specified map types
   if (is.null(map)) {
     if (is.na(proj4str)) {
-      m <- leaflet::leaflet()
+      m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth)
     } else {
-      m <- initBaseMaps(map.types)
+      m <- initBaseMaps(map.types,leafletHeight,leafletWidth)
     }
   } else {
     m <- map
