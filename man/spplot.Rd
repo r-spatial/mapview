@@ -7,7 +7,8 @@
 \title{spplot method for objects of class 'mapview'}
 \usage{
 \S4method{spplot}{mapview}(obj, zoom = NULL,
-  col.regions = mapviewPalette(256), alpha.regions = 0.8, ...)
+  col.regions = mapviewPalette(256), alpha.regions = 0.8, ...,
+  sp.layout = NULL)
 }
 \arguments{
 \item{obj}{an object of class 'mapview'}
@@ -17,6 +18,8 @@
 \item{col.regions, alpha.regions}{See \code{\link[sp]{spplot}}.}
 
 \item{...}{Further arguments passed on to \code{\link[sp]{spplot}}.}
+
+\item{sp.layout}{(list with) layout elements, see \code{\link[sp]{spplot}}}
 }
 \description{
 this function attempts to produce a static version of the specified
@@ -30,6 +33,10 @@ spplot(m1)
 
 m2 <- mapview(gadmCHE, zcol = "NAME_1")
 spplot(m2)
+
+demo(meuse,ask=F,echo=FALSE)
+m = spTransform(meuse.area, CRS("+init=epsg:4326"))
+spplot(mapView(meuse["zinc"]), sp.layout = m)
 }
 
 }
