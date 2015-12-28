@@ -65,11 +65,12 @@ this function produces an interactive view of the specified
 raster object(s) on a plain grey background but for any CRS.
 }
 \details{
-if the raster object is not in memory
+If the raster object is not in memory
 (i.e. if \code{raster::inMemory} is \code{FLASE})
 and argument \code{gdal} is set to TRUE (default) gdalUtils::gdal_translate
 is used to translate the rsater object to a png file to be rendered in
-the viewer/browser. This is fast for large rasters.
+the viewer/browser. This is fast for large rasters. In this case, argument
+\code{maxpixels} is not used, instead the image is rendered in original resolution.
 However, this means that RasterLayers will be shown in greyscale.
 If you want to set a color palette manually, use \code{gdal = FALSE} and
 (optionally provide) \code{col.regions}.
