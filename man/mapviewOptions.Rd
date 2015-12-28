@@ -7,7 +7,8 @@
 \usage{
 mapviewOptions(platform, basemaps, raster.size, maxpixels, maxpoints,
   maxpolygons, maxlines, raster.palette, vector.palette, verbose, na.color,
-  layers.control.pos, default = FALSE, console = TRUE)
+  layers.control.pos, default = FALSE, console = TRUE, leafletWidth,
+  leafletHeight)
 
 mapviewGetOption(param)
 }

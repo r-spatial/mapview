@@ -3,11 +3,11 @@ if ( !isGeneric('plainView') ) {
     standardGeneric('plainView'))
 }
 
-#' View spatial objects interactively without background map but in any CRS
+#' View raster objects interactively without background map but in any CRS
 #'
 #' @description
 #' this function produces an interactive view of the specified
-#' spatial object(s) on a plain grey background but for any CRS.
+#' raster object(s) on a plain grey background but for any CRS.
 #'
 #' @param x a \code{\link{raster}}* object
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
@@ -18,9 +18,22 @@ if ( !isGeneric('plainView') ) {
 #' @param na.color color for missing values
 #' @param verbose should some details be printed during the process
 #' @param layer.name the name of the layer to be shown on the map
+#' @param gdal logical. If TRUE (default) gdalUtils::gdal_translate is used
+#' to create the png file for display when possible. See details for further
+#' information.
 #' @param ... additional arguments passed on to repective functions.
 #' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
+#'
+#' @details
+#' if the raster object is not in memory
+#' (i.e. if \code{raster::inMemory} is \code{FLASE})
+#' and argument \code{gdal} is set to TRUE (default) gdalUtils::gdal_translate
+#' is used to translate the rsater object to a png file to be rendered in
+#' the viewer/browser. This is fast for large rasters.
+#' However, this means that RasterLayers will be shown in greyscale.
+#' If you want to set a color palette manually, use \code{gdal = FALSE} and
+#' (optionally provide) \code{col.regions}.
 #'
 #' @author
 #' Tim Appelhans
@@ -104,6 +117,7 @@ setMethod('plainView', signature(x = 'RasterLayer'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
+                   gdal = TRUE,
                    ...) {
 
             ## temp dir
@@ -111,12 +125,13 @@ setMethod('plainView', signature(x = 'RasterLayer'),
             dir.create(dir)
             fl <- paste0(dir, "/img", ".png")
 
-#             if (raster::filename(x) != "") {
-#               gdalUtils::gdal_translate(src_dataset = filename(x),
-#                                         dst_dataset = fl,
-#                                         of = "PNG",
-#                                         verbose = TRUE)
-#             } else {
+            if (raster::fromDisk(x) & gdal) {
+              gdalUtils::gdal_translate(src_dataset = filename(x),
+                                        dst_dataset = fl,
+                                        of = "PNG",
+                                        b = bandnr(x),
+                                        verbose = verbose)
+            } else {
               png <- raster2PNG(x,
                                 col.regions = col.regions,
                                 at = at,
@@ -124,7 +139,7 @@ setMethod('plainView', signature(x = 'RasterLayer'),
                                 maxpixels = maxpixels)
 
               png::writePNG(png, fl)
-            #}
+            }
 
             plainViewInternal(filename = fl,
                               imgnm = layer.name)
