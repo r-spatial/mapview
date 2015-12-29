@@ -424,6 +424,8 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                                   legend = legend,
                                   legend.opacity = legend.opacity,
                                   verbose = verbose,
+                                  layer.name = layer.name,
+                                  popup = popup,
                                   ...)
               } else {
                 NULL
@@ -458,6 +460,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                    na.color = mapviewGetOption("na.color"),
                    map.types = mapviewGetOption("basemaps"),
                    lwd = 2,
+                   alpha = 0.8,
                    alpha.regions = 0.2,
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
