@@ -146,7 +146,7 @@ wmcrs <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=
 llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
 
 
-# Check size of Raster* objects for mapView -------------------------------
+# Check size of out <- methods::new('mapview', object = out_obj, map = m)out <- methods::new('mapview', object = out_obj, map = m)out <- methods::new('mapview', object = out_obj, map = m)* objects for mapView -------------------------------
 
 rasterCheckSize <- function(x, maxpixels) {
   if (maxpixels < raster::ncell(x)) {
@@ -195,8 +195,7 @@ rasterCheckAdjustProjection <- function(x) {
 
 initBaseMaps <- function(map.types) {
   ## create base map using specified map types
-  if (missing(map.types)) map.types <- c("OpenStreetMap",
-                                         "Esri.WorldImagery")
+  if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
   leafletHeight <- mapviewGetOption("leafletHeight")
   leafletWidth <- mapviewGetOption("leafletWidth")
     m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth)
@@ -216,12 +215,11 @@ initBaseMaps <- function(map.types) {
 
 initMap <- function(map, map.types, proj4str) {
 
-  if (missing(map.types)) map.types <- c("OpenStreetMap",
-                                         "Esri.WorldImagery")
+  if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
+
   if (missing(map) & missing(map.types)) {
     map <- NULL
-    map.types <- c("OpenStreetMap",
-                   "Esri.WorldImagery")
+    map.types <- mapviewGetOption("basemaps")
   }
 
   leafletHeight <- mapviewGetOption("leafletHeight")
@@ -434,10 +432,16 @@ checkAdjustProjection <- function(x) {
 
 mapViewLayersControl <- function(map, map.types, names) {
 
+  if (!length(getLayerControlEntriesFromMap(map))) {
+    bgm <- map.types
+  } else {
+    bgm <- map$x$calls[[getLayerControlEntriesFromMap(map)[1]]]$args[[1]]
+  }
+
   m <- leaflet::addLayersControl(map = map,
                                  position = mapviewGetOption(
                                    "layers.control.pos"),
-                                 baseGroups = map.types,
+                                 baseGroups = bgm,
                                  overlayGroups = c(
                                    getLayerNamesFromMap(map),
                                    names))
