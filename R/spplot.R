@@ -39,7 +39,8 @@ if ( !isGeneric('spplot') ) {
 setMethod('spplot',
           signature('mapview'),
           function(obj, zoom = NULL, col.regions = mapviewPalette(256),
-                   alpha.regions = 0.8, ..., sp.layout = NULL) {
+                   alpha.regions = 0.8, ..., sp.layout = NULL,
+                   map.type = "osm") {
 
             if (length(obj@object) == 1) {
 
@@ -71,11 +72,11 @@ setMethod('spplot',
               lowerRight <- c(y_ext[1], x_ext[2])
 
               ## map type
-              type <- "osm"
+              #type <- map.type
 
               ## acquire map
               rgb <- OpenStreetMap::openmap(upperLeft, lowerRight,
-                                            type = type, zoom = zoom)
+                                            type = map.type, zoom = zoom)
 
               ## rasterize rgb image
               rgb <- raster::raster(rgb)
@@ -98,7 +99,7 @@ setMethod('spplot',
                   latticeExtra::as.layer(spplot(obj_bg, colorkey = FALSE,
                                                 col.regions = "transparent",
                                                 alpha.regions = alpha.regions,
-                                                sp.layout = append(list(rgb), sp.layout)), 
+                                                sp.layout = append(list(rgb), sp.layout)),
 												under = TRUE)
 
               # all other objects
