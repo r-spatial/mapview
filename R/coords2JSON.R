@@ -105,14 +105,16 @@ setMethod("coords2JSON",
             ## convert to 'character'
             if (class(x[1, ]) != "character") {
                #x <- sprintf("%s",x)
-               x <- apply(x, 2, "as.character")
+               class(x) <- "character" #apply(x, 2, "as.character")
 
             }
 
             ## round to 7 decimal places
-            x[, xy] <- apply(x[, xy], 2, FUN = function(i) {
-              as.character(round(as.numeric(i), 7))
-            })
+            rndFn <- function(v) round(as.numeric(v), 7)
+            x[, xy] <- apply(x[, xy], 2, FUN = "rndFn")
+            class(x[, xy]) <- "character" #function(i) {
+              #as.character(round(as.numeric(i), 7))
+            #})
 
             ## integer-formatted 'character' to float
 #            crd <- x[, xy]
@@ -127,8 +129,9 @@ setMethod("coords2JSON",
             if (length(lst_json) == 1) {
               chr_json <- lst_json[[1]]
             } else {
-              chr_json <- do.call(function(...) paste(..., sep = ","), lst_json)
-              chr_json <- paste0("[", chr_json, "]")
+              f <- function(...) paste(..., sep = ",")
+              chr_json <-  paste0("[", do.call("f", lst_json), "]")
+              #chr_json <- paste0("[", chr_json, "]")
             }
 
             return(chr_json)
