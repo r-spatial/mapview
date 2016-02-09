@@ -6,6 +6,7 @@
 \alias{mapView,RasterLayer-method}
 \alias{mapView,RasterStackBrick-method}
 \alias{mapView,Satellite-method}
+\alias{mapView,SpatialGridDataFrame-method}
 \alias{mapView,SpatialLines-method}
 \alias{mapView,SpatialLinesDataFrame-method}
 \alias{mapView,SpatialPixelsDataFrame-method}
@@ -38,6 +39,8 @@
 \S4method{mapView}{Satellite}(x, ...)
 
 \S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL, ...)
+
+\S4method{mapView}{SpatialGridDataFrame}(x, zcol = NULL, ...)
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapviewGetOption("vector.palette")(256),
@@ -169,6 +172,8 @@ See \url{http://www.chrome-allow-file-access-from-file.com/} for further details
 \item \code{Satellite}: \code{\link{satellite}}
 
 \item \code{SpatialPixelsDataFrame}: \code{\link{SpatialPixelsDataFrame}}
+
+\item \code{SpatialGridDataFrame}: \code{\link{SpatialGridDataFrame}}
 
 \item \code{SpatialPointsDataFrame}: \code{\link{SpatialPointsDataFrame}}
 
