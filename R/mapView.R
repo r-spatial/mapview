@@ -257,6 +257,24 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
 
           }
 )
+## SpatialGridDataFrame =================================================
+#' @describeIn mapView \code{\link{SpatialGridDataFrame}}
+#'
+setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
+          function(x,
+                   zcol = NULL,
+                   ...) {
+
+            if (mapviewGetOption("platform") == "leaflet") {
+              leafletPixelsDF(as(x, "SpatialPixelsDataFrame"),
+                              zcol,
+                              ...)
+            } else {
+              NULL
+            }
+
+          }
+)
 
 
 ## SpatialPointsDataFrame =================================================
