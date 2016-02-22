@@ -1,0 +1,22 @@
+# (uncomment to add a dependency)
+# dependencies:
+#  - name:
+#    version:
+#    src:
+#    script:
+#    stylesheet:
+
+dependencies:
+  - name: style
+    version: 1
+    src: htmlwidgets/lib/cubeView_style
+    stylesheet:
+      - cubeView.css
+  - name: three
+    version: 1
+    src: htmlwidgets/lib/three
+    script: three.js
+  - name: OrbitControls
+    version: 1
+    src: htmlwidgets/lib/orbit_controls
+    script: OrbitControls.js

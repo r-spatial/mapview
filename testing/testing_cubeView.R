@@ -1,0 +1,3 @@
+library(mapview)
+
+cubeView(NULL)
