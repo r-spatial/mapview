@@ -8,7 +8,7 @@
 \usage{
 \S4method{spplot}{mapview}(obj, zoom = NULL,
   col.regions = mapviewPalette(256), alpha.regions = 0.8, ...,
-  sp.layout = NULL)
+  sp.layout = NULL, map.type = "osm")
 }
 \arguments{
 \item{obj}{an object of class 'mapview'}
@@ -20,6 +20,8 @@
 \item{...}{Further arguments passed on to \code{\link[sp]{spplot}}.}
 
 \item{sp.layout}{(list with) layout elements, see \code{\link[sp]{spplot}}}
+
+\item{map.type}{background map type, see \code{\link{openmap}} for details}
 }
 \description{
 this function attempts to produce a static version of the specified

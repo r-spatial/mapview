@@ -13,6 +13,7 @@ if ( !isGeneric('spplot') ) {
 #' @param col.regions,alpha.regions See \code{\link[sp]{spplot}}.
 #' @param ... Further arguments passed on to \code{\link[sp]{spplot}}.
 #' @param sp.layout (list with) layout elements, see \code{\link[sp]{spplot}}
+#' @param map.type background map type, see \code{\link{openmap}} for details
 #'
 #' @author
 #' Tim Appelhans, Florian Detsch

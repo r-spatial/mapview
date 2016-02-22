@@ -36,7 +36,13 @@
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
   ...)
 
-\S4method{mapView}{Satellite}(x, ...)
+\S4method{mapView}{Satellite}(x, map = NULL,
+  maxpixels = mapviewGetOption("maxpixels"),
+  col.regions = mapviewGetOption("raster.palette")(256), at,
+  na.color = mapviewGetOption("na.color"), values = NULL,
+  map.types = mapviewGetOption("basemaps"), legend = FALSE,
+  legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
+  ...)
 
 \S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL, ...)
 
@@ -69,9 +75,9 @@
 
 \S4method{mapView}{SpatialPolygons}(x, map = NULL, color = "#460000",
   na.color = mapviewGetOption("na.color"),
-  map.types = mapviewGetOption("basemaps"), lwd = 2, alpha.regions = 0.2,
-  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), ...)
+  map.types = mapviewGetOption("basemaps"), lwd = 2, alpha = 0.8,
+  alpha.regions = 0.2, verbose = mapviewGetOption("verbose"),
+  layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
 \S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapviewGetOption("vector.palette")(256),

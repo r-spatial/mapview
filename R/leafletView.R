@@ -318,6 +318,22 @@ leafletPointsDF <- function(x,
 
 ### leaflet w SpatialPoints ===============================================
 
+leafletSatellite <- function(x, ...) {
+
+  pkgs <- c("leaflet", "satellite", "magrittr")
+  tst <- sapply(pkgs, "requireNamespace",
+                quietly = TRUE, USE.NAMES = FALSE)
+
+  m <- mapView(stack(x), ...)
+
+  out <- new('mapview', object = list(x), map = m@map)
+
+  return(out)
+
+}
+
+### leaflet w SpatialPoints ===============================================
+
 leafletPoints <- function(x,
                           map,
                           cex,

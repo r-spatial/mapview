@@ -210,29 +210,36 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
 
 setMethod('mapView', signature(x = 'Satellite'),
           function(x,
-                    ...) {
+                   map = NULL,
+                   maxpixels = mapviewGetOption("maxpixels"),
+                   col.regions = mapviewGetOption("raster.palette")(256),
+                   at,
+                   na.color = mapviewGetOption("na.color"),
+                   values = NULL,
+                   map.types = mapviewGetOption("basemaps"),
+                   legend = FALSE,
+                   legend.opacity = 1,
+                   trim = TRUE,
+                   verbose = mapviewGetOption("verbose"),
+                   ...) {
 
-            pkgs <- c("leaflet", "satellite", "magrittr")
-            tst <- sapply(pkgs, "requireNamespace",
-                          quietly = TRUE, USE.NAMES = FALSE)
-
-            lyrs <- x@layers
-
-            m <- mapView(lyrs[[1]], ...)
-
-            if (length(lyrs) > 1) {
-              for (i in 2:length(lyrs)) {
-                m <- mapView(lyrs[[i]], m, ...)
-              }
+            if (mapviewGetOption("platform") == "leaflet") {
+              leafletSatellite(x,
+                               map,
+                               maxpixels,
+                               col.regions,
+                               at,
+                               na.color,
+                               values,
+                               map.types,
+                               legend,
+                               legend.opacity,
+                               trim,
+                               verbose,
+                               ...)
+            } else {
+              NULL
             }
-
-            if (length(getLayerNamesFromMap(m)) > 1) {
-              m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
-            }
-
-            out <- new('mapview', object = list(x), map = m)
-
-            return(out)
 
           }
 
