@@ -72,21 +72,20 @@ setMethod('spplot',
               upperLeft <- c(y_ext[2], x_ext[1])
               lowerRight <- c(y_ext[1], x_ext[2])
 
-              ## map type
-              #type <- map.type
-
               ## acquire map
               rgb <- OpenStreetMap::openmap(upperLeft, lowerRight,
                                             type = map.type, zoom = zoom)
 
               ## rasterize rgb image
-              rgb <- raster::raster(rgb)
+              rgb_rst <- raster::raster(rgb)
 
-              if (!raster::compareCRS(crs_obj, raster::projection(rgb)))
-                rgb <- projectRaster(rgb, crs = crs_obj)
+              if (!raster::compareCRS(crs_obj, raster::projection(rgb_rst))) {
+                rgb_rst <- projectRaster(rgb_rst, crs = crs_obj)
+                rgb_rst <- raster::trim(rgb_rst)
+              }
 
               ## convert to list format compatible with 'sp.layout'
-              rgb <- rgb2spLayout(rgb)
+              rgb <- rgb2spLayout(rgb_rst)
 
               ## create plot
 
@@ -105,9 +104,25 @@ setMethod('spplot',
 
               # all other objects
               } else {
+
+                # if dealing with a single-point feature
+                if (grep("SpatialPoints", class(obj@object[[1]])) == 1 &
+                      length(obj@object[[1]]) == 1) {
+
+                  pts <- list("sp.points", obj@object[[1]],
+                              col = "black", alpha = alpha.regions, ...)
+
+                  sp::spplot(rgb_rst[[1]], col.regions = "transparent",
+                             colorkey = FALSE, scales = list(draw = TRUE),
+                             sp.layout = list(rgb, pts))
+
+                # any other 'sp' object
+                } else {
+
                 sp::spplot(obj@object[[1]], col.regions = col.regions,
                            alpha.regions = alpha.regions,
                            sp.layout = append(list(rgb), sp.layout), ...)
+                }
               }
 
 
