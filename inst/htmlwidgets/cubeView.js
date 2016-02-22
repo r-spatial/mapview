@@ -1,31 +1,18 @@
 HTMLWidgets.widget({
-
   name: 'cubeView',
-
   type: 'output',
-
   initialize: function(el, width, height) {
-
     return {}
-
   },
 
-  renderValue: function(el, x, instance) {
-
-    init(el);
-
-    //el.innerHTML = "text";
-
+  renderValue: function(root, json, instance) {
+    init(root, json);
   },
 
   resize: function(el, width, height, instance) {
-
   }
 
 });
-
-
-
 
 var hovmoeller;
 
@@ -44,18 +31,18 @@ var x_pos = iDiv(X_SIZE*2,3);
 var y_pos = iDiv(Y_SIZE*2,3);
 var z_pos = iDiv(Z_SIZE*2,3);
 
-function init(root) {
-	hovmoeller = new Hovmoeller(root);
+function init(root, json) {
+	hovmoeller = new Hovmoeller(root, json);
 }
 
 function iDiv(a,b) {
 	return (a/b>>0);
 }
 
-function Hovmoeller(root) {
+function Hovmoeller(root, json) {
 
-	for(var z=0;z<Z_SIZE;z++) {
-		var z_base = z*XY_SIZE;
+	/*for(var z=0;z<Z_SIZE;z++) { // example data: full color cube
+		var z_base = z * XY_SIZE;
 		for(var y=0;y<Y_SIZE;y++) {
 			var y_base = z_base + y*X_SIZE;
 			for(var x=0;x<X_SIZE;x++) {
@@ -65,7 +52,30 @@ function Hovmoeller(root) {
 				dB[i] = (z*255)/Z_SIZE;
 			}
 		}
-	}
+	}*/
+
+	X_SIZE = json.x_size;
+  Y_SIZE = json.y_size;
+  Z_SIZE = json.z_size;
+  XY_SIZE = X_SIZE*Y_SIZE;
+  XZ_SIZE = X_SIZE*Z_SIZE;
+  ZY_SIZE = Z_SIZE*Y_SIZE;
+  XYZ_SIZE = X_SIZE*Y_SIZE*Z_SIZE;
+  dR = new Uint8Array(XYZ_SIZE);
+  dG = new Uint8Array(XYZ_SIZE);
+  dB = new Uint8Array(XYZ_SIZE);
+  x_pos = iDiv(X_SIZE*2,3);
+  y_pos = iDiv(Y_SIZE*2,3);
+  z_pos = iDiv(Z_SIZE*2,3);
+
+  var rR = json.red;
+  var rG = json.green;
+  var rB = json.blue;
+  for(var i=0;i<XYZ_SIZE;i++) {
+    dR[i] = rR[i];
+    dG[i] = rG[i];
+    dB[i] = rB[i];
+  }
 
 	this.scene = new THREE.Scene();
 	this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );

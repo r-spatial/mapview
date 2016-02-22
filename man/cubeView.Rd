@@ -2,12 +2,30 @@
 % Please edit documentation in R/cubeView.R
 \name{cubeView}
 \alias{cubeView}
-\title{<Add Title>}
+\title{View a cube of 3-dimensional data filled with points (voxels).}
 \usage{
-cubeView(message, width = NULL, height = NULL)
+cubeView(red, green, blue, x_size, y_size, z_size, width = NULL,
+  height = NULL)
 }
 \description{
-<Add Description>
+A variation of Hovmoeller diagram: Each voxel is colored with a RGB-color value.
+}
+\details{
+The cube faces show a selectable layer of the data within the cube.
+
+Currently the visible layers are alterable by keys (not reliable within RStudio):
+
+z: PAGE_UP PAGE_DOWN
+
+x: INS DEL
+
+y: HOME END
+
+Press and hold left mouse-button to rotate the cube.
+
+Press and hold right mouse-button to move the cube.
+
+Move mouse-wheel to zoom the cube.
 }
 \author{
 Stephan Woellauer

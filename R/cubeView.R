@@ -1,6 +1,23 @@
-#' <Add Title>
+#' View a cube of 3-dimensional data filled with points (voxels).
 #'
-#' <Add Description>
+#' A variation of Hovmoeller diagram: Each voxel is colored with a RGB-color value.
+#'
+#' The cube faces show a selectable layer of the data within the cube.
+#'
+#' Currently the visible layers are alterable by keys (not reliable within RStudio):
+#'
+#' z: PAGE_UP PAGE_DOWN
+#'
+#' x: INS DEL
+#'
+#' y: HOME END
+#'
+#'
+#' Press and hold left mouse-button to rotate the cube.
+#'
+#' Press and hold right mouse-button to move the cube.
+#'
+#' Move mouse-wheel to zoom the cube.
 #'
 #' @author
 #' Stephan Woellauer
@@ -8,17 +25,26 @@
 #' @import htmlwidgets
 #'
 #' @export
-cubeView <- function(message, width = NULL, height = NULL) {
+cubeView <- function(red, green, blue, x_size, y_size, z_size, width = NULL, height = NULL) {
 
-  # forward options using x
-  x = list(
-    message = message
-  )
+  total_size <- x_size*y_size*z_size
+
+  if(length(red)!=total_size) {
+    stop("length of red vector not correct: ", length(red), " should be ", total_size)
+  }
+  if(length(green)!=total_size) {
+    stop("length of green vector not correct", length(green), " should be ", total_size)
+  }
+  if(length(blue)!=total_size) {
+    stop("length of blue vector not correct", length(blue), " should be ", total_size)
+  }
+
+  object_list <- list(red=red, green=green, blue=blue, x_size=x_size, y_size=y_size, z_size=z_size)
 
   # create widget
   htmlwidgets::createWidget(
     name = 'cubeView',
-    x,
+    x = object_list,
     width = width,
     height = height,
     package = 'mapview'
