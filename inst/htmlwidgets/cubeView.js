@@ -68,13 +68,34 @@ function Hovmoeller(root, json) {
   y_pos = iDiv(Y_SIZE*2,3);
   z_pos = iDiv(Z_SIZE*2,3);
 
-  var rR = json.red;
-  var rG = json.green;
-  var rB = json.blue;
-  for(var i=0;i<XYZ_SIZE;i++) {
-    dR[i] = rR[i];
-    dG[i] = rG[i];
-    dB[i] = rB[i];
+  if (json.grey !== undefined) {
+    var s = json.grey;
+    for(var i=0;i<XYZ_SIZE;i++) {
+      dR[i] = s[i];
+      dG[i] = s[i];
+      dB[i] = s[i];
+    }
+  }
+
+  if (json.red !== undefined) {
+    var s = json.red;
+    for(var i=0;i<XYZ_SIZE;i++) {
+      dR[i] = s[i];
+    }
+  }
+
+  if (json.green !== undefined) {
+    var s = json.green;
+    for(var i=0;i<XYZ_SIZE;i++) {
+      dG[i] = s[i];
+    }
+  }
+
+  if (json.blue !== undefined) {
+    var s = json.blue;
+    for(var i=0;i<XYZ_SIZE;i++) {
+      dB[i] = s[i];
+    }
   }
 
 	this.scene = new THREE.Scene();
@@ -109,9 +130,6 @@ function Hovmoeller(root, json) {
 	this.materialZY = new THREE.MeshBasicMaterial( {} );
 	this.materials = [this.materialZY, this.materialZY, this.materialXZ, this.materialXZ , this.materialXY, this.materialXY];
 
-
-	//TODO check http://stackoverflow.com/questions/11961288/three-js-cube-with-different-texture-on-each-face-how-to-hide-edges-vertices?rq=1
-
 	var format = THREE.RGBAFormat;
 	var type = THREE.UnsignedByteType;
 	var mapping = THREE.UVMapping;
@@ -129,7 +147,7 @@ function Hovmoeller(root, json) {
 	this.cube = new THREE.Mesh( geometry,  new THREE.MeshFaceMaterial(this.materials) );
 	this.scene.add( this.cube );
 
-	this.camera.position.z = 7;
+	this.camera.position.z = 15;
 
 	document.body.addEventListener( 'keydown', this.onKeyDown, false );
 

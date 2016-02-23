@@ -4,11 +4,26 @@
 \alias{cubeView}
 \title{View a cube of 3-dimensional data filled with points (voxels).}
 \usage{
-cubeView(red, green, blue, x_size, y_size, z_size, width = NULL,
-  height = NULL)
+cubeView(grey = NULL, red = NULL, green = NULL, blue = NULL, x_size,
+  y_size, z_size, width = NULL, height = NULL)
+}
+\arguments{
+\item{grey}{optional integer vector with 0 <= value <= 255.}
+
+\item{red}{optional integer vector with 0 <= value <= 255.}
+
+\item{green}{optional integer vector with 0 <= value <= 255.}
+
+\item{blue}{optional integer vector with 0 <= value <= 255.}
+
+\item{x_size}{integer. size of x-dimension}
+
+\item{y_size}{integer. size of y-dimension}
+
+\item{z_size}{integer. size of z-dimension}
 }
 \description{
-A variation of Hovmoeller diagram: Each voxel is colored with a RGB-color value.
+A variation of Hovmoeller diagram: Each voxel is colored with a RGB-color (or grey) value.
 }
 \details{
 The cube faces show a selectable layer of the data within the cube.
@@ -21,11 +36,19 @@ x: INS DEL
 
 y: HOME END
 
+
 Press and hold left mouse-button to rotate the cube.
 
 Press and hold right mouse-button to move the cube.
 
 Move mouse-wheel to zoom the cube.
+
+The color resp. grey vectors contain sequentially values of each voxel. So each vector is length == x_size * y_size * z_size.
+Color component values overwrite grey values.
+
+Sequence of coordinates (x,y,z) for values in vectors:
+
+(1,1,1), (2,1,1), (3,1,1), ... (1,2,1), (2,2,1), (3,2,1), ... (1,1,2), (2,1,2), (3,1,2), ...
 }
 \author{
 Stephan Woellauer
