@@ -59,28 +59,28 @@ cubeView <- function(grey=NULL, red=NULL, green=NULL, blue=NULL, x_size, y_size,
     if(length(grey)!=total_size) {
       stop("length of grey vector not correct: ", length(grey), " should be ", total_size)
     }
-    object_list <- c(object_list, list(grey=as.integer(grey)))
+    object_list <- c(object_list, list(grey=as.raw(as.integer(grey))))
   }
 
   if(!is.null(red)) {
     if(length(red)!=total_size) {
       stop("length of red vector not correct: ", length(red), " should be ", total_size)
     }
-    object_list <- c(object_list, list(red=as.integer(red)))
+    object_list <- c(object_list, list(red=as.raw(as.integer(red))))
   }
 
   if(!is.null(green)) {
     if(length(green)!=total_size) {
       stop("length of green vector not correct: ", length(green), " should be ", total_size)
     }
-    object_list <- c(object_list, list(green=as.integer(green)))
+    object_list <- c(object_list, list(green=as.raw(as.integer(green))))
   }
 
   if(!is.null(blue)) {
     if(length(blue)!=total_size) {
       stop("length of blue vector not correct: ", length(blue), " should be ", total_size)
     }
-    object_list <- c(object_list, list(blue=as.integer(blue)))
+    object_list <- c(object_list, list(blue=as.raw(as.integer(blue))))
   }
 
   # create widget
@@ -89,7 +89,8 @@ cubeView <- function(grey=NULL, red=NULL, green=NULL, blue=NULL, x_size, y_size,
     x = object_list,
     width = width,
     height = height,
-    package = 'mapview'
+    package = 'mapview',
+    sizingPolicy = htmlwidgets::sizingPolicy(padding = 0, browser.fill = TRUE)
   )
 }
 
