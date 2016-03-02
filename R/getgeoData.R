@@ -145,19 +145,19 @@ if (!isGeneric('getGeoData')) {
 #'If  \code{name}='tiroldem' you must set the switch 'all' to \code{FALSE} if you just want to download a specified item you have to set data=item.
 #'The list of allowd items is:
 #'\itemize{
-#'\item \code{ibk_10m} Innsbruck,
-#'\item \code{il_10m} Innsbruck Land,
-#'\item \code{im_10m} Imst,
-#'\item \code{kb_10m} Kitzbühl,
-#'\item \code{ku_10m} Kufstein,
-#'\item \code{la_10m} Landeck,
-#'\item \code{re_10m} Reutte,
-#'\item \code{sz_10m} Schwaz,
-#'\item \code{lz_10m} Lienz (Osttirol).
+#'\item \code{IBK_DGM10} Innsbruck,
+#'\item \code{IL_DGM10} Innsbruck Land,
+#'\item \code{IM_DGM10} Imst,
+#'\item \code{KB_DGM10} Kitzbühl,
+#'\item \code{KU_DGM10} Kufstein,
+#'\item \code{LA_DGM10} Landeck,
+#'\item \code{RE_DGM10} Reutte,
+#'\item \code{SZ_DGM10} Schwaz,
+#'\item \code{LZ_DGM10} Lienz (Osttirol).
 #'}
 #'For use in ArcGIS the data is correctly georeferenced. However for R you MUST use the following proj4 strings if you want to project other data acccording to the Austrian Datum. DO NOT USE the default EPSG Code string! All datasets except Lienz are projected with: ''+proj=tmerc +lat_0=0 +lon_0=10.33333333333333 +k=1 +x_0=0 +y_0=-5000000 +ellps=bessel +towgs84=577.326, 90.129, 463.919, 5.137, 1.474, 5.297, 2.4232 +units=m'. Item=lz_10m (Lienz) has an different Central_Meridian. You have to change it to 13.333333.\cr
 #'
-#'\code{getGeoData('tiroldem', item = 'ku_10m')} \cr
+#'\code{getGeoData('tiroldem', item = 'KU_DGM10')} \cr
 #'
 
 #'@references
@@ -684,22 +684,22 @@ ccodes <- function() {
 
 }
 
-.tiroldem <- function(item, download, path) {
-  stopifnot( (item == 'ibk_10m') | (item == 'il_10m') | (item == 'im_10m') | (item == 'kb_10m') |(item == 'ku_10m') |(item == 'la_10m') |(item == 're_10m') |(item == 'sz_10m') |(item == 'lz_10m') )
+.tiroldem <- function(item, path,download) {
+  stopifnot( (item == 'IBK_DGM10') | (item == 'IL_DGM10') | (item == 'IM_DGM10') | (item == 'KB_DGM10') |(item == 'KU_DGM10') |(item == 'LA_DGM10') |(item == 'RE_DGM10') |(item == 'SZ_DGM10') |(item == 'LZ_DGM10') )
 
   f <- item
   zipfilename <- paste(path,  f, ".zip", sep="")
-  ascfilename <- paste(path,  f, "_float.asc", sep="")
+  ascfilename <- paste(path,  f, ".asc", sep="")
 
   if (!file.exists(zipfilename)) {
     if (download) {
-      theurl <- paste("https://gis.tirol.gv.at/ogd/geografie_planung/", f,".zip", sep="")
-      test <- try (.download(theurl, zipfilename) , silent=TRUE)
+      theurl <- paste("https://gis.tirol.gv.at/ogd/geografie_planung/DGM/", f,".zip", sep="")
+       test <- try (.download(theurl, zipfilename) , silent=TRUE)
     } else {cat('file not available locally, use download=TRUE\n') }
   }
   if (file.exists(zipfilename)) {
     unzip(zipfilename,junkpath=TRUE, exdir=dirname(zipfilename))
-    file.remove(zipfilename)
+    #file.remove(zipfilename)
   }
 
   if (file.exists(ascfilename)) {

@@ -146,19 +146,19 @@ If  \code{name}='OSMp' you must provide lat_min,lat_max,lon_min,lon_max for the 
 If  \code{name}='tiroldem' you must set the switch 'all' to \code{FALSE} if you just want to download a specified item you have to set data=item.
 The list of allowd items is:
 \itemize{
-\item \code{ibk_10m} Innsbruck,
-\item \code{il_10m} Innsbruck Land,
-\item \code{im_10m} Imst,
-\item \code{kb_10m} Kitzbühl,
-\item \code{ku_10m} Kufstein,
-\item \code{la_10m} Landeck,
-\item \code{re_10m} Reutte,
-\item \code{sz_10m} Schwaz,
-\item \code{lz_10m} Lienz (Osttirol).
+\item \code{IBK_DGM10} Innsbruck,
+\item \code{IL_DGM10} Innsbruck Land,
+\item \code{IM_DGM10} Imst,
+\item \code{KB_DGM10} Kitzbühl,
+\item \code{KU_DGM10} Kufstein,
+\item \code{LA_DGM10} Landeck,
+\item \code{RE_DGM10} Reutte,
+\item \code{SZ_DGM10} Schwaz,
+\item \code{LZ_DGM10} Lienz (Osttirol).
 }
 For use in ArcGIS the data is correctly georeferenced. However for R you MUST use the following proj4 strings if you want to project other data acccording to the Austrian Datum. DO NOT USE the default EPSG Code string! All datasets except Lienz are projected with: ''+proj=tmerc +lat_0=0 +lon_0=10.33333333333333 +k=1 +x_0=0 +y_0=-5000000 +ellps=bessel +towgs84=577.326, 90.129, 463.919, 5.137, 1.474, 5.297, 2.4232 +units=m'. Item=lz_10m (Lienz) has an different Central_Meridian. You have to change it to 13.333333.\cr
 
-\code{getGeoData('tiroldem', item = 'ku_10m')} \cr
+\code{getGeoData('tiroldem', item = 'KU_DGM10')} \cr
 }
 \examples{
 #### Example getGeoData
