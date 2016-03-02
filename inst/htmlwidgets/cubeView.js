@@ -16,6 +16,22 @@ HTMLWidgets.widget({
 
 var hovmoeller;
 
+var X_SIZE;
+var Y_SIZE;
+var Z_SIZE;
+var XY_SIZE;
+var XZ_SIZE;
+var ZY_SIZE;
+var XYZ_SIZE;
+var dR;
+var dG;
+var dB;
+
+var x_pos = iDiv(X_SIZE*2,3);
+var y_pos = iDiv(Y_SIZE*2,3);
+var z_pos = iDiv(Z_SIZE*2,3);
+
+/*
 var X_SIZE = 41;
 var Y_SIZE = 97;
 var Z_SIZE = 13;
@@ -29,7 +45,7 @@ var dB = new Uint8Array(XYZ_SIZE);
 
 var x_pos = iDiv(X_SIZE*2,3);
 var y_pos = iDiv(Y_SIZE*2,3);
-var z_pos = iDiv(Z_SIZE*2,3);
+var z_pos = iDiv(Z_SIZE*2,3);*/
 
 function init(root, json) {
 	hovmoeller = new Hovmoeller(root, json);
@@ -37,6 +53,17 @@ function init(root, json) {
 
 function iDiv(a,b) {
 	return (a/b>>0);
+}
+
+function b64toArray(data) {
+  console.log("base46decode...");
+  var byteString = atob(data);
+	var buffer = new Uint8Array(byteString.length);
+	for (var i = 0; i < byteString.length; i++) {
+		buffer[i] = byteString.charCodeAt(i);
+	}
+	console.log("base46decode done.");
+	return buffer;
 }
 
 function Hovmoeller(root, json) {
@@ -61,28 +88,68 @@ function Hovmoeller(root, json) {
   XZ_SIZE = X_SIZE*Z_SIZE;
   ZY_SIZE = Z_SIZE*Y_SIZE;
   XYZ_SIZE = X_SIZE*Y_SIZE*Z_SIZE;
-  dR = new Uint8Array(XYZ_SIZE);
-  dG = new Uint8Array(XYZ_SIZE);
-  dB = new Uint8Array(XYZ_SIZE);
   x_pos = iDiv(X_SIZE*2,3);
   y_pos = iDiv(Y_SIZE*2,3);
   z_pos = iDiv(Z_SIZE*2,3);
 
-  var rR = json.red;
-  var rG = json.green;
-  var rB = json.blue;
-  for(var i=0;i<XYZ_SIZE;i++) {
-    dR[i] = rR[i];
-    dG[i] = rG[i];
-    dB[i] = rB[i];
+
+  if (json.grey !== undefined) {
+    dR = dG = dB = b64toArray(json.grey);
   }
+
+  if (json.red !== undefined) {
+    dR = b64toArray(json.red);
+  }
+
+  if (json.green !== undefined) {
+    dG = b64toArray(json.green);
+  }
+
+  if (json.blue !== undefined) {
+    dB = b64toArray(json.blue);
+  }
+
+  /*dR = new Uint8Array(XYZ_SIZE);
+  dG = new Uint8Array(XYZ_SIZE);
+  dB = new Uint8Array(XYZ_SIZE);
+
+
+  if (json.grey !== undefined) {
+    var s = b64toArray(json.grey);
+    for(var i=0;i<XYZ_SIZE;i++) {
+      dR[i] = s[i];
+      dG[i] = s[i];
+      dB[i] = s[i];
+    }
+  }
+
+  if (json.red !== undefined) {
+    var s = b64toArray(json.red);
+    for(var i=0;i<XYZ_SIZE;i++) {
+      dR[i] = s[i];
+    }
+  }
+
+  if (json.green !== undefined) {
+    var s = b64toArray(json.green);
+    for(var i=0;i<XYZ_SIZE;i++) {
+      dG[i] = s[i];
+    }
+  }
+
+  if (json.blue !== undefined) {
+    var s = b64toArray(json.blue);
+    for(var i=0;i<XYZ_SIZE;i++) {
+      dB[i] = s[i];
+    }
+  }*/
 
 	this.scene = new THREE.Scene();
 	this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 	this.renderer = new THREE.WebGLRenderer( {/*antialias: true*/} );
 	this.renderer.setSize( window.innerWidth, window.innerHeight );
-	console.log(this.renderer.getMaxAnisotropy());
+	//console.log(this.renderer.getMaxAnisotropy());
 
 	var controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 
@@ -109,9 +176,6 @@ function Hovmoeller(root, json) {
 	this.materialZY = new THREE.MeshBasicMaterial( {} );
 	this.materials = [this.materialZY, this.materialZY, this.materialXZ, this.materialXZ , this.materialXY, this.materialXY];
 
-
-	//TODO check http://stackoverflow.com/questions/11961288/three-js-cube-with-different-texture-on-each-face-how-to-hide-edges-vertices?rq=1
-
 	var format = THREE.RGBAFormat;
 	var type = THREE.UnsignedByteType;
 	var mapping = THREE.UVMapping;
@@ -129,29 +193,23 @@ function Hovmoeller(root, json) {
 	this.cube = new THREE.Mesh( geometry,  new THREE.MeshFaceMaterial(this.materials) );
 	this.scene.add( this.cube );
 
-	this.camera.position.z = 7;
+	this.camera.position.z = 15;
 
 	document.body.addEventListener( 'keydown', this.onKeyDown, false );
 
+	//console.log(JSON.stringify(this.cube.geometry.faceVertexUvs));
 
-
-	console.log(JSON.stringify(this.cube.geometry.faceVertexUvs));
-
+	this.updateMaterial();
 	this.render();
 }
 
 Hovmoeller.prototype = {
 
 render: function () {
+	this.renderer.render( this.scene, this.camera );
 	var self = this;
 	function mov() {self.render();}
 	requestAnimationFrame( mov );
-
-	/*this.cube.rotation.x += 0.005;
-	this.cube.rotation.y += 0.007;
-	this.cube.rotation.z += 0.003;*/
-	this.updateMaterial();
-	this.renderer.render( this.scene, this.camera );
 },
 
 updateMaterial: function () {
@@ -262,8 +320,9 @@ onKeyDown: function(e) {
 			e.stopPropagation();
 			break;
 		default:
-			console.log(e.keyCode);
+			//console.log(e.keyCode);
 	}
+	hovmoeller.updateMaterial();
 }
 
 }
