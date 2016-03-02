@@ -106,7 +106,7 @@ setMethod('spplot',
               } else {
 
                 # if dealing with a single-point feature
-                if (grep("SpatialPoints", class(obj@object[[1]])) == 1 &
+                if (grepl("SpatialPoints", class(obj@object[[1]])) == 1 &
                       length(obj@object[[1]]) == 1) {
 
                   pts <- list("sp.points", obj@object[[1]],

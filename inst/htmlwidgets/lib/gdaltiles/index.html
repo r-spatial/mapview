@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Test</title>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+		<link rel="stylesheet" href="../../lib/leaflet/leaflet.css" />
+		<script src="../../lib/leaflet/leaflet.js"></script>
+		<script src="rastercoords.js"></script>
+		<script src="index.js"></script>
+		<style>
+			  body { margin:0; padding:0; }
+  #map { position:absolute; top:0; bottom:0; width:80%; }
+
+
+		</style>
+	</head>
+	<body onload="init()">
+		<style>
+.ui-control {
+  background:#fff;
+  position:absolute;
+  top:10px;
+  right:10px;
+  padding:10px;
+  z-index:100;
+  border-radius:3px;
+  }
+</style>
+		<div id="map"></div>
+		<div id='output' class='ui-control'>
+  Click: <code id='click'></code><br/>
+  Mousemove: <code id='mousemove'></code><br/>
+</div>
+	</body>
+</html>

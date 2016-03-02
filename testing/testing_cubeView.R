@@ -1,6 +1,6 @@
 library(mapview)
-
-?cubeView
+mapview()
+??cubeView
 
 x_size <- 41
 y_size <- 97
