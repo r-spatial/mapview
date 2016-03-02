@@ -763,7 +763,7 @@ ccodes <- function() {
   # we also pass the .php extension of the download address
 
   # define the spatial extend of the OSM data we want to retrieve
-  osm.extend <- corner_bbox(extent$xmin,extent$ymin,extent$xmax,extent$ymax)
+  osm.extend <- corner_bbox(extent[1],extent[3],extent[2],extent[4])
 
   # download all osm data inside this area, note we have to declare the api interface with source
   print('Retrieving OSM data. Be patient...')
