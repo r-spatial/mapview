@@ -18,38 +18,38 @@ if (!isGeneric('visEarthPole')) {
 #'@param zoom set zoom level maximum is 5
 #'
 #'@details Layerlisting for details pleas look at \url{https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products}\cr
-#'[1] <-  "AMSR2_Sea_Ice_Concentration_12km" \cr
-#'[2] <-  "AMSR2_Sea_Ice_Concentration_25km" \cr
-#'[3] <-  "AMSR2_Sea_Ice_Brightness_Temp_6km_89H" \cr
-#'[4] <-  "AMSR2_Sea_Ice_Brightness_Temp_6km_89V" \cr
-#'[5] <-  "AMSRE_Sea_Ice_Concentration_12km" \cr
-#'[6] <-  "AMSRE_Snow_Depth_Over_Ice" \cr
-#'[7] <-  "AMSRE_Sea_Ice_Concentration_25km" \cr
-#'[8] <-  "AMSRE_Sea_Ice_Brightness_Temp_89H" \cr
-#'[9] <-  "AMSRE_Sea_Ice_Brightness_Temp_89V" \cr
-#'[10] <-  "BlueMarble_NextGeneration" \cr
-#'[11] <-  "BlueMarble_ShadedRelief" \cr
-#'[12] <-  "BlueMarble_ShadedRelief_Bathymetry" \cr
-#'[13] <-  "Coastlines" \cr
-#'[14] <-  "Graticule" \cr
-#'[15] <-  "MODIS_Terra_Snow_Cover" \cr
-#'[16] <-  "MODIS_Terra_Sea_Ice" \cr
-#'[17] <-  "MODIS_Terra_Brightness_Temp_Band31_Day" \cr
-#'[18] <-  "MODIS_Terra_Brightness_Temp_Band31_Night" \cr
-#'[19] <-  "MODIS_Terra_CorrectedReflectance_TrueColor" \cr
-#'[20] <-  "MODIS_Terra_CorrectedReflectance_Bands367" \cr
-#'[21] <-  "MODIS_Terra_CorrectedReflectance_Bands721" \cr
-#'[22] <-  "MODIS_Aqua_Snow_Cover" \cr
-#'[23] <-  "MODIS_Aqua_Sea_Ice" \cr
-#'[24] <-  "MODIS_Aqua_Brightness_Temp_Band31_Day" \cr
-#'[25] <-  "MODIS_Aqua_Brightness_Temp_Band31_Night" \cr
-#'[26] <-  "MODIS_Aqua_CorrectedReflectance_TrueColor" \cr
-#'[27] <-  "MODIS_Aqua_CorrectedReflectance_Bands721" \cr
-#'[28] <-  "SCAR_Land_Mask" \cr
-#'[29] <-  "SCAR_Land_Water_Map \cr"
-#'[30] <-  "VIIRS_SNPP_CorrectedReflectance_TrueColor" \cr
-#'[31] <-  "VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1" \cr
-#'[32] <-  "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11" \cr
+#'[1]  "AMSR2_Sea_Ice_Concentration_12km" \cr
+#'[2]  "AMSR2_Sea_Ice_Concentration_25km" \cr
+#'[3]  "AMSR2_Sea_Ice_Brightness_Temp_6km_89H" \cr
+#'[4]  "AMSR2_Sea_Ice_Brightness_Temp_6km_89V" \cr
+#'[5]  "AMSRE_Sea_Ice_Concentration_12km" \cr
+#'[6]  "AMSRE_Snow_Depth_Over_Ice" \cr
+#'[7]  "AMSRE_Sea_Ice_Concentration_25km" \cr
+#'[8]  "AMSRE_Sea_Ice_Brightness_Temp_89H" \cr
+#'[9]  "AMSRE_Sea_Ice_Brightness_Temp_89V" \cr
+#'[10]  "BlueMarble_NextGeneration" \cr
+#'[11]  "BlueMarble_ShadedRelief" \cr
+#'[12]  "BlueMarble_ShadedRelief_Bathymetry" \cr
+#'[13]  "Coastlines" \cr
+#'[14]  "Graticule" \cr
+#'[15]  "MODIS_Terra_Snow_Cover" \cr
+#'[16]  "MODIS_Terra_Sea_Ice" \cr
+#'[17]  "MODIS_Terra_Brightness_Temp_Band31_Day" \cr
+#'[18]  "MODIS_Terra_Brightness_Temp_Band31_Night" \cr
+#'[19]  "MODIS_Terra_CorrectedReflectance_TrueColor" \cr
+#'[20]  "MODIS_Terra_CorrectedReflectance_Bands367" \cr
+#'[21]  "MODIS_Terra_CorrectedReflectance_Bands721" \cr
+#'[22]  "MODIS_Aqua_Snow_Cover" \cr
+#'[23]  "MODIS_Aqua_Sea_Ice" \cr
+#'[24]  "MODIS_Aqua_Brightness_Temp_Band31_Day" \cr
+#'[25]  "MODIS_Aqua_Brightness_Temp_Band31_Night" \cr
+#'[26]  "MODIS_Aqua_CorrectedReflectance_TrueColor" \cr
+#'[27]  "MODIS_Aqua_CorrectedReflectance_Bands721" \cr
+#'[28]  "SCAR_Land_Mask" \cr
+#'[29]  "SCAR_Land_Water_Map \cr"
+#'[30]  "VIIRS_SNPP_CorrectedReflectance_TrueColor" \cr
+#'[31]  "VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1" \cr
+#'[32]  "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11" \cr
 #'
 #'@references
 #'\url{https://wiki.earthdata.nasa.gov/display/GIBS/Global+Imagery+Browse+Services+-+GIBS}\cr
