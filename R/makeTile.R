@@ -3,23 +3,24 @@ if (!isGeneric('makeTile')) {
     standardGeneric('makeTile'))
 }
 
-#' Create a tile layer from a raster
+#' Create a leaflet conform raster tile layer from a GDAL/raster input
 #'
 #' @description makeTile takes a raster object or a GDAL raster file  and creates  a leaflet compatible tile structure in a given directory.
 #'
 #'@param x raster object or gdal file
-#'@param outPath=tmpDir()
-#'@param scale=NULL
-#'@param gray=TRUE
-#'@param rgb=FALSE
-#'@param rgba=FALSE
-#'@param s_srs="+proj=longlat +datum=WGS84"
-#'@param t_srs="+proj=longlat +datum=WGS84"
-#'@param epsg=NULL
-#'@param rType="near"
-#'@param zoom=NULL
+#'@param outPath tmpDir()
+#'@param scale NULL
+#'@param gray TRUE
+#'@param rgb FALSE
+#'@param rgba FALSE
+#'@param s_srs "+proj=longlat +datum=WGS84"
+#'@param t_srs "+proj=longlat +datum=WGS84"
+#'@param epsg NULL
+#'@param rType "near"
+#'@param zoom NULL
 #'
 #'
+#'@details soon more
 #' @author
 #' Chris Reudenbach
 #'

@@ -2,22 +2,51 @@
 % Please edit documentation in R/makeTile.R
 \name{makeTile}
 \alias{makeTile}
-\title{Create a tile layer from a raster}
+\title{Create a leaflet conform raster tile layer from a GDAL/raster input}
+\arguments{
+\item{x}{raster object or gdal file}
+
+\item{outPath}{tmpDir()}
+
+\item{scale}{NULL}
+
+\item{gray}{TRUE}
+
+\item{rgb}{FALSE}
+
+\item{rgba}{FALSE}
+
+\item{s_srs}{"+proj=longlat +datum=WGS84"}
+
+\item{t_srs}{"+proj=longlat +datum=WGS84"}
+
+\item{epsg}{NULL}
+
+\item{rType}{"near"}
+
+\item{zoom}{NULL}
+}
 \description{
-makeTile takes a raster object and creates  a leaflet compatible tile structure.
+makeTile takes a raster object or a GDAL raster file  and creates  a leaflet compatible tile structure in a given directory.
+}
+\details{
+soon more
 }
 \examples{
 \dontrun{
-#we need sp and raster ###
- library(sp)
- library(raster)
-### Now we go  bigger
-### get some SRTM data
-  r<-getGeoData(name="SRTM",extent(83.8,27,9,99,34),download=TRUE)
-  prj3035<-"proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+ # we need a running gdal with all python bindings  ###
+ require(raster)
+ require(gdalUtils)
+ require("curl")
+ ### get some data for the antartica
+
+  curl_download(url="ftp://ftp.uninett.no/pub/quantarctica/Quantarctica2.zip", destfile="~/tmp/quantartic.zip"  ,  quiet = TRUE, mode = "wb")
+  unzip("~/tmp/quantartic.zip")
+  # define correct projection
   epsg3031<-"+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
-  makeTile(x="mosaicSRTM.tif",outPath="/home/creu/proj/makeTile", t_srs= prj3035,scale=c(1000,5000))
- makeTile(x=fn,outPath="/home/creu/proj/makeTile", s_srs= epsg3031,t_srs= epsg3031)
+  # choose a dataset
+  fn="~/tmp/quantarctic/ETOPO1_DEM.tif"
+  makeTile(fn=fn,outPath="~/proj/LeafletTiles/etopo1/", s_srs= epsg3031,t_srs= epsg3031))
 }
 }
 \author{

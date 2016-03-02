@@ -2,23 +2,68 @@ if (!isGeneric('visEarthPole')) {
   setGeneric('visEarthPole', function(x, ...)
     standardGeneric('visEarthPole'))
 }
-#' test some widget things
+#' usecase for local leaflet projections
 #'
-#' @description visEarthPole gets the visEarthPole Data for leaflet
+#' @description visEarthPole is an usecase interface to the Global Imagery
+#'   Browse Services - GIBS  Basically the projection at the South Pole is EPSG
+#'   3031 and somehow a perfect test implementation of proj4leaflet.
+#'   It is up to now VERY basic and just demonstrate the possibilities of using it along with mapview.
+#'
+#'@usage visEarthPole(dateString="2011-10-04", layerList=c(12,10,11),groupList=NULL,scale=scale500,zoom=5)
+#'
+#'@param dateString a date in the convienient format "2011-10-04". Basically the retrieve of non existing time slots is corrected to the next existing.
+#'@param layerList default is (12,10,11). You will find 32 layers  to choose. See Details for more info
+#'@param groupList default = "500" there are two more "250" and "1000" predifined  group list according to the resolution of the data . if you choose "burst" you will get all layers.
+#'@param scale set scale groups according to the resolution will be removed options are "scale250","scale500" "scale1000".
+#'@param zoom set zoom level maximum is 5
+#'
+#'@details Layerlisting for details pleas look at \url{https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products}\cr
+#'[1] <-  "AMSR2_Sea_Ice_Concentration_12km" \cr
+#'[2] <-  "AMSR2_Sea_Ice_Concentration_25km" \cr
+#'[3] <-  "AMSR2_Sea_Ice_Brightness_Temp_6km_89H" \cr
+#'[4] <-  "AMSR2_Sea_Ice_Brightness_Temp_6km_89V" \cr
+#'[5] <-  "AMSRE_Sea_Ice_Concentration_12km" \cr
+#'[6] <-  "AMSRE_Snow_Depth_Over_Ice" \cr
+#'[7] <-  "AMSRE_Sea_Ice_Concentration_25km" \cr
+#'[8] <-  "AMSRE_Sea_Ice_Brightness_Temp_89H" \cr
+#'[9] <-  "AMSRE_Sea_Ice_Brightness_Temp_89V" \cr
+#'[10] <-  "BlueMarble_NextGeneration" \cr
+#'[11] <-  "BlueMarble_ShadedRelief" \cr
+#'[12] <-  "BlueMarble_ShadedRelief_Bathymetry" \cr
+#'[13] <-  "Coastlines" \cr
+#'[14] <-  "Graticule" \cr
+#'[15] <-  "MODIS_Terra_Snow_Cover" \cr
+#'[16] <-  "MODIS_Terra_Sea_Ice" \cr
+#'[17] <-  "MODIS_Terra_Brightness_Temp_Band31_Day" \cr
+#'[18] <-  "MODIS_Terra_Brightness_Temp_Band31_Night" \cr
+#'[19] <-  "MODIS_Terra_CorrectedReflectance_TrueColor" \cr
+#'[20] <-  "MODIS_Terra_CorrectedReflectance_Bands367" \cr
+#'[21] <-  "MODIS_Terra_CorrectedReflectance_Bands721" \cr
+#'[22] <-  "MODIS_Aqua_Snow_Cover" \cr
+#'[23] <-  "MODIS_Aqua_Sea_Ice" \cr
+#'[24] <-  "MODIS_Aqua_Brightness_Temp_Band31_Day" \cr
+#'[25] <-  "MODIS_Aqua_Brightness_Temp_Band31_Night" \cr
+#'[26] <-  "MODIS_Aqua_CorrectedReflectance_TrueColor" \cr
+#'[27] <-  "MODIS_Aqua_CorrectedReflectance_Bands721" \cr
+#'[28] <-  "SCAR_Land_Mask" \cr
+#'[29] <-  "SCAR_Land_Water_Map \cr"
+#'[30] <-  "VIIRS_SNPP_CorrectedReflectance_TrueColor" \cr
+#'[31] <-  "VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1" \cr
+#'[32] <-  "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11" \cr
+#'
+#'@references
+#'\url{https://wiki.earthdata.nasa.gov/display/GIBS/Global+Imagery+Browse+Services+-+GIBS}\cr
+#'\url{https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products}\cr
+#'\url{http://map1.vis.earthdata.nasa.gov/twms-antarctic/twms.cgi?request=GetTileService}\cr
+#'\url{https://github.com/kartena/Proj4Leaflet}\cr
 
 #' @author
 #' Chris Reudenbach
 #'
 #' @examples
 #' \dontrun{
-#' #we need sp and raster ###
-#'  library(sp)
-#'  library(raster)
-#' ### Now we go  bigger
-#' ### get some SRTM data
-#'   r<-getGeoData(name<-"SRTM",extent(83.8,27,9,99,34),download=TRUE)
-#   prj3035<-"proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
-#   mapview:::visEarthPole(x="mosaicSRTM.tif",outPath="/home/creu/proj/visEarthPole", t_srs= prj3035,scale=c(1000,5000))
+#'
+#'  visEarthPole(groupList="1000",dateString="2014-02-04")
 #'}
 #'@name visEarthPole
 #'@export visEarthPole
@@ -31,7 +76,7 @@ visEarthPole<- function(dateString="2011-10-04",
                         layerList=c(12,10,11),
                         groupList=NULL,
                         scale=scale500,
-                        zoom=4)
+                        zoom=5)
 {
 
   tileSize=512
