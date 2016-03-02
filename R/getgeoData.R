@@ -766,7 +766,7 @@ ccodes <- function() {
   osm.extend <- corner_bbox(extent[1],extent[3],extent[2],extent[4])
 
   # download all osm data inside this area, note we have to declare the api interface with source
-  print('Retrieving OSM data. Be patient...')
+  cat('Retrieving OSM data. Be patient...')
   osm <- get_osm(osm.extend, source = osmsource_api())
   # find the first attribute key&val
   node.id <- find(osm, node(tags(k == key & v == val)))
@@ -796,11 +796,11 @@ ccodes <- function() {
 
   # clean the df and rename the cols
   m.df<-.stmp
-  colnames(m.df)<- c("Latitude","Longitude","Name","Altitude")
+  colnames(m.df)<- c("osmID","Longitude","Latitude","Name","Altitude")
 
   # convert the osm.peak df to a SpatialPoints object and assign reference system
   coordinates(m.df) <- ~Longitude+Latitude
-  proj4string(m.df)<-"+proj=longlat +datum=WGS84"
+  proj4string(m.df)<- CRS("+proj=longlat +datum=WGS84 +no_defs")
   # save to shapefile
   writePointsShape(m.df,"OSMNode.shp")
 
