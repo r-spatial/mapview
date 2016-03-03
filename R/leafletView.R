@@ -660,16 +660,59 @@ leafletLinesDF <- function(x,
 
     grp <- layer.name
 
-    if (pop.null) popup <- brewPopupTable(x)
+    # if (pop.null) popup <- brewPopupTable(x)
 
-    m <- leaflet::addPolylines(m,
-                               group = grp,
-                               color = color[length(color)],
-                               popup = popup,
-                               data = x,
-                               weight = lwd,
-                               opacity = alpha,
-                               ...)
+    ### test -----
+
+    for (i in 1:length(x)) {
+
+      # individual popup
+      if (pop.null) popup <- brewPopupTable(x[i, ])
+
+      # continuous line
+      segments <- length(x[i, ]@lines[[1]]@Lines)
+
+      if (segments == 1) {
+        m <- leaflet::addPolylines(m,
+                                   group = grp,
+                                   color = color[length(color)],
+                                   popup = popup,
+                                   data = x[i, ],
+                                   weight = lwd,
+                                   opacity = alpha,
+                                   ...)
+
+      # disjunct line
+      } else {
+
+        # add one segment after another
+        for (j in seq(segments)) {
+          ln <- x[i, ]@lines[[1]]@Lines[[j]]
+          lns <- sp::Lines(list(ln), ID = rownames(x@data[i, ]))
+          sln <- sp::SpatialLines(list(lns),
+                                  proj4string = sp::CRS(sp::proj4string(x)))
+          slndf <- sp::SpatialLinesDataFrame(sln, data = x@data[i, ])
+          m <- leaflet::addPolylines(m,
+                                     group = grp,
+                                     color = color[length(color)],
+                                     popup = popup,
+                                     data = slndf,
+                                     weight = lwd,
+                                     opacity = alpha,
+                                     ...)
+        }
+      }
+    }
+
+
+    # m <- leaflet::addPolylines(m,
+    #                            group = grp,
+    #                            color = color[length(color)],
+    #                            popup = popup,
+    #                            data = x,
+    #                            weight = lwd,
+    #                            opacity = alpha,
+    #                            ...)
 
     m <- mapViewLayersControl(map = m,
                               map.types = map.types,
