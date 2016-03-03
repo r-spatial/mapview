@@ -82,9 +82,15 @@ brewPopupTable <- function(x, use_cpp = TRUE) {
                    mat)
     }
 
-    cols <- colnames(mat)
+    ## add 'feature id' in case of spydf, slndf
+    if (grep("DataFrame", class(x)) == 1) {
+      fid <- rownames(x@data)
+      mat <- cbind("Feature ID" = fid, mat)
+    }
 
     ## create list with row-specific html code
+    cols <- colnames(mat)
+
     lst_html <- listPopupTemplates(mat, cols,
                                    system.file("templates/popup.brew",
                                                package = "mapview"))

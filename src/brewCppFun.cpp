@@ -106,8 +106,9 @@ std::string mergePopupRows(CharacterVector names, CharacterVector values) {
     ssName << names[i];
     ssValue << values[i];
 
-    // coords
-    if (names[i] == "Longitude" | names[i] == "Latitude") {
+    // feature id or coords
+    if (names[i] == "Feature ID" |
+          names[i] == "Longitude" | names[i] == "Latitude") {
       chOut = chOut + brewPopupCoords(ssName.str(), ssValue.str());
     } else {
 
