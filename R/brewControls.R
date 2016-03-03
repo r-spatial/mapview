@@ -83,7 +83,7 @@ brewPopupTable <- function(x, use_cpp = TRUE) {
     }
 
     ## add 'feature id' in case of spydf, slndf
-    if (grep("DataFrame", class(x)) == 1) {
+    if (length(grep("DataFrame", class(x))) > 0) {
       fid <- rownames(x@data)
       mat <- cbind("Feature ID" = fid, mat)
     }
