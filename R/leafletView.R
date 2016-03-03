@@ -751,12 +751,47 @@ leafletLines <- function(x,
 
   grp <- layer.name
 
-  m <- leaflet::addPolylines(m,
-                             group = grp,
-                             data = x,
-                             weight = lwd,
-                             opacity = alpha,
-                             ...)
+  ### test -----
+
+  for (i in 1:length(x)) {
+
+    # continuous line
+    segments <- length(x[i, ]@lines[[1]]@Lines)
+
+    if (segments == 1) {
+      m <- leaflet::addPolylines(m,
+                                 group = grp,
+                                 color = color[length(color)],
+                                 data = x[i, ],
+                                 weight = lwd,
+                                 opacity = alpha,
+                                 ...)
+
+    # disjunct line
+    } else {
+
+      # add one segment after another
+      for (j in seq(segments)) {
+        ln <- x[i, ]@lines[[1]]@Lines[[j]]
+        lns <- sp::Lines(list(ln), ID = i)
+        sln <- sp::SpatialLines(list(lns),
+                                proj4string = sp::CRS(sp::proj4string(x)))
+        m <- leaflet::addPolylines(m,
+                                   group = grp,
+                                   data = sln,
+                                   weight = lwd,
+                                   opacity = alpha,
+                                   ...)
+      }
+    }
+  }
+
+  # m <- leaflet::addPolylines(m,
+  #                            group = grp,
+  #                            data = x,
+  #                            weight = lwd,
+  #                            opacity = alpha,
+  #                            ...)
 
   m <- mapViewLayersControl(map = m,
                             map.types = map.types,
