@@ -37,8 +37,8 @@ if (!isGeneric('makeTile')) {
 #'   # define correct projection
 #'   epsg3031<-"+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
 #'   # choose a dataset
-#'   fn="~/tmp/quantarctic/ETOPO1_DEM.tif"
-#'   makeTile(fn=fn,outPath="~/proj/LeafletTiles/etopo1/", s_srs= epsg3031,t_srs= epsg3031))
+#'   x="/home/creu/proj/antarctica/Quantarctica2/Basemap/Terrain/ETOPO1_DEM.tif"
+#'   log<-makeTile(x=x,outPath="/home/creu/proj/makeTile/etopo2DGM", s_srs= epsg3031,t_srs= epsg3031)
 #'}
 #'@name makeTile
 #'@export makeTile
