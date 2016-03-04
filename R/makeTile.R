@@ -79,6 +79,7 @@ makeTile <- function(x=NULL,
              s_srs = s_srs,
              t_srs = t_srs,
              r = rType,
+             multi = TRUE,
              overwrite = TRUE
     )
     fnTranslate<-path.expand(paste0(tmpPath,"/rawTile.tif"))

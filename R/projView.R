@@ -151,6 +151,8 @@ projView<- function(url=NULL,
       epsgCode<- paste0("EPSG:",EPSG[grep(proj4Str, EPSG$prj4,fixed=TRUE),1])
       if (epsgCode ==""){return(cat(' no valid EPSG or similar code available')) }
     }
+    epsg<-paste('var ProjCode = "',epsgCode,'";')
+    proj<-paste('var Proj4String ="', proj4Str,'";')
     tileSize<-param[[5]]
     # calculate orig for polarstereographic
     # extract the extent needing only positive half of it
@@ -198,8 +200,8 @@ projView<- function(url=NULL,
                 layer = c(url),
                 layername=urlLabel,
                 zoom = zoom,
-                #              epsgcode=epsgCode,
-                #              epsgproj=proj4Str,
+                epsgcode=epsgCode,
+                epsgproj=proj4Str,
                 tilesize=tileSize,
                 attribution=attribution)
 
