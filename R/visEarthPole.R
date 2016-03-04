@@ -190,8 +190,8 @@ makeTmpPath <- function (p=NULL){
   if (is.null(p)){
     tmpPath <- tempfile()
   } else {tmpPath <- p}
-  dir.create(tmpPath)
-  dir.create(paste0(tmpPath,"/tiles"))
+  dir.create(tmpPath,recursive = TRUE, showWarnings = FALSE)
+  dir.create(paste0(tmpPath,"/tiles"),recursive = TRUE, showWarnings = FALSE)
   baseFn <- "rawTile"
   extFn <- "JPEG"
   rasFn <- paste0(baseFn,".",extFn)

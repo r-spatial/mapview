@@ -42,7 +42,6 @@ dependencies:
       - leaflet.glify.js
       - leaflet.canvasoverlay.js
       - gl.js
-
   - name: "fragment-shader"
     version: 0.1.0
     src: "htmlwidgets/lib/glify"

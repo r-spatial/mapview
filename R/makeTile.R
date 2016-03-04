@@ -58,7 +58,8 @@ makeTile <- function(x=NULL,
                      t_srs="+proj=longlat +datum=WGS84",
                      epsg=NULL,
                      rType="near",
-                     zoom=NULL)
+                     zoom=NULL
+                     )
 {
   if (class(x)=="raster"|class(x)=="rasterbrick"){
     writeRaster(x,paste0(outPath,"/tile.tif"))
@@ -73,20 +74,20 @@ makeTile <- function(x=NULL,
   rasType <- tmp[[4]][1]
 
   if (t_srs != s_srs){
-    gdalwarp(fnx@file@name,
-             paste0(tmpPath,"/rawTile.tif") ,
+    gdalwarp(path.expand(fnx@file@name),
+             path.expand(paste0(tmpPath,"/rawTile.tif")) ,
              s_srs = s_srs,
              t_srs = t_srs,
              r = rType,
              overwrite = TRUE
     )
-    fnTranslate<-paste0(tmpPath,"/rawTile.tif")
+    fnTranslate<-path.expand(paste0(tmpPath,"/rawTile.tif"))
   } else {
-    fnTranslate<-  fnx@file@name
+    fnTranslate<-  path.expand(fnx@file@name)
   }
 
   rx<- gdal_translate(fnTranslate,
-                      paste0(tmpPath,"/",rasFn) ,
+                      path.expand(paste0(tmpPath,"/",rasFn)) ,
                       output_Raster = FALSE,
                       overwrite= TRUE,
                       verbose=TRUE,
@@ -95,12 +96,12 @@ makeTile <- function(x=NULL,
   )
 
   # calculate zoom level from extent of input raster
-  if (is.null(zoom))  {  zoom<-estimateZoom(fnx,t_srs)}
+  if (is.null(zoom))  {  zoom<-estimateZoom(fnx,t_srs)[[1]]}
 
   # make tiles
-  r <- system(paste0("inst/htmlwidgets/lib/gdaltiles/gdal2tiles-multiprocess.py   -l  --profile=raster   -z  0-",zoom," -w all --verbose ", paste0(tmpPath,"/",rasFn) ," ", paste0(tmpPath,"/tiles")),intern=T)
+  r <- system(paste0("inst/htmlwidgets/lib/gdaltiles/gdal2tiles-multiprocess.py   -l  --profile=raster   -z  0-",zoom," -w all --verbose ", path.expand(paste0(tmpPath,"/",rasFn)) ," ", path.expand(paste0(tmpPath,"/tiles"))),intern=T)
 
-  return(r)
+  return(c(estimateZoom(fnx,t_srs),256,outPath,t_srs,fnx))
 }
 
 ### makepath creates temp paths and filenames =================================================
@@ -108,8 +109,8 @@ makeTmpPath <- function (p=NULL){
   if (is.null(p)){
     tmpPath <- tempfile()
   } else {tmpPath <- p}
-  dir.create(tmpPath)
-  dir.create(paste0(tmpPath,"/tiles"))
+  dir.create(tmpPath,recursive = TRUE, showWarnings = FALSE)
+  dir.create(paste0(tmpPath,"/tiles"),recursive = TRUE, showWarnings = FALSE)
   baseFn <- "rawTile"
   extFn <- "JPEG"
   rasFn <- paste0(baseFn,".",extFn)
@@ -151,7 +152,7 @@ estimateZoom <- function(ext=NULL,proj4){
   for (i in seq(1,32)) {
     tmpRes<-256 * 2**i
     if (tmpRes>ext@nrows) {
-      return(i)}
+      return(c(i,groundResolution,dist,ext))}
   }
 }
 

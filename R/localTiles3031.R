@@ -42,13 +42,33 @@ localTiles3031<- function(x=NULL,
                           xname='LocalRasterTile',
                           tileSize=256,
                           attribution=NULL,
-                          zoom=7)
+                          zoom=7,
+                          epsgCode=NULL,
+                          Proj4Str=NULL)
   {
+
+  epsgCode <- "urn:ogc:def:crs:EPSG::3031"
+  proj4Str <- "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
+  res<-"8192,4096,2048,1024,512,256"
+  orig<- c(-3199300/(5), 3199300/(5))
+  orig<- "-639860,639860"
+
+  #epsg<-paste('var ProjCode = "',epsgCode,'";')
+  #proj<-paste('var Proj4String ="',Proj4Str,'";')
+  crs<-paste0('var crs =  new L.Proj.CRS("',epsgCode,'","',proj4Str,'",{resolutions: [',res,'],origin: [',orig,']});')
+
+  ## temp dir
+  tmpCRS <- createTempDataTransfer(fn="crs.js")
+  fileConn<-file(tmpCRS)
+  writeLines(crs, fileConn)
+
+
+
+  close(fileConn)
 
   if (is.null(attribution)) {attribution <-"<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a> &nbsp;|| &nbsp; <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>"}
 
-  epsg3031Code <- "urn:ogc:def:crs:EPSG::3031"
-  epsg3031String <- "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
+
 
 
   layer.name = deparse(substitute(x,env = parent.frame()))
@@ -63,20 +83,27 @@ lst_x <- list(data  = 'undefined',
               layer = x,
               layername=xname,
               zoom = zoom,
-              epsgcode=epsg3031Code,
-              epsgproj=epsg3031String,
+#              epsgcode=epsgCode,
+#              epsgproj=proj4Str,
               tilesize=tileSize,
               attribution=attribution)
 
 # creating the widget
-localTiles3031Internal(jFn = pathRasFn ,  x = lst_x)
+localTiles3031Internal(fn = tmpCRS ,  x = lst_x)
 
 }
 
 ### bViewInternal creates fpView widget =================================================
 
-localTiles3031Internal <- function(jFn = NULL, x = NULL) {
-
+localTiles3031Internal <- function(fn = NULL, x = NULL) {
+  data_dir <- dirname(fn)
+  data_file <- basename(fn)
+  name<-tools::file_path_sans_ext(data_file)
+  dep1 <- htmltools::htmlDependency(name = name,
+                                    version = "1",
+                                    src = c(file = data_dir),
+                                    script = list(data_file))
+  deps <- list(dep1)
   sizing = htmlwidgets::sizingPolicy(
     browser.fill = TRUE,
     viewer.fill = TRUE,
@@ -86,6 +113,7 @@ localTiles3031Internal <- function(jFn = NULL, x = NULL) {
   htmlwidgets::createWidget(
     name = 'localTiles3031',
     x,
+    dependencies = deps,
     sizingPolicy = sizing,
     package = 'mapview'
   )
@@ -106,7 +134,7 @@ renderlocalTiles3031<- function(expr, env = parent.frame(), quoted = FALSE) {
   htmlwidgets::shinyRenderWidget(expr, localTiles3031Output, env, quoted = TRUE)
 }
 
-### makepath creates temp paths and filenames =================================================
+### makeTmppath creates temp paths and filenames =================================================
 makeTmpPath <- function (p=NULL){
   if (is.null(p)){
     tmpPath <- tempfile()
@@ -120,3 +148,10 @@ makeTmpPath <- function (p=NULL){
   return(list(tmpPath,pathRasFn,rasFn,extFn))
 }
 
+###  creates temporary file structure for data transfer =================================================
+createTempDataTransfer <- function (fn){
+  tmpPath <- tempfile(pattern="007")
+  dir.create(tmpPath)
+  pathFN <- paste0(tmpPath,"/",fn)
+  return(pathFN)
+}
