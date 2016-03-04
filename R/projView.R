@@ -5,10 +5,8 @@ if (!isGeneric('projView')) {
 #'create projected local tiles for leaflet and maps it
 #'
 #'@description projView creates and maps a tiles from a given raster or GDAL
-#'  object. Up to know there is no way to initialize a htmlwidget object
-#'  dynamically. So we have to create static versions for the region on higher
-#'  latitude than +/- 85 degree
-#'@usage servr::httd("~/proj/makeTile/etopo/tiles",daemon=TRUE)
+#'  object.
+#'@usage
 #'  projView(url="http://localhost:4321/{z}/{x}/{y}.png")
 #'@param url  local/remote url(s) pointing to the tiles to serve
 #'@param urlLabel label(s) corresponding to the tile layers
@@ -98,7 +96,7 @@ if (!isGeneric('projView')) {
 #'
 #'  ## ...yields the same result as
 #'  projView(url = c("http://localhost:4321/{z}/{x}/{y}.png","http://localhost:4321/{z}/{x}/{y}.png"),
-#'            xname = c("BaseTile","overlaytile"),,
+#'            urlLabel = c("BaseTile","overlaytile"),,
 #'            zoom = 5)
 #'
 #'  ## pipe the process of tiling and viewing with makTile = TRUE,

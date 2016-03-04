@@ -4,8 +4,7 @@
 \alias{projView}
 \title{create projected local tiles for leaflet and maps it}
 \usage{
-servr::httd("~/proj/makeTile/etopo/tiles",daemon=TRUE)
- projView(url="http://localhost:4321/{z}/{x}/{y}.png")
+projView(url="http://localhost:4321/{z}/{x}/{y}.png")
 }
 \arguments{
 \item{url}{local/remote url(s) pointing to the tiles to serve}
@@ -39,9 +38,7 @@ coordinate system}
 }
 \description{
 projView creates and maps a tiles from a given raster or GDAL
- object. Up to know there is no way to initialize a htmlwidget object
- dynamically. So we have to create static versions for the region on higher
- latitude than +/- 85 degree
+ object.
 }
 \details{
 \code{vector of labels corresponding to the tile layers} vector of local or remote raster tiles. at the moment only
@@ -111,7 +108,7 @@ There tons of security issues one have to regard if reading locals files with a 
 
  ## ...yields the same result as
  projView(url = c("http://localhost:4321/{z}/{x}/{y}.png","http://localhost:4321/{z}/{x}/{y}.png"),
-           xname = c("BaseTile","overlaytile"),,
+           urlLabel = c("BaseTile","overlaytile"),,
            zoom = 5)
 
  ## pipe the process of tiling and viewing with makTile = TRUE,
