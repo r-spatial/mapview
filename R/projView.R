@@ -4,10 +4,12 @@ if (!isGeneric('projView')) {
 }
 #'create projected local tiles for leaflet and maps it
 #'
-#'@description projView creates and maps a tiles from a given raster or GDAL
-#'  object.
+#'@description projView maps existing local or online tiles. Optional it creates
+#'  a local tile from a given GDAL file. object.
 #'
-#'@usage projView(url, urlLabel, zoom, epsgCode, proj4Str, tileSize, resolution, origin, bounds, attribution, makeTile, inputFile, pathtoTile, inputFileProj4, mapCenter, port, relUrl)
+#'@usage projView(url, urlLabel, zoom, epsgCode, proj4Str, tileSize, resolution,
+#'  origin, bounds, attribution, makeTile, inputFile, pathtoTile,
+#'  inputFileProj4, mapCenter, port, relUrl)
 #'
 #'@param url  local/remote url(s) pointing to the tiles to serve
 #'@param urlLabel label(s) corresponding to the tile layers
@@ -21,37 +23,56 @@ if (!isGeneric('projView')) {
 #'  coordinate system
 #'@param tileSize sie of the tiles in pixel default is 256,
 #'@param attribution of the layer see details
-#'@param makTile default is FALSE if true you can chain makeTile to generate a new tile before rendering it with \code{projView}
-#'@param inputFile if \code{url{makeTile}} is TRUE you have to provide the location of the file to be tiled
-#'@param pathtoTile path to the tile folder. It is crated automatically and the tiles are stored under \code{pathtoTile/tiles}
-#'@param inputFileProj4 valid proj4 string of the input file that is going to be tiled
+#'@param makTile default is FALSE if true you can chain makeTile to generate a
+#'  new tile before rendering it with \code{projView}
+#'@param inputFile if \code{url{makeTile}} is TRUE you have to provide the
+#'  location of the file to be tiled
+#'@param pathtoTile path to the tile folder. It is crated automatically and the
+#'  tiles are stored under \code{pathtoTile/tiles}
+#'@param inputFileProj4 valid proj4 string of the input file that is going to be
+#'  tiled
 #'
-#'@details \code{vector of labels corresponding to the tile layers} vector of local or remote raster tiles. at the moment only
+#'@details
+#'
+#'NOTE: tile serving usually works from the file system without
+#'engaging a http server. Unfortunately this setting it is a pretty complex topic. First of
+#'all it is usually not alowed to injure or load data via the browser due to
+#'security issues. Additionally browsers do what they want and finally RStudio
+#'also starts a webserver.... \cr So it is stringly recommended to use a local http
+#'server to provide full access to local tiles and files. There are several
+#'solutions within R. Most easiest way to do so is the package \code{\link{httd}}.\cr
+#'Nevertheless it is much more convienient to install seperatly a http daemon. If you are not used to the topic the \href{http://twistedmatrix.com}{twistd} daemon  is a very good cross platform powerful, save and simple solution.
+#' For some basic information and installation advices have a look at stackoverflow
+#'\href{http://stackoverflow.com/questions/12905426/what-is-a-faster-alternative-to-pythons-simplehttpserver}{simplehttpserver}.
+#'
+#'
+#'\code{vector of labels corresponding to the tile layers} vector of local or
+#'remote raster tiles. at the moment only
 #'\href{http://leafletjs.com/reference.html#tilelayer}{L.tileLayer} conform
-#'adresses are supported.\cr \cr
-#'\code{urlLabel} vector of labels corresponding to the tile layers\cr\cr
-#' \code{epsgCode} projection code. best practise is using the
-#'full \href{http://www.opengeospatial.org/ogcUrnPolicy}{OGC Urn Policy} code
-#'(e.g. \code{ urn:ogc:def:crs:EPSG::3031}. In most cases you can use the short
-#'version as provided by \href{http://spatialreference.org}{spatialreference}
-#'e.g. \code{EPSG:4326}, \code{ESRI:37234}, \code{IAU2000:29918}\cr \cr
+#'adresses are supported.\cr \cr \code{urlLabel} vector of labels corresponding
+#'to the tile layers\cr\cr \code{epsgCode} projection code. best practise is
+#'using the full \href{http://www.opengeospatial.org/ogcUrnPolicy}{OGC Urn
+#'Policy} code (e.g. \code{ urn:ogc:def:crs:EPSG::3031}. In most cases you can
+#'use the short version as provided by
+#'\href{http://spatialreference.org}{spatialreference} e.g. \code{EPSG:4326},
+#'\code{ESRI:37234}, \code{IAU2000:29918}\cr \cr
 #'
-#'\code{proj4Str} proj4 projection parameter string. best to retrieve both EPSG and PROJ4 from
-#'\href{http://spatialreference.org}{spatialreference.org}\cr \cr
-#'\code{resolution}
-#'string with the tile resolution/zoom level. It is the number of zoom level + 1
-#'multiplied by the tileSize. e.g. zoom = 5, tileSize = 256 => resolution =
-#'"8192,4096,2048,1024,512,256"\cr\cr
-#'\code{origin}  The upper left corner of the tile image in projected coordinates. Webservices usually provide the
-#'correct information but this can be tricky especially for complex projections
-#'and local tiles. E.g. for polarstereographic projections you can calculate it
-#'as follows: sqrt(abs(minx)**2+abs(miny)**2)/2*zoom\cr\cr
-#'\code{attribution} a string
-#'with the map references. Please take care of correct referencing of your data.\cr
+#'\code{proj4Str} proj4 projection parameter string. best to retrieve both EPSG
+#'and PROJ4 from \href{http://spatialreference.org}{spatialreference.org}\cr \cr
+#'\code{resolution} string with the tile resolution/zoom level. It is the number
+#'of zoom level + 1 multiplied by the tileSize. e.g. zoom = 5, tileSize = 256 =>
+#'resolution = "8192,4096,2048,1024,512,256"\cr\cr \code{origin}  The upper left
+#'corner of the tile image in projected coordinates. Webservices usually provide
+#'the correct information but this can be tricky especially for complex
+#'projections and local tiles. E.g. for polarstereographic projections you can
+#'calculate it as follows: sqrt(abs(minx)**2+abs(miny)**2)/2*zoom\cr\cr
+#'\code{attribution} a string with the map references. Please take care of
+#'correct referencing of your data.\cr
 #'
-#'\code{<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a>}\cr
+#'\code{<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS
+#'GIBS</a>}\cr
 #'
-#' There tons of security issues one have to regard if reading locals files with a browser. To avoid this complications it makes sense to serve the local tiles via a http daemon. The most easiest way for common purposes is to use a R internal server like\code{\link{servr}}\cr
+
 
 #'
 #'@author Chris Reudenbach
@@ -81,7 +102,8 @@ if (!isGeneric('projView')) {
 #'  localFile<-paste0(tmpDir,"/Quantarctica2/Basemap/Terrain/ETOPO1_DEM.tif")
 #'
 #'  ## serve the directory that contains the valid tile subfolder structure with tiles to serve.
-#'  servr::httd("~/proj/Tiles",daemon=TRUE)
+#'  # servr::httd("~/proj/Tiles",daemon=TRUE)
+#'  system(paste0("twistd -no web --path=","~/proj/Tiles"),wait=FALSE)
 #'
 #'  ## the default usage...
 #'  projView(url = c("http://localhost:4321/{z}/{x}/{y}.png","http://localhost:4321/{z}/{x}/{y}.png"),
