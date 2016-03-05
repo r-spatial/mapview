@@ -3,6 +3,9 @@
 \name{makeTile}
 \alias{makeTile}
 \title{Create a leaflet conform raster tile layer from a GDAL/raster input}
+\usage{
+makeTile(x, outPath, scale, rgb, rgba, s_srs, t_srs, epsg, rType, zoom)
+}
 \arguments{
 \item{x}{raster object or gdal file}
 

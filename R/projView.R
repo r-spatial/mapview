@@ -6,8 +6,9 @@ if (!isGeneric('projView')) {
 #'
 #'@description projView creates and maps a tiles from a given raster or GDAL
 #'  object.
-#'@usage
-#'  projView(url="http://localhost:4321/{z}/{x}/{y}.png")
+#'
+#'@usage projView(url, urlLabel, zoom, epsgCode, proj4Str, tileSize, resolution, origin, bounds, attribution, makeTile, inputFile, pathtoTile, inputFileProj4, mapCenter, port, relUrl)
+#'
 #'@param url  local/remote url(s) pointing to the tiles to serve
 #'@param urlLabel label(s) corresponding to the tile layers
 #'@param zoom maximum zoom level. corresponds with the available number of tile
@@ -80,7 +81,7 @@ if (!isGeneric('projView')) {
 #'  localFile<-paste0(tmpDir,"/Quantarctica2/Basemap/Terrain/ETOPO1_DEM.tif")
 #'
 #'  ## serve the directory that contains the valid tile subfolder structure with tiles to serve.
-#'  servr::httd("~/proj/makeTile/etopo/tiles",daemon=TRUE)
+#'  servr::httd("~/proj/Tiles",daemon=TRUE)
 #'
 #'  ## the default usage...
 #'  projView(url = c("http://localhost:4321/{z}/{x}/{y}.png","http://localhost:4321/{z}/{x}/{y}.png"),
@@ -104,6 +105,16 @@ if (!isGeneric('projView')) {
 #'              inputFile = localFile,
 #'              pathtoTile = "~/proj/Tiles/antartica/etopo1",
 #'              inputFileProj4 = "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs")
+#'
+#'  ## pipe the process with changing the projection of the input file
+#'  projView( makeTile = TRUE,
+#'  inputFile = "~/proj/makeTile/test.tif",
+#'  pathtoTile = "~/proj/Tiles/test/3376",
+#'  inputFileProj4 = "+proj=laea +lat_0=90 +lon_0=90 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
+#'  proj4Str = "+proj=omerc +lat_0=4 +lonc=115 +alpha=53.31580995 +k=0.99984 +x_0=0 +y_0=0 +no_uoff +gamma=53.13010236111111 +ellps=GRS80 +units=m +no_defs",
+#'  epsgCode = "EPSG:3376",
+#'  tileRootDir = "~/proj/Tiles",
+#'  relUrl="test/3376/tiles/")
 #' }
 #'@name projView
 #'@export projView
@@ -123,9 +134,14 @@ projView<- function(url=NULL,
                     inputFile = NULL,
                     pathtoTile = NULL,
                     inputFileProj4 = NULL,
+                    mapCenter=c(0,0),
+                    startHttpd = TRUE,
                     port="4321",
+                    tileRootDir ="~/proj/Tiles",
                     relUrl="")
 {
+
+
 
   if (makeTile) {
 
@@ -136,7 +152,7 @@ projView<- function(url=NULL,
     zoom<-param[[1]]
 
     # calculate the resolution as derived by tileSize and zoom level
-    startRes<-log(param[[5]], base = 2)
+    startRes<-log(param[[2]], base = 2)
     tmp<-2^(startRes:(startRes+zoom))
     tmp<-sort(tmp,decreasing = TRUE)
     tmp<- paste(tmp,collapse = ",")
@@ -144,7 +160,7 @@ projView<- function(url=NULL,
     # create local url
     url<-c(paste0("http://localhost:",port,"/",relUrl,"{z}/{x}/{y}.png"),paste0("http://localhost:",port,"/",relUrl,"{z}/{x}/{y}.png"))
     urlLabel<- url
-    proj4Str<- param[[7]]
+    proj4Str<- param[[4]]
 
     if(epsgCode ==""){
       EPSG<-make_EPSG()
@@ -153,16 +169,23 @@ projView<- function(url=NULL,
     }
     epsg<-paste('var ProjCode = "',epsgCode,'";')
     proj<-paste('var Proj4String ="', proj4Str,'";')
-    tileSize<-param[[5]]
+    tileSize<-param[[2]]
     # calculate orig for polarstereographic
     # extract the extent needing only positive half of it
     #tmpOrig<- as.numeric(unlist(strsplit(unlist(strsplit(gsub("[()]","",gdalinfo(x)[grep("Upper Left",gdalinfo(x))]), split='  ', fixed=TRUE))[2], split=',', fixed=TRUE))[2])
     # use pythagoras to shift the ul corner in the correct position
     #  orig<- c(-3199300/(5), 3199300/(5))
-    tmpOrig<-abs(param[[4]]@extent@xmin)
+    tmpOrig<-abs(param[[5]]@extent@xmin)
+    if ( length(grep("+proj=stere", proj, fixed = TRUE)) != 0 ) {
     origin <- paste0("[-",(sqrt(tmpOrig**2+tmpOrig**2)/2)/zoom,",",(sqrt(tmpOrig**2+tmpOrig**2)/2)/zoom,"]")
+    }
+    else {
+    origin<- paste0("[",param[[5]]@extent@xmin ,",",param[[5]]@extent@ymax,"]")
+    }
 
-    bounds <- paste0("[",param[[4]]@extent@xmin,",",param[[4]]@extent@ymin,"],[",param[[4]]@extent@xmax,",",param[[4]]@extent@ymax,"]")
+    mapCenterLon <- gdaltransform(s_srs=proj4Str, t_srs="+proj=longlat +datum=WGS84",coords=matrix(c(abs(param[[5]]@extent@ymin/2),abs(param[[5]]@extent@xmin/2)), ncol = 2))[1]
+    mapCenterLat <- gdaltransform(s_srs=proj4Str, t_srs="+proj=longlat +datum=WGS84",coords=matrix(c(abs(param[[5]]@extent@ymin/2),abs(param[[5]]@extent@xmin/2)), ncol = 2))[2]
+    bounds <- paste0("[",param[[5]]@extent@xmin,",",param[[5]]@extent@ymin,"],[",param[[5]]@extent@xmax,",",param[[5]]@extent@ymax,"]")
     attribution<-attribution
   }
 
@@ -203,7 +226,9 @@ projView<- function(url=NULL,
                 epsgcode=epsgCode,
                 epsgproj=proj4Str,
                 tilesize=tileSize,
-                attribution=attribution)
+                attribution=attribution,
+                mapCenterLat=mapCenterLat,
+                mapCenterLon=mapCenterLon)
 
   # creating the widget
   projViewInternal(f = tmpCRS ,  x = lst_x)
@@ -272,3 +297,4 @@ createTempDataTransfer <- function (f){
   pathFN <- paste0(tmpPath,"/",f)
   return(pathFN)
 }
+

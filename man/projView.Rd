@@ -4,7 +4,7 @@
 \alias{projView}
 \title{create projected local tiles for leaflet and maps it}
 \usage{
-projView(url="http://localhost:4321/{z}/{x}/{y}.png")
+projView(url, urlLabel, zoom, epsgCode, proj4Str, tileSize, resolution, origin, bounds, attribution, makeTile, inputFile, pathtoTile, inputFileProj4, mapCenter, port, relUrl)
 }
 \arguments{
 \item{url}{local/remote url(s) pointing to the tiles to serve}
@@ -92,7 +92,7 @@ There tons of security issues one have to regard if reading locals files with a 
  localFile<-paste0(tmpDir,"/Quantarctica2/Basemap/Terrain/ETOPO1_DEM.tif")
 
  ## serve the directory that contains the valid tile subfolder structure with tiles to serve.
- servr::httd("~/proj/makeTile/etopo/tiles",daemon=TRUE)
+ servr::httd("~/proj/Tiles",daemon=TRUE)
 
  ## the default usage...
  projView(url = c("http://localhost:4321/{z}/{x}/{y}.png","http://localhost:4321/{z}/{x}/{y}.png"),
@@ -116,6 +116,16 @@ There tons of security issues one have to regard if reading locals files with a 
              inputFile = localFile,
              pathtoTile = "~/proj/Tiles/antartica/etopo1",
              inputFileProj4 = "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs")
+
+ ## pipe the process with changing the projection of the input file
+ projView( makeTile = TRUE,
+ inputFile = "~/proj/makeTile/test.tif",
+ pathtoTile = "~/proj/Tiles/test/3376",
+ inputFileProj4 = "+proj=laea +lat_0=90 +lon_0=90 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
+ proj4Str = "+proj=omerc +lat_0=4 +lonc=115 +alpha=53.31580995 +k=0.99984 +x_0=0 +y_0=0 +no_uoff +gamma=53.13010236111111 +ellps=GRS80 +units=m +no_defs",
+ epsgCode = "EPSG:3376",
+ tileRootDir = "~/proj/Tiles",
+ relUrl="test/3376/tiles/")
 }
 }
 \author{

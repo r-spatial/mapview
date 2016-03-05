@@ -7,6 +7,8 @@ if (!isGeneric('makeTile')) {
 #'
 #' @description makeTile takes a raster object or a GDAL raster file  and creates  a leaflet compatible tile structure in a given directory.
 #'
+#' @usage makeTile(x, outPath, scale, rgb, rgba, s_srs, t_srs, epsg, rType, zoom)
+#'
 #'@param x raster object or gdal file
 #'@param outPath tmpDir()
 #'@param scale NULL
@@ -50,16 +52,13 @@ tempfile()
 
 makeTile <- function(x=NULL,
                      outPath=tmpDir(),
-                     scale=NULL,
-                     gray=TRUE,
-                     rgb=FALSE,
-                     rgba=FALSE,
+                     scale=c(0,8192),
                      s_srs="+proj=longlat +datum=WGS84",
                      t_srs="+proj=longlat +datum=WGS84",
                      epsg=NULL,
-                     rType="near",
+                     rType="bilinear",
                      zoom=NULL
-                     )
+)
 {
   if (class(x)=="raster"|class(x)=="rasterbrick"){
     writeRaster(x,paste0(outPath,"/tile.tif"))
@@ -67,7 +66,10 @@ makeTile <- function(x=NULL,
   } else {
     fnx<-raster(x)
   }
+  gdalinfo(path.expand(x))
   tmp <- makeTmpPath(outPath)
+  nodata<- as.numeric(strsplit(gdalinfo(path.expand(x))[grep("NoData Value=",gdalinfo(path.expand(x)))], split='=', fixed=TRUE)[[1]][2])
+
   tmpPath <- tmp[[1]][1]
   pathRasFn <- tmp[[2]][1]
   rasFn <- tmp[[3]][1]
@@ -79,8 +81,10 @@ makeTile <- function(x=NULL,
              s_srs = s_srs,
              t_srs = t_srs,
              r = rType,
+             srcnodata = nodata,
              multi = TRUE,
-             overwrite = TRUE
+             overwrite = TRUE,
+             q = TRUE
     )
     fnTranslate<-path.expand(paste0(tmpPath,"/rawTile.tif"))
   } else {
@@ -93,16 +97,25 @@ makeTile <- function(x=NULL,
                       overwrite= TRUE,
                       verbose=TRUE,
                       scale=scale,
-                      of=rasType
+                      of=rasType,
+                      q = TRUE
   )
 
   # calculate zoom level from extent of input raster
-  if (is.null(zoom))  {  zoom<-estimateZoom(fnx,t_srs)[[1]]}
+  if (is.null(zoom))  {
+    zoom<-estimateZoom(fnx,t_srs)[[1]]
+    # have to check if the estimated zoom is fitting to the native zoom of the raster
+    if (zoom < log2(fnx@nrows/256) || zoom < log2(fnx@ncols/256))
+    {
+      zoom <- zoom + 1
+    }
+  }
 
-  # make tiles
+
+  # make tiles take care of the correct zoom!
   r <- system(paste0("inst/htmlwidgets/lib/gdaltiles/gdal2tiles-multiprocess.py   -l  --profile=raster   -z  0-",zoom," -w all --verbose ", path.expand(paste0(tmpPath,"/",rasFn)) ," ", path.expand(paste0(tmpPath,"/tiles"))),intern=T)
-
-  return(c(estimateZoom(fnx,t_srs),256,outPath,t_srs,fnx))
+  fnx<-raster(fnTranslate)
+  return(c(zoom,256,outPath,t_srs,fnx))
 }
 
 ### makepath creates temp paths and filenames =================================================

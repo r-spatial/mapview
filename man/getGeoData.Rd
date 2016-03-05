@@ -43,12 +43,12 @@ If  \code{name}='alt' or \code{name}='GADM' you must provide a 'country=' argume
     \code{getGeoData('alt', country='FRA', mask=TRUE)}\cr
 \cr
 \code{SRTM} refers to the 4.1 version of the CGIAR-SRTM (90 m resolution). \cr
-If  \code{name}='SRTM' you must provide the extent of an area as argument (minlong/lat and maxlong/lat).
+If  \code{name}='SRTM' you must provide at least the extent of an area as argument (minlong,minlat,maxlong,maxlat).
 #' \cr
 
 If \code{name}=CMIP5 for (projected) future climate data you must provide arguments var and res as above. Only resolutions 2.5, 5, and 10 are currently available. In addition, you need to provide model, rcp and year.
 For example:\cr
-  \code{getData('CMIP5', var='tmin', res=10, rcp=85, model='AC', year=70)}\cr
+  \code{getGeoData('CMIP5', var='tmin', res=10, rcp=85, model='AC', year=70)}\cr
   function (var, model, rcp, year, res, lon, lat, path, download = TRUE)\cr
   'model' should be one of "AC", "BC", "CC", "CE", "CN", "GF", "GD", "GS", "HD", "HG", "HE", "IN", "IP", "MI", "MR", "MC", "MP", "MG", or "NO".\cr
   'rcp' should be one of 26, 45, 60, or 85.\cr
@@ -161,32 +161,42 @@ For use in ArcGIS the data is correctly georeferenced. However for R you MUST us
 \code{getGeoData('tiroldem', item = 'KU_DGM10')} \cr
 }
 \examples{
-#### Example getGeoData
+#### Examples getGeoData
 
 \dontrun{
-# get SRTM data according to a reference extent
-r<-getGeoData(name="SRTM",extent(83.8,27,9,99,34),download=TRUE)
+## get SRTM data at a position
+r<-getGeoData(name="SRTM",xtent = extent(11.,11.,50.,50.))
+## get SRTM data for an area
+r<-getGeoData(name="SRTM",xtent = extent(11.,17.,50.,56.))
+## get SRTM data for an area with a buffer zone (e.g. for a cost or watershed analysis) zone is in degree
+r<-getGeoData(name="SRTM",xtent = extent(11.,17.,50.,56.), zone = 3.0)
+## get SRTM Tile names
+t<-getGeoData(name="SRTM",xtent = extent(11.,17.,50.,56.), zone = 3.0, download = FALSE)
+## get SRTM data for an area with a buffer and merge it
+r<-getGeoData(name="SRTM",xtent = extent(11.,17.,50.,56.), zone = 3.0, merge = TRUE)
 
-# get Schmatz et al. data
-getGeoData('schmatzPangea', item='tasmin_A_MO_pmip2_21k_oa_CNRM_eu_30s',endTime=12)
-getGeoData('schmatzPangea', item="bioclim_A_MO_pmip2_21k_oa_CCSM_eu_30s", layer="bio_1")
+## get Schmatz et al. data please have a look at details
+r<- getGeoData('schmatzPangea', item='tasmin_A_MO_pmip2_21k_oa_CNRM_eu_30s',endTime=12)
+r<- getGeoData('schmatzPangea', item="bioclim_A_MO_pmip2_21k_oa_CCSM_eu_30s", layer="bio_1")
 
-# get tirolean DEM
-getGeoData('tiroldem', item='ibk_10m', all=FALSE)
+## get a single tile of the Tirolean DEM
+r<- getGeoData('tiroldem', items='IBK_DGM10')
+## get a single 3 tiles of the Tirolean DEM as a merged raster
+r<- getGeoData('tiroldem', item=c('IBK_DGM10','IL_DGM10','IM_DGM10'), merge =TRUE)
 
 # get arbitrary OSM point data
-getGeoData('OSMp', extent=c(11.35547,11.40009,47.10114,47.13512), key='natural',val='saddle',taglist=c('name','ele','direction'))
+r<- getGeoData('OSMp', extent=c(11.35547,11.40009,47.10114,47.13512), key='natural',val='saddle',taglist=c('name','ele','direction'))
 
 # get Harald Breitkreutz' summit list
-getGeoData('harrylist', extent=c(11.35547,11.40009,47.10114,47.13512))
-#
-### get the known getdata() datasets
-getGeoData('worldclim', var='tmin', res=0.5, lon=5, lat=45)
-getGeoData('worldclim', var='bio', res=10)
-getData('CMIP5', var='tmin', res=10, rcp=85, model='AC', year=70)
-getGeoData('alt', country='FRA', mask=TRUE)
-getGeoData('GADM', country='FRA', level=1)
-ccodes()
+r<- getGeoData('harrylist', extent=c(11.35547,11.40009,47.10114,47.13512))
+
+### the following datasets are retrieved according to Hijmans \\code{getData}
+r<- getGeoData('worldclim', var='tmin', res=0.5, lon=5, lat=45)
+r<- getGeoData('worldclim', var='bio', res=10)
+r<- getGeoData('CMIP5', var='tmin', res=10, rcp=85, model='AC', year=70)
+v<- getGeoData('alt', country='FRA', mask=TRUE)
+v<- getGeoData('GADM', country='FRA', level=1)
+t<- ccodes()
 }
 }
 \author{

@@ -41,12 +41,12 @@ if (!isGeneric('getGeoData')) {
 #'     \code{getGeoData('alt', country='FRA', mask=TRUE)}\cr
 #' \cr
 #' \code{SRTM} refers to the 4.1 version of the CGIAR-SRTM (90 m resolution). \cr
-#'If  \code{name}='SRTM' you must provide the extent of an area as argument (minlong/lat and maxlong/lat).
+#'If  \code{name}='SRTM' you must provide at least the extent of an area as argument (minlong,minlat,maxlong,maxlat).
 #'#' \cr
 #'
 #'If \code{name}=CMIP5 for (projected) future climate data you must provide arguments var and res as above. Only resolutions 2.5, 5, and 10 are currently available. In addition, you need to provide model, rcp and year.
 #'For example:\cr
-#'   \code{getData('CMIP5', var='tmin', res=10, rcp=85, model='AC', year=70)}\cr
+#'   \code{getGeoData('CMIP5', var='tmin', res=10, rcp=85, model='AC', year=70)}\cr
 #'   function (var, model, rcp, year, res, lon, lat, path, download = TRUE)\cr
 #'   'model' should be one of "AC", "BC", "CC", "CE", "CN", "GF", "GD", "GS", "HD", "HG", "HE", "IN", "IP", "MI", "MR", "MC", "MP", "MG", or "NO".\cr
 #'   'rcp' should be one of 26, 45, 60, or 85.\cr
@@ -175,32 +175,42 @@ if (!isGeneric('getGeoData')) {
 #'@export getGeoData
 #'
 #'@examples
-#'#### Example getGeoData
+#'#### Examples getGeoData
 #'
 #' \dontrun{
-#' # get SRTM data according to a reference extent
-#' r<-getGeoData(name="SRTM",extent(83.8,27,9,99,34),download=TRUE)
+#' ## get SRTM data at a position
+#' r<-getGeoData(name="SRTM",xtent = extent(11.,11.,50.,50.))
+#' ## get SRTM data for an area
+#' r<-getGeoData(name="SRTM",xtent = extent(11.,17.,50.,56.))
+#' ## get SRTM data for an area with a buffer zone (e.g. for a cost or watershed analysis) zone is in degree
+#' r<-getGeoData(name="SRTM",xtent = extent(11.,17.,50.,56.), zone = 3.0)
+#' ## get SRTM Tile names
+#' t<-getGeoData(name="SRTM",xtent = extent(11.,17.,50.,56.), zone = 3.0, download = FALSE)
+#' ## get SRTM data for an area with a buffer and merge it
+#' r<-getGeoData(name="SRTM",xtent = extent(11.,17.,50.,56.), zone = 3.0, merge = TRUE)
 #'
-#' # get Schmatz et al. data
-#' getGeoData('schmatzPangea', item='tasmin_A_MO_pmip2_21k_oa_CNRM_eu_30s',endTime=12)
-#' getGeoData('schmatzPangea', item="bioclim_A_MO_pmip2_21k_oa_CCSM_eu_30s", layer="bio_1")
+#' ## get Schmatz et al. data please have a look at details
+#' r<- getGeoData('schmatzPangea', item='tasmin_A_MO_pmip2_21k_oa_CNRM_eu_30s',endTime=12)
+#' r<- getGeoData('schmatzPangea', item="bioclim_A_MO_pmip2_21k_oa_CCSM_eu_30s", layer="bio_1")
 #'
-#' # get tirolean DEM
-#' getGeoData('tiroldem', item='ibk_10m', all=FALSE)
+#' ## get a single tile of the Tirolean DEM
+#' r<- getGeoData('tiroldem', items='IBK_DGM10')
+#' ## get a single 3 tiles of the Tirolean DEM as a merged raster
+#' r<- getGeoData('tiroldem', item=c('IBK_DGM10','IL_DGM10','IM_DGM10'), merge =TRUE)
 #'
 #' # get arbitrary OSM point data
-#' getGeoData('OSMp', extent=c(11.35547,11.40009,47.10114,47.13512), key='natural',val='saddle',taglist=c('name','ele','direction'))
+#' r<- getGeoData('OSMp', extent=c(11.35547,11.40009,47.10114,47.13512), key='natural',val='saddle',taglist=c('name','ele','direction'))
 #'
 #' # get Harald Breitkreutz' summit list
-#' getGeoData('harrylist', extent=c(11.35547,11.40009,47.10114,47.13512))
-#' #
-#' ### get the known getdata() datasets
-#' getGeoData('worldclim', var='tmin', res=0.5, lon=5, lat=45)
-#' getGeoData('worldclim', var='bio', res=10)
-#' getData('CMIP5', var='tmin', res=10, rcp=85, model='AC', year=70)
-#' getGeoData('alt', country='FRA', mask=TRUE)
-#' getGeoData('GADM', country='FRA', level=1)
-#' ccodes()
+#' r<- getGeoData('harrylist', extent=c(11.35547,11.40009,47.10114,47.13512))
+#'
+#' ### the following datasets are retrieved according to Hijmans \code{getData}
+#' r<- getGeoData('worldclim', var='tmin', res=0.5, lon=5, lat=45)
+#' r<- getGeoData('worldclim', var='bio', res=10)
+#' r<- getGeoData('CMIP5', var='tmin', res=10, rcp=85, model='AC', year=70)
+#' v<- getGeoData('alt', country='FRA', mask=TRUE)
+#' v<- getGeoData('GADM', country='FRA', level=1)
+#' t<- ccodes()
 #' }
 
 
@@ -596,10 +606,10 @@ ccodes <- function() {
   return(srtmNames)
 }
 
-.SRTM <- function(xtent,zone=3.0, download, path) {
+.SRTM <- function(xtent=NULL, zone = 0, download = TRUE, path = tempfile(), merge = FALSE) {
 
   if (!download) {
-    return(srtmNames<-.getSRTMfn(xtent,zone))
+    return(.getSRTMfn(xtent,zone))
   }
 
   x<-extent(xtent)
@@ -628,8 +638,8 @@ ccodes <- function() {
       if (colTile < 10) { colTile <- paste('0', colTile, sep='') }
 
       f <- paste('srtm_', colTile, '_', rowTile, sep="")
-      zipfilename <- paste(dirname(path), "/srtm/", f, ".ZIP", sep="")
-      tiffilename <- paste(dirname(path), "/srtm/", f, ".tif", sep="")
+      zipfilename <- paste(path.expand(path), "srtm/", f, ".ZIP", sep="")
+      tiffilename <- paste(path.expand(path), "srtm/", f, ".tif", sep="")
       if (!file.exists(tiffilename)) {
         if (!file.exists(zipfilename)) {
           if (download) {
@@ -658,57 +668,75 @@ ccodes <- function() {
     lat<-lat+5
   }
 
-  listTif<-list.files(paste0(dirname(path), "/srtm/"), pattern = glob2rx("srtm*.tif"),
-                      full.names = TRUE, recursive = FALSE)
-  cat ("merging:\n",paste(listTif,'\n'))
-  mosaicSRTM<-mosaic_rasters(gdalfile=listTif,
-                             dst_dataset=paste0(dirname(path), "/srtm/mosaicSRTM.tif"),
-                             output_Raster=FALSE,
-                             of="GTiff",
-                             verbose=FALSE,
-                             seperate=FALSE,
-                             overwrite= TRUE
-  )
+  if (merge){
+    listTif<-list.files(paste0(path.expand(path), "srtm"), pattern = glob2rx("srtm*.tif"),
+                        full.names = TRUE, recursive = FALSE)
+    cat ("merging:\n",paste(listTif,'\n'))
+    mosaicSRTM<-mosaic_rasters(gdalfile=listTif,
+                               dst_dataset=paste0(path.expand(path), "srtm/mosaicSRTM.tif"),
+                               output_Raster=FALSE,
+                               of="GTiff",
+                               verbose=FALSE,
+                               seperate=FALSE,
+                               overwrite= TRUE
+    )
+    if (! (xtent@xmin-zone == xtent@xmax+zone || xtent@ymin-zone == xtent@ymax+zone)) {
+      mosaicSRTM<- gdal_translate(paste0(path.expand(path), "srtm/mosaicSRTM.tif"),
+                                  paste0(path.expand(path), "srtm/cMosaicSRTM.tif"),
+                                  projwin=c(xtent@xmin-zone,xtent@ymax+zone,xtent@xmax+zone,xtent@ymin-zone),
+                                  output_Raster = TRUE,
+                                  overwrite= TRUE,
+                                  verbose=TRUE
+      )} else{
 
-  mosaicSRTM<- gdal_translate(paste0(dirname(path), "/srtm/mosaicSRTM.tif"),
-                              paste0(dirname(path), "/srtm/cMosaicSRTM.tif"),
-                              projwin=c(xtent@xmin-zone,xtent@ymax+zone,xtent@xmax+zone,xtent@ymin-zone),
-                              output_Raster = TRUE,
-                              overwrite= TRUE,
-                              verbose=TRUE
-  )
+        mosaicSRTM<- gdal_translate(paste0(path.expand(path), "srtm/mosaicSRTM.tif"),
+                                    paste0(path.expand(path), "srtm/cMosaicSRTM.tif"),
 
-  projection(mosaicSRTM) <- "+proj=longlat +datum=WGS84"
-  return(mosaicSRTM)
+                                    output_Raster = TRUE,
+                                    overwrite= TRUE,
+                                    verbose=TRUE)
+
+      }
+    projection(mosaicSRTM) <- "+proj=longlat +datum=WGS84"
+    return(mosaicSRTM)
+
+  }
 
 
 }
 
-.tiroldem <- function(item, path,download) {
-  stopifnot( (item == 'IBK_DGM10') | (item == 'IL_DGM10') | (item == 'IM_DGM10') | (item == 'KB_DGM10') |(item == 'KU_DGM10') |(item == 'LA_DGM10') |(item == 'RE_DGM10') |(item == 'SZ_DGM10') |(item == 'LZ_DGM10') )
-
-  f <- item
-  zipfilename <- paste(path,  f, ".zip", sep="")
-  ascfilename <- paste(path,  f, ".asc", sep="")
-
-  if (!file.exists(zipfilename)) {
-    if (download) {
-      theurl <- paste("https://gis.tirol.gv.at/ogd/geografie_planung/DGM/", f,".zip", sep="")
-       test <- try (.download(theurl, zipfilename) , silent=TRUE)
-    } else {cat('file not available locally, use download=TRUE\n') }
-  }
-  if (file.exists(zipfilename)) {
-    unzip(zipfilename,junkpath=TRUE, exdir=dirname(zipfilename))
-    #file.remove(zipfilename)
+.tiroldem <- function(items = NULL, path = tempfile(), download = TRUE, all = FALSE, merge = FALSE) {
+  if (all == TRUE){
+    items<-c('IBK_DGM10','IL_DGM10','IM_DGM10','KB_DGM10','KU_DGM10','LA_DGM10','RE_DGM10','SZ_DGM10','LZ_DGM10')
   }
 
-  if (file.exists(ascfilename)) {
-    rs <- raster(ascfilename)
-    projection(rs) <- '+proj=tmerc +lat_0=0 +lon_0=10.33333333333333 +k=1 +x_0=0 +y_0=-5000000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs'
-    return(rs)
-  } else {
-    stop('file not found')
+  for (item in items){
+    f <- item
+    zipfilename <- paste(path,  f, ".zip", sep="")
+    ascfilename <- paste(path,  f, ".asc", sep="")
+
+    if (!file.exists(zipfilename)) {
+      if (download) {
+        theurl <- paste("https://gis.tirol.gv.at/ogd/geografie_planung/DGM/", f,".zip", sep="")
+        test <- try (.download(theurl, zipfilename) , silent=TRUE)
+      } else {cat('file not available locally, use download=TRUE\n') }
+    }
+    if (file.exists(zipfilename)) {
+      unzip(zipfilename,junkpath=TRUE, exdir=dirname(zipfilename))
+      #file.remove(zipfilename)
+    }
   }
+
+  filenames <- list.files(pattern="*.asc", full.names=TRUE)
+  rs <- lapply(filenames,.importAsc,'+proj=tmerc +lat_0=0 +lon_0=10.33333333333333 +k=1 +x_0=0 +y_0=-5000000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs')
+  if (merge){
+    names(rs)[1:2] <- c('x', 'y')
+    rs$fun <- mean
+    rs <- do.call(mosaic, rs)
+  }
+
+  return(rs)
+
 }
 
 .harrylist <- function(extent=c(-180,180,-90,90),path,download=TRUE) {
@@ -912,3 +940,9 @@ ccodes <- function() {
   }
   return(d)
 }
+
+.importAsc<-function(x,z) {
+  y <- raster(x)
+  projection(y) <- CRS(z)
+  return(y)
+ii}

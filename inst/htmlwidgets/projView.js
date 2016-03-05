@@ -64,15 +64,15 @@ HTMLWidgets.widget({
                   'type': 'Feature',
                   'geometry': {
                     'type': 'Point',
-                    'coordinates': [0, 0],
+                    'coordinates': [x.mapCenterLat,x.mapCenterLon],
                     },
                   'properties': {
-                    'name': 'south pole'
+                    'name': 'map centre'
                     },
                   'crs': {
                     'type': 'name',
                       'properties': {
-                          'name': "urn:ogc:def:crs:EPSG::3031"
+                          'name': x.epsgcode
                        }
                     }
     };
@@ -97,7 +97,7 @@ HTMLWidgets.widget({
        }
 
    L.control.layers(baseLayers, overlayLayers).addTo(map);
-   map.setView([-90.0,0.0], 0);
+   map.setView([x.mapCenterLat,x.mapCenterLon], 0);
 
 
 
