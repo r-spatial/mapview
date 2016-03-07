@@ -2,35 +2,38 @@
 % Please edit documentation in R/projView.R
 \name{projView}
 \alias{projView}
-\title{create projected local tiles for leaflet and maps it}
+\title{maps projected local and remote tiles and vector data using leaflet}
 \usage{
-projView(url, urlLabel, zoom, epsgCode, proj4Str, tileSize, resolution,
+projView(map.types, layer.name, zoom, t_epsg, t_srs, tileSize, resolution,
  origin, bounds, attribution, makeTile, inputFile, pathtoTile,
  inputFileProj4, mapCenter, port, relUrl)
 }
 \arguments{
-\item{url}{local/remote url(s) pointing to the tiles to serve}
+\item{map.types}{local/remote map.types(s) pointing to the tiles to serve}
 
-\item{urlLabel}{label(s) corresponding to the tile layers}
+\item{layer.name}{label(s) corresponding to the tile layers}
 
-\item{zoom}{maximum zoom level. corresponds with the available number of tile
-levels -1}
+\item{t_epsg}{e.g. \code{ urn:ogc:def:crs:EPSG::3031} or \code{EPSG:4326}
+has to correspond with t_srs}
 
-\item{epsgCode}{e.g. \code{ urn:ogc:def:crs:EPSG::3031} or \code{EPSG:4326}
-has to correspond with proj4Str}
+\item{t_srs}{valid proj4 string}
 
-\item{proj4Str}{valid proj4 string}
+\item{attribution}{of the layer see details}
 
 \item{tileSize}{sie of the tiles in pixel default is 256,}
 
 \item{resolution}{resolution of tiles for each zoom level}
 
+\item{zoom}{maximum zoom level. corresponds with the available number of tile
+levels -1}
+
 \item{origin}{upper left corner of the raster tiles expressed in the new
 coordinate system}
 
-\item{attribution}{of the layer see details}
+\item{makTile}{default is FALSE if true you can chain makeTile to generate a
+new tile before rendering it with \code{projView}}
 
-\item{inputFile}{if \code{url{makeTile}} is TRUE you have to provide the
+\item{inputFile}{if \code{map.types{makeTile}} is TRUE you have to provide the
 location of the file to be tiled}
 
 \item{pathtoTile}{path to the tile folder. It is crated automatically and the
@@ -38,9 +41,6 @@ tiles are stored under \code{pathtoTile/tiles}}
 
 \item{inputFileProj4}{valid proj4 string of the input file that is going to be
 tiled}
-
-\item{makTile}{default is FALSE if true you can chain makeTile to generate a
-new tile before rendering it with \code{projView}}
 }
 \description{
 projView maps existing local or online tiles. Optional it creates
@@ -62,15 +62,15 @@ For some basic information and installation advices have a look at stackoverflow
 \code{vector of labels corresponding to the tile layers} vector of local or
 remote raster tiles. at the moment only
 \href{http://leafletjs.com/reference.html#tilelayer}{L.tileLayer} conform
-adresses are supported.\cr \cr \code{urlLabel} vector of labels corresponding
-to the tile layers\cr\cr \code{epsgCode} projection code. best practise is
+adresses are supported.\cr \cr \code{layer.name} vector of labels corresponding
+to the tile layers\cr\cr \code{t_epsg} projection code. best practise is
 using the full \href{http://www.opengeospatial.org/ogcUrnPolicy}{OGC Urn
 Policy} code (e.g. \code{ urn:ogc:def:crs:EPSG::3031}. In most cases you can
 use the short version as provided by
 \href{http://spatialreference.org}{spatialreference} e.g. \code{EPSG:4326},
 \code{ESRI:37234}, \code{IAU2000:29918}\cr \cr
 
-\code{proj4Str} proj4 projection parameter string. best to retrieve both EPSG
+\code{t_srs} proj4 projection parameter string. best to retrieve both EPSG
 and PROJ4 from \href{http://spatialreference.org}{spatialreference.org}\cr \cr
 \code{resolution} string with the tile resolution/zoom level. It is the number
 of zoom level + 1 multiplied by the tileSize. e.g. zoom = 5, tileSize = 256 =>
@@ -93,6 +93,10 @@ GIBS</a>}\cr
  require(rgdal)
  require(gdalUtils)
 
+ ## NOTE currently depreceated the directory that contains the valid tile subfolder structure with tiles to serve.
+ # servr::httd("~/proj/Tiles",daemon=TRUE)
+ system(paste0("twistd -no web --path=","~/proj/Tiles"),wait=FALSE)
+
  ### like all the time we need some data in this case from the great QGIS \\href{http://www.quantarctica.org/}{Quantartica project} of the \\href{http://www.npolar.no/en}{Norwegian Polar Institute}, ftp://ftp.uninett.no/pub/quantarctica/Quantarctica2.zip
 
  ## creating a tmp dir because this is a lot of data
@@ -100,7 +104,7 @@ GIBS</a>}\cr
  tmpDir<-"~/tmp/data/quantartica"
  dir.create(tmpDir,recursive = TRUE, showWarnings = FALSE)
  ## download will take a while (~7 GB)
- curl_download(url="ftp://ftp.uninett.no/pub/quantarctica/Quantarctica2.zip", destfile=paste0(tmpDir,"/Quantarctica2.zip"),  quiet = FALSE, mode = "wb")
+ curl_download(map.types="ftp://ftp.uninett.no/pub/quantarctica/Quantarctica2.zip", destfile=paste0(tmpDir,"/Quantarctica2.zip"),  quiet = FALSE, mode = "wb")
 
  ## unzip it
  unzip(paste0(tmpDir,"/Quantarctica2.zip"), exdir=tmpDir)
@@ -108,42 +112,123 @@ GIBS</a>}\cr
  ## and choose a data set of interest for tiling...
  localFile<-paste0(tmpDir,"/Quantarctica2/Basemap/Terrain/ETOPO1_DEM.tif")
 
- ## serve the directory that contains the valid tile subfolder structure with tiles to serve.
- # servr::httd("~/proj/Tiles",daemon=TRUE)
- system(paste0("twistd -no web --path=","~/proj/Tiles"),wait=FALSE)
 
- ## the default usage...
- projView(url = c("http://localhost:4321/{z}/{x}/{y}.png","http://localhost:4321/{z}/{x}/{y}.png"),
-           urlLabel = c("BaseTile","overlaytile"),,
-           zoom = 5,
-           epsgCode = "urn:ogc:def:crs:EPSG::3031",
-           proj4Str = "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
-           tileSize = 256,
-           resolution = "[8192,4096,2048,1024,512,256]",
-           origin = "[-639860.046230607,639860.046230607]",
-           bounds = "[-4524493,-4524493],[4524493,4524493]",
-           attribution = "<a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG:3031</a> | <a href='www.quantarctica.org'>Norwegian Polar Institute</a>")
+ ## choose vector data from Quantartica
+ stations <-rgdal::readOGR(paste0(tmpDir,"/Quantarctica2/Basemap/Vector", "stations")
 
- ## ...yields the same result as
- projView(url = c("http://localhost:4321/{z}/{x}/{y}.png","http://localhost:4321/{z}/{x}/{y}.png"),
-           urlLabel = c("BaseTile","overlaytile"),,
-           zoom = 5)
+ ##   for tile layers ...
+projView(  stations,
+           color=mapviewGetOption("raster.palette")(256),
+           na.color=mapviewGetOption("na.color"),
+           map.types= list(tL=list('bluemarble'=list(L.tileLayer='https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/BlueMarble_ShadedRelief_Bathymetry/default/EPSG3031_500m/{z}/{y}/{x}.jpg',
+                                                      layer="BlueMarble_ShadedRelief_Bathymetry",
+                                                      format="image\%2Fjpeg",
+                                                      tileSize="512",
+                                                      subdomains="abc",
+                                                      noWrap ="true",
+                                                      continuousWorld='true',
+                                                      attribution="<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a> &nbsp;|| &nbsp; <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>"),
+                                  ('EPSG3031_250m'= list(L.tileLayer='https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/MODIS_Terra_Sea_Ice/default/2014-02-04/EPSG3031_1km/{z}/{y}/{x}.png',
+                                                         layer='MODIS_Terra_Brightness_Temp_Band31_Day',
+                                                         format="image\%2Fjpeg",
+                                                         tileSize="512",
+                                                         subdomains="abc",
+                                                         noWrap ="true",
+                                                         continuousWorld='true',
+                                                         attribution="<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a> &nbsp;|| &nbsp; <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>"
+          ))
+          )),
+          lwd = 2,
+          alpha = 0.6,
+          legend = FALSE,
+          legend.opacity = 1,
+          t_epsg = "urn:ogc:def:crs:EPSG::3031",
+          t_srs = "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
+          setBound=TRUE,
+          setmapCenter =TRUE,
+          mapCenter=c(-90,0),
+          resolution= "[8192,4096,2048,1024,512,256]",
+          bounds = "[-4194304,-4194304],[4194304,4194304]",
+          origin= "[-4194304,4194304]")
 
- ## pipe the process of tiling and viewing with makTile = TRUE,
- projView( makeTile = TRUE,
-             inputFile = localFile,
-             pathtoTile = "~/proj/Tiles/antartica/etopo1",
-             inputFileProj4 = "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs")
+### get some more data
+ curl_download("http://download.geofabrik.de/antarctica-latest.shp.zip", destfile=paste0(tmpDir,"/geofabrikATA.zip"),  quiet = FALSE, mode = "wb")
+ unzip(paste0(tmpDir,"/geofabrikATA.zip"), exdir=tmpDir)
+ tmpDir<-"~/tmp/data/quantartica"
+ naturalATA<- rgdal:::readOGR(dsn =path.expand(tmpDir), layer="waterways")
 
- ## pipe the process with changing the projection of the input file
- projView( makeTile = TRUE,
- inputFile = "~/proj/makeTile/test.tif",
- pathtoTile = "~/proj/Tiles/test/3376",
- inputFileProj4 = "+proj=laea +lat_0=90 +lon_0=90 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
- proj4Str = "+proj=omerc +lat_0=4 +lonc=115 +alpha=53.31580995 +k=0.99984 +x_0=0 +y_0=0 +no_uoff +gamma=53.13010236111111 +ellps=GRS80 +units=m +no_defs",
- epsgCode = "EPSG:3376",
- tileRootDir = "~/proj/Tiles",
- relUrl="test/3376/tiles/")
+
+projView(  waterwaysATA,
+                       map.types= list(tL=list('bluemarble'=list(L.tileLayer='https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/BlueMarble_ShadedRelief_Bathymetry/default/EPSG3031_500m/{z}/{y}/{x}.jpg',
+                                                                 layer="BlueMarble_ShadedRelief_Bathymetry",
+                                                                 format="image\%2Fjpeg",
+                                                                 tileSize="512",
+                                                                 subdomains="abc",
+                                                                 noWrap ="true",
+                                                                 continuousWorld='true',
+                                                                 attribution="<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a> &nbsp;|| &nbsp; <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>"),
+                                                                 ('EPSG3031_250m'= list(L.tileLayer='https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/MODIS_Terra_Sea_Ice/default/2014-02-04/EPSG3031_1km/{z}/{y}/{x}.png',
+                                                                 layer='MODIS_Terra_Brightness_Temp_Band31_Day',
+                                                                 format="image\%2Fjpeg",
+                                                                 tileSize="512",
+                                                                 subdomains="abc",
+                                                                 noWrap ="true",
+                                                                 continuousWorld='true',
+                                                                 attribution="<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a> &nbsp;|| &nbsp; <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>"
+                                      ))
+                      )),
+                      lwd = 3,
+                      alpha = 0.9,
+                      t_epsg = "urn:ogc:def:crs:EPSG::3031",
+                      t_srs = "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
+                      setBound=TRUE,
+                      setmapCenter =TRUE,
+                      mapCenter=c(-90,0),
+                      resolution= "[8192,4096,2048,1024,512,256]",
+                      bounds = "[-4194304,-4194304],[4194304,4194304]",
+                      origin= "[-4194304,4194304]")
+
+
+ ### define a wms resource
+resource<-list(wms=list('hav grundkarta'=list(L.tileLayer.wms='http://geodatatest.havochvatten.se/geoservices/ows',
+                                               layers='hav-bakgrundskartor:hav-grundkarta',
+                                               format='image/png',
+                                               continuousWorld='true',
+                                               attribution=' | &copy; <a href="https://www.havochvatten.se/kunskap-om-vara-vatten/kartor-och-geografisk-information/karttjanster.html">Havs- och vattenmyndigheten (Swedish Agency for Marine and Water Management)</a> | Projection: <a href="http://spatialreference.org/ref/epsg/2056"> EPSG:2056</a>'
+)))
+
+
+### getting some vector data
+sweden<-getGeoData("GADM", country="SWE", level = 2)
+
+projView(sweden,
+ color=mapviewGetOption("raster.palette")(256),
+ na.color=mapviewGetOption("na.color"),
+ map.types= resource,
+cex = 10,
+lwd = 2,
+alpha = 0.6,
+legend = FALSE,
+legend.opacity = 1,
+verbose = mapviewGetOption("verbose"),
+use.layer.names = FALSE,
+t_epsg = 'EPSG:3006',
+t_srs = '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
+resolution= "[8192, 4096, 2048, 1024, 512, 256, 128,64, 32, 16, 8, 4, 2, 1, 0.5]",
+origin= "[0,0]",
+relUrl="")
+
+
+
+### just change the projection changing EPSG Code and proj4 string
+projView(sweden,
+ map.types= resource,
+lwd = 2,
+alpha = 0.6,
+t_epsg = 'EPSG:2056',
+t_srs = '+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs',
+resolution= "[8192, 4096, 2048, 1024, 512, 256, 128,64, 32, 16, 8, 4, 2, 1, 0.5]",
+origin= "[0,0]")
 }
 }
 \author{

@@ -48,7 +48,7 @@ if (!isGeneric('makeTile')) {
 
 
 library(raster)
-tempfile()
+
 
 makeTile <- function(x=NULL,
                      outPath=tmpDir(),
@@ -59,16 +59,18 @@ makeTile <- function(x=NULL,
                      rType="bilinear",
                      zoom=NULL
 )
-{
-  if (class(x)=="raster"|class(x)=="rasterbrick"){
-    writeRaster(x,paste0(outPath,"/tile.tif"))
-    fnx<-raster(x)
+{  tmp <- makeTmpPath(outPath)
+  if (class(x)=="raster" | class(x)=="rasterbrick" | class(x)=="RasterLayer"){
+    writeRaster(x,paste0(outPath,"/tile.tif"),overwrite =TRUE)
+    x@file@name <-paste0(outPath,"/tile.tif")
+    fnx<-x
   } else {
     fnx<-raster(x)
   }
-  gdalinfo(path.expand(x))
-  tmp <- makeTmpPath(outPath)
-  nodata<- as.numeric(strsplit(gdalinfo(path.expand(x))[grep("NoData Value=",gdalinfo(path.expand(x)))], split='=', fixed=TRUE)[[1]][2])
+
+  #nodata<- as.numeric(strsplit(gdalinfo(path.expand(x))[grep("NoData Value=",gdalinfo(path.expand(x)))], split='=', fixed=TRUE)[[1]][2])
+
+  nodata<- x@file@nodatavalue
 
   tmpPath <- tmp[[1]][1]
   pathRasFn <- tmp[[2]][1]
@@ -133,10 +135,10 @@ makeTmpPath <- function (p=NULL){
 }
 
 estimateZoom <- function(ext=NULL,proj4){
-  srs <- grep("+units=m", proj4,fixed=TRUE)
+  lola <- if (grep("+proj=longlat", proj4,fixed=TRUE)>= 1)
   rad<-pi/180
   earth<- 6378137
-  if (!srs) {
+  if (lola) {
     lat1<-ext@extent@ymin
     lon1<-ext@extent@xmin
     lat2<-ext@extent@ymax

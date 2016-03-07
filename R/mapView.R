@@ -115,6 +115,7 @@ if ( !isGeneric('mapView') ) {
 #' @rdname mapView
 #' @aliases mapView,RasterLayer-method
 
+
 ## RasterLayer ============================================================
 
 setMethod('mapView', signature(x = 'RasterLayer'),
