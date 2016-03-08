@@ -110,17 +110,17 @@ if (!isGeneric('projView')) {
 #'  stations <-rgdal::readOGR(paste0(tmpDir,"/Quantarctica2/Basemap/Vector", "stations")
 #'
 #'  ##   for tile layers ...
-#' projView(  stations,
-#'            color=mapviewGetOption("raster.palette")(256),
-#'            na.color=mapviewGetOption("na.color"),
-#'            map.types= list(tL=list('bluemarble'=list(L.tileLayer='https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/BlueMarble_ShadedRelief_Bathymetry/default/EPSG3031_500m/{z}/{y}/{x}.jpg',
-#'                                                       layer="BlueMarble_ShadedRelief_Bathymetry",
-#'                                                       format="image%2Fjpeg",
-#'                                                       tileSize="512",
-#'                                                       subdomains="abc",
-#'                                                       noWrap ="true",
-#'                                                       continuousWorld='true',
-#'                                                       attribution="<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a> &nbsp;|| &nbsp; <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>"),
+#'projView(  stations,
+#'           color=mapviewGetOption("raster.palette")(256),
+#'           na.color=mapviewGetOption("na.color"),
+#'           map.types= list(tL=list('bluemarble'=list(L.tileLayer='https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/BlueMarble_ShadedRelief_Bathymetry/default/EPSG3031_500m/{z}/{y}/{x}.jpg',
+#'                                                     layer="BlueMarble_ShadedRelief_Bathymetry",
+#'                                                     format="image%2Fjpeg",
+#'                                                     tileSize="512",
+#'                                                     subdomains="abc",
+#'                                                     noWrap ="true",
+#'                                                     continuousWorld='true',
+#'                                                     attribution="<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a> &nbsp;|| &nbsp; <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>"),
 #'                                   ('EPSG3031_250m'= list(L.tileLayer='https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/MODIS_Terra_Sea_Ice/default/2014-02-04/EPSG3031_1km/{z}/{y}/{x}.png',
 #'                                                          layer='MODIS_Terra_Brightness_Temp_Band31_Day',
 #'                                                          format="image%2Fjpeg",
@@ -129,10 +129,11 @@ if (!isGeneric('projView')) {
 #'                                                          noWrap ="true",
 #'                                                          continuousWorld='true',
 #'                                                          attribution="<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a> &nbsp;|| &nbsp; <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>"
-#'           ))
+#'                                   ))
 #'           )),
+#'           cex=20,
 #'           lwd = 2,
-#'           alpha = 0.6,
+#'           alpha = 0.5,
 #'           legend = FALSE,
 #'           legend.opacity = 1,
 #'           t_epsg = "urn:ogc:def:crs:EPSG::3031",
@@ -235,8 +236,8 @@ projView<- function( x,
                      na.color=mapviewGetOption("na.color"),
                      map.types='//tile.osm.ch/2056/{z}/{x}/{y}.png',
                      cex = 10,
-                     lwd = 2,
-                     alpha = 0.6,
+                     lwd = 1,
+                     alpha = 0.9,
                      legend = FALSE,
                      legend.opacity = 1,
                      verbose = mapviewGetOption("verbose"),
@@ -440,7 +441,8 @@ projView<- function( x,
                 opacity = alpha,
                 weight = lwd,
                 values = x@data,
-                ext=xt
+                ext=xt,
+                cex=cex
   )
 
   # creating the widget

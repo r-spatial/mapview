@@ -58,7 +58,7 @@ HTMLWidgets.widget({
     {
         var col =  x.color[x.color.length-1];
     }
-
+    var cex = x.cex
     var color = col;
     var opacity = x.opacity;
     var lnWidth = x.weight;
@@ -113,23 +113,32 @@ HTMLWidgets.widget({
 	        */
 	        } else {
 	            return {
-	                color: col,
+	                color: color,
 	                weight: lnWidth,
 	                opacity: opacity
 	            }
 	        }
 	    }
-
+var geojsonMarkerOptions = {
+    radius: cex,
+    fillColor: color,
+    color: color,
+    weight: lnWidth,
+    opacity: 1,
+    fillOpacity: opacity
+};
 
    // define projection params for geojson
    proj4.defs(x.t_epsg,x.t_srs);
 
 
    // create geojsonlayer
-   var polyLayer = L.Proj.geoJson(jsondata,{style:style,onEachFeature:onEachFeature});
+   var polyLayer = L.Proj.geoJson(jsondata,{ pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions);
+    },style:style,onEachFeature:onEachFeature});
 
    // add vector (geojson) layer to the overlay mapset
-   overlayLayers["poly"] = polyLayer;
+   overlayLayers[x.layername] = polyLayer;
 
 
    // add the layer control
