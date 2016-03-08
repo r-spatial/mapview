@@ -16,7 +16,12 @@ dependencies:
     src: "htmlwidgets/lib/leaflet"
     script:
          - leaflet.js
+         - leaflet.label.js
+         - leaflet.ajax.js
          - leaflet-providers.js
+         - geojson-vt-dev.js
+         - L.CanvasTiles.js
+         - rtree.min.js
     stylesheet:
           - leaflet.css
           - leafletfix.css

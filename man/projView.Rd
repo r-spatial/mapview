@@ -158,7 +158,7 @@ projView(  stations,
  naturalATA<- rgdal:::readOGR(dsn =path.expand(tmpDir), layer="waterways")
 
 
-projView(  waterwaysATA,
+projView(  naturalATA,
                        map.types= list(tL=list('bluemarble'=list(L.tileLayer='https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/BlueMarble_ShadedRelief_Bathymetry/default/EPSG3031_500m/{z}/{y}/{x}.jpg',
                                                                  layer="BlueMarble_ShadedRelief_Bathymetry",
                                                                  format="image\%2Fjpeg",

@@ -58,6 +58,10 @@ HTMLWidgets.widget({
     {
         var col =  x.color[x.color.length-1];
     }
+
+    var color = col;
+    var opacity = x.opacity;
+    var lnWidth = x.weight;
   // style for polygons
    var polyStyle = {
      "color": col,
@@ -65,16 +69,64 @@ HTMLWidgets.widget({
      "opacity": x.opacity
    };
    // -------------------- end base styles
+	  function onEachFeature(feature, layer) {
+      var i = 1;
+      var content = '';
+    // does this feature have a property named popupContent?
+    if (feature.properties) {
+        for (var key in feature.properties) {
+          if (isEven(i)) {
+            content += "<tr><td> " +  key + " </td><td>" + feature.properties[key] +" </td></tr>";
+          } else {
+            content += "<tr class='alt'><td> " +  key + " </td><td>" + feature.properties[key] +" </td></tr>";
+          }
+          i = i + 1;
+        };
+        var popupContent = x.html + content + "</table></body></html>";
+        //console.log(popupContent);
+        layer.bindPopup(popupContent);
+    }
+  }
+	// The styles of the layer
+	function style(feature) {
+	        if (feature.properties.ELEV != "" && feature.properties.ELEV != "<Null>" && feature.properties.ELEV != null) {
+	           /* if (feature.properties.ELEV == "1000") {
+	                return {
+	                    color: "green",
+	                    weight: 4,
+	                    opacity: 0.9
+	                }
+	            } else if (feature.properties.ELEV == "2000") {
+	                return {
+	                    color: "blue",
+	                    weight: 4,
+	                    opacity: 0.9
+	                }
 
+	            } else {
+	                return {
+	                    color: "red",
+	                    weight: 2,
+	                    opacity: 0.9
+	                }
+	            }
+	        */
+	        } else {
+	            return {
+	                color: col,
+	                weight: lnWidth,
+	                opacity: opacity
+	            }
+	        }
+	    }
 
 
    // define projection params for geojson
    proj4.defs(x.t_epsg,x.t_srs);
 
+
    // create geojsonlayer
-   var polyLayer = L.Proj.geoJson(jsondata,{
-    style: polyStyle
-   });
+   var polyLayer = L.Proj.geoJson(jsondata,{style:style,onEachFeature:onEachFeature});
 
    // add vector (geojson) layer to the overlay mapset
    overlayLayers["poly"] = polyLayer;
@@ -114,5 +166,10 @@ function addElement () {
       //provide ID and style
       newDiv.id = 'lnlt';
       newDiv.style.cssText = 'position: relative; bottomleft:  0px; background-color: rgba(255, 255, 255, 0.7);box-shadow: 0 0 2px #bbb; background-clip: padding-box; margin:0; color: #333; font: 9px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif; ></div>;';
+}
+
+
+function isEven(n) {
+   return n % 2 == 0;
 }
 
