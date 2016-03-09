@@ -138,7 +138,7 @@ var geojsonMarkerOptions = {
     },style:style,onEachFeature:onEachFeature});
 
    // add vector (geojson) layer to the overlay mapset
-   overlayLayers[x.layername] = polyLayer;
+   overlayLayers["overlay"] = polyLayer;
 
 
    // add the layer control

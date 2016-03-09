@@ -269,7 +269,7 @@ projView<- function( x,
 
   # check if x exist
   if (!is.null(x)) {
-    # get epsg code and proj4 string from vector file
+    ##get epsg code and proj4 string from vector file
     string<-unlist(strsplit(x@proj4string@projargs, split='+', fixed=TRUE))
     epsg<-string[grepl("init",string)]
     unlist(strsplit(epsg, split=':', fixed=TRUE))[2]
