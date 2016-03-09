@@ -1,3 +1,6 @@
+/src/*.so
+/src/*.o
+/src/*.dll
 .Rproj.user
 .Rhistory
 .RData
