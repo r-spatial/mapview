@@ -12,11 +12,15 @@ dependencies:
     src: htmlwidgets/lib/cubeView_style
     stylesheet:
       - cubeView.css
-  - name: three
-    version: 1
-    src: htmlwidgets/lib/three
-    script: three.js
+  - name: three.js
+    version: 74
+    src: htmlwidgets/lib/three.js-r74
+    script: three.min.js
   - name: OrbitControls
-    version: 1
-    src: htmlwidgets/lib/orbit_controls
+    version: 74
+    src: htmlwidgets/lib/OrbitControls-r74
     script: OrbitControls.js
+  - name: TrackballControls
+    version: 74
+    src: htmlwidgets/lib/TrackballControls-r74
+    script: TrackballControls.js

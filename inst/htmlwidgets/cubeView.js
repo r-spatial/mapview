@@ -68,6 +68,8 @@ function b64toArray(data) {
 
 function Hovmoeller(root, json) {
 
+  this.orbit = true;
+
 	/*for(var z=0;z<Z_SIZE;z++) { // example data: full color cube
 		var z_base = z * XY_SIZE;
 		for(var y=0;y<Y_SIZE;y++) {
@@ -151,7 +153,26 @@ function Hovmoeller(root, json) {
 	this.renderer.setSize( window.innerWidth, window.innerHeight );
 	//console.log(this.renderer.getMaxAnisotropy());
 
-	var controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+	if(this.orbit) {
+	  this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+	  this.controls.enableKeys = false; // prevents using arrow keys in OrbitControls
+	} else {
+	  this.controls = new THREE.TrackballControls(this.camera); // currently not functioning
+
+	  this.controls.rotateSpeed = 1.0;
+		this.controls.zoomSpeed = 1.2;
+		this.controls.panSpeed = 0.8;
+
+		this.controls.noZoom = false;
+		this.controls.noPan = false;
+
+		this.controls.staticMoving = true;
+		this.controls.dynamicDampingFactor = 0.3;
+
+		this.controls.keys = [ 65, 83, 68 ];
+
+		this.controls.addEventListener( 'change', function mov() {hovmoeller.render();} );
+	}
 
 	root.innerHTML = "";
 	root.appendChild( this.renderer.domElement );
@@ -206,7 +227,12 @@ function Hovmoeller(root, json) {
 Hovmoeller.prototype = {
 
 render: function () {
-	this.renderer.render( this.scene, this.camera );
+	if(this.orbit) {
+	  this.renderer.render( this.scene, this.camera );
+	} else {
+	  this.renderer.render( this.scene, this.camera );
+	  this.controls.update();
+	}
 	var self = this;
 	function mov() {self.render();}
 	requestAnimationFrame( mov );
@@ -299,22 +325,22 @@ onKeyDown: function(e) {
 			e.preventDefault();
 			e.stopPropagation();
 			break;
-		case 45: // INS
+		case 39: //RIGHT //case 45: // INS
 			x_pos =  x_pos==X_SIZE-1?X_SIZE-1:x_pos+1;
 			e.preventDefault();
 			//e.stopPropagation();
 			break;
-		case 46: // DEL
+		case 37: //LEFT //case 46: // DEL
 			x_pos = x_pos==0?0:x_pos-1;
 			e.preventDefault();
 			e.stopPropagation();
 			break;
-		case 36: // HOME
+		case 38: //UP //case 36: // HOME
 			y_pos =  y_pos==Y_SIZE-1?Y_SIZE-1:y_pos+1;
 			e.preventDefault();
 			//e.stopPropagation();
 			break;
-		case 35: // END
+		case 40: //DOWN //case 35: // END
 			y_pos = y_pos==0?0:y_pos-1;
 			e.preventDefault();
 			e.stopPropagation();
