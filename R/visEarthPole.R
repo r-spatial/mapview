@@ -1,4 +1,4 @@
-if (!isGeneric('visEarthPole')) {
+     if (!isGeneric('visEarthPole')) {
   setGeneric('visEarthPole', function(x, ...)
     standardGeneric('visEarthPole'))
 }
@@ -76,7 +76,8 @@ visEarthPole<- function(dateString="2011-10-04",
                         layerList=c(12,10,11),
                         groupList=NULL,
                         scale=scale500,
-                        zoom=5)
+                        zoom=5,
+                        createList=False)
 {
 
   tileSize=512
@@ -146,7 +147,9 @@ visEarthPole<- function(dateString="2011-10-04",
                 epsgproj=epsg3031String,
                 tilesize=tileSize,
                 attribution=attribution)
-
+ if (createList) {
+   return (lst_x)
+ }
   # creating the widget
   visEarthPoleInternal(  x = lst_x)
 

@@ -17,8 +17,11 @@ HTMLWidgets.widget({
 
   // create map object
   var map = new L.map(el, {
-	 crs : crs
+	 crs : crs,
+	 		continuousWorld: true,
+		worldCopyJump: true
   });
+
 
   //you can add more (static) leaflet stuff here ;-)
 
@@ -46,6 +49,7 @@ HTMLWidgets.widget({
     //var maxcorner = L.marker([x.ext.ymax, x.ext.xmax]);
     //var group = new L.featureGroup([maxcorner, mincorner]);
     //map.fitBounds(group.getBounds());
+    var ly = new loadLayers();
 
 
    // check if an array of colors (palette) or a single color is provided
@@ -137,12 +141,46 @@ var geojsonMarkerOptions = {
         return L.circleMarker(latlng, geojsonMarkerOptions);
     },style:style,onEachFeature:onEachFeature});
 
+    if (!x.internalList) {ly.overlayLayers["overlay"] = polyLayer;}
+
+///////////////////////////////////////////////////////////////77
+if (x.internalList) {
+   var ibaseLayers = {};
+   var ioverlayLayers = {};
    // add vector (geojson) layer to the overlay mapset
-   overlayLayers["overlay"] = polyLayer;
+   ioverlayLayers["overlay"] = polyLayer;
+    var defaultLayer = L.tileLayer(x.layer[0],
+                                  {tileSize: x.tilesize,
+                                   subdomains: "abc",
+                                   noWrap: true,
+                                   continuousWorld:
+                                   true,minZoom: 0,
+                                   maxZoom: x.zoom,
+                                   attribution: x.attribution}).addTo(map);
+
+
+
+   ibaseLayers[x.layername[0]] = defaultLayer;
+   var ioverlayLayers = {};
+   ioverlayLayers["Vector-Overlay"] = polyLayer;
+   for (var i = 1; i < x.layer.length;  i++) {
+          ioverlayLayers[x.layername[i] ] = L.tileLayer(x.layer[i],
+                                                  {tileSize: x.tilesize,
+                                                  subdomains: "abc",
+                                                  noWrap: true,
+                                                  continuousWorld: true,
+                                                  minZoom: 0,
+                                                  maxZoom: x.zoom,
+                                                  attribution: x.attribution});
+       }
+   L.control.layers(ibaseLayers, ioverlayLayers).addTo(map);
+ }      /////////////////////////////////////////////77
+
+
 
 
    // add the layer control
-   L.control.layers(baseLayers, overlayLayers).addTo(map);
+   if (!x.internalList) {L.control.layers(ly.baseLayers, ly.overlayLayers).addTo(map);}
 
    // center the map
    map.setView([mapCenter[0],mapCenter[1]], initialZoom);

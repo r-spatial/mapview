@@ -4,31 +4,29 @@
 \alias{projView}
 \title{maps projected local and remote tiles and vector data using leaflet}
 \usage{
-projView(map.types, layer.name, zoom, t_epsg, t_srs, tileSize, resolution,
- origin, bounds, attribution, makeTile, inputFile, pathtoTile,
- inputFileProj4, mapCenter, port, relUrl)
+projView( x, zcol, color, na.color, map.types=NULL, cex, lwd, alpha, legend, legend.opacity, verbose, use.layer.names,layer.name,trim,popup)
 }
 \arguments{
 \item{map.types}{local/remote map.types(s) pointing to the tiles to serve}
 
 \item{layer.name}{label(s) corresponding to the tile layers}
 
+\item{zoom}{maximum zoom level. corresponds with the available number of tile
+levels -1}
+
 \item{t_epsg}{e.g. \code{ urn:ogc:def:crs:EPSG::3031} or \code{EPSG:4326}
 has to correspond with t_srs}
 
 \item{t_srs}{valid proj4 string}
 
-\item{attribution}{of the layer see details}
-
-\item{tileSize}{sie of the tiles in pixel default is 256,}
-
 \item{resolution}{resolution of tiles for each zoom level}
-
-\item{zoom}{maximum zoom level. corresponds with the available number of tile
-levels -1}
 
 \item{origin}{upper left corner of the raster tiles expressed in the new
 coordinate system}
+
+\item{tileSize}{sie of the tiles in pixel default is 256,}
+
+\item{attribution}{of the layer see details}
 
 \item{makTile}{default is FALSE if true you can chain makeTile to generate a
 new tile before rendering it with \code{projView}}
@@ -96,8 +94,7 @@ GIBS</a>}\cr
  ## NOTE currently depreceated the directory that contains the valid tile subfolder structure with tiles to serve.
  # servr::httd("~/proj/Tiles",daemon=TRUE)
  system(paste0("twistd -no web --path=","~/proj/Tiles"),wait=FALSE)
-
- ### like all the time we need some data in this case from the great QGIS \\href{http://www.quantarctica.org/}{Quantartica project} of the \\href{http://www.npolar.no/en}{Norwegian Polar Institute}, ftp://ftp.uninett.no/pub/quantarctica/Quantarctica2.zip
+ ## getting some data for the South from the great QGIS \\href{http://www.quantarctica.org/}{Quantartica project} of the \\href{http://www.npolar.no/en}{Norwegian Polar Institute}, ftp://ftp.uninett.no/pub/quantarctica/Quantarctica2.zip
 
  ## creating a tmp dir because this is a lot of data
  ## create a permanent tempdir
@@ -105,131 +102,141 @@ GIBS</a>}\cr
  dir.create(tmpDir,recursive = TRUE, showWarnings = FALSE)
  ## download will take a while (~7 GB)
  curl_download(map.types="ftp://ftp.uninett.no/pub/quantarctica/Quantarctica2.zip", destfile=paste0(tmpDir,"/Quantarctica2.zip"),  quiet = FALSE, mode = "wb")
-
  ## unzip it
  unzip(paste0(tmpDir,"/Quantarctica2.zip"), exdir=tmpDir)
-
  ## and choose a data set of interest for tiling...
- localFile<-paste0(tmpDir,"/Quantarctica2/Basemap/Terrain/ETOPO1_DEM.tif")
+ localTileFile<-paste0(tmpDir,"/Quantarctica2/Basemap/Terrain/ETOPO1_DEM.tif")
+ ## download some vector data
+ ## get Greenland data from geofabrik
+ curl_download("http://download.geofabrik.de/north-america/greenland-latest.shp.zip", destfile=paste0(tmpDir,"/geofabrikGREEN.zip"),  quiet = FALSE, mode = "wb")
+ unzip(paste0(tmpDir,"/geofabrikGREEN.zip"), exdir=tmpDir)
+ ## import natural
+ naturalGREEN<- rgdal:::readOGR(dsn =path.expand(tmpDir), layer="natural")
 
-
- ## choose vector data from Quantartica
- stations <-rgdal::readOGR(paste0(tmpDir,"/Quantarctica2/Basemap/Vector", "stations")
-
- ##   for tile layers ...
-projView(  stations,
-          color=mapviewGetOption("raster.palette")(256),
-          na.color=mapviewGetOption("na.color"),
-          map.types= list(tL=list('bluemarble'=list(L.tileLayer='https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/BlueMarble_ShadedRelief_Bathymetry/default/EPSG3031_500m/{z}/{y}/{x}.jpg',
-                                                    layer="BlueMarble_ShadedRelief_Bathymetry",
-                                                    format="image\%2Fjpeg",
-                                                    tileSize="512",
-                                                    subdomains="abc",
-                                                    noWrap ="true",
-                                                    continuousWorld='true',
-                                                    attribution="<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a> &nbsp;|| &nbsp; <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>"),
-                                  ('EPSG3031_250m'= list(L.tileLayer='https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/MODIS_Terra_Sea_Ice/default/2014-02-04/EPSG3031_1km/{z}/{y}/{x}.png',
-                                                         layer='MODIS_Terra_Brightness_Temp_Band31_Day',
-                                                         format="image\%2Fjpeg",
-                                                         tileSize="512",
-                                                         subdomains="abc",
-                                                         noWrap ="true",
-                                                         continuousWorld='true',
-                                                         attribution="<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a> &nbsp;|| &nbsp; <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>"
-                                  ))
-          )),
-          cex=20,
-          lwd = 2,
-          alpha = 0.5,
-          legend = FALSE,
-          legend.opacity = 1,
-          t_epsg = "urn:ogc:def:crs:EPSG::3031",
-          t_srs = "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
-          setBound=TRUE,
-          setmapCenter =TRUE,
-          mapCenter=c(-90,0),
-          resolution= "[8192,4096,2048,1024,512,256]",
-          bounds = "[-4194304,-4194304],[4194304,4194304]",
-          origin= "[-4194304,4194304]")
-
-### get some more data
+ ## get Antartica data from geofabrik
  curl_download("http://download.geofabrik.de/antarctica-latest.shp.zip", destfile=paste0(tmpDir,"/geofabrikATA.zip"),  quiet = FALSE, mode = "wb")
  unzip(paste0(tmpDir,"/geofabrikATA.zip"), exdir=tmpDir)
- tmpDir<-"~/tmp/data/quantartica"
- naturalATA<- rgdal:::readOGR(dsn =path.expand(tmpDir), layer="waterways")
+ ## import natural for antartica
+ naturalATA<- rgdal:::readOGR(dsn =path.expand(tmpDir), layer="natural")
+ ## import stations vector data from Quantartica2 project
+ stationsATA <-rgdal::readOGR(paste0(tmpDir,"/Quantarctica2/Basemap/Vector", "stations")
+
+ ## first we have to define some online data providers. this is a bit tricky and yields sometimes just frustration...
+ ## please have a look at the vignette for further explanations. In the example you'll find
+ ## a typical WMS service and a typical OSM tile server. For your preferred list copy and paste
+ ## the values of your tileserver/WMS service into the list elements.
+ ## for convenience you also can add this new sublist to the master list for further use.
+
+ovlLayer<-list( HAV=list(service="WMS", # typical WMS service
+                         L.tileLayer.wms="http://geodatatest.havochvatten.se/geoservices/ows",
+                         format="image/png",
+                         layers=list(layer=list("hav-bakgrundskartor:hav-grundkarta")),
+                         minZoom="0",
+                         maxZoom="14",
+                         continiuousWorld="true",
+                         transparent="false",
+                         attribution=" | &copy; <a href='https://www.havochvatten.se/kunskap-om-vara-vatten/kartor-och-geografisk-information/karttjanster.html'>Havs- och vattenmyndigheten (Swedish Agency for Marine and Water Management)</a> | Projection: <a href='http://spatialreference.org/ref/epsg/3006'> EPSG:3006</a>' | <a href='http://download.geofabrik.de/'> geofabrik/osm</a>",
+                         params=list(t_epsg="EPSG:3575",
+                                     t_srs="+proj=laea +lat_0=90 +lon_0=10 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ",
+                                     mapCenter=list(cLat="90",
+                                                    cLon="90"),
+                                     initialZoom="0",
+                                     zoomLevels="12",
+                                     resolution="8",
+                                     ovlBounds=list(minx="-4462340.35076383",
+                                                    miny="-4467019.64923622",
+                                                    maxx="4467019.64923617",
+                                                    maxy="4462340.35076378"),
+                                     origin=list(olx="-4462340.35076383",
+                                                 oly="4462340.35076378"),
+                                     relUrl=""
+
+                         )), # end of CAFF list
+
+                CAFF=list(service="WMS", # typical WMS service templete
+                          L.tileLayer.wms="http://dev.caff.is:8080/geoserver/ows",
+                          format="image/png",
+                          layers=list(layer=list("arctic_sdi:LandSurfaceTemperature","arctic_sdi:SeaSurfaceTemperature")),
+                          minZoom="0",
+                          maxZoom="12",
+                          continiuousWorld="true",
+                          transparent="true",
+                          attribution=" | &copy; <a href=' http://www.arcticbiodiversity.is>Arctic Biodiversity Assessment</a> |<a href='http://download.geofabrik.de/'> geofabrik/osm</a> | Projection: <a href='http://spatialreference.org/ref/epsg/3575'> EPSG:3575</a>",
+                          params=list(t_epsg="EPSG:3575",
+                                      t_srs="+proj=laea +lat_0=90 +lon_0=10 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ",
+                                      mapCenter=list(cLat="90",
+                                                     cLon="90"),
+                                      initialZoom="0",
+                                      zoomLevels="12",
+                                      resolution="8",
+                                      ovlBounds=list(minx="-4462340.35076383",
+                                                     miny="-4467019.64923622",
+                                                     maxx="4467019.64923617",
+                                                     maxy="4462340.35076378"),
+                                      origin=list(olx="-4462340.35076383",
+                                                  oly="4462340.35076378"),
+                                      relUrl=""
+
+                          )), # end of CAFF list
+                # here we start a new map.types input list this time for OSM tiles
+                NASA=list(service="NASA",
+                          L.tileLayer="https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/",
+                          layer=list(layer=list(list("BlueMarble_ShadedRelief_Bathymetry", path=list("EPSG3031_500m")),
+                                                list("AMSR2_Sea_Ice_Brightness_Temp_6km_89H",path= list("2014-02-04",
+                                                                                                        "EPSG3031_1km")),
+                                                list(" MODIS_Terra_Snow_Cover",path= list("2014-02-04",
+                                                                                          "EPSG3031_1km"))
+                          )),
+                          format="image/jpg",
+                          tileSize="512",
+                          subdomains="abc",
+                          noWrap ="true",
+                          attribution="<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a> &nbsp;|| &nbsp; <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>",
+                          params=list(t_epsg="EPSG:3031",
+                                      t_srs="+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
+                                      mapCenter=list(cLat="-90",
+                                                     cLon="0"),
+                                      initialZoom="0",
+                                      zoomLevels="5",
+                                      resolution="256",
+                                      ovlBounds=list(minx="-4194304",
+                                                     miny="-4194304",
+                                                     maxx="4194304",
+                                                     maxy="4194304"),
+                                      origin=list(olx="-4194304",
+                                                  oly="4194304"),
+                                      relUrl=""
+
+                          )) # end of NASA list
+) # end of total list
 
 
-projView(  naturalATA,
-                       map.types= list(tL=list('bluemarble'=list(L.tileLayer='https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/BlueMarble_ShadedRelief_Bathymetry/default/EPSG3031_500m/{z}/{y}/{x}.jpg',
-                                                                 layer="BlueMarble_ShadedRelief_Bathymetry",
-                                                                 format="image\%2Fjpeg",
-                                                                 tileSize="512",
-                                                                 subdomains="abc",
-                                                                 noWrap ="true",
-                                                                 continuousWorld='true',
-                                                                 attribution="<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a> &nbsp;|| &nbsp; <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>"),
-                                                                 ('EPSG3031_250m'= list(L.tileLayer='https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/MODIS_Terra_Sea_Ice/default/2014-02-04/EPSG3031_1km/{z}/{y}/{x}.png',
-                                                                 layer='MODIS_Terra_Brightness_Temp_Band31_Day',
-                                                                 format="image\%2Fjpeg",
-                                                                 tileSize="512",
-                                                                 subdomains="abc",
-                                                                 noWrap ="true",
-                                                                 continuousWorld='true',
-                                                                 attribution="<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a> &nbsp;|| &nbsp; <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>"
-                                      ))
-                      )),
-                      lwd = 3,
-                      alpha = 0.9,
-                      t_epsg = "urn:ogc:def:crs:EPSG::3031",
-                      t_srs = "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
-                      setBound=TRUE,
-                      setmapCenter =TRUE,
-                      mapCenter=c(-90,0),
-                      resolution= "[8192,4096,2048,1024,512,256]",
-                      bounds = "[-4194304,-4194304],[4194304,4194304]",
-                      origin= "[-4194304,4194304]")
 
+### now let's start mapping
+#load the stations and the defined NASA Layers
+projView(stations, , map.types= "ovlLayer$NASA")
+# use the visEarthPole function as a plugin
+projView(stations, map.types= "ovlLayer$NASA",
+                  internalList =TRUE,
+                  externalList = c("arctic-nasa","visEarthPole(groupList='1000',dateString='2014-02-04',createList = TRUE)"))
+# it also works for the North Pole
+# we use greenland and data from the CAFF
+mapview::projView(naturalGreen, , map.types= "ovlLayer$CAFF")
+# again Greenland with online tiles from HAV
+mapview::projView(naturalGreen, , map.types= "ovlLayer$HAV")
 
- ### define a wms resource
-resource<-list(wms=list('hav grundkarta'=list(L.tileLayer.wms='http://geodatatest.havochvatten.se/geoservices/ows',
-                                               layers='hav-bakgrundskartor:hav-grundkarta',
-                                               format='image/png',
-                                               continuousWorld='true',
-                                               attribution=' | &copy; <a href="https://www.havochvatten.se/kunskap-om-vara-vatten/kartor-och-geografisk-information/karttjanster.html">Havs- och vattenmyndigheten (Swedish Agency for Marine and Water Management)</a> | Projection: <a href="http://spatialreference.org/ref/epsg/2056"> EPSG:2056</a>'
-)))
+## reproject it to EPSG:3995
+ovlLayer$HAV$params$t_srs <- "+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
+ovlLayer$HAV$params$t_epsg <- "EPSG:3995"
+mapview::projView(naturalGreen, , map.types= "ovlLayer$HAV")
 
-
-### getting some vector data
-sweden<-getGeoData("GADM", country="SWE", level = 2)
-
-projView(sweden,
- color=mapviewGetOption("raster.palette")(256),
- na.color=mapviewGetOption("na.color"),
- map.types= resource,
-cex = 10,
-lwd = 2,
-alpha = 0.6,
-legend = FALSE,
-legend.opacity = 1,
-verbose = mapviewGetOption("verbose"),
-use.layer.names = FALSE,
-t_epsg = 'EPSG:3006',
-t_srs = '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
-resolution= "[8192, 4096, 2048, 1024, 512, 256, 128,64, 32, 16, 8, 4, 2, 1, 0.5]",
-origin= "[0,0]",
-relUrl="")
+# move center
+ovlLayer$HAV$params$mapCenter$cLon="70"
+ovlLayer$HAV$params$mapCenter$cLat="15"
+mapview::projView(naturalGreen, , map.types= "ovlLayer$HAV")
 
 
 
-### just change the projection changing EPSG Code and proj4 string
-projView(sweden,
- map.types= resource,
-lwd = 2,
-alpha = 0.6,
-t_epsg = 'EPSG:2056',
-t_srs = '+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs',
-resolution= "[8192, 4096, 2048, 1024, 512, 256, 128,64, 32, 16, 8, 4, 2, 1, 0.5]",
-origin= "[0,0]")
 }
 }
 \author{
