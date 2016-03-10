@@ -106,6 +106,7 @@ GIBS</a>}\cr
  unzip(paste0(tmpDir,"/Quantarctica2.zip"), exdir=tmpDir)
  ## and choose a data set of interest for tiling...
  localTileFile<-paste0(tmpDir,"/Quantarctica2/Basemap/Terrain/ETOPO1_DEM.tif")
+
  ## download some vector data
  ## get Greenland data from geofabrik
  curl_download("http://download.geofabrik.de/north-america/greenland-latest.shp.zip", destfile=paste0(tmpDir,"/geofabrikGREEN.zip"),  quiet = FALSE, mode = "wb")
@@ -114,12 +115,8 @@ GIBS</a>}\cr
  naturalGREEN<- rgdal:::readOGR(dsn =path.expand(tmpDir), layer="natural")
 
  ## get Antartica data from geofabrik
- curl_download("http://download.geofabrik.de/antarctica-latest.shp.zip", destfile=paste0(tmpDir,"/geofabrikATA.zip"),  quiet = FALSE, mode = "wb")
- unzip(paste0(tmpDir,"/geofabrikATA.zip"), exdir=tmpDir)
- ## import natural for antartica
- naturalATA<- rgdal:::readOGR(dsn =path.expand(tmpDir), layer="natural")
  ## import stations vector data from Quantartica2 project
- stationsATA <-rgdal::readOGR(paste0(tmpDir,"/Quantarctica2/Basemap/Vector", "stations")
+ stationsQ2 <-rgdal::readOGR(paste0(path.expand(tmpDir),"/Quantarctica2/Basemap/Vector"), "stations")
 
  ## first we have to define some online data providers. this is a bit tricky and yields sometimes just frustration...
  ## please have a look at the vignette for further explanations. In the example you'll find
@@ -214,21 +211,23 @@ ovlLayer<-list( HAV=list(service="WMS", # typical WMS service
 
 ### now let's start mapping
 #load the stations and the defined NASA Layers
-projView(stations, , map.types= "ovlLayer$NASA")
-# use the visEarthPole function as a plugin
-projView(stations, map.types= "ovlLayer$NASA",
+projView(stationsQ2, , map.types= "ovlLayer$NASA")
+
+### use the visEarthPole function as a plugin
+projView(stationsQ2, map.types= "ovlLayer$NASA",
                   internalList =TRUE,
                   externalList = c("arctic-nasa","visEarthPole(groupList='1000',dateString='2014-02-04',createList = TRUE)"))
-# it also works for the North Pole
-# we use greenland and data from the CAFF
-mapview::projView(naturalGreen, , map.types= "ovlLayer$CAFF")
-# again Greenland with online tiles from HAV
-mapview::projView(naturalGreen, , map.types= "ovlLayer$HAV")
+### it also works for the North Pole
+### use Greenland and online tiles from the CAFF
+mapview::projView(naturalGREEN, , map.types= "ovlLayer$CAFF")
 
-## reproject it to EPSG:3995
+# again Greenland with online tiles from HAV
+mapview::projView(naturalGREEN, , map.types= "ovlLayer$HAV")
+
+## reproject HAV and Greenland to EPSG:3995
 ovlLayer$HAV$params$t_srs <- "+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
 ovlLayer$HAV$params$t_epsg <- "EPSG:3995"
-mapview::projView(naturalGreen, , map.types= "ovlLayer$HAV")
+mapview::projView(naturalGREEN, , map.types= "ovlLayer$HAV")
 
 # move center
 ovlLayer$HAV$params$mapCenter$cLon="70"

@@ -49,8 +49,9 @@ HTMLWidgets.widget({
     //var maxcorner = L.marker([x.ext.ymax, x.ext.xmax]);
     //var group = new L.featureGroup([maxcorner, mincorner]);
     //map.fitBounds(group.getBounds());
-    var ly = new loadLayers();
-
+    if (!x.internalList) {var ly = new loadLayers();}
+    else { var baseLayers = {};
+           var overlayLayers = {};}
 
    // check if an array of colors (palette) or a single color is provided
    if (x.color.length <= 7 ) {
