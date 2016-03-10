@@ -1,14 +1,6 @@
 library(mapview)
 
-??cubeView
-
-#example with RasterBrick Poppendorf
-cubeView_RasterBrick(poppendorf)
-
-#example with RasterStack Poppendorf
-rs <- stack(poppendorf)
-cubeView_RasterStack(rs)
-
+?cubeView
 
 #example with synthetic data
 x_size <- 41
@@ -19,7 +11,7 @@ r <- (c(0:(xyz_size-1))/43)%%256
 g <- (c(0:(xyz_size-1))/7)%%256
 b <- (c(0:(xyz_size-1))/1)%%256
 
-cubeViewRaw(red=r, green=g, blue=b, x_size=x_size, y_size=y_size, z_size=z_size)
+cubeView(red=r, green=g, blue=b, x_size=x_size, y_size=y_size, z_size=z_size)
 
 #example with data of Poppendorf
 library(mapview)
@@ -31,9 +23,10 @@ x_size <- p@ncols
 y_size <- p@nrows
 z_size <- p@data@nlayers
 
-cubeViewRaw(grey=v, x_size=x_size, y_size=y_size, z_size=z_size)
+cubeView(grey=v, x_size=x_size, y_size=y_size, z_size=z_size)
 
-#example with replicated data of Poppendorf
+
+#example with data of Poppendorf
 library(mapview)
 library(raster)
 p <- stack(poppendorf)
@@ -45,5 +38,4 @@ x_size <- ncol(p)
 y_size <- nrow(p)
 z_size <- nlayers(p)
 
-cubeViewRaw(grey=v, x_size=x_size, y_size=y_size, z_size=z_size)
-
+cubeView(grey=v, x_size=x_size, y_size=y_size, z_size=z_size)

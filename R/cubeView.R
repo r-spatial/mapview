@@ -1,3 +1,35 @@
+#' View a RasterStack as 3-dimensional cube.
+#' @author
+#' Stephan Woellauer
+#'
+#' @export
+cubeView_RasterStack <- function(r) {
+  v <- as.integer(values(r))
+  v <- as.integer(v %/% (max(v)%/%255))
+
+  x_size <- ncol(r)
+  y_size <- nrow(r)
+  z_size <- nlayers(r)
+
+  cubeViewRaw(grey=v, x_size=x_size, y_size=y_size, z_size=z_size)
+}
+
+#' View a RasterBrick as 3-dimensional cube.
+#' @author
+#' Stephan Woellauer
+#'
+#' @export
+cubeView_RasterBrick <- function(r) {
+  v <- as.integer(r@data@values)
+  v <- as.integer(v %/% (max(v)%/%255))
+
+  x_size <- r@ncols
+  y_size <- r@nrows
+  z_size <- r@data@nlayers
+
+  cubeViewRaw(grey=v, x_size=x_size, y_size=y_size, z_size=z_size)
+}
+
 #' View a cube of 3-dimensional data filled with points (voxels).
 #'
 #' A variation of Hovmoeller diagram: Each voxel is colored with a RGB-color (or grey) value.
@@ -22,11 +54,11 @@
 #'
 #' Currently the visible layers are alterable by keys (not reliable within RStudio):
 #'
-#' z: PAGE_UP PAGE_DOWN
+#' z: PAGE_UP PAGE_DOWN key
 #'
-#' x: INS DEL
+#' x: LEFT RIGHT arrow key
 #'
-#' y: HOME END
+#' y: DOWN UP arror key
 #'
 #'
 #' Press and hold left mouse-button to rotate the cube.
@@ -49,7 +81,7 @@
 #' @import htmlwidgets
 #'
 #' @export
-cubeView <- function(grey=NULL, red=NULL, green=NULL, blue=NULL, x_size, y_size, z_size, width = NULL, height = NULL) {
+cubeViewRaw <- function(grey=NULL, red=NULL, green=NULL, blue=NULL, x_size, y_size, z_size, width = NULL, height = NULL) {
 
   total_size <- x_size*y_size*z_size
 
