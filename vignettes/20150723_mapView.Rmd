@@ -2,10 +2,16 @@
 title: "mapview - interactive viewing of spatial data in R"
 author: "Tim Appelhans"
 date: "July 23, 2015"
-output: 
-  html_document: 
+output:
+  html_document:
     toc: yes
+            
+vignette: >
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{mapview - interactive viewing of spatial data in R}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
+
 
 ![](http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png) (CC-BY-NC-SA)
 
@@ -27,7 +33,7 @@ For the devolpment version:
 install_github("environmentalinformatics-marburg/mapview", ref = "develop")
 ```
 
-------
+------  
 
 ## Introduction
 

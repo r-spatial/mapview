@@ -40,3 +40,6 @@ Imports:
 LinkingTo: Rcpp
 RoxygenNote: 5.0.1
 SystemRequirements: GNU make
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr

@@ -4,18 +4,15 @@ author: "Chris Reudenbach"
 date: "March 10, 2016"
 output:
   html_document:
-    fig_width: 9.47
+    self_contained: no
     highlight: tango
-    self_contained: yes
     toc: yes
-  pdf_document:
-    fig_caption: yes
-    latex_engine: xelatex
-    toc: yes
-    toc_depth: 3
-always_allow_html: yes
-vignette: |
-  %\VignetteEncoding{UTF-8} %\VignetteIndexEntry{projections with mapview} %\VignetteEngine{knitr::rmarkdown}
+
+            
+vignette: >
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Projections with mapview}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ![](http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png) (CC-BY-NC-SA)
@@ -106,7 +103,7 @@ projView is using the proj4leaflet [api](http://kartena.github.io/Proj4Leaflet/a
 
 Let's assume we are interested in the Blue Marble Shaded Relief Bathymetry. If we search for this layer in the [REST GetCapabilities](http://map1.vis.earthdata.nasa.gov/wmts-antarctic/1.0.0/WMTSCapabilities.xml) XML file we will see something like:
 
-```{xml}
+```xml
 <Layer>
 <ows:Title>BlueMarble_ShadedRelief_Bathymetry</ows:Title>
 <ows:LowerCorner>-180 -90</ows:LowerCorner>
@@ -159,7 +156,7 @@ Ready to compile the information.
 Now we need an appropriate structure for these parameters to make it less complicated to feed the projView function with this information. This is a simple nested list. If we fill it with the values it looks like this:
 
 
-```{r, eval = FALSE, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE}
 NASA=list(service="NASA",                                             # name of the list
 L.tileLayer="https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/", # base address <ResourceURL>
 # layer list is structured like the path of the url in this case: <ows:Identifier>,<TileMatrixSet>
@@ -193,7 +190,7 @@ relUrl=""                      ## obsolete used for local tiles
 
 First we need to load some packages and get data:
 
-```{r, eval = FALSE, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, fig.width=9.47}
 library(mapview)
 library(raster)
 
@@ -234,18 +231,9 @@ library(raster)
  mapview::projView(campsQ2, , map.types= "ovlLayer$NASA")
 ```
 
-Please note you have to activate the layers using the layer control in the upper right corner.
-
-```{r, eval = FALSE, warning=FALSE, message=FALSE}
- 
- # map it
- mapview::projView(campsQ2, , map.types= "ovlLayer$NASA")
- 
-```
-
 For the NASA EarthData you may use the visEarthPole() function.
 
-```{r, eval = FALSE, warning=FALSE, message=FALSE,}
+```{r, warning=FALSE, message=FALSE, fig.width=9.47}
  
 ### use the visEarthPole function as a plugin
 projView(campsQ2, map.types= "ovlLayer$NASA",

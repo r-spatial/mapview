@@ -2,115 +2,62 @@ if (!isGeneric('projView')) {
   setGeneric('projView', function(x, ...)
     standardGeneric('projView'))
 }
-#'maps projected local and remote tiles and vector data using leaflet
+#'projView generates projected leaflet maps using (local) or remote tiles and arbitrary vector for obverlaying.
 #'
-#'@description projView maps existing local or online tiles. Optional it creates
-#'  a local tile from a given GDAL file. object.
+#'@description projView maps existing local or online tiles in the choosen target projection. The first raster tile is taken for the default background.
 #'
-#'@usage projView( x, zcol, color, na.color, map.types=NULL, cex, lwd, alpha, legend, legend.opacity, verbose, use.layer.names,layer.name,trim,popup)
+#'@usage projView( x, zcol, color, na.color, map.types, cex, lwd, alpha, legend, legend.opacity, verbose, use.layer.names,layer.name,popup,internalList, externalList)
 #'
-#'@param map.types  local/remote map.types(s) pointing to the tiles to serve
-#'@param layer.name label(s) corresponding to the tile layers
-#'@param zoom maximum zoom level. corresponds with the available number of tile
-#'  levels -1
-#'@param t_epsg e.g. \code{ urn:ogc:def:crs:EPSG::3031} or \code{EPSG:4326}
-#'  has to correspond with t_srs
-#'@param t_srs valid proj4 string
-#'@param resolution resolution of tiles for each zoom level
-#'@param origin upper left corner of the raster tiles expressed in the new
-#'  coordinate system
-#'@param tileSize sie of the tiles in pixel default is 256,
-#'@param attribution of the layer see details
-#'@param makTile default is FALSE if true you can chain makeTile to generate a
-#'  new tile before rendering it with \code{projView}
-#'@param inputFile if \code{map.types{makeTile}} is TRUE you have to provide the
-#'  location of the file to be tiled
-#'@param pathtoTile path to the tile folder. It is crated automatically and the
-#'  tiles are stored under \code{pathtoTile/tiles}
-#'@param inputFileProj4 valid proj4 string of the input file that is going to be
-#'  tiled
+#'@param x a \code{\link{sp}}* object
+#'@param map.types an optionallist of map tiles see \link{details}
+#'@param color color (palette) for points/polygons/lines
+#'@param na.color color for missing values
+#'@param use.layer.names should layer names of the Raster* object be used?
+#'@param values a vector of values for the visualisation of the layers.
+#' Per default these are calculated based on the supplied raster* object.
+#'@param map.types character spcifications for the base maps.
+#' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
+#' for available options.
+#'@param alpha opacity of the lines or points
+#'@param legend should a legend be plotted
+#'@param legend.opacity opacity of the legend
+#'@param verbose should some details be printed during the process
+#'@param layer.name the name of the overlay layer to be shown on the map
+#'@param popup a character vector of the HTML content for the popups. See
+#' \code{\link{addControl}} for details.
+#'@param internalList default is FALSE if set to TRUE it is possible to pipe a command with externalList
+#'@param externalList list of two strings  first item is the keyword for the kind of data (currently just "arctic-nasa" is implemented, second is the R command to be evaluated. example: externalList = c("arctic-nasa","visEarthPole(groupList='1000',dateString='2014-02-04',createList = TRUE)"))
+#'@param zcol attribute name(s) or column number(s) in attribute table
+#' of the column(s) to be rendered
+#'@param cex attribute name(s) or column number(s) in attribute table
+#' of the column(s) to be used for defining the size of circles
+#'@param lwd line width
 #'
-#'@details
+#'@details For all other information  please have a look at the vignette or at \href{http://gisma.github.io/projView/projView1_0_9.html#some-examples}{projView}
 #'
-#'NOTE: tile serving usually works from the file system without
-#'engaging a http server. Unfortunately this setting it is a pretty complex topic. First of
-#'all it is usually not alowed to injure or load data via the browser due to
-#'security issues. Additionally browsers do what they want and finally RStudio
-#'also starts a webserver.... \cr So it is stringly recommended to use a local http
-#'server to provide full access to local tiles and files. There are several
-#'solutions within R. Most easiest way to do so is the package \code{\link{httd}}.\cr
-#'Nevertheless it is much more convienient to install seperatly a http daemon. If you are not used to the topic the \href{http://twistedmatrix.com}{twistd} daemon  is a very good cross platform powerful, save and simple solution.
-#' For some basic information and installation advices have a look at stackoverflow
-#'\href{http://stackoverflow.com/questions/12905426/what-is-a-faster-alternative-to-pythons-simplehttpserver}{simplehttpserver}.
-#'
-#'
-#'\code{vector of labels corresponding to the tile layers} vector of local or
-#'remote raster tiles. at the moment only
-#'\href{http://leafletjs.com/reference.html#tilelayer}{L.tileLayer} conform
-#'adresses are supported.\cr \cr \code{layer.name} vector of labels corresponding
-#'to the tile layers\cr\cr \code{t_epsg} projection code. best practise is
-#'using the full \href{http://www.opengeospatial.org/ogcUrnPolicy}{OGC Urn
-#'Policy} code (e.g. \code{ urn:ogc:def:crs:EPSG::3031}. In most cases you can
-#'use the short version as provided by
-#'\href{http://spatialreference.org}{spatialreference} e.g. \code{EPSG:4326},
-#'\code{ESRI:37234}, \code{IAU2000:29918}\cr \cr
-#'
-#'\code{t_srs} proj4 projection parameter string. best to retrieve both EPSG
-#'and PROJ4 from \href{http://spatialreference.org}{spatialreference.org}\cr \cr
-#'\code{resolution} string with the tile resolution/zoom level. It is the number
-#'of zoom level + 1 multiplied by the tileSize. e.g. zoom = 5, tileSize = 256 =>
-#'resolution = "8192,4096,2048,1024,512,256"\cr\cr \code{origin}  The upper left
-#'corner of the tile image in projected coordinates. Webservices usually provide
-#'the correct information but this can be tricky especially for complex
-#'projections and local tiles. E.g. for polarstereographic projections you can
-#'calculate it as follows: sqrt(abs(minx)**2+abs(miny)**2)/2*zoom\cr\cr
-#'\code{attribution} a string with the map references. Please take care of
-#'correct referencing of your data.\cr
-#'
-#'\code{<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS
-#'GIBS</a>}\cr
+#'@references
+#'\href{https://wiki.earthdata.nasa.gov/display/GIBS}{NASA EOSDIS GIBS}\cr
+#'\href{http://kartena.github.io/Proj4Leaflet/}{Proj4Leaflet}
 #'
 
 
 #'
 #'@author Chris Reudenbach
 #'
-#' @examples
+#'@examples
 #' \dontrun{
-#' ## requiered packages
+#' ##  packages
 #'  require(curl)
-#'  require(servr)
 #'  require(rgdal)
-#'  require(gdalUtils)
 #'
-#'  ## NOTE currently depreceated the directory that contains the valid tile subfolder structure with tiles to serve.
-#'  # servr::httd("~/proj/Tiles",daemon=TRUE)
-#'  system(paste0("twistd -no web --path=","~/proj/Tiles"),wait=FALSE)
-#
-#'  ## getting some data for the South from the great QGIS \href{http://www.quantarctica.org/}{Quantartica project} of the \href{http://www.npolar.no/en}{Norwegian Polar Institute}, ftp://ftp.uninett.no/pub/quantarctica/Quantarctica2.zip
+#'  ## load data of the arctic stations
+#'  data("campsQ2")
 #'
-#'  ## creating a tmp dir because this is a lot of data
-#'  ## create a permanent tempdir
-#'  tmpDir<-"~/tmp/data/quantartica"
-#'  dir.create(tmpDir,recursive = TRUE, showWarnings = FALSE)
-
-#'  ## download will take a while (~7 GB)
-#'  curl_download(map.types="ftp://ftp.uninett.no/pub/quantarctica/Quantarctica2.zip", destfile=paste0(tmpDir,"/Quantarctica2.zip"),  quiet = FALSE, mode = "wb")
-#'  ## unzip it
-#'  unzip(paste0(tmpDir,"/Quantarctica2.zip"), exdir=tmpDir)
-#'  ## and choose a data set of interest for tiling...
-#'  localTileFile<-paste0(tmpDir,"/Quantarctica2/Basemap/Terrain/ETOPO1_DEM.tif")
-#'
-#'  ## download some vector data
-#'  ## get Greenland data from geofabrik
+#'  ## download Greenland data from geofabrik
 #'  curl_download("http://download.geofabrik.de/north-america/greenland-latest.shp.zip", destfile=paste0(tmpDir,"/geofabrikGREEN.zip"),  quiet = FALSE, mode = "wb")
 #'  unzip(paste0(tmpDir,"/geofabrikGREEN.zip"), exdir=tmpDir)
 #'  ## import natural
 #'  naturalGREEN<- rgdal:::readOGR(dsn =path.expand(tmpDir), layer="natural")
-#'
-#'  ## get Antartica data from geofabrik
-#'  ## import stations vector data from Quantartica2 project
-#'  stationsQ2 <-rgdal::readOGR(paste0(path.expand(tmpDir),"/Quantarctica2/Basemap/Vector"), "stations")
 #'
 #'  ## first we have to define some online data providers. this is a bit tricky and yields sometimes just frustration...
 #'  ## please have a look at the vignette for further explanations. In the example you'll find
@@ -206,10 +153,10 @@ if (!isGeneric('projView')) {
 #'
 #' ### now let's start mapping
 #' #load the stations and the defined NASA Layers
-#' projView(stationsQ2, , map.types= "ovlLayer$NASA")
+#' projView(campsQ2, , map.types= "ovlLayer$NASA")
 #'
 #' ### use the visEarthPole function as a plugin
-#' projView(stationsQ2, map.types= "ovlLayer$NASA",
+#' projView(campsQ2, map.types= "ovlLayer$NASA",
 #'                   internalList =TRUE,
 #'                   externalList = c("arctic-nasa","visEarthPole(groupList='1000',dateString='2014-02-04',createList = TRUE)"))
 #' ### it also works for the North Pole
@@ -469,12 +416,14 @@ projView<- function( x=NULL,
               v <- paste0(attributes(ovl[j]),":", ovl[j],",")
             }
           }
+
           write(v,layFn,append = TRUE)
         }
-        write("});",layFn,append = TRUE)
+        if (i==999){write("}).addTo(map);",layFn,append = TRUE)}else{write("});",layFn,append = TRUE)}
+        #write("});",layFn,append = TRUE)
       }
     }
-    write("return{overlayLayers: overlayLayers, baseLayers: baseLayers }",layFn,append = TRUE)
+    write(paste0("return{overlayLayers: overlayLayers, baseLayers: baseLayers,defaultLayer: '",ovl$layer$layer[[1]][1],"' }"),layFn,append = TRUE)
     write("};",layFn,append = TRUE)
   } else if (externalList[1] == "arctic-nasa"){
     extList<-eval(parse(text = externalList[2]))

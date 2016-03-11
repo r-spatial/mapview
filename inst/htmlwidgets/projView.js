@@ -142,14 +142,14 @@ var geojsonMarkerOptions = {
         return L.circleMarker(latlng, geojsonMarkerOptions);
     },style:style,onEachFeature:onEachFeature});
 
-    if (!x.internalList) {ly.overlayLayers["overlay"] = polyLayer;}
+    if (!x.internalList) {ly.overlayLayers[x.layername] = polyLayer;}
 
 ///////////////////////////////////////////////////////////////77
 if (x.internalList) {
    var ibaseLayers = {};
    var ioverlayLayers = {};
    // add vector (geojson) layer to the overlay mapset
-   ioverlayLayers["overlay"] = polyLayer;
+   ioverlayLayers[x.layername] = polyLayer;
     var defaultLayer = L.tileLayer(x.layer[0],
                                   {tileSize: x.tilesize,
                                    subdomains: "abc",
@@ -157,13 +157,12 @@ if (x.internalList) {
                                    continuousWorld:
                                    true,minZoom: 0,
                                    maxZoom: x.zoom,
-                                   attribution: x.attribution}).addTo(map);
-
+                                     attribution: x.attribution}).addTo(map);
 
 
    ibaseLayers[x.layername[0]] = defaultLayer;
    var ioverlayLayers = {};
-   ioverlayLayers["Vector-Overlay"] = polyLayer;
+   ioverlayLayers[x.layername] = polyLayer;
    for (var i = 1; i < x.layer.length;  i++) {
           ioverlayLayers[x.layername[i] ] = L.tileLayer(x.layer[i],
                                                   {tileSize: x.tilesize,
@@ -181,7 +180,8 @@ if (x.internalList) {
 
 
    // add the layer control
-   if (!x.internalList) {L.control.layers(ly.baseLayers, ly.overlayLayers).addTo(map);}
+   if (!x.internalList) {map.addLayer(ly.baseLayers[ly.defaultLayer]);
+     L.control.layers(ly.baseLayers, ly.overlayLayers).addTo(map);}
 
    // center the map
    map.setView([mapCenter[0],mapCenter[1]], initialZoom);

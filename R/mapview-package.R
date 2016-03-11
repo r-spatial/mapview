@@ -84,3 +84,12 @@ NULL
 #' "The Geography of Beer, sustainability in the food industry"
 #' @format \code{sp::SpatialPointsDataFrame}
 NULL
+#'
+#' @docType data
+#' @name campsQ2
+#' @title Antartic Facilities
+#' @description Selected breweries in Franconia (zip code starting with 91...)
+#' @details The data show the antartic facilities (2012) as provided by \href{https://www.comnap.aq}{comnap} via the \href{www.quantartica.org}{Quantartica2} data compilation that is compiled by the \href{Norwegian Polar Institute}{http://www.npolar.no/en}
+#' @format \code{sp::SpatialPointsDataFrame}
+NULL
+
