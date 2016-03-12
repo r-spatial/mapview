@@ -142,14 +142,14 @@ var geojsonMarkerOptions = {
         return L.circleMarker(latlng, geojsonMarkerOptions);
     },style:style,onEachFeature:onEachFeature});
 
-    if (!x.internalList) {ly.overlayLayers[x.layername] = polyLayer;}
+    if (!x.internalList) {ly.overlayLayers[x.overlayLayer] = polyLayer;}
 
 ///////////////////////////////////////////////////////////////77
 if (x.internalList) {
    var ibaseLayers = {};
    var ioverlayLayers = {};
    // add vector (geojson) layer to the overlay mapset
-   ioverlayLayers[x.layername] = polyLayer;
+   ioverlayLayers[x.overlayLayer] = polyLayer;
     var defaultLayer = L.tileLayer(x.layer[0],
                                   {tileSize: x.tilesize,
                                    subdomains: "abc",
@@ -162,7 +162,7 @@ if (x.internalList) {
 
    ibaseLayers[x.layername[0]] = defaultLayer;
    var ioverlayLayers = {};
-   ioverlayLayers[x.layername] = polyLayer;
+   ioverlayLayers[x.overlayLayer] = polyLayer;
    for (var i = 1; i < x.layer.length;  i++) {
           ioverlayLayers[x.layername[i] ] = L.tileLayer(x.layer[i],
                                                   {tileSize: x.tilesize,

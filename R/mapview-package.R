@@ -88,8 +88,15 @@ NULL
 #' @docType data
 #' @name campsQ2
 #' @title Antartic Facilities
-#' @description Selected breweries in Franconia (zip code starting with 91...)
-#' @details The data show the antartic facilities (2012) as provided by \href{https://www.comnap.aq}{comnap} via the \href{www.quantartica.org}{Quantartica2} data compilation that is compiled by the \href{Norwegian Polar Institute}{http://www.npolar.no/en}
+#' @description Antartic facilities. Type of facility attribute is ""feature_ty"
+#' @details The data show the antartic facilities (2012) as provided by \href{https://www.comnap.aq}{comnap} via the \href{www.quantartica.org}{Quantartica2} data compilation that is compiled by the \href{http://www.npolar.no/en}{Norwegian Polar Institute}
 #' @format \code{sp::SpatialPointsDataFrame}
 NULL
-
+#'
+#' @docType data
+#' @name roadsGRL
+#' @title roads data from Greenland as provided by geofabrik.de
+#' @description Roads snapshot March(2016) from the OSM data extract as provided by geofabrik.de
+#' @details The data show the roads (snapshot 03/2013) as downloaded by \href{ttp://download.geofabrik.de/north-america/greenland-latest.shp.zip}{geofabrik}. The geofabrik extracts are based on the OpenStreetMap \href{http://www.openstreetmap.org/}{OSM} data. For further information see also \href{http://download.geofabrik.de/north-america/greenland.html}{Geofabrik Downloads}
+#' @format \code{sp::SpatialPointsDataFrame}
+NULL

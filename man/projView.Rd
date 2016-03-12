@@ -53,30 +53,25 @@ for available options.}
 projView maps existing local or online tiles in the choosen target projection. The first raster tile is taken for the default background.
 }
 \details{
-For all other information  please have a look at the vignette or at \href{http://gisma.github.io/projView/projView1_0_9.html#some-examples}{projView}
+Please note: If you use coordinates with numbers that are smaller then the Latitude/Longitude Values (i.e. -180/+180, -90/+90) projView assumes that you provide coordinates in the target srs and will not touch them. This is especially helpful for pole standing polarstereographic projections and projections that are not "common" or well described by an EPSG, ESRI or other code. Otherwise it construct a rectangle and project the coordinates towards the target system. \cr For all other information  please have a look at the vignette or at \href{http://gisma.github.io/projView/projView1_0_9.html#some-examples}{projView}
 }
 \examples{
 \dontrun{
 ##  packages
- require(curl)
- require(rgdal)
+ require(mapview)
+ require(raster)
 
  ## load data of the arctic stations
  data("campsQ2")
 
- ## download Greenland data from geofabrik
- curl_download("http://download.geofabrik.de/north-america/greenland-latest.shp.zip", destfile=paste0(tmpDir,"/geofabrikGREEN.zip"),  quiet = FALSE, mode = "wb")
- unzip(paste0(tmpDir,"/geofabrikGREEN.zip"), exdir=tmpDir)
- ## import natural
- naturalGREEN<- rgdal:::readOGR(dsn =path.expand(tmpDir), layer="natural")
+ ## load Greenlands roads data from geofabrik
+ data("roadsGRL")
 
- ## first we have to define some online data providers. this is a bit tricky and yields sometimes just frustration...
- ## please have a look at the vignette for further explanations. In the example you'll find
- ## a typical WMS service and a typical OSM tile server. For your preferred list copy and paste
- ## the values of your tileserver/WMS service into the list elements.
- ## for convenience you also can add this new sublist to the master list for further use.
+ ## We need to define online data providers. this is a bit tricky and yields sometimes just frustration...
+ ## under details you'll find a link for further explanations.
+ ## The example covers some typical services
 
-ovlLayer<-list( HAV=list(service="WMS", # typical WMS service
+ ovlLayer<-list( HAV=list(service="WMS", # typical WMS service
                          L.tileLayer.wms="http://geodatatest.havochvatten.se/geoservices/ows",
                          format="image/png",
                          layers=list(layer=list("hav-bakgrundskartor:hav-grundkarta")),
@@ -161,32 +156,33 @@ ovlLayer<-list( HAV=list(service="WMS", # typical WMS service
 
 
 
-### now let's start mapping
-#load the stations and the defined NASA Layers
-projView(campsQ2, , map.types= "ovlLayer$NASA")
+### finally let's start mapping
 
-### use the visEarthPole function as a plugin
+## map the antarctic facilities data using the NASA EarthData tiles
+projView(campsQ2, map.types= "ovlLayer$NASA")
+
+## same as before but now using the visEarthPole function as a "plugin"
 projView(campsQ2, map.types= "ovlLayer$NASA",
                   internalList =TRUE,
                   externalList = c("arctic-nasa","visEarthPole(groupList='1000',dateString='2014-02-04',createList = TRUE)"))
-### it also works for the North Pole
-### use Greenland and online tiles from the CAFF
-mapview::projView(naturalGREEN, , map.types= "ovlLayer$CAFF")
 
-# again Greenland with online tiles from HAV
-mapview::projView(naturalGREEN, , map.types= "ovlLayer$HAV")
+### similiar job in the North
 
-## reproject HAV and Greenland to EPSG:3995
+## map Greenland's roads using the CAFF tiles for sea and landsurface temerature
+mapview::projView(roadsGRL, map.types= "ovlLayer$CAFF")
+
+## again Greenland's roads using the HAV map tiles
+mapview::projView(roadsGRL, map.types= "ovlLayer$HAV")
+
+## reproject HAV and roadsGRL to EPSG:3995
 ovlLayer$HAV$params$t_srs <- "+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
 ovlLayer$HAV$params$t_epsg <- "EPSG:3995"
-mapview::projView(naturalGREEN, , map.types= "ovlLayer$HAV")
+mapview::projView(roadsGRL, map.types= "ovlLayer$HAV")
 
-# move center
+## move center
 ovlLayer$HAV$params$mapCenter$cLon="70"
 ovlLayer$HAV$params$mapCenter$cLat="15"
-mapview::projView(naturalGreen, , map.types= "ovlLayer$HAV")
-
-
+mapview::projView(roadsGRL, map.types= "ovlLayer$HAV")
 
 }
 }
@@ -194,7 +190,13 @@ mapview::projView(naturalGreen, , map.types= "ovlLayer$HAV")
 Chris Reudenbach
 }
 \references{
-\href{https://wiki.earthdata.nasa.gov/display/GIBS}{NASA EOSDIS GIBS}\cr
-\href{http://kartena.github.io/Proj4Leaflet/}{Proj4Leaflet}
+Online maps and tile services\cr
+The NASA Earthdata project: \href{https://wiki.earthdata.nasa.gov/display/GIBS}{NASA EOSDIS GIBS}\cr
+The Artic Biodiversity Assesment: \href{http://www.arcticbiodiversity.is/}{CAFF}\cr
+The  Havs- och vattenmyndigheten (Swedish Agency for Marine and Water Management): \href{https://www.havochvatten.se/kunskap-om-vara-vatten/kartor-och-geografisk-information/karttjanster.html}{HAV}\cr\cr
+For the used overlay data see: \code{\link{campsQ2}}, \code{\link{roadsGRL}}\cr
+JS libraries\cr
+Leaflet 0.7.7: \href{http://leafletjs.com/}{Leaflet}\cr
+The kartena projection plugin for leaflet: \href{http://kartena.github.io/Proj4Leaflet/}{Proj4Leaflet}\cr
 }
 

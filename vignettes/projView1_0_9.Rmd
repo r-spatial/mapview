@@ -1,5 +1,5 @@
 ---
-title: "projections with mapview"
+title: "Projected data in mapview"
 author: "Chris Reudenbach"
 date: "March 10, 2016"
 output:
@@ -11,7 +11,7 @@ output:
             
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{Projections with mapview}
+  %\VignetteIndexEntry{Projected data in mapview}
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
@@ -34,7 +34,7 @@ install_github("environmentalinformatics-marburg/mapview", ref = "develop")
 
 # Some remarks about projected slippy maps
 
-The answer is two folded but simple. First there are areas of the earth which you cannot map with a pseudo-Mercator projection and second (at least for me) even more important the adequate or inadequate cartographic representation of spatial data has a deep impact on our visual reception and interpretation of this data. The straightforward conclusion is that there is a high need for projected mapping.
+Why would you be interested to visualize projected data? The answer is two folded but simple. First there are areas of the earth which you cannot map with a pseudo-Mercator projection and second (at least for me) even more important the adequate or inadequate cartographic representation of spatial data has a deep impact on our visual reception and interpretation of this data. The straightforward conclusion is that there is a high need for projected mapping.
 
 Beyond all mapping philosophy let's focus on a practical problem. We want to analyze and visualize some recent research data from the antartic continent using R and slippy maps. There is no possibility to use leaflet maps beyond the -85 degree latitude due to the implemented projections and we have to switch over to the great Open Source Geographic Information System <a href="http://www.qgis.org/" target="_blank">QGIS</a> or another mature GIS software package. With no doubt we may also use the well known static plotting packages of R - but no slippy maps for the penguins and polar bears within R.
 
