@@ -38,7 +38,7 @@ if (!isGeneric('projView')) {
 #'@references
 #'Online maps and tile services\cr
 #'The NASA Earthdata project: \href{https://wiki.earthdata.nasa.gov/display/GIBS}{NASA EOSDIS GIBS}\cr
-#'The Artic Biodiversity Assesment: \href{http://www.arcticbiodiversity.is/}{CAFF}\cr
+#'The Artic Biodiversity Assesment: \href{http://www.arcticbiodiversity.is/}{CAFF}, \href{http://dev.caff.is:8080/geoserver/web/}{CAFF Geoserver}\cr
 #'The  Havs- och vattenmyndigheten (Swedish Agency for Marine and Water Management): \href{https://www.havochvatten.se/kunskap-om-vara-vatten/kartor-och-geografisk-information/karttjanster.html}{HAV}\cr\cr
 #'For the used overlay data see: \code{\link{campsQ2}}, \code{\link{roadsGRL}}\cr
 #'JS libraries\cr
@@ -62,121 +62,36 @@ if (!isGeneric('projView')) {
 #'
 #'  ## We need to define online data providers. this is a bit tricky and yields sometimes just frustration...
 #'  ## under details you'll find a link for further explanations.
-#'  ## The example covers some typical services
-#'
-#'  ovlLayer<-list( HAV=list(service="WMS", # typical WMS service
-#'                          L.tileLayer.wms="http://geodatatest.havochvatten.se/geoservices/ows",
-#'                          format="image/png",
-#'                          layers=list(layer=list("hav-bakgrundskartor:hav-grundkarta")),
-#'                          minZoom="0",
-#'                          maxZoom="14",
-#'                          continiuousWorld="true",
-#'                          transparent="false",
-#'                          attribution=" | &copy; <a href='https://www.havochvatten.se/kunskap-om-vara-vatten/kartor-och-geografisk-information/karttjanster.html'>Havs- och vattenmyndigheten (Swedish Agency for Marine and Water Management)</a> | Projection: <a href='http://spatialreference.org/ref/epsg/3006'> EPSG:3006</a>' | <a href='http://download.geofabrik.de/'> geofabrik/osm</a>",
-#'                          params=list(t_epsg="EPSG:3575",
-#'                                      t_srs="+proj=laea +lat_0=90 +lon_0=10 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ",
-#'                                      mapCenter=list(cLat="90",
-#'                                                     cLon="90"),
-#'                                      initialZoom="0",
-#'                                      zoomLevels="12",
-#'                                      resolution="8",
-#'                                      ovlBounds=list(minx="-4462340.35076383",
-#'                                                     miny="-4467019.64923622",
-#'                                                     maxx="4467019.64923617",
-#'                                                     maxy="4462340.35076378"),
-#'                                      origin=list(olx="-4462340.35076383",
-#'                                                  oly="4462340.35076378"),
-#'                                      relUrl=""
-#'
-#'                          )), # end of CAFF list
-#'
-#'                 CAFF=list(service="WMS", # typical WMS service templete
-#'                           L.tileLayer.wms="http://dev.caff.is:8080/geoserver/ows",
-#'                           format="image/png",
-#'                           layers=list(layer=list("arctic_sdi:LandSurfaceTemperature","arctic_sdi:SeaSurfaceTemperature")),
-#'                           minZoom="0",
-#'                           maxZoom="12",
-#'                           continiuousWorld="true",
-#'                           transparent="true",
-#'                           attribution=" | &copy; <a href=' http://www.arcticbiodiversity.is>Arctic Biodiversity Assessment</a> |<a href='http://download.geofabrik.de/'> geofabrik/osm</a> | Projection: <a href='http://spatialreference.org/ref/epsg/3575'> EPSG:3575</a>",
-#'                           params=list(t_epsg="EPSG:3575",
-#'                                       t_srs="+proj=laea +lat_0=90 +lon_0=10 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ",
-#'                                       mapCenter=list(cLat="90",
-#'                                                      cLon="90"),
-#'                                       initialZoom="0",
-#'                                       zoomLevels="12",
-#'                                       resolution="8",
-#'                                       ovlBounds=list(minx="-4462340.35076383",
-#'                                                      miny="-4467019.64923622",
-#'                                                      maxx="4467019.64923617",
-#'                                                      maxy="4462340.35076378"),
-#'                                       origin=list(olx="-4462340.35076383",
-#'                                                   oly="4462340.35076378"),
-#'                                       relUrl=""
-#'
-#'                           )), # end of CAFF list
-#'                 # here we start a new map.types input list this time for OSM tiles
-#'                 NASA=list(service="NASA",
-#'                           L.tileLayer="https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/",
-#'                           layer=list(layer=list(list("BlueMarble_ShadedRelief_Bathymetry", path=list("EPSG3031_500m")),
-#'                                                 list("AMSR2_Sea_Ice_Brightness_Temp_6km_89H",path= list("2014-02-04",
-#'                                                                                                         "EPSG3031_1km")),
-#'                                                 list(" MODIS_Terra_Snow_Cover",path= list("2014-02-04",
-#'                                                                                           "EPSG3031_1km"))
-#'                           )),
-#'                           format="image/jpg",
-#'                           tileSize="512",
-#'                           subdomains="abc",
-#'                           noWrap ="true",
-#'                           attribution="<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a> &nbsp;|| &nbsp; <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>",
-#'                           params=list(t_epsg="EPSG:3031",
-#'                                       t_srs="+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
-#'                                       mapCenter=list(cLat="-90",
-#'                                                      cLon="0"),
-#'                                       initialZoom="0",
-#'                                       zoomLevels="5",
-#'                                       resolution="256",
-#'                                       ovlBounds=list(minx="-4194304",
-#'                                                      miny="-4194304",
-#'                                                      maxx="4194304",
-#'                                                      maxy="4194304"),
-#'                                       origin=list(olx="-4194304",
-#'                                                   oly="4194304"),
-#'                                       relUrl=""
-#'
-#'                           )) # end of NASA list
-#' ) # end of total list
-#'
-
-#'
+#'  ## The map.typeList as provided contains five examples. 2 OSM and 3 WMS services
+#'  data("map.typeList")
 #'
 #' ### finally let's start mapping
 #'
 #' ## map the antarctic facilities data using the NASA EarthData tiles
-#' projView(campsQ2, map.types= "ovlLayer$NASA")
+#' projView(campsQ2, map.types= "map.typesList$NASA")
 #'
 #' ## same as before but now using the visEarthPole function as a "plugin"
-#' projView(campsQ2, map.types= "ovlLayer$NASA",
+#' projView(campsQ2, map.types= "map.typesList$NASA",
 #'                   internalList =TRUE,
 #'                   externalList = c("arctic-nasa","visEarthPole(groupList='1000',dateString='2014-02-04',createList = TRUE)"))
 #'
 #' ### similiar job in the North
 #'
 #' ## map Greenland's roads using the CAFF tiles for sea and landsurface temerature
-#' mapview::projView(roadsGRL, map.types= "ovlLayer$CAFF")
+#' mapview::projView(roadsGRL, map.types= "map.typesList$CAFF")
 #'
 #' ## again Greenland's roads using the HAV map tiles
-#' mapview::projView(roadsGRL, map.types= "ovlLayer$HAV")
+#' mapview::projView(roadsGRL, map.types= "map.typesList$HAV")
 #'
 #' ## reproject HAV and roadsGRL to EPSG:3995
-#' ovlLayer$HAV$params$t_srs <- "+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
-#' ovlLayer$HAV$params$t_epsg <- "EPSG:3995"
-#' mapview::projView(roadsGRL, map.types= "ovlLayer$HAV")
+#' map.typesList$HAV$params$t_srs <- "+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
+#' map.typesList$HAV$params$t_epsg <- "EPSG:3995"
+#' mapview::projView(roadsGRL, map.types= "map.typesList$HAV")
 #'
 #' ## move center
-#' ovlLayer$HAV$params$mapCenter$cLon="70"
-#' ovlLayer$HAV$params$mapCenter$cLat="15"
-#' mapview::projView(roadsGRL, map.types= "ovlLayer$HAV")
+#' map.typesList$HAV$params$mapCenter$cLon="70"
+#' map.typesList$HAV$params$mapCenter$cLat="15"
+#' mapview::projView(roadsGRL, map.types= "map.typesList$HAV")
 #'
 #' }
 #'@name projView
@@ -210,18 +125,38 @@ projView<- function( x=NULL,
   tmpPath<- createTempDataTransfer()
   if (! class(map.types) == "list") {
     ovl<-eval(parse(text = map.types))}
+  else {
+      ovl<-map.types
+  }
+
   #deparse(substitute (ovl))
+  geoLatLon<- FALSE
+  estimateMapCenter=FALSE
+  noBounds<-FALSE
+  calcRes<-FALSE
+  res<-NULL
   # redefine vars not neccessry but less confusing
-  minx<-as.numeric(ovl$params$ovlBounds$minx)
-  miny<-as.numeric(ovl$params$ovlBounds$miny)
-  maxx<-as.numeric(ovl$params$ovlBounds$maxx)
-  maxy<-as.numeric(ovl$params$ovlBounds$maxy)
+    minx<-as.numeric(ovl$params$ovlBounds$minx)
+    miny<-as.numeric(ovl$params$ovlBounds$miny)
+    maxx<-as.numeric(ovl$params$ovlBounds$maxx)
+    maxy<-as.numeric(ovl$params$ovlBounds$maxy)
+    if (length(minx) == 0 || length(maxx) == 0 || length(miny) == 0 || length(maxy) == 0){
+      noBounds<-TRUE
+    } else if ( ((minx > -360 & minx < 360)|| (maxx < 360 & maxx > -360) || (miny > -360 & miny < 360) || maxy < 360 & maxy > -360 ))
+      {geoLatLon<-TRUE }
+  if (! is.null(ovl$params$origin$olx) || ! is.null(ovl$params$origin$oly)) {
   ulx<-as.numeric(ovl$params$origin$olx)
   uly<-as.numeric(ovl$params$origin$oly)
+  } else{
+    cat("No upper left corner provided. Can not head on. ")
+    return()
+  }
   # get tileSize if provided otherwise assume 256 pix
   if (! is.null(ovl$tileSize)) {
     tileSize<-as.numeric(ovl$tileSize)
+    calcRes<-TRUE
   } else {
+    cat("No tileSize provided. use default 256.")
     tileSize = 256
   }
   if (! is.null(ovl$params$zoomLevels)) {
@@ -229,11 +164,18 @@ projView<- function( x=NULL,
   } else {
     maxZoom = 18
   }
-  if (! is.null(ovl$params$resolution)) {
-    resStart<-as.numeric(ovl$params$resolution)
+  if (! is.null(ovl$params$initialResolution)) {
+    if (length(ovl$params$initialResolution)>1){
+      initialRes<-paste(ovl$params$initialResolution,collapse = ",")
+    } else {
+      initialRes<-as.numeric(ovl$params$initialResolution)
+      calcRes=TRUE
+    }
   } else {
-    resStart = maxZoom
+    cat("No initialResolution provided. use default 256.")
+    initialRes = 256
   }
+
   if (! is.null(ovl$params$t_epsg)) {
     t_epsg<-ovl$params$t_epsg
   } else {
@@ -246,7 +188,7 @@ projView<- function( x=NULL,
     cat(" No target SRS provided. Don't know how to project the map...")
     return()
   }
-  estimateMapCenter=FALSE
+
   if (!is.null(ovl$params$mapCenter$cLat) || !is.null(ovl$params$mapCenter$cLon)){
     mCLon<-ovl$params$mapCenter$cLon
     mCLat<-ovl$params$mapCenter$cLat
@@ -274,11 +216,8 @@ projView<- function( x=NULL,
   # but leaflet needs the targes srs.
   # Unfortunately in most cases this is set to the mapserver bounds
   # so we calculate it if possible from the original bounds
-  if ( (minx < -360 || maxx > 360 || miny < -360 || maxy > 360)) {
-    bounds <- paste0("bounds: L.bounds([",miny,",",minx,"],[",maxy,",",maxx,"])")
-    origin <- paste0("origin: [",ulx,",",uly,"]")
 
-  } else{
+  if ( geoLatLon) {
 
     tmpPoly = Polygon(cbind(c(minx,minx,maxx,maxx,minx),c(miny,maxy,maxy,miny,miny)))
     tmpPoly = Polygons(list(tmpPoly), ID = "bbox")
@@ -291,22 +230,41 @@ projView<- function( x=NULL,
     bounds <- paste0("bounds: L.bounds([",xt@ymax,",",xt@xmin,"],[",xt@ymin,",",xt@xmax,"])")
     origin <- paste0("origin: [",xt@ymax,",",xt@xmax,"]")
 
+    res<-max(maxx-minx,maxy-miny)
+  } else {
+    bounds <- paste0("bounds: L.bounds([",miny,",",minx,"],[",maxy,",",maxx,"])")
+    origin <- paste0("origin: [",ulx,",",uly,"]")
+
   }
   # estimate resolution will be overriden if  length(resStart) > 1
-  if  (length(resStart) == 1)
+  if  (calcRes)
   {
-    initRes<-log(resStart, base = 2)
-    if (initRes <= 0) {initRes <-1}
-    tmpres<-2^(initRes:(maxZoom + initRes))
-    tmpres<-sort(tmpres,decreasing = TRUE)
-    tmpres<- paste(tmpres,collapse = ",")
+    #initRes<-log(resStart, base = 2)
+    #if (initRes <= 0) {initRes <-1}
+    #tmpres<-2^(initRes:(maxZoom + initRes))
+    #tmpres<-sort(tmpres,decreasing = TRUE)
+    #tmpres<- paste(tmpres,collapse = ",")
+    if (tileSize != initialRes) {
+      div<-tileSize/initialRes*tileSize
+    } else {
+        div<-tileSize
+    }
+
+
+    if (is.null(res)) {res<-abs(ulx) + abs(uly)}
+    maxResolution <- res / div
+    resolution<- list()
+    for ( i in seq(0,maxZoom)){
+      resolution[i+1] <- maxResolution /  2^i
+    }
+    tmpres<-paste(resolution,collapse = ",")
     # create CRS string
     LProjResolution<-paste0("{resolutions: [",tmpres,"],")
 
   } else
   {
     # create CRS string
-    LProjResolution<-paste0("{resolutions: [",resStart,"],")
+    LProjResolution<-paste0("{resolutions: [",initialRes,"],")
   }
   # create CRS string
   LProjEpsgSrs<-paste0('var crs =  new L.Proj.CRS("',t_epsg,'","',t_srs,'",')
@@ -324,15 +282,13 @@ projView<- function( x=NULL,
   write(CRSvarMapCenter,tmpCRS,append = TRUE)
   write(LProjEpsgSrs,tmpCRS,append = TRUE)
   write(LProjResolution,tmpCRS,append = TRUE)
-  #  if(setBound)
-  #  {
-  write(paste0(origin,","),tmpCRS,append = TRUE)
-  write(bounds,tmpCRS,append = TRUE)
-  # }
-  #  else
-  #  {
-  #    write(origin,tmpCRS,append = TRUE)
-  #  }
+
+  if (!noBounds){
+    write(paste0(origin,","),tmpCRS,append = TRUE)
+    write(bounds,tmpCRS,append = TRUE)
+  } else {
+    write(paste0(origin),tmpCRS,append = TRUE)
+    }
   write(paste0('});'),tmpCRS,append = TRUE)
 
   if (!internalList) {
@@ -348,81 +304,92 @@ projView<- function( x=NULL,
       for (i in seq(1,length(unlist(ovl$layers)), by = 1)) {
         for (j in seq(2,length(ovl)-1, by = 1)){
           if (j == 2 & i == 1 ){
-            v <- paste0("baseLayers['",ovl$layers$layer[i], "'] =  ",attributes(ovl[j]),"('",ovl$L.tileLayer.wms,"',{")
+            v <- paste0("var defaultLayer  =  ",attributes(ovl[j]),"('",ovl$L.tileLayer.wms,"',{")
+            #v <- paste0("baseLayers['",ovl$layer[i], "'] =  ",attributes(ovl[j]),"('",ovl$L.tileLayer.wms,"',{")
           }
           else if (j == 2 & i>1){
-            v <- paste0("overlayLayers['",ovl$layers$layer[i], "'] =  ",attributes(ovl[j]),"('",ovl$L.tileLayer.wms,"',{")
+            v <- paste0("overlayLayers['",attributes(ovl$layers[i]), "'] =  ",attributes(ovl[j]),"('",ovl$L.tileLayer.wms,"',{")
+  #          v <- paste0("overlayLayers['",ovl$layers$layer[i], "'] =  ",attributes(ovl[j]),"('",ovl$L.tileLayer.wms,"',{")
           }
           else {
-            if (j != length(ovl)-1){
-              if (attributes(ovl[j]) == "layers" )
-              {ovl$layers$layer[i]
-                v <- paste0(attributes(ovl[j]),": '",ovl$layers$layer[i],"',")
+            #if (j != length(ovl)-1){
+              if (attributes(ovl[j]) == "layers"){
+                v <- paste0(attributes(ovl[j]),": '",attributes(ovl$layers[i]),"',")
               }
-              else if (attributes(ovl[j]) == "format"){
-                v <- paste0(attributes(ovl[j]),": '", ovl[j],"',")
-              }
-              else {
-                v <- paste0(attributes(ovl[j]),": ", ovl[j],",")
-              }
-            }
-            else {
-              v <- paste0(attributes(ovl[j]),': "', ovl[j],'"});')
-            }
-          }
-          write(v,layFn,append = TRUE)
-        }
-      }
-    }
-
-    if(ovl$service == "NASA"){
-
-      for (i in seq(1,length(ovl$layer$layer), by = 1)) {
-        for (j in seq(2,length(ovl)-1, by = 1)){
-          if (j == 2 & i==1){
-            # create pathstring
-            if (ovl$service == "NASA") {
-              url<-makeNasaUrl(i,ovl)
-            } else {
-              url<-ovl$L.tileLayer
-            }
-
-            v <- paste0("baseLayers['",ovl$layer$layer[[i]][1], "'] =  ",attributes(ovl[j]),"('",url,"',{")
-          }
-          else if (j == 2 & i>1){
-            # create pathstring
-            if (ovl$service == "NASA") {
-              url<-makeNasaUrl(i,ovl)
-            } else {
-              url<-ovl$L.tileLayer
-            }
-            v <- paste0("overlayLayers['",ovl$layer$layer[i], "'] =  ",attributes(ovl[j]),"('",url,"',{")
-          }
-          else {
-            if (j != length(ovl)-2){
-              if (attributes(ovl[j]) == "layer" )
-              {
-                v <- paste0(attributes(ovl[j]),": '",ovl$layer$layer[[i]][1],"',")
-              }
-              else if (attributes(ovl[j]) == "format" || attributes(ovl[j])== "subdomains" || attributes(ovl[j])== "attribution"){
+              else if (attributes(ovl[j]) == "format" ||
+                       attributes(ovl[j]) == "attribution"){
                 v <- paste0(attributes(ovl[j]),': "', ovl[j],'",')
               }
               else {
                 v <- paste0(attributes(ovl[j]),": ", ovl[j],",")
               }
-            }
-            else {
-              v <- paste0(attributes(ovl[j]),":", ovl[j],",")
-            }
+            #}
+            #else {
+            #  v <- paste0(attributes(ovl[j]),': "', ovl[j],'"});')
+            #}
           }
-
           write(v,layFn,append = TRUE)
         }
-        if (i==999){write("}).addTo(map);",layFn,append = TRUE)}else{write("});",layFn,append = TRUE)}
-        #write("});",layFn,append = TRUE)
+        write("});",layFn,append = TRUE)
       }
     }
-    write(paste0("return{overlayLayers: overlayLayers, baseLayers: baseLayers,defaultLayer: '",ovl$layer$layer[[1]][1],"' }"),layFn,append = TRUE)
+
+    if(ovl$service == "NASA"){
+      layerNumber<- length(ovl$layer)
+    #  if (grep(ovl$layer[layerNumber],pattern = "{z}",fixed=TRUE ) & grep(ovl$layer$layer[layerNumber],pattern = "{x}",fixed=TRUE ))
+     # {
+      #  layerNumber<-layerNumber-1
+      #}
+      for (i in seq(1,layerNumber, by = 1)) {        # for all layers
+        for (j in seq(2,length(ovl)-1, by = 1)) {    # parse starting at pos 2 because 1 = service
+          if (j == 2 & i==1) {                       # if first layer do
+            #    if (ovl$service == "NASA") {
+            url<-makeUrl(i,ovl)                    # parse the layer fragments for building the url
+            #} else {
+            #  url<-ovl$L.tileLayer
+            #}
+            # create the string for baseLayers
+            v <- paste0("var defaultLayer  =  ",attributes(ovl[j]),"('",url,"',{")
+          }
+          else if (j == 2 & i>1){                    #for all other layers make overlayLayers
+            url<-makeUrl(i,ovl)
+            v <- paste0("overlayLayers['",attributes(ovl$layer[i]), "'] =  ",attributes(ovl[j]),"('",url,"',{")
+          }
+          else {
+
+           # if (j != length(ovl)-2){
+              #if (attributes(ovl[j]) == "layer" || attributes(ovl[j]) == "params" )
+              #{
+              #  v<- NULL # <- paste0(attributes(ovl[j]),': "', ovl[j],'",')
+              #  }
+            if ( attributes(ovl[j]) == "layer" ||
+                 attributes(ovl[j]) == "params" ) {
+              v<-NULL}
+
+            else if (attributes(ovl[j]) == "subdomains" ||
+                     attributes(ovl[j]) == "format" ||
+                     attributes(ovl[j]) == "attribution" ){
+              v  <- paste0(attributes(ovl[j]),': "', ovl[j],'",')
+
+            }
+            else {
+              v <- paste0(attributes(ovl[j]),": ", ovl[j],",")
+
+            }
+          #  }
+          #  else {
+          #    v <- paste0(attributes(ovl[j]),":", ovl[j],",")
+          #  }
+          }
+
+          if (!is.null(v)){write(v,layFn,append = TRUE)}
+          v<-NULL
+        }
+        write("});",layFn,append = TRUE)
+      }
+    }
+    write(paste0("baseLayers['",attributes(ovl$layer[1]), "'] = defaultLayer;"),layFn,append = TRUE)
+    write(paste0("return{overlayLayers: overlayLayers, baseLayers: baseLayers,defaultLayer: defaultLayer }"),layFn,append = TRUE)
     write("};",layFn,append = TRUE)
   } else if (externalList[1] == "arctic-nasa"){
     extList<-eval(parse(text = externalList[2]))
@@ -461,7 +428,7 @@ projView<- function( x=NULL,
     # optional calculate the resolution as derived by local tiles and zoom level
 
     # NOW transform x to target projection
-    x <- sp::spTransform(x, CRSobj = t_srs)
+    x <- sp::spTransform(x, CRS(paste0("+init=epsg",substr(t_epsg, 5, nchar(t_epsg))," ",t_srs)))
 
     # define jsonpath
     tmpJSON <-paste(tmpPath, ".jsondata", sep=.Platform$file.sep)
@@ -636,15 +603,20 @@ getPopupStyle <- function(){
   return(htmlTemplate)
 }
 # create the url for the nasa vis project
-makeNasaUrl <- function (i,ovl){
-
-  t<-unlist(ovl$layer$layer[[i]][2])
+makeUrl <- function (i,ovl){
   fragPath<-"/"
-  for (k in seq(1,length(t), by = 1)) {
-    fragPath<-paste0(fragPath,t[k],"/")
+  if (length(ovl$layer) >=1){
+  tmpLayer<-ovl$layer[[i]]
+  tmpLayer<-unlist(tmpLayer)
+  fragPath<-NULL
+  for (k in seq(1,length(tmpLayer), by = 1)) {
+    fragPath<-paste0(fragPath,tmpLayer[k],"/")
   }
+  }
+  fragPath<-substr(fragPath, 1, nchar(fragPath)-1)
   extension<- strsplit(unlist(ovl$format[[1]]),"/",fixed = TRUE)[[1]][2]
-  layerName<-ovl$layer[[1]][[i]][1]
-  url<-paste0(ovl$L.tileLayer,layerName,"/default",fragPath,"{z}/{y}/{x}.",extension)
+  #layerName<-ovl$layer[[1]][[i]][1]
+  url<-paste0(ovl$L.tileLayer,fragPath,".",extension)
   return(url)
 }
+

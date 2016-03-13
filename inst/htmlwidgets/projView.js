@@ -18,8 +18,8 @@ HTMLWidgets.widget({
   // create map object
   var map = new L.map(el, {
 	 crs : crs,
-	 		continuousWorld: true,
-		worldCopyJump: true
+	 	//	continuousWorld: true,
+		//worldCopyJump: true
   });
 
 
@@ -180,7 +180,7 @@ if (x.internalList) {
 
 
    // add the layer control
-   if (!x.internalList) {map.addLayer(ly.baseLayers[ly.defaultLayer]);
+   if (!x.internalList) {map.addLayer(ly.defaultLayer);
      L.control.layers(ly.baseLayers, ly.overlayLayers).addTo(map);}
 
    // center the map

@@ -1,4 +1,4 @@
-// fast webGL based leaflet map widget for a lot of points
+      // fast webGL based leaflet map widget for a lot of points
 
 HTMLWidgets.widget({
 

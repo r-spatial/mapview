@@ -77,7 +77,7 @@ visEarthPole<- function(dateString="2011-10-04",
                         groupList=NULL,
                         scale=scale500,
                         zoom=5,
-                        createList=False)
+                        createList=FALSE)
 {
 
   tileSize=512
