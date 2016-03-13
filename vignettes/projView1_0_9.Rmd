@@ -300,9 +300,15 @@ Time for some examples...
 
 # Some examples
 
-First we need to load some packages and get data:
 
-```{r, warning=FALSE, message=FALSE, fig.width=9.47}
+
+## EarthData South Pole
+
+
+First lets map the manually written input list from the tutorial. For convienience reason we load it from the package. We are obtaining the data from [NASA EarthData] (https://wiki.earthdata.nasa.gov/display/ECE/Dashboard" target="_blank">EarthData-Wiki). The used camps are documented in the package.
+
+
+```{r ,echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
 library(mapview)
 library(raster)
 
@@ -311,14 +317,45 @@ library(raster)
 
  # load the list of the above example
  data("map.types")
- nasa<-map.types$NASA
- # map it
- mapview::projView(campsQ2,  map.types= "nasa")
  
+
+ 
+mapview::projView(campsQ2,  map.types = map.types$NASA)
+
 ```
 
 
+In this special case of the antarctic NASA EarthData you may use the visEarthPole() function from the mapview package
 
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+
+   
+  # load data of the arctic stations
+ data("campsQ2")
+
+ # load the list of the above example
+ data("map.types")
+ 
+ nasa<-map.types$NASA
+ 
+### use the visEarthPole function as a plugin
+projView(campsQ2, map.types = nasa,
+         internalList = TRUE,
+         externalList = c("arctic-nasa","visEarthPole(groupList='1000',dateString='2014-02-04',createList = TRUE)"))
+```
+
+
+To avoid some strange side effects you'll find further examples on seperates pages:
+
+## Arctic Web Maps as provided by ArcticConnect (AC)
+
+* [Arctic Connect](http://gisma.github.io/projView/projView1_0_9_AC.html)
+
+## The Conservation of Arctic Fauna and Flora (CAFF)
+
+* [CAFF](http://gisma.github.io/projView/projView1_0_9_CAFF.html)
+
+------
 
 # Final remarks
 

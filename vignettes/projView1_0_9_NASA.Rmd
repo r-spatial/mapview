@@ -1,0 +1,21 @@
+---
+title: "NASA"
+author: "Chris Reudenbach"
+date: "March 10, 2016"
+output:
+  html_document:
+    highlight: tango
+    self_contained: no
+
+vignette: |
+  %\VignetteEncoding{UTF-8} 
+  %\VignetteIndexEntry{NASA} %\VignetteEngine{knitr::rmarkdown}
+---
+
+![](http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png) (CC-BY-NC-SA)
+
+This document was produced on _`r format(Sys.time(), "%a %b %d %Y")`_ using `mapview` version **`r packageVersion("mapview")`**
+
+------
+
+------

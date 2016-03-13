@@ -1,0 +1,44 @@
+---
+title: "Arctic Connect"
+author: "Chris Reudenbach"
+date: "March 10, 2016"
+output:
+  html_document:
+    highlight: tango
+    self_contained: no
+
+vignette: |
+  %\VignetteEncoding{UTF-8} 
+  %\VignetteIndexEntry{Arctic Connecct} %\VignetteEngine{knitr::rmarkdown}
+---
+
+![](http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png) (CC-BY-NC-SA)
+
+This document was produced on _`r format(Sys.time(), "%a %b %d %Y")`_ using `mapview` version **`r packageVersion("mapview")`**
+
+------
+
+
+#  Arctic Web Map as provided by ArcticConnect (AC)
+
+[Arctic Connect](http://arcticconnect.org/services) provides with Arctic Web Map (AWM) an Arctic-specific web mapping tool. It is a Javascript Library that can be used for adequate arctic map projections "especially for for scientifically accurate visualization and analysis" They think as me that it is a function that is "critical for arctic system research but missing in existing web mapping platforms". To keep it simple you can use the example map.types$AC settings to connect to their really beautiful backgraund maps.
+
+
+
+```{r ac, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47,cache=FALSE}
+
+library(mapview)
+library(raster)
+
+### load Greenlands roads data from geofabrik
+data("roadsGRL")
+
+ # load the list of the above example
+ data("map.types")
+
+### map the AC data
+mapview::projView(roadsGRL, map.types = map.types$AC)
+```
+
+
+------

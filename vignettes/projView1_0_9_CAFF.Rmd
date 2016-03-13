@@ -1,0 +1,48 @@
+---
+title: "CAFF"
+author: "Chris Reudenbach"
+date: "March 10, 2016"
+output:
+  html_document:
+    highlight: tango
+    self_contained: no
+
+vignette: |
+  %\VignetteEncoding{UTF-8} 
+  %\VignetteIndexEntry{CAFF} %\VignetteEngine{knitr::rmarkdown}
+---
+
+![](http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png) (CC-BY-NC-SA)
+
+This document was produced on _`r format(Sys.time(), "%a %b %d %Y")`_ using `mapview` version **`r packageVersion("mapview")`**
+
+------
+
+
+#  The Conservation of Arctic Fauna and Flora (CAFF)
+
+We are going to the North and utilize data from the The Conservation of Arctic Fauna and Flora in short [CAFF](http://http://www.caff.is/). They provide a lot of interesting data for the northern hemisphere [CAFF Geoserver](http://dev.caff.is:8080/geoserver/web/).
+
+We take the sea surface and the land surface temperature what may interest in correspondence to the roads of Greenland.
+
+
+
+
+```{r caff, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47,cache=FALSE}
+
+rm(list = ls())
+library(mapview)
+library(raster)
+
+### load Greenlands roads data from geofabrik
+data("roadsGRL")
+
+ # load the list of the above example
+ data("map.types")
+
+### map the CAFF data
+mapview::projView(roadsGRL, map.types = map.types$CAFF)
+```
+
+
+------
