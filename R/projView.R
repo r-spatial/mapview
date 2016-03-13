@@ -334,7 +334,7 @@ projView<- function( x=NULL,
       }
     }
 
-    if(ovl$service == "NASA"){
+    if(ovl$service == "OSM"){
       layerNumber<- length(ovl$layer)
     #  if (grep(ovl$layer[layerNumber],pattern = "{z}",fixed=TRUE ) & grep(ovl$layer$layer[layerNumber],pattern = "{x}",fixed=TRUE ))
      # {
