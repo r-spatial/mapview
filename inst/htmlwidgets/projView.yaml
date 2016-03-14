@@ -19,20 +19,12 @@ dependencies:
          - leaflet.label.js
          - leaflet.ajax.js
          - leaflet-providers.js
-         - geojson-vt-dev.js
-         - L.CanvasTiles.js
-         - rtree.min.js
     stylesheet:
           - leaflet.css
           - leafletfix.css
           - leaflet.label.css
           - gh-fork-ribbon.css
           - gh-fork-ribbon.ie.css
-  - name: tiles
-    version: 0.0.1
-    src: "htmlwidgets/lib/gdaltiles"
-    script:
-      - rastercoords.js
   - name: proj4leafet
     version: 0.7.2
     src: "htmlwidgets/lib/proj4leaflet"
@@ -40,18 +32,4 @@ dependencies:
       - proj4-compressed.js
       - proj4.js
       - proj4leaflet.js
-  - name: glify
-    version: 0.0.1
-    src: "htmlwidgets/lib/glify"
-    script:
-      - leaflet.glify.js
-      - leaflet.canvasoverlay.js
-      - gl.js
-  - name: "fragment-shader"
-    version: 0.1.0
-    src: "htmlwidgets/lib/glify"
-    attachment: {"fragment-shader": "fragment-shader.glsl"}
-  - name: "vertex-shader"
-    version: 0.1.0
-    src: "htmlwidgets/lib/glify"
-    attachment: {"vertex-shader": "vertex-shader.glsl"}
+

@@ -30,7 +30,15 @@ if (!isGeneric('projView')) {
 #' of the column(s) to be used for defining the size of circles
 #'@param lwd line width
 #'
-#'@details Please note: If you use coordinates with numbers that are smaller then the Latitude/Longitude Values (i.e. -180/+180, -90/+90) projView assumes that you provide coordinates in the target srs and will not touch them. This is especially helpful for pole standing polarstereographic projections and projections that are not "common" or well described by an EPSG, ESRI or other code. Otherwise it construct a rectangle and project the coordinates towards the target system. \cr For all other information  please have a look at the vignette or at the online help of \href{http://gisma.github.io/projView/projView1_0_9.html}{projView}
+#'@details Please note: If you use coordinates with numbers that are smaller
+#'  then the Latitude/Longitude Values (i.e. -180/+180, -90/+90) projView
+#'  assumes that you provide coordinates in the target srs and will not touch
+#'  them. This is especially helpful for pole standing polarstereographic
+#'  projections and projections that are not "common" or well described by an
+#'  EPSG, ESRI or other code. Otherwise it construct a rectangle and project the
+#'  coordinates towards the target system. \cr For all other information  please
+#'  have a look at the vignette or at the online help of
+#'  \href{http://gisma.github.io/projView/projView1_0_9.html}{projView}
 #'
 #'@references
 #'Online maps and tile services:\cr
@@ -140,6 +148,7 @@ projView<- function( x=NULL,
   noBounds<-FALSE
   calcRes<-FALSE
   res<-NULL
+  fixRes<-FALSE
   # redefine vars not neccessry but less confusing
   minx<-as.numeric(ovl$params$ovlBounds$minx)
   miny<-as.numeric(ovl$params$ovlBounds$miny)
@@ -172,6 +181,7 @@ projView<- function( x=NULL,
   if (! is.null(ovl$params$initialResolution)) {
     if (length(ovl$params$initialResolution)>1){
       initialRes<-paste(ovl$params$initialResolution,collapse = ",")
+      calcRes<-FALSE
     } else {
       initialRes<-as.numeric(ovl$params$initialResolution)
       calcRes=TRUE

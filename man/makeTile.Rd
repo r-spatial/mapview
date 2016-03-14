@@ -2,32 +2,79 @@
 % Please edit documentation in R/makeTile.R
 \name{makeTile}
 \alias{makeTile}
-\title{Create a leaflet conform raster tile layer from a GDAL/raster input file}
+\title{Create a leaflet conform set of raster tiles from a GDAL/raster input file}
 \usage{
-makeTile(x, outPath, scale, s_srs, t_srs, t_epsg, rType, attribution)
+makeTile(x = NULL, outPath = NULL, scalec = (0,8848), s_srs =
+ "+proj=longlat +datum=WGS84", t_srs = "+proj=longlat +datum=WGS84", t_epsg =
+ "EPSG:4326", rType = "average", attribution = "to be done", cLat = NULL,
+ cLon = NULL, zoom = NULL, res = NULL, srvrUrl = "http://localhost:4321/")
 }
 \arguments{
 \item{x}{raster object or gdal file}
 
-\item{outPath}{tmpDir()}
+\item{outPath}{path where the tiles will be generated. Note it is always
+extented by \code{tiles/}}
 
-\item{scale}{scale of grey values for jpeg creation default c(0,8848)}
+\item{scale}{scale of grey values for jpeg creation}
 
-\item{s_srs}{source proj4 string default  "+proj=longlat +datum=WGS84"}
+\item{s_srs}{source proj4 string}
 
-\item{t_srs}{target proj4 string  "+proj=longlat +datum=WGS84"}
+\item{t_srs}{target proj4 string}
 
-\item{t_epsg}{target EPSG code "EPSG:4326"}
+\item{t_epsg}{target EPSG code}
 
-\item{rType}{resampling type default is near "near"}
+\item{rType}{Resampling method
+(average,near,bilinear,cubic,cubicspline,lanczos,antialias) - default
+'average'}
 
-\item{attribution}{string how attribute the tile map}
+\item{attribution}{string how attribute the tile map default is "still to be
+done"}
+
+\item{cLat}{center of Latitude of the leaflet map object has to be in decimal
+degrees}
+
+\item{cLon}{center of Longitude of the leaflet map object has to be in decimal
+degrees}
+
+\item{zoom}{if you want to override the automatic calculation of maxZoom you
+can provide here a value up to 21}
+
+\item{res}{if you want to override the automatic calculation of the resolution
+you can  provide a predifined list like c(512,256,128)}
+
+\item{srvrUrl}{is the root address of the locale http daemon default see
+\link{details}, \link{seealso}}
 }
 \description{
-makeTile takes a raster object or a GDAL raster file  and creates  a leaflet compatible tile structure in a given directory.  Additionally it produces a correct map.types list for the use with \link{projView}
+makeTile takes a raster object or a GDAL raster file  and creates
+ a leaflet compatible tile structure in a given directory.  Additionally it
+ produces a correct map.types list for the use with \link{projView}
 }
 \details{
-soon more
+The integration of local tiles in leaflet is first of all
+ straightforward. You can easyly generate them with
+ \href{http://www.gdal.org/gdal2tiles.html}{gdal2tyles}. Actually the
+ \href{https://github.com/commenthol/gdal2tiles-leaflet}{modified version} of
+ \href{https://github.com/commenthol}{commenthol} is used, that has some
+ leaflet specific arguments and engages all available cpus for tiling.
+
+ The basic concept is focused on piping the result to \link{projView}. That
+ means for each tile a nested map.types list is generated. For convenience
+ reasons this list is also saved in the root directory of the tiles for later
+ use. For more information about this list and serving have a look at online
+ help of \href{http://gisma.github.io/projView/projView1_0_9.html}{projView}
+
+ Nevertheless one has to take care of some pitfalls.\cr
+
+ For the first it seems to be more efficient to override the concept of
+ \link{createWidget} which copys all necessary files of a htmlwidget instance
+ to the temporary path and then serves location with the the build in http
+ daemon of RStudio. Imagine if you just have 6-8 SRTM tiles you need to copy
+ about 1-2 GB of tiles to the temporary directory. An easy solution is to use
+ a seperate http daemon as \link{httd} from the package servr.
+
+ Also there may problems arise while you use "exotic" projections like polar
+ stereographic or similar.
 }
 \examples{
 \dontrun{
@@ -35,25 +82,55 @@ soon more
  require(raster)
  require(gdalUtils)
  require("curl")
+ require(servr)
 
- ## get some data for the antartica
-  curl_download(url="ftp://ftp.uninett.no/pub/quantarctica/Quantarctica2.zip", destfile="~/tmp/quantartic.zip"  ,  quiet = TRUE, mode = "wb")
-  unzip("~/tmp/quantartic.zip")
+ ### Typical workflow nevertheless you just can call maketiles by itself
 
- ## define target projection in this case also used for source
-  proj3031<-"+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
+ ## get Germany vector data
+  gadmGER <- getGeoData(name="GADM",country="DEU",level="1")
 
- ## define target epsg code
-  epsg3031<-"EPSG:3031"
+ ## download the SRTM data for Germany
+  r<-getGeoData(name="SRTM",xtent = extent(gadmGER), merge=TRUE)
 
- ## choose a dataset from quantartica2
-  x<-"/home/creu/proj/antarctica/Quantarctica2/Basemap/Terrain/ETOPO1_DEM.tif"
+ ## define target EPSG code
+  t_epsg<-"EPSG:32632"
+
+ ## define target  proj4 string
+  t_srs<-"+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
 
  ## create tiles
-  map.typesList<-makeTile(x=x,outPath="/home/creu/proj/makeTile/etopo2DGM", s_srs= proj3031,t_srs= proj3031,t_epsg=epsg3031,cLat=-90,cLon=0)
+  map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm/", t_srs=t_srs,t_epsg=t_epsg)
+
+ ## start http daemon
+  servr::httd("~/tmp/data/makeTile/srtm",daemon=TRUE)
+
+ ## map it
+  mapview::projView(gadmGER , map.types = map.typesList$layerName)
+
+ ## stop all server instances
+  daemon_stop(daemon_list())
+
 }
 }
 \author{
 Chris Reudenbach
+}
+\seealso{
+NOTE: tile serving usually would work from the local file system without
+engaging a http daemon. Due to security issues this scenario is a pretty
+complex topic. To do soo you have to override the default security properties
+of your browser wich is NOT encouraged. See
+\href{https://en.wikipedia.org/wiki/JavaScript#Security}{Wikipedia} for some
+basic expalanation. You may override this setting (here for
+\href{http://www.chrome-allow-file-access-from-file.com/}{chrome/chromium}),
+but again this is a first order security vulneration.\cr So it is strictly
+recommended to use a local http server to provide full access to local tiles
+and files. There are several solutions within R. Most easiest way to do so is
+the package \code{\link{httd}}.\cr Nevertheless it is much more convenient to
+install seperatly a http daemon. If you are not used to the topic the
+\href{http://twistedmatrix.com}{twistd} daemon  is a very good cross platform
+powerful, save and simple solution. For some basic information and
+installation advices have a look at stackoverflow
+\href{http://stackoverflow.com/questions/12905426/what-is-a-faster-alternative-to-pythons-simplehttpserver}{simplehttpserver}.
 }
 
