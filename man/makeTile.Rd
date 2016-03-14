@@ -2,54 +2,55 @@
 % Please edit documentation in R/makeTile.R
 \name{makeTile}
 \alias{makeTile}
-\title{Create a leaflet conform raster tile layer from a GDAL/raster input}
+\title{Create a leaflet conform raster tile layer from a GDAL/raster input file}
 \usage{
-makeTile(x, outPath, scale, rgb, rgba, s_srs, t_srs, epsg, rType, zoom)
+makeTile(x, outPath, scale, s_srs, t_srs, t_epsg, rType, attribution)
 }
 \arguments{
 \item{x}{raster object or gdal file}
 
 \item{outPath}{tmpDir()}
 
-\item{scale}{NULL}
+\item{scale}{scale of grey values for jpeg creation default c(0,8848)}
 
-\item{gray}{TRUE}
+\item{s_srs}{source proj4 string default  "+proj=longlat +datum=WGS84"}
 
-\item{rgb}{FALSE}
+\item{t_srs}{target proj4 string  "+proj=longlat +datum=WGS84"}
 
-\item{rgba}{FALSE}
+\item{t_epsg}{target EPSG code "EPSG:4326"}
 
-\item{s_srs}{"+proj=longlat +datum=WGS84"}
+\item{rType}{resampling type default is near "near"}
 
-\item{t_srs}{"+proj=longlat +datum=WGS84"}
-
-\item{epsg}{NULL}
-
-\item{rType}{"near"}
-
-\item{zoom}{NULL}
+\item{attribution}{string how attribute the tile map}
 }
 \description{
-makeTile takes a raster object or a GDAL raster file  and creates  a leaflet compatible tile structure in a given directory.
+makeTile takes a raster object or a GDAL raster file  and creates  a leaflet compatible tile structure in a given directory.  Additionally it produces a correct map.types list for the use with \link{projView}
 }
 \details{
 soon more
 }
 \examples{
 \dontrun{
- # we need a running gdal with all python bindings  ###
+ ## we need a running gdal with all python bindings  ###
  require(raster)
  require(gdalUtils)
  require("curl")
- ### get some data for the antartica
 
+ ## get some data for the antartica
   curl_download(url="ftp://ftp.uninett.no/pub/quantarctica/Quantarctica2.zip", destfile="~/tmp/quantartic.zip"  ,  quiet = TRUE, mode = "wb")
   unzip("~/tmp/quantartic.zip")
-  # define correct projection
-  epsg3031<-"+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
-  # choose a dataset
-  x="/home/creu/proj/antarctica/Quantarctica2/Basemap/Terrain/ETOPO1_DEM.tif"
-  log<-makeTile(x=x,outPath="/home/creu/proj/makeTile/etopo2DGM", s_srs= epsg3031,t_srs= epsg3031)
+
+ ## define target projection in this case also used for source
+  proj3031<-"+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
+
+ ## define target epsg code
+  epsg3031<-"EPSG:3031"
+
+ ## choose a dataset from quantartica2
+  x<-"/home/creu/proj/antarctica/Quantarctica2/Basemap/Terrain/ETOPO1_DEM.tif"
+
+ ## create tiles
+  map.typesList<-makeTile(x=x,outPath="/home/creu/proj/makeTile/etopo2DGM", s_srs= proj3031,t_srs= proj3031,t_epsg=epsg3031,cLat=-90,cLon=0)
 }
 }
 \author{
