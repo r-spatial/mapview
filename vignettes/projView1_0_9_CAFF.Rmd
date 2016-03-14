@@ -28,7 +28,7 @@ We take the sea surface and the land surface temperature what may interest in co
 
 
 
-```{r caff, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47,cache=FALSE}
+```{r caff,  warning=FALSE, message=FALSE, fig.width=9.47,cache=FALSE}
 
 rm(list = ls())
 library(mapview)

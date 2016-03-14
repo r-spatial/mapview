@@ -53,52 +53,58 @@ for available options.}
 projView maps existing local or online tiles in the choosen target projection. The first raster tile is taken for the default background.
 }
 \details{
-Please note: If you use coordinates with numbers that are smaller then the Latitude/Longitude Values (i.e. -180/+180, -90/+90) projView assumes that you provide coordinates in the target srs and will not touch them. This is especially helpful for pole standing polarstereographic projections and projections that are not "common" or well described by an EPSG, ESRI or other code. Otherwise it construct a rectangle and project the coordinates towards the target system. \cr For all other information  please have a look at the vignette or at \href{http://gisma.github.io/projView/projView1_0_9.html}{projView}
+Please note: If you use coordinates with numbers that are smaller then the Latitude/Longitude Values (i.e. -180/+180, -90/+90) projView assumes that you provide coordinates in the target srs and will not touch them. This is especially helpful for pole standing polarstereographic projections and projections that are not "common" or well described by an EPSG, ESRI or other code. Otherwise it construct a rectangle and project the coordinates towards the target system. \cr For all other information  please have a look at the vignette or at the online help of \href{http://gisma.github.io/projView/projView1_0_9.html}{projView}
 }
 \examples{
 \dontrun{
-##  packages
- require(mapview)
- require(raster)
+ ##  packages
+  require(mapview)
+  require(raster)
 
  ## load data of the arctic stations
- data("campsQ2")
+  data("campsQ2")
 
  ## load Greenlands roads data from geofabrik
- data("roadsGRL")
+  data("roadsGRL")
 
  ## We need to define online data providers. this is a bit tricky and yields sometimes just frustration...
  ## under details you'll find a link for further explanations.
  ## The map.typeList as provided contains five examples. 2 OSM and 3 WMS services
- data("map.typeList")
+  data("map.types")
 
-### finally let's start mapping
+ ### finally let's start mapping
 
-## map the antarctic facilities data using the NASA EarthData tiles
-projView(campsQ2, map.types= "map.typesList$NASA")
+ ## map the antarctic facilities data using the NASA EarthData tiles
+  projView(campsQ2, map.types= "map.types$NASA")
 
-## same as before but now using the visEarthPole function as a "plugin"
-projView(campsQ2, map.types= "map.typesList$NASA",
+ ## same as before but now using the visEarthPole function as a "plugin"
+  projView(campsQ2, map.types= "map.types$NASA",
                   internalList =TRUE,
                   externalList = c("arctic-nasa","visEarthPole(groupList='1000',dateString='2014-02-04',createList = TRUE)"))
 
-### similiar job in the North
+ ### similiar job in the North
 
-## map Greenland's roads using the CAFF tiles for sea and landsurface temerature
-mapview::projView(roadsGRL, map.types= "map.typesList$CAFF")
+ ## map Greenland's roads using the CAFF tiles for sea and landsurface temerature
+  mapview::projView(roadsGRL, map.types= "map.types$CAFF")
 
-## again Greenland's roads using the HAV map tiles
-mapview::projView(roadsGRL, map.types= "map.typesList$HAV")
+ ## again Greenland's roads using the HAV map tiles
+  mapview::projView(roadsGRL, map.types= "map.types$HAV")
 
-## reproject HAV and roadsGRL to EPSG:3995
-map.typesList$HAV$params$t_srs <- "+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
-map.typesList$HAV$params$t_epsg <- "EPSG:3995"
-mapview::projView(roadsGRL, map.types= "map.typesList$HAV")
+ ## reproject HAV and roadsGRL to EPSG:3995
+  map.types$HAV$params$t_srs <- "+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
+  map.types$HAV$params$t_epsg <- "EPSG:3995"
+  mapview::projView(roadsGRL, map.types= "map.types$HAV")
 
-## move center
-map.typesList$HAV$params$mapCenter$cLon="70"
-map.typesList$HAV$params$mapCenter$cLat="15"
-mapview::projView(roadsGRL, map.types= "map.typesList$HAV")
+ ## move center
+  map.types$HAV$params$mapCenter$cLon="70"
+  map.types$HAV$params$mapCenter$cLat="15"
+  mapview::projView(roadsGRL, map.types= "map.types$HAV")
+
+ ## load the list of the above example
+  data("map.types")
+
+ ## map the ArcticConnect map
+  mapview::projView(roadsGRL, map.types = map.types$AC)
 
 }
 }
@@ -106,12 +112,14 @@ mapview::projView(roadsGRL, map.types= "map.typesList$HAV")
 Chris Reudenbach
 }
 \references{
-Online maps and tile services\cr
+Online maps and tile services:\cr
 The NASA Earthdata project: \href{https://wiki.earthdata.nasa.gov/display/GIBS}{NASA EOSDIS GIBS}\cr
-The Artic Biodiversity Assesment: \href{http://www.arcticbiodiversity.is/}{CAFF}, \href{http://dev.caff.is:8080/geoserver/web/}{CAFF Geoserver}\cr
+The Conservation of Fauna and Flora: \href{http://www.caff.is/about-caff}{CAFF}, \href{http://dev.caff.is:8080/geoserver/web/}{CAFF Geoserver}\cr
+The ArcticConnect \href{http://arcticconnect.org/}{ArcticConnect} with data from \href{http://webmap.arcticconnect.org/}{ArcticWebMap}\cr
+The Environmental maps from the Authorithy of Mecklenburg-Vorpommern \href{https://www.umweltkarten.mv-regierung.de}{L-MV}\cr
 The  Havs- och vattenmyndigheten (Swedish Agency for Marine and Water Management): \href{https://www.havochvatten.se/kunskap-om-vara-vatten/kartor-och-geografisk-information/karttjanster.html}{HAV}\cr\cr
 For the used overlay data see: \code{\link{campsQ2}}, \code{\link{roadsGRL}}\cr
-JS libraries\cr
+JS libraries:\cr
 Leaflet 0.7.7: \href{http://leafletjs.com/}{Leaflet}\cr
 The kartena projection plugin for leaflet: \href{http://kartena.github.io/Proj4Leaflet/}{Proj4Leaflet}\cr
 }

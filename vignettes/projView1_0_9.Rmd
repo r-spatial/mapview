@@ -139,15 +139,15 @@ First we have to analyze the primary arguments:
 * UpperCorner
 * Identifier
 
-If we focus *ResourceURL* we will find more information in the the argument *template*:
+If we focus `ResourceURL` we will find more information in the the argument `template`:
 
-*http://map1.vis.earthdata.nasa.gov/wmts-antarctic/BlueMarble_ShadedRelief_Bathymetry/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg*
+`http://map1.vis.earthdata.nasa.gov/wmts-antarctic/BlueMarble_ShadedRelief_Bathymetry/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg`
 
 To construct a valid URL we also need the content of the following variables:
-* {TileMatrixSet}
-* {TileMatrix},{TileRow},{TileCol}
+* `{TileMatrixSet}` 
+* `{TileMatrix}`,`{TileRow}`,`{TileCol}`
 
-There are still some parameters missing which are not documented in the xml file. We will find tileSize and zoomlevel information at the [EPSG:3031 examples](https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+API+for+Developers#GIBSAPIforDevelopers-AntarcticPolarStereographic(EPSG:3031)) table. Additionally it is common that the variable {TileMatrix},{TileRow},{TileCol} are corresponding to the subdomains of the WMTS Rest format (i.e. "abc").
+There are still some parameters missing which are not documented in the xml file. We will find tileSize and zoomlevel information at the [EPSG:3031 examples](https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+API+for+Developers#GIBSAPIforDevelopers-AntarcticPolarStereographic(EPSG:3031)) table. Additionally it is common that the variable `{TileMatrix},{TileRow},{TileCol}` are corresponding to the subdomains of the WMTS Rest format (i.e. `abc`).
 
 Ready to compile the information.
 
@@ -191,7 +191,7 @@ relUrl=""                      ## obsolete used for local tiles
 ```
 
 
-## Things you better know
+## Things inside projView you'd better know
 
 You may imagine that serving of tiles is a world itself. Therefore it seems to be pretty ambitious to find a all in one solution. What I tried so far is to get a as simple as possible way to use WMS and OSM services. You should know some internal calculations and undocumented argument usage to prevent that you are going mad watching the weird behaviour of the tool.
 
@@ -248,7 +248,7 @@ List of 11
 
 ### The URL of the service 
 
-The whole List will be iterated using the sublist  *$layer* to build the URL, in the example case 3 times. The root of the url is always *$L.tileLayer*:
+The whole List will be iterated using the sublist  `$layer` to build the URL, in the example case 3 times. The root of the url is always `$L.tileLayer`:
 
 Note the first item will be **always** the baselayer of the map and can not be switched on an off. 
 
@@ -258,13 +258,13 @@ As a result you should get the (correct) URL for the service.
 
 ### The remaining Parameters of the URL/Service
 
-All items except *$params* and *$layer* are parsed and used to set up a correct *L.tileLayer{}* parameter list. They can be crucial and it is possible that you have to play around a bit
+All items except `$params` and `$layer` are parsed and used to set up a correct `L.tileLayer{}` parameter list. They can be crucial and it is possible that you have to play around a bit
 
 ### Parameters of the ruling leaflet map object
 
-All Parameters of the *$param* list belong to the leaflet map object respective the Proj4Leaflet extension for non leaflet CRSs.
+All Parameters of the `$param` list belong to the leaflet map object respective the Proj4Leaflet extension for non leaflet CRSs.
 
-Most of them are as they are looking like. Especially *$initialResolution*, *$ovlBound* and *$origin*. These parameter set is ruling the leaflet map object setup and even if everything all other arguments are perfect, you will get strange or no effects, if they don't meet the needs of the data providers.
+Most of them are as they are looking like. Especially `$initialResolution`, `$ovlBound` and `$origin`. These parameter set is ruling the leaflet map object setup and even if everything all other arguments are perfect, you will get strange or no effects, if they don't meet the needs of the data providers.
 
 #### $initialResolution
 
@@ -276,9 +276,9 @@ Usually it is tried to calculate the resolution automatically. the approach is s
             resolution[i+1] <- maxResolution /  2^i
             }
 
-where i is the increasing level of zoom up to maxZoom, res is the maximum extend of the the bounds of the maps, div is the tilSize scaled by the initialResolution. Ususally tileSize and initialResoulution should be the same than div=tileSize if not  div<-tileSize/initialRes*tileSize
+where `i` is the increasing level of `zoom` up to `maxZoom`, `res is the maximum extend of the the `bounds of the maps, `div` is the `tilSize` scaled by the `initialResolution`. Ususally tileSize and initialResoulution should be the same than `div=tileSize` outherweise div is calculated as  `div<-tileSize/initialRes*tileSize`.
 
-If you are not able to find a good range of resolution but you find an example then you may just paste it in initialResolution.
+If you are not able to find a good range of resolution but you find an example then you may just paste it in `initialResolution`.
 
            initialResolution=c(8192,4096,2048, 1024, 512, 256, 128,64, 32, 16, 8, 4, 2,1,0.5,0.25,0.125,0.0625)
 
@@ -286,7 +286,7 @@ This will be taken as it is.
 
 #### $bounds
 
-If you don't need or have no idea about the bounds you may try to set at least one of the values to NULL
+If you don't need or have no idea about the `bounds` you may try to set at least one of the values to NULL
 
         minx=NULL
         
@@ -294,7 +294,7 @@ with this option no bounds will be generated.
 
 #### $origin
 
-the origin has always to be set. Note you **must** use values of the target reference system. Especially in polar stereographic projections that are not centered on the pole this can be tricky.
+The 'origin' has always to be set. It this the upper left corner of the tiles and used as reference point for transforming the projected coordinates. Note you **must** use values of the target reference system. Especially in polar stereographic projections that are not centered on the pole this can be tricky.
 
 Time for some examples...
 
@@ -305,10 +305,10 @@ Time for some examples...
 ## EarthData South Pole
 
 
-First lets map the manually written input list from the tutorial. For convienience reason we load it from the package. We are obtaining the data from [NASA EarthData] (https://wiki.earthdata.nasa.gov/display/ECE/Dashboard" target="_blank">EarthData-Wiki). The used camps are documented in the package.
+First lets map the manually written input list from the tutorial. For convienience reason we load it from the package. We are obtaining the data from [NASA EarthData Wiki](https://wiki.earthdata.nasa.gov/display/ECE/Dashboard). The used camps are documented in the package.
 
 
-```{r ,echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+```{r , warning=FALSE, message=FALSE, fig.width=9.47}
 library(mapview)
 library(raster)
 
@@ -327,7 +327,7 @@ mapview::projView(campsQ2,  map.types = map.types$NASA)
 
 In this special case of the antarctic NASA EarthData you may use the visEarthPole() function from the mapview package
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+```{r,  warning=FALSE, message=FALSE, fig.width=9.47}
 
    
   # load data of the arctic stations
