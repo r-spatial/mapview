@@ -16,7 +16,7 @@ of the column(s) to be rendered}
 
 \item{na.color}{color for missing values}
 
-\item{map.types}{an optionallist of map tiles see \link{details}}
+\item{map.types}{an obligate list of map tiles see \link{details}}
 
 \item{cex}{attribute name(s) or column number(s) in attribute table
 of the column(s) to be used for defining the size of circles}
@@ -113,12 +113,12 @@ Chris Reudenbach
 }
 \references{
 Online maps and tile services:\cr
-The NASA Earthdata project: \href{https://wiki.earthdata.nasa.gov/display/GIBS}{NASA EOSDIS GIBS}\cr
-The Conservation of Fauna and Flora: \href{http://www.caff.is/about-caff}{CAFF}, \href{http://dev.caff.is:8080/geoserver/web/}{CAFF Geoserver}\cr
-The ArcticConnect \href{http://arcticconnect.org/}{ArcticConnect} with data from \href{http://webmap.arcticconnect.org/}{ArcticWebMap}\cr
-The Environmental maps from the Authorithy of Mecklenburg-Vorpommern \href{https://www.umweltkarten.mv-regierung.de}{L-MV}\cr
-The  Havs- och vattenmyndigheten (Swedish Agency for Marine and Water Management): \href{https://www.havochvatten.se/kunskap-om-vara-vatten/kartor-och-geografisk-information/karttjanster.html}{HAV}\cr\cr
-For the used overlay data see: \code{\link{campsQ2}}, \code{\link{roadsGRL}}\cr
+NASA EarthData project: \href{https://wiki.earthdata.nasa.gov/display/GIBS}{NASA EOSDIS GIBS}\cr
+Conservation of Arctic Fauna and Flora: \href{http://www.caff.is/about-caff}{CAFF}, The CAFF \href{http://dev.caff.is:8080/geoserver/web/}{Geoserver}\cr
+\href{http://arcticconnect.org/}{ArcticConnect} project using their \href{http://webmap.arcticconnect.org/}{ArcticWebMap} server.\cr
+Environmental maps from the Authorithy of Mecklenburg-Vorpommern \href{https://www.umweltkarten.mv-regierung.de}{L-MV}\cr
+Swedish Agency for Marine and Water Management (Havs- och vattenmyndigheten): \href{https://www.havochvatten.se/kunskap-om-vara-vatten/kartor-och-geografisk-information/karttjanster.html}{HAV}\cr\cr
+For the used overlay data see: \code{\link{campsQ2}}, \code{\link{roadsGRL}}\cr\cr
 JS libraries:\cr
 Leaflet 0.7.7: \href{http://leafletjs.com/}{Leaflet}\cr
 The kartena projection plugin for leaflet: \href{http://kartena.github.io/Proj4Leaflet/}{Proj4Leaflet}\cr

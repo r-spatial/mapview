@@ -9,7 +9,7 @@ if (!isGeneric('projView')) {
 #'@usage projView( x, zcol, color, na.color, map.types, cex, lwd, alpha, legend, legend.opacity, verbose, use.layer.names,layer.name,popup,internalList, externalList)
 #'
 #'@param x a \code{\link{sp}}* object
-#'@param map.types an optionallist of map tiles see \link{details}
+#'@param map.types an obligate list of map tiles see \link{details}
 #'@param color color (palette) for points/polygons/lines
 #'@param na.color color for missing values
 #'@param use.layer.names should layer names of the Raster* object be used?
@@ -37,12 +37,12 @@ if (!isGeneric('projView')) {
 #'
 #'@references
 #'Online maps and tile services:\cr
-#'The NASA Earthdata project: \href{https://wiki.earthdata.nasa.gov/display/GIBS}{NASA EOSDIS GIBS}\cr
-#'The Conservation of Fauna and Flora: \href{http://www.caff.is/about-caff}{CAFF}, \href{http://dev.caff.is:8080/geoserver/web/}{CAFF Geoserver}\cr
-#'The ArcticConnect \href{http://arcticconnect.org/}{ArcticConnect} with data from \href{http://webmap.arcticconnect.org/}{ArcticWebMap}\cr
-#'The Environmental maps from the Authorithy of Mecklenburg-Vorpommern \href{https://www.umweltkarten.mv-regierung.de}{L-MV}\cr
-#'The  Havs- och vattenmyndigheten (Swedish Agency for Marine and Water Management): \href{https://www.havochvatten.se/kunskap-om-vara-vatten/kartor-och-geografisk-information/karttjanster.html}{HAV}\cr\cr
-#'For the used overlay data see: \code{\link{campsQ2}}, \code{\link{roadsGRL}}\cr
+#'NASA EarthData project: \href{https://wiki.earthdata.nasa.gov/display/GIBS}{NASA EOSDIS GIBS}\cr
+#'Conservation of Arctic Fauna and Flora: \href{http://www.caff.is/about-caff}{CAFF}, The CAFF \href{http://dev.caff.is:8080/geoserver/web/}{Geoserver}\cr
+#'\href{http://arcticconnect.org/}{ArcticConnect} project using their \href{http://webmap.arcticconnect.org/}{ArcticWebMap} server.\cr
+#'Environmental maps from the Authorithy of Mecklenburg-Vorpommern \href{https://www.umweltkarten.mv-regierung.de}{L-MV}\cr
+#'Swedish Agency for Marine and Water Management (Havs- och vattenmyndigheten): \href{https://www.havochvatten.se/kunskap-om-vara-vatten/kartor-och-geografisk-information/karttjanster.html}{HAV}\cr\cr
+#'For the used overlay data see: \code{\link{campsQ2}}, \code{\link{roadsGRL}}\cr\cr
 #'JS libraries:\cr
 #'Leaflet 0.7.7: \href{http://leafletjs.com/}{Leaflet}\cr
 #'The kartena projection plugin for leaflet: \href{http://kartena.github.io/Proj4Leaflet/}{Proj4Leaflet}\cr
@@ -112,9 +112,9 @@ projView<- function( x=NULL,
                      color=mapviewGetOption("raster.palette")(256),
                      na.color=mapviewGetOption("na.color"),
                      map.types=NULL,
-                     cex = 6,
-                     lwd = 1,
-                     alpha = 0.7,
+                     cex = 10,
+                     lwd = 2,
+                     alpha = 0.6,
                      legend = FALSE,
                      legend.opacity = 1,
                      verbose = mapviewGetOption("verbose"),
@@ -134,7 +134,7 @@ projView<- function( x=NULL,
   if (! class(map.types) == "list") {
     ovl<-eval(parse(text = map.types))}
   else {
-      ovl<-map.types
+    ovl<-map.types
   }
 
   #deparse(substitute (ovl))
@@ -144,17 +144,17 @@ projView<- function( x=NULL,
   calcRes<-FALSE
   res<-NULL
   # redefine vars not neccessry but less confusing
-    minx<-as.numeric(ovl$params$ovlBounds$minx)
-    miny<-as.numeric(ovl$params$ovlBounds$miny)
-    maxx<-as.numeric(ovl$params$ovlBounds$maxx)
-    maxy<-as.numeric(ovl$params$ovlBounds$maxy)
-    if (length(minx) == 0 || length(maxx) == 0 || length(miny) == 0 || length(maxy) == 0){
-      noBounds<-TRUE
-    } else if ( ((minx > -360 & minx < 360)|| (maxx < 360 & maxx > -360) || (miny > -360 & miny < 360) || maxy < 360 & maxy > -360 ))
-      {geoLatLon<-TRUE }
+  minx<-as.numeric(ovl$params$ovlBounds$minx)
+  miny<-as.numeric(ovl$params$ovlBounds$miny)
+  maxx<-as.numeric(ovl$params$ovlBounds$maxx)
+  maxy<-as.numeric(ovl$params$ovlBounds$maxy)
+  if (length(minx) == 0 || length(maxx) == 0 || length(miny) == 0 || length(maxy) == 0){
+    noBounds<-TRUE
+  } else if ( ((minx > -360 & minx < 360)|| (maxx < 360 & maxx > -360) || (miny > -360 & miny < 360) || maxy < 360 & maxy > -360 ))
+  {geoLatLon<-TRUE }
   if (! is.null(ovl$params$origin$olx) || ! is.null(ovl$params$origin$oly)) {
-  ulx<-as.numeric(ovl$params$origin$olx)
-  uly<-as.numeric(ovl$params$origin$oly)
+    ulx<-as.numeric(ovl$params$origin$olx)
+    uly<-as.numeric(ovl$params$origin$oly)
   } else{
     cat("No upper left corner provided. Can not head on. ")
     return()
@@ -255,7 +255,7 @@ projView<- function( x=NULL,
     if (tileSize != initialRes) {
       div<-tileSize/initialRes*tileSize
     } else {
-        div<-tileSize
+      div<-tileSize
     }
 
 
@@ -296,7 +296,7 @@ projView<- function( x=NULL,
     write(bounds,tmpCRS,append = TRUE)
   } else {
     write(paste0(origin),tmpCRS,append = TRUE)
-    }
+  }
   write(paste0('});'),tmpCRS,append = TRUE)
 
   if (!internalList) {
@@ -317,20 +317,20 @@ projView<- function( x=NULL,
           }
           else if (j == 2 & i>1){
             v <- paste0("overlayLayers['",attributes(ovl$layers[i]), "'] =  ",attributes(ovl[j]),"('",ovl$L.tileLayer.wms,"',{")
-  #          v <- paste0("overlayLayers['",ovl$layers$layer[i], "'] =  ",attributes(ovl[j]),"('",ovl$L.tileLayer.wms,"',{")
+            #          v <- paste0("overlayLayers['",ovl$layers$layer[i], "'] =  ",attributes(ovl[j]),"('",ovl$L.tileLayer.wms,"',{")
           }
           else {
             #if (j != length(ovl)-1){
-              if (attributes(ovl[j]) == "layers"){
-                v <- paste0(attributes(ovl[j]),": '",attributes(ovl$layers[i]),"',")
-              }
-              else if (attributes(ovl[j]) == "format" ||
-                       attributes(ovl[j]) == "attribution"){
-                v <- paste0(attributes(ovl[j]),': "', ovl[j],'",')
-              }
-              else {
-                v <- paste0(attributes(ovl[j]),": ", ovl[j],",")
-              }
+            if (attributes(ovl[j]) == "layers"){
+              v <- paste0(attributes(ovl[j]),": '",attributes(ovl$layers[i]),"',")
+            }
+            else if (attributes(ovl[j]) == "format" ||
+                     attributes(ovl[j]) == "attribution"){
+              v <- paste0(attributes(ovl[j]),': "', ovl[j],'",')
+            }
+            else {
+              v <- paste0(attributes(ovl[j]),": ", ovl[j],",")
+            }
             #}
             #else {
             #  v <- paste0(attributes(ovl[j]),': "', ovl[j],'"});')
@@ -344,8 +344,8 @@ projView<- function( x=NULL,
 
     if(ovl$service == "OSM"){
       layerNumber<- length(ovl$layer)
-    #  if (grep(ovl$layer[layerNumber],pattern = "{z}",fixed=TRUE ) & grep(ovl$layer$layer[layerNumber],pattern = "{x}",fixed=TRUE ))
-     # {
+      #  if (grep(ovl$layer[layerNumber],pattern = "{z}",fixed=TRUE ) & grep(ovl$layer$layer[layerNumber],pattern = "{x}",fixed=TRUE ))
+      # {
       #  layerNumber<-layerNumber-1
       #}
       for (i in seq(1,layerNumber, by = 1)) {        # for all layers
@@ -365,11 +365,11 @@ projView<- function( x=NULL,
           }
           else {
 
-           # if (j != length(ovl)-2){
-              #if (attributes(ovl[j]) == "layer" || attributes(ovl[j]) == "params" )
-              #{
-              #  v<- NULL # <- paste0(attributes(ovl[j]),': "', ovl[j],'",')
-              #  }
+            # if (j != length(ovl)-2){
+            #if (attributes(ovl[j]) == "layer" || attributes(ovl[j]) == "params" )
+            #{
+            #  v<- NULL # <- paste0(attributes(ovl[j]),': "', ovl[j],'",')
+            #  }
             if ( attributes(ovl[j]) == "layer" ||
                  attributes(ovl[j]) == "params" ) {
               v<-NULL}
@@ -384,10 +384,10 @@ projView<- function( x=NULL,
               v <- paste0(attributes(ovl[j]),": ", ovl[j],",")
 
             }
-          #  }
-          #  else {
-          #    v <- paste0(attributes(ovl[j]),":", ovl[j],",")
-          #  }
+            #  }
+            #  else {
+            #    v <- paste0(attributes(ovl[j]),":", ovl[j],",")
+            #  }
           }
 
           if (!is.null(v)){write(v,layFn,append = TRUE)}
@@ -504,7 +504,7 @@ projView<- function( x=NULL,
                   layer = extList$layer,
                   layername=extList$layername,
                   overlayLayer=deparse(substitute(x,
-                                                      env = parent.frame())),
+                                                  env = parent.frame())),
                   zoom = initialZoom,
                   t_epsg=t_epsg,
                   t_srs=t_srs,
@@ -614,12 +614,12 @@ getPopupStyle <- function(){
 makeUrl <- function (i,ovl){
   fragPath<-"/"
   if (length(ovl$layer) >=1){
-  tmpLayer<-ovl$layer[[i]]
-  tmpLayer<-unlist(tmpLayer)
-  fragPath<-NULL
-  for (k in seq(1,length(tmpLayer), by = 1)) {
-    fragPath<-paste0(fragPath,tmpLayer[k],"/")
-  }
+    tmpLayer<-ovl$layer[[i]]
+    tmpLayer<-unlist(tmpLayer)
+    fragPath<-NULL
+    for (k in seq(1,length(tmpLayer), by = 1)) {
+      fragPath<-paste0(fragPath,tmpLayer[k],"/")
+    }
   }
   fragPath<-substr(fragPath, 1, nchar(fragPath)-1)
   extension<- strsplit(unlist(ovl$format[[1]]),"/",fixed = TRUE)[[1]][2]
