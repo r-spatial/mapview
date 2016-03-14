@@ -15,9 +15,6 @@ if (!isGeneric('projView')) {
 #'@param use.layer.names should layer names of the Raster* object be used?
 #'@param values a vector of values for the visualisation of the layers.
 #' Per default these are calculated based on the supplied raster* object.
-#'@param map.types character spcifications for the base maps.
-#' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
-#' for available options.
 #'@param alpha opacity of the lines or points
 #'@param legend should a legend be plotted
 #'@param legend.opacity opacity of the legend

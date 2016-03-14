@@ -44,10 +44,6 @@ of the column(s) to be used for defining the size of circles}
 
 \item{values}{a vector of values for the visualisation of the layers.
 Per default these are calculated based on the supplied raster* object.}
-
-\item{map.types}{character spcifications for the base maps.
-see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
-for available options.}
 }
 \description{
 projView maps existing local or online tiles in the choosen target projection. The first raster tile is taken for the default background.
