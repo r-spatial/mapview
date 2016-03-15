@@ -263,6 +263,7 @@ estimateZoom <- function(ext=NULL,proj4){
 
 makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=NULL,zoom=NULL,attribution,cLat,cLon,srvrUrl){
   #c(zoom,256,outPath,t_srs,fnx)
+  ts<-TRUE
   pathtoTile<-outPath
   layerName<-names(fnx)
   minx<-fnx@extent@xmin
@@ -279,7 +280,7 @@ makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=
   for ( i in seq(0,zoom)){
     resolution[i+1] <- maxResolution /  2^i
   }
-
+  minRes<-as.numeric(resolution[length(resolution)])
   # create resolution string
   # resolution<-c(paste(resolution,collapse = ","))
   # LProjResolution<-paste0("[",tmpres,"]")
@@ -321,19 +322,52 @@ makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=
       cLon <- (xtrLL@xmax-xtrLL@xmin) * 0.5 + xtrLL@xmin
     }
   }
+  # to do +proj=stere +lat_0=-90 +lat_0=+90
+  if (t_epsg == "EPSG:3031" || t_epsg == "EPSG:3031" ) {
+    res<-max(maxx-minx,maxy-miny)
+    #if (is.null(res)) {res<-abs(ulx) + abs(uly)}
+    maxRes <- res / 256
+    for (i in seq(1,21)) {
+      tmp <-256 * 2**i
+      if (tmp>minRes & ts) {
+        tileSize<-tmp
+        ts<-FALSE
+      }
+    }
 
-  # assign the ulc
-  olx<-minx
-  oly<-maxy
+    initRes<-log(256, base = 2)
+    if (initRes <= 0) {initRes <-1}
+    #as.numeric(resolution[length(resolution)])
+    tmpres<-2^(initRes:(zoom + initRes))
+    tmpres<-sort(tmpres,decreasing = TRUE)
+    resolution<-tmpres
 
+    diff <-(sqrt(abs(minx)**2+abs(miny)**2)/2)/zoom
+    #oly<-(sqrt(abs(minx)**2+abs(miny)**2)/2)/zoom
+    olx<-(minx-diff)
+    oly<- (miny-diff)* (-1)
+
+  } else {
+    for (i in seq(1,21)) {
+      tmp <-256 * 2**i
+      if (tmp>minRes & ts) {
+        tileSize<-tmp
+        ts<-FALSE
+      }
+    }
+
+    # assign the ulc
+    olx<-minx
+    oly<-maxy
+  }
   # create param list
   map.types<-list(layerName=list(service="OSM",
                                  L.tileLayer=srvrUrl,
                                  layer=list( layerName   = list("tiles","{z}/{x}/{y}")
                                  ),
                                  format="image/png",
-                                 tileSize="256",
-                                 #tms="true",
+                                 tileSize=tileSize,
+                                 tms="false",
                                  minZoom=0,
                                  maxZoom=zoom,
                                  noWrap ="true",
