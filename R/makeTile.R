@@ -131,10 +131,11 @@ library(raster)
 
 makeTile <- function(x=NULL,
                      outPath=tmpDir(),
-                     scale=c(0,8848),
-                     s_srs="+proj=longlat +datum=WGS84",
-                     t_srs="+proj=longlat +datum=WGS84",
-                     t_epsg="EPSG:4326",
+                     scale=c(-500,2500),
+                     #s_srs="+proj=longlat +datum=WGS84 +ellps=WGS84",
+                     t_srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs",
+                     s_epsg="NULL",
+                     t_epsg="EPSG:3857",
                      rType="average",
                      attribution="still to be done",
                      cLat=NULL,
@@ -144,13 +145,18 @@ makeTile <- function(x=NULL,
                      srvrUrl="http://localhost:4321/"
 )
 {  tmp <- makeTmpPath(outPath)
-if (class(x)=="raster" | class(x)=="rasterbrick" | class(x)=="RasterLayer" || class(x)=="RasterBrick"){
-  writeRaster(x,paste0(outPath,"/tile.tif"),overwrite =TRUE)
-  x@file@name <-paste0(outPath,"/tile.tif")
-  fnx<-x
-} else {
-  fnx<-raster(x)
-}
+if (nchar(x)>0){
+  fnx<-raster(x)}
+#else if (class(x)=="raster" | class(x)=="rasterbrick" | class(x)=="RasterLayer" || class(x)=="RasterBrick"){
+#  writeRaster(x,paste0(outPath,"/tile.tif"),overwrite =TRUE)
+#  x@file@name <-paste0(outPath,"/tile.tif")
+#  fnx<-x
+#}
+
+ else{
+  cat("no idea about the input type")
+  return()
+ }
 
 #nodata<- as.numeric(strsplit(gdalinfo(path.expand(x))[grep("NoData Value=",gdalinfo(path.expand(x)))], split='=', fixed=TRUE)[[1]][2])
 
@@ -162,24 +168,28 @@ pathRasFn <- tmp[[2]][1]
 rasFn <- tmp[[3]][1]
 rasType <- tmp[[4]][1]
 
-if (t_srs != s_srs){
-  gdalwarp(path.expand(fnx@file@name),
+#gdalwarp -overwrite -t_srs EPSG:3857 -r lanczos -multi -dstnodata 0 -of GTiff /home/creu/proj/antarctica/mapview/srtm/cMosaicSRTM.tif /home/creu/tmp/data/makeTile/srtm/rawTileQG.tif
+#gdalwarp -overwrite -t_srs EPSG:32632 -r lanczos -multi -dstnodata 0 -of GTiff /home/creu/proj/antarctica/mapview/srtm/cMosaicSRTM.tif /home/creu/tmp/data/makeTile/srtm/rawTileQG.tif
+
+# #if (t_srs != s_srs){
+  gdalwarp(path.expand(x),
            path.expand(paste0(tmpPath,"/rawTile.tif")) ,
-           s_srs = s_srs,
-           t_srs = t_srs,
+           s_srs = s_epsg,
+           t_srs = t_epsg,
            r = rType,
-           srcnodata = nodata,
+           #srcnodata = nodata,
+           dstnodata = -9999,
            multi = TRUE,
            overwrite = TRUE,
            q = TRUE
   )
-  fnTranslate<-path.expand(paste0(tmpPath,"/rawTile.tif"))
+fnTranslate<-path.expand(paste0(tmpPath,"/rawTile.tif"))
 
-} else {
-  fnTranslate<-  path.expand(fnx@file@name)
-}
+#} else {
+#  fnTranslate<-  path.expand(x@file@name)
+#}
 
-rx<- gdal_translate(fnTranslate,
+rx<- gdal_translate(path.expand(paste0(tmpPath,"/rawTile.tif")),
                     path.expand(paste0(tmpPath,"/",rasFn)) ,
                     output_Raster = FALSE,
                     overwrite= TRUE,
@@ -195,9 +205,10 @@ if ( is.null(zoom)){
 
 }
 
+fnTranslate<-path.expand(paste0(tmpPath,"/",rasFn))
 
 # make tiles take care of the correct zoom!
-r <- system(paste0("inst/htmlwidgets/lib/gdaltiles/gdal2tiles-multiprocess.py -l  --profile=raster -r ",rType,"  -z  0-",zoom," -s '",t_srs,"' -w all --verbose ", path.expand(paste0(tmpPath,"/",rasFn)) ," ", path.expand(paste0(tmpPath,"/tiles"))),intern=T)
+r <- system(paste0("inst/htmlwidgets/lib/gdaltiles/gdal2tiles-multiprocess.py -l  --profile=raster -r ",rType,"  -z  0-",zoom," -s  ",t_epsg," -w all --verbose ", fnTranslate ," ", path.expand(paste0(tmpPath,"/tiles"))),intern=T)
 fnx<-raster(fnTranslate)
 map.typesList<-makeMapTypesList(outPath,s_srs,t_srs,t_epsg,fnx,zoom,attribution,cLat,cLon,srvrUrl)
 return(map.typesList)
@@ -348,17 +359,24 @@ makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=
     oly<- (miny-diff)* (-1)
 
   } else {
-    for (i in seq(1,21)) {
-      tmp <-256 * 2**i
-      if (tmp>minRes & ts) {
-        tileSize<-tmp
-        ts<-FALSE
-      }
-    }
 
-    # assign the ulc
-    olx<-minx
-    oly<-maxy
+     initRes<-log(256, base = 2)
+     if (initRes <= 0) {initRes <-1}
+     #as.numeric(resolution[length(resolution)])
+     tmpres<-2^(initRes:(zoom + initRes))
+     tmpres<-sort(tmpres,decreasing = TRUE)
+     resolution<-tmpres
+#
+#     diff <-(sqrt(abs(minx)**2+abs(miny)**2)/2)/zoom
+#     #oly<-(sqrt(abs(minx)**2+abs(miny)**2)/2)/zoom
+    olx<-minx #(minx-diff)
+    oly<-maxy # (miny-diff)* (-1)
+    minSide<-min(fnx@ncols,fnx@nrows)
+    maxSide<-max(fnx@ncols,fnx@nrows)
+    mainScale<-minSide/maxSide
+    minSide256<-zoom**2*256
+    tileSize<-(minSide/minSide256)*256*mainScale
+
   }
   # create param list
   map.types<-list(layerName=list(service="OSM",
@@ -386,8 +404,7 @@ makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=
                                                             maxy=maxy),
                                              origin=list(olx=olx,
                                                          oly=oly),
-                                             relUrl=""
-
+                                             useBounds="FALSE"
                                  )) # end of list
   ) # end of total list
   save(map.types,file = paste0(pathtoTile,"/",layerName,".rda"))

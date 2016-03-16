@@ -149,6 +149,8 @@ projView<- function( x=NULL,
   calcRes<-FALSE
   res<-NULL
   fixRes<-FALSE
+
+
   # redefine vars not neccessry but less confusing
   minx<-as.numeric(ovl$params$ovlBounds$minx)
   miny<-as.numeric(ovl$params$ovlBounds$miny)
@@ -165,6 +167,13 @@ projView<- function( x=NULL,
     cat("No upper left corner provided. Can not head on. ")
     return()
   }
+  # get noBounds
+  if (! is.null(ovl$params$useBounds)) {
+    if (ovl$params$useBounds == "TRUE"){
+    noBounds<-FALSE
+    } else {noBounds<-TRUE}
+  }
+
   # get tileSize if provided otherwise assume 256 pix
   if (! is.null(ovl$tileSize)) {
     tileSize<-as.numeric(ovl$tileSize)
@@ -221,6 +230,102 @@ projView<- function( x=NULL,
 
 
 
+  # check if an overlay vector datase (x) exist and add it
+  if (!is.null(x)) {
+    ##get epsg code and proj4 string from vector file
+    #     string<-unlist(strsplit(x@proj4string@projargs, split='+', fixed=TRUE))
+    #     epsg<-string[grepl("init",string)]
+    #     unlist(strsplit(epsg, split=':', fixed=TRUE))[2]
+    #     s_srs<-x@proj4string@projargs
+    #     s_epsg <- paste0("epsg:",unlist(strsplit(epsg, split=':', fixed=TRUE))[2])
+    # get extent from vector file
+    # recalculate center of map in lat lon
+    #ulc<-gdaltransform(s_srs=s_srs, t_srs=t_srs,coords=matrix(c(xt@xmin,xt@ymax), ncol = 2))[1:2]
+    #lrc<-gdaltransform(s_srs=s_srs, t_srs=t_srs,coords=matrix(c(xt@xmax,xt@ymin), ncol = 2))[1:2]
+    #bounds <- paste0("[",ulc[1],",",ulc[2],"],[",lrc[1],",",lrc[2],"]")
+
+    # get map center and extent
+    xtr <- mapview:::spCheckAdjustProjection(x)
+    xtrLL<-extent(xtr)
+    if ( estimateMapCenter ){
+      mapCenterLat <- (xtrLL@ymax-xtrLL@ymin) * 0.5  + xtrLL@ymin
+      mapCenterLon <- (xtrLL@xmax-xtrLL@xmin) * 0.5 + xtrLL@xmin
+    }
+    # optional calculate the resolution as derived by local tiles and zoom level
+
+    # NOW transform x to target projection
+    x <- sp::spTransform(x, CRS(paste0("+init=epsg",substr(t_epsg, 5, nchar(t_epsg)))))
+    # define jsonpath
+    tmpJSON <-paste(tmpPath, ".jsondata", sep=.Platform$file.sep)
+    # check and correct if sp object is of type dataframe
+    x <- mapview:::toSPDF(x)
+    ###
+    ID = "tileExtend"
+    rawPolygon <- Polygon(cbind(c(minx,minx,maxx,maxx,minx),c(miny,maxy,maxy,miny,miny)))
+    tileExtend <- Polygons(list(rawPolygon), ID = ID)
+    tileExtend <- SpatialPolygons(list(tileExtend))
+    #(pid <- sapply(slot(tileExtend, "polygons"), function(x) slot(x, "ID")) )
+    df <- data.frame( ID=1:length(rawPolygon), row.names = ID)
+    frame <- SpatialPolygonsDataFrame(tileExtend, df)
+    sp::proj4string(frame) <-crs(t_srs)
+
+#         x@bbox[1]<-minx
+#         x@bbox[2]<-miny
+#         x@bbox[3]<-maxx
+#         x@bbox[4]<-maxy
+    #x<-sp::spTransform(x, crs(t_srs))
+
+    #x@polygons[length(x@polygons)+1]<-tileExtend@polygons
+    ###
+
+
+    # get the variable names
+    keep <- colnames(x@data)
+
+    # apply zcol
+    if (!is.null(zcol)) {
+      keep <- c(zcol)
+    }
+    x@data <- x@data[(names(x@data) %in% keep)]
+
+    # write to a file to be able to use ogr2ogr
+    rgdal::writeOGR(x, paste(tmpPath, "jsondata", sep=.Platform$file.sep), "OGRGeoJSON", driver="GeoJSON")
+    rgdal::writeOGR(frame, paste(tmpPath, "framedata", sep=.Platform$file.sep), "OGRGeoJSON", driver="GeoJSON")
+
+    # for fastet json read in a html document we wrap it with var data = {};
+    # and we fix the crs item of ogrjson
+    lns <- data.table::fread(paste(tmpPath, "jsondata", sep=.Platform$file.sep), header = FALSE, sep = "\n", data.table = FALSE)
+    lnsFrame <- data.table::fread(paste(tmpPath, "framedata", sep=.Platform$file.sep), header = FALSE, sep = "\n", data.table = FALSE)
+    lns[1,] <-paste0('var jsondata = {')
+    lns[3,]<-paste0('"crs": { "type": "name", "properties": { "name": "',t_epsg,'" } },')
+    lns[length(lns[,1]),]<- '};'
+    write.table(lns, paste(tmpPath, "jsondata", sep=.Platform$file.sep), sep="\n", row.names=FALSE, col.names=FALSE, quote = FALSE)
+
+    lnsFrame[1,] <-paste0('var framedata = {')
+    lnsFrame[3,]<-paste0('"crs": { "type": "name", "properties": { "name": "',t_epsg,'" } },')
+    lnsFrame[length(lnsFrame[,1]),]<- '};'
+    write.table(lnsFrame, paste(tmpPath, "jsondata", sep=.Platform$file.sep), sep="\n", row.names=FALSE, col.names=FALSE, quote = FALSE,append=TRUE)
+
+
+#     lns <- data.table::fread(paste(tmpPath, "framedata", sep=.Platform$file.sep), header = FALSE, sep = "\n", data.table = FALSE)
+#     lns[1,] <-paste0('var framedata = {')
+#     lns[3,]<-paste0('"crs": { "type": "name", "properties": { "name": "',t_epsg,'" } },')
+#     lns[length(lns[,1]),]<- '};'
+#     write.table(lns, paste(tmpPath, "framedata", sep=.Platform$file.sep), sep="\n", row.names=FALSE, col.names=FALSE, quote = FALSE)
+
+
+    if (class(x)[1] == 'SpatialPolygonsDataFrame'){
+      noFeature <- length(x@polygons)
+    } else if (class(x)[1] == 'SpatialLinesDataFrame'){
+      noFeature <- length(x@lines)
+    } else {
+      # nrow(coordinates(x)
+    }
+
+
+
+  }
+  #### now raster tiles
 
 
   # DEFINE GLOBAL VARIABLES
@@ -232,6 +337,15 @@ projView<- function( x=NULL,
   # Unfortunately in most cases this is set to the mapserver bounds
   # so we calculate it if possible from the original bounds
 
+
+
+
+
+    #tileExtend <- sp::spTransform(tileExtend, crs(t_srs))
+  #x<-merge(test,x,all.x=TRUE)
+  #xxx<-gUnion(test,tmpx)
+
+
   if ( geoLatLon) {
 
     tmpPoly = Polygon(cbind(c(minx,minx,maxx,maxx,minx),c(miny,maxy,maxy,miny,miny)))
@@ -242,14 +356,23 @@ projView<- function( x=NULL,
     bbox <- sp::spTransform(bbox, crs(t_srs))
     xt<-extent(bbox)
     # create the "bounds" string
-    bounds <- paste0("bounds: L.bounds([",xt@ymax,",",xt@xmin,"],[",xt@ymin,",",xt@xmax,"])")
+    bounds <- paste0("bounds: L.bounds([",xt@ymin,",",xt@xmin,"],[",xt@ymax,",",xt@xmax,"])")
     origin <- paste0("origin: [",xt@ymax,",",xt@xmax,"]")
 
     res<-max(maxx-minx,maxy-miny)
   } else {
-    bounds <- paste0("bounds: L.bounds([",miny,",",minx,"],[",maxy,",",maxx,"])")
+    diff_y<-abs(x@bbox[4])-abs(maxy)
+    uly_cor<-uly-diff_y
+#     diff_x<-abs(x@bbox[1])-abs(minx)
+#     ulx_cor<-uly-diff_x
+    bounds <- paste0("bounds: L.bounds([",minx,",",miny,"],[",maxx,",",maxy,"])")
     origin <- paste0("origin: [",ulx,",",uly,"]")
 
+
+#     x@bbox[1]<-minx
+#     x@bbox[2]<-miny
+#     x@bbox[3]<-maxx
+#     x@bbox[4]<-maxy
   }
   # estimate resolution will be overriden if  length(resStart) > 1
   if  (calcRes)
@@ -289,11 +412,14 @@ projView<- function( x=NULL,
 
   # create CRS string
   CRSinitialZoom<-paste('var initialZoom = ',initialZoom,';')
+  UrnEPSG<-paste0('var urnEPSG = "urn:ogc:def:crs:EPSG:',substr(t_epsg, 5, nchar(t_epsg)),'";')
+
 
   # assign tmpfilename for CRS definition
   tmpCRS <- paste0(tmpPath,"/crs.js")
   # write the proj4leaflet CRS
   write(CRSinitialZoom,tmpCRS,append = TRUE)
+  write(UrnEPSG,tmpCRS,append = TRUE)
   write(CRSvarMapCenter,tmpCRS,append = TRUE)
   write(LProjEpsgSrs,tmpCRS,append = TRUE)
   write(LProjResolution,tmpCRS,append = TRUE)
@@ -419,65 +545,6 @@ projView<- function( x=NULL,
   #  write("worldCopyJump: true",tmptL,append = TRUE)
   #  write("})",tmptL,append = TRUE)
 
-  # check if an overlay vector datase (x) exist and add it
-  if (!is.null(x)) {
-    ##get epsg code and proj4 string from vector file
-    #     string<-unlist(strsplit(x@proj4string@projargs, split='+', fixed=TRUE))
-    #     epsg<-string[grepl("init",string)]
-    #     unlist(strsplit(epsg, split=':', fixed=TRUE))[2]
-    #     s_srs<-x@proj4string@projargs
-    #     s_epsg <- paste0("epsg:",unlist(strsplit(epsg, split=':', fixed=TRUE))[2])
-    # get extent from vector file
-    # recalculate center of map in lat lon
-    #ulc<-gdaltransform(s_srs=s_srs, t_srs=t_srs,coords=matrix(c(xt@xmin,xt@ymax), ncol = 2))[1:2]
-    #lrc<-gdaltransform(s_srs=s_srs, t_srs=t_srs,coords=matrix(c(xt@xmax,xt@ymin), ncol = 2))[1:2]
-    #bounds <- paste0("[",ulc[1],",",ulc[2],"],[",lrc[1],",",lrc[2],"]")
-
-    # get map center and extent
-    xtr <- mapview:::spCheckAdjustProjection(x)
-    xtrLL<-extent(xtr)
-    if ( estimateMapCenter ){
-      mapCenterLat <- (xtrLL@ymax-xtrLL@ymin) * 0.5  + xtrLL@ymin
-      mapCenterLon <- (xtrLL@xmax-xtrLL@xmin) * 0.5 + xtrLL@xmin
-    }
-    # optional calculate the resolution as derived by local tiles and zoom level
-
-    # NOW transform x to target projection
-    x <- sp::spTransform(x, CRS(paste0("+init=epsg",substr(t_epsg, 5, nchar(t_epsg))," ",t_srs)))
-
-    # define jsonpath
-    tmpJSON <-paste(tmpPath, ".jsondata", sep=.Platform$file.sep)
-    # check and correct if sp object is of type dataframe
-    x <- mapview:::toSPDF(x)
-
-    # get the variable names
-    keep <- colnames(x@data)
-
-    # apply zcol
-    if (!is.null(zcol)) {
-      keep <- c(zcol)
-    }
-    x@data <- x@data[(names(x@data) %in% keep)]
-
-    # write to a file to be able to use ogr2ogr
-    rgdal::writeOGR(x, paste(tmpPath, "jsondata", sep=.Platform$file.sep), "OGRGeoJSON", driver="GeoJSON")
-
-    # for fastet json read in a html document we wrap it with var data = {};
-    # and we fix the crs item of ogrjson
-    lns <- data.table::fread(paste(tmpPath, "jsondata", sep=.Platform$file.sep), header = FALSE, sep = "\n", data.table = FALSE)
-    lns[1,] <-paste0('var jsondata = {')
-    lns[3,]<-paste0('"crs": { "type": "name", "properties": { "name": "',t_epsg,'" } },')
-    lns[length(lns[,1]),]<- '};'
-    write.table(lns, paste(tmpPath, "jsondata", sep=.Platform$file.sep), sep="\n", row.names=FALSE, col.names=FALSE, quote = FALSE)
-
-    if (class(x)[1] == 'SpatialPolygonsDataFrame'){
-      noFeature <- length(x@polygons)
-    } else if (class(x)[1] == 'SpatialLinesDataFrame'){
-      noFeature <- length(x@lines)
-    } else {
-      # nrow(coordinates(x)
-    }
-  }
 
   #layer.name = deparse(substitute(map.types,env = parent.frame()))
   #use.layer.names =TRUE
@@ -499,7 +566,7 @@ projView<- function( x=NULL,
                 values = x@data,
                 cex=cex,
                 internalList =internalList
-  )
+                )
 
   if (internalList) {
 
@@ -530,13 +597,13 @@ projView<- function( x=NULL,
 
   #lst_x<-c(lst_x, extList)}
   # creating the widget
-  projViewInternal(f = paste0(tmpPath,"/crs.js") , jFn = paste(tmpPath, "jsondata", sep=.Platform$file.sep),  tmptL= paste0(tmpPath,"/layers.js"),x = lst_x)
+  projViewInternal(f = paste0(tmpPath,"/crs.js") , jFn = paste(tmpPath, "jsondata", sep=.Platform$file.sep),  tmptL= paste0(tmpPath,"/layers.js"),frameFn = paste(tmpPath, "framedata"),x = lst_x)
 
 }
 
 ### bViewInternal creates fpView widget =================================================
 
-projViewInternal <- function(f = NULL, jFn= NULL, tmptL=NULL, x = NULL) {
+projViewInternal <- function(f = NULL, jFn= NULL, tmptL=NULL,frameFn=NULL, x = NULL) {
   data_dir <- dirname(f)
   data_file <- basename(f)
   name<-tools::file_path_sans_ext(data_file)
@@ -557,6 +624,14 @@ projViewInternal <- function(f = NULL, jFn= NULL, tmptL=NULL, x = NULL) {
                                     version = "1",
                                     src = c(file = data_dir),
                                     script = list(data_file))
+#   data_dir <- dirname(frameFn)
+#   data_file <- basename(frameFn)
+#   name<-tools::file_path_sans_ext(data_file)
+#   dep4 <- htmltools::htmlDependency(name = name,
+#                                     version = "1",
+#                                     src = c(file = data_dir),
+#                                     script = list(data_file))
+
   deps <- list(dep1,dep2,dep3)
   sizing = htmlwidgets::sizingPolicy(
     browser.fill = TRUE,

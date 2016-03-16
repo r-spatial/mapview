@@ -14,13 +14,22 @@ HTMLWidgets.widget({
 
   // we create a "no-htmlwidget"" div in the widget container
   addElement();
+    //var southWest = L.latLng(-90, -180),
+    //northEast = L.latLng(90, 180),
+    //bounds = L.latLngBounds(southWest, northEast);
+    var map = new L.map(el, {
+      center: mapCenter,
+      crs : crs,
+      continuousWorld: true,
+      worldCopyJump: true
+    });
 
   // create map object
-  var map = new L.map(el, {
-	 crs : crs,
-	 	//	continuousWorld: true,
-		//worldCopyJump: true
-  });
+//  var map = new L.map(el, {
+//	 crs : crs,
+//	 	continuousWorld: true,
+//    worldCopyJump: true
+//  });
 
 
   //you can add more (static) leaflet stuff here ;-)
@@ -134,7 +143,7 @@ var geojsonMarkerOptions = {
 };
 
    // define projection params for geojson
-   proj4.defs(x.t_epsg,x.t_srs);
+   proj4.defs(urnEPSG,x.t_srs);
 
 
    // create geojsonlayer
@@ -142,7 +151,16 @@ var geojsonMarkerOptions = {
         return L.circleMarker(latlng, geojsonMarkerOptions);
     },style:style,onEachFeature:onEachFeature});
 
-    if (!x.internalList) {ly.overlayLayers[x.overlayLayer] = polyLayer;}
+  // create geojsonlayer
+   var frameLayer = L.Proj.geoJson(framedata,{ pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions);
+    },style:style,onEachFeature:onEachFeature});
+
+
+    if (!x.internalList) {ly.overlayLayers[x.overlayLayer] = polyLayer;
+    ly.overlayLayers["frame"] = frameLayer;
+
+    }
 
 ///////////////////////////////////////////////////////////////77
 if (x.internalList) {
@@ -185,7 +203,7 @@ if (x.internalList) {
 
    // center the map
    map.setView([mapCenter[0],mapCenter[1]], initialZoom);
-
+// map.fitWorld();
   // ad the lat lon mousover to the element created in the init
   lnlt = document.getElementById('lnlt');
   map.on('mousemove', function (e) {
