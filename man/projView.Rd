@@ -49,14 +49,14 @@ Per default these are calculated based on the supplied raster* object.}
 projView maps existing local or online tiles in the choosen target projection. The first raster tile is taken for the default background.
 }
 \details{
-Please note: If you use coordinates with numbers that are smaller
- then the Latitude/Longitude Values (i.e. -180/+180, -90/+90) projView
- assumes that you provide coordinates in the target srs and will not touch
- them. This is especially helpful for pole standing polarstereographic
- projections and projections that are not "common" or well described by an
- EPSG, ESRI or other code. Otherwise it construct a rectangle and project the
- coordinates towards the target system. \cr For all other information  please
- have a look at the vignette or at the online help of
+Please note: If you use in the list ovlBounds coordinates with
+ numbers that are bigger then Latitude/Longitude values would be (i.e.
+ -180/+180, -90/+90), projView assumes that you are providing *correct*
+ extend coordinates and will not touch them. This can be helpful if the
+ transformation fails for projections that are not "common" or well described
+ by an EPSG, ESRI or other code. Otherwise it construct a rectangle and
+ project the coordinates towards the target system. \cr For all other
+ information  please have a look at the vignette or at the online help of
  \href{http://gisma.github.io/projView/projView1_0_9.html}{projView}
 }
 \examples{

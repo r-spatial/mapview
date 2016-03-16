@@ -5,20 +5,21 @@ if (!isGeneric('makeTile')) {
 
 #'Create a leaflet conform set of raster tiles from a GDAL/raster input file
 #'
-#'@description makeTile takes a raster object or a GDAL raster file  and creates
-#'  a leaflet compatible tile structure in a given directory.  Additionally it
-#'  produces a correct map.types list for the use with \link{projView}
+#'@description makeTile creates from a GDAL raster file a leaflet compatible
+#'  tile structure in a given directory.  Additionally it produces a correct
+#'  map.types list for the use with \link{projView}
 #'
-#'@usage makeTile(x = NULL, outPath = NULL, scalec = (0,8848), s_srs =
-#'  "+proj=longlat +datum=WGS84", t_srs = "+proj=longlat +datum=WGS84", t_epsg =
-#'  "EPSG:4326", rType = "average", attribution = "to be done", cLat = NULL,
+#'@usage makeTile(x = NULL, outPath = NULL, scalec = (0,8848), s_epsg =NULL ,
+#'  t_srs = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0
+#'  +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs", t_epsg =
+#'  "EPSG:3857", rType = "average", attribution = "to be done", cLat = NULL,
 #'  cLon = NULL, zoom = NULL, res = NULL, srvrUrl = "http://localhost:4321/")
 #'
-#'@param x raster object or gdal file
+#'@param x  GDAL raster file
 #'@param outPath path where the tiles will be generated. Note it is always
 #'  extented by \code{tiles/}
 #'@param scale scale of grey values for jpeg creation
-#'@param s_srs source proj4 string
+#'@param s_epsg source proj4 string
 #'@param t_srs target proj4 string
 #'@param t_epsg target EPSG code
 #'@param rType Resampling method
@@ -94,7 +95,7 @@ if (!isGeneric('makeTile')) {
 #' require("curl")
 #' require(servr)
 #'
-#' ### Typical workflow nevertheless you just can call maketiles by itself
+#' ### Typical workflow (1) makeTile, (2) start http deamon (3) use projView()
 #'
 #' ## get Germany vector data
 #'  gadmGER <- getGeoData(name="GADM",country="DEU",level="1")
