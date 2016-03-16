@@ -32,7 +32,7 @@ before_install:
   - ./configure --prefix=/usr
   - make
   - sudo make install
-  - cd /home/travis/build/edzer/sp
+  - cd /home/travis/build/environmentalinformatics-marburg/mapview
 
 install:
   - ./pkg-build.sh install_deps
