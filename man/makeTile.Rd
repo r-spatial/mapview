@@ -78,37 +78,64 @@ The integration of local tiles in leaflet is first of all
 }
 \examples{
 \dontrun{
- ## we need a running gdal with all python bindings  ###
- require(raster)
- require(gdalUtils)
- require("curl")
- require(servr)
+### we need a running gdal with all python bindings  ###
+require(raster)
+require(gdalUtils)
+require("curl")
+require(servr)
 
- ### Typical workflow nevertheless you just can call maketiles by itself
+### Typical workflow nevertheless you just can call maketiles by itself
 
- ## get Germany vector data
-  gadmGER <- getGeoData(name="GADM",country="DEU",level="1")
+## get Germany vector data
+ gadmGER <- getGeoData(name="GADM",country="DEU",level="1")
 
- ## download the SRTM data for Germany
-  r<-getGeoData(name="SRTM",xtent = extent(gadmGER), merge=TRUE)
+## download  administartivve data from Germany
+ gadmDNK <- getGeoData(name="GADM",country="DNK",level="1")
 
- ## define target EPSG code
-  t_epsg<-"EPSG:32632"
+## get the SRTM data for this area
+ r<-getGeoData(name="SRTM",xtent = extent(11,11,54,54), merge=TRUE)
 
- ## define target  proj4 string
-  t_srs<-"+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
+## define the target projection
+ s_epsg<-"EPSG:4326"
+ t_epsg<-"EPSG:32632"
+ t_srs<-"+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
 
- ## create tiles
-  map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm/", t_srs=t_srs,t_epsg=t_epsg)
+## create tiles and parameter list
+ map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm/", t_srs=t_srs,t_epsg=t_epsg,cLat=54,cLon=12,scale=c(-500,1500))
 
- ## start http daemon
-  servr::httd("~/tmp/data/makeTile/srtm",daemon=TRUE)
+## strt http daemon
+ servr::httd("~/tmp/data/makeTile/srtm",daemon=TRUE)
 
- ## map it
-  mapview::projView(gadmGER , map.types = map.typesList$layerName)
+## map it
+ mapview::projView(gadmGER , map.types = map.typesList$layerName)
 
- ## stop all server instances
-  daemon_stop(daemon_list())
+## stop all daemon instances
+ servr::daemon_stop(daemon_list())
+
+### data from Quantartica2
+
+## create persistant temp folder
+ tmpDir<-"~/tmp/data/quantartica"
+
+## choose a file
+ fn<-paste0(tmpDir,"/Quantarctica2/Basemap/Terrain/ETOPO1_DEM.tif")
+
+## define target projection
+ s_epsg="EPSG:3031"
+ t_epsg="EPSG:3031"
+ t_srs="+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
+
+## create tiles and parameter list
+ map.typesList<-makeTile(x=localTileFile,outPath="/home/creu/tmp/data/makeTile/quantica",s_epsg=s_epsg, t_srs=t_srs,t_epsg=t_epsg,cLat=-90,cLon=0)
+
+## strt http daemon
+ servr::httd("/home/creu/tmp/data/makeTile/quantica/",daemon=TRUE)
+
+## map it
+ mapview::projView(gadmGER , map.types = map.typesList$layerName)
+
+## stop all daemon instances
+ daemon_stop(daemon_list())
 
 }
 }
