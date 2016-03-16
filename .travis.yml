@@ -34,9 +34,6 @@ before_install:
   - sudo make install
   - cd /home/travis/build/environmentalinformatics-marburg/mapview
 
-install:
-  - ./pkg-build.sh install_deps
-
 notifications:
   email:
     on_success: change

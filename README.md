@@ -6,7 +6,7 @@ This month      | In total
 
 <hr>
 
-[![Travis-CI Build Status](https://travis-ci.org/environmentalinformatics-marburg/mapview.svg?branch=master)](https://travis-ci.org/environmentalinformatics-marburg/mapview)
+[![Travis-CI Build Status](https://travis-ci.org/environmentalinformatics-marburg/mapview.svg?branch=develop)](https://travis-ci.org/environmentalinformatics-marburg/mapview)
 
 
 # mapview
