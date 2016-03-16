@@ -1,0 +1,43 @@
+# Sample .travis.yml for R projects
+
+language: r
+
+warnings_are_errors: true
+
+sudo: required
+
+dist: trusty
+
+env:
+ global:
+   - CRAN: http://cran.rstudio.com
+   - R_BUILD_ARGS="--no-build-vignettes --no-manual"
+   - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
+
+before_install:
+  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
+  - chmod 755 pkg-build.sh
+  - ./pkg-build.sh bootstrap
+  - cd
+  - wget http://download.osgeo.org/gdal/2.0.1/gdal-2.0.1.tar.gz
+  - tar zxf gdal-2.0.1.tar.gz
+  - cd gdal-2.0.1
+  - ./configure --prefix=/usr
+  - make
+  - sudo make install
+  - cd
+  - wget http://download.osgeo.org/proj/proj-4.9.2.tar.gz
+  - tar zxvf proj-4.9.2.tar.gz
+  - cd proj-4.9.2
+  - ./configure --prefix=/usr
+  - make
+  - sudo make install
+  - cd /home/travis/build/environmentalinformatics-marburg/mapview
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
+r_build_args: "--no-build-vignettes"
+r_check_args: "--no-build-vignettes --as-cran"
