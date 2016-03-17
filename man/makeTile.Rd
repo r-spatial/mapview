@@ -45,6 +45,8 @@ you can  provide a predifined list like c(512,256,128)}
 
 \item{srvrUrl}{is the root address of the locale http daemon default see
 \link{details}, \link{seealso}}
+
+\item{GDALFormat}{see \href{http://www.gdal.org/formats_list.html}{GDAL formats}}
 }
 \description{
 makeTile creates from a GDAL raster file a leaflet compatible
@@ -78,45 +80,57 @@ The integration of local tiles in leaflet is first of all
  stereographic or similar.
 }
 \examples{
+
 \dontrun{
 ### we need a running gdal with all python bindings  ###
 require(raster)
-require(gdalUtils)
 require("curl")
 require(servr)
 
-### Typical workflow (1) makeTile, (2) start http deamon (3) use projView()
+### Typical workflow (1) start http deamon (2) makeTile,  (3) use projView()
 
-## get Germany vector data
- gadmGER <- getGeoData(name="GADM",country="DEU",level="1")
 
-## download  administartivve data from Germany
+#### NOTE
+#### (1) please zoom in one Level and activate the overlays
+#### (2) the "frame" overlay shows you the "real" extend of the not tiled layer
+#### (3) due to using bounds strictly sometimes you have to zoom in 1 level more
+
+## get Denmark vector data
  gadmDNK <- getGeoData(name="GADM",country="DNK",level="1")
 
 ## get the SRTM data for this area
- r<-getGeoData(name="SRTM",xtent = extent(11,11,54,54), merge=TRUE)
+ r<-getGeoData(name="SRTM",xtent = extent(11,11,58,58), merge=TRUE)
 
-## define the target projection
+## start http daemon
+ servr::httd("~/tmp/data/makeTile/srtm",daemon=TRUE)
+
+## First pseudomercator
+ map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",cLat=56,cLon=12,scale=c(-2500,2500),attribution = "CGIAR SRTM v4 | GADM | Projection EPSG:3857")
+
+## map it
+ mapview::projView(gadmDNK , map.types = map.typesList$layerName)
+
+## define new target projection note then you must provide the source projection
  s_epsg<-"EPSG:4326"
  t_epsg<-"EPSG:32632"
  t_srs<-"+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
 
 ## create tiles and parameter list
- map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm/", t_srs=t_srs,t_epsg=t_epsg,cLat=54,cLon=12,scale=c(-500,1500))
-
-## strt http daemon
- servr::httd("~/tmp/data/makeTile/srtm",daemon=TRUE)
+ map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",s_epsg=s_epsg, t_srs=t_srs,t_epsg=t_epsg,cLat=54,cLon=12,scale=c(-2500,2500),,attribution = "CGIAR SRTM v4 | GADM | Projection: EPSG:32632")
 
 ## map it
- mapview::projView(gadmGER , map.types = map.typesList$layerName)
+ mapview::projView(gadmDNK , map.types = map.typesList$layerName)
 
 ## stop all daemon instances
  servr::daemon_stop(daemon_list())
 
-### data from Quantartica2
+####### data from Quantartica2 #######
 
 ## create persistant temp folder
  tmpDir<-"~/tmp/data/quantartica"
+
+## get Camps data
+data(campsQ2)
 
 ## choose a file
  fn<-paste0(tmpDir,"/Quantarctica2/Basemap/Terrain/ETOPO1_DEM.tif")
@@ -127,18 +141,20 @@ require(servr)
  t_srs="+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
 
 ## create tiles and parameter list
- map.typesList<-makeTile(x=localTileFile,outPath="/home/creu/tmp/data/makeTile/quantica",s_epsg=s_epsg, t_srs=t_srs,t_epsg=t_epsg,cLat=-90,cLon=0)
+
+ map.typesList<-makeTile(x=fn,outPath="~/tmp/data/makeTile/quantica",s_epsg=s_epsg, t_srs=t_srs,t_epsg=t_epsg,cLat=-90,cLon=0,attribution = "<a href='http://www.quantartica.org'> Quantartica </a> provided by: <a href='http://www.npolar.no/en'>Norwegian Polar Institute</a> &nbsp;| <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>")
 
 ## strt http daemon
- servr::httd("/home/creu/tmp/data/makeTile/quantica/",daemon=TRUE)
+ servr::httd("~/tmp/data/makeTile/quantica/",daemon=TRUE)
 
 ## map it
- mapview::projView(gadmGER , map.types = map.typesList$layerName)
+ mapview::projView(campsQ2 , map.types = map.typesList$layerName)
 
 ## stop all daemon instances
  daemon_stop(daemon_list())
 
 }
+
 }
 \author{
 Chris Reudenbach

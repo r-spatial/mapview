@@ -37,6 +37,7 @@ if (!isGeneric('makeTile')) {
 #'  you can  provide a predifined list like c(512,256,128)
 #'@param srvrUrl is the root address of the locale http daemon default see
 #'  \link{details}, \link{seealso}
+#'@param GDALFormat see \href{http://www.gdal.org/formats_list.html}{GDAL formats}
 #'
 #'@details The integration of local tiles in leaflet is first of all
 #'  straightforward. You can easyly generate them with
@@ -83,50 +84,61 @@ if (!isGeneric('makeTile')) {
 #'installation advices have a look at stackoverflow
 #'\href{http://stackoverflow.com/questions/12905426/what-is-a-faster-alternative-to-pythons-simplehttpserver}{simplehttpserver}.
 #'
-
 #'@author
 #' Chris Reudenbach
 #'
-#' @examples
-#' \dontrun{
+#'@examples
+#'
+#'\dontrun{
 #' ### we need a running gdal with all python bindings  ###
 #' require(raster)
-#' require(gdalUtils)
 #' require("curl")
 #' require(servr)
 #'
-#' ### Typical workflow (1) makeTile, (2) start http deamon (3) use projView()
+#' ### Typical workflow (1) start http deamon (2) makeTile,  (3) use projView()
 #'
-#' ## get Germany vector data
-#'  gadmGER <- getGeoData(name="GADM",country="DEU",level="1")
 #'
-#' ## download  administartivve data from Germany
+#' #### NOTE
+#' #### (1) please zoom in one Level and activate the overlays
+#' #### (2) the "frame" overlay shows you the "real" extend of the not tiled layer
+#' #### (3) due to using bounds strictly sometimes you have to zoom in 1 level more
+#'
+#' ## get Denmark vector data
 #'  gadmDNK <- getGeoData(name="GADM",country="DNK",level="1")
 #'
 #' ## get the SRTM data for this area
-#'  r<-getGeoData(name="SRTM",xtent = extent(11,11,54,54), merge=TRUE)
+#'  r<-getGeoData(name="SRTM",xtent = extent(11,11,58,58), merge=TRUE)
 #'
-#' ## define the target projection
+#' ## start http daemon
+#'  servr::httd("~/tmp/data/makeTile/srtm",daemon=TRUE)
+#'
+#' ## First pseudomercator
+#'  map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",cLat=56,cLon=12,scale=c(-2500,2500),attribution = "CGIAR SRTM v4 | GADM | Projection EPSG:3857")
+#'
+#' ## map it
+#'  mapview::projView(gadmDNK , map.types = map.typesList$layerName)
+#'
+#' ## define new target projection note then you must provide the source projection
 #'  s_epsg<-"EPSG:4326"
 #'  t_epsg<-"EPSG:32632"
 #'  t_srs<-"+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
 #'
 #' ## create tiles and parameter list
-#'  map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm/", t_srs=t_srs,t_epsg=t_epsg,cLat=54,cLon=12,scale=c(-500,1500))
-#'
-#' ## strt http daemon
-#'  servr::httd("~/tmp/data/makeTile/srtm",daemon=TRUE)
+#'  map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",s_epsg=s_epsg, t_srs=t_srs,t_epsg=t_epsg,cLat=54,cLon=12,scale=c(-2500,2500),,attribution = "CGIAR SRTM v4 | GADM | Projection: EPSG:32632")
 #'
 #' ## map it
-#'  mapview::projView(gadmGER , map.types = map.typesList$layerName)
+#'  mapview::projView(gadmDNK , map.types = map.typesList$layerName)
 #'
 #' ## stop all daemon instances
 #'  servr::daemon_stop(daemon_list())
 #'
-#' ### data from Quantartica2
+#' ####### data from Quantartica2 #######
 #'
 #' ## create persistant temp folder
 #'  tmpDir<-"~/tmp/data/quantartica"
+#'
+#' ## get Camps data
+#' data(campsQ2)
 #'
 #' ## choose a file
 #'  fn<-paste0(tmpDir,"/Quantarctica2/Basemap/Terrain/ETOPO1_DEM.tif")
@@ -137,18 +149,20 @@ if (!isGeneric('makeTile')) {
 #'  t_srs="+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
 #'
 #' ## create tiles and parameter list
-#'  map.typesList<-makeTile(x=localTileFile,outPath="/home/creu/tmp/data/makeTile/quantica",s_epsg=s_epsg, t_srs=t_srs,t_epsg=t_epsg,cLat=-90,cLon=0)
+#'
+#'  map.typesList<-makeTile(x=fn,outPath="~/tmp/data/makeTile/quantica",s_epsg=s_epsg, t_srs=t_srs,t_epsg=t_epsg,cLat=-90,cLon=0,attribution = "<a href='http://www.quantartica.org'> Quantartica </a> provided by: <a href='http://www.npolar.no/en'>Norwegian Polar Institute</a> &nbsp;| <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>")
 #'
 #' ## strt http daemon
-#'  servr::httd("/home/creu/tmp/data/makeTile/quantica/",daemon=TRUE)
+#'  servr::httd("~/tmp/data/makeTile/quantica/",daemon=TRUE)
 #'
 #' ## map it
-#'  mapview::projView(gadmGER , map.types = map.typesList$layerName)
+#'  mapview::projView(campsQ2 , map.types = map.typesList$layerName)
 #'
 #' ## stop all daemon instances
 #'  daemon_stop(daemon_list())
 #'
 #'}
+#'
 #'@name makeTile
 #'@export makeTile
 #'@rdname makeTile
@@ -158,11 +172,11 @@ library(raster)
 
 
 makeTile <- function(x=NULL,
-                     outPath=tmpDir(),
+                     outPath=NULL,
                      scale=c(-500,2500),
                      #s_srs="+proj=longlat +datum=WGS84 +ellps=WGS84",
                      t_srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs",
-                     s_epsg="NULL",
+                     s_epsg="EPSG:4326",
                      t_epsg="EPSG:3857",
                      rType="average",
                      attribution="still to be done",
@@ -170,37 +184,40 @@ makeTile <- function(x=NULL,
                      cLon=NULL,
                      zoom=NULL,
                      res=NULL,
+                     GDALFormat="JPEG",
                      srvrUrl="http://localhost:4321/"
 )
-{  tmp <- makeTmpPath(outPath)
-if (nchar(x)>0){
-  fnx<-raster(x)}
-#else if (class(x)=="raster" | class(x)=="rasterbrick" | class(x)=="RasterLayer" || class(x)=="RasterBrick"){
-#  writeRaster(x,paste0(outPath,"/tile.tif"),overwrite =TRUE)
-#  x@file@name <-paste0(outPath,"/tile.tif")
-#  fnx<-x
-#}
-
- else{
-  cat("no idea about the input type")
-  return()
- }
-
-#nodata<- as.numeric(strsplit(gdalinfo(path.expand(x))[grep("NoData Value=",gdalinfo(path.expand(x)))], split='=', fixed=TRUE)[[1]][2])
-
-nodata<- fnx@file@nodatavalue
+{
+  # creates the temporyry directory for the CRS, data and layer transfer
 
 
-tmpPath <- tmp[[1]][1]
-pathRasFn <- tmp[[2]][1]
-rasFn <- tmp[[3]][1]
-rasType <- tmp[[4]][1]
+  tmpPath<- createTempDataPath(outPath)
+  # define GDAL fpath+filename
+  tmpGDAL <-paste(tmpPath, paste0("rawTile.",GDALFormat), sep=.Platform$file.sep)
 
-#gdalwarp -overwrite -t_srs EPSG:3857 -r lanczos -multi -dstnodata 0 -of GTiff /home/creu/proj/antarctica/mapview/srtm/cMosaicSRTM.tif /home/creu/tmp/data/makeTile/srtm/rawTileQG.tif
-#gdalwarp -overwrite -t_srs EPSG:32632 -r lanczos -multi -dstnodata 0 -of GTiff /home/creu/proj/antarctica/mapview/srtm/cMosaicSRTM.tif /home/creu/tmp/data/makeTile/srtm/rawTileQG.tif
+  # if of class raster
+  if (class(x)[1] %in% c("RasterLayer", "RasterStack", "RasterBrick")){
+    if (nchar(x@file@name) < 1){
+      writeRaster(x,paste0(outPath,"/tile.tif"),overwrite =TRUE)
+      fn <-paste0(outPath,"/tile.tif")
+    }
+    fnx<-x
+    fn<-x@file@name
+  } else if (nchar(x)>0){
+    fnx<-raster(x)
+    fn<-x
+  }
+  else{
+    cat("no idea about the input type")
+    return()
+  }
 
-# #if (t_srs != s_srs){
-  gdalwarp(path.expand(x),
+  #nodata<- as.numeric(strsplit(gdalinfo(path.expand(x))[grep("NoData Value=",gdalinfo(path.expand(x)))], split='=', fixed=TRUE)[[1]][2])
+  #nodata<- fnx@file@nodatavalue
+
+  # if necessary project data
+  if (t_epsg != s_epsg){
+  gdalwarp(path.expand(fn),
            path.expand(paste0(tmpPath,"/rawTile.tif")) ,
            s_srs = s_epsg,
            t_srs = t_epsg,
@@ -211,51 +228,45 @@ rasType <- tmp[[4]][1]
            overwrite = TRUE,
            q = TRUE
   )
-fnTranslate<-path.expand(paste0(tmpPath,"/rawTile.tif"))
+    fn <- paste0(tmpPath,"/rawTile.tif")
+  }
 
-#} else {
-#  fnTranslate<-  path.expand(x@file@name)
-#}
+  # transform and scale to jpeg for speedup TODO better scaling better way to PNG
+  rx<- gdal_translate(path.expand(fn),
+                      path.expand(tmpGDAL) ,
+                      output_Raster = FALSE,
+                      overwrite= TRUE,
+                      verbose=TRUE,
+                      scale=scale,
+                      of=GDALFormat,
+                      q = TRUE
+  )
+  fnTranslate<-path.expand(tmpGDAL)
+  # put last raster image in fnx
+  fnx<-raster(fnTranslate)
 
-rx<- gdal_translate(path.expand(paste0(tmpPath,"/rawTile.tif")),
-                    path.expand(paste0(tmpPath,"/",rasFn)) ,
-                    output_Raster = FALSE,
-                    overwrite= TRUE,
-                    verbose=TRUE,
-                    scale=scale,
-                    of=rasType,
-                    q = TRUE
-)
+  # calculate zoom level from extent of input raster
+  if ( is.null(zoom)){
+    zfacs<-estimateZoom(fnx,t_srs)
+    zoom<-zfacs[[1]]
+    scaleFac<-zfacs[[5]]
+  }
 
-# calculate zoom level from extent of input raster
-if ( is.null(zoom)){
-  zoom<-estimateZoom(fnx,t_srs)[[1]]
 
+
+  # make tiles take care of the correct zoom!
+  r <- system(paste0("inst/htmlwidgets/lib/gdaltiles/gdal2tiles-multiprocess.py -l  --profile=raster -r ",rType,"  -z  0-",zoom," -s  ",t_epsg," -w all --verbose ", fnTranslate ," ", path.expand(paste0(tmpPath,"/tiles"))),intern=T)
+
+
+
+  # generate map.type list
+  map.typesList<-makeMapTypesList(outPath,s_srs,t_srs,t_epsg,fnx,zoom,attribution,cLat,cLon,srvrUrl,scaleFac)
+
+  return(map.typesList)
 }
 
-fnTranslate<-path.expand(paste0(tmpPath,"/",rasFn))
 
-# make tiles take care of the correct zoom!
-r <- system(paste0("inst/htmlwidgets/lib/gdaltiles/gdal2tiles-multiprocess.py -l  --profile=raster -r ",rType,"  -z  0-",zoom," -s  ",t_epsg," -w all --verbose ", fnTranslate ," ", path.expand(paste0(tmpPath,"/tiles"))),intern=T)
-fnx<-raster(fnTranslate)
-map.typesList<-makeMapTypesList(outPath,s_srs,t_srs,t_epsg,fnx,zoom,attribution,cLat,cLon,srvrUrl)
-return(map.typesList)
-}
-
-### makepath creates temp paths and filenames =================================================
-makeTmpPath <- function (p=NULL){
-  if (is.null(p)){
-    tmpPath <- tempfile()
-  } else {tmpPath <- p}
-  dir.create(tmpPath,recursive = TRUE, showWarnings = FALSE)
-  dir.create(paste0(tmpPath,"/tiles"),recursive = TRUE, showWarnings = FALSE)
-  baseFn <- "rawTile"
-  extFn <- "JPEG"
-  rasFn <- paste0(baseFn,".",extFn)
-  pathRasFn <- paste0(tmpPath,"/",rasFn)
-  return(list(tmpPath,pathRasFn,rasFn,extFn))
-}
-
+# function that calculates the zoom resolution and so on
 estimateZoom <- function(ext=NULL,proj4){
   if (length(grep("+proj=longlat", proj4,fixed=TRUE))>= 1){
     lola<-TRUE
@@ -290,28 +301,32 @@ estimateZoom <- function(ext=NULL,proj4){
     groundResolution<- dist / ext@ncols
     fulldiskPixel<- 2*earth*pi/groundResolution
   }
+  # calculate zomm via up counting
   #for (i in seq(1,32)) {
   #  tmpRes<-256 * 2**i
   #  if (tmpRes>ext@nrows) {
   #    return(c(i,groundResolution,dist,ext))}
   #}
+
   # calculate native zoom of the input raster
+  maxExact<-max(log2(ext@nrows/256),log2(ext@ncols/256))
   zoom<- ceiling(max(log2(ext@nrows/256),log2(ext@ncols/256)))
-  return(c(zoom,groundResolution,dist,ext))
+  scaleFac<-zoom/maxExact
+
+  return(c(zoom,groundResolution,dist,ext,scaleFac))
 }
 
-makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=NULL,zoom=NULL,attribution,cLat,cLon,srvrUrl){
-  #c(zoom,256,outPath,t_srs,fnx)
-  ts<-TRUE
+makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=NULL,zoom=NULL,attribution,cLat,cLon,srvrUrl,scaleFac){
+
   pathtoTile<-outPath
+  ts<-TRUE
   layerName<-names(fnx)
   minx<-fnx@extent@xmin
   miny<-fnx@extent@ymin
   maxx<-fnx@extent@xmax
   maxy<-fnx@extent@ymax
 
-  # calculate resolution
-
+  # calculates generic resolution
   res<-max(maxx-minx,maxy-miny)
   #if (is.null(res)) {res<-abs(ulx) + abs(uly)}
   maxResolution <- res / 256
@@ -320,37 +335,31 @@ makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=
     resolution[i+1] <- maxResolution /  2^i
   }
   minRes<-as.numeric(resolution[length(resolution)])
+
   # create resolution string
   # resolution<-c(paste(resolution,collapse = ","))
   # LProjResolution<-paste0("[",tmpres,"]")
 
-
-  # To derive the correct map Center coordinats in lat lat lon !!!
-  # and the bounds in the target projection it seems to be easier to
-  # co    # reproject it to latlong
-
-  #tmp<-sp::spTransform(bbox, CRS("+proj=longlat +datum=WGS84 +no_defs"))
-
+  # if no map centre is set calculate it
   if (is.null(cLat)||is.null(cLon)){
     # create an polygon from the xtend of the raster image
     tmpPoly = Polygon(cbind(c(minx,minx,maxx,maxx,minx),c(miny,maxy,maxy,miny,miny)))
     tmpPoly = Polygons(list(tmpPoly), ID = "bbox")
     bbox = SpatialPolygons(list(tmpPoly))
-
     # if the raster was reprojected
-    if (s_srs != t_srs) {
+    if (s_epsg != t_epsg) {
       # assign the target projection
       sp::proj4string(bbox) <-CRS(t_srs)
       # reproject it to latlong
       tmp<-sp::spTransform(bbox, CRS("+proj=longlat +datum=WGS84 +no_defs"))
-      #bbox <- sp::spTransform(bbox, CRS(paste0("+init=epsg",substr(t_epsg, 5, nchar(t_epsg))," ",t_srs)))
       # get the xtent
       xt<-extent(tmp)
       # get map center and extent
       xtrLL<-extent(xt)
       cLat <- (xtrLL@ymax-xtrLL@ymin) * 0.5  + xtrLL@ymin
       cLon <- (xtrLL@xmax-xtrLL@xmin) * 0.5 + xtrLL@xmin
-    } else {
+    }
+    else {
       proj4string(bbox) <-CRS(s_srs)
       # reproject it to latlong
       tmp<-sp::spTransform(bbox, CRS("+proj=longlat +datum=WGS84 +no_defs"))
@@ -360,9 +369,10 @@ makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=
       cLat <- (xtrLL@ymax-xtrLL@ymin) * 0.5  + xtrLL@ymin
       cLon <- (xtrLL@xmax-xtrLL@xmin) * 0.5 + xtrLL@xmin
     }
-  }
+  } # end map center
+
   # to do +proj=stere +lat_0=-90 +lat_0=+90
-  if (t_epsg == "EPSG:3031" || t_epsg == "EPSG:3031" ) {
+  if (t_epsg == "EPSG:3031" || t_epsg == "EPSG:3995" ) {
     res<-max(maxx-minx,maxy-miny)
     #if (is.null(res)) {res<-abs(ulx) + abs(uly)}
     maxRes <- res / 256
@@ -382,30 +392,34 @@ makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=
     resolution<-tmpres
 
     diff <-(sqrt(abs(minx)**2+abs(miny)**2)/2)/zoom
-    #oly<-(sqrt(abs(minx)**2+abs(miny)**2)/2)/zoom
     olx<-(minx-diff)
     oly<- (miny-diff)* (-1)
 
-  } else {
+  }
+  # if not polarstereographic
+  else {
+    initRes<-log(256, base = 2)
+    if (initRes <= 0) {initRes <-1}
+    tmpres<-2^(initRes:(zoom + initRes))
+    tmpres<-sort(tmpres,decreasing = TRUE)
+    resolution<-tmpres
+    olx<-minx
+    oly<-maxy
 
-     initRes<-log(256, base = 2)
-     if (initRes <= 0) {initRes <-1}
-     #as.numeric(resolution[length(resolution)])
-     tmpres<-2^(initRes:(zoom + initRes))
-     tmpres<-sort(tmpres,decreasing = TRUE)
-     resolution<-tmpres
-#
-#     diff <-(sqrt(abs(minx)**2+abs(miny)**2)/2)/zoom
-#     #oly<-(sqrt(abs(minx)**2+abs(miny)**2)/2)/zoom
-    olx<-minx #(minx-diff)
-    oly<-maxy # (miny-diff)* (-1)
+    # rescale the canvas to the real tilesize
+    # yes I had to think about it a while
+    # that this is the most weird calculation
+    # of the pixel size
     minSide<-min(fnx@ncols,fnx@nrows)
     maxSide<-max(fnx@ncols,fnx@nrows)
     mainScale<-minSide/maxSide
-    minSide256<-zoom**2*256
+    minSide256<-8**2*256
+
     tileSize<-(minSide/minSide256)*256*mainScale
+    tileSize<-xres(fnx)
 
   }
+
   # create param list
   map.types<-list(layerName=list(service="OSM",
                                  L.tileLayer=srvrUrl,
@@ -417,7 +431,7 @@ makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=
                                  minZoom=0,
                                  maxZoom=zoom,
                                  noWrap ="true",
-                                 continuousworld="true",
+                                 continuousworld="false",
                                  attribution=attribution,
                                  params=list(t_epsg=t_epsg,
                                              t_srs=t_srs,
@@ -432,9 +446,27 @@ makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=
                                                             maxy=maxy),
                                              origin=list(olx=olx,
                                                          oly=oly),
-                                             useBounds="FALSE"
+                                             useBounds="TRUE"
                                  )) # end of list
   ) # end of total list
   save(map.types,file = paste0(pathtoTile,"/",layerName,".rda"))
   return(map.types)
 }
+
+###  creates temporary file structure for data transfer =================================================
+
+createTempDataPath<- function (path=NULL){
+
+  if (is.null(path)){
+  tmpPath <- tempfile(pattern="007")
+  dir.create(tmpPath)
+  }
+  else{
+  dir.create(path,showWarnings = FALSE,recursive = TRUE)
+    tmpPath<-path
+  }
+  #pathFN <- paste0(tmpPath,"/",f)
+  return(tmpPath)
+
+}
+

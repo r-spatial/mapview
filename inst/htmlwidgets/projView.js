@@ -20,8 +20,8 @@ HTMLWidgets.widget({
     var map = new L.map(el, {
       center: mapCenter,
       crs : crs,
-      continuousWorld: true,
-      worldCopyJump: true
+      //continuousWorld: true,
+      //worldCopyJump: true
     });
 
   // create map object
