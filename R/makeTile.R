@@ -15,28 +15,34 @@ if (!isGeneric('makeTile')) {
 #'  "EPSG:3857", rType = "average", attribution = "to be done", cLat = NULL,
 #'  cLon = NULL, zoom = NULL, res = NULL, srvrUrl = "http://localhost:4321/")
 #'
-#'@param x  GDAL raster file
-#'@param outPath path where the tiles will be generated. Note it is always
+#'@param x character GDAL raster file name or a \code{\link{raster*}} object.
+#'@param outPath charcter path where the tiles will be generated. Note it is always
 #'  extented by \code{tiles/}
-#'@param scale  numeric. (c(src_min,src_max,dst_min,dst_max)). Rescale the input pixels values from the range src_min to src_max to the range dst_min to dst_max. If omitted the output range is 0 to 255. If omitted the input range is automatically computed from the source data.
+#'@param scale  numeric. (c(src_min,src_max,dst_min,dst_max)). Rescale the input
+#'  pixels values from the range src_min to src_max to the range dst_min to
+#'  dst_max. If omitted the output range is 0 to 255. If omitted the input range
+#'  is automatically computed from the source data.
 #'@param s_epsg character source proj4 string
 #'@param t_srs character target proj4 string
 #'@param t_epsg character target EPSG code
-#'@param rType  character resampling_method. ("nearest"|"bilinear"|"cubic"|"cubicspline"|"lanczos"|"average"|"mode") (GDAL >= 2.0) Select a resampling algorithm.
+#'@param rType  character resampling_method.
+#'  ("nearest"|"bilinear"|"cubic"|"cubicspline"|"lanczos"|"average"|"mode")
+#'  (GDAL >= 2.0) Select a resampling algorithm.
 #'
 #'@param attribution charcter attribution of the map default is "still to be
 #'  done"
-#'@param cLat numeric center of Latitude of the leaflet map object has to be in decimal
-#'  degrees
-#'@param cLon numeric center of Longitude of the leaflet map object has to be in decimal
-#'  degrees
-#'@param zoom numeric if you want to override the automatic calculation of maxZoom you
-#'  can provide here a value up to 21
-#'@param res numeric if you want to override the automatic calculation of the resolution
-#'  you can  provide a predifined list like c(512,256,128)
-#'@param srvrUrl character the root address of the locale http daemon default see
-#'  \link{details}, \link{seealso}
-#'@param GDALFormat character see \href{http://www.gdal.org/formats_list.html}{GDAL formats}
+#'@param cLat numeric center of Latitude of the leaflet map object has to be in
+#'  decimal degrees
+#'@param cLon numeric center of Longitude of the leaflet map object has to be in
+#'  decimal degrees
+#'@param zoom numeric if you want to override the automatic calculation of
+#'  maxZoom you can provide here a value up to 21
+#'@param res numeric if you want to override the automatic calculation of the
+#'  resolution you can  provide a predifined list like c(512,256,128)
+#'@param srvrUrl character the root address of the locale http daemon default
+#'  see \link{details}, \link{seealso}
+#'@param GDALFormat character see
+#'  \href{http://www.gdal.org/formats_list.html}{GDAL formats}
 #'
 #'@details The integration of local tiles in leaflet is first of all
 #'  straightforward. You can easyly generate them with
@@ -58,10 +64,24 @@ if (!isGeneric('makeTile')) {
 #'  to the temporary path and then serves location with the the build in http
 #'  daemon of RStudio. Imagine if you just have 6-8 SRTM tiles you need to copy
 #'  about 1-2 GB of tiles to the temporary directory. An easy solution is to use
-#'  a seperate http daemon as \link{httd} from the package servr.
+#'  a seperate http daemon as \link{httd} from the package servr.\cr\cr
 #'
-#'  Also there may problems arise while you use "exotic" projections like polar
-#'  stereographic or similar.
+#' The physical generation of raster tiles is with the help of the gdal tools
+#' fairly simple. Nevertheless it is a bit tricky to glue the raster tiles at
+#' the correct position in the map frame because Leaflet is made for mapping of
+#' seamless and continuously existing tiles like the OSM ones.\cr\cr
+#'  Owing to this concept you have to  rescale each raster on the given canvas of the browser.
+#' Additionally there you must define the zoom levels which you want to use. Unlike the OSM tiles that
+#'  have a defined resolution, the local raster files usually have a generic pixel resolution
+#'  as a function of the sensor and the post-processing. To meet the 256 pixel tiling
+#'  concept this original resolution has to be scaled to the tiles.\cr \cr
+#'  In the end maketile uses the original or reprojected resolution of the pixel  as reference for the
+#' maximum  zoom level which is synchronized with the OSM zoom levels. Therefore the pixel resolution
+#'  depends on (1) the original and/or (2) the projected resolution. \cr To keep
+#'  overlays and raster tiles geometrically in line, the leaflet "bounds" settings
+#'  is applied strictly, so you sometimes you may have to zoom some levels into
+#'  or pan around the map  to see the background tiles ...
+#'
 #'
 #'
 #'@seealso
@@ -83,8 +103,7 @@ if (!isGeneric('makeTile')) {
 #'installation advices have a look at stackoverflow
 #'\href{http://stackoverflow.com/questions/12905426/what-is-a-faster-alternative-to-pythons-simplehttpserver}{simplehttpserver}.
 #'
-#'@author
-#' Chris Reudenbach
+#'@author Chris Reudenbach
 #'
 #'@examples
 #'
@@ -95,15 +114,6 @@ if (!isGeneric('makeTile')) {
 #' require(servr)
 #'
 #' ### Typical workflow (1) start http deamon (2) makeTile,  (3) use projView()
-#'
-#' #### Remarks
-#' ####  The zoomlevel of the raster tile is optimized to the full h
-#' ####  of the projected input raster. The pixel resolution is dependend
-#' ####  on the choosen projection. to keep overlays and raster tile in line
-#' ####  the leaflet bounds settings are applied strictly
-#' ####  to make it short sometimes you have to zoom in some steps or pan the map
-#' ####  to see the background tiles ...
-#' ####
 #'
 #' ## get Denmark vector data
 #'  gadmDNK <- getGeoData(name="GADM",country="DNK",level="1")
