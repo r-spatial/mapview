@@ -131,7 +131,7 @@ projView<- function( x=NULL,
                      popup = popup,
                      internalList =FALSE,
                      externalList=NULL,
-                     northArrow=FALSE)
+                     scaleBar=TRUE)
 {
 
 
