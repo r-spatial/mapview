@@ -107,9 +107,9 @@ require(servr)
 
 ## First pseudomercator
  map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",
-                             cLat=56,
-                             cLon=12,
-                             attribution = "<a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | Projection EPSG:3857")
+                             cLat=56.5,
+                             cLon=11,
+                             attribution = "<a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | Projection: <a href='http://spatialreference.org/ref/epsg/3857'> EPSG:3857</a>")
 
 ## map it
  mapview::projView(gadmDNK , map.types = map.typesList$layerName)
@@ -124,9 +124,9 @@ require(servr)
                              s_epsg=s_epsg,
                              t_srs=t_srs,
                              t_epsg=t_epsg,
-                             cLat=54,
-                             cLon=12,
-                             attribution = "<a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | <a href='http://www.gadme.org'>GADM</a> | Projection: <a href='http://spatialreference.org/ref/epsg/32632'> EPSG:32632</a>' ")
+                             cLat=56.5,
+                             cLon=11,
+                             attribution = "<a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | <a href='http://spatialreference.org/ref/epsg/32632'> EPSG:32632</a>")
 
 ## map it
  mapview::projView(gadmDNK , map.types = map.typesList$layerName)
