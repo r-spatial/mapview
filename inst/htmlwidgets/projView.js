@@ -203,6 +203,8 @@ if (x.internalList) {
 
    // center the map
    map.setView([mapCenter[0],mapCenter[1]], initialZoom);
+  if (x.scaleBar) { L.control.scale().addTo(map)}
+  if (x.northArrow) {north.addTo(map);}
 // map.fitWorld();
   // ad the lat lon mousover to the element created in the init
   lnlt = document.getElementById('lnlt');

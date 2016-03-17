@@ -130,7 +130,8 @@ projView<- function( x=NULL,
                      trim = TRUE,
                      popup = popup,
                      internalList =FALSE,
-                     externalList=NULL)
+                     externalList=NULL,
+                     northArrow=FALSE)
 {
 
 
@@ -536,7 +537,8 @@ projView<- function( x=NULL,
                 weight = lwd,
                 values = x@data,
                 cex=cex,
-                internalList =internalList
+                internalList =internalList,
+                scaleBar=scaleBar
   )
   #for internal List merge it TODO make it a more common interface
   if (internalList) {
@@ -561,7 +563,8 @@ projView<- function( x=NULL,
                   weight = lwd,
                   values = x@data,
                   cex=cex,
-                  internalList =internalList
+                  internalList =internalList,
+                  scaleBar=scaleBar
     )
 
   }
