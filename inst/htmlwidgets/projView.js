@@ -149,7 +149,7 @@ var geojsonMarkerOptions = {
    // create geojsonlayer
    var polyLayer = L.Proj.geoJson(jsondata,{ pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, geojsonMarkerOptions);
-    },style:style,onEachFeature:onEachFeature});
+    },style:style,onEachFeature:onEachFeature}).addTo(map);
 
   // create geojsonlayer
    var frameLayer = L.Proj.geoJson(framedata,{ pointToLayer: function (feature, latlng) {

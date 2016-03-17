@@ -16,37 +16,35 @@ makeTile(x = NULL, outPath = NULL, scalec = (0,8848), s_epsg =NULL ,
 \item{outPath}{path where the tiles will be generated. Note it is always
 extented by \code{tiles/}}
 
-\item{scale}{scale of grey values for jpeg creation}
+\item{scale}{numeric. (c(src_min,src_max,dst_min,dst_max)). Rescale the input pixels values from the range src_min to src_max to the range dst_min to dst_max. If omitted the output range is 0 to 255. If omitted the input range is automatically computed from the source data.}
 
-\item{s_epsg}{source proj4 string}
+\item{s_epsg}{character source proj4 string}
 
-\item{t_srs}{target proj4 string}
+\item{t_srs}{character target proj4 string}
 
-\item{t_epsg}{target EPSG code}
+\item{t_epsg}{character target EPSG code}
 
-\item{rType}{Resampling method
-(average,near,bilinear,cubic,cubicspline,lanczos,antialias) - default
-'average'}
+\item{rType}{character resampling_method. ("nearest"|"bilinear"|"cubic"|"cubicspline"|"lanczos"|"average"|"mode") (GDAL >= 2.0) Select a resampling algorithm.}
 
-\item{attribution}{string how attribute the tile map default is "still to be
+\item{attribution}{charcter attribution of the map default is "still to be
 done"}
 
-\item{cLat}{center of Latitude of the leaflet map object has to be in decimal
+\item{cLat}{numeric center of Latitude of the leaflet map object has to be in decimal
 degrees}
 
-\item{cLon}{center of Longitude of the leaflet map object has to be in decimal
+\item{cLon}{numeric center of Longitude of the leaflet map object has to be in decimal
 degrees}
 
-\item{zoom}{if you want to override the automatic calculation of maxZoom you
+\item{zoom}{numeric if you want to override the automatic calculation of maxZoom you
 can provide here a value up to 21}
 
-\item{res}{if you want to override the automatic calculation of the resolution
+\item{res}{numeric if you want to override the automatic calculation of the resolution
 you can  provide a predifined list like c(512,256,128)}
 
-\item{srvrUrl}{is the root address of the locale http daemon default see
+\item{srvrUrl}{character the root address of the locale http daemon default see
 \link{details}, \link{seealso}}
 
-\item{GDALFormat}{see \href{http://www.gdal.org/formats_list.html}{GDAL formats}}
+\item{GDALFormat}{character see \href{http://www.gdal.org/formats_list.html}{GDAL formats}}
 }
 \description{
 makeTile creates from a GDAL raster file a leaflet compatible
@@ -90,10 +88,13 @@ require(servr)
 ### Typical workflow (1) start http deamon (2) makeTile,  (3) use projView()
 
 #### Remarks
-####     due to using leaflet bounds strictly it depends on the scale how much of the frame you see
-####     so sometimes you have to zoom in a level...
+####  The zoomlevel of the raster tile is optimized to the full h
+####  of the projected input raster. The pixel resolution is dependend
+####  on the choosen projection. to keep overlays and raster tile in line
+####  the leaflet bounds settings are applied strictly
+####  to make it short sometimes you have to zoom in some steps or pan the map
+####  to see the background tiles ...
 ####
-#### overlay vectors are not activated by default
 
 ## get Denmark vector data
  gadmDNK <- getGeoData(name="GADM",country="DNK",level="1")
@@ -105,7 +106,10 @@ require(servr)
  servr::httd("~/tmp/data/makeTile/srtm",daemon=TRUE)
 
 ## First pseudomercator
- map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",cLat=56,cLon=12,scale=c(-2500,2500),attribution = "CGIAR SRTM v4 | GADM | Projection EPSG:3857")
+ map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",
+                             cLat=56,
+                             cLon=12,
+                             attribution = "<a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | Projection EPSG:3857")
 
 ## map it
  mapview::projView(gadmDNK , map.types = map.typesList$layerName)
@@ -116,7 +120,13 @@ require(servr)
  t_srs<-"+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
 
 ## create tiles and parameter list
- map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",s_epsg=s_epsg, t_srs=t_srs,t_epsg=t_epsg,cLat=54,cLon=12,scale=c(-2500,2500),,attribution = "CGIAR SRTM v4 | GADM | Projection: EPSG:32632")
+ map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",
+                             s_epsg=s_epsg,
+                             t_srs=t_srs,
+                             t_epsg=t_epsg,
+                             cLat=54,
+                             cLon=12,
+                             attribution = "<a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | <a href='http://www.gadme.org'>GADM</a> | Projection: <a href='http://spatialreference.org/ref/epsg/32632'> EPSG:32632</a>' ")
 
 ## map it
  mapview::projView(gadmDNK , map.types = map.typesList$layerName)
@@ -142,7 +152,13 @@ data(campsQ2)
 
 ## create tiles and parameter list
 
- map.typesList<-makeTile(x=fn,outPath="~/tmp/data/makeTile/quantica",s_epsg=s_epsg, t_srs=t_srs,t_epsg=t_epsg,cLat=-90,cLon=0,attribution = "<a href='http://www.quantartica.org'> Quantartica </a> provided by: <a href='http://www.npolar.no/en'>Norwegian Polar Institute</a> &nbsp;| <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>")
+ map.typesList<-makeTile(x=fn,outPath="~/tmp/data/makeTile/quantica",
+                              s_epsg=s_epsg,
+                              t_srs=t_srs,
+                              t_epsg=t_epsg,
+                              cLat=-90,
+                              cLon=0,
+                              attribution = "<a href='http://www.quantartica.org'> Quantartica </a> provided by: <a href='http://www.npolar.no/en'>Norwegian Polar Institute</a> &nbsp;| <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>")
 
 ## strt http daemon
  servr::httd("~/tmp/data/makeTile/quantica/",daemon=TRUE)

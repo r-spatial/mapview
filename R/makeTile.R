@@ -18,26 +18,25 @@ if (!isGeneric('makeTile')) {
 #'@param x  GDAL raster file
 #'@param outPath path where the tiles will be generated. Note it is always
 #'  extented by \code{tiles/}
-#'@param scale scale of grey values for jpeg creation
-#'@param s_epsg source proj4 string
-#'@param t_srs target proj4 string
-#'@param t_epsg target EPSG code
-#'@param rType Resampling method
-#'  (average,near,bilinear,cubic,cubicspline,lanczos,antialias) - default
-#'  'average'
-#'@param attribution string how attribute the tile map default is "still to be
+#'@param scale  numeric. (c(src_min,src_max,dst_min,dst_max)). Rescale the input pixels values from the range src_min to src_max to the range dst_min to dst_max. If omitted the output range is 0 to 255. If omitted the input range is automatically computed from the source data.
+#'@param s_epsg character source proj4 string
+#'@param t_srs character target proj4 string
+#'@param t_epsg character target EPSG code
+#'@param rType  character resampling_method. ("nearest"|"bilinear"|"cubic"|"cubicspline"|"lanczos"|"average"|"mode") (GDAL >= 2.0) Select a resampling algorithm.
+#'
+#'@param attribution charcter attribution of the map default is "still to be
 #'  done"
-#'@param cLat center of Latitude of the leaflet map object has to be in decimal
+#'@param cLat numeric center of Latitude of the leaflet map object has to be in decimal
 #'  degrees
-#'@param cLon center of Longitude of the leaflet map object has to be in decimal
+#'@param cLon numeric center of Longitude of the leaflet map object has to be in decimal
 #'  degrees
-#'@param zoom if you want to override the automatic calculation of maxZoom you
+#'@param zoom numeric if you want to override the automatic calculation of maxZoom you
 #'  can provide here a value up to 21
-#'@param res if you want to override the automatic calculation of the resolution
+#'@param res numeric if you want to override the automatic calculation of the resolution
 #'  you can  provide a predifined list like c(512,256,128)
-#'@param srvrUrl is the root address of the locale http daemon default see
+#'@param srvrUrl character the root address of the locale http daemon default see
 #'  \link{details}, \link{seealso}
-#'@param GDALFormat see \href{http://www.gdal.org/formats_list.html}{GDAL formats}
+#'@param GDALFormat character see \href{http://www.gdal.org/formats_list.html}{GDAL formats}
 #'
 #'@details The integration of local tiles in leaflet is first of all
 #'  straightforward. You can easyly generate them with
@@ -98,10 +97,13 @@ if (!isGeneric('makeTile')) {
 #' ### Typical workflow (1) start http deamon (2) makeTile,  (3) use projView()
 #'
 #' #### Remarks
-#' ####     due to using leaflet bounds strictly it depends on the scale how much of the frame you see
-#' ####     so sometimes you have to zoom in a level...
+#' ####  The zoomlevel of the raster tile is optimized to the full h
+#' ####  of the projected input raster. The pixel resolution is dependend
+#' ####  on the choosen projection. to keep overlays and raster tile in line
+#' ####  the leaflet bounds settings are applied strictly
+#' ####  to make it short sometimes you have to zoom in some steps or pan the map
+#' ####  to see the background tiles ...
 #' ####
-#' #### overlay vectors are not activated by default
 #'
 #' ## get Denmark vector data
 #'  gadmDNK <- getGeoData(name="GADM",country="DNK",level="1")
@@ -113,7 +115,10 @@ if (!isGeneric('makeTile')) {
 #'  servr::httd("~/tmp/data/makeTile/srtm",daemon=TRUE)
 #'
 #' ## First pseudomercator
-#'  map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",cLat=56,cLon=12,scale=c(-2500,2500),attribution = "CGIAR SRTM v4 | GADM | Projection EPSG:3857")
+#'  map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",
+#'                              cLat=56,
+#'                              cLon=12,
+#'                              attribution = "<a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | Projection EPSG:3857")
 #'
 #' ## map it
 #'  mapview::projView(gadmDNK , map.types = map.typesList$layerName)
@@ -124,7 +129,13 @@ if (!isGeneric('makeTile')) {
 #'  t_srs<-"+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
 #'
 #' ## create tiles and parameter list
-#'  map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",s_epsg=s_epsg, t_srs=t_srs,t_epsg=t_epsg,cLat=54,cLon=12,scale=c(-2500,2500),,attribution = "CGIAR SRTM v4 | GADM | Projection: EPSG:32632")
+#'  map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",
+#'                              s_epsg=s_epsg,
+#'                              t_srs=t_srs,
+#'                              t_epsg=t_epsg,
+#'                              cLat=54,
+#'                              cLon=12,
+#'                              attribution = "<a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | <a href='http://www.gadme.org'>GADM</a> | Projection: <a href='http://spatialreference.org/ref/epsg/32632'> EPSG:32632</a>' ")
 #'
 #' ## map it
 #'  mapview::projView(gadmDNK , map.types = map.typesList$layerName)
@@ -150,7 +161,13 @@ if (!isGeneric('makeTile')) {
 #'
 #' ## create tiles and parameter list
 #'
-#'  map.typesList<-makeTile(x=fn,outPath="~/tmp/data/makeTile/quantica",s_epsg=s_epsg, t_srs=t_srs,t_epsg=t_epsg,cLat=-90,cLon=0,attribution = "<a href='http://www.quantartica.org'> Quantartica </a> provided by: <a href='http://www.npolar.no/en'>Norwegian Polar Institute</a> &nbsp;| <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>")
+#'  map.typesList<-makeTile(x=fn,outPath="~/tmp/data/makeTile/quantica",
+#'                               s_epsg=s_epsg,
+#'                               t_srs=t_srs,
+#'                               t_epsg=t_epsg,
+#'                               cLat=-90,
+#'                               cLon=0,
+#'                               attribution = "<a href='http://www.quantartica.org'> Quantartica </a> provided by: <a href='http://www.npolar.no/en'>Norwegian Polar Institute</a> &nbsp;| <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>")
 #'
 #' ## strt http daemon
 #'  servr::httd("~/tmp/data/makeTile/quantica/",daemon=TRUE)
@@ -173,7 +190,7 @@ library(raster)
 
 makeTile <- function(x=NULL,
                      outPath=NULL,
-                     scale=c(-500,2500),
+                     scale=NULL,
                      #s_srs="+proj=longlat +datum=WGS84 +ellps=WGS84",
                      t_srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs",
                      s_epsg="EPSG:4326",
@@ -211,7 +228,7 @@ makeTile <- function(x=NULL,
     cat("no idea about the input type")
     return()
   }
-
+  if (is.null(scale)) {scale<-c(minValue(fnx),maxValue(fnx))}
   #nodata<- as.numeric(strsplit(gdalinfo(path.expand(x))[grep("NoData Value=",gdalinfo(path.expand(x)))], split='=', fixed=TRUE)[[1]][2])
   #nodata<- fnx@file@nodatavalue
 
@@ -249,7 +266,7 @@ makeTile <- function(x=NULL,
   if ( is.null(zoom)){
     zfacs<-estimateZoom(fnx,t_srs)
     zoom<-zfacs[[1]]
-    scaleFac<-zfacs[[5]]
+    #scaleFac<-zfacs[[5]]
   }
 
 
@@ -260,7 +277,7 @@ makeTile <- function(x=NULL,
 
 
   # generate map.type list
-  map.typesList<-makeMapTypesList(outPath,s_srs,t_srs,t_epsg,fnx,zoom,attribution,cLat,cLon,srvrUrl,scaleFac)
+  map.typesList<-makeMapTypesList(outPath,s_srs,t_srs,t_epsg,fnx,zoom,attribution,cLat,cLon,srvrUrl)
 
   return(map.typesList)
 }
@@ -311,12 +328,13 @@ estimateZoom <- function(ext=NULL,proj4){
   # calculate native zoom of the input raster
   maxExact<-max(log2(ext@nrows/256),log2(ext@ncols/256))
   zoom<- ceiling(max(log2(ext@nrows/256),log2(ext@ncols/256)))
-  scaleFac<-zoom/maxExact
-
-  return(c(zoom,groundResolution,dist,ext,scaleFac))
+  #scaleFac<-zoom/maxExact
+  #zoom<-ceiling(min(ext@ncols,ext@nrows)/256)
+  return(c(zoom,groundResolution,dist,ext)
+         )
 }
 
-makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=NULL,zoom=NULL,attribution,cLat,cLon,srvrUrl,scaleFac){
+makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=NULL,zoom=NULL,attribution,cLat,cLon,srvrUrl){
 
   pathtoTile<-outPath
   ts<-TRUE
@@ -398,25 +416,32 @@ makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=
   }
   # if not polarstereographic
   else {
-    initRes<-log(256, base = 2)
-    if (initRes <= 0) {initRes <-1}
-    tmpres<-2^(initRes:(zoom + initRes))
-    tmpres<-sort(tmpres,decreasing = TRUE)
-    resolution<-tmpres
+
     olx<-minx
     oly<-maxy
 
     # rescale the canvas to the real tilesize
     # yes I had to think about it a while
     # that this is the most weird calculation
-    # of the pixel size
-    minSide<-min(fnx@ncols,fnx@nrows)
-    maxSide<-max(fnx@ncols,fnx@nrows)
-    mainScale<-minSide/maxSide
-    minSide256<-8**2*256
+    # of the pixel size I ever did a monument
+    # of circular thinking
+#     minSide<-min(fnx@ncols,fnx@nrows)
+#     maxSide<-max(fnx@ncols,fnx@nrows)
+#     mainScale<-minSide/maxSide
+#     minSide256<-8**2*256
+#     tileSize<-(minSide/minSide256)*256*mainScale
 
-    tileSize<-(minSide/minSide256)*256*mainScale
     tileSize<-xres(fnx)
+
+    #zoom<-ceiling(min(fnx@ncols,fnx@nrows)/256)
+    exp<-ceiling(256/tileSize)
+    initRes<- (log(256, base = 2))-exp
+    if (initRes <= 0) {initRes <-0}
+    tmpres<-2^(initRes:(zoom + initRes))
+    tmpres<-sort(tmpres,decreasing = TRUE)
+    resolution<-tmpres
+    exp<-8-log(tmpres[length(tmpres)],base=2)
+    tileSize<-tileSize*2**exp
 
   }
 
