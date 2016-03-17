@@ -75,30 +75,30 @@ if (!isGeneric('projView')) {
 #'  ### finally let's start mapping
 #'
 #'  ## map the antarctic facilities data using the NASA EarthData tiles
-#'   projView(campsQ2, map.types= "map.types$NASA")
+#'   projView(campsQ2, map.types= map.types$NASA)
 #'
 #'  ## same as before but now using the visEarthPole function as a "plugin"
-#'   projView(campsQ2, map.types= "map.types$NASA",
+#'   projView(campsQ2, map.types= map.types$NASA,
 #'                   internalList =TRUE,
 #'                   externalList = c("arctic-nasa","visEarthPole(groupList='1000',dateString='2014-02-04',createList = TRUE)"))
 #'
 #'  ### similiar job in the North
 #'
 #'  ## map Greenland's roads using the CAFF tiles for sea and landsurface temerature
-#'   mapview::projView(roadsGRL, map.types= "map.types$CAFF")
+#'   mapview::projView(roadsGRL, map.types= map.types$CAFF)
 #'
 #'  ## again Greenland's roads using the HAV map tiles
-#'   mapview::projView(roadsGRL, map.types= "map.types$HAV")
+#'   mapview::projView(roadsGRL, map.types= map.types$HAV)
 #'
 #'  ## reproject HAV and roadsGRL to EPSG:3995
 #'   map.types$HAV$params$t_srs <- "+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
 #'   map.types$HAV$params$t_epsg <- "EPSG:3995"
-#'   mapview::projView(roadsGRL, map.types= "map.types$HAV")
+#'   mapview::projView(roadsGRL, map.types= map.types$HAV)
 #'
 #'  ## move center
 #'   map.types$HAV$params$mapCenter$cLon="70"
 #'   map.types$HAV$params$mapCenter$cLat="15"
-#'   mapview::projView(roadsGRL, map.types= "map.types$HAV")
+#'   mapview::projView(roadsGRL, map.types= map.types$HAV)
 #'
 #'  ## load the list of the above example
 #'   data("map.types")

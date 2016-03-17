@@ -89,11 +89,11 @@ require(servr)
 
 ### Typical workflow (1) start http deamon (2) makeTile,  (3) use projView()
 
-
-#### NOTE
-#### (1) please zoom in one Level and activate the overlays
-#### (2) the "frame" overlay shows you the "real" extend of the not tiled layer
-#### (3) due to using bounds strictly sometimes you have to zoom in 1 level more
+#### Remarks
+####     due to using leaflet bounds strictly it depends on the scale how much of the frame you see
+####     so sometimes you have to zoom in a level...
+####
+#### overlay vectors are not activated by default
 
 ## get Denmark vector data
  gadmDNK <- getGeoData(name="GADM",country="DNK",level="1")
