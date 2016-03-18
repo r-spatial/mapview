@@ -118,7 +118,7 @@ require(servr)
  map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",
                              cLat=56.5,
                              cLon=11,
-                             attribution = " <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | <a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | <a href='http://spatialreference.org/ref/epsg/3857'> EPSG:3857</a>")
+                             attribution = " <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | <a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadm.org'>GADM</a> | <a href='http://spatialreference.org/ref/sr-org/7483/'> EPSG:3857</a>")
 
 ## map it
  mapview::projView(gadmDNK , map.types = map.typesList$layerName)
@@ -135,7 +135,7 @@ require(servr)
                              t_epsg=t_epsg,
                              cLat=56.5,
                              cLon=11,
-                             attribution = "<a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | <a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | <a href='http://spatialreference.org/ref/epsg/32632'> EPSG:32632</a>")
+                             attribution = "<a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | <a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadm.org'>GADM</a> | <a href='http://spatialreference.org/ref/epsg/32632/'> EPSG:32632</a>")
 
 ## map it
  mapview::projView(gadmDNK , map.types = map.typesList$layerName)
