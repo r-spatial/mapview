@@ -13,13 +13,12 @@ makeTile(x = NULL, outPath = NULL, scalec = (0,8848), s_epsg =NULL ,
 \arguments{
 \item{x}{character GDAL raster file name or a \code{\link{raster*}} object.}
 
-\item{outPath}{charcter path where the tiles will be generated. Note it is always
+\item{outPath}{character path where the tiles will be generated. Note it is always
 extented by \code{tiles/}}
 
 \item{scale}{numeric. (c(src_min,src_max,dst_min,dst_max)). Rescale the input
 pixels values from the range src_min to src_max to the range dst_min to
-dst_max. If omitted the output range is 0 to 255. If omitted the input range
-is automatically computed from the source data.}
+dst_max. \code{\link{gdal_translate}}.}
 
 \item{s_epsg}{character source proj4 string}
 
@@ -29,7 +28,7 @@ is automatically computed from the source data.}
 
 \item{rType}{character resampling_method.
 ("nearest"|"bilinear"|"cubic"|"cubicspline"|"lanczos"|"average"|"mode")
-(GDAL >= 2.0) Select a resampling algorithm.}
+\code{\link{gdal_translate}}.}
 
 \item{attribution}{charcter attribution of the map default is "still to be
 done"}
@@ -109,7 +108,7 @@ require(servr)
 ## get Denmark vector data
  gadmDNK <- getGeoData(name="GADM",country="DNK",level="1")
 
-## get the SRTM data for this area
+## get SRTM  elevation data for the Danish coast area
  r<-getGeoData(name="SRTM",xtent = extent(11,11,58,58), merge=TRUE)
 
 ## start http daemon
@@ -119,7 +118,7 @@ require(servr)
  map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",
                              cLat=56.5,
                              cLon=11,
-                             attribution = "<a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | Projection: <a href='http://spatialreference.org/ref/epsg/3857'> EPSG:3857</a>")
+                             attribution = " <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | <a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | <a href='http://spatialreference.org/ref/epsg/3857'> EPSG:3857</a>")
 
 ## map it
  mapview::projView(gadmDNK , map.types = map.typesList$layerName)
@@ -136,7 +135,7 @@ require(servr)
                              t_epsg=t_epsg,
                              cLat=56.5,
                              cLon=11,
-                             attribution = "<a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | <a href='http://spatialreference.org/ref/epsg/32632'> EPSG:32632</a>")
+                             attribution = "<a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | <a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | <a href='http://spatialreference.org/ref/epsg/32632'> EPSG:32632</a>")
 
 ## map it
  mapview::projView(gadmDNK , map.types = map.typesList$layerName)
@@ -144,7 +143,7 @@ require(servr)
 ## stop all daemon instances
  servr::daemon_stop(daemon_list())
 
-####### data from Quantartica2 #######
+####### data from Quantartica, http://www.quantarctica.org #######
 
 ## create persistant temp folder
  tmpDir<-"~/tmp/data/quantartica"
@@ -168,7 +167,7 @@ data(campsQ2)
                               t_epsg=t_epsg,
                               cLat=-90,
                               cLon=0,
-                              attribution = "<a href='http://www.quantartica.org'> Quantartica </a> provided by: <a href='http://www.npolar.no/en'>Norwegian Polar Institute</a> &nbsp;| <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>")
+                              attribution = "<a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | <a href='http://www.quantartica.org'> Quantartica </a> provided by: <a href='http://www.npolar.no/en'>Norwegian Polar Institute</a> &nbsp;| <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> |<a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>")
 
 ## strt http daemon
  servr::httd("~/tmp/data/makeTile/quantica/",daemon=TRUE)

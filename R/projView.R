@@ -260,7 +260,7 @@ projView<- function( x=NULL,
 
     # get map center and extent
     xtr <- mapview:::spCheckAdjustProjection(x)
-    xtrLL<-extent(xtr)
+    xtrLL<-raster::extent(xtr)
     if ( estimateMapCenter ){
       mapCenterLat <- (xtrLL@ymax-xtrLL@ymin) * 0.5  + xtrLL@ymin
       mapCenterLon <- (xtrLL@xmax-xtrLL@xmin) * 0.5 + xtrLL@xmin
@@ -276,12 +276,12 @@ projView<- function( x=NULL,
 
     ### generate extend feature
     ID = "tileExtend"
-    rawPolygon <- Polygon(cbind(c(minx,minx,maxx,maxx,minx),c(miny,maxy,maxy,miny,miny)))
-    tileExtend <- Polygons(list(rawPolygon), ID = ID)
-    tileExtend <- SpatialPolygons(list(tileExtend))
+    rawPolygon <- sp::Polygon(cbind(c(minx,minx,maxx,maxx,minx),c(miny,maxy,maxy,miny,miny)))
+    tileExtend <- sp::Polygons(list(rawPolygon), ID = ID)
+    tileExtend <- sp::SpatialPolygons(list(tileExtend))
     #(pid <- sapply(slot(tileExtend, "polygons"), function(x) slot(x, "ID")) )
     df <- data.frame( ID=1:length(rawPolygon), row.names = ID)
-    frame <- SpatialPolygonsDataFrame(tileExtend, df)
+    frame <- sp::SpatialPolygonsDataFrame(tileExtend, df)
     sp::proj4string(frame) <-crs(t_srs)
 
     #x@polygons[length(x@polygons)+1]<-tileExtend@polygons
@@ -336,13 +336,13 @@ projView<- function( x=NULL,
   # if input is Latlon (not projected)
   if ( geoLatLon) {
 
-    tmpPoly = Polygon(cbind(c(minx,minx,maxx,maxx,minx),c(miny,maxy,maxy,miny,miny)))
-    tmpPoly = Polygons(list(tmpPoly), ID = "bbox")
-    bbox = SpatialPolygons(list(tmpPoly))
+    tmpPoly = sp::Polygon(cbind(c(minx,minx,maxx,maxx,minx),c(miny,maxy,maxy,miny,miny)))
+    tmpPoly = sp::Polygons(list(tmpPoly), ID = "bbox")
+    bbox = sp::SpatialPolygons(list(tmpPoly))
 
     proj4string(bbox) <-CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
     bbox <- sp::spTransform(bbox, crs(t_srs))
-    xt<-extent(bbox)
+    xt<-raster::extent(bbox)
     # create the "bounds" string
     bounds <- paste0("bounds: L.bounds([",xt@ymin,",",xt@xmin,"],[",xt@ymax,",",xt@xmax,"])")
     origin <- paste0("origin: [",xt@ymax,",",xt@xmax,"]")

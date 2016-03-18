@@ -16,18 +16,17 @@ if (!isGeneric('makeTile')) {
 #'  cLon = NULL, zoom = NULL, res = NULL, srvrUrl = "http://localhost:4321/")
 #'
 #'@param x character GDAL raster file name or a \code{\link{raster*}} object.
-#'@param outPath charcter path where the tiles will be generated. Note it is always
+#'@param outPath character path where the tiles will be generated. Note it is always
 #'  extented by \code{tiles/}
 #'@param scale  numeric. (c(src_min,src_max,dst_min,dst_max)). Rescale the input
 #'  pixels values from the range src_min to src_max to the range dst_min to
-#'  dst_max. If omitted the output range is 0 to 255. If omitted the input range
-#'  is automatically computed from the source data.
+#'  dst_max. \code{\link{gdal_translate}}.
 #'@param s_epsg character source proj4 string
 #'@param t_srs character target proj4 string
 #'@param t_epsg character target EPSG code
 #'@param rType  character resampling_method.
 #'  ("nearest"|"bilinear"|"cubic"|"cubicspline"|"lanczos"|"average"|"mode")
-#'  (GDAL >= 2.0) Select a resampling algorithm.
+#'  \code{\link{gdal_translate}}.
 #'
 #'@param attribution charcter attribution of the map default is "still to be
 #'  done"
@@ -118,7 +117,7 @@ if (!isGeneric('makeTile')) {
 #' ## get Denmark vector data
 #'  gadmDNK <- getGeoData(name="GADM",country="DNK",level="1")
 #'
-#' ## get the SRTM data for this area
+#' ## get SRTM  elevation data for the Danish coast area
 #'  r<-getGeoData(name="SRTM",xtent = extent(11,11,58,58), merge=TRUE)
 #'
 #' ## start http daemon
@@ -128,7 +127,7 @@ if (!isGeneric('makeTile')) {
 #'  map.typesList<-makeTile(x=r,outPath="/home/creu/tmp/data/makeTile/srtm",
 #'                              cLat=56.5,
 #'                              cLon=11,
-#'                              attribution = "<a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | Projection: <a href='http://spatialreference.org/ref/epsg/3857'> EPSG:3857</a>")
+#'                              attribution = " <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | <a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | <a href='http://spatialreference.org/ref/epsg/3857'> EPSG:3857</a>")
 #'
 #' ## map it
 #'  mapview::projView(gadmDNK , map.types = map.typesList$layerName)
@@ -145,7 +144,7 @@ if (!isGeneric('makeTile')) {
 #'                              t_epsg=t_epsg,
 #'                              cLat=56.5,
 #'                              cLon=11,
-#'                              attribution = "<a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | <a href='http://spatialreference.org/ref/epsg/32632'> EPSG:32632</a>")
+#'                              attribution = "<a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | <a href='http://srtm.csi.cgiar.org/'>SRTM CGIAR</a> | <a href='http://www.gadme.org'>GADM</a> | <a href='http://spatialreference.org/ref/epsg/32632'> EPSG:32632</a>")
 #'
 #' ## map it
 #'  mapview::projView(gadmDNK , map.types = map.typesList$layerName)
@@ -153,7 +152,7 @@ if (!isGeneric('makeTile')) {
 #' ## stop all daemon instances
 #'  servr::daemon_stop(daemon_list())
 #'
-#' ####### data from Quantartica2 #######
+#' ####### data from Quantartica, http://www.quantarctica.org #######
 #'
 #' ## create persistant temp folder
 #'  tmpDir<-"~/tmp/data/quantartica"
@@ -177,7 +176,7 @@ if (!isGeneric('makeTile')) {
 #'                               t_epsg=t_epsg,
 #'                               cLat=-90,
 #'                               cLon=0,
-#'                               attribution = "<a href='http://www.quantartica.org'> Quantartica </a> provided by: <a href='http://www.npolar.no/en'>Norwegian Polar Institute</a> &nbsp;| <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>")
+#'                               attribution = "<a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | <a href='http://www.quantartica.org'> Quantartica </a> provided by: <a href='http://www.npolar.no/en'>Norwegian Polar Institute</a> &nbsp;| <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> |<a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>")
 #'
 #' ## strt http daemon
 #'  servr::httd("~/tmp/data/makeTile/quantica/",daemon=TRUE)
@@ -225,26 +224,26 @@ makeTile <- function(x=NULL,
   # if of class raster
   if (class(x)[1] %in% c("RasterLayer", "RasterStack", "RasterBrick")){
     if (nchar(x@file@name) < 1){
-      writeRaster(x,paste0(outPath,"/tile.tif"),overwrite =TRUE)
+      raster::writeRaster(x,paste0(outPath,"/tile.tif"),overwrite =TRUE)
       fn <-paste0(outPath,"/tile.tif")
     }
     fnx<-x
     fn<-x@file@name
   } else if (nchar(x)>0){
-    fnx<-raster(x)
+    fnx<-raster::raster(x)
     fn<-x
   }
   else{
     cat("no idea about the input type")
     return()
   }
-  if (is.null(scale)) {scale<-c(minValue(fnx),maxValue(fnx))}
+  if (is.null(scale)) {scale<-c(raster::minValue(fnx),raster::maxValue(fnx))}
   #nodata<- as.numeric(strsplit(gdalinfo(path.expand(x))[grep("NoData Value=",gdalinfo(path.expand(x)))], split='=', fixed=TRUE)[[1]][2])
   #nodata<- fnx@file@nodatavalue
 
   # if necessary project data
   if (t_epsg != s_epsg){
-  gdalwarp(path.expand(fn),
+  gdalUtils::gdalwarp(path.expand(fn),
            path.expand(paste0(tmpPath,"/rawTile.tif")) ,
            s_srs = s_epsg,
            t_srs = t_epsg,
@@ -259,7 +258,7 @@ makeTile <- function(x=NULL,
   }
 
   # transform and scale to jpeg for speedup TODO better scaling better way to PNG
-  rx<- gdal_translate(path.expand(fn),
+  rx<- gdalUtils::gdal_translate(path.expand(fn),
                       path.expand(tmpGDAL) ,
                       output_Raster = FALSE,
                       overwrite= TRUE,
@@ -270,7 +269,7 @@ makeTile <- function(x=NULL,
   )
   fnTranslate<-path.expand(tmpGDAL)
   # put last raster image in fnx
-  fnx<-raster(fnTranslate)
+  fnx<-raster::raster(fnTranslate)
 
   # calculate zoom level from extent of input raster
   if ( is.null(zoom)){
@@ -279,12 +278,8 @@ makeTile <- function(x=NULL,
     #scaleFac<-zfacs[[5]]
   }
 
-
-
-  # make tiles take care of the correct zoom!
+  # make tiles
   r <- system(paste0("inst/htmlwidgets/lib/gdaltiles/gdal2tiles-multiprocess.py -l  --profile=raster -r ",rType,"  -z  0-",zoom," -s  ",t_epsg," -w all --verbose ", fnTranslate ," ", path.expand(paste0(tmpPath,"/tiles"))),intern=T)
-
-
 
   # generate map.type list
   map.typesList<-makeMapTypesList(outPath,s_srs,t_srs,t_epsg,fnx,zoom,attribution,cLat,cLon,srvrUrl)
@@ -328,7 +323,7 @@ estimateZoom <- function(ext=NULL,proj4){
     groundResolution<- dist / ext@ncols
     fulldiskPixel<- 2*earth*pi/groundResolution
   }
-  # calculate zomm via up counting
+  # calculate zomm via counting up
   #for (i in seq(1,32)) {
   #  tmpRes<-256 * 2**i
   #  if (tmpRes>ext@nrows) {
@@ -371,9 +366,9 @@ makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=
   # if no map centre is set calculate it
   if (is.null(cLat)||is.null(cLon)){
     # create an polygon from the xtend of the raster image
-    tmpPoly = Polygon(cbind(c(minx,minx,maxx,maxx,minx),c(miny,maxy,maxy,miny,miny)))
-    tmpPoly = Polygons(list(tmpPoly), ID = "bbox")
-    bbox = SpatialPolygons(list(tmpPoly))
+    tmpPoly = sp::Polygon(cbind(c(minx,minx,maxx,maxx,minx),c(miny,maxy,maxy,miny,miny)))
+    tmpPoly = sp::Polygons(list(tmpPoly), ID = "bbox")
+    bbox = sp::SpatialPolygons(list(tmpPoly))
     # if the raster was reprojected
     if (s_epsg != t_epsg) {
       # assign the target projection
@@ -381,19 +376,19 @@ makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=
       # reproject it to latlong
       tmp<-sp::spTransform(bbox, CRS("+proj=longlat +datum=WGS84 +no_defs"))
       # get the xtent
-      xt<-extent(tmp)
+      xt<-raster::extent(tmp)
       # get map center and extent
-      xtrLL<-extent(xt)
+      xtrLL<-raster::extent(xt)
       cLat <- (xtrLL@ymax-xtrLL@ymin) * 0.5  + xtrLL@ymin
       cLon <- (xtrLL@xmax-xtrLL@xmin) * 0.5 + xtrLL@xmin
     }
     else {
-      proj4string(bbox) <-CRS(s_srs)
+      sp::proj4string(bbox) <-CRS(s_srs)
       # reproject it to latlong
       tmp<-sp::spTransform(bbox, CRS("+proj=longlat +datum=WGS84 +no_defs"))
-      xt<-extent(bbox)
+      xt<-raster::extent(bbox)
       # get map center and extent
-      xtrLL<-extent(xt)
+      xtrLL<-raster::extent(xt)
       cLat <- (xtrLL@ymax-xtrLL@ymin) * 0.5  + xtrLL@ymin
       cLon <- (xtrLL@xmax-xtrLL@xmin) * 0.5 + xtrLL@xmin
     }
@@ -441,7 +436,7 @@ makeMapTypesList <- function(outPath=NULL,s_srs=NULL,t_srs=NULL,t_epsg=NULL,fnx=
 #     minSide256<-8**2*256
 #     tileSize<-(minSide/minSide256)*256*mainScale
 
-    tileSize<-xres(fnx)
+    tileSize<-raster::xres(fnx)
 
     #zoom<-ceiling(min(fnx@ncols,fnx@nrows)/256)
     exp<-ceiling(256/tileSize)
