@@ -35,7 +35,7 @@ before_install:
   - sudo make install
   - cd /home/travis/build/environmentalinformatics-marburg/mapview
 
-r_packages: OpenStreetMap
+r_packages: "OpenStreetMap"
 
 notifications:
   email:
