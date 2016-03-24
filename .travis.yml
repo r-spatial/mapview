@@ -1,6 +1,7 @@
 # Sample .travis.yml for R projects
 
 language: r
+cache: packages
 
 warnings_are_errors: true
 
@@ -33,6 +34,8 @@ before_install:
   - make
   - sudo make install
   - cd /home/travis/build/environmentalinformatics-marburg/mapview
+
+r_packages: OpenStreetMap
 
 notifications:
   email:
