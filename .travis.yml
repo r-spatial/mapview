@@ -1,19 +1,8 @@
-# Sample .travis.yml for R projects
+## Sample .travis.yml file for use with metacran/r-builder
+## See https://github.com/metacran/r-builder for details.
 
-language: r
-cache: packages
-
-warnings_are_errors: true
-
+language: c
 sudo: required
-
-dist: trusty
-
-env:
- global:
-   - CRAN: http://cran.rstudio.com
-   - R_BUILD_ARGS="--no-build-vignettes --no-manual"
-   - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
 
 before_install:
   - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
@@ -35,12 +24,22 @@ before_install:
   - sudo make install
   - cd /home/travis/build/environmentalinformatics-marburg/mapview
 
-r_packages: "OpenStreetMap"
+install:
+  - ./pkg-build.sh install_deps
+
+script:
+  - ./pkg-build.sh run_tests
+
+after_failure:
+  - ./pkg-build.sh dump_logs
 
 notifications:
   email:
     on_success: change
     on_failure: change
 
-r_build_args: "--no-build-vignettes"
-r_check_args: "--no-build-vignettes --as-cran"
+env:
+  matrix:
+    - RVERSION=oldrel
+    - RVERSION=release
+    - RVERSION=devel
