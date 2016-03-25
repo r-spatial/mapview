@@ -3,6 +3,7 @@
 
 language: c
 sudo: required
+warnings_are_errors: false ## set to true for CRAN test
 
 before_install:
   - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
