@@ -1,7 +1,5 @@
 ## mapview [![Travis-CI Build Status](https://travis-ci.org/environmentalinformatics-marburg/mapview.svg?branch=develop)](https://travis-ci.org/environmentalinformatics-marburg/mapview)
 
-====
-
 Interactive viewing of spatial objects in R
 
 [![CRAN](http://www.r-pkg.org/badges/version/mapview?color=009999)](http://cran.rstudio.com/package=mapview)
