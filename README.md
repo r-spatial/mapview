@@ -2,7 +2,7 @@
 Interactive viewing of spatial objects in R
 
 [![Travis-CI Build Status](https://travis-ci.org/environmentalinformatics-marburg/mapview.svg?branch=develop)](https://travis-ci.org/environmentalinformatics-marburg/mapview)
-[![CRAN](http://www.r-pkg.org/badges/version/mapview)](http://cran.rstudio.com/package=mapview?color=009999)
+[![CRAN](http://www.r-pkg.org/badges/version/mapview)](http://cran.rstudio.com/package=mapview?color=#009999)
 ![month](http://cranlogs.r-pkg.org/badges/mapview) ![total](http://cranlogs.r-pkg.org/badges/grand-total/mapview)
 
 ====
