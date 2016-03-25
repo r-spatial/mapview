@@ -31,6 +31,8 @@ To install the development version install and load the [devtools](http://cran.r
 install_github("environmentalinformatics-marburg/mapview", ref = "develop")
 ```
 
+====
+
 See
 
 <a href="http://gisma.github.io/projView/projView1_0_9.html" target="_blank">projView</a> 
