@@ -1,9 +1,13 @@
-## mapview
+## mapview [![Travis-CI Build Status](https://travis-ci.org/environmentalinformatics-marburg/mapview.svg?branch=develop)](https://travis-ci.org/environmentalinformatics-marburg/mapview)
+
+====
+
 Interactive viewing of spatial objects in R
 
-[![Travis-CI Build Status](https://travis-ci.org/environmentalinformatics-marburg/mapview.svg?branch=develop)](https://travis-ci.org/environmentalinformatics-marburg/mapview)
 [![CRAN](http://www.r-pkg.org/badges/version/mapview?color=009999)](http://cran.rstudio.com/package=mapview)
-![month](http://cranlogs.r-pkg.org/badges/mapview) ![total](http://cranlogs.r-pkg.org/badges/grand-total/mapview)
+[![License](https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat)](http://www.gnu.org/licenses/gpl-3.0.html)
+
+![monthly](http://cranlogs.r-pkg.org/badges/mapview) ![total](http://cranlogs.r-pkg.org/badges/grand-total/mapview)
 
 ====
 
@@ -39,6 +43,7 @@ See
 
 for a brief introduction how to use projected maps with mapview
 
+====
 
 ### Contact
 
