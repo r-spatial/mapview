@@ -1,15 +1,11 @@
-#### Package downloads from the [RStudio CRAN Mirror](http://cran-logs.rstudio.com/)</b>
-
-This month      | In total
---------------- | -----------
-![month](http://cranlogs.r-pkg.org/badges/mapview) | ![total](http://cranlogs.r-pkg.org/badges/grand-total/mapview)
-
-<hr>
-
+## mapview
 [![Travis-CI Build Status](https://travis-ci.org/environmentalinformatics-marburg/mapview.svg?branch=develop)](https://travis-ci.org/environmentalinformatics-marburg/mapview)
+![month](http://cranlogs.r-pkg.org/badges/mapview) ![total](http://cranlogs.r-pkg.org/badges/grand-total/mapview)
+[![CRAN](http://www.r-pkg.org/badges/version/mapview)](http://cran.rstudio.com/package=mapview?color=brightgreen)
+[![Github All Releases](https://img.shields.io/github/downloads/environmentalinformatics-marburg/mapview/total.svg)]()
 
+====
 
-# mapview
 Interactive viewing of spatial objects in R
 
 See 
