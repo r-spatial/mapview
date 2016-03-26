@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 ^inst/htmlwidgets/lib/leaflet/.bower.json
 ^.travis.yml
+^.TODO.md
