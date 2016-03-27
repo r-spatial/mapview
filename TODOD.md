@@ -1,7 +1,11 @@
 ### popups (Tim, Flo)
 
-* add function to create popups including option zcol = ...
+* add function to create popups including option `zcol = ...`
     * defaulting to all columns
+* add function to create popups using plots
+    * see http://stackoverflow.com/questions/32352539/plotting-barchart-in-popup-using-leaflet-library/36237460#36237460
+* include `popupOtions(minWidth = "100%")` in mapviewOptions 
+* implement `...` to be passed to `addPopups()` for each popup function
 
 ### spplot (Flo, Tim)
 
@@ -21,4 +25,4 @@
 
 ### miscellaneous (Tim)
 
-* clean leafletControls -> mapviewControls
+* clean `leafletControls` -> `mapviewControls`
