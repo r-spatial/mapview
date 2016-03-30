@@ -1,6 +1,6 @@
 setMethod("show", signature(object = "mapview"),
           function(object)
           {
-            print(object@map)
+            print.mapview(object)
           }
 )
