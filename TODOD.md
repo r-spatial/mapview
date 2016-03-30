@@ -23,6 +23,10 @@
 
 * function to create list objects easy
 
+### mapView (Tim)
+
+* add option to save html map to specified folder
+
 ### miscellaneous (Tim)
 
 * clean `leafletControls` -> `mapviewControls`
