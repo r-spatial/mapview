@@ -184,8 +184,8 @@ mapviewOptions <- function(platform,
     options(mapviewVerbose = FALSE)
     options(mapviewNAColor = "transparent")
     options(mapviewLayersControlPos = "topleft")
-    options(mapviewleafletWidth = "100%")
-    options(mapviewleafletHeight = "800px")
+    options(mapviewleafletWidth = NULL)
+    options(mapviewleafletHeight = NULL)
   }
 
 
@@ -387,7 +387,7 @@ mapviewOptions <- function(platform,
 }
 
 .leafletWidth <- function() {
-  default <- "100%"
+  default <- NULL #"100%"
   lwth <- getOption('leafletWidth')
   if (is.null(lwth)) {
     return(default)
@@ -397,7 +397,7 @@ mapviewOptions <- function(platform,
 }
 
 .leafletHeight <- function() {
-  default <- "800px"
+  default <- NULL #"800px"
   lhgt <- getOption('leafletHeight')
   if (is.null(lhgt)) {
     return(default)
