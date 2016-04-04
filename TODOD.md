@@ -34,3 +34,4 @@
 ### miscellaneous (Tim)
 
 * clean `leafletControls` -> `mapviewControls`
+* add functionality to burst by factor levels of specific column
