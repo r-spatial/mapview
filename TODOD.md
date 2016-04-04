@@ -27,6 +27,10 @@
 
 * add option to save html map to specified folder
 
+### mapviewColors (Tim)
+
+* integrate `viridis` package in `Enhances` so that `inferno` palette is used as default if viridis package is installed 
+
 ### miscellaneous (Tim)
 
 * clean `leafletControls` -> `mapviewControls`
