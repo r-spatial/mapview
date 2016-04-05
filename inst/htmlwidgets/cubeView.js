@@ -147,7 +147,9 @@ function Hovmoeller(root, json) {
   }*/
 
 	this.scene = new THREE.Scene();
-	this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+	//this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+	this.camera = new THREE.OrthographicCamera( window.innerWidth/-2, window.innerWidth/2, window.innerHeight/2, window.innerHeight/-2, 1, 20 );
+
 
 	this.renderer = new THREE.WebGLRenderer( {/*antialias: true*/} );
 	this.renderer.setSize( window.innerWidth, window.innerHeight );
@@ -156,6 +158,8 @@ function Hovmoeller(root, json) {
 	if(this.orbit) {
 	  this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 	  this.controls.enableKeys = false; // prevents using arrow keys in OrbitControls
+	  this.camera.zoom = 200; // for OrthographicCamera
+	  this.camera.updateProjectionMatrix();
 	} else {
 	  this.controls = new THREE.TrackballControls(this.camera); // currently not functioning
 
