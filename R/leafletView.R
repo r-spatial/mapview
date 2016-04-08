@@ -857,6 +857,8 @@ leafletMissing <- function(map.types,
     sp::proj4string(envinMR) <- sp::CRS(llcrs)
     m <- initBaseMaps(map.types)
 
+    fl <- 'http://cdn.makeagif.com/media/8-11-2015/n2JwUG.gif'
+
     pop <- paste("<center>", "<b>", "mapview", "</b>", "<br>", " was created at",
                  "<br>",
                  '<a target="_blank" href="http://environmentalinformatics-marburg.de/">Environmental Informatics Marburg</a>',
@@ -875,6 +877,13 @@ leafletMissing <- function(map.types,
                  '<font face="courier">',
                  'citation("mapview")',
                  '</font face="courier">',
+                 "<br>", "<br>",
+                 '<hr width=50% style="border: none; height: 1px; color: #D8D8D8; background: #D8D8D8;"/>',
+                 "<br>",
+                 "<b>", "mapview", "</b>", "is for quick visualisation of spatial data",
+                 "<br>", "<br>",
+                 paste('<img src =', fl, 'width="95%">'),
+                 '<a target="_blank" href="http://makeagif.com/n2JwUG">Source: MakeAGIF.com</a>',
                  "</center>")
     m <- leaflet::addCircles(data = envinMR, map = m,
                              fillColor = "white",
