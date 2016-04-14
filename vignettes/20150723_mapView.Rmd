@@ -380,7 +380,7 @@ m + meuse
 
 Given that objects created with `mapView()` contain a slot called `map`, you can first create a map using `mapView()` and then add components provided by `leaflet`. To reproduce the following example you will (at the time of this writing) need to install `leaflet` from the <a href="https://github.com/rstudio/leaflet" target="_blank">GitHub leaflet repository</a> which provides new functionality to measure distances and areas. The following code will then add a control element in the top right corner of the map which lets you interactively create a polygon and will show its perimeter and area. Double-click to finish a measurement.
 
-```{r, fig.width=9.47}
+```{r, fig.width=9.47, eval = FALSE}
 m <- mapView(breweries91) + viewExtent(poppendorf)
 m@map %>% addMeasure(primaryLengthUnit = "meters", primaryAreaUnit = "sqmeters", 
                      activeColor = "#3D535D", completedColor = "#7D4479")
