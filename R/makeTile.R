@@ -152,7 +152,7 @@ if (!isGeneric('makeTile')) {
 #' ## stop all daemon instances
 #'  servr::daemon_stop(daemon_list())
 #'
-#' ####### data from Quantartica, http://www.quantarctica.org #######
+#' ####### data from Quantarctica, http://www.quantarctica.org #######
 #'
 #' ## create persistant temp folder
 #'  tmpDir<-"~/tmp/data/quantartica"
@@ -176,7 +176,7 @@ if (!isGeneric('makeTile')) {
 #'                               t_epsg=t_epsg,
 #'                               cLat=-90,
 #'                               cLon=0,
-#'                               attribution = "<a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | <a href='http://www.quantartica.org'> Quantartica </a> provided by: <a href='http://www.npolar.no/en'>Norwegian Polar Institute</a> &nbsp;| <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> |<a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>")
+#'                               attribution = "<a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | <a href='http://www.quantarctica.org'> Quantarctica </a> provided by: <a href='http://www.npolar.no/en'>Norwegian Polar Institute</a> &nbsp;| <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> |<a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>")
 #'
 #' ## strt http daemon
 #'  servr::httd("~/tmp/data/makeTile/quantica/",daemon=TRUE)
