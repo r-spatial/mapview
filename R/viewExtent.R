@@ -130,7 +130,7 @@ viewExtentNoRef <- function(x,
 
   ext <- raster::extent(x)
 
-  m <- leaflet::leaflet()
+  m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth)
   m <- leaflet::addRectangles(map = m,
                               lng1 = ext@xmin,
                               lat1 = ext@ymin,

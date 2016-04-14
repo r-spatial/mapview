@@ -8,14 +8,14 @@
 \alias{plainView,SpatialPixelsDataFrame-method}
 \alias{plainview}
 \alias{plainview,ANY-method}
-\title{View spatial objects interactively without background map but in any CRS}
+\title{View raster objects interactively without background map but in any CRS}
 \usage{
 \S4method{plainView}{RasterLayer}(x,
   maxpixels = mapviewGetOption("maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at,
   na.color = mapviewGetOption("na.color"),
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), ...)
+  env = parent.frame())), gdal = TRUE, ...)
 
 \S4method{plainView}{RasterStackBrick}(x, r = 3, g = 2, b = 1,
   na.color = mapviewGetOption("na.color"),
@@ -43,6 +43,10 @@ If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
 \item{layer.name}{the name of the layer to be shown on the map}
 
+\item{gdal}{logical. If TRUE (default) gdalUtils::gdal_translate is used
+to create the png file for display when possible. See details for further
+information.}
+
 \item{...}{additional arguments passed on to repective functions.
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
@@ -58,7 +62,18 @@ of the column to be rendered}
 }
 \description{
 this function produces an interactive view of the specified
-spatial object(s) on a plain grey background but for any CRS.
+raster object(s) on a plain grey background but for any CRS.
+}
+\details{
+If the raster object is not in memory
+(i.e. if \code{raster::inMemory} is \code{FLASE})
+and argument \code{gdal} is set to TRUE (default) gdalUtils::gdal_translate
+is used to translate the rsater object to a png file to be rendered in
+the viewer/browser. This is fast for large rasters. In this case, argument
+\code{maxpixels} is not used, instead the image is rendered in original resolution.
+However, this means that RasterLayers will be shown in greyscale.
+If you want to set a color palette manually, use \code{gdal = FALSE} and
+(optionally provide) \code{col.regions}.
 }
 \section{Methods (by class)}{
 \itemize{

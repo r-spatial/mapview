@@ -1,14 +1,13 @@
-#### Package downloads from the [RStudio CRAN Mirror](http://cran-logs.rstudio.com/)</b>
+## mapview [![Travis-CI Build Status](https://travis-ci.org/environmentalinformatics-marburg/mapview.svg?branch=develop)](https://travis-ci.org/environmentalinformatics-marburg/mapview)
 
-This month      | In total
---------------- | -----------
-![month](http://cranlogs.r-pkg.org/badges/mapview) | ![total](http://cranlogs.r-pkg.org/badges/grand-total/mapview)
-
-<hr>
-
-
-# mapview
 Interactive viewing of spatial objects in R
+
+[![CRAN](http://www.r-pkg.org/badges/version/mapview?color=009999)](http://cran.rstudio.com/package=mapview)
+[![License](https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat)](http://www.gnu.org/licenses/gpl-3.0.html)
+
+![monthly](http://cranlogs.r-pkg.org/badges/mapview) ![total](http://cranlogs.r-pkg.org/badges/grand-total/mapview)
+
+====
 
 See 
 
@@ -34,6 +33,15 @@ To install the development version install and load the [devtools](http://cran.r
 install_github("environmentalinformatics-marburg/mapview", ref = "develop")
 ```
 
+====
+
+See
+
+<a href="http://gisma.github.io/projView/projView1_0_9.html" target="_blank">projView</a> 
+
+for a brief introduction how to use projected maps with mapview
+
+====
 
 ### Contact
 

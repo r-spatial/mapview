@@ -69,11 +69,16 @@ setMethod("+",
                     e2 = "ANY"),
           function (e1, e2)
           {
+
             nm <- deparse(substitute(e2))
             m <- mapView(e2, map = e1@map, layer.name = nm)
             out_obj <- append(e1@object, m@object)
 
-            if (length(e2) > 1) {
+            xrng <- c(raster::xmin(e2), raster::xmax(e2))
+            yrng <- c(raster::ymin(e2), raster::ymax(e2))
+
+            if (diff(xrng) != 0 & diff(yrng) != 0) {
+
               ext <- raster::extent(
                 raster::projectExtent(out_obj[[length(out_obj)]],
                                       crs = llcrs))
@@ -82,7 +87,6 @@ setMethod("+",
                                       lat1 = ext@ymin,
                                       lng2 = ext@xmax,
                                       lat2 = ext@ymax)
-              #m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
             }
 
             out <- methods::new('mapview', object = out_obj, map = m)

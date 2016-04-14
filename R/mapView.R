@@ -9,6 +9,15 @@ if ( !isGeneric('mapView') ) {
 #' this function produces an interactive view of the specified
 #' spatial object(s) on top of the specified base maps.
 #'
+#' @details
+#' The usage of big data sets is performed by loading local copies
+#' of json files from temporary storage. This works fine for most of
+#' the current browsers. If you are using Google's chrome browser you have to
+#' start the browser with the flag \code{-allow-file-access-from-files} (i.e
+#' for windows: "path_to_your_chrome_installation\\chrome.exe --allow-file-access-from-files",
+#' for linux: "/usr/bin/google-chrome --allow-access-from-files").
+#' See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
+#'
 #'
 #' @param x a \code{\link{raster}}* object
 #' @param map an optional existing map to be updated/added to
@@ -106,6 +115,7 @@ if ( !isGeneric('mapView') ) {
 #' @rdname mapView
 #' @aliases mapView,RasterLayer-method
 
+
 ## RasterLayer ============================================================
 
 setMethod('mapView', signature(x = 'RasterLayer'),
@@ -201,29 +211,36 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
 
 setMethod('mapView', signature(x = 'Satellite'),
           function(x,
+                   map = NULL,
+                   maxpixels = mapviewGetOption("maxpixels"),
+                   col.regions = mapviewGetOption("raster.palette")(256),
+                   at,
+                   na.color = mapviewGetOption("na.color"),
+                   values = NULL,
+                   map.types = mapviewGetOption("basemaps"),
+                   legend = FALSE,
+                   legend.opacity = 1,
+                   trim = TRUE,
+                   verbose = mapviewGetOption("verbose"),
                    ...) {
 
-            pkgs <- c("leaflet", "satellite", "magrittr")
-            tst <- sapply(pkgs, "requireNamespace",
-                          quietly = TRUE, USE.NAMES = FALSE)
-
-            lyrs <- x@layers
-
-            m <- mapView(lyrs[[1]], ...)
-
-            if (length(lyrs) > 1) {
-              for (i in 2:length(lyrs)) {
-                m <- mapView(lyrs[[i]], m, ...)
-              }
+            if (mapviewGetOption("platform") == "leaflet") {
+              leafletSatellite(x,
+                               map,
+                               maxpixels,
+                               col.regions,
+                               at,
+                               na.color,
+                               values,
+                               map.types,
+                               legend,
+                               legend.opacity,
+                               trim,
+                               verbose,
+                               ...)
+            } else {
+              NULL
             }
-
-            if (length(getLayerNamesFromMap(m)) > 1) {
-              m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
-            }
-
-            out <- new('mapview', object = list(x), map = m)
-
-            return(out)
 
           }
 
@@ -240,6 +257,24 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
 
             if (mapviewGetOption("platform") == "leaflet") {
               leafletPixelsDF(x,
+                              zcol,
+                              ...)
+            } else {
+              NULL
+            }
+
+          }
+)
+## SpatialGridDataFrame =================================================
+#' @describeIn mapView \code{\link{SpatialGridDataFrame}}
+#'
+setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
+          function(x,
+                   zcol = NULL,
+                   ...) {
+
+            if (mapviewGetOption("platform") == "leaflet") {
+              leafletPixelsDF(as(x, "SpatialPixelsDataFrame"),
                               zcol,
                               ...)
             } else {
@@ -312,7 +347,8 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                      weight = cex,
                      verbose = verbose,
                      layer.name = layer.name,
-                     popup = popup)
+                     popup = popup,
+                     )
             }
 
           }
@@ -338,7 +374,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   ...) {
+                  ...) {
 
             if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
               if (mapviewGetOption("platform") == "leaflet") {
@@ -349,7 +385,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                               map.types = map.types,
                               verbose = verbose,
                               layer.name = layer.name,
-                              ...)
+                             ...)
               } else {
                 NULL
               }
@@ -364,7 +400,8 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                      weight = cex,
                      verbose = verbose,
                      layer.name = layer.name,
-                     popup = NULL)
+                     popup = NULL
+                    )
             }
 
 
@@ -449,11 +486,12 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                    na.color = mapviewGetOption("na.color"),
                    map.types = mapviewGetOption("basemaps"),
                    lwd = 2,
-                   alpha.regions = 0.8,
+                   alpha = 0.8,
+                   alpha.regions = 0.2,
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   ...) {
+                  ...) {
 
             if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
               if (mapviewGetOption("platform") == "leaflet") {
@@ -467,7 +505,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                                 map.types = map.types,
                                 verbose = verbose,
                                 layer.name = layer.name,
-                                ...)
+                               ...)
               } else {
                 NULL
               }
@@ -568,7 +606,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   ...) {
+                  ...) {
 
             if (length(x@lines) < mapviewGetOption("maxlines")) {
               if (mapviewGetOption("platform") == "leaflet") {
@@ -581,7 +619,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                              map.types = map.types,
                              verbose = verbose,
                              layer.name = layer.name,
-                             ...)
+                            ...)
               } else {
                 NULL
               }

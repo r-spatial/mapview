@@ -12,6 +12,8 @@ if ( !isGeneric('spplot') ) {
 #' @param zoom Zoom level, see \code{\link{openmap}}.
 #' @param col.regions,alpha.regions See \code{\link[sp]{spplot}}.
 #' @param ... Further arguments passed on to \code{\link[sp]{spplot}}.
+#' @param sp.layout (list with) layout elements, see \code{\link[sp]{spplot}}
+#' @param map.type background map type, see \code{\link{openmap}} for details
 #'
 #' @author
 #' Tim Appelhans, Florian Detsch
@@ -24,6 +26,10 @@ if ( !isGeneric('spplot') ) {
 #'
 #' m2 <- mapview(gadmCHE, zcol = "NAME_1")
 #' spplot(m2)
+#'
+#' demo(meuse,ask=F,echo=FALSE)
+#' m = spTransform(meuse.area, CRS("+init=epsg:4326"))
+#' spplot(mapView(meuse["zinc"]), sp.layout = m)
 #' }
 #'
 #' @export spplot
@@ -34,7 +40,8 @@ if ( !isGeneric('spplot') ) {
 setMethod('spplot',
           signature('mapview'),
           function(obj, zoom = NULL, col.regions = mapviewPalette(256),
-                   alpha.regions = 0.8, ...) {
+                   alpha.regions = 0.8, ..., sp.layout = NULL,
+                   map.type = "osm") {
 
             if (length(obj@object) == 1) {
 
@@ -65,21 +72,20 @@ setMethod('spplot',
               upperLeft <- c(y_ext[2], x_ext[1])
               lowerRight <- c(y_ext[1], x_ext[2])
 
-              ## map type
-              type <- "osm"
-
               ## acquire map
               rgb <- OpenStreetMap::openmap(upperLeft, lowerRight,
-                                            type = type, zoom = zoom)
+                                            type = map.type, zoom = zoom)
 
               ## rasterize rgb image
-              rgb <- raster::raster(rgb)
+              rgb_rst <- raster::raster(rgb)
 
-              if (!raster::compareCRS(crs_obj, raster::projection(rgb)))
-                rgb <- projectRaster(rgb, crs = crs_obj)
+              if (!raster::compareCRS(crs_obj, raster::projection(rgb_rst))) {
+                rgb_rst <- projectRaster(rgb_rst, crs = crs_obj)
+                rgb_rst <- raster::trim(rgb_rst)
+              }
 
               ## convert to list format compatible with 'sp.layout'
-              rgb <- rgb2spLayout(rgb)
+              rgb <- rgb2spLayout(rgb_rst)
 
               ## create plot
 
@@ -93,13 +99,32 @@ setMethod('spplot',
                   latticeExtra::as.layer(spplot(obj_bg, colorkey = FALSE,
                                                 col.regions = "transparent",
                                                 alpha.regions = alpha.regions,
-                                                sp.layout = rgb), under = TRUE)
+                                                sp.layout = append(list(rgb), sp.layout)),
+												under = TRUE)
 
               # all other objects
               } else {
+
+                # if dealing with a single-point feature
+
+                if (grepl("SpatialPoints", class(obj@object[[1]])) &
+
+                      length(obj@object[[1]]) == 1) {
+
+                  pts <- list("sp.points", obj@object[[1]],
+                              col = "black", alpha = alpha.regions, ...)
+
+                  sp::spplot(rgb_rst[[1]], col.regions = "transparent",
+                             colorkey = FALSE, scales = list(draw = TRUE),
+                             sp.layout = list(rgb, pts))
+
+                # any other 'sp' object
+                } else {
+
                 sp::spplot(obj@object[[1]], col.regions = col.regions,
                            alpha.regions = alpha.regions,
-                           sp.layout = rgb, ...)
+                           sp.layout = append(list(rgb), sp.layout), ...)
+                }
               }
 
 

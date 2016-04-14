@@ -86,7 +86,9 @@ mapviewOptions <- function(platform,
                            na.color,
                            layers.control.pos,
                            default = FALSE,
-                           console = TRUE) {
+                           console = TRUE,
+                           leafletWidth,
+                           leafletHeight) {
 
   ## platform
   setPlatform <- function(platform) {
@@ -153,6 +155,16 @@ mapviewOptions <- function(platform,
     options(mapviewLayersControlPos = layers.control.pos)
   }
 
+  ## leaflet() height
+  setleafletHeight <- function(leafletHeight) {
+    options(leafletHeight = leafletHeight)
+  }
+
+  ## leaflet() width
+  setleafletWidth <- function(leafletWidth) {
+    options(leafletWidth = leafletWidth)
+  }
+
   cnt <- 0
 
   if (default) {
@@ -172,6 +184,8 @@ mapviewOptions <- function(platform,
     options(mapviewVerbose = FALSE)
     options(mapviewNAColor = "transparent")
     options(mapviewLayersControlPos = "topleft")
+    options(mapviewleafletWidth = NULL)
+    options(mapviewleafletHeight = NULL)
   }
 
 
@@ -190,7 +204,8 @@ mapviewOptions <- function(platform,
   if (!missing(na.color)) { setNAColor(na.color); cnt <- cnt + 1 }
   if (!missing(layers.control.pos)) {
     setLayersControlPos(layers.control.pos); cnt <- cnt + 1 }
-
+  if (!missing(leafletWidth)) { setleafletWidth(leafletWidth); cnt <- cnt + 1 }
+  if (!missing(leafletHeight)) { setleafletHeight(leafletHeight); cnt <- cnt + 1 }
 
   lst <- list(platform = .platform(),
               basemaps = .basemaps(),
@@ -203,7 +218,9 @@ mapviewOptions <- function(platform,
               vector.palette = .vectorPalette(),
               verbose = .verbose(),
               na.color = .naColor(),
-              layers.control.pos = .layersControlPos())
+              layers.control.pos = .layersControlPos(),
+              leafletWidth = .leafletWidth(),
+              leafletHeight = .leafletHeight())
 
 
 
@@ -225,6 +242,8 @@ mapviewOptions <- function(platform,
       cat('verbose             :', lst$verbose, '\n')
       cat('na.color            :', lst$na.color, '\n')
       cat('layers.control.pos  :', lst$layers.control.pos, '\n')
+      cat('leafletWidth  :', lst$leafletWidth, '\n')
+      cat('leafletHeight  :', lst$leafletHeight, '\n')
     }
   }
 
@@ -367,7 +386,25 @@ mapviewOptions <- function(platform,
   }
 }
 
+.leafletWidth <- function() {
+  default <- NULL #"100%"
+  lwth <- getOption('leafletWidth')
+  if (is.null(lwth)) {
+    return(default)
+  } else {
+    return(lwth)
+  }
+}
 
+.leafletHeight <- function() {
+  default <- NULL #"800px"
+  lhgt <- getOption('leafletHeight')
+  if (is.null(lhgt)) {
+    return(default)
+  } else {
+    return(lhgt)
+  }
+}
 #' query single mapviewOption parameters
 #' @describeIn mapviewOptions query single mapviewOption parameters
 #' @param param character. parameter to be queried.

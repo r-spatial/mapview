@@ -6,6 +6,7 @@
 \alias{mapView,RasterLayer-method}
 \alias{mapView,RasterStackBrick-method}
 \alias{mapView,Satellite-method}
+\alias{mapView,SpatialGridDataFrame-method}
 \alias{mapView,SpatialLines-method}
 \alias{mapView,SpatialLinesDataFrame-method}
 \alias{mapView,SpatialPixelsDataFrame-method}
@@ -35,9 +36,17 @@
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
   ...)
 
-\S4method{mapView}{Satellite}(x, ...)
+\S4method{mapView}{Satellite}(x, map = NULL,
+  maxpixels = mapviewGetOption("maxpixels"),
+  col.regions = mapviewGetOption("raster.palette")(256), at,
+  na.color = mapviewGetOption("na.color"), values = NULL,
+  map.types = mapviewGetOption("basemaps"), legend = FALSE,
+  legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
+  ...)
 
 \S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL, ...)
+
+\S4method{mapView}{SpatialGridDataFrame}(x, zcol = NULL, ...)
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapviewGetOption("vector.palette")(256),
@@ -66,9 +75,9 @@
 
 \S4method{mapView}{SpatialPolygons}(x, map = NULL, color = "#460000",
   na.color = mapviewGetOption("na.color"),
-  map.types = mapviewGetOption("basemaps"), lwd = 2, alpha.regions = 0.8,
-  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), ...)
+  map.types = mapviewGetOption("basemaps"), lwd = 2, alpha = 0.8,
+  alpha.regions = 0.2, verbose = mapviewGetOption("verbose"),
+  layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
 \S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapviewGetOption("vector.palette")(256),
@@ -153,6 +162,15 @@ of the column(s) to be used for defining the size of circles}
 this function produces an interactive view of the specified
 spatial object(s) on top of the specified base maps.
 }
+\details{
+The usage of big data sets is performed by loading local copies
+of json files from temporary storage. This works fine for most of
+the current browsers. If you are using Google's chrome browser you have to
+start the browser with the flag \code{-allow-file-access-from-files} (i.e
+for windows: "path_to_your_chrome_installation\\chrome.exe --allow-file-access-from-files",
+for linux: "/usr/bin/google-chrome --allow-access-from-files").
+See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
+}
 \section{Methods (by class)}{
 \itemize{
 \item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{brick}}
@@ -160,6 +178,8 @@ spatial object(s) on top of the specified base maps.
 \item \code{Satellite}: \code{\link{satellite}}
 
 \item \code{SpatialPixelsDataFrame}: \code{\link{SpatialPixelsDataFrame}}
+
+\item \code{SpatialGridDataFrame}: \code{\link{SpatialGridDataFrame}}
 
 \item \code{SpatialPointsDataFrame}: \code{\link{SpatialPointsDataFrame}}
 

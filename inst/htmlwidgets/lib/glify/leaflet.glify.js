@@ -137,7 +137,7 @@
          */
         render: function() {
 
-            this.layerControl = L.control.layers(this.settings.baseLayers).addTo(this.settings.map);
+            //this.layerControl = L.control.layers(this.settings.baseLayers).addTo(this.settings.map);
             //this.layerControl.addOverlay(this.glLayer,"points");
       var txt2 = $("<div id='lnlt'></div>").text('<button onclick="switchLayer()">Append text</button>');
       $('lnlt').append(txt2);

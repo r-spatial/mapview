@@ -11,7 +11,7 @@ leafletRL <- function(x,
                       use.layer.names,
                       values,
                       map.types,
-                      alpha,
+                      alpha.regions,
                       legend,
                       legend.opacity,
                       trim,
@@ -81,7 +81,7 @@ leafletRL <- function(x,
                                x = x,
                                colors = pal,
                                project = FALSE,
-                               opacity = alpha,
+                               opacity = alpha.regions,
                                group = grp,
                                ...)
 
@@ -318,12 +318,28 @@ leafletPointsDF <- function(x,
 
 ### leaflet w SpatialPoints ===============================================
 
+leafletSatellite <- function(x, ...) {
+
+  pkgs <- c("leaflet", "satellite", "magrittr")
+  tst <- sapply(pkgs, "requireNamespace",
+                quietly = TRUE, USE.NAMES = FALSE)
+
+  m <- mapView(stack(x), ...)
+
+  out <- new('mapview', object = list(x), map = m@map)
+
+  return(out)
+
+}
+
+### leaflet w SpatialPoints ===============================================
+
 leafletPoints <- function(x,
                           map,
-                          cex,
-                          lwd,
-                          alpha,
-                          alpha.regions,
+                          cex = 10,
+                          lwd = 2,
+                          alpha = 0.6,
+                          alpha.regions = 0.2,
                           na.color,
                           map.types,
                           verbose,
@@ -644,16 +660,59 @@ leafletLinesDF <- function(x,
 
     grp <- layer.name
 
-    if (pop.null) popup <- brewPopupTable(x)
+    # if (pop.null) popup <- brewPopupTable(x)
 
-    m <- leaflet::addPolylines(m,
-                               group = grp,
-                               color = color[length(color)],
-                               popup = popup,
-                               data = x,
-                               weight = lwd,
-                               opacity = alpha,
-                               ...)
+    ### test -----
+
+    for (i in 1:length(x)) {
+
+      # individual popup
+      if (pop.null) popup <- brewPopupTable(x[i, ])
+
+      # continuous line
+      segments <- length(x[i, ]@lines[[1]]@Lines)
+
+      if (segments == 1) {
+        m <- leaflet::addPolylines(m,
+                                   group = grp,
+                                   color = color[length(color)],
+                                   popup = popup,
+                                   data = x[i, ],
+                                   weight = lwd,
+                                   opacity = alpha,
+                                   ...)
+
+      # disjunct line
+      } else {
+
+        # add one segment after another
+        for (j in seq(segments)) {
+          ln <- x[i, ]@lines[[1]]@Lines[[j]]
+          lns <- sp::Lines(list(ln), ID = rownames(x@data[i, ]))
+          sln <- sp::SpatialLines(list(lns),
+                                  proj4string = sp::CRS(sp::proj4string(x)))
+          slndf <- sp::SpatialLinesDataFrame(sln, data = x@data[i, ])
+          m <- leaflet::addPolylines(m,
+                                     group = grp,
+                                     color = color[length(color)],
+                                     popup = popup,
+                                     data = slndf,
+                                     weight = lwd,
+                                     opacity = alpha,
+                                     ...)
+        }
+      }
+    }
+
+
+    # m <- leaflet::addPolylines(m,
+    #                            group = grp,
+    #                            color = color[length(color)],
+    #                            popup = popup,
+    #                            data = x,
+    #                            weight = lwd,
+    #                            opacity = alpha,
+    #                            ...)
 
     m <- mapViewLayersControl(map = m,
                               map.types = map.types,
@@ -692,12 +751,47 @@ leafletLines <- function(x,
 
   grp <- layer.name
 
-  m <- leaflet::addPolylines(m,
-                             group = grp,
-                             data = x,
-                             weight = lwd,
-                             opacity = alpha,
-                             ...)
+  ### test -----
+
+  for (i in 1:length(x)) {
+
+    # continuous line
+    segments <- length(x[i, ]@lines[[1]]@Lines)
+
+    if (segments == 1) {
+      m <- leaflet::addPolylines(m,
+                                 group = grp,
+                                 color = color[length(color)],
+                                 data = x[i, ],
+                                 weight = lwd,
+                                 opacity = alpha,
+                                 ...)
+
+    # disjunct line
+    } else {
+
+      # add one segment after another
+      for (j in seq(segments)) {
+        ln <- x[i, ]@lines[[1]]@Lines[[j]]
+        lns <- sp::Lines(list(ln), ID = i)
+        sln <- sp::SpatialLines(list(lns),
+                                proj4string = sp::CRS(sp::proj4string(x)))
+        m <- leaflet::addPolylines(m,
+                                   group = grp,
+                                   data = sln,
+                                   weight = lwd,
+                                   opacity = alpha,
+                                   ...)
+      }
+    }
+  }
+
+  # m <- leaflet::addPolylines(m,
+  #                            group = grp,
+  #                            data = x,
+  #                            weight = lwd,
+  #                            opacity = alpha,
+  #                            ...)
 
   m <- mapViewLayersControl(map = m,
                             map.types = map.types,
@@ -763,6 +857,8 @@ leafletMissing <- function(map.types,
     sp::proj4string(envinMR) <- sp::CRS(llcrs)
     m <- initBaseMaps(map.types)
 
+    fl <- 'http://cdn.makeagif.com/media/8-11-2015/n2JwUG.gif'
+
     pop <- paste("<center>", "<b>", "mapview", "</b>", "<br>", " was created at",
                  "<br>",
                  '<a target="_blank" href="http://environmentalinformatics-marburg.de/">Environmental Informatics Marburg</a>',
@@ -781,6 +877,13 @@ leafletMissing <- function(map.types,
                  '<font face="courier">',
                  'citation("mapview")',
                  '</font face="courier">',
+                 "<br>", "<br>",
+                 '<hr width=50% style="border: none; height: 1px; color: #D8D8D8; background: #D8D8D8;"/>',
+                 "<br>",
+                 "<b>", "mapview", "</b>", "is for quick visualisation of spatial data",
+                 "<br>", "<br>",
+                 paste('<img src =', fl, 'width="95%">'),
+                 '<a target="_blank" href="http://makeagif.com/n2JwUG">Source: MakeAGIF.com</a>',
                  "</center>")
     m <- leaflet::addCircles(data = envinMR, map = m,
                              fillColor = "white",

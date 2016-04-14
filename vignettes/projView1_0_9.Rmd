@@ -1,0 +1,377 @@
+---
+title: "Projected data in mapview"
+author: "Chris Reudenbach"
+date: "March 10, 2016"
+output:
+  html_document:
+    highlight: tango
+    self_contained: no
+    toc: yes
+    toc_depth: 4
+  pdf_document:
+    toc: yes
+    toc_depth: 4
+vignette: |
+  %\VignetteEncoding{UTF-8} %\VignetteIndexEntry{Projected data in mapview} %\VignetteEngine{knitr::rmarkdown}
+---
+
+![](http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png) (CC-BY-NC-SA)
+
+This document was produced on _`r format(Sys.time(), "%a %b %d %Y")`_ using `mapview` version **`r packageVersion("mapview")`**
+
+------
+
+# Installation
+Currently you will find projView only in the development branch of mapview. If you want to use it the probably easiest way to install `mapview` is to use `library("devtools")`. With `devtools` installed and loaded type the following:
+
+For the development version:
+```{r, eval = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+install_github("environmentalinformatics-marburg/mapview", ref = "develop")
+```
+
+------
+
+
+# Some remarks about projected slippy maps
+
+Why would you be interested to visualize projected data? The answer is two folded but simple. First there are areas of the earth which you cannot map with a pseudo-Mercator projection and second (at least for me) even more important the adequate or inadequate cartographic representation of spatial data has a deep impact on our visual reception and interpretation of this data. The straightforward conclusion is that there is a high need for projected mapping.
+
+Beyond all mapping philosophy let's focus on a practical problem. We want to analyze and visualize some recent research data from the antarctic continent using R and slippy maps. There is no possibility to use leaflet maps beyond the -85 degree latitude due to the implemented projections and we have to switch over to the great Open Source Geographic Information System <a href="http://www.qgis.org/" target="_blank">QGIS</a> or another mature GIS software package. With no doubt we may also use the well known static plotting packages of R - but no slippy maps for the penguins and polar bears within R.
+
+Leaflet is a fascinating JavaScript library which is not only lightweight and easy to use. but moreover fully extensible with plug-ins and own JS scripts. With respect to our needs the proj4leaflet extension of leaflet is dealing with projections. The R interface to JS-leaflet is provided by the leaflet package and in turn the mapview package provides a comfortable wrapper for the R leaflet package. It seems to be obvious that this chaining may lead to some restrictions and exactly this is the situation.
+
+ProjView uses its own interface directly to leaflet. To keep it in line with leaflet and mapview it is also using the htmlwidget package. the main advantage is that there is no need to live with the restrictions of the outlined chain but on the other hand you have to to it by your own means. Therefore projView is not neat less integrated and its usage and functionality  is slightly different and restricted.
+
+# Use case EPSG:3031
+
+As we already have learned, the mapview penguin story ends at 85 degree of latitude. Using projView continuous the story. Unfortunately first we need to invest in the business - we have to gather some informations.
+
+# The short way
+
+You know what to do? Perfect. Search "NASA  leaflet earthdata" and choose the appropriate <a href="https://wiki.earthdata.nasa.gov/display/GIBS/Map+Library+Usage" target="_blank">GIBS Map Library Usage</a> hit. Navigate to Leaflet and choose [GIS Web examples](https://github.com/nasa-gibs/gibs-web-examples). Find [Antarctic (EPSG:3031)](https://earthdata.nasa.gov/labs/gibs/examples/leaflet/antarctic-epsg3031.html) and move down in this tutorial to *parameter format for use in preview*.
+
+# The long way
+
+## Slippy maps where do they come from?
+
+Basically for slippy maps you need on-line data from service providers. Best known are the WMS and OSM tiling services. All of some send you by request rasterized tiles of georeferenced maps, satellite images and so on. Usually you want to add your own vector or raster data overlay. Depending on the service and the client there are almost all possibilities out there. One of leaflets major pros is that it is easy and fast. The main reason is that it is a client side approach what means that your browser and your CPU has to do all the work because usually you are getting the data "as it is delivered".  
+
+To learn how to prepare  on-line services for mapview/leaflet we have to dive into the world of web mapping services.You will find a brief and simple explanation of how web maps (web services for web maps) works at Mapbox in the article  (<a href="https://www.mapbox.com/help/how-web-maps-work/" target="_blank"> How web maps works </a>). Unfortunately you have to forget the last conclusion.
+
+Basically we need to access from a high level client (mapview) data tiles to retrieve. So we have to to know (1) which products are available (2) which map projections are available (3) how many zoom levels per product are available and (4) which protocol to access the data is available.
+
+Due to the fact that without a service provider you hardly will find a service and data, it is obviously rational that you first take a look at this topic. For an introduction of the WMS related services you will find a perfect outline of what OGC services are around and what they mean in the [QGIS OGC Documentation](http://docs.qgis.org/2.6/en/docs/user_manual/working_with_ogc/ogc_client_support.html). Please note even if this documentations refers to GIS as a client all decribed concepts of the services are valid for all type of clients. For the OSM tiling concept you may have a look at the OSM Wiki topic called [Tiles](http://wiki.openstreetmap.org/wiki/Tiles). Both concepts differ pretty much even if you will get as a result  - tiles.
+
+In theory, everything seems to be clear so far.
+
+## Hands on getting the information
+
+We have learned that it makes sense to start at a data provider and to find out what standards products on which projection and zoomlevel they provide.
+
+ProjView supports up to now WMTS related services.
+
+1. Identify the data provider
+2. Check which data is available for WMTS
+3. Extract the necessary informations.
+
+### Identify the data provider
+
+A big shot and always a good first try in data retrieval processing and providing in the earth science scene is the NASA Earth Observing System Data and Information System <a href="https://earthdata.nasa.gov/about" target="_blank">EOSDIS</a>. Don't get confused. They provide an incredible amount of information and data but you have to know how to find it. It is a typical govermental structure. EOSDIS implements the  Earth Science Data and Information System <a href="https://earthdata.nasa.gov/about/esdis-project" target="_blank"> ESDIS </a> for data providing. Within this EarthData portal you will find all types of interfaces and services. Best way to get <i>real</i> information is the usage of the <a href="https://wiki.earthdata.nasa.gov/display/ECE/Dashboard" target="_blank">EarthData-Wiki</a>.
+
+As we are interested in web served data we need providers of this data. Just to have an example we will have a look at the NASA  Global Imagery Browse Services <a href="https://wiki.earthdata.nasa.gov/display/GIBS" target="_blank">GIBS</a>.
+Here you will find all kinds of data and informations you may interested in.
+The services implement functionality for automated anaysis of the provided Content. We will use the most common OGC Web Map Tile Service (WMTS). The EarthData-Wiki provides all information at  <a href="https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+API+for+Developers#GIBSAPIforDevelopers-OGCWebMapTileService(WMTS)" target="_blank">GIBS API for Developers</a> OGC Web Map Tile Service (WMTS).
+
+### Check which data is available
+
+As we are interested in the antarctic region we look for something like *Antarctic polar stereographic - EPSG:3031* . We choose the [REST GetCapabilities](http://map1.vis.earthdata.nasa.gov/wmts-antarctic/1.0.0/WMTSCapabilities.xml) link and get an incredible XML output.
+
+### Extract the necessary informations
+
+You can read it now manually or write a script to extract the information you need.
+
+### Put it together
+
+projView is using the proj4leaflet [api](http://kartena.github.io/Proj4Leaflet/api/). For a basic setup of tiles we need at least the following arguments.
+
+- service and service parameters
+* internal service parameters usually url, format, tilesize, subdomains...
+* leaflet map parameters, as  correct bounding and upper left corner coordinates zoom levels, resolution ...
+* target projection (EPSG Code and proj4 string)
+
+### Assess the parameters
+
+Let's assume we are interested in the Blue Marble Shaded Relief Bathymetry. If we search for this layer in the [REST GetCapabilities](http://map1.vis.earthdata.nasa.gov/wmts-antarctic/1.0.0/WMTSCapabilities.xml) XML file we will see something like:
+
+```xml
+<Layer>
+<ows:Title>BlueMarble_ShadedRelief_Bathymetry</ows:Title>
+<ows:LowerCorner>-180 -90</ows:LowerCorner>
+<ows:UpperCorner>180 -38.941373</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:BoundingBox crs="urn:ogc:def:crs:EPSG::3031">
+<ows:LowerCorner>-4194304 -4194304</ows:LowerCorner>
+<ows:UpperCorner>4194304 4194304</ows:UpperCorner>
+</ows:BoundingBox>
+<ows:Identifier>BlueMarble_ShadedRelief_Bathymetry</ows:Identifier>
+<Style isDefault="true">
+<ows:Title>default</ows:Title>
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>EPSG3031_500m</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="http://map1.vis.earthdata.nasa.gov/wmts-antarctic/BlueMarble_ShadedRelief_Bathymetry/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+```
+
+Admittedly annoying to read but it provides all necessary information in a compact way.
+
+First we have to analyze the primary arguments:
+
+* ResourceURL
+* format
+* resourceType
+* template
+* BoundingBox
+* LowerCorner
+* UpperCorner
+* Identifier
+
+If we focus `ResourceURL` we will find more information in the the argument `template`:
+
+`http://map1.vis.earthdata.nasa.gov/wmts-antarctic/BlueMarble_ShadedRelief_Bathymetry/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg`
+
+To construct a valid URL we also need the content of the following variables:
+* `{TileMatrixSet}` 
+* `{TileMatrix}`,`{TileRow}`,`{TileCol}`
+
+There are still some parameters missing which are not documented in the xml file. We will find tileSize and zoomlevel information at the [EPSG:3031 examples](https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+API+for+Developers#GIBSAPIforDevelopers-AntarcticPolarStereographic(EPSG:3031)) table. Additionally it is common that the variable `{TileMatrix},{TileRow},{TileCol}` are corresponding to the subdomains of the WMTS Rest format (i.e. `abc`).
+
+Ready to compile the information.
+
+
+# map.types parameter list of projView
+
+Now we need an appropriate structure for these parameters to make it less complicated to feed the projView function with this information. This is a simple nested list. If we fill it with the values it looks like this:
+
+
+```{r, warning=FALSE, message=FALSE}
+NASA=list(service="OSM",                                             # name of the list
+L.tileLayer="https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/", # base address <ResourceURL>
+# layer list is structured like the path of the url in this case: <ows:Identifier>,<TileMatrixSet>
+          layer=list( "BlueMarble_ShadedRelief_Bathymetry"   = list("BlueMarble_ShadedRelief_Bathymetry","default","EPSG3031_500m","{z}/{y}/{x}"),
+                      "AMSR2_Sea_Ice_Brightness_Temp_6km_89H"= list("AMSR2_Sea_Ice_Brightness_Temp_6km_89H","default","2014-02-04","EPSG3031_1km","{z}/{y}/{x}"),
+                      "MODIS_Terra_Snow_Cover"               = list("MODIS_Terra_Snow_Cover","default","2014-02-04","EPSG3031_1km","{z}/{y}/{x}")
+          ),      # end of layer list
+ 
+format="image/jpg",#<Format>
+tileSize="512",   # min resolution  EPSG:3031 examples
+subdomains="abc", # most often used -> can be assumed as default 
+noWrap ="true",   # most often used -> can be assumed as default 
+# attribution has to meet the data providers needs and your personal interpretation of transparence 
+attribution="<a href='https://wiki.earthdata.nasa.gov/display/GIBS'> NASA EOSDIS GIBS</a> &nbsp;|| &nbsp; <a href='https://github.com/kartena/Proj4Leaflet'> Proj4Leaflet</a> | Projection: <a href='http://spatialreference.org/ref/epsg/wgs-84-antarctic-polar-stereographic/'> EPSG3031</a>",
+params=list(t_epsg="EPSG:3031", # exactly this the EPSG Code beside all other possibilieties and standards if possible keep it like this
+t_srs="+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs", # corresponding proj4 strings best be taken from href='http://spatialreference.org
+mapCenter=list(cLat="-90",  #see example map EPSG:3031 examples
+cLon="0"),                  #see example map EPSG:3031 examples
+initialZoom="1",            #EPSG:3031 examples: Please note that the "top tile" (i.e., zoom level 0) is not currently supported by GIBS.
+zoomLevels="5",             # zoom/levels EPSG:3031 examples
+initialResolution="256",           # = minresolution EPSG:3031 examples
+ovlBounds=list(minx="-4194304", ## <ows:LowerCorner>
+miny="-4194304",                ## <ows:LowerCorner>
+maxx="4194304",                 ## <ows:UpperCorner>
+maxy="4194304"),                ## <ows:UpperCorner>
+origin=list(olx="-4194304",    ## <ows:LowerCorner> firstvalue minx
+oly="4194304"),                ## <ows:UpperCorner> lastvalue maxy
+relUrl=""                      ## obsolete used for local tiles
+))
+
+```
+
+
+## Things inside projView you'd better know
+
+You may imagine that serving of tiles is a world itself. Therefore it seems to be pretty ambitious to find a all in one solution. What I tried so far is to get a as simple as possible way to use WMS and OSM services. You should know some internal calculations and undocumented argument usage to prevent that you are going mad watching the weird behaviour of the tool.
+
+First a dump of the list to identfy the crucial arguments we have to talk about.
+
+```
+List of 11
+ $ service    : chr "OSM"
+ $ L.tileLayer: chr "https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/"
+ $ layer      :List of 3
+  ..$ BlueMarble_ShadedRelief_Bathymetry   :List of 4
+  .. ..$ : chr "BlueMarble_ShadedRelief_Bathymetry"
+  .. ..$ : chr "default"
+  .. ..$ : chr "EPSG3031_500m"
+  .. ..$ : chr "{z}/{y}/{x}"
+  ..$ AMSR2_Sea_Ice_Brightness_Temp_6km_89H:List of 5
+  .. ..$ : chr "AMSR2_Sea_Ice_Brightness_Temp_6km_89H"
+  .. ..$ : chr "default"
+  .. ..$ : chr "2014-02-04"
+  .. ..$ : chr "EPSG3031_1km"
+  .. ..$ : chr "{z}/{y}/{x}"
+  ..$ MODIS_Terra_Snow_Cover               :List of 5
+  .. ..$ : chr "MODIS_Terra_Snow_Cover"
+  .. ..$ : chr "default"
+  .. ..$ : chr "2014-02-04"
+  .. ..$ : chr "EPSG3031_1km"
+  .. ..$ : chr "{z}/{y}/{x}"
+ $ format     : chr "image/jpg"
+ $ tileSize   : chr "512"
+ $ subdomains : chr "abc"
+ $ minZoom    : num 0
+ $ maxZoom    : num 5
+ $ noWrap     : chr "true"
+ $ attribution: chr "<a href='https://wiki.ear __truncated__'"
+ $ params     :List of 9
+  ..$ t_epsg           : chr "EPSG:3031"
+  ..$ t_srs            : chr "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
+  ..$ mapCenter        :List of 2
+  .. ..$ cLat: chr "-90"
+  .. ..$ cLon: chr "0"
+  ..$ initialZoom      : chr "0"
+  ..$ zoomLevels       : chr "5"
+  ..$ initialResolution: chr "256"
+  ..$ ovlBounds        :List of 4
+  .. ..$ minx: chr "-4194304"
+  .. ..$ miny: chr "-4194304"
+  .. ..$ maxx: chr "4194304"
+  .. ..$ maxy: chr "4194304"
+  ..$ origin           :List of 2
+  .. ..$ olx: chr "-4194304"
+  .. ..$ oly: chr "4194304"
+  ..$ relUrl           : chr ""
+```
+
+### The URL of the service 
+
+The whole List will be iterated using the sublist  `$layer` to build the URL, in the example case 3 times. The root of the url is always `$L.tileLayer`:
+
+Note the first item will be **always** the baselayer of the map and can not be switched on an off. 
+
+Each layer item is then iterated over the path list. Note the items **must** be in the sequence of the path because they were pasted in exactly one after the other.
+
+As a result you should get the (correct) URL for the service.
+
+### The remaining Parameters of the URL/Service
+
+All items except `$params` and `$layer` are parsed and used to set up a correct `L.tileLayer{}` parameter list. They can be crucial and it is possible that you have to play around a bit
+
+### Parameters of the ruling leaflet map object
+
+All Parameters of the `$param` list belong to the leaflet map object respective the Proj4Leaflet extension for non leaflet CRSs.
+
+Most of them are as they are looking like. Especially `$initialResolution`, `$ovlBound` and `$origin`. These parameter set is ruling the leaflet map object setup and even if everything all other arguments are perfect, you will get strange or no effects, if they don't meet the needs of the data providers.
+
+#### $initialResolution
+
+Usually it is tried to calculate the resolution automatically. the approach is simple:
+
+            maxResolution <- res / div
+            resolution<- list()
+            for ( i in seq(0,maxZoom)){
+            resolution[i+1] <- maxResolution /  2^i
+            }
+
+where `i` is the increasing level of `zoom` up to `maxZoom`, `res is the maximum extend of the the `bounds of the maps, `div` is the `tilSize` scaled by the `initialResolution`. Ususally tileSize and initialResoulution should be the same than `div=tileSize` outherweise div is calculated as  `div<-tileSize/initialRes*tileSize`.
+
+If you are not able to find a good range of resolution but you find an example then you may just paste it in `initialResolution`.
+
+           initialResolution=c(8192,4096,2048, 1024, 512, 256, 128,64, 32, 16, 8, 4, 2,1,0.5,0.25,0.125,0.0625)
+
+This will be taken as it is.
+
+#### $bounds
+
+If you don't need or have no idea about the `bounds` you may try to set at least one of the values to NULL
+
+        minx=NULL
+        
+with this option no bounds will be generated.
+
+#### $origin
+
+The 'origin' has always to be set. It this the upper left corner of the tiles and used as reference point for transforming the projected coordinates. Note you **must** use values of the target reference system. Especially in polar stereographic projections that are not centered on the pole this can be tricky.
+
+Time for some examples...
+
+# Some examples
+
+
+
+## EarthData South Pole
+
+
+First lets map the manually written input list from the tutorial. For convienience reason we load it from the package. We are obtaining the data from [NASA EarthData Wiki](https://wiki.earthdata.nasa.gov/display/ECE/Dashboard). The used camps are documented in the package.
+
+
+```{r , warning=FALSE, message=FALSE, fig.width=9.47}
+library(mapview)
+library(raster)
+
+ # load data of the arctic stations
+ data("campsQ2")
+
+ # load the list of the above example
+ data("map.types")
+ 
+
+ 
+mapview::projView(campsQ2,  map.types = map.types$NASA)
+
+```
+
+
+In this special case of the antarctic NASA EarthData you may use the visEarthPole() function from the mapview package
+
+```{r,  warning=FALSE, message=FALSE, fig.width=9.47}
+
+   
+  # load data of the arctic stations
+ data("campsQ2")
+
+ # load the list of the above example
+ data("map.types")
+ 
+ nasa<-map.types$NASA
+ 
+### use the visEarthPole function as a plugin
+projView(campsQ2, map.types = nasa,
+         internalList = TRUE,
+         externalList = c("arctic-nasa","visEarthPole(groupList='1000',dateString='2014-02-04',createList = TRUE)"))
+```
+
+
+To avoid some strange side effects you'll find further examples on seperates pages:
+
+## Arctic Web Maps as provided by ArcticConnect (AC)
+
+* [Arctic Connect](http://gisma.github.io/projView/projView1_0_9_AC.html)
+
+## The Conservation of Arctic Fauna and Flora (CAFF)
+
+* [CAFF](http://gisma.github.io/projView/projView1_0_9_CAFF.html)
+
+------
+
+# Final remarks
+
+There are still more limitations than solutions. Actually the process of generating the correct map.types lists is more ore less cumbersome. On the other hand in the end there is always some manual work due to non strict service declarations. If somebody likes the function it could be worthwhile to automated this process.
+
+In future releases I would like to
+
+* provide some additional functions for often used datasets
+* integrate a fully working localTile functionality for serving local raster data
+* ...
+
+If you have any feedback, please don't hesitate to contact [me](http://www.uni-marburg.de/fb19/personal/mitarbeiter/reudenbachc/index.html).
+
+Bug reports should be filed at <a href="https://github.com/environmentalinformatics-marburg/mapview/issues" target="_blank">https://github.com/environmentalinformatics-marburg/mapview/issues</a>
+
+Cheers
+
+Chris
+
