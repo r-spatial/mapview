@@ -206,11 +206,12 @@ leafletPointsDF <- function(x,
   tst <- sapply(pkgs, "requireNamespace",
                 quietly = TRUE, USE.NAMES = FALSE)
 
+  pop.null <- is.null(popup)
+  if (pop.null) popup <- brewPopupTable(x)
+
   rad_vals <- circleRadius(x, cex)
   if(!is.null(zcol)) x <- x[, zcol]
   if(!is.null(zcol)) burst <- TRUE
-
-  pop.null <- is.null(popup)
 
   x <- spCheckObject(x, verbose = verbose)
   x <- spCheckAdjustProjection(x)
@@ -235,8 +236,7 @@ leafletPointsDF <- function(x,
     for (i in seq(lst)) {
 
       #x <- lst[[i]]
-
-      if (pop.null) popup <- brewPopupTable(lst[[i]])
+      labs <- as.character(lst[[i]]@data[, zcol])
 
       m <- leaflet::addCircleMarkers(m,
                                      lng = coordinates(lst[[i]])[, 1],
@@ -248,6 +248,7 @@ leafletPointsDF <- function(x,
                                      opacity = alpha,
                                      fillOpacity = alpha.regions,
                                      popup = popup,
+                                     label = labs,
                                      #data = lst[[i]],
                                      radius = rad_vals,
                                      ...)
@@ -281,7 +282,7 @@ leafletPointsDF <- function(x,
 
     grp <- layer.name
 
-    if (pop.null) popup <- brewPopupTable(x)
+    #if (pop.null) popup <- brewPopupTable(x)
 
     m <- leaflet::addCircleMarkers(map = m,
                                    lng = coordinates(x)[, 1],
