@@ -1,9 +1,13 @@
 mapview (upcoming release)
 --------------------------------------------------------------------------------
 
-* projView
-* knitr integration
-* cubeView
+* new features:
+  * projView
+  * knitr integration
+  * cubeView
+
+* changes:
+  * colors: viridis based colors now default if package is available
 
 
 mapview 1.0.0

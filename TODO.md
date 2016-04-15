@@ -30,7 +30,9 @@
 
 ### mapviewColors (Tim)
 
-* integrate `viridis` package in `Enhances` so that `inferno` palette is used as default if viridis package is installed 
+* integrate `viridis` package
+* functions for creating suitable palettes based on data type (rst vs. vec)
+* clean leafletView functions, i.e. move all color related stuff to above created functions
 
 ### miscellaneous (Tim)
 
