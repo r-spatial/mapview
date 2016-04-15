@@ -3,12 +3,12 @@
 \docType{data}
 \name{campsQ2}
 \alias{campsQ2}
-\title{Antartic Facilities}
+\title{Antarctic Facilities}
 \format{\code{sp::SpatialPointsDataFrame}}
 \description{
-Antartic facilities. Type of facility attribute is ""feature_ty"
+Antarctic facilities. Type of facility attribute is ""feature_ty"
 }
 \details{
-The data show the antartic facilities (2012) as provided by \href{https://www.comnap.aq}{comnap} via the \href{www.quantartica.org}{Quantartica2} data compilation that is compiled by the \href{http://www.npolar.no/en}{Norwegian Polar Institute}
+The data show the Antarctic facilities (2012) as provided by \href{https://www.comnap.aq}{comnap} via the \href{www.quantarctica.org}{Quantarctica2} data compilation that is compiled by the \href{http://www.npolar.no/en}{Norwegian Polar Institute}
 }
 

@@ -1,9 +1,7 @@
 #' @export
 #'
 print.mapview <- function(x, ...) {
-
   htmlwidgets:::print.htmlwidget(mapview2leaflet(x), ...)
-
 }
 
 
@@ -20,4 +18,10 @@ getSimpleClass <- function(x) {
                       "RasterBrick", "Satellite",
                       "SpatialGridDataFrame",
                       "SpatialPixelsDataFrame")) "rst" else "vec"
+}
+
+
+### labels
+makeLabels <- function(column) {
+  labs <- as.character(column)
 }

@@ -182,6 +182,28 @@ leafletPixelsDF <- function(x,
 
 
 
+
+
+### leaflet w Satellite ===================================================
+
+leafletSatellite <- function(x, ...) {
+
+  pkgs <- c("leaflet", "satellite", "magrittr")
+  tst <- sapply(pkgs, "requireNamespace",
+                quietly = TRUE, USE.NAMES = FALSE)
+
+  m <- mapView(stack(x), ...)
+
+  out <- new('mapview', object = list(x), map = m@map)
+
+  return(out)
+
+}
+
+
+
+
+
 ### leaflet w SpatialPointsDataFrame ======================================
 
 leafletPointsDF <- function(x,
@@ -200,14 +222,14 @@ leafletPointsDF <- function(x,
                             verbose,
                             layer.name,
                             popup,
+                            label,
                             ...) {
 
   pkgs <- c("leaflet", "sp", "magrittr")
   tst <- sapply(pkgs, "requireNamespace",
                 quietly = TRUE, USE.NAMES = FALSE)
 
-  pop.null <- is.null(popup)
-  if (pop.null) popup <- brewPopupTable(x)
+  if (missing(popup)) popup <- brewPopupTable(x)
 
   rad_vals <- circleRadius(x, cex)
   if(!is.null(zcol)) x <- x[, zcol]
@@ -236,7 +258,7 @@ leafletPointsDF <- function(x,
     for (i in seq(lst)) {
 
       #x <- lst[[i]]
-      labs <- as.character(lst[[i]]@data[, zcol])
+      if (missing(label)) label <- makeLabels(lst[[i]][[1]])
 
       m <- leaflet::addCircleMarkers(m,
                                      lng = coordinates(lst[[i]])[, 1],
@@ -248,7 +270,7 @@ leafletPointsDF <- function(x,
                                      opacity = alpha,
                                      fillOpacity = alpha.regions,
                                      popup = popup,
-                                     label = labs,
+                                     label = label,
                                      #data = lst[[i]],
                                      radius = rad_vals,
                                      ...)
@@ -317,21 +339,6 @@ leafletPointsDF <- function(x,
 
 
 
-### leaflet w SpatialPoints ===============================================
-
-leafletSatellite <- function(x, ...) {
-
-  pkgs <- c("leaflet", "satellite", "magrittr")
-  tst <- sapply(pkgs, "requireNamespace",
-                quietly = TRUE, USE.NAMES = FALSE)
-
-  m <- mapView(stack(x), ...)
-
-  out <- new('mapview', object = list(x), map = m@map)
-
-  return(out)
-
-}
 
 ### leaflet w SpatialPoints ===============================================
 
@@ -355,7 +362,7 @@ leafletPoints <- function(x,
 
   m <- initMap(map, map.types, sp::proj4string(x))
 
-  txt <- brewPopupTable(x)
+  if (missing(popup)) popup <- brewPopupTable(x)
 
   grp <- layer.name
 
@@ -367,7 +374,7 @@ leafletPoints <- function(x,
                                  opacity = alpha,
                                  fillOpacity = alpha.regions,
                                  group = grp,
-                                 popup = txt,
+                                 popup = popup,
                                  ...)
 
   m <- mapViewLayersControl(map = m,
@@ -400,6 +407,7 @@ leafletPolygonsDF <- function(x,
                               verbose,
                               layer.name,
                               popup,
+                              label,
                               ...) {
 
   pkgs <- c("leaflet", "sp", "magrittr")
@@ -408,10 +416,10 @@ leafletPolygonsDF <- function(x,
 
   x <- spCheckObject(x, verbose = verbose)
 
+  if (missing(popup)) popup <- brewPopupTable(x)
+
   if(!is.null(zcol)) x <- x[, zcol]
   if(!is.null(zcol)) burst <- TRUE
-
-  pop.null <- is.null(popup)
 
   x <- spCheckAdjustProjection(x)
 
@@ -446,7 +454,7 @@ leafletPolygonsDF <- function(x,
 
       grp <- names(lst[[i]])
 
-      if (pop.null) popup <- brewPopupTable(lst[[i]])
+      if (missing(label)) label <- makeLabels(lst[[i]][[1]])
 
       clrs <- pal_n[[i]](vals[[i]])
       m <- leaflet::addPolygons(m,
@@ -456,6 +464,7 @@ leafletPolygonsDF <- function(x,
                                 group = grp,
                                 color = clrs,
                                 popup = popup,
+                                label = label,
                                 data = lst[[i]],
                                 ...)
 
@@ -470,13 +479,6 @@ leafletPolygonsDF <- function(x,
                               map.types = map.types,
                               names = names(x))
 
-
-    #     m <- leaflet::addLayersControl(map = m,
-    #                                    position = mapviewOptions(
-    #                                      console = FALSE)$layerscontrolpos,
-    #                                    baseGroups = map.types,
-    #                                    overlayGroups = names(x))
-
     if (length(names(x)) > 1) {
       m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
     }
@@ -484,8 +486,6 @@ leafletPolygonsDF <- function(x,
   } else {
 
     grp <- layer.name
-
-    if (pop.null) popup <- brewPopupTable(x)
 
     m <- leaflet::addPolygons(m,
                               weight = lwd,
@@ -496,12 +496,6 @@ leafletPolygonsDF <- function(x,
                               popup = popup,
                               data = x,
                               ...)
-
-    #     m <- leaflet::addLayersControl(map = m,
-    #                                    position = mapviewOptions(
-    #                                      console = FALSE)$layerscontrolpos,
-    #                                    baseGroups = map.types,
-    #                                    overlayGroups = grp)
 
     m <- mapViewLayersControl(map = m,
                               map.types = map.types,
@@ -576,6 +570,7 @@ leafletLinesDF <- function(x,
                            verbose,
                            layer.name,
                            popup,
+                           label,
                            ...) {
 
   pkgs <- c("leaflet", "sp", "magrittr")
@@ -585,7 +580,7 @@ leafletLinesDF <- function(x,
   if(!is.null(zcol)) x <- x[, zcol]
   if(!is.null(zcol)) burst <- TRUE
 
-  pop.null <- is.null(popup)
+  if (missing(popup)) popup <- brewPopupTable(x)
 
   x <- spCheckObject(x, verbose = verbose)
   x <- spCheckAdjustProjection(x)
@@ -629,12 +624,13 @@ leafletLinesDF <- function(x,
 
       grp <- names(df)[i]
 
-      if (pop.null) popup <- brewPopupTable(lst[[i]])
+      if (missing(label)) label <- makeLabels(lst[[i]][[1]])
 
       m <- leaflet::addPolylines(m,
                                  group = grp,
                                  color = pal_n[[i]](vals[[i]]),
                                  popup = popup,
+                                 label = label,
                                  data = lst[[i]],
                                  weight = lwd,
                                  opacity = alpha,
@@ -668,7 +664,7 @@ leafletLinesDF <- function(x,
     for (i in 1:length(x)) {
 
       # individual popup
-      if (pop.null) popup <- brewPopupTable(x[i, ])
+      if (missing(popup)) popup <- brewPopupTable(x[i, ])
 
       # continuous line
       segments <- length(x[i, ]@lines[[1]]@Lines)
@@ -704,16 +700,6 @@ leafletLinesDF <- function(x,
         }
       }
     }
-
-
-    # m <- leaflet::addPolylines(m,
-    #                            group = grp,
-    #                            color = color[length(color)],
-    #                            popup = popup,
-    #                            data = x,
-    #                            weight = lwd,
-    #                            opacity = alpha,
-    #                            ...)
 
     m <- mapViewLayersControl(map = m,
                               map.types = map.types,
@@ -786,13 +772,6 @@ leafletLines <- function(x,
       }
     }
   }
-
-  # m <- leaflet::addPolylines(m,
-  #                            group = grp,
-  #                            data = x,
-  #                            weight = lwd,
-  #                            opacity = alpha,
-  #                            ...)
 
   m <- mapViewLayersControl(map = m,
                             map.types = map.types,

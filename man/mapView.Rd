@@ -54,7 +54,7 @@
   alpha = 0.6, alpha.regions = 0.2,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
   legend.opacity = 1, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
+  layer.name = deparse(substitute(x, env = parent.frame())), popup, label,
   ...)
 
 \S4method{mapView}{SpatialPoints}(x, map = NULL, zcol = NULL,
@@ -70,7 +70,7 @@
   alpha.regions = 0.2, values = NULL,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
   legend.opacity = 1, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
+  layer.name = deparse(substitute(x, env = parent.frame())), popup, label,
   ...)
 
 \S4method{mapView}{SpatialPolygons}(x, map = NULL, color = "#460000",
@@ -84,7 +84,7 @@
   na.color = mapviewGetOption("na.color"), lwd = 2, alpha = 0.8,
   values = NULL, map.types = mapviewGetOption("basemaps"), legend = FALSE,
   legend.opacity = 1, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
+  layer.name = deparse(substitute(x, env = parent.frame())), popup, label,
   ...)
 
 \S4method{mapView}{SpatialLines}(x, map = NULL, zcol = NULL,
@@ -154,6 +154,9 @@ of the column(s) to be used for defining the size of circles}
 \item{alpha}{opacity of the lines or points}
 
 \item{popup}{a character vector of the HTML content for the popups. See
+\code{\link{addControl}} for details.}
+
+\item{label}{a character vector of labels to be shown on mouseover. See
 \code{\link{addControl}} for details.}
 
 \item{easter.egg}{well, you might find out if you set this to TRUE}

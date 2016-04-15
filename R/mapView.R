@@ -44,6 +44,8 @@ if ( !isGeneric('mapView') ) {
 #' @param layer.name the name of the layer to be shown on the map
 #' @param popup a character vector of the HTML content for the popups. See
 #' \code{\link{addControl}} for details.
+#' @param label a character vector of labels to be shown on mouseover. See
+#' \code{\link{addControl}} for details.
 #' @param ... additional arguments passed on to repective functions.
 #' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
@@ -301,17 +303,18 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    burst = FALSE,
                    color = mapviewGetOption("vector.palette")(256),
                    na.color = mapviewGetOption("na.color"),
-                   cex = 10,
-                   lwd = 2,
-                   alpha = 0.6,
-                   alpha.regions = 0.2,
+                   cex = 8,
+                   lwd = 4,
+                   alpha = 0.9,
+                   alpha.regions = 0.4,
                    map.types = mapviewGetOption("basemaps"),
                    legend = FALSE,
                    legend.opacity = 1,
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   popup = NULL,
+                   popup,
+                   label,
                    ...) {
 
             if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
@@ -332,6 +335,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                 verbose = verbose,
                                 layer.name = layer.name,
                                 popup = popup,
+                                label = label,
                                 ...)
               } else {
                 NULL
@@ -431,7 +435,8 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   popup = NULL,
+                   popup,
+                   label,
                    ...) {
 
             if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
@@ -452,6 +457,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                                   verbose = verbose,
                                   layer.name = layer.name,
                                   popup = popup,
+                                  label = label,
                                   ...)
               } else {
                 NULL
@@ -546,7 +552,8 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   popup = NULL,
+                   popup,
+                   label,
                    ...) {
 
             if (length(x@lines) < mapviewGetOption("maxlines")) {
@@ -566,6 +573,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                                verbose = verbose,
                                layer.name = layer.name,
                                popup = popup,
+                               label = label,
                                ...)
               } else {
                 NULL

@@ -2,7 +2,7 @@
 % Please edit documentation in R/mapshot.R
 \name{mapshot}
 \alias{mapshot}
-\title{Save mapview or leaflet map to file}
+\title{Save mapview or leaflet map as image}
 \usage{
 mapshot(x, url = NULL, file, ...)
 }

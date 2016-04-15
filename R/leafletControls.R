@@ -492,6 +492,13 @@ circleRadius <- function(x, radius) {
 
 spCheckObject <- function(x, verbose) {
 
+  ## convert chracter columns to factor columns
+  for (i in names(x)) {
+    if (is.character(x@data[, i])) {
+      x@data[, i] <- as.factor(x@data[, i])
+    }
+  }
+
   ## check and remove data columns where all NA
   if (any(methods::slotNames(x) %in% "data")) {
     all_na_index <- sapply(seq(x@data), function(i) {

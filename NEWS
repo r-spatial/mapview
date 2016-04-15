@@ -1,13 +1,17 @@
 mapview (upcoming release)
 --------------------------------------------------------------------------------
 
-* new features:
+new features:
   * projView
   * knitr integration
   * cubeView
+  * labels: if zcol is set, mouseoer will now show the repesctive values of zcol.
 
-* changes:
+changes:
   * colors: viridis based colors now default if package is available
+
+bugfixes:
+  * if attribute was of class "character" mapview did through an error if passed to zcol.
 
 
 mapview 1.0.0
