@@ -1,8 +1,8 @@
 Package: mapview
 Type: Package
 Title: Interactive Viewing of Spatial Objects in R
-Version: 1.0.16
-Date: 2016-04-15
+Version: 1.0.17
+Date: 2016-04-16
 Authors@R: c(
       person("Tim", "Appelhans", email = "admin@environmentalinformatics-marburg.de", role = c("cre", "aut")),
       person("Florian", "Detsch", email = "florian.detsch@staff.uni-marburg.de", role = c("aut")),
