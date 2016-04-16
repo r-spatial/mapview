@@ -303,7 +303,7 @@ leafletPointsDF <- function(x,
   } else {
 
     grp <- layer.name
-    label <- makeLabels(row.names(x))
+    if (missing(label)) label <- makeLabels(row.names(x))
     #if (pop.null) popup <- brewPopupTable(x)
 
     m <- leaflet::addCircleMarkers(map = m,
