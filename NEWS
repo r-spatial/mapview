@@ -5,7 +5,7 @@ new features:
   * projView
   * knitr integration
   * cubeView
-  * labels: if zcol is set, mouseoer will now show the repesctive values of zcol.
+  * labels: if zcol is set, mouseover will now show the repesctive values of zcol, if zcol is not set moseover shoes feature ID.
 
 changes:
   * colors: viridis based colors now default if package is available

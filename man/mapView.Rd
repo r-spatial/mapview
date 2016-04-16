@@ -50,19 +50,20 @@
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapviewGetOption("vector.palette")(256),
-  na.color = mapviewGetOption("na.color"), cex = 10, lwd = 2,
-  alpha = 0.6, alpha.regions = 0.2,
+  na.color = mapviewGetOption("na.color"), cex = 8, lwd = 4,
+  alpha = 0.9, alpha.regions = 0.4,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
   legend.opacity = 1, verbose = mapviewGetOption("verbose"),
   layer.name = deparse(substitute(x, env = parent.frame())), popup, label,
   ...)
 
 \S4method{mapView}{SpatialPoints}(x, map = NULL, zcol = NULL,
-  color = "#460000", na.color = mapviewGetOption("na.color"), cex = 10,
-  lwd = 2, alpha = 0.6, alpha.regions = 0.2,
+  color = mapviewGetOption("vector.palette")(2),
+  na.color = mapviewGetOption("na.color"), cex = 8, lwd = 4,
+  alpha = 0.9, alpha.regions = 0.4,
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), ...)
+  env = parent.frame())), label, ...)
 
 \S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapviewGetOption("vector.palette")(256),
@@ -73,11 +74,12 @@
   layer.name = deparse(substitute(x, env = parent.frame())), popup, label,
   ...)
 
-\S4method{mapView}{SpatialPolygons}(x, map = NULL, color = "#460000",
+\S4method{mapView}{SpatialPolygons}(x, map = NULL,
+  color = mapviewGetOption("vector.palette")(2),
   na.color = mapviewGetOption("na.color"),
   map.types = mapviewGetOption("basemaps"), lwd = 2, alpha = 0.8,
   alpha.regions = 0.2, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+  layer.name = deparse(substitute(x, env = parent.frame())), label, ...)
 
 \S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
   burst = FALSE, color = mapviewGetOption("vector.palette")(256),
@@ -88,10 +90,11 @@
   ...)
 
 \S4method{mapView}{SpatialLines}(x, map = NULL, zcol = NULL,
-  color = "#460000", na.color = mapviewGetOption("na.color"), lwd = 2,
-  alpha = 0.8, map.types = mapviewGetOption("basemaps"),
+  color = mapviewGetOption("vector.palette")(2),
+  na.color = mapviewGetOption("na.color"), lwd = 2, alpha = 0.8,
+  map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), ...)
+  env = parent.frame())), label, ...)
 
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
   easter.egg = FALSE)

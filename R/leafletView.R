@@ -303,7 +303,7 @@ leafletPointsDF <- function(x,
   } else {
 
     grp <- layer.name
-
+    label <- makeLabels(row.names(x))
     #if (pop.null) popup <- brewPopupTable(x)
 
     m <- leaflet::addCircleMarkers(map = m,
@@ -316,6 +316,7 @@ leafletPointsDF <- function(x,
                                    opacity = alpha,
                                    fillOpacity = alpha.regions,
                                    popup = popup,
+                                   label = label,
                                    #data = x,
                                    radius = rad_vals,
                                    ...)
@@ -344,14 +345,15 @@ leafletPointsDF <- function(x,
 
 leafletPoints <- function(x,
                           map,
-                          cex = 10,
-                          lwd = 2,
-                          alpha = 0.6,
-                          alpha.regions = 0.2,
+                          cex,
+                          lwd,
+                          alpha,
+                          alpha.regions,
                           na.color,
                           map.types,
                           verbose,
                           layer.name,
+                          label,
                           ...) {
 
   pkgs <- c("leaflet", "sp", "magrittr")
@@ -362,9 +364,8 @@ leafletPoints <- function(x,
 
   m <- initMap(map, map.types, sp::proj4string(x))
 
-  if (missing(popup)) popup <- brewPopupTable(x)
-
   grp <- layer.name
+  label <- makeLabels(row.names(x))
 
   m <- leaflet::addCircleMarkers(m,
                                  lng = coordinates(x)[, 1],
@@ -374,7 +375,7 @@ leafletPoints <- function(x,
                                  opacity = alpha,
                                  fillOpacity = alpha.regions,
                                  group = grp,
-                                 popup = popup,
+                                 label = label,
                                  ...)
 
   m <- mapViewLayersControl(map = m,
@@ -486,6 +487,7 @@ leafletPolygonsDF <- function(x,
   } else {
 
     grp <- layer.name
+    label <- makeLabels(row.names(x))
 
     m <- leaflet::addPolygons(m,
                               weight = lwd,
@@ -494,6 +496,7 @@ leafletPolygonsDF <- function(x,
                               group = grp,
                               color = color[length(color)],
                               popup = popup,
+                              label = label,
                               data = x,
                               ...)
 
@@ -521,6 +524,7 @@ leafletPolygons <- function(x,
                             alpha.regions,
                             verbose,
                             layer.name,
+                            label,
                             ...) {
 
   pkgs <- c("leaflet", "sp", "magrittr")
@@ -532,6 +536,7 @@ leafletPolygons <- function(x,
   m <- initMap(map, map.types, sp::proj4string(x))
 
   grp <- layer.name
+  label <- makeLabels(row.names(x))
 
   m <- leaflet::addPolygons(m,
                             weight = lwd,
@@ -539,6 +544,7 @@ leafletPolygons <- function(x,
                             data = x,
                             opacity = alpha,
                             fillOpacity = alpha.regions,
+                            label = label,
                             ...)
 
   m <- mapViewLayersControl(map = m,
@@ -652,19 +658,17 @@ leafletLinesDF <- function(x,
 
   } else {
 
-    df <- as.data.frame(sapply(x@data, as.character),
-                        stringsAsFactors = FALSE)
-
     grp <- layer.name
+    label <- makeLabels(row.names(x))
 
-    # if (pop.null) popup <- brewPopupTable(x)
+    if (missing(popup)) popup <- brewPopupTable(x)
 
     ### test -----
 
     for (i in 1:length(x)) {
 
       # individual popup
-      if (missing(popup)) popup <- brewPopupTable(x[i, ])
+      #if (missing(popup)) popup <- brewPopupTable(x[i, ])
 
       # continuous line
       segments <- length(x[i, ]@lines[[1]]@Lines)
@@ -673,7 +677,8 @@ leafletLinesDF <- function(x,
         m <- leaflet::addPolylines(m,
                                    group = grp,
                                    color = color[length(color)],
-                                   popup = popup,
+                                   popup = popup[i],
+                                   label = label[i],
                                    data = x[i, ],
                                    weight = lwd,
                                    opacity = alpha,
@@ -692,7 +697,8 @@ leafletLinesDF <- function(x,
           m <- leaflet::addPolylines(m,
                                      group = grp,
                                      color = color[length(color)],
-                                     popup = popup,
+                                     popup = popup[i],
+                                     label = label[i],
                                      data = slndf,
                                      weight = lwd,
                                      opacity = alpha,
@@ -718,12 +724,14 @@ leafletLinesDF <- function(x,
 
 leafletLines <- function(x,
                          map,
+                         color,
                          na.color,
                          map.types,
                          lwd,
                          alpha,
                          verbose,
                          layer.name,
+                         label,
                          ...) {
 
   pkgs <- c("leaflet", "sp", "magrittr")
@@ -737,7 +745,7 @@ leafletLines <- function(x,
   m <- initMap(map, map.types, sp::proj4string(x))
 
   grp <- layer.name
-
+  label <- makeLabels(row.names(x))
   ### test -----
 
   for (i in 1:length(x)) {
@@ -752,6 +760,7 @@ leafletLines <- function(x,
                                  data = x[i, ],
                                  weight = lwd,
                                  opacity = alpha,
+                                 label = label[i],
                                  ...)
 
     # disjunct line
@@ -768,6 +777,7 @@ leafletLines <- function(x,
                                    data = sln,
                                    weight = lwd,
                                    opacity = alpha,
+                                   label = label[i],
                                    ...)
       }
     }

@@ -8,13 +8,13 @@ print.mapview <- function(x, ...) {
 
 ### mapview to leaflet ----------------------------------------------------
 mapview2leaflet <- function(x) {
-  x@map
+  slot(x, "map")
 }
 
 
 ### mapview simple class
-getSimpleClass <- function(x) {
-  if (class(x) %in% c("RasterLayer", "RasterStack",
+getSimpleClass <- function(obj) {
+  if (class(obj) %in% c("RasterLayer", "RasterStack",
                       "RasterBrick", "Satellite",
                       "SpatialGridDataFrame",
                       "SpatialPixelsDataFrame")) "rst" else "vec"
@@ -22,6 +22,6 @@ getSimpleClass <- function(x) {
 
 
 ### labels
-makeLabels <- function(column) {
-  labs <- as.character(column)
+makeLabels <- function(col) {
+  as.character(col)
 }

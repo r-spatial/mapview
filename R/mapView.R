@@ -368,16 +368,17 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
           function(x,
                    map = NULL,
                    zcol = NULL,
-                   color = "#460000",
+                   color = mapviewGetOption("vector.palette")(2),
                    na.color = mapviewGetOption("na.color"),
-                   cex = 10,
-                   lwd = 2,
-                   alpha = 0.6,
-                   alpha.regions = 0.2,
+                   cex = 8,
+                   lwd = 4,
+                   alpha = 0.9,
+                   alpha.regions = 0.4,
                    map.types = mapviewGetOption("basemaps"),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
+                   label,
                   ...) {
 
             if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
@@ -386,9 +387,14 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                               map = map,
                               color = color,
                               na.color = na.color,
+                              cex = cex,
+                              lwd = lwd,
+                              alpha = alpha,
+                              alpha.regions = alpha.regions,
                               map.types = map.types,
                               verbose = verbose,
                               layer.name = layer.name,
+                              label = label,
                              ...)
               } else {
                 NULL
@@ -488,7 +494,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 setMethod('mapView', signature(x = 'SpatialPolygons'),
           function(x,
                    map = NULL,
-                   color = "#460000",
+                   color = mapviewGetOption("vector.palette")(2),
                    na.color = mapviewGetOption("na.color"),
                    map.types = mapviewGetOption("basemaps"),
                    lwd = 2,
@@ -497,6 +503,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
+                   label,
                   ...) {
 
             if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
@@ -511,6 +518,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                                 map.types = map.types,
                                 verbose = verbose,
                                 layer.name = layer.name,
+                                label = label,
                                ...)
               } else {
                 NULL
@@ -606,7 +614,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
           function(x,
                    map = NULL,
                    zcol = NULL,
-                   color = "#460000",
+                   color = mapviewGetOption("vector.palette")(2),
                    na.color = mapviewGetOption("na.color"),
                    lwd = 2,
                    alpha = 0.8,
@@ -614,6 +622,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
+                   label,
                   ...) {
 
             if (length(x@lines) < mapviewGetOption("maxlines")) {
@@ -627,6 +636,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                              map.types = map.types,
                              verbose = verbose,
                              layer.name = layer.name,
+                             label = label,
                             ...)
               } else {
                 NULL
