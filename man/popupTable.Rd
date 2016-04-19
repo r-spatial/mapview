@@ -2,12 +2,12 @@
 % Please edit documentation in R/popupTable.R
 \name{popupTable}
 \alias{popupTable}
-\title{Create mapview popup table}
+\title{Create HTML strings for popup tables}
 \usage{
 popupTable(x, zcol, use_cpp = TRUE)
 }
 \arguments{
-\item{x}{\code{Spatial*} or \code{Raster*} object.}
+\item{x}{A \code{Spatial*} object.}
 
 \item{zcol}{\code{numeric} or \code{character} vector indicating the columns
 included in the output popup table. If missing, all columns are displayed.}
@@ -16,11 +16,12 @@ included in the output popup table. If missing, all columns are displayed.}
 \strong{Rcpp} functionality.}
 }
 \value{
-A \code{list} of HTML strings required to create the feature popup table(s).
+A \code{list} of HTML strings required to create feature popup table(s).
 }
 \description{
-Create a \code{popup} table used as input for \code{\link{mapview}}. This
-optionally allows the user to include only a subset of feature attributes.
+Create HTML strings for \code{popup} tables used as input for
+\code{\link{mapview}}. This optionally allows the user to include only a
+subset of feature attributes.
 }
 \examples{
 library(sp)
@@ -32,5 +33,8 @@ proj4string(meuse) <- CRS("+init=epsg:28992")
 ## include columns 1 and 2 only
 mapview(meuse, popup = popupTable(meuse, zcol = 1:2))
 
+}
+\seealso{
+\code{\link{popupGraph}}.
 }
 

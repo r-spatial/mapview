@@ -1,10 +1,11 @@
-#' Create mapview popup table
+#' Create HTML strings for popup tables
 #'
 #' @description
-#' Create a \code{popup} table used as input for \code{\link{mapview}}. This
-#' optionally allows the user to include only a subset of feature attributes.
+#' Create HTML strings for \code{popup} tables used as input for
+#' \code{\link{mapview}}. This optionally allows the user to include only a
+#' subset of feature attributes.
 #'
-#' @param x \code{Spatial*} or \code{Raster*} object.
+#' @param x A \code{Spatial*} object.
 #' @param zcol \code{numeric} or \code{character} vector indicating the columns
 #' included in the output popup table. If missing, all columns are displayed.
 #' @param use_cpp \code{logical} determining whether or not to enable
@@ -12,6 +13,8 @@
 #'
 #' @return
 #' A \code{list} of HTML strings required to create feature popup table(s).
+#'
+#' @seealso \code{\link{popupGraph}}.
 #'
 #' @examples
 #' library(sp)
