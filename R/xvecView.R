@@ -299,7 +299,7 @@ bView <- function(x,
                   lwd,
                   verbose,
                   layer.name,
-                  popup)
+                  popup = NULL)
   {
 
 

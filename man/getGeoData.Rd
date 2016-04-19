@@ -149,7 +149,7 @@ The list of allowd items is:
 \item \code{IBK_DGM10} Innsbruck,
 \item \code{IL_DGM10} Innsbruck Land,
 \item \code{IM_DGM10} Imst,
-\item \code{KB_DGM10} Kitzbühl,
+\item \code{KB_DGM10} Kitzbuehl,
 \item \code{KU_DGM10} Kufstein,
 \item \code{LA_DGM10} Landeck,
 \item \code{RE_DGM10} Reutte,

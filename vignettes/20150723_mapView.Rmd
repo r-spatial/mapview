@@ -54,7 +54,7 @@ The result is a package called <a href="https://github.com/environmentalinformat
 
 * _Raster_ *objects (Layer, Stack, Brick) and SpatialPixelsDataFrame
 * _Spatial_ *objects (Points, Polygons, Lines and their DataFrame version)
-* _Satellite_ *objects (from the  <a href="https://cran.r-project.org/web/packages/satellite/index.html" target="_blank">satellite package</a> for working with satellite data)
+* _Satellite_ *objects (from the  <a href="https://cran.r-project.org/package=satellite" target="_blank">satellite package</a> for working with satellite data)
 
 ------
 

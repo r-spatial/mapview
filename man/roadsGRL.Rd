@@ -9,6 +9,6 @@
 Roads snapshot March(2016) from the OSM data extract as provided by geofabrik.de
 }
 \details{
-The data show the roads (snapshot 03/2013) as downloaded by \href{ttp://download.geofabrik.de/north-america/greenland-latest.shp.zip}{geofabrik}. The geofabrik extracts are based on the OpenStreetMap \href{http://www.openstreetmap.org/}{OSM} data. For further information see also \href{http://download.geofabrik.de/north-america/greenland.html}{Geofabrik Downloads}
+The data show the roads (snapshot 03/2013) as downloaded by \href{http://download.geofabrik.de/north-america/greenland-latest.shp.zip}{geofabrik}. The geofabrik extracts are based on the OpenStreetMap \href{http://www.openstreetmap.org/}{OSM} data. For further information see also \href{http://download.geofabrik.de/north-america/greenland.html}{Geofabrik Downloads}
 }
 
