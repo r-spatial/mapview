@@ -19,7 +19,7 @@ if ( !isGeneric('mapView') ) {
 #' See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
 #'
 #'
-#' @param x a \code{\link{raster}}* object
+#' @param x a \code{Raster*} or \code{Spatial*} object.
 #' @param map an optional existing map to be updated/added to
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
@@ -42,8 +42,9 @@ if ( !isGeneric('mapView') ) {
 #' @param trim should the raster be trimmed in case there are NAs on the egdes
 #' @param verbose should some details be printed during the process
 #' @param layer.name the name of the layer to be shown on the map
-#' @param popup a character vector of the HTML content for the popups. See
-#' \code{\link{addControl}} for details.
+#' @param popup a \code{list} of HTML strings with the popup contents, usually
+#' created from \code{\link{popupTable}}. See \code{\link{addControl}} for
+#' details.
 #' @param label a character vector of labels to be shown on mouseover. See
 #' \code{\link{addControl}} for details.
 #' @param ... additional arguments passed on to repective functions.
@@ -313,7 +314,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   popup,
+                   popup = popupTable(x),
                    label,
                    ...) {
 
@@ -409,8 +410,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                      alpha = alpha,
                      weight = cex,
                      verbose = verbose,
-                     layer.name = layer.name,
-                     popup = NULL
+                     layer.name = layer.name
                     )
             }
 
@@ -441,7 +441,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   popup,
+                   popup = popupTable(x),
                    label,
                    ...) {
 
@@ -533,8 +533,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                     alpha.regions = alpha.regions,
                     lwd = lwd,
                     verbose = verbose,
-                    layer.name = layer.name,
-                    popup = NULL)
+                    layer.name = layer.name)
             }
 
           }
@@ -560,7 +559,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   popup,
+                   popup = popupTable(x),
                    label,
                    ...) {
 
@@ -651,8 +650,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                     alpha.regions = alpha,
                     lwd = lwd,
                     verbose = verbose,
-                    layer.name = layer.name,
-                    popup = NULL)
+                    layer.name = layer.name)
             }
 
           }

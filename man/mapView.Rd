@@ -54,8 +54,8 @@
   alpha = 0.9, alpha.regions = 0.4,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
   legend.opacity = 1, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())), popup, label,
-  ...)
+  layer.name = deparse(substitute(x, env = parent.frame())),
+  popup = popupTable(x), label, ...)
 
 \S4method{mapView}{SpatialPoints}(x, map = NULL, zcol = NULL,
   color = mapviewGetOption("vector.palette")(2),
@@ -71,8 +71,8 @@
   alpha.regions = 0.2, values = NULL,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
   legend.opacity = 1, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())), popup, label,
-  ...)
+  layer.name = deparse(substitute(x, env = parent.frame())),
+  popup = popupTable(x), label, ...)
 
 \S4method{mapView}{SpatialPolygons}(x, map = NULL,
   color = mapviewGetOption("vector.palette")(2),
@@ -86,8 +86,8 @@
   na.color = mapviewGetOption("na.color"), lwd = 2, alpha = 0.8,
   values = NULL, map.types = mapviewGetOption("basemaps"), legend = FALSE,
   legend.opacity = 1, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())), popup, label,
-  ...)
+  layer.name = deparse(substitute(x, env = parent.frame())),
+  popup = popupTable(x), label, ...)
 
 \S4method{mapView}{SpatialLines}(x, map = NULL, zcol = NULL,
   color = mapviewGetOption("vector.palette")(2),
@@ -102,7 +102,7 @@
 \S4method{mapview}{ANY}(...)
 }
 \arguments{
-\item{x}{a \code{\link{raster}}* object}
+\item{x}{a \code{Raster*} or \code{Spatial*} object.}
 
 \item{map}{an optional existing map to be updated/added to}
 
@@ -156,8 +156,9 @@ of the column(s) to be used for defining the size of circles}
 
 \item{alpha}{opacity of the lines or points}
 
-\item{popup}{a character vector of the HTML content for the popups. See
-\code{\link{addControl}} for details.}
+\item{popup}{a \code{list} of HTML strings with the popup contents, usually
+created from \code{\link{popupTable}}. See \code{\link{addControl}} for
+details.}
 
 \item{label}{a character vector of labels to be shown on mouseover. See
 \code{\link{addControl}} for details.}
