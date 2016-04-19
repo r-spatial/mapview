@@ -469,10 +469,12 @@ leafletPolygonsDF <- function(x,
                                 data = lst[[i]],
                                 ...)
 
-      m <- leaflet::addLegend(map = m, position = "topright",
-                              pal = pal_n[[i]], opacity = 1,
-                              values = vals[[i]],
-                              title = grp)
+      if (legend) {
+        m <- leaflet::addLegend(map = m, position = "topright",
+                                pal = pal_n[[i]], opacity = 1,
+                                values = vals[[i]],
+                                title = grp)
+      }
 
     }
 
