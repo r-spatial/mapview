@@ -7,6 +7,8 @@ new features:
   * cubeView
   * labels: if zcol is set, mouseover will now show the repesctive values of zcol, if zcol is not set moseover shoes feature ID.
   * new popup functions popupTable and popupGraph
+  * functions to turn coordinates into spatial lines or spatial polygons
+  * mapview objects now work natively on shiny applications
 
 changes:
   * colors: viridis based colors now default if package is available
