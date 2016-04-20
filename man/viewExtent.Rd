@@ -33,6 +33,7 @@ of the supplied spatial object
 \item \code{addExtent}: add extent/bbox of spatial objects interactively
 }}
 \examples{
+\dontrun{
 ### raster data ###
 library(sp)
 library(raster)
@@ -43,6 +44,7 @@ proj4string(meuse.grid) <- CRS("+init=epsg:28992")
 gridded(meuse.grid) = TRUE
 
 viewExtent(meuse.grid)
+}
 
 }
 \author{

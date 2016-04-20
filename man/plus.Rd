@@ -21,6 +21,7 @@
 Add a layer to a mapview or leaflet map
 }
 \examples{
+\dontrun{
 ### raster data ###
 library(sp)
 library(raster)
@@ -33,6 +34,7 @@ m2 <- mapView(breweries91)
 ### add two mapview objects
 m1 + m2 # final zoom level based on m2
 '+'(m2, m1) # final zoom level based on m1
+}
 
 }
 
