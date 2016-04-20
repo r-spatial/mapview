@@ -24,6 +24,7 @@ Create HTML strings for \code{popup} tables used as input for
 subset of feature attributes.
 }
 \examples{
+\dontrun{
 library(sp)
 
 data(meuse)
@@ -32,6 +33,7 @@ proj4string(meuse) <- CRS("+init=epsg:28992")
 
 ## include columns 1 and 2 only
 mapview(meuse, popup = popupTable(meuse, zcol = 1:2))
+}
 
 }
 \seealso{

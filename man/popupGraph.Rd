@@ -19,6 +19,7 @@ Create HTML strings for \code{popup} graphs used as input for
 \code{\link{mapview}}.
 }
 \examples{
+\dontrun{
 library(sp)
 
 data(meuse)
@@ -28,7 +29,7 @@ proj4string(meuse) <- CRS("+init=epsg:28992")
 ## create plots with points colored according to feature id
 library(lattice)
 p <- xyplot(copper ~ cadmium, data = meuse@data, col = "grey")
-p <- mget(rep("p", length(x)))
+p <- mget(rep("p", length(meuse)))
 
 clr <- rep("grey", length(meuse))
 p <- lapply(1:length(p), function(i) {
@@ -37,6 +38,7 @@ p <- lapply(1:length(p), function(i) {
 })
 
 mapview(meuse, popup = popupGraph(p, width = 3, height = 2.5))
+}
 
 }
 \seealso{
