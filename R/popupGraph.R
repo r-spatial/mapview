@@ -13,6 +13,7 @@
 #' @seealso \code{\link{popupTable}}.
 #'
 #' @examples
+#' \dontrun{
 #' library(sp)
 #'
 #' data(meuse)
@@ -31,6 +32,7 @@
 #' })
 #'
 #' mapview(meuse, popup = popupGraph(p, width = 3, height = 2.5))
+#' }
 #'
 #' @export popupGraph
 #' @name popupGraph

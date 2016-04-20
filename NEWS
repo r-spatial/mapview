@@ -6,6 +6,7 @@ new features:
   * knitr integration
   * cubeView
   * labels: if zcol is set, mouseover will now show the repesctive values of zcol, if zcol is not set moseover shoes feature ID.
+  * new popup functions popupTable and popupGraph
 
 changes:
   * colors: viridis based colors now default if package is available

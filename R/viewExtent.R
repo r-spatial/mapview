@@ -16,6 +16,7 @@
 #' Tim Appelhans
 #'
 #' @examples
+#' \dontrun{
 #' ### raster data ###
 #' library(sp)
 #' library(raster)
@@ -26,6 +27,7 @@
 #' gridded(meuse.grid) = TRUE
 #'
 #' viewExtent(meuse.grid)
+#' }
 #'
 #' @export viewExtent
 #' @name viewExtent

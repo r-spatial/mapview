@@ -9,6 +9,7 @@ if ( !isGeneric('+') ) {
 #' @param e2 (spatial) object to be added
 #'
 #' @examples
+#' \dontrun{
 #' ### raster data ###
 #' library(sp)
 #' library(raster)
@@ -21,6 +22,7 @@ if ( !isGeneric('+') ) {
 #' ### add two mapview objects
 #' m1 + m2 # final zoom level based on m2
 #' '+'(m2, m1) # final zoom level based on m1
+#' }
 #'
 #' @name +
 #' @docType methods

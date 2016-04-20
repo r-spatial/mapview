@@ -17,6 +17,7 @@
 #' @seealso \code{\link{popupGraph}}.
 #'
 #' @examples
+#' \dontrun{
 #' library(sp)
 #'
 #' data(meuse)
@@ -25,6 +26,7 @@
 #'
 #' ## include columns 1 and 2 only
 #' mapview(meuse, popup = popupTable(meuse, zcol = 1:2))
+#' }
 #'
 #' @export popupTable
 #' @name popupTable
