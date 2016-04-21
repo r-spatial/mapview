@@ -238,7 +238,7 @@ leafletPointsDF <- function(x,
   x <- spCheckObject(x, verbose = verbose)
   x <- spCheckAdjustProjection(x)
 
-  m <- initMap(map, map.types, sp::proj4string(x))
+  m0 <- initMap(map, map.types, sp::proj4string(x))
 
   if (burst) {
     lst <- lapply(names(x), function(j) x[j])
@@ -260,7 +260,7 @@ leafletPointsDF <- function(x,
       #x <- lst[[i]]
       if (missing(label)) label <- makeLabels(lst[[i]][[1]])
 
-      m <- leaflet::addCircleMarkers(m,
+      m <- leaflet::addCircleMarkers(m0,
                                      lng = coordinates(lst[[i]])[, 1],
                                      lat = coordinates(lst[[i]])[, 2],
                                      group = names(lst[[i]]),
@@ -306,20 +306,38 @@ leafletPointsDF <- function(x,
     if (missing(label)) label <- makeLabels(row.names(x))
     #if (pop.null) popup <- brewPopupTable(x)
 
-    m <- leaflet::addCircleMarkers(map = m,
-                                   lng = coordinates(x)[, 1],
-                                   lat = coordinates(x)[, 2],
-                                   group = grp,
-                                   color = color[length(color)],
-                                   #radius = cex,
-                                   weight = lwd,
-                                   opacity = alpha,
-                                   fillOpacity = alpha.regions,
-                                   popup = popup,
-                                   label = label,
-                                   #data = x,
-                                   radius = rad_vals,
-                                   ...)
+    m <- try(leaflet::addCircleMarkers(map = m0,
+                                       lng = coordinates(x)[, 1],
+                                       lat = coordinates(x)[, 2],
+                                       group = grp,
+                                       color = color[length(color)],
+                                       #radius = cex,
+                                       weight = lwd,
+                                       opacity = alpha,
+                                       fillOpacity = alpha.regions,
+                                       popup = popup,
+                                       label = label,
+                                       #data = x,
+                                       radius = rad_vals,
+                                       ...), silent = TRUE)
+
+    if (class(m) == "try-error") {
+
+      warning("Feature labels during mouseover are disabled. \nRun devtools::install_github('RStudio/leaflet') to fix this issue.")
+
+      m <- leaflet::addCircleMarkers(map = m0,
+                                     lng = coordinates(x)[, 1],
+                                     lat = coordinates(x)[, 2],
+                                     group = grp,
+                                     color = color[length(color)],
+                                     #radius = cex,
+                                     weight = lwd,
+                                     opacity = alpha,
+                                     fillOpacity = alpha.regions,
+                                     popup = popup,
+                                     radius = rad_vals,
+                                     ...)
+    }
 
     m <- mapViewLayersControl(map = m,
                               map.types = map.types,
