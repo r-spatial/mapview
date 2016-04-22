@@ -227,7 +227,7 @@ leafletPointsDF <- function(x,
                             label,
                             ...) {
 
-  warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
+  if(!lab_avl) warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
 
   pkgs <- c("leaflet", "sp", "magrittr")
   tst <- sapply(pkgs, "requireNamespace",
@@ -387,7 +387,7 @@ leafletPoints <- function(x,
                           label,
                           ...) {
 
-  warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
+  if(!lab_avl) warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
 
   pkgs <- c("leaflet", "sp", "magrittr")
   tst <- sapply(pkgs, "requireNamespace",
@@ -457,7 +457,7 @@ leafletPolygonsDF <- function(x,
                               label,
                               ...) {
 
-  warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
+  if(!lab_avl) warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
 
   pkgs <- c("leaflet", "sp", "magrittr")
   tst <- sapply(pkgs, "requireNamespace",
@@ -604,7 +604,7 @@ leafletPolygons <- function(x,
                             label,
                             ...) {
 
-  warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
+  if(!lab_avl) warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
 
   pkgs <- c("leaflet", "sp", "magrittr")
   tst <- sapply(pkgs, "requireNamespace",
@@ -669,7 +669,7 @@ leafletLinesDF <- function(x,
                            label,
                            ...) {
 
-  warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
+  if(!lab_avl) warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
 
   pkgs <- c("leaflet", "sp", "magrittr")
   tst <- sapply(pkgs, "requireNamespace",
@@ -870,7 +870,7 @@ leafletLines <- function(x,
                          label,
                          ...) {
 
-  warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
+  if(!lab_avl) warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
 
   pkgs <- c("leaflet", "sp", "magrittr")
   tst <- sapply(pkgs, "requireNamespace",
@@ -886,7 +886,7 @@ leafletLines <- function(x,
   label <- makeLabels(row.names(x))
   ### test -----
 
-  if (lab_avl) {
+  if(lab_avl) {
     for (i in 1:length(x)) {
 
       # continuous line
