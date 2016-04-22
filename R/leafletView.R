@@ -277,7 +277,7 @@ leafletPointsDF <- function(x,
                                        ...)
       } else {
 
-        warning("Feature labels on mouseover are are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
+        warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
 
         m <- leaflet::addCircleMarkers(m,
                                        lng = coordinates(lst[[i]])[, 1],
@@ -337,7 +337,7 @@ leafletPointsDF <- function(x,
                                      radius = rad_vals,
                                      ...)
     } else {
-      warning("Feature labels on mouseover are are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
+      warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
 
       m <- leaflet::addCircleMarkers(map = m,
                                      lng = coordinates(x)[, 1],
@@ -411,6 +411,9 @@ leafletPoints <- function(x,
                                    label = label,
                                    ...)
   } else {
+
+    warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
+
     m <- leaflet::addCircleMarkers(m,
                                    lng = coordinates(x)[, 1],
                                    lat = coordinates(x)[, 2],
@@ -515,6 +518,9 @@ leafletPolygonsDF <- function(x,
                                   data = lst[[i]],
                                   ...)
       } else {
+
+        warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
+
         m <- leaflet::addPolygons(m,
                                   weight = lwd,
                                   opacity = alpha,
@@ -560,6 +566,9 @@ leafletPolygonsDF <- function(x,
                                 data = x,
                                 ...)
     } else {
+
+      warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
+
       m <- leaflet::addPolygons(m,
                                 weight = lwd,
                                 opacity = alpha,
@@ -619,6 +628,9 @@ leafletPolygons <- function(x,
                               label = label,
                               ...)
   } else {
+
+    warning("Feature labels on mouseover are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
+
     m <- leaflet::addPolygons(m,
                               weight = lwd,
                               group = grp,
