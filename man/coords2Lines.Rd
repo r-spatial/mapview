@@ -12,7 +12,8 @@
 \S4method{coords2Lines}{Line}(coords, ID, data, match.ID = TRUE, ...)
 }
 \arguments{
-\item{coords}{2-column \code{numeric} matrix with x and y coordinates.}
+\item{coords}{\code{Line} object or 2-column \code{numeric matrix} with x and
+y coordinates.}
 
 \item{ID}{\code{character}, see \code{\link{Lines}}.}
 
@@ -29,9 +30,9 @@ If \code{data} is missing, a \code{SpatialLines} object; else a
 \code{SpatialLinesDataFrame} object.
 }
 \description{
-Create a \code{SpatialLines*} object from a set of point coordinates in
-one go, i.e. without being required to run through the single steps outlined
-in \code{\link{SpatialLines}}.
+Create a \code{SpatialLines*} object from a \code{Line} object or set of
+point coordinates in one go, i.e. without being required to run through the
+single steps outlined in \code{\link{SpatialLines}}.
 }
 \examples{
 library(sp)

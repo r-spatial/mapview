@@ -5,11 +5,12 @@ if ( !isGeneric("coords2Lines") ) {
 #' Convert points to SpatialLines*
 #'
 #' @description
-#' Create a \code{SpatialLines*} object from a set of point coordinates in
-#' one go, i.e. without being required to run through the single steps outlined
-#' in \code{\link{SpatialLines}}.
+#' Create a \code{SpatialLines*} object from a \code{Line} object or set of
+#' point coordinates in one go, i.e. without being required to run through the
+#' single steps outlined in \code{\link{SpatialLines}}.
 #'
-#' @param coords 2-column \code{numeric} matrix with x and y coordinates.
+#' @param coords \code{Line} object or 2-column \code{numeric matrix} with x and
+#' y coordinates.
 #' @param ID \code{character}, see \code{\link{Lines}}.
 #' @param data \code{data.frame} with data to add to the output
 #' \code{SpatialLines*} object (optional).

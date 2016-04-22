@@ -1,11 +1,16 @@
+if ( !isGeneric("coords2Polygons") ) {
+  setGeneric("coords2Polygons", function(coords, ...)
+    standardGeneric("coords2Polygons"))
+}
 #' Convert points to SpatialPolygons*
 #'
 #' @description
-#' Create a \code{SpatialPolygons*} object from a set of point coordinates in
-#' one go, i.e. without being required to run through the single steps outlined
-#' in \code{\link{SpatialPolygons}}.
+#' Create a \code{SpatialPolygons*} object from a \code{Polygon} object or set
+#' of point coordinates in one go, i.e. without being required to run through
+#' the single steps outlined in \code{\link{SpatialPolygons}}.
 #'
-#' @param coords 2-column \code{numeric} matrix with x and y coordinates.
+#' @param coords \code{Polygon} object or 2-column \code{numeric} matrix with x
+#' and y coordinates.
 #' @param hole \code{logical}, see \code{\link{Polygon}}.
 #' @param ID \code{character}, see \code{\link{Polygons}}.
 #' @param data \code{data.frame} with data to add to the output
@@ -34,18 +39,40 @@
 #'
 #' @export coords2Polygons
 #' @name coords2Polygons
-coords2Polygons <- function(coords, hole = NA, ID, data, match.ID = TRUE, ...) {
+NULL
 
-  # convert coordinates matrix to 'Polygons' object
-  py <- sp::Polygon(coords, hole)
-  pys <- sp::Polygons(list(py), ID)
+### matrix method -----
+#' @aliases coords2Polygons,matrix-method
+#' @rdname coords2Polygons
+setMethod("coords2Polygons",
+          signature(coords = "matrix"),
+          function(coords, hole = NA, ID, data, match.ID = TRUE, ...) {
 
-  # 'Polygons' to 'SpatialPolygons'
-  spy <- sp::SpatialPolygons(list(pys), ...)
+            # convert coordinates matrix to 'Polygon' object
+            py <- sp::Polygon(coords, hole)
 
-  if (!missing("data")) {
-    return(sp::SpatialPolygonsDataFrame(spy, data, match.ID))
-  } else {
-    return(spy)
-  }
-}
+            coords2Polygons(py, ID = ID, data = data, match.ID = match.ID, ...)
+          }
+)
+
+
+### polygon method -----
+#' @aliases coords2Polygons,Polygon-method
+#' @rdname coords2Polygons
+setMethod("coords2Polygons",
+          signature(coords = "Polygon"),
+          function(coords, ID, data, match.ID = TRUE, ...) {
+
+            # convert input 'Polygon' to 'Polygons' object
+            pys <- sp::Polygons(list(coords), ID)
+
+            # 'Polygons' to 'SpatialPolygons'
+            spy <- sp::SpatialPolygons(list(pys), ...)
+
+            if (!missing("data")) {
+              return(sp::SpatialPolygonsDataFrame(spy, data, match.ID))
+            } else {
+              return(spy)
+            }
+          }
+)
