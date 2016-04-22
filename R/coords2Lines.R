@@ -1,3 +1,7 @@
+if ( !isGeneric("coords2Lines") ) {
+  setGeneric("coords2Lines", function(coords, ...)
+    standardGeneric("coords2Lines"))
+}
 #' Convert points to SpatialLines*
 #'
 #' @description
@@ -33,18 +37,41 @@
 #'
 #' @export coords2Lines
 #' @name coords2Lines
-coords2Lines <- function(coords, ID, data, match.ID = TRUE, ...) {
+NULL
 
-  # convert coordinates matrix to 'Lines' object
-  ln <- sp::Line(coords)
-  lns <- sp::Lines(list(ln), ID)
+### matrix method -----
+#' @aliases coords2Lines,matrix-method
+#' @rdname coords2Lines
+setMethod("coords2Lines",
+          signature(coords = "matrix"),
+          function(coords, ID, data, match.ID = TRUE, ...) {
 
-  # 'Lines' to 'SpatialLines'
-  sln <- sp::SpatialLines(list(lns), ...)
+            # convert coordinates matrix to 'Line' object
+            ln <- sp::Line(coords)
 
-  if (!missing("data")) {
-    return(sp::SpatialLinesDataFrame(sln, data, match.ID))
-  } else {
-    return(sln)
-  }
-}
+            # pass object on to 'Line'-method
+            coords2Lines(ln, ID, data, match.ID, ...)
+          }
+)
+
+
+### Line method -----
+#' @aliases coords2Lines,Line-method
+#' @rdname coords2Lines
+setMethod("coords2Lines",
+          signature(coords = "Line"),
+          function(coords, ID, data, match.ID = TRUE, ...) {
+
+            # convert 'Line' to 'Lines' object
+            lns <- sp::Lines(list(coords), ID)
+
+            # 'Lines' to 'SpatialLines'
+            sln <- sp::SpatialLines(list(lns), ...)
+
+            if (!missing("data")) {
+              return(sp::SpatialLinesDataFrame(sln, data, match.ID))
+            } else {
+              return(sln)
+            }
+          }
+)

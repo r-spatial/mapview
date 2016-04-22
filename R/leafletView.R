@@ -793,11 +793,11 @@ leafletLinesDF <- function(x,
 
           # add one segment after another
           for (j in seq(segments)) {
-            ln <- x[i, ]@lines[[1]]@Lines[[j]]
-            lns <- sp::Lines(list(ln), ID = rownames(x@data[i, ]))
-            sln <- sp::SpatialLines(list(lns),
-                                    proj4string = sp::CRS(sp::proj4string(x)))
-            slndf <- sp::SpatialLinesDataFrame(sln, data = x@data[i, ])
+            slndf <- coords2Lines(x[i, ]@lines[[1]]@Lines[[j]]
+                                  , ID = rownames(x@data[i, ])
+                                  , data = x@data[i, ]
+                                  , proj4string = sp::CRS(sp::proj4string(x)))
+
             m <- leaflet::addPolylines(m,
                                        group = grp,
                                        color = color[length(color)],
@@ -825,11 +825,11 @@ leafletLinesDF <- function(x,
 
           # add one segment after another
           for (j in seq(segments)) {
-            ln <- x[i, ]@lines[[1]]@Lines[[j]]
-            lns <- sp::Lines(list(ln), ID = rownames(x@data[i, ]))
-            sln <- sp::SpatialLines(list(lns),
-                                    proj4string = sp::CRS(sp::proj4string(x)))
-            slndf <- sp::SpatialLinesDataFrame(sln, data = x@data[i, ])
+            slndf <- coords2Lines(x[i, ]@lines[[1]]@Lines[[j]]
+                                  , ID = rownames(x@data[i, ])
+                                  , data = x@data[i, ]
+                                  , proj4string = sp::CRS(sp::proj4string(x)))
+
             m <- leaflet::addPolylines(m,
                                        group = grp,
                                        color = color[length(color)],
