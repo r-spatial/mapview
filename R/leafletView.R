@@ -339,7 +339,7 @@ leafletPointsDF <- function(x,
     } else {
       warning("Feature labels on mouseover are are not supported in the installed version of 'leaflet'. \nRun devtools::install_github('rstudio/leaflet') to fix this issue.")
 
-      m <- leaflet::addCircleMarkers(map = m0,
+      m <- leaflet::addCircleMarkers(map = m,
                                      lng = coordinates(x)[, 1],
                                      lat = coordinates(x)[, 2],
                                      group = grp,
