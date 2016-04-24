@@ -43,6 +43,8 @@ sln1 <- coords2Lines(coords1, ID = "A")
 coords2 <- cbind(c(5, 4, 2, 5), c(2, 3, 2, 2))
 sln2 <- coords2Lines(coords2, ID = "B")
 
+mapview(sln1)
+
 plot(sln1, col = "grey75")
 plot(sln2, col = "grey25", add = TRUE)
 
