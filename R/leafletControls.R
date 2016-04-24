@@ -294,9 +294,11 @@ scalePolygonsCoordinates <- function(x) {
 
   for (j in seq(coord_lst)) {
     for (h in seq(coord_lst[[j]])) {
-      methods::slot(x@polygons[[j]]@Polygons[[h]], "coords") <-
+      coords_rscl <-
         cbind((sp::coordinates(x@polygons[[j]]@Polygons[[h]])[, 1] - x_mn) / x_mx,
-              (sp::coordinates(x@polygons[[j]]@Polygons[[h]])[, 2] - y_mn) / y_mx)
+              (sp::coordinates(x@polygons[[j]]@Polygons[[h]])[, 2] - y_mn) / y_mx * ratio)
+      methods::slot(x@polygons[[j]]@Polygons[[h]], "coords") <- coords_rscl
+      methods::slot(x@polygons[[j]]@Polygons[[h]], "labpt") <- range(coords_rscl)
     }
   }
 
@@ -337,7 +339,7 @@ scaleLinesCoordinates <- function(x) {
     for (h in seq(coord_lst[[j]])) {
       methods::slot(x@lines[[j]]@Lines[[h]], "coords") <-
         cbind((sp::coordinates(x@lines[[j]]@Lines[[h]])[, 1] - x_mn) / x_mx,
-              (sp::coordinates(x@lines[[j]]@Lines[[h]])[, 2] - y_mn) / y_mx)
+              (sp::coordinates(x@lines[[j]]@Lines[[h]])[, 2] - y_mn) / y_mx * ratio)
     }
   }
 
