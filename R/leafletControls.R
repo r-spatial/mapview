@@ -292,18 +292,31 @@ scalePolygonsCoordinates <- function(x) {
   y_mn <- min(ycoords, na.rm = TRUE)
   y_mx <- max(ycoords - min(ycoords, na.rm = TRUE), na.rm = TRUE)
 
-  for (j in seq(coord_lst)) {
-    for (h in seq(coord_lst[[j]])) {
-      coords_rscl <-
-        cbind((sp::coordinates(x@polygons[[j]]@Polygons[[h]])[, 1] - x_mn) / x_mx,
-              (sp::coordinates(x@polygons[[j]]@Polygons[[h]])[, 2] - y_mn) / y_mx * ratio)
-      methods::slot(x@polygons[[j]]@Polygons[[h]], "coords") <- coords_rscl
-      methods::slot(x@polygons[[j]]@Polygons[[h]], "labpt") <- range(coords_rscl)
-    }
-  }
+  do.call("rbind", lapply(seq(coord_lst), function(j) {
 
-  return(x)
+    ## extract current 'Polygons'
+    pys <- x@polygons[[j]]
 
+    lst <- lapply(seq(pys@Polygons), function(h) {
+
+      # extract current 'Polygon'
+      py <- pys@Polygons[[h]]
+
+      # rescale coordinates
+      crd <- sp::coordinates(py)
+      coords_rscl <- cbind((crd[, 1] - x_mn) / x_mx,
+                           (crd[, 2] - y_mn) / y_mx * ratio)
+
+      # assign new coordinates and label point
+      methods::slot(py, "coords") <- coords_rscl
+      methods::slot(py, "labpt") <- range(coords_rscl)
+
+      return(py)
+    })
+
+    sp::SpatialPolygons(list(sp::Polygons(lst, ID = pys@ID)),
+                        proj4string = sp::CRS(sp::proj4string(x)))
+  }))
 }
 
 
@@ -335,16 +348,30 @@ scaleLinesCoordinates <- function(x) {
   y_mn <- min(ycoords, na.rm = TRUE)
   y_mx <- max(ycoords - min(ycoords, na.rm = TRUE), na.rm = TRUE)
 
-  for (j in seq(coord_lst)) {
-    for (h in seq(coord_lst[[j]])) {
-      methods::slot(x@lines[[j]]@Lines[[h]], "coords") <-
-        cbind((sp::coordinates(x@lines[[j]]@Lines[[h]])[, 1] - x_mn) / x_mx,
-              (sp::coordinates(x@lines[[j]]@Lines[[h]])[, 2] - y_mn) / y_mx * ratio)
-    }
-  }
+  do.call("rbind", lapply(seq(coord_lst), function(j) {
 
-  return(x)
+    ## extract current 'Lines'
+    lns <- x@lines[[j]]
 
+    lst <- lapply(seq(lns@Lines), function(h) {
+
+      # extract current 'Line'
+      ln <- lns@Lines[[h]]
+
+      # rescale coordinates
+      crd <- sp::coordinates(ln)
+      coords_rscl <- cbind((crd[, 1] - x_mn) / x_mx,
+                           (crd[, 2] - y_mn) / y_mx * ratio)
+
+      # assign new coordinates and label point
+      methods::slot(ln, "coords") <- coords_rscl
+
+      return(ln)
+    })
+
+    sp::SpatialLines(list(sp::Lines(lst, ID = lns@ID)),
+                        proj4string = sp::CRS(sp::proj4string(x)))
+  }))
 }
 
 
