@@ -75,7 +75,7 @@
   popup = popupTable(x), label, ...)
 
 \S4method{mapView}{SpatialPolygons}(x, map = NULL,
-  color = mapviewGetOption("vector.palette")(2),
+  color = mapviewGetOption("vector.palette")(256),
   na.color = mapviewGetOption("na.color"),
   map.types = mapviewGetOption("basemaps"), lwd = 2, alpha = 0.8,
   alpha.regions = 0.2, verbose = mapviewGetOption("verbose"),
