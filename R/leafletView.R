@@ -239,7 +239,23 @@ leafletPointsDF <- function(x,
   if(!is.null(zcol)) x <- x[, zcol]
   if(!is.null(zcol)) burst <- TRUE
 
-  x <- spCheckObject(x, verbose = verbose)
+  x <- spCheckObject(x)
+  if (length(grep("DataFrame", class(x)[1])) == 0) {
+    return(leafletPoints(x = x,
+                         map = map,
+                         cex = cex,
+                         lwd = lwd,
+                         alpha = alpha,
+                         alpha.regions = alpha.regions,
+                         na.color = na.color,
+                         map.types = map.types,
+                         verbose = verbose,
+                         layer.name = layer.name,
+                         label = label,
+                         ...)
+    )
+  }
+
   x <- spCheckAdjustProjection(x)
 
   m <- initMap(map, map.types, sp::proj4string(x))
@@ -463,7 +479,22 @@ leafletPolygonsDF <- function(x,
   tst <- sapply(pkgs, "requireNamespace",
                 quietly = TRUE, USE.NAMES = FALSE)
 
-  x <- spCheckObject(x, verbose = verbose)
+  x <- spCheckObject(x)
+  if (length(grep("DataFrame", class(x)[1])) == 0) {
+    return(leafletPolygons(x = x,
+                           map = map,
+                           color = color,
+                           na.color = na.color,
+                           map.types = map.types,
+                           lwd = lwd,
+                           alpha = alpha,
+                           alpha.regions = alpha.regions,
+                           verbose = verbose,
+                           layer.name = layer.name,
+                           label = label,
+                           ...)
+    )
+  }
 
   if (missing(popup)) popup <- brewPopupTable(x)
 
@@ -683,7 +714,22 @@ leafletLinesDF <- function(x,
 
   if (missing(popup)) popup <- brewPopupTable(x)
 
-  x <- spCheckObject(x, verbose = verbose)
+  x <- spCheckObject(x)
+  if (length(grep("DataFrame", class(x)[1])) == 0) {
+    return(leafletLines(x = x,
+                        map = map,
+                        color = color,
+                        na.color = na.color,
+                        map.types = map.types,
+                        lwd = lwd,
+                        alpha = alpha,
+                        verbose = verbose,
+                        layer.name = layer.name,
+                        label = label,
+                        ...)
+    )
+  }
+
   x <- spCheckAdjustProjection(x)
 
   m <- initMap(map, map.types, sp::proj4string(x))
@@ -1275,7 +1321,7 @@ leafletMissing <- function(map.types,
 # #
 # #   pop.null <- is.null(popup)
 # #
-# #   x <- spCheckObject(x, verbose = verbose)
+# #   x <- spCheckObject(x)
 # #   x <- spCheckAdjustProjection(x)
 # #
 # #   m <- initMap(map, map.types, sp::proj4string(x))

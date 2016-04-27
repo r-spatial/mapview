@@ -519,7 +519,7 @@ circleRadius <- function(x, radius) {
 
 # Check sp objects --------------------------------------------------------
 
-spCheckObject <- function(x, verbose) {
+spCheckObject <- function(x) {
 
   ## convert chracter columns to factor columns
   for (i in names(x)) {
@@ -534,17 +534,20 @@ spCheckObject <- function(x, verbose) {
     all_na_index <- sapply(seq(x@data), function(i) {
       all(is.na(x@data[, i]))
     })
-    if (verbose & any(all_na_index)) {
-      cat(paste("columns:",
-                paste(colnames(x@data)[all_na_index],
-                      collapse = "and"),
-                "in attribute table only have NA values and are dropped"))
-    }
-
-    if (!all(all_na_index)) {
-      x <- x[, !all_na_index]
+    if (any(all_na_index)) {
+      if (all(all_na_index)) {
+        cl <- gsub("DataFrame", "", class(x)[1])
+        warning("Attribute table associated with 'x' contains only NA values. Converting to '", cl, "' object.")
+        x <- as(x, cl)
+      } else {
+        warning("Columns ",
+                paste(colnames(x@data)[all_na_index], collapse = ", "),
+                "in attribute table contain only NA values and are dropped.")
+        x <- x[, !all_na_index]
+      }
     }
   }
+
   return(x)
 }
 
