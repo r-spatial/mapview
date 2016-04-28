@@ -35,8 +35,6 @@ Imports:
     rgdal,
     gdalUtils,
     data.table,
-    rasterVis,
-    OpenStreetMap (>= 0.3.2),
     webshot
 LinkingTo: Rcpp
 RoxygenNote: 5.0.1

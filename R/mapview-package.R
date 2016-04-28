@@ -14,7 +14,7 @@
 #' \cr
 #' \emph{Maintainer:} Tim Appelhans \email{admin@@environmentalinformatics-marburg.de}
 #'
-#' @import leaflet sp raster satellite scales Rcpp methods png lattice rgdal gdalUtils latticeExtra rasterVis OpenStreetMap
+#' @import leaflet sp raster satellite scales Rcpp methods png lattice rgdal gdalUtils latticeExtra
 #' @importFrom grDevices rgb
 #' @importFrom utils write.table
 #' @importFrom webshot webshot
