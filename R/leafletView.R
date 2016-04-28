@@ -237,6 +237,7 @@ leafletPointsDF <- function(x,
 
   rad_vals <- circleRadius(x, cex)
   if(!is.null(zcol)) x <- x[, zcol]
+  usr_burst <- burst
   if(!is.null(zcol)) burst <- TRUE
 
   x <- spCheckObject(x)
@@ -261,77 +262,98 @@ leafletPointsDF <- function(x,
   m <- initMap(map, map.types, sp::proj4string(x))
 
   if (burst) {
-    lst <- lapply(names(x), function(j) x[j])
 
-    vals <- lapply(seq(lst), function(i) lst[[i]]@data[, 1])
+    leafletList(x = x,
+                zcol = zcol,
+                usr_burst,
+                map = m,
+                color = color,
+                na.color = na.color,
+                cex = cex,
+                lwd = lwd,
+                alpha = alpha,
+                alpha.regions = alpha.regions,
+                map.types = map.types,
+                legend = legend,
+                legend.opacity = legend.opacity,
+                verbose = verbose,
+                layer.name = layer.name,
+                popup = popup,
+                label = label,
+                radius = rad_vals,
+                ...)
 
-    pal_n <- lapply(seq(lst), function(i) {
-      if (is.factor(lst[[i]]@data[, 1])) {
-        leaflet::colorFactor(color, lst[[i]]@data[, 1],
-                             levels = levels(lst[[i]]@data[, 1]))
-      } else {
-        leaflet::colorNumeric(color, vals[[i]],
-                              na.color = na.color)
-      }
-    })
-
-    for (i in seq(lst)) {
-
-      #x <- lst[[i]]
-      if (missing(label)) label <- makeLabels(lst[[i]][[1]])
-
-      if(lab_avl) {
-        m <- leaflet::addCircleMarkers(m,
-                                       lng = coordinates(lst[[i]])[, 1],
-                                       lat = coordinates(lst[[i]])[, 2],
-                                       group = names(lst[[i]]),
-                                       color = pal_n[[i]](vals[[i]]),
-                                       weight = lwd,
-                                       opacity = alpha,
-                                       fillOpacity = alpha.regions,
-                                       popup = popup,
-                                       label = label,
-                                       radius = rad_vals,
-                                       ...)
-      } else {
-
-        m <- leaflet::addCircleMarkers(m,
-                                       lng = coordinates(lst[[i]])[, 1],
-                                       lat = coordinates(lst[[i]])[, 2],
-                                       group = names(lst[[i]]),
-                                       color = pal_n[[i]](vals[[i]]),
-                                       weight = lwd,
-                                       opacity = alpha,
-                                       fillOpacity = alpha.regions,
-                                       popup = popup,
-                                       radius = rad_vals,
-                                       ...)
-      }
-
-      if (legend) {
-        m <- leaflet::addLegend(map = m, position = "topright",
-                                pal = pal_n[[i]],
-                                opacity = 1, values = vals[[i]],
-                                title = names(lst[[i]]),
-                                layerId = names(lst[[i]]))
-      }
-
-    }
-
-    m <- mapViewLayersControl(map = m,
-                              map.types = map.types,
-                              names = names(x))
-
-    #     m <- leaflet::addLayersControl(map = m,
-    #                                    position = mapviewOptions(
-    #                                      console = FALSE)$layerscontrolpos,
-    #                                    baseGroups = map.types,
-    #                                    overlayGroups = names(x))
-
-
-    if (length(getLayerNamesFromMap(m)) > 1) {
-      m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
-    }
+    # lst <- lapply(names(x), function(j) x[j])
+    #
+    # vals <- lapply(seq(lst), function(i) lst[[i]]@data[, 1])
+    #
+    # pal_n <- lapply(seq(lst), function(i) {
+    #   if (is.factor(lst[[i]]@data[, 1])) {
+    #     leaflet::colorFactor(color, lst[[i]]@data[, 1],
+    #                          levels = levels(lst[[i]]@data[, 1]))
+    #   } else {
+    #     leaflet::colorNumeric(color, vals[[i]],
+    #                           na.color = na.color)
+    #   }
+    # })
+    #
+    # for (i in seq(lst)) {
+    #
+    #   #x <- lst[[i]]
+    #   if (missing(label)) label <- makeLabels(lst[[i]][[1]])
+    #
+    #   if(lab_avl) {
+    #     m <- leaflet::addCircleMarkers(m,
+    #                                    lng = coordinates(lst[[i]])[, 1],
+    #                                    lat = coordinates(lst[[i]])[, 2],
+    #                                    group = names(lst[[i]]),
+    #                                    color = pal_n[[i]](vals[[i]]),
+    #                                    weight = lwd,
+    #                                    opacity = alpha,
+    #                                    fillOpacity = alpha.regions,
+    #                                    popup = popup,
+    #                                    label = label,
+    #                                    radius = rad_vals,
+    #                                    ...)
+    #   } else {
+    #
+    #     m <- leaflet::addCircleMarkers(m,
+    #                                    lng = coordinates(lst[[i]])[, 1],
+    #                                    lat = coordinates(lst[[i]])[, 2],
+    #                                    group = names(lst[[i]]),
+    #                                    color = pal_n[[i]](vals[[i]]),
+    #                                    weight = lwd,
+    #                                    opacity = alpha,
+    #                                    fillOpacity = alpha.regions,
+    #                                    popup = popup,
+    #                                    radius = rad_vals,
+    #                                    ...)
+    #   }
+    #
+    #   if (legend) {
+    #     m <- leaflet::addLegend(map = m, position = "topright",
+    #                             pal = pal_n[[i]],
+    #                             opacity = 1, values = vals[[i]],
+    #                             title = names(lst[[i]]),
+    #                             layerId = names(lst[[i]]))
+    #   }
+    #
+    # }
+    #
+    # m <- mapViewLayersControl(map = m,
+    #                           map.types = map.types,
+    #                           names = names(x))
+    #
+    # #     m <- leaflet::addLayersControl(map = m,
+    # #                                    position = mapviewOptions(
+    # #                                      console = FALSE)$layerscontrolpos,
+    # #                                    baseGroups = map.types,
+    # #                                    overlayGroups = names(x))
+    #
+    #
+    # if (length(getLayerNamesFromMap(m)) > 1) {
+    #   m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+    # }
 
   } else {
 
@@ -377,12 +399,10 @@ leafletPointsDF <- function(x,
     #                                      console = FALSE)$layerscontrolpos,
     #                                    baseGroups = map.types,
     #                                    overlayGroups = grp)
+    out <- new('mapview', object = list(x), map = m)
+
+    return(out)
   }
-
-  out <- new('mapview', object = list(x), map = m)
-
-  return(out)
-
 }
 
 
@@ -1012,6 +1032,103 @@ leafletLines <- function(x,
                             names = grp)
 
   out <- new('mapview', object = list(x), map = m)
+
+  return(out)
+
+}
+
+
+### leaflet w list ========================================================
+
+leafletList <- function(x,
+                        zcol,
+                        usr_burst,
+                        map,
+                        color,
+                        na.color,
+                        cex,
+                        lwd,
+                        alpha,
+                        alpha.regions,
+                        map.types,
+                        legend,
+                        legend.opacity,
+                        verbose,
+                        layer.name,
+                        popup,
+                        label,
+                        radius,
+                        ...) {
+
+  bbr <- length(zcol) == 1L && usr_burst
+
+  if(bbr) {
+    lst <- split(x, x@data[, zcol])
+    grp <- sapply(seq(lst), function(i) names(lst)[i])
+    zcol <- rep(zcol, length(grp))
+  } else {
+    lst <- lapply(names(x), function(j) x[j])
+    zcol <- grp <- names(x)
+  }
+
+  vals <- lapply(seq(lst), function(i) lst[[i]]@data[, zcol[i]])
+
+  if (missing(label))
+    label <- lapply(seq(lst), function(i) {
+      makeLabels(lst[[i]]@data[, zcol[i]])
+    })
+
+  pal_n <- lapply(seq(lst), function(i) {
+    if (is.factor(lst[[i]]@data[, zcol[i]])) {
+      leaflet::colorFactor(color, lst[[i]]@data[, zcol[i]],
+                           levels = levels(lst[[i]]@data[, zcol[i]]))
+    } else {
+      leaflet::colorNumeric(color, vals[[i]],
+                            na.color = na.color)
+    }
+  })
+
+  m <- map
+
+  for (i in seq(lst)) {
+
+    if(lab_avl) {
+      m <- leaflet::addCircleMarkers(map = m,
+                                     lng = coordinates(lst[[i]])[, 1],
+                                     lat = coordinates(lst[[i]])[, 2],
+                                     group = grp[[i]],
+                                     color = pal_n[[i]](vals[[i]]),
+                                     weight = lwd,
+                                     opacity = alpha,
+                                     fillOpacity = alpha.regions,
+                                     popup = popup,
+                                     label = label[[i]],
+                                     radius = radius)
+
+    } else {
+      m <- leaflet::addCircleMarkers(map = m,
+                                     lng = coordinates(lst[[i]])[, 1],
+                                     lat = coordinates(lst[[i]])[, 2],
+                                     group = grp[[i]],
+                                     color = pal_n[[i]](vals[[i]]),
+                                     weight = lwd,
+                                     opacity = alpha,
+                                     fillOpacity = alpha.regions,
+                                     popup = popup,
+                                     radius = radius)
+
+    }
+  }
+  m
+  m <- mapViewLayersControl(map = m,
+                            map.types = map.types,
+                            names = grp)
+
+  if (!bbr && length(getLayerNamesFromMap(m)) > 1) {
+    m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
+  }
+
+  out <- new('mapview', object = lst, map = m)
 
   return(out)
 
