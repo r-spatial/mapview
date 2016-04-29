@@ -4,7 +4,7 @@
 \alias{popupGraph}
 \title{Create HTML strings for popup graphs}
 \usage{
-popupGraph(graphs, type = c("png", "svg"), ...)
+popupGraph(graphs, type = c("png", "svg", "html"), ...)
 }
 \arguments{
 \item{graphs}{A \code{list} of figures associated with \code{x}.}
@@ -20,6 +20,11 @@ A \code{list} of HTML strings required to create popup graphs.
 \description{
 Create HTML strings for \code{popup} graphs used as input for
 \code{\link{mapview}}.
+}
+\details{
+Type \code{svg} uses native \code{svg} encoding via \code{\link{readLines}}. \cr
+Type \code{png} embeds via \code{"<img src = ..."}. \cr
+Type \code{html} embeds via \code{"<iframe src = ..."}. \cr
 }
 \examples{
 \dontrun{
@@ -53,6 +58,21 @@ proj4string(pt) <- "+init=epsg:4326"
 p2 <- levelplot(t(volcano), col.regions = terrain.colors(100))
 
 mapview(pt, popup = popupGraph(p2, width = 300, height = 400))
+
+### example: html -----
+library(scatterD3)
+p <- lapply(1:length(meuse), function(i) {
+  clr <-rep(0, length(meuse))
+  clr[[i]] <- 1
+  scatterD3(x = meuse$cadmium,
+            y = meuse$copper,
+            col_var = clr,
+            legend_width = 0)
+})
+
+mapview(meuse, popup = popupGraph(p, type = "html", width = 400, height = 300))
+
+mapview(pt, popup = popupGraph(mapview(pt)@map, type = "html"))
 }
 
 }
