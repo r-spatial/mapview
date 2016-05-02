@@ -9,7 +9,7 @@ popupGraph(graphs, type = c("png", "svg", "html"), ...)
 \arguments{
 \item{graphs}{A \code{list} of figures associated with \code{x}.}
 
-\item{type}{Output filetype, one of "png" (default) and "svg".}
+\item{type}{Output filetype, one of "png" (default), "svg" or "html".}
 
 \item{...}{Further arguments passed on to \code{\link{png}} or
 \code{\link{svg}}.}
@@ -19,12 +19,17 @@ A \code{list} of HTML strings required to create popup graphs.
 }
 \description{
 Create HTML strings for \code{popup} graphs used as input for
-\code{\link{mapview}}.
+\code{\link{mapview}} or \code{\link{leaflet}}.
 }
 \details{
-Type \code{svg} uses native \code{svg} encoding via \code{\link{readLines}}. \cr
-Type \code{png} embeds via \code{"<img src = ..."}. \cr
-Type \code{html} embeds via \code{"<iframe src = ..."}. \cr
+Type \code{svg} uses native \code{svg} encoding via \code{\link{readLines}}.
+\code{height} and \code{width} are set via \code{...} and passed on to
+\code{\link{svg}} \cr
+Type \code{png} embeds via \code{"<img src = ..."}.
+\code{height} and \code{width} are set via \code{...} and passed on to
+\code{\link{png}} \cr
+Type \code{html} embeds via \code{"<iframe src = ..."}.
+\code{height} and \code{width} are set directly in pixels. \cr
 }
 \examples{
 \dontrun{

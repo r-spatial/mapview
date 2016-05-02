@@ -2,15 +2,20 @@
 #'
 #' @description
 #' Create HTML strings for \code{popup} graphs used as input for
-#' \code{\link{mapview}}.
+#' \code{\link{mapview}} or \code{\link{leaflet}}.
 #'
 #' @details
-#' Type \code{svg} uses native \code{svg} encoding via \code{\link{readLines}}. \cr
-#' Type \code{png} embeds via \code{"<img src = ..."}. \cr
-#' Type \code{html} embeds via \code{"<iframe src = ..."}. \cr
+#' Type \code{svg} uses native \code{svg} encoding via \code{\link{readLines}}.
+#' \code{height} and \code{width} are set via \code{...} and passed on to
+#' \code{\link{svg}} \cr
+#' Type \code{png} embeds via \code{"<img src = ..."}.
+#' \code{height} and \code{width} are set via \code{...} and passed on to
+#' \code{\link{png}} \cr
+#' Type \code{html} embeds via \code{"<iframe src = ..."}.
+#' \code{height} and \code{width} are set directly in pixels. \cr
 #'
 #' @param graphs A \code{list} of figures associated with \code{x}.
-#' @param type Output filetype, one of "png" (default) and "svg".
+#' @param type Output filetype, one of "png" (default), "svg" or "html".
 #' @param ... Further arguments passed on to \code{\link{png}} or
 #' \code{\link{svg}}.
 #'
@@ -77,7 +82,7 @@ popupGraph <- function(graphs, type = c("png", "svg", "html"), ...) {
     graphs <- list(graphs)
 
   ## create target folder and filename
-  drs <- paste0(tempdir(), "/graphs")
+  drs <- file.path(tempdir(), "graphs")
   if (!dir.exists(drs)) dir.create(drs)
 
   type <- type[1]
@@ -102,7 +107,8 @@ popupGraph <- function(graphs, type = c("png", "svg", "html"), ...) {
 ### svg -----
 popupSVGraph <- function(graphs, dsn = tempdir(), ...) {
   lapply(1:length(graphs), function(i) {
-    fls <- paste0(dsn, "/tmp_", i, ".svg")
+    nm <- paste0("tmp_", i, ".png")
+    fls <- file.path(dsn, nm)
 
     svg(filename = fls, ...)
     print(graphs[[i]])
@@ -118,13 +124,16 @@ popupSVGraph <- function(graphs, dsn = tempdir(), ...) {
 ### png -----
 popupPNGraph <- function(graphs, dsn = tempdir(), ...) {
   lapply(1:length(graphs), function(i) {
-    fls <- paste0(dsn, "/tmp_", i, ".png")
+    nm <- paste0("tmp_", i, ".png")
+    fls <- file.path(dsn, nm)
 
     png(filename = fls, ...)
     print(graphs[[i]])
     dev.off()
 
-    paste0("<img src = ", paste0("../graphs/", basename(fls)), ">")
+    rel_path <- file.path("..", basename(dsn))
+
+    paste0("<img src = ", file.path(rel_path, basename(fls)), ">")
   })
 }
 
@@ -132,15 +141,32 @@ popupPNGraph <- function(graphs, dsn = tempdir(), ...) {
 popupHTMLGraph <- function(graphs, dsn = tempdir(),
                            width = 300, height = 300, ...) {
   lapply(1:length(graphs), function(i) {
-
-    fls <- paste0(dsn, "/tmp_", i, ".html")
+    nm <- paste0("tmp_", i, ".html")
+    fls <- file.path(dsn, nm)
     htmlwidgets::saveWidget(graphs[[i]], fls, ...)
 
-    paste0("<iframe src='../graphs/",
-           basename(fls),
-           "' frameborder='0' width=",
-           width,
-           " height=",
-           height, "></iframe>")
+    rel_path <- file.path("..", basename(dsn))
+
+    popupIframe(file.path(rel_path, basename(fls)), width, height)
+
+    # paste0("<iframe src='",
+    #        file.path(rel_path, basename(fls)),
+    #        "' frameborder='0' width=",
+    #        width,
+    #        " height=",
+    #        height, "></iframe>")
   })
+}
+
+
+### iframe -----
+popupIframe <- function(src, width = 300, height = 300) {
+  paste0("<iframe src='",
+         src,
+         "' frameborder=0 width=",
+         width,
+         " height=",
+         height,
+         #" align=middle",
+         "></iframe>")
 }
