@@ -90,6 +90,11 @@ mapviewOptions <- function(platform,
                            leafletWidth,
                            leafletHeight) {
 
+  pkgs <- c("viridis", "viridisLite")
+  viridis_avl <- sapply(pkgs, "requireNamespace",
+                        quietly = TRUE, USE.NAMES = FALSE)
+  viridis_avl <- any(viridis_avl)
+
   ## platform
   setPlatform <- function(platform) {
     if (!platform %in% c("leaflet")) {
@@ -179,8 +184,12 @@ mapviewOptions <- function(platform,
     options(write.table = 30000)
     options(mapviewMaxPoints = 20000)
     options(mapviewMaxLines = 30000)
-    options(mapviewRasterPalette = mapviewPalette)
-    options(mapviewVectorPalette = mapviewPalette)
+    options(mapviewRasterPalette =
+              mapviewPalette(name = if (viridis_avl) "inferno" else
+                "mapviewSpectralColors"))
+    options(mapviewVectorPalette =
+              mapviewPalette(name = if (viridis_avl) "viridis" else
+                "mapviewSpectralColors"))
     options(mapviewVerbose = FALSE)
     options(mapviewNAColor = "transparent")
     options(mapviewLayersControlPos = "topleft")
@@ -333,7 +342,9 @@ mapviewOptions <- function(platform,
 }
 
 .rasterPalette <- function() {
-  default <- mapviewPalette
+  default <- mapviewPalette(
+    name = if (viridis_avl) "mapviewRasterColors" else
+      "mapviewSpectralColors")
   rp <- getOption('mapviewRasterPalette')
   if (is.null(rp)) {
     return(default)
@@ -344,7 +355,9 @@ mapviewOptions <- function(platform,
 
 
 .vectorPalette <- function() {
-  default <- mapviewPalette
+  default <- mapviewPalette(
+    name = if (viridis_avl) "mapviewVectorColors" else
+      "mapviewSpectralColors")
   rp <- getOption('mapviewVectorPalette')
   if (is.null(rp)) {
     return(default)

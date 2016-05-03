@@ -5,15 +5,15 @@
 \alias{mapviewPalette}
 \title{Default color palette for mapview}
 \usage{
-mapviewPalette(n, name = "mapviewSpectralColors")
+mapviewPalette(name, ...)
 
-mapViewPalette(n, name = "mapviewSpectralColors")
+mapViewPalette(name, ...)
 }
 \arguments{
-\item{n}{the number of colours to be created}
-
 \item{name}{name of the color palette to be used. One of
 "mapviewSpectralColors" (default) or "mapviewTopoColors"}
+
+\item{n}{the number of colours to be created}
 }
 \description{
 Default color palette for mapview
