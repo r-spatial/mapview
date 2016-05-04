@@ -73,6 +73,12 @@
 #' @rdname mapviewOptions
 #' @aliases mapviewOptions
 
+pkgs <- c("viridis", "viridisLite")
+viridis_avl <- sapply(pkgs, "requireNamespace",
+                      quietly = TRUE, USE.NAMES = FALSE)
+viridis_avl <- any(viridis_avl)
+
+
 mapviewOptions <- function(platform,
                            basemaps,
                            raster.size,
@@ -89,11 +95,6 @@ mapviewOptions <- function(platform,
                            console = TRUE,
                            leafletWidth,
                            leafletHeight) {
-
-  pkgs <- c("viridis", "viridisLite")
-  viridis_avl <- sapply(pkgs, "requireNamespace",
-                        quietly = TRUE, USE.NAMES = FALSE)
-  viridis_avl <- any(viridis_avl)
 
   ## platform
   setPlatform <- function(platform) {
