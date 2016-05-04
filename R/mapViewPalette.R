@@ -17,8 +17,8 @@
 mapviewPalette <- function(name, ...) {
 
   switch(name,
-         mapviewRasterColors = viridis::inferno,
-         mapviewVectorColors = viridis::viridis,
+         mapviewRasterColors = viridisLite::inferno,
+         mapviewVectorColors = viridisLite::viridis,
          mapviewSpectralColors =
            grDevices::colorRampPalette(c("#ebeaf7", "#92b9db",
                                          "#7db7c4", "#7dbbaa",
