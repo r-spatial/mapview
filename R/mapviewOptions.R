@@ -73,10 +73,10 @@
 #' @rdname mapviewOptions
 #' @aliases mapviewOptions
 
-pkgs <- c("viridis", "viridisLite")
-viridis_avl <- sapply(pkgs, "requireNamespace",
-                      quietly = TRUE, USE.NAMES = FALSE)
-viridis_avl <- any(viridis_avl)
+# pkgs <- c("viridis", "viridisLite")
+# viridis_avl <- try(sapply(pkgs, "requireNamespace",
+#                           quietly = TRUE, USE.NAMES = FALSE))
+# viridis_avl <- any(viridis_avl)
 
 
 mapviewOptions <- function(platform,
@@ -185,12 +185,8 @@ mapviewOptions <- function(platform,
     options(write.table = 30000)
     options(mapviewMaxPoints = 20000)
     options(mapviewMaxLines = 30000)
-    options(mapviewRasterPalette =
-              mapviewPalette(name = if (viridis_avl) "inferno" else
-                "mapviewSpectralColors"))
-    options(mapviewVectorPalette =
-              mapviewPalette(name = if (viridis_avl) "viridis" else
-                "mapviewSpectralColors"))
+    options(mapviewRasterPalette = mapviewPalette(name = "mapviewRasterColors"))
+    options(mapviewVectorPalette = mapviewPalette(name = "mapviewVectorColors"))
     options(mapviewVerbose = FALSE)
     options(mapviewNAColor = "transparent")
     options(mapviewLayersControlPos = "topleft")
@@ -343,9 +339,7 @@ mapviewOptions <- function(platform,
 }
 
 .rasterPalette <- function() {
-  default <- mapviewPalette(
-    name = if (viridis_avl) "mapviewRasterColors" else
-      "mapviewSpectralColors")
+  default <- mapviewPalette(name = "mapviewRasterColors")
   rp <- getOption('mapviewRasterPalette')
   if (is.null(rp)) {
     return(default)
@@ -356,9 +350,7 @@ mapviewOptions <- function(platform,
 
 
 .vectorPalette <- function() {
-  default <- mapviewPalette(
-    name = if (viridis_avl) "mapviewVectorColors" else
-      "mapviewSpectralColors")
+  default <- mapviewPalette(name = "mapviewVectorColors")
   rp <- getOption('mapviewVectorPalette')
   if (is.null(rp)) {
     return(default)

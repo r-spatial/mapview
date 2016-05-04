@@ -35,7 +35,8 @@ Imports:
     rgdal,
     gdalUtils,
     data.table,
-    webshot
+    webshot,
+    viridisLite
 LinkingTo: Rcpp
 RoxygenNote: 5.0.1
 SystemRequirements: GNU make
