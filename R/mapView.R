@@ -10,6 +10,9 @@ if ( !isGeneric('mapView') ) {
 #' spatial object(s) on top of the specified base maps.
 #'
 #' @details
+#' If \code{zcol} is not \code{NULL} and \code{burst} is \code{TRUE}
+#' one layer for each unique value of \code{zcol} will be drawn. \cr
+#' \cr
 #' The usage of big data sets is performed by loading local copies
 #' of json files from temporary storage. This works fine for most of
 #' the current browsers. If you are using Google's chrome browser you have to
@@ -85,6 +88,9 @@ if ( !isGeneric('mapView') ) {
 #'
 #' # only one layer, all info in popups
 #' mapview(meuse)
+#'
+#' # one layer for each level of "soil"
+#' mapview(meuse, zcol = "soil", burst = TRUE)
 #'
 #' ## SpatialPoints ##
 #' meuse_pts <- as(meuse, "SpatialPoints")
@@ -290,9 +296,10 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
 
 ## SpatialPointsDataFrame =================================================
 #' @describeIn mapView \code{\link{SpatialPointsDataFrame}}
-#' @param burst whether to show all (TRUE) or only one (FALSE) layers
+#' @param burst whether to show all (TRUE) or only one (FALSE) layers.
+#' See also Details.
 #' @param zcol attribute name(s) or column number(s) in attribute table
-#' of the column(s) to be rendered
+#' of the column(s) to be rendered. See also Details.
 #' @param cex attribute name(s) or column number(s) in attribute table
 #' of the column(s) to be used for defining the size of circles
 #' @param lwd line width
