@@ -9,6 +9,7 @@ new features:
   * new popup functions popupTable and popupGraph
   * functions to turn coordinates into spatial lines or spatial polygons
   * mapview objects now work natively on shiny applications
+  * zcol + burst now plots one layer for each unique value of zcol
 
 changes:
   * colors: viridis based colors now default if package is available
