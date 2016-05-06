@@ -8,7 +8,7 @@
 #' web-URL(s) to any sort of image file(s).
 #' @param src Whether the source is "local" (i.e. valid file path(s)) or
 #' "remote" (i.e. valid URL(s)).
-#' @param ... currently not used.
+#' @param ... width and height (in pixels) can be passed to underlying functions.
 #'
 #' @return
 #' A \code{list} of HTML strings required to create popup graphs.

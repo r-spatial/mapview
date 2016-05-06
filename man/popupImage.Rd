@@ -13,7 +13,7 @@ web-URL(s) to any sort of image file(s).}
 \item{src}{Whether the source is "local" (i.e. valid file path(s)) or
 "remote" (i.e. valid URL(s)).}
 
-\item{...}{currently not used.}
+\item{...}{width and height (in pixels) can be passed to underlying functions.}
 }
 \value{
 A \code{list} of HTML strings required to create popup graphs.
