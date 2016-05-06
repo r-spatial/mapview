@@ -37,6 +37,6 @@ mapview(meuse, popup = popupTable(meuse, zcol = 1:2))
 
 }
 \seealso{
-\code{\link{popupGraph}}.
+\code{\link{popupGraph}} and \code{\link{popupImage}}.
 }
 

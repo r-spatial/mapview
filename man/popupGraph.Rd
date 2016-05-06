@@ -82,6 +82,6 @@ mapview(pt, popup = popupGraph(mapview(pt)@map, type = "html"))
 
 }
 \seealso{
-\code{\link{popupTable}}.
+\code{\link{popupTable}} and \code{\link{popupImage}}.
 }
 

@@ -14,7 +14,7 @@
 #' @return
 #' A \code{list} of HTML strings required to create feature popup table(s).
 #'
-#' @seealso \code{\link{popupGraph}}.
+#' @seealso \code{\link{popupGraph}} and \code{\link{popupImage}}.
 #'
 #' @examples
 #' \dontrun{

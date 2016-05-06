@@ -22,7 +22,7 @@
 #' @return
 #' A \code{list} of HTML strings required to create popup graphs.
 #'
-#' @seealso \code{\link{popupTable}}.
+#' @seealso \code{\link{popupTable}} and \code{\link{popupImage}}.
 #'
 #' @examples
 #' \dontrun{
@@ -171,32 +171,3 @@ popupIframe <- function(src, width = 300, height = 300) {
          "></iframe>")
 }
 
-
-### local images -----
-popupLocalImage <- function(src, width, height) {
-  nm <- basename(src)
-  drs <- file.path(tempdir(), "graphs")
-  if (!dir.exists(drs)) dir.create(drs)
-  fls <- file.path(drs, nm)
-  invisible(file.copy(src, file.path(drs, nm)))
-  rel_path <- file.path("..", basename(drs), basename(src))
-
-  info <- sapply(src, function(...) rgdal::GDALinfo(..., silent = TRUE))
-  yx_ratio <- as.numeric(info["rows", ]) / as.numeric(info["columns", ])
-  xy_ratio <- as.numeric(info["columns", ]) / as.numeric(info["rows", ])
-
-  if (missing(height) && missing(width)) {
-    width <- 300
-    height <- yx_ratio * width
-  } else if (missing(height)) height <- yx_ratio * width else
-    if (missing(width)) width <- xy_ratio * height
-
-  paste0("<image src='../graphs/",
-         basename(src),
-         "' width=",
-         width,
-         " height=",
-         height,
-         ">")
-
-}
