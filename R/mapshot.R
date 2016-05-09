@@ -29,6 +29,9 @@ mapshot <- function(x, url = NULL, file, ...) {
     x <- mapview2leaflet(x)
   }
 
+  ## remove layers control
+  x <- leaflet::removeLayersControl(x)
+
   ## if url is missing, create temporary .html file
   avl <- !is.null(url)
 
