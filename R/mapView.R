@@ -325,6 +325,8 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    label,
                    ...) {
 
+            color <- col2Hex(color)
+
             if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletPointsDF(x,
@@ -389,6 +391,8 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                    label,
                   ...) {
 
+            color <- col2Hex(color)
+
             if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletPoints(x,
@@ -452,6 +456,8 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    label,
                    ...) {
 
+            color <- col2Hex(color)
+
             if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletPolygonsDF(x,
@@ -513,6 +519,8 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                    label,
                   ...) {
 
+            color <- col2Hex(color)
+
             if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletPolygons(x,
@@ -569,6 +577,8 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                    popup = popupTable(x),
                    label,
                    ...) {
+
+            color <- col2Hex(color)
 
             if (length(x@lines) < mapviewGetOption("maxlines")) {
               if (mapviewGetOption("platform") == "leaflet") {
@@ -630,6 +640,8 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                                                    env = parent.frame())),
                    label,
                   ...) {
+
+            color <- col2Hex(color)
 
             if (length(x@lines) < mapviewGetOption("maxlines")) {
               if (mapviewGetOption("platform") == "leaflet") {

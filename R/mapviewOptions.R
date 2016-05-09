@@ -176,7 +176,8 @@ mapviewOptions <- function(platform,
   if (default) {
     cnt <- 1
     options(mapviewPlatform = "leaflet")
-    options(mapviewBasemaps = c("OpenStreetMap",
+    options(mapviewBasemaps = c("CartoDB.Positron",
+                                "OpenStreetMap",
                                 "Esri.WorldImagery",
                                 "Thunderforest.Landscape",
                                 "OpenTopoMap"))
@@ -270,7 +271,8 @@ mapviewOptions <- function(platform,
 
 
 .basemaps <- function() {
-  default <- c("OpenStreetMap",
+  default <- c("CartoDB.Positron",
+               "OpenStreetMap",
                "Esri.WorldImagery",
                "Thunderforest.Landscape",
                "OpenTopoMap")
