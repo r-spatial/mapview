@@ -244,9 +244,13 @@ initMap <- function(map, map.types, proj4str) {
 
 scaleCoordinates <- function(x.coords, y.coords) {
 
-  ratio <- diff(range(y.coords)) / diff(range(x.coords))
-  x_sc <- scales::rescale(x.coords, to = c(0, 1))
-  y_sc <- scales::rescale(y.coords, to = c(0, 1)) * ratio
+  if (length(x.coords) == 1) {
+    x_sc <- y_sc <- 0
+  } else {
+    ratio <- diff(range(y.coords)) / diff(range(x.coords))
+    x_sc <- scales::rescale(x.coords, to = c(0, 1))
+    y_sc <- scales::rescale(y.coords, to = c(0, 1)) * ratio
+  }
   return(cbind(x_sc, y_sc))
 
 }
