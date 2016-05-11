@@ -236,9 +236,12 @@ leafletPointsDF <- function(x,
   #if (missing(popup)) popup <- brewPopupTable(x)
 
   rad_vals <- circleRadius(x, cex)
-  if(!is.null(zcol)) x <- x[, zcol]
   usr_burst <- burst
-  if(!is.null(zcol)) burst <- TRUE
+
+  if(!is.null(zcol)) {
+    x <- x[, zcol]
+    burst <- TRUE
+  }
 
   x <- spCheckObject(x)
   if (length(grep("DataFrame", class(x)[1])) == 0) {
@@ -297,7 +300,7 @@ leafletPointsDF <- function(x,
                                      lng = coordinates(x)[, 1],
                                      lat = coordinates(x)[, 2],
                                      group = grp,
-                                     color = color[1],
+                                     color = color,
                                      weight = lwd,
                                      opacity = alpha,
                                      fillOpacity = alpha.regions,
@@ -311,7 +314,7 @@ leafletPointsDF <- function(x,
                                      lng = coordinates(x)[, 1],
                                      lat = coordinates(x)[, 2],
                                      group = grp,
-                                     color = color[1],
+                                     color = color,
                                      #radius = cex,
                                      weight = lwd,
                                      opacity = alpha,
@@ -900,136 +903,161 @@ leafletList <- function(x,
                         row.nms,
                         ...) {
 
-  cls <- class(x)[1]
+  pop <- popup
+  #cls <- class(x)[1]
   bbr <- length(zcol) == 1L && usr_burst
 
   if(bbr) {
     x@data[, zcol] <- as.factor(x@data[, zcol])
     lst <- split(x, x@data[, zcol])
     grp <- sapply(seq(lst), function(i) names(lst)[i])
-    zcol <- rep(zcol, length(grp))
+    col <- mapviewGetOption("vector.palette")(length(lst))
+    #zcol <- rep(zcol, length(grp))
   } else {
     lst <- lapply(names(x), function(j) x[j])
     zcol <- grp <- names(x)
+    col <- lapply(seq(lst), function(i) {
+      clrs <- mapviewColors(
+        col.regions = mapviewGetOption("vector.palette"),
+        at = unique(lst[[i]]@data[, 1]),
+        na.color = na.color)
+      clr <- clrs(as.numeric(lst[[i]]@data[, 1]))
+      clr[which(is.na(clr))] <- na.color
+      return(clr)
+    })
   }
 
-  vals <- lapply(seq(lst), function(i) lst[[i]]@data[, zcol[i]])
-
-  if (missing(label))
-    label <- lapply(seq(lst), function(i) {
-      makeLabels(lst[[i]]@data[, zcol[i]])
-    })
-
-  pal_n <- lapply(seq(lst), function(i) {
-    if (is.factor(lst[[i]]@data[, zcol[i]])) {
-      leaflet::colorFactor(color, lst[[i]]@data[, zcol[i]],
-                           levels = levels(lst[[i]]@data[, zcol[i]]))
-    } else {
-      leaflet::colorNumeric(color, vals[[i]],
-                            na.color = na.color)
-    }
-  })
-
-  m <- map
-
-  for (i in seq(lst)) {
-
+  m <- Reduce("+", lapply(seq(lst), function(i) {
     ind <- which(row.nms %in% row.names(lst[[i]]))
     pop <- popup[ind]
 
-    if(lab_avl) {
+    mapview(lst[[i]],
+            zcol = NULL,
+            burst = FALSE,
+            color = col[[i]],
+            layer.name = grp[i],
+            popup = pop,
+            label = makeLabels(lst[[i]]@data[, 1]),
+            ...)
+  }))
 
-      if (cls == "SpatialPointsDataFrame") {
-        m <- leaflet::addCircleMarkers(map = m,
-                                       lng = coordinates(lst[[i]])[, 1],
-                                       lat = coordinates(lst[[i]])[, 2],
-                                       group = grp[[i]],
-                                       color = pal_n[[i]](vals[[i]]),
-                                       weight = lwd,
-                                       opacity = alpha,
-                                       fillOpacity = alpha.regions,
-                                       popup = pop,
-                                       label = label[[i]],
-                                       radius = radius)
-      } else if (cls == "SpatialPolygonsDataFrame") {
-        m <- leaflet::addPolygons(m,
-                                  weight = lwd,
-                                  opacity = alpha,
-                                  fillOpacity = alpha.regions,
-                                  group = grp[[i]],
-                                  color = pal_n[[i]](vals[[i]]),
-                                  popup = pop,
-                                  label = label[[i]],
-                                  data = lst[[i]],
-                                  ...)
-      } else {
-        m <- leaflet::addPolylines(m,
-                                   group = grp[[i]],
-                                   color = pal_n[[i]](vals[[i]]),
-                                   popup = pop,
-                                   label = label[[i]],
-                                   data = lst[[i]],
-                                   weight = lwd,
-                                   opacity = alpha,
-                                   ...)
-      }
+  # vals <- lapply(seq(lst), function(i) lst[[i]]@data[, zcol[i]])
+  #
+  # if (missing(label))
+  #   label <- lapply(seq(lst), function(i) {
+  #     makeLabels(lst[[i]]@data[, zcol[i]])
+  #   })
+  #
+  # pal_n <- lapply(seq(lst), function(i) {
+  #   if (is.factor(lst[[i]]@data[, zcol[i]])) {
+  #     leaflet::colorFactor(color, lst[[i]]@data[, zcol[i]],
+  #                          levels = levels(lst[[i]]@data[, zcol[i]]))
+  #   } else {
+  #     leaflet::colorNumeric(color, vals[[i]],
+  #                           na.color = na.color)
+  #   }
+  # })
+  #
+  # m <- map
+  #
+  # for (i in seq(lst)) {
+  #
+  #   ind <- which(row.nms %in% row.names(lst[[i]]))
+  #   pop <- popup[ind]
+  #
+  #   if(lab_avl) {
+  #
+  #     if (cls == "SpatialPointsDataFrame") {
+  #       m <- leaflet::addCircleMarkers(map = m,
+  #                                      lng = coordinates(lst[[i]])[, 1],
+  #                                      lat = coordinates(lst[[i]])[, 2],
+  #                                      group = grp[[i]],
+  #                                      color = pal_n[[i]](vals[[i]]),
+  #                                      weight = lwd,
+  #                                      opacity = alpha,
+  #                                      fillOpacity = alpha.regions,
+  #                                      popup = pop,
+  #                                      label = label[[i]],
+  #                                      radius = radius)
+  #     } else if (cls == "SpatialPolygonsDataFrame") {
+  #       m <- leaflet::addPolygons(m,
+  #                                 weight = lwd,
+  #                                 opacity = alpha,
+  #                                 fillOpacity = alpha.regions,
+  #                                 group = grp[[i]],
+  #                                 color = pal_n[[i]](vals[[i]]),
+  #                                 popup = pop,
+  #                                 label = label[[i]],
+  #                                 data = lst[[i]],
+  #                                 ...)
+  #     } else {
+  #       m <- leaflet::addPolylines(m,
+  #                                  group = grp[[i]],
+  #                                  color = pal_n[[i]](vals[[i]]),
+  #                                  popup = pop,
+  #                                  label = label[[i]],
+  #                                  data = lst[[i]],
+  #                                  weight = lwd,
+  #                                  opacity = alpha,
+  #                                  ...)
+  #     }
+  #
+  #   } else {
+  #
+  #     if (cls == "SpatialPointsDataFrame") {
+  #       m <- leaflet::addCircleMarkers(map = m,
+  #                                      lng = coordinates(lst[[i]])[, 1],
+  #                                      lat = coordinates(lst[[i]])[, 2],
+  #                                      group = grp[[i]],
+  #                                      color = pal_n[[i]](vals[[i]]),
+  #                                      weight = lwd,
+  #                                      opacity = alpha,
+  #                                      fillOpacity = alpha.regions,
+  #                                      popup = pop,
+  #                                      radius = rad_vals)
+  #     } else if (cls == "SpatialPolygonsDataFrame") {
+  #       m <- leaflet::addPolygons(m,
+  #                                 weight = lwd,
+  #                                 opacity = alpha,
+  #                                 fillOpacity = alpha.regions,
+  #                                 group = grp[[i]],
+  #                                 color = pal_n[[i]](vals[[i]]),
+  #                                 popup = pop,
+  #                                 data = lst[[i]],
+  #                                 ...)
+  #     } else {
+  #       m <- leaflet::addPolylines(m,
+  #                                  group = grp[[i]],
+  #                                  color = pal_n[[i]](vals[[i]]),
+  #                                  popup = pop,
+  #                                  data = lst[[i]],
+  #                                  weight = lwd,
+  #                                  opacity = alpha,
+  #                                  ...)
+  #     }
+  #
+  #   }
+  # }
+  #
+  # if (legend) {
+  #   m <- leaflet::addLegend(map = m, position = "topright",
+  #                           pal = pal_n[[i]],
+  #                           opacity = 1, values = vals[[i]],
+  #                           title = names(lst[[i]]),
+  #                           layerId = names(lst[[i]]))
+  # }
+  #
+  # m <- mapViewLayersControl(map = m,
+  #                           map.types = map.types,
+  #                           names = grp)
 
-    } else {
-
-      if (cls == "SpatialPointsDataFrame") {
-        m <- leaflet::addCircleMarkers(map = m,
-                                       lng = coordinates(lst[[i]])[, 1],
-                                       lat = coordinates(lst[[i]])[, 2],
-                                       group = grp[[i]],
-                                       color = pal_n[[i]](vals[[i]]),
-                                       weight = lwd,
-                                       opacity = alpha,
-                                       fillOpacity = alpha.regions,
-                                       popup = pop,
-                                       radius = rad_vals)
-      } else if (cls == "SpatialPolygonsDataFrame") {
-        m <- leaflet::addPolygons(m,
-                                  weight = lwd,
-                                  opacity = alpha,
-                                  fillOpacity = alpha.regions,
-                                  group = grp[[i]],
-                                  color = pal_n[[i]](vals[[i]]),
-                                  popup = pop,
-                                  data = lst[[i]],
-                                  ...)
-      } else {
-        m <- leaflet::addPolylines(m,
-                                   group = grp[[i]],
-                                   color = pal_n[[i]](vals[[i]]),
-                                   popup = pop,
-                                   data = lst[[i]],
-                                   weight = lwd,
-                                   opacity = alpha,
-                                   ...)
-      }
-
-    }
+  if (!bbr && length(getLayerNamesFromMap(m@map)) > 1) {
+    m@map <- leaflet::hideGroup(map = m@map, group = layers2bHidden(m@map))
   }
 
-  if (legend) {
-    m <- leaflet::addLegend(map = m, position = "topright",
-                            pal = pal_n[[i]],
-                            opacity = 1, values = vals[[i]],
-                            title = names(lst[[i]]),
-                            layerId = names(lst[[i]]))
-  }
+  #out <- new('mapview', object = lst, map = m@map)
 
-  m <- mapViewLayersControl(map = m,
-                            map.types = map.types,
-                            names = grp)
-
-  if (!bbr && length(getLayerNamesFromMap(m)) > 1) {
-    m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
-  }
-
-  out <- new('mapview', object = lst, map = m)
-
-  return(out)
+  return(m)
 
 }
 

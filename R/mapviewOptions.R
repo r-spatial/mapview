@@ -189,7 +189,7 @@ mapviewOptions <- function(platform,
     options(mapviewRasterPalette = mapviewPalette(name = "mapviewRasterColors"))
     options(mapviewVectorPalette = mapviewPalette(name = "mapviewVectorColors"))
     options(mapviewVerbose = FALSE)
-    options(mapviewNAColor = "transparent")
+    options(mapviewNAColor = col2Hex("grey"))
     options(mapviewLayersControlPos = "topleft")
     options(mapviewleafletWidth = NULL)
     options(mapviewleafletHeight = NULL)
@@ -374,7 +374,7 @@ mapviewOptions <- function(platform,
 
 
 .naColor <- function() {
-  default <- "transparent"
+  default <- col2Hex("grey")
   nc <- getOption('mapviewNAColor')
   if (is.null(nc)) {
     return(default)

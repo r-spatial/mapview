@@ -21,6 +21,6 @@ mapview version of leaflet::colorNumeric
 Tim Appelhans
 }
 \seealso{
-\code{\link{levelplot}}
+\code{\link{level.colors}}
 }
 

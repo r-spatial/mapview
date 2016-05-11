@@ -9,7 +9,7 @@
 #' Tim Appelhans
 #'
 #' @seealso
-#' \code{\link{levelplot}}
+#' \code{\link{level.colors}}
 #'
 #' @name mapviewColors
 #' @export mapviewColors
