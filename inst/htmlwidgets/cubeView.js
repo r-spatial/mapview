@@ -147,8 +147,7 @@ function Hovmoeller(root, json) {
   }*/
 
 	this.scene = new THREE.Scene();
-	//this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-	this.camera = new THREE.OrthographicCamera( window.innerWidth/-2, window.innerWidth/2, window.innerHeight/2, window.innerHeight/-2, 1, 20 );
+	this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 
 	this.renderer = new THREE.WebGLRenderer( {/*antialias: true*/} );
@@ -158,7 +157,6 @@ function Hovmoeller(root, json) {
 	if(this.orbit) {
 	  this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 	  this.controls.enableKeys = false; // prevents using arrow keys in OrbitControls
-	  this.camera.zoom = 200; // for OrthographicCamera
 	  this.camera.updateProjectionMatrix();
 	} else {
 	  this.controls = new THREE.TrackballControls(this.camera); // currently not functioning
@@ -182,7 +180,10 @@ function Hovmoeller(root, json) {
 	root.appendChild( this.renderer.domElement );
 
 	var MIN_SIZE = Math.min(X_SIZE, Y_SIZE, Z_SIZE);
-	var geometry = new THREE.BoxGeometry( X_SIZE/MIN_SIZE, Y_SIZE/MIN_SIZE, Z_SIZE/MIN_SIZE );
+	var X_BOX = X_SIZE/MIN_SIZE;
+	var Y_BOX = Y_SIZE/MIN_SIZE;
+	var Z_BOX = Z_SIZE/MIN_SIZE;
+	var geometry = new THREE.BoxGeometry(X_BOX, Y_BOX,  Z_BOX);
 
 	//console.log(JSON.stringify(this.cube.geometry.faceVertexUvs));
 
@@ -217,6 +218,43 @@ function Hovmoeller(root, json) {
 
 	this.cube = new THREE.Mesh( geometry,  new THREE.MeshFaceMaterial(this.materials) );
 	this.scene.add( this.cube );
+
+	var line_material_x = new THREE.LineBasicMaterial({color:0xff5555, linewidth:3});
+	var line_material_y = new THREE.LineBasicMaterial({color:0x55ff55, linewidth:3});
+	var line_material_z = new THREE.LineBasicMaterial({color:0x5555ff, linewidth:3});
+
+	var origin_gap = 0.3;
+	var origin_x = -X_BOX/2-origin_gap;
+	var origin_y = -Y_BOX/2-origin_gap;
+	var origin_z = -Z_BOX/2-origin_gap;
+	var origin = new THREE.Vector3( origin_x, origin_y, origin_z);
+	var line_size = 2;
+
+  var line_geometry_x = new THREE.Geometry();
+  line_geometry_x.vertices.push(
+	  origin,
+	  new THREE.Vector3(origin_x+line_size, origin_y, origin_z)
+  );
+
+  var line_geometry_y = new THREE.Geometry();
+  line_geometry_y.vertices.push(
+	  origin,
+	  new THREE.Vector3(origin_x, origin_y+line_size, origin_z)
+  );
+
+  var line_geometry_z = new THREE.Geometry();
+  line_geometry_z.vertices.push(
+	  origin,
+	  new THREE.Vector3(origin_x, origin_y, origin_z+line_size)
+  );
+
+  var line_x = new THREE.Line(line_geometry_x, line_material_x);
+  var line_y = new THREE.Line(line_geometry_y, line_material_y);
+  var line_z = new THREE.Line(line_geometry_z, line_material_z);
+  this.scene.add(line_x);
+  this.scene.add(line_y);
+  this.scene.add(line_z);
+
 
 	this.camera.position.z = 15;
 
