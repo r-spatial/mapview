@@ -7,7 +7,7 @@
 cubeView_RasterStack(r)
 }
 \description{
-View a RasterStack as 3-dimensional cube.
+see details of cubeView: \link{cubeViewRaw}
 }
 \author{
 Stephan Woellauer

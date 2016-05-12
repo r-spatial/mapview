@@ -1,4 +1,7 @@
 #' View a RasterStack as 3-dimensional cube.
+#'
+#' see details of cubeView: \link{cubeViewRaw}
+#'
 #' @author
 #' Stephan Woellauer
 #'
@@ -15,6 +18,9 @@ cubeView_RasterStack <- function(r) {
 }
 
 #' View a RasterBrick as 3-dimensional cube.
+#'
+#' see details of cubeView: \link{cubeViewRaw}
+#'
 #' @author
 #' Stephan Woellauer
 #'
@@ -50,22 +56,25 @@ cubeView_RasterBrick <- function(r) {
 #'
 #' @details
 #'
-#' The cube faces show a selectable layer of the data within the cube.
+#' The cube faces show a selectable layer of data within the cube.
 #'
-#' Currently the visible layers are alterable by keys (not reliable within RStudio):
+#' The visible layers are alterable by keys:
 #'
-#' z: PAGE_UP PAGE_DOWN key
+#' x-axis: LEFT / RIGHT arrow key
 #'
-#' x: LEFT RIGHT arrow key
+#' y-axis: DOWN / UP arrow key
 #'
-#' y: DOWN UP arror key
+#' z-axis: PAGE_DOWN / PAGE_UP key
+#'
+#' Note: Because of key focus issues key-press-events are not always recognised within RStudio at Windows.
+#' In this case open the view in a web-browser (RStudio button: "show in new window").
 #'
 #'
 #' Press and hold left mouse-button to rotate the cube.
 #'
 #' Press and hold right mouse-button to move the cube.
 #'
-#' Move mouse-wheel to zoom the cube.
+#' Spin mouse-wheel or press and hold middle mouse-button and move mouse down/up to zoom the cube.
 #'
 #' The color resp. grey vectors contain sequentially values of each voxel. So each vector is length == x_size * y_size * z_size.
 #' Color component values overwrite grey values.

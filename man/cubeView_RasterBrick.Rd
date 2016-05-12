@@ -7,7 +7,7 @@
 cubeView_RasterBrick(r)
 }
 \description{
-View a RasterBrick as 3-dimensional cube.
+see details of cubeView: \link{cubeViewRaw}
 }
 \author{
 Stephan Woellauer
