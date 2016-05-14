@@ -49,7 +49,7 @@
 \S4method{mapView}{SpatialGridDataFrame}(x, zcol = NULL, ...)
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapviewGetOption("vector.palette")(1),
+  burst = FALSE, color = mapviewGetOption("vector.palette"), at,
   na.color = mapviewGetOption("na.color"), cex = 8, lwd = 4,
   alpha = 0.9, alpha.regions = 0.4,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
@@ -58,7 +58,7 @@
   popup = popupTable(x), label, ...)
 
 \S4method{mapView}{SpatialPoints}(x, map = NULL, zcol = NULL,
-  color = mapviewGetOption("vector.palette")(1),
+  color = mapviewGetOption("vector.palette"),
   na.color = mapviewGetOption("na.color"), cex = 8, lwd = 4,
   alpha = 0.9, alpha.regions = 0.4,
   map.types = mapviewGetOption("basemaps"),
@@ -66,7 +66,7 @@
   env = parent.frame())), label, ...)
 
 \S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapviewGetOption("vector.palette")(1),
+  burst = FALSE, color = mapviewGetOption("vector.palette"), at,
   na.color = mapviewGetOption("na.color"), lwd = 2, alpha = 0.8,
   alpha.regions = 0.2, values = NULL,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
@@ -75,14 +75,14 @@
   popup = popupTable(x), label, ...)
 
 \S4method{mapView}{SpatialPolygons}(x, map = NULL,
-  color = mapviewGetOption("vector.palette")(1),
+  color = mapviewGetOption("vector.palette"),
   na.color = mapviewGetOption("na.color"),
   map.types = mapviewGetOption("basemaps"), lwd = 2, alpha = 0.8,
   alpha.regions = 0.2, verbose = mapviewGetOption("verbose"),
   layer.name = deparse(substitute(x, env = parent.frame())), label, ...)
 
 \S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapviewGetOption("vector.palette")(1),
+  burst = FALSE, color = mapviewGetOption("vector.palette"), at,
   na.color = mapviewGetOption("na.color"), lwd = 2, alpha = 0.8,
   values = NULL, map.types = mapviewGetOption("basemaps"), legend = FALSE,
   legend.opacity = 1, verbose = mapviewGetOption("verbose"),

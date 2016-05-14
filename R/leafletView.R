@@ -55,7 +55,7 @@ leafletRL <- function(x,
                                 na.color = na.color)
     pal2 <- pal
   } else {
-    pal <- mapviewColors(col.regions,
+    pal <- rasterColors(col.regions,
                          at = at,
                          na.color = na.color)
 
@@ -213,6 +213,7 @@ leafletPointsDF <- function(x,
                             map,
                             burst,
                             color,
+                            at,
                             na.color,
                             cex,
                             lwd,
@@ -273,6 +274,7 @@ leafletPointsDF <- function(x,
                 usr_burst,
                 map = m,
                 color = color,
+                at = at,
                 na.color = na.color,
                 cex = cex,
                 lwd = lwd,
@@ -293,7 +295,8 @@ leafletPointsDF <- function(x,
 
     grp <- layer.name
     if (missing(label)) label <- makeLabels(row.names(x))
-    #if (pop.null) popup <- brewPopupTable(x)
+
+    color <- mapviewColors(x, colors = color, at = at, na.color = na.color)
 
     if(lab_avl) {
       m <- leaflet::addCircleMarkers(map = m,
@@ -416,6 +419,7 @@ leafletPolygonsDF <- function(x,
                               map,
                               burst,
                               color,
+                              at,
                               na.color,
                               values,
                               map.types,
@@ -472,6 +476,7 @@ leafletPolygonsDF <- function(x,
                 usr_burst,
                 map = m,
                 color = color,
+                at,
                 na.color = na.color,
                 cex = cex,
                 lwd = lwd,
@@ -491,7 +496,9 @@ leafletPolygonsDF <- function(x,
   } else {
 
     grp <- layer.name
-    label <- makeLabels(row.names(x))
+    if (missing(label)) label <- makeLabels(row.names(x))
+
+    color <- mapviewColors(x, colors = color, at = at, na.color = na.color)
 
     if (lab_avl) {
       m <- leaflet::addPolygons(m,
@@ -499,7 +506,7 @@ leafletPolygonsDF <- function(x,
                                 opacity = alpha,
                                 fillOpacity = alpha.regions,
                                 group = grp,
-                                color = color[1],
+                                color = color,
                                 popup = popup,
                                 label = label,
                                 data = x,
@@ -511,7 +518,7 @@ leafletPolygonsDF <- function(x,
                                 opacity = alpha,
                                 fillOpacity = alpha.regions,
                                 group = grp,
-                                color = color[1],
+                                color = color,
                                 popup = popup,
                                 data = x,
                                 ...)
@@ -557,7 +564,7 @@ leafletPolygons <- function(x,
   m <- initMap(map, map.types, sp::proj4string(x))
 
   grp <- layer.name
-  label <- makeLabels(row.names(x))
+  if (missing(label)) label <- makeLabels(row.names(x))
 
   if (lab_avl) {
     m <- leaflet::addPolygons(m,
@@ -600,6 +607,7 @@ leafletLinesDF <- function(x,
                            map,
                            burst,
                            color,
+                           at,
                            na.color,
                            values,
                            map.types,
@@ -654,6 +662,7 @@ leafletLinesDF <- function(x,
                 usr_burst,
                 map = m,
                 color = color,
+                at,
                 na.color = na.color,
                 cex = cex,
                 lwd = lwd,
@@ -673,9 +682,12 @@ leafletLinesDF <- function(x,
   } else {
 
     grp <- layer.name
-    label <- makeLabels(row.names(x))
+    if (missing(label)) label <- makeLabels(row.names(x))
 
     if (missing(popup)) popup <- brewPopupTable(x)
+
+    color <- mapviewColors(x, colors = color, at = at, na.color = na.color)
+    if (is.null(zcol) && !usr_burst) color <- rep(color, length(x))
 
     ### test -----
 
@@ -691,7 +703,7 @@ leafletLinesDF <- function(x,
         if (segments == 1) {
           m <- leaflet::addPolylines(m,
                                      group = grp,
-                                     color = color[1],
+                                     color = color[i],
                                      popup = popup[i],
                                      label = label[i],
                                      data = x[i, ],
@@ -704,6 +716,8 @@ leafletLinesDF <- function(x,
 
           # add one segment after another
           for (j in seq(segments)) {
+
+            col <- rep(color[i], length(segments[i]))
             slndf <- coords2Lines(x[i, ]@lines[[1]]@Lines[[j]]
                                   , ID = rownames(x@data[i, ])
                                   , data = x@data[i, ]
@@ -711,7 +725,7 @@ leafletLinesDF <- function(x,
 
             m <- leaflet::addPolylines(m,
                                        group = grp,
-                                       color = color[1],
+                                       color = col[i],
                                        popup = popup[i],
                                        label = label[i],
                                        data = slndf,
@@ -724,7 +738,7 @@ leafletLinesDF <- function(x,
         if (segments == 1) {
           m <- leaflet::addPolylines(m,
                                      group = grp,
-                                     color = color[1],
+                                     color = color[i],
                                      popup = popup[i],
                                      data = x[i, ],
                                      weight = lwd,
@@ -743,7 +757,7 @@ leafletLinesDF <- function(x,
 
             m <- leaflet::addPolylines(m,
                                        group = grp,
-                                       color = color[1],
+                                       color = color,
                                        popup = popup[i],
                                        data = slndf,
                                        weight = lwd,
@@ -794,7 +808,7 @@ leafletLines <- function(x,
   m <- initMap(map, map.types, sp::proj4string(x))
 
   grp <- layer.name
-  label <- makeLabels(row.names(x))
+  if (missing(label)) label <- makeLabels(row.names(x))
   ### test -----
 
   if(lab_avl) {
@@ -806,7 +820,7 @@ leafletLines <- function(x,
       if (segments == 1) {
         m <- leaflet::addPolylines(m,
                                    group = grp,
-                                   color = color[1],
+                                   color = color,
                                    data = x[i, ],
                                    weight = lwd,
                                    opacity = alpha,
@@ -824,7 +838,7 @@ leafletLines <- function(x,
                                   proj4string = sp::CRS(sp::proj4string(x)))
           m <- leaflet::addPolylines(m,
                                      group = grp,
-                                     color = color[1],
+                                     color = color,
                                      data = sln,
                                      weight = lwd,
                                      opacity = alpha,
@@ -842,7 +856,7 @@ leafletLines <- function(x,
       if (segments == 1) {
         m <- leaflet::addPolylines(m,
                                    group = grp,
-                                   color = color[1],
+                                   color = color,
                                    data = x[i, ],
                                    weight = lwd,
                                    opacity = alpha,
@@ -859,7 +873,7 @@ leafletLines <- function(x,
                                   proj4string = sp::CRS(sp::proj4string(x)))
           m <- leaflet::addPolylines(m,
                                      group = grp,
-                                     color = color[1],
+                                     color = color,
                                      data = sln,
                                      weight = lwd,
                                      opacity = alpha,
@@ -887,6 +901,7 @@ leafletList <- function(x,
                         usr_burst,
                         map,
                         color,
+                        at,
                         na.color,
                         cex,
                         lwd,
@@ -911,20 +926,14 @@ leafletList <- function(x,
     x@data[, zcol] <- as.factor(x@data[, zcol])
     lst <- split(x, x@data[, zcol])
     grp <- sapply(seq(lst), function(i) names(lst)[i])
-    col <- mapviewGetOption("vector.palette")(length(lst))
+    col <- mapviewColors(lst, colors = color, at = at, na.color = na.color)
+
     #zcol <- rep(zcol, length(grp))
   } else {
     lst <- lapply(names(x), function(j) x[j])
     zcol <- grp <- names(x)
-    col <- lapply(seq(lst), function(i) {
-      clrs <- mapviewColors(
-        col.regions = mapviewGetOption("vector.palette"),
-        at = unique(lst[[i]]@data[, 1]),
-        na.color = na.color)
-      clr <- clrs(as.numeric(lst[[i]]@data[, 1]))
-      clr[which(is.na(clr))] <- na.color
-      return(clr)
-    })
+    col <- lapply(lst, mapviewColors, zcol = zcol, colors = color,
+                  at = at, na.color = na.color)
   }
 
   m <- Reduce("+", lapply(seq(lst), function(i) {

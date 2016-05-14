@@ -309,7 +309,8 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    zcol = NULL,
                    map = NULL,
                    burst = FALSE,
-                   color = mapviewGetOption("vector.palette")(1),
+                   color = mapviewGetOption("vector.palette"),
+                   at,
                    na.color = mapviewGetOption("na.color"),
                    cex = 8,
                    lwd = 4,
@@ -325,8 +326,6 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    label,
                    ...) {
 
-            color <- col2Hex(color)
-
             if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletPointsDF(x,
@@ -334,6 +333,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                 map = map,
                                 burst = burst,
                                 color = color,
+                                at = at,
                                 na.color = na.color,
                                 cex = cex,
                                 lwd = lwd,
@@ -378,7 +378,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
           function(x,
                    map = NULL,
                    zcol = NULL,
-                   color = mapviewGetOption("vector.palette")(1),
+                   color = mapviewGetOption("vector.palette"),
                    na.color = mapviewGetOption("na.color"),
                    cex = 8,
                    lwd = 4,
@@ -390,8 +390,6 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                                                    env = parent.frame())),
                    label,
                   ...) {
-
-            color <- col2Hex(color)
 
             if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
               if (mapviewGetOption("platform") == "leaflet") {
@@ -440,7 +438,8 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    zcol = NULL,
                    map = NULL,
                    burst = FALSE,
-                   color = mapviewGetOption("vector.palette")(1),
+                   color = mapviewGetOption("vector.palette"),
+                   at,
                    na.color = mapviewGetOption("na.color"),
                    lwd = 2,
                    alpha = 0.8,
@@ -456,8 +455,6 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    label,
                    ...) {
 
-            color <- col2Hex(color)
-
             if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletPolygonsDF(x,
@@ -465,6 +462,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                                   map = map,
                                   burst = burst,
                                   color = color,
+                                  at,
                                   na.color = na.color,
                                   lwd = lwd,
                                   alpha = alpha,
@@ -507,7 +505,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 setMethod('mapView', signature(x = 'SpatialPolygons'),
           function(x,
                    map = NULL,
-                   color = mapviewGetOption("vector.palette")(1),
+                   color = mapviewGetOption("vector.palette"),
                    na.color = mapviewGetOption("na.color"),
                    map.types = mapviewGetOption("basemaps"),
                    lwd = 2,
@@ -518,8 +516,6 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                                                    env = parent.frame())),
                    label,
                   ...) {
-
-            color <- col2Hex(color)
 
             if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
               if (mapviewGetOption("platform") == "leaflet") {
@@ -563,7 +559,8 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                    zcol = NULL,
                    map = NULL,
                    burst = FALSE,
-                   color = mapviewGetOption("vector.palette")(1),
+                   color = mapviewGetOption("vector.palette"),
+                   at,
                    na.color = mapviewGetOption("na.color"),
                    lwd = 2,
                    alpha = 0.8,
@@ -578,8 +575,6 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                    label,
                    ...) {
 
-            color <- col2Hex(color)
-
             if (length(x@lines) < mapviewGetOption("maxlines")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletLinesDF(x,
@@ -587,6 +582,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                                map = map,
                                burst = burst,
                                color = color,
+                               at,
                                na.color = na.color,
                                lwd = lwd,
                                alpha = alpha,
@@ -640,8 +636,6 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                                                    env = parent.frame())),
                    label,
                   ...) {
-
-            color <- col2Hex(color)
 
             if (length(x@lines) < mapviewGetOption("maxlines")) {
               if (mapviewGetOption("platform") == "leaflet") {

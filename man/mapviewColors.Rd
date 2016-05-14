@@ -4,15 +4,21 @@
 \alias{mapviewColors}
 \title{mapview version of leaflet::colorNumeric}
 \usage{
-mapviewColors(col.regions, at, na.color)
+mapviewColors(x, zcol = NULL, colors, at, na.color, ...)
 }
 \arguments{
-\item{col.regions}{color vector to be used for coloring the levels
+\item{x}{Spatial* or Raster* object}
+
+\item{zcol}{the column to be colored}
+
+\item{colors}{color vector to be used for coloring the levels
 specified in at}
 
 \item{at}{numeric vector giving the breakpoints for the colors}
 
-\item{na.color}{the color for NA values. Defaults to "transparent"}
+\item{na.color}{the color for NA values.}
+
+\item{...}{additional arguments passed on to \code{\link{level.colors}}}
 }
 \description{
 mapview version of leaflet::colorNumeric

@@ -1,9 +1,12 @@
 #' mapview version of leaflet::colorNumeric
 #'
-#' @param col.regions color vector to be used for coloring the levels
+#' @param x Spatial* or Raster* object
+#' @param zcol the column to be colored
+#' @param colors color vector to be used for coloring the levels
 #' specified in at
 #' @param at numeric vector giving the breakpoints for the colors
-#' @param na.color the color for NA values. Defaults to "transparent"
+#' @param na.color the color for NA values.
+#' @param ... additional arguments passed on to \code{\link{level.colors}}
 #'
 #' @author
 #' Tim Appelhans
@@ -14,17 +17,68 @@
 #' @name mapviewColors
 #' @export mapviewColors
 #' @aliases mapviewColors
+mapviewColors <- function(x,
+                         zcol = NULL,
+                         colors,
+                         at,
+                         na.color,
+                         ...) {
 
-mapviewColors <- function(col.regions,
-                          at,
-                          na.color) {
+  if (typeof(x) == "list") {
+    if (is.function(colors)) colors <- colors(length(x))
+    return(col2Hex(colors))
+  }
+
+  if (typeof(x) == "S4" && is.null(zcol)) {
+    if (is.function(colors)) colors <- colors(1)
+    return(col2Hex(colors))
+  }
+
+  if (typeof(x) == "S4" && !is.null(zcol)) x <- x@data[, 1]
+
+  if (is.character(x)) x <- factor(x)
+  x <- as.numeric(x)
+
+  if (length(unique(x)) == 1) {
+
+    if (is.function(colors)) colors <- colors(1)
+    return(col2Hex(colors[1]))
+
+  } else {
+
+    if (missing(at)) at <- lattice::do.breaks(range(x, na.rm = TRUE),
+                                              length(x))
+
+    cols <- lattice::level.colors(x,
+                                  at = at,
+                                  col.regions = colors,
+                                  ...)
+
+    cols[is.na(cols)] <- na.color
+
+    return(col2Hex(cols))
+
+  }
+
+  # attributes(f) <- list(colorType = "bin",
+  #                       colorArgs = list(bins = at,
+  #                                        na.color = na.color))
+}
+
+
+## raster colors
+rasterColors <- function(col.regions,
+                         at,
+                         na.color) {
 
   f <- function(x) {
 
     cols <- lattice::level.colors(x,
                                   at = at,
                                   col.regions = col.regions)
-    return(cols)
+    cols[is.na(cols)] <- na.color
+
+    return(col2Hex(cols))
 
   }
 
