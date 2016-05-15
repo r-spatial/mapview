@@ -20,7 +20,7 @@
 \title{View spatial objects interactively}
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL,
-  maxpixels = mapviewGetOption("maxpixels"),
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at,
   na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
   values = NULL, map.types = mapviewGetOption("basemaps"),
@@ -29,7 +29,7 @@
   env = parent.frame())), ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
-  maxpixels = mapviewGetOption("maxpixels"),
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at,
   na.color = mapviewGetOption("na.color"), values = NULL,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
@@ -37,7 +37,7 @@
   ...)
 
 \S4method{mapView}{Satellite}(x, map = NULL,
-  maxpixels = mapviewGetOption("maxpixels"),
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at,
   na.color = mapviewGetOption("na.color"), values = NULL,
   map.types = mapviewGetOption("basemaps"), legend = FALSE,
@@ -58,7 +58,7 @@
   popup = popupTable(x), label, ...)
 
 \S4method{mapView}{SpatialPoints}(x, map = NULL, zcol = NULL,
-  color = mapviewGetOption("vector.palette"),
+  color = mapviewGetOption("vector.palette")(1),
   na.color = mapviewGetOption("na.color"), cex = 8, lwd = 4,
   alpha = 0.9, alpha.regions = 0.4,
   map.types = mapviewGetOption("basemaps"),
@@ -75,7 +75,7 @@
   popup = popupTable(x), label, ...)
 
 \S4method{mapView}{SpatialPolygons}(x, map = NULL,
-  color = mapviewGetOption("vector.palette"),
+  color = mapviewGetOption("vector.palette")(1),
   na.color = mapviewGetOption("na.color"),
   map.types = mapviewGetOption("basemaps"), lwd = 2, alpha = 0.8,
   alpha.regions = 0.2, verbose = mapviewGetOption("verbose"),

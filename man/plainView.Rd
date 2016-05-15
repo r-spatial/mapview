@@ -11,7 +11,7 @@
 \title{View raster objects interactively without background map but in any CRS}
 \usage{
 \S4method{plainView}{RasterLayer}(x,
-  maxpixels = mapviewGetOption("maxpixels"),
+  maxpixels = mapviewGetOption("plainview.maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at,
   na.color = mapviewGetOption("na.color"),
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
@@ -19,7 +19,7 @@
 
 \S4method{plainView}{RasterStackBrick}(x, r = 3, g = 2, b = 1,
   na.color = mapviewGetOption("na.color"),
-  maxpixels = mapviewGetOption("maxpixels"),
+  maxpixels = mapviewGetOption("plainview.maxpixels"),
   layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
 \S4method{plainView}{SpatialPixelsDataFrame}(x, zcol = 1, ...)

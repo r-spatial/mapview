@@ -82,7 +82,8 @@
 mapviewOptions <- function(platform,
                            basemaps,
                            raster.size,
-                           maxpixels,
+                           mapview.maxpixels,
+                           plainview.maxpixels,
                            maxpoints,
                            maxpolygons,
                            maxlines,
@@ -116,9 +117,14 @@ mapviewOptions <- function(platform,
     options(mapviewRasterSize = raster.size)
   }
 
-  ## maxpixels
-  setMaxPixels <- function(maxpixels) {
-    options(mapviewMaxPixels = maxpixels)
+  ## mapview maxpixels
+  setMapviewMaxPixels <- function(mapview.maxpixels) {
+    options(mapviewMaxPixels = mapview.maxpixels)
+  }
+
+  ## plainview maxpixels
+  setPlainviewMaxPixels <- function(plainview.maxpixels) {
+    options(plainviewMaxPixels = plainview.maxpixels)
   }
 
   ## maxpolygons
@@ -183,13 +189,14 @@ mapviewOptions <- function(platform,
                                 "OpenTopoMap"))
     options(mapviewraster.size = 8 * 1024 * 1024)
     options(mapviewMaxPixels = 500000)
+    options(plainviewMaxPixels = 10000000)
     options(write.table = 30000)
     options(mapviewMaxPoints = 20000)
     options(mapviewMaxLines = 30000)
     options(mapviewRasterPalette = mapviewPalette(name = "mapviewRasterColors"))
     options(mapviewVectorPalette = mapviewPalette(name = "mapviewVectorColors"))
     options(mapviewVerbose = FALSE)
-    options(mapviewNAColor = col2Hex("grey"))
+    options(mapviewNAColor = "#BEBEBE80")
     options(mapviewLayersControlPos = "topleft")
     options(mapviewleafletWidth = NULL)
     options(mapviewleafletHeight = NULL)
@@ -199,7 +206,10 @@ mapviewOptions <- function(platform,
   if (!missing(platform)) { setPlatform(platform); cnt <- cnt + 1 }
   if (!missing(basemaps)) { setBasemaps(basemaps); cnt <- cnt + 1 }
   if (!missing(raster.size)) { setRasterSize(raster.size); cnt <- cnt + 1 }
-  if (!missing(maxpixels)) { setMaxPixels(maxpixels); cnt <- cnt + 1 }
+  if (!missing(mapview.maxpixels)) {
+    setMapviewMaxPixels(mapview.maxpixels); cnt <- cnt + 1 }
+  if (!missing(plainview.maxpixels)) {
+    setPlainviewMaxPixels(plainview.maxpixels); cnt <- cnt + 1 }
   if (!missing(maxpolygons)) { setMaxPolygons(maxpolygons); cnt <- cnt + 1 }
   if (!missing(maxpoints)) { setMaxPoints(maxpoints); cnt <- cnt + 1 }
   if (!missing(maxlines)) { setMaxLines(maxlines); cnt <- cnt + 1 }
@@ -217,7 +227,8 @@ mapviewOptions <- function(platform,
   lst <- list(platform = .platform(),
               basemaps = .basemaps(),
               raster.size = .rasterSize(),
-              maxpixels = .maxpixels(),
+              mapview.maxpixels = .mapviewMaxpixels(),
+              plainview.maxpixels = .plainviewMaxpixels(),
               maxpolygons = .maxpolygons(),
               maxpoints = .maxpoints(),
               maxlines = .maxlines(),
@@ -236,7 +247,8 @@ mapviewOptions <- function(platform,
       cat('platform            :', lst$platform, '\n' )
       cat('basemaps            :', lst$basemaps, '\n')
       cat('raster.size         :', lst$raster.size, '\n')
-      cat('maxpixels           :', lst$maxpixels, '\n')
+      cat('mapview.maxpixels   :', lst$mapview.maxpixels, '\n')
+      cat('plainview.maxpixels :', lst$plainview.maxpixels, '\n')
       cat('maxpolygons         :', lst$maxpolygons, '\n')
       cat('maxpoints           :', lst$maxpoints, '\n')
       cat('maxlines            :', lst$maxlines, '\n')
@@ -297,13 +309,24 @@ mapviewOptions <- function(platform,
 }
 
 
-.maxpixels <- function() {
+.mapviewMaxpixels <- function() {
   default <- 500000
-  mp <- getOption('mapviewMaxPixels')
-  if (is.null(mp)) {
+  mmp <- getOption('mapviewMaxPixels')
+  if (is.null(mmp)) {
     return(default)
   } else {
-    return(mp)
+    return(mmp)
+  }
+}
+
+
+.plainviewMaxpixels <- function() {
+  default <- 10000000
+  pmp <- getOption('plainviewMaxPixels')
+  if (is.null(pmp)) {
+    return(default)
+  } else {
+    return(pmp)
   }
 }
 
@@ -374,7 +397,7 @@ mapviewOptions <- function(platform,
 
 
 .naColor <- function() {
-  default <- col2Hex("grey")
+  default <- "#BEBEBE80"
   nc <- getOption('mapviewNAColor')
   if (is.null(nc)) {
     return(default)

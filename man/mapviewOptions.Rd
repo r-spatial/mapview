@@ -5,10 +5,10 @@
 \alias{mapviewOptions}
 \title{Global options for the mapview package}
 \usage{
-mapviewOptions(platform, basemaps, raster.size, maxpixels, maxpoints,
-  maxpolygons, maxlines, raster.palette, vector.palette, verbose, na.color,
-  layers.control.pos, default = FALSE, console = TRUE, leafletWidth,
-  leafletHeight)
+mapviewOptions(platform, basemaps, raster.size, mapview.maxpixels,
+  plainview.maxpixels, maxpoints, maxpolygons, maxlines, raster.palette,
+  vector.palette, verbose, na.color, layers.control.pos, default = FALSE,
+  console = TRUE, leafletWidth, leafletHeight)
 
 mapviewGetOption(param)
 }
@@ -21,10 +21,6 @@ is allowed)}
 values}
 
 \item{raster.size}{numeric. see the maxBytes argument in \code{\link{addRasterImage}}}
-
-\item{maxpixels}{numeric. The maximum amount of pixels allowed for Raster*
-objects to be rendered. Defaults to 500000. Set this higher if you have a
-potent machine or are patient enough to wait a little}
 
 \item{maxpoints}{numeric. Maximum number of points allowed for leaflet overlay
 rendering. If this number is exceeded rendering will be done
@@ -66,6 +62,10 @@ placed? One of "topleft", "topright", "bottomleft", "bottomright".}
 \item{console}{logical. Should the options be printed to the console}
 
 \item{param}{character. parameter to be queried.}
+
+\item{maxpixels}{numeric. The maximum amount of pixels allowed for Raster*
+objects to be rendered. Defaults to 500000. Set this higher if you have a
+potent machine or are patient enough to wait a little}
 }
 \value{
 list of the current options (invisibly).

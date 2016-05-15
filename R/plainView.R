@@ -111,7 +111,7 @@ if ( !isGeneric('plainView') ) {
 
 setMethod('plainView', signature(x = 'RasterLayer'),
           function(x,
-                   maxpixels = mapviewGetOption("maxpixels"),
+                   maxpixels = mapviewGetOption("plainview.maxpixels"),
                    col.regions = mapviewGetOption("raster.palette")(256),
                    at,
                    na.color = mapviewGetOption("na.color"),
@@ -296,7 +296,7 @@ renderPlainView <- function(expr, env = parent.frame(), quoted = FALSE) {
 setMethod('plainView', signature(x = 'RasterStackBrick'),
           function(x, r = 3, g = 2, b = 1,
                    na.color = mapviewGetOption("na.color"),
-                   maxpixels = mapviewGetOption("maxpixels"),
+                   maxpixels = mapviewGetOption("plainview.maxpixels"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    ...) {
