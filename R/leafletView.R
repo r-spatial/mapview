@@ -374,6 +374,8 @@ leafletPoints <- function(x,
   grp <- layer.name
   label <- makeLabels(row.names(x))
 
+  color <- mapviewColors(x, colors = color)
+
   if(lab_avl) {
     m <- leaflet::addCircleMarkers(m,
                                    lng = coordinates(x)[, 1],
@@ -381,7 +383,7 @@ leafletPoints <- function(x,
                                    radius = cex,
                                    weight = lwd,
                                    opacity = alpha,
-                                   color = color[1],
+                                   color = color,
                                    fillOpacity = alpha.regions,
                                    group = grp,
                                    label = label,
@@ -566,11 +568,13 @@ leafletPolygons <- function(x,
   grp <- layer.name
   if (missing(label)) label <- makeLabels(row.names(x))
 
+  color <- mapviewColors(x, colors = color)
+
   if (lab_avl) {
     m <- leaflet::addPolygons(m,
                               weight = lwd,
                               group = grp,
-                              color = color[1],
+                              color = color,
                               data = x,
                               opacity = alpha,
                               fillOpacity = alpha.regions,
@@ -809,6 +813,9 @@ leafletLines <- function(x,
 
   grp <- layer.name
   if (missing(label)) label <- makeLabels(row.names(x))
+
+  color <- mapviewColors(x, colors = color)
+
   ### test -----
 
   if(lab_avl) {

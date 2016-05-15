@@ -78,7 +78,7 @@ rasterColors <- function(col.regions,
                                   col.regions = col.regions)
     cols[is.na(cols)] <- na.color
 
-    return(col2Hex(cols))
+    return(cols)
 
   }
 
