@@ -69,13 +69,12 @@ if ( !isGeneric('viewRGB') ) {
 #' @name viewRGB
 #' @rdname viewRGB
 #' @aliases viewRGB,RasterStackBrick-method
-NULL
 
 setMethod("viewRGB", signature(x = "RasterStackBrick"),
           function(x, r = 3, g = 2, b = 1,
                    quantiles = c(0.02, 0.98),
                    map = NULL,
-                   maxpixels = mapviewGetOption("maxpixels"),
+                   maxpixels = mapviewGetOption("mapview.maxpixels"),
                    map.types = mapviewGetOption("basemaps"),
                    na.color = mapviewGetOption("na.color"),
                    layer.name = deparse(substitute(x,
