@@ -236,7 +236,7 @@ leafletPointsDF <- function(x,
 
   #if (missing(popup)) popup <- brewPopupTable(x)
 
-  rad_vals <- circleRadius(x, cex)
+  cex <- circleRadius(x, cex)
   usr_burst <- burst
 
   if(!is.null(zcol)) {
@@ -309,7 +309,7 @@ leafletPointsDF <- function(x,
                                      fillOpacity = alpha.regions,
                                      popup = popup,
                                      label = label,
-                                     radius = rad_vals,
+                                     radius = cex,
                                      ...)
     } else {
 
@@ -323,7 +323,7 @@ leafletPointsDF <- function(x,
                                      opacity = alpha,
                                      fillOpacity = alpha.regions,
                                      popup = popup,
-                                     radius = rad_vals,
+                                     radius = cex,
                                      ...)
     }
 
@@ -954,6 +954,7 @@ leafletList <- function(x,
             layer.name = grp[i],
             popup = pop,
             label = makeLabels(lst[[i]]@data[, 1]),
+            cex = cex,
             ...)
   }))
 
