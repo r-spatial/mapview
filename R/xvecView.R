@@ -384,6 +384,8 @@ bView <- function(x,
     NULL
   }
 
+  color <- mapviewColors(x, colors = color, at = at, na.color = na.color)
+
   # create list of user data that is passed to the widget
   lst_x <- list(color = col2Hex(color),
                 layer = map.types,
