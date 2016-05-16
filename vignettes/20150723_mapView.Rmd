@@ -477,7 +477,7 @@ leaflet(meuse) %>%
   addCircleMarkers(lng = coordinates(meuse)[, 1],
                    lat = coordinates(meuse)[, 2],
                    group = "meuse",
-                   color = mapViewPalette(3)[length(mapViewPalette(3))],
+                   color = "#440154",
                    popup = txt) %>%
   addLayersControl(position = "bottomleft",
                    baseGroups = c("OpenStreetMap",
