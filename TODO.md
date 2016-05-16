@@ -25,6 +25,7 @@
 ### mapviewColors (Tim)
 
 * clean leafletView functions, i.e. move all color related stuff to above created functions
+* add legend option to leafletList
 
 ### miscellaneous (Tim)
 
