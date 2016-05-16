@@ -18,11 +18,11 @@
 #' @export mapviewColors
 #' @aliases mapviewColors
 mapviewColors <- function(x,
-                         zcol = NULL,
-                         colors,
-                         at,
-                         na.color,
-                         ...) {
+                          zcol = NULL,
+                          colors,
+                          at,
+                          na.color,
+                          ...) {
 
   if (typeof(x) == "list") {
     if (is.function(colors)) colors <- colors(length(x))
@@ -91,6 +91,7 @@ rasterColors <- function(col.regions,
 }
 
 
+## hex color conversion
 col2Hex <- function(col) {
 
   mat <- grDevices::col2rgb(col)
