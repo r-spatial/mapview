@@ -1,14 +1,16 @@
-#' Save mapview or leaflet map as image
+#' Save mapview or leaflet map as HTML and/or image
 #'
 #' @description
-#' Save a mapview or leaflet map as \code{.png}, \code{.pdf}, or \code{.jpeg}
-#' image.
+#' Save a mapview or leaflet map as \code{.html} index file or \code{.png},
+#' \code{.pdf}, or \code{.jpeg} image.
 #'
 #' @param x \code{mapview} or \code{leaflet} object.
-#' @param url Filepath of the \code{.html} index file related with \code{x}. If
-#' not supplied, a temporarily created index file will be used.
-#' @param file Output filename. Currently supported data types are \code{.png},
-#' \code{.pdf}, and \code{.jpeg}.
+#' @param url Output \code{.html} file. If not supplied and 'file' is specified,
+#' a temporary index file will be created.
+#' @param file Output \code{.png}, \code{.pdf}, or \code{.jpeg} file.
+#' @param remove_url \code{logical}. If \code{TRUE} (default), the \code{.html}
+#' file is removed once processing is completed. Only applies if 'url' is not
+#' specified.
 #' @param ... Further arguments passed on to \code{\link{webshot}}.
 #'
 #' @seealso
@@ -17,12 +19,28 @@
 #' @examples
 #' \dontrun{
 #' m <- mapview(breweries91)
+#'
+#' ## create standalone .html
+#' mapshot(m, url = "~/map.html")
+#'
+#' ## create standalone .png; temporary .html is removed automatically unless
+#' ## 'remove_url = FALSE' is specified
 #' mapshot(m, file = "~/map.png")
+#'
+#' ## create .html and .png
+#' mapshot(m, url = "~/map.html", file = "~/map.png")
 #' }
 #'
 #' @export mapshot
 #' @name mapshot
-mapshot <- function(x, url = NULL, file, ...) {
+mapshot <- function(x, url = NULL, file = NULL, remove_url = TRUE, ...) {
+
+  ## if both 'url' and 'file' are missing, throw an error
+  avl_url <- !is.null(url)
+  avl_file <- !is.null(file)
+
+  if (!avl_url & !avl_file)
+    stop("Please provide a valid 'url' or 'file' argument (or both).")
 
   ## if a 'mapview' object is supplied, extract map
   if (class(x) == "mapview") {
@@ -33,18 +51,17 @@ mapshot <- function(x, url = NULL, file, ...) {
   x <- leaflet::removeLayersControl(x)
 
   ## if url is missing, create temporary .html file
-  avl <- !is.null(url)
-
-  if (!avl) {
+  if (!avl_url)
     url <- gsub("\\.png|\\.pdf|\\.jpeg|\\.jpg", ".html", file)
-    htmlwidgets::saveWidget(x, url)
-  }
+
+  htmlwidgets::saveWidget(x, url)
 
   ## save to file
-  webshot::webshot(url = url, file = file, ...)
+  if (avl_file)
+    webshot::webshot(url = url, file = file, ...)
 
   ## if url was missing, remove temporary .html file
-  if (!avl)
+  if (!avl_url & remove_url)
     file.remove(url)
 
   return(invisible())

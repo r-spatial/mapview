@@ -2,29 +2,41 @@
 % Please edit documentation in R/mapshot.R
 \name{mapshot}
 \alias{mapshot}
-\title{Save mapview or leaflet map as image}
+\title{Save mapview or leaflet map as HTML and/or image}
 \usage{
-mapshot(x, url = NULL, file, ...)
+mapshot(x, url = NULL, file = NULL, remove_url = TRUE, ...)
 }
 \arguments{
 \item{x}{\code{mapview} or \code{leaflet} object.}
 
-\item{url}{Filepath of the \code{.html} index file related with \code{x}. If
-not supplied, a temporarily created index file will be used.}
+\item{url}{Output \code{.html} file. If not supplied and 'file' is specified,
+a temporary index file will be created.}
 
-\item{file}{Output filename. Currently supported data types are \code{.png},
-\code{.pdf}, and \code{.jpeg}.}
+\item{file}{Output \code{.png}, \code{.pdf}, or \code{.jpeg} file.}
+
+\item{remove_url}{\code{logical}. If \code{TRUE} (default), the \code{.html}
+file is removed once processing is completed. Only applies if 'url' is not
+specified.}
 
 \item{...}{Further arguments passed on to \code{\link{webshot}}.}
 }
 \description{
-Save a mapview or leaflet map as \code{.png}, \code{.pdf}, or \code{.jpeg}
-image.
+Save a mapview or leaflet map as \code{.html} index file or \code{.png},
+\code{.pdf}, or \code{.jpeg} image.
 }
 \examples{
 \dontrun{
 m <- mapview(breweries91)
+
+## create standalone .html
+mapshot(m, url = "~/map.html")
+
+## create standalone .png; temporary .html is removed automatically unless
+## 'remove_url = FALSE' is specified
 mapshot(m, file = "~/map.png")
+
+## create .html and .png
+mapshot(m, url = "~/map.html", file = "~/map.png")
 }
 
 }
