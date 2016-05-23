@@ -240,7 +240,12 @@ leafletPointsDF <- function(x,
   cex <- circleRadius(x, cex)
   usr_burst <- burst
 
-  if(!is.null(zcol)) {
+  if (is.null(zcol) & is.character(burst)) {
+    zcol <- burst
+    usr_burst <- TRUE
+  }
+
+  if (!is.null(zcol)) {
     x <- x[, zcol]
     burst <- TRUE
   }
@@ -463,9 +468,17 @@ leafletPolygonsDF <- function(x,
 
   #if (missing(popup)) popup <- brewPopupTable(x)
 
-  if(!is.null(zcol)) x <- x[, zcol]
   usr_burst <- burst
-  if(!is.null(zcol)) burst <- TRUE
+
+  if (is.null(zcol) & is.character(burst)) {
+    zcol <- burst
+    usr_burst <- TRUE
+  }
+
+  if (!is.null(zcol)) {
+    x <- x[, zcol]
+    burst <- TRUE
+  }
 
   x <- spCheckAdjustProjection(x)
 
@@ -635,9 +648,17 @@ leafletLinesDF <- function(x,
   tst <- sapply(pkgs, "requireNamespace",
                 quietly = TRUE, USE.NAMES = FALSE)
 
-  if(!is.null(zcol)) x <- x[, zcol]
   usr_burst <- burst
-  if(!is.null(zcol)) burst <- TRUE
+
+  if (is.null(zcol) & is.character(burst)) {
+    zcol <- burst
+    usr_burst <- TRUE
+  }
+
+  if (!is.null(zcol)) {
+    x <- x[, zcol]
+    burst <- TRUE
+  }
 
   #if (missing(popup)) popup <- brewPopupTable(x)
 
