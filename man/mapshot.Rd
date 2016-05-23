@@ -29,14 +29,15 @@ Save a mapview or leaflet map as \code{.html} index file or \code{.png},
 m <- mapview(breweries91)
 
 ## create standalone .html
-mapshot(m, url = "~/map.html")
+mapshot(m, url = paste0(getwd(), "/map.html"))
 
 ## create standalone .png; temporary .html is removed automatically unless
 ## 'remove_url = FALSE' is specified
-mapshot(m, file = "~/map.png")
+mapshot(m, file = paste0(getwd(), "/map.png"))
 
 ## create .html and .png
-mapshot(m, url = "~/map.html", file = "~/map.png")
+mapshot(m, url = paste0(getwd(), "/map.html"),
+        file = paste0(getwd(), "/map.png"))
 }
 
 }
