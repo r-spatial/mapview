@@ -937,10 +937,13 @@ leafletList <- function(x,
 
     x@data[, zcol] <- as.factor(x@data[, zcol])
     lst <- split(x, x@data[, zcol])
-    grp <- sapply(seq(lst), function(i) names(lst)[i])
+    #grp <- sapply(seq(lst), function(i) names(lst)[i])
     col <- mapviewColors(lst, colors = color, at = at, na.color = na.color)
 
     if (length(cex) == 1 & is.numeric(cex)) cex <- rep(cex, length(x))
+    if (length(layer.name) < length(lst)) {
+      layer.name <- sapply(seq(lst), function(i) paste(zcol, names(lst)[i]))
+    }
 
     m <- Reduce("+", lapply(seq(lst), function(i) {
       ind <- which(row.nms %in% row.names(lst[[i]]))
@@ -963,7 +966,7 @@ leafletList <- function(x,
               label = makeLabels(lst[[i]]@data[, 1]),
               legend = legend,
               legend.opacity = legend.opacity,
-              layer.name = grp[i],
+              layer.name = layer.name[i],
               verbose = verbose,
               ...)
     }))
@@ -971,9 +974,16 @@ leafletList <- function(x,
     #zcol <- rep(zcol, length(grp))
   } else {
     lst <- lapply(names(x), function(j) x[j])
-    zcol <- grp <- names(x)
+    zcol <- names(x)
     col <- lapply(lst, mapviewColors, zcol = zcol, colors = color,
                   at = at, na.color = na.color)
+    if (length(layer.name) < length(lst)) {
+      layer.name <- paste(layer.name, names(x))
+    } else {
+      if (!layer.name %in% names(x) && length(layer.name) == 1) {
+        layer.name <- layer.name
+      }
+    }
 
     m <- Reduce("+", lapply(seq(lst), function(i) {
       ind <- which(row.nms %in% row.names(lst[[i]]))
@@ -996,7 +1006,7 @@ leafletList <- function(x,
               label = makeLabels(lst[[i]]@data[, 1]),
               legend = legend,
               legend.opacity = legend.opacity,
-              layer.name = grp[i],
+              layer.name = layer.name[i], #grp[i],
               verbose = verbose,
               ...)
     }))

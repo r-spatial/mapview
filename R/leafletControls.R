@@ -546,7 +546,7 @@ spCheckObject <- function(x) {
       } else {
         warning("Columns ",
                 paste(colnames(x@data)[all_na_index], collapse = ", "),
-                "in attribute table contain only NA values and are dropped.")
+                " in attribute table contain only NA values and are dropped.")
         x <- x[, !all_na_index]
       }
     }
