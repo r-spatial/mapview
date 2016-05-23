@@ -977,12 +977,9 @@ leafletList <- function(x,
     zcol <- names(x)
     col <- lapply(lst, mapviewColors, zcol = zcol, colors = color,
                   at = at, na.color = na.color)
-    if (length(layer.name) < length(lst)) {
+    if (length(layer.name) < length(lst) |
+        length(find(layer.name[1], mode = "S4")) > 0) {
       layer.name <- paste(layer.name, names(x))
-    } else {
-      if (!layer.name %in% names(x) && length(layer.name) == 1) {
-        layer.name <- layer.name
-      }
     }
 
     m <- Reduce("+", lapply(seq(lst), function(i) {
