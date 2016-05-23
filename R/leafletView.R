@@ -238,7 +238,6 @@ leafletPointsDF <- function(x,
   #if (missing(popup)) popup <- brewPopupTable(x)
 
   cex <- circleRadius(x, cex)
-
   usr_burst <- burst
 
   if(!is.null(zcol)) {
@@ -935,10 +934,39 @@ leafletList <- function(x,
   bbr <- length(zcol) == 1L && usr_burst
 
   if(bbr) {
+
     x@data[, zcol] <- as.factor(x@data[, zcol])
     lst <- split(x, x@data[, zcol])
     grp <- sapply(seq(lst), function(i) names(lst)[i])
     col <- mapviewColors(lst, colors = color, at = at, na.color = na.color)
+
+    if (length(cex) == 1 & is.numeric(cex)) cex <- rep(cex, length(x))
+
+    m <- Reduce("+", lapply(seq(lst), function(i) {
+      ind <- which(row.nms %in% row.names(lst[[i]]))
+      pop <- popup[ind]
+
+      mapView(x = lst[[i]],
+              map = map,
+              map.types = map.types,
+              zcol = NULL,
+              burst = FALSE,
+              color = col[[i]],
+              alpha = alpha,
+              col.regions = col.regions,
+              alpha.regions = alpha.regions,
+              na.color = na.color,
+              at = at,
+              cex = cex[[i]],
+              lwd = lwd,
+              popup = pop,
+              label = makeLabels(lst[[i]]@data[, 1]),
+              legend = legend,
+              legend.opacity = legend.opacity,
+              layer.name = grp[i],
+              verbose = verbose,
+              ...)
+    }))
 
     #zcol <- rep(zcol, length(grp))
   } else {
@@ -946,33 +974,59 @@ leafletList <- function(x,
     zcol <- grp <- names(x)
     col <- lapply(lst, mapviewColors, zcol = zcol, colors = color,
                   at = at, na.color = na.color)
+
+    m <- Reduce("+", lapply(seq(lst), function(i) {
+      ind <- which(row.nms %in% row.names(lst[[i]]))
+      pop <- popup[ind]
+
+      mapView(x = lst[[i]],
+              map = map,
+              map.types = map.types,
+              zcol = NULL,
+              burst = FALSE,
+              color = col[[i]],
+              alpha = alpha,
+              col.regions = col.regions,
+              alpha.regions = alpha.regions,
+              na.color = na.color,
+              at = at,
+              cex = cex,
+              lwd = lwd,
+              popup = pop,
+              label = makeLabels(lst[[i]]@data[, 1]),
+              legend = legend,
+              legend.opacity = legend.opacity,
+              layer.name = grp[i],
+              verbose = verbose,
+              ...)
+    }))
   }
 
-  m <- Reduce("+", lapply(seq(lst), function(i) {
-    ind <- which(row.nms %in% row.names(lst[[i]]))
-    pop <- popup[ind]
-
-    mapView(x = lst[[i]],
-            map = map,
-            map.types = map.types,
-            zcol = NULL,
-            burst = FALSE,
-            color = col[[i]],
-            alpha = alpha,
-            col.regions = col.regions,
-            alpha.regions = alpha.regions,
-            na.color = na.color,
-            at = at,
-            cex = cex,
-            lwd = lwd,
-            popup = pop,
-            label = makeLabels(lst[[i]]@data[, 1]),
-            legend = legend,
-            legend.opacity = legend.opacity,
-            layer.name = grp[i],
-            verbose = verbose,
-            ...)
-  }))
+  # m <- Reduce("+", lapply(seq(lst), function(i) {
+  #   ind <- which(row.nms %in% row.names(lst[[i]]))
+  #   pop <- popup[ind]
+  #
+  #   mapView(x = lst[[i]],
+  #           map = map,
+  #           map.types = map.types,
+  #           zcol = NULL,
+  #           burst = FALSE,
+  #           color = col[[i]],
+  #           alpha = alpha,
+  #           col.regions = col.regions,
+  #           alpha.regions = alpha.regions,
+  #           na.color = na.color,
+  #           at = at,
+  #           cex = cex,
+  #           lwd = lwd,
+  #           popup = pop,
+  #           label = makeLabels(lst[[i]]@data[, 1]),
+  #           legend = legend,
+  #           legend.opacity = legend.opacity,
+  #           layer.name = grp[i],
+  #           verbose = verbose,
+  #           ...)
+  # }))
 
   # vals <- lapply(seq(lst), function(i) lst[[i]]@data[, zcol[i]])
   #
