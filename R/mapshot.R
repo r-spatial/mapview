@@ -21,14 +21,15 @@
 #' m <- mapview(breweries91)
 #'
 #' ## create standalone .html
-#' mapshot(m, url = "~/map.html")
+#' mapshot(m, url = paste0(getwd(), "/map.html"))
 #'
 #' ## create standalone .png; temporary .html is removed automatically unless
 #' ## 'remove_url = FALSE' is specified
-#' mapshot(m, file = "~/map.png")
+#' mapshot(m, file = paste0(getwd(), "/map.png"))
 #'
 #' ## create .html and .png
-#' mapshot(m, url = "~/map.html", file = "~/map.png")
+#' mapshot(m, url = paste0(getwd(), "/map.html"),
+#'         file = paste0(getwd(), "/map.png"))
 #' }
 #'
 #' @export mapshot
@@ -57,8 +58,17 @@ mapshot <- function(x, url = NULL, file = NULL, remove_url = TRUE, ...) {
   htmlwidgets::saveWidget(x, url)
 
   ## save to file
-  if (avl_file)
-    webshot::webshot(url = url, file = file, ...)
+  if (avl_file) {
+
+    # if working under windows, append 'file:///' to url
+    os <- Sys.info()[["sysname"]]
+    if (os == "Windows" & substr(url, 1, 8) != "file:///")
+      url_os <- paste0("file:///", url)
+    else
+      url_os <- url
+
+    webshot::webshot(url = url_os, file = file, ...)
+  }
 
   ## if url was missing, remove temporary .html file
   if (!avl_url & remove_url)
