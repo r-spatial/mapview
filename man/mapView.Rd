@@ -146,7 +146,7 @@ See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \item{zcol}{attribute name(s) or column number(s) in attribute table
 of the column(s) to be rendered. See also Details.}
 
-\item{burst}{whether to show all (TRUE) or only one (FALSE) layers.
+\item{burst}{whether to show all (TRUE) or only one (FALSE) layer(s).
 See also Details.}
 
 \item{color}{color (palette) for points/polygons/lines}
@@ -172,8 +172,12 @@ this function produces an interactive view of the specified
 spatial object(s) on top of the specified base maps.
 }
 \details{
-If \code{zcol} is not \code{NULL} and \code{burst} is \code{TRUE}
-one layer for each unique value of \code{zcol} will be drawn. \cr
+If \code{zcol} is not \code{NULL} but a length one character vector
+(referring to a column name of the attribute table)
+and \code{burst} is \code{TRUE}, one layer for each unique value
+of \code{zcol} will be drawn. The same will happen if \code{burst} is
+a length one character vector (again referring to a column of
+the attribute table). \cr
 \cr
 The usage of big data sets is performed by loading local copies
 of json files from temporary storage. This works fine for most of
@@ -241,8 +245,10 @@ mapview(meuse, burst = TRUE)
 # only one layer, all info in popups
 mapview(meuse)
 
-# one layer for each level of "soil"
-mapview(meuse, zcol = "soil", burst = TRUE)
+# one specific layer
+mapview(meuse, zcol = "soil") # one layer
+mapview(meuse, zcol = "soil", burst = TRUE) # three layers
+mapview(meuse, burst = "soil") # identical to above
 
 ## SpatialPoints ##
 meuse_pts <- as(meuse, "SpatialPoints")
