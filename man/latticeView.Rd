@@ -5,7 +5,7 @@
 \alias{latticeview}
 \title{View two or more possibly synchronised mapview or leaflet maps}
 \usage{
-latticeView(..., ncol = 2, sync = "all", sync.curser = TRUE,
+latticeView(..., ncol = 2, sync = "all", sync.cursor = TRUE,
   no.initial.sync = TRUE)
 
 latticeview(...)
@@ -21,7 +21,7 @@ synchronisation or a list of panel numbers, e.g. \code{list(c(1, 3), c(2, 4))}
 will synchronise panels 1 & 3 and panels 2 & 4. Panels are drawn from top right
 to bottom left.}
 
-\item{sync.curser}{whether to show curser position in synced panels (default TRUE).}
+\item{sync.cursor}{whether to show cursor position in synced panels (default TRUE).}
 
 \item{no.initial.sync}{whether to sync the initial view (default TRUE).}
 }
@@ -48,7 +48,7 @@ m3 <- mapview(meuse, zcol = "landuse")
 m4 <- mapview(meuse, zcol = "dist.m")
 
 latticeView(m1, m2, m3, m4) # 4 panels
-latticeView(m1, m2, m3, m4, sync.curser = FALSE) # 4 panels
+latticeView(m1, m2, m3, m4, sync.cursor = FALSE) # 4 panels
 latticeView(m1, m2) # 2 panels, split vertical
 latticeView(m1, m2, ncol = 1) # 2 panels split horizontal
 latticeView(m1, m2, m3, m4, sync = list(c(1, 2), c(3, 4))) # individual syncing

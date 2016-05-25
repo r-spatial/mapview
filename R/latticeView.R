@@ -11,7 +11,7 @@
 #' synchronisation or a list of panel numbers, e.g. \code{list(c(1, 3), c(2, 4))}
 #' will synchronise panels 1 & 3 and panels 2 & 4. Panels are drawn from top right
 #' to bottom left.
-#' @param sync.curser whether to show curser position in synced panels (default TRUE).
+#' @param sync.cursor whether to show cursor position in synced panels (default TRUE).
 #' @param no.initial.sync whether to sync the initial view (default TRUE).
 #'
 #' @examples
@@ -29,7 +29,7 @@
 #' m4 <- mapview(meuse, zcol = "dist.m")
 #'
 #' latticeView(m1, m2, m3, m4) # 4 panels
-#' latticeView(m1, m2, m3, m4, sync.curser = FALSE) # 4 panels
+#' latticeView(m1, m2, m3, m4, sync.cursor = FALSE) # 4 panels
 #' latticeView(m1, m2) # 2 panels, split vertical
 #' latticeView(m1, m2, ncol = 1) # 2 panels split horizontal
 #' latticeView(m1, m2, m3, m4, sync = list(c(1, 2), c(3, 4))) # individual syncing
@@ -62,7 +62,7 @@
 latticeView <- function(...,
                         ncol = 2,
                         sync = "all",
-                        sync.curser = TRUE,
+                        sync.cursor = TRUE,
                         no.initial.sync = TRUE) {
 
   ## convert all ... objects to list or extract list if list was passed
@@ -106,7 +106,7 @@ latticeView <- function(...,
       second <- rev(do.call(c, lapply(seq(sync[[i]]), function(j) {
         paste0(".sync(leaf_widgets[", sync[[i]][[j]] - 1,
                "], {syncCursor: ",
-               tolower(sync.curser),
+               tolower(sync.cursor),
                ", noInitialSync: ",
                tolower(no.initial.sync),
                "});")
@@ -120,14 +120,14 @@ latticeView <- function(...,
       }))[-i]
       second <- paste0(".sync(leaf_widgets[", i - 1,
                        "], {syncCursor: ",
-                       tolower(sync.curser),
+                       tolower(sync.cursor),
                        ", noInitialSync: ",
                        tolower(no.initial.sync),
                        "});")
       paste0(first, second)
     }))
   } else sync_strng <- ""
-print(sync_strng)
+
   ## more htmltools stuff... ??
   tl <- htmltools::tagList(
     # htmltools::tags$head(htmltools::tags$script(
