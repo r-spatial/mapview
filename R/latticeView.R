@@ -83,7 +83,7 @@ latticeView <- function(...,
     if(length(ls[[i]]$dependencies) == 0){
       ls[[i]]$dependencies = list()
     }
-    ls[[i]]$dependencies[[length(ls[[i]]$dependencies) + 1]] <- sync_dep
+    #ls[[i]]$dependencies[[length(ls[[i]]$dependencies) + 1]] <- sync_dep
   }
 
   ## calculate div width depending on ncol and set div style
@@ -128,23 +128,21 @@ latticeView <- function(...,
     }))
   } else sync_strng <- ""
 
-  ## more htmltools stuff... ??
-  tl <- htmltools::tagList(
-    # htmltools::tags$head(htmltools::tags$script(
-    #   type="text/javascript",
-    #   src="https://cdn.rawgit.com/turban/Leaflet.Sync/master/L.Map.Sync.js"
-    # )),
-    tg,
-    htmlwidgets::onStaticRenderComplete(
-      paste0('var leaf_widgets = Array.prototype.map.call(
-        document.querySelectorAll(".leaflet"),
-          function(ldiv){
-            return HTMLWidgets.find("#" + ldiv.id);
-          }
-        );',
-             sync_strng
+  tl <- htmltools::attachDependencies(
+    htmltools::tagList(
+      tg,
+      htmlwidgets::onStaticRenderComplete(
+        paste0('var leaf_widgets = Array.prototype.map.call(
+                 document.querySelectorAll(".leaflet"),
+                   function(ldiv){
+                     return HTMLWidgets.find("#" + ldiv.id);
+                   }
+               );',
+               sync_strng
+        )
       )
-    )
+    ),
+    sync_dep
   )
 
   return(htmltools::browsable(tl))
@@ -162,3 +160,29 @@ latticeview <- function(...) latticeView(...)
 #   }))
 #   paste0(first, ".sync(leaf_widgets[", i - 1, "]);")
 # }))
+
+
+# ## more htmltools stuff... ??
+# tl <- htmltools::tagList(
+#   # htmltools::tags$head(htmltools::tags$script(
+#   #   type="text/javascript",
+#   #   src="https://cdn.rawgit.com/turban/Leaflet.Sync/master/L.Map.Sync.js"
+#   # )),
+#   tg,
+#   htmlwidgets::onStaticRenderComplete(
+#     paste0('var leaf_widgets = Array.prototype.map.call(
+#       document.querySelectorAll(".leaflet"),
+#         function(ldiv){
+#           return HTMLWidgets.find("#" + ldiv.id);
+#         }
+#       );',
+#            sync_strng
+#     )
+#   )
+# )
+
+
+# htmltools::tags$head(htmltools::tags$script(
+#   type="text/javascript",
+#   src="https://cdn.rawgit.com/turban/Leaflet.Sync/master/L.Map.Sync.js"
+# )),
