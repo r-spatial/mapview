@@ -2,19 +2,19 @@ mapview (upcoming release - end May)
 --------------------------------------------------------------------------------
 
 new features:
-  * projView
-  * knitr integration
-  * cubeView
+  * latticeView: view mapview or leaflet maps as small multiple and sync some, all or none.
+  * knitr integration.
+  * cubeView: view raster bricks or stacks hovmoeller style, use keys up & down, left & right, page up & page down to navigate through y, x, z dimensions, respectively.
   * labels: if zcol is set, mouseover will now show the repesctive values of zcol, if zcol is not set moseover shows feature ID.
-  * new popup functions popupTable, popupGraph and popupImage
-  * functions to turn coordinates into spatial lines or spatial polygons
-  * mapview objects now work natively on shiny applications (i.e. renderMapview and mapviewOutput now available)
-  * zcol + burst now plots one layer for each unique value of zcol
+  * new popup functions popupTable, popupGraph and popupImage.
+  * functions to turn coordinates into spatial lines or spatial polygons.
+  * mapview objects now work natively on shiny applications (i.e. renderMapview and mapviewOutput now available).
+  * zcol + burst now plots one layer for each unique value of zcol.
 
 changes:
-  * colors: viridis based colors now default if viridisLite package is available
-  * basemaps: new default basemap is "CartoDB.Positron" as colors of features are better visible on the grey background
-  * layer names now include the name of the object they originate from (e.g. "meuse lead" instead of "lead")
+  * colors: viridis based colors now default if viridisLite package is available.
+  * basemaps: new default basemap is "CartoDB.Positron" as colors of features are better visible on the grey background.
+  * layer names now include the name of the object they originate from (e.g. "meuse lead" instead of "lead").
 
 bugfixes:
   * if attribute was of class "character" mapview did through an error if passed to zcol.
