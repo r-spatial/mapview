@@ -187,10 +187,7 @@ latticeview <- function(...) latticeView(...)
 # )),
 
 
-#' Provide Leaflet.sync Dependency
-#'
-#' @return \code{\link[htmltools]{htmlDependency}}
-#' @export
+# Provide Leaflet.sync Dependency
 dependencyLeafletsync <- function(){
   htmltools::htmlDependency(
     name = "Leaflet.Sync"
