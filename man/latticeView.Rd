@@ -36,6 +36,7 @@ any combination of panels or all or none.
 \examples{
 \dontrun{
 library(sp)
+library(raster)
 
 data(meuse)
 coordinates(meuse) <- ~x+y

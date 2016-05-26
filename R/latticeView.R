@@ -17,6 +17,7 @@
 #' @examples
 #' \dontrun{
 #' library(sp)
+#' library(raster)
 #'
 #' data(meuse)
 #' coordinates(meuse) <- ~x+y
