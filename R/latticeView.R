@@ -1,8 +1,9 @@
-#' View two or more possibly synchronised mapview or leaflet maps
+#' View two or more (possibly synchronised) mapview or leaflet maps
 #'
 #' @description
-#' This function produces a view of two or more maps. It is possible to sync
-#' any combination of panels or all or none.
+#' This function produces a lattice like view of two or more maps. It is possible to sync
+#' any combination of panels or all or none. For synchronising all panels it
+#' is best to use the provided convenience function \code{sync}.
 #'
 #' @param ... any number of mapview or leaflet objects or a list thereof
 #' @param ncol how many columns should be plotted
@@ -26,32 +27,33 @@
 #' ## view different aspects of same data set
 #' m1 <- mapview(meuse, zcol = "soil", burst = TRUE)
 #' m2 <- mapview(meuse, zcol = "lead")
-#' m3 <- mapview(meuse, zcol = "landuse")
+#' m3 <- mapview(meuse, zcol = "landuse", map.types = "Esri.WorldImagery")
 #' m4 <- mapview(meuse, zcol = "dist.m")
 #'
 #' latticeView(m1, m2, m3, m4) # 4 panels
-#' latticeView(m1, m2, m3, m4, sync.cursor = FALSE) # 4 panels
+#' sync(m1, m2, m3, m4) # 4 panels synchronised
 #' latticeView(m1, m2) # 2 panels, split vertical
 #' latticeView(m1, m2, ncol = 1) # 2 panels split horizontal
-#' latticeView(m1, m2, m3, m4, sync = list(c(1, 2), c(3, 4))) # individual syncing
-#' latticeView(m1, m2, m3, m4, sync = list(c(1, 2, 4)))
+#' sync(m1, m2, ncol = 1) # same but synchronised
+#' sync(m1, m2, m3, m4, sync = list(c(1, 2), c(3, 4))) # individual syncing
+#' sync(m1, m2, m3, m4, sync = list(c(1, 2, 4)))
 #'
-#' ## view all layers of raster stack - not very resposive!!
+#' ## view all layers of raster stack
 #' map_list <- lapply(seq(nlayers(poppendorf)), function(i) {
 #'   mapview(poppendorf[[i]], layer.name = names(poppendorf)[i])
 #' })
 #'
-#' latticeView(map_list, ncol = 3)
+#' latticeView(map_list, ncol = 5)
 #'
 #' ## view multiple data sets
 #' m1 <- mapview(meuse, zcol = "soil", burst = TRUE)
 #' m2 <- mapview(atlStorms2005, zcol = "Name")
-#' m3 <- mapview(breweries91)
-#' m4 <- mapview(gadmCHE, color = "cornflowerblue")
+#' m3 <- mapview(poppendorf[[10]], use.layer.names = TRUE)
+#' m4 <- mapview(gadmCHE, color = "black")
 #'
-#' latticeView(m1, m2, m3, m4, sync = "none") # not synced
-#' latticeView(m1, m2, m3, m4) # synced
-#' latticeView(m1, m2, m3, m4, no.initial.sync = FALSE) # all maps zoomed to m4 extent
+#' latticeView(m1, m2, m3, m4) # not synced
+#' sync(m1, m2, m3, m4) # synced
+#' sync(m1, m2, m3, m4, no.initial.sync = FALSE) # all maps zoomed to m4 extent
 #'
 #' }
 #'
@@ -62,8 +64,8 @@
 
 latticeView <- function(...,
                         ncol = 2,
-                        sync = "all",
-                        sync.cursor = TRUE,
+                        sync = "none",
+                        sync.cursor = FALSE,
                         no.initial.sync = TRUE) {
 
   ## convert all ... objects to list or extract list if list was passed
@@ -152,6 +154,23 @@ latticeView <- function(...,
 #' @aliases latticeview
 #' @export latticeview
 latticeview <- function(...) latticeView(...)
+
+#' @describeIn latticeView convenience function for syncing maps
+#' @aliases sync
+#' @export sync
+sync <- function(...,
+                 ncol = 2,
+                 sync = "all",
+                 sync.cursor = TRUE,
+                 no.initial.sync = TRUE) {
+
+  latticeView(...,
+              ncol = ncol,
+              sync = sync,
+              sync.cursor = sync.cursor,
+              no.initial.sync = no.initial.sync)
+
+}
 
 
 # Reduce(paste0, sapply(seq(ls), function(i) {
