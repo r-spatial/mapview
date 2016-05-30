@@ -511,11 +511,14 @@ mapViewLayersControl <- function(map, map.types, names) {
 
 # Set or calculate circle radius ------------------------------------------
 
-circleRadius <- function(x, radius = 8) {
-  if (is.character(radius)) {
+circleRadius <- function(x, radius = 8, sort.by = NULL) {
+
+  if (is.character(radius) && !is.null(sort.by)) {
+    rad <- scales::rescale(as.numeric(x@data[, radius]), to = c(3, 20))
+    rad <- rad[order(x@data[, sort.by])]
+  } else if (is.character(radius) && is.null(sort.by)) {
     rad <- scales::rescale(as.numeric(x@data[, radius]), to = c(3, 20))
   } else rad <- radius
-
   return(rad)
 }
 

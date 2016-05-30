@@ -235,8 +235,6 @@ leafletPointsDF <- function(x,
   tst <- sapply(pkgs, "requireNamespace",
                 quietly = TRUE, USE.NAMES = FALSE)
 
-  #if (missing(popup)) popup <- brewPopupTable(x)
-
   cex <- circleRadius(x, cex)
   usr_burst <- burst
 
@@ -324,7 +322,6 @@ leafletPointsDF <- function(x,
                                      lat = coordinates(x)[, 2],
                                      group = grp,
                                      color = color,
-                                     #radius = cex,
                                      weight = lwd,
                                      opacity = alpha,
                                      fillOpacity = alpha.regions,
@@ -337,11 +334,6 @@ leafletPointsDF <- function(x,
                               map.types = map.types,
                               names = grp)
 
-    #     m <- leaflet::addLayersControl(map = m,
-    #                                    position = mapviewOptions(
-    #                                      console = FALSE)$layerscontrolpos,
-    #                                    baseGroups = map.types,
-    #                                    overlayGroups = grp)
     out <- new('mapview', object = list(x), map = m)
 
     return(out)
@@ -465,8 +457,6 @@ leafletPolygonsDF <- function(x,
                            ...)
     )
   }
-
-  #if (missing(popup)) popup <- brewPopupTable(x)
 
   usr_burst <- burst
 
@@ -659,8 +649,6 @@ leafletLinesDF <- function(x,
     x <- x[, zcol]
     burst <- TRUE
   }
-
-  #if (missing(popup)) popup <- brewPopupTable(x)
 
   x <- spCheckObject(x)
   if (length(grep("DataFrame", class(x)[1])) == 0) {
@@ -958,7 +946,6 @@ leafletList <- function(x,
 
     x@data[, zcol] <- as.factor(x@data[, zcol])
     lst <- split(x, x@data[, zcol])
-    #grp <- sapply(seq(lst), function(i) names(lst)[i])
     col <- mapviewColors(lst, colors = color, at = at, na.color = na.color)
 
     if (length(cex) == 1 & is.numeric(cex)) cex <- rep(cex, length(x))
@@ -981,7 +968,7 @@ leafletList <- function(x,
               alpha.regions = alpha.regions,
               na.color = na.color,
               at = at,
-              cex = cex[[i]],
+              cex = cex[ind],
               lwd = lwd,
               popup = pop,
               label = makeLabels(lst[[i]]@data[, 1]),
@@ -992,8 +979,8 @@ leafletList <- function(x,
               ...)
     }))
 
-    #zcol <- rep(zcol, length(grp))
   } else {
+
     lst <- lapply(names(x), function(j) x[j])
     zcol <- names(x)
     col <- lapply(lst, mapviewColors, zcol = zcol, colors = color,
@@ -1177,8 +1164,6 @@ leafletList <- function(x,
                        raster::xmax(x),
                        raster::ymax(x))
   }
-
-  #out <- new('mapview', object = lst, map = m@map)
 
   return(m)
 
