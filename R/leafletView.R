@@ -1165,6 +1165,19 @@ leafletList <- function(x,
                        raster::ymax(x))
   }
 
+  # if (legend) {
+  #   col <- mapviewColors(x, colors = color, zcol = zcol,
+  #                        at = at, na.color = na.color)
+  #   print(col)
+  #   m <- leaflet::addLegend(map = m@map,
+  #                           position = "topright",
+  #                           pal = col,
+  #                           opacity = 1,
+  #                           values = x@data[, zcol],
+  #                           title = zcol,
+  #                           layerId = zcol)
+  # }
+
   return(m)
 
 }
