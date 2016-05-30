@@ -34,7 +34,7 @@ mapviewColors <- function(x,
     return(col2Hex(colors))
   }
 
-  if (typeof(x) == "S4" && !is.null(zcol)) x <- x@data[, 1]
+  if (typeof(x) == "S4" && !is.null(zcol)) x <- x@data[, zcol]
 
   if (is.character(x)) x <- factor(x)
   x <- as.numeric(x)
@@ -78,7 +78,7 @@ rasterColors <- function(col.regions,
                                   col.regions = col.regions)
     cols[is.na(cols)] <- na.color
 
-    return(cols)
+    return(col2Hex(cols))
 
   }
 

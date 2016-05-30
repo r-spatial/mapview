@@ -938,12 +938,19 @@ leafletList <- function(x,
                         row.nms,
                         ...) {
 
+  if (is.factor(x@data[, zcol])) {
+    vals <- as.character(x@data[, zcol])
+  } else {
+    vals <- x@data[, zcol] # orig values needed for legend creation later on
+  }
+  is.fact <- is.factor(x@data[, zcol])
   pop <- popup
   #cls <- class(x)[1]
   bbr <- length(zcol) == 1L && usr_burst
 
   if(bbr) {
 
+    #is.fact <- TRUE
     x@data[, zcol] <- as.factor(x@data[, zcol])
     lst <- split(x, x@data[, zcol])
     col <- mapviewColors(lst, colors = color, at = at, na.color = na.color)
@@ -1011,147 +1018,11 @@ leafletList <- function(x,
               label = makeLabels(lst[[i]]@data[, 1]),
               legend = legend,
               legend.opacity = legend.opacity,
-              layer.name = layer.name[i], #grp[i],
+              layer.name = layer.name[i],
               verbose = verbose,
               ...)
     }))
   }
-
-  # m <- Reduce("+", lapply(seq(lst), function(i) {
-  #   ind <- which(row.nms %in% row.names(lst[[i]]))
-  #   pop <- popup[ind]
-  #
-  #   mapView(x = lst[[i]],
-  #           map = map,
-  #           map.types = map.types,
-  #           zcol = NULL,
-  #           burst = FALSE,
-  #           color = col[[i]],
-  #           alpha = alpha,
-  #           col.regions = col.regions,
-  #           alpha.regions = alpha.regions,
-  #           na.color = na.color,
-  #           at = at,
-  #           cex = cex,
-  #           lwd = lwd,
-  #           popup = pop,
-  #           label = makeLabels(lst[[i]]@data[, 1]),
-  #           legend = legend,
-  #           legend.opacity = legend.opacity,
-  #           layer.name = grp[i],
-  #           verbose = verbose,
-  #           ...)
-  # }))
-
-  # vals <- lapply(seq(lst), function(i) lst[[i]]@data[, zcol[i]])
-  #
-  # if (missing(label))
-  #   label <- lapply(seq(lst), function(i) {
-  #     makeLabels(lst[[i]]@data[, zcol[i]])
-  #   })
-  #
-  # pal_n <- lapply(seq(lst), function(i) {
-  #   if (is.factor(lst[[i]]@data[, zcol[i]])) {
-  #     leaflet::colorFactor(color, lst[[i]]@data[, zcol[i]],
-  #                          levels = levels(lst[[i]]@data[, zcol[i]]))
-  #   } else {
-  #     leaflet::colorNumeric(color, vals[[i]],
-  #                           na.color = na.color)
-  #   }
-  # })
-  #
-  # m <- map
-  #
-  # for (i in seq(lst)) {
-  #
-  #   ind <- which(row.nms %in% row.names(lst[[i]]))
-  #   pop <- popup[ind]
-  #
-  #   if(lab_avl) {
-  #
-  #     if (cls == "SpatialPointsDataFrame") {
-  #       m <- leaflet::addCircleMarkers(map = m,
-  #                                      lng = coordinates(lst[[i]])[, 1],
-  #                                      lat = coordinates(lst[[i]])[, 2],
-  #                                      group = grp[[i]],
-  #                                      color = pal_n[[i]](vals[[i]]),
-  #                                      weight = lwd,
-  #                                      opacity = alpha,
-  #                                      fillOpacity = alpha.regions,
-  #                                      popup = pop,
-  #                                      label = label[[i]],
-  #                                      radius = radius)
-  #     } else if (cls == "SpatialPolygonsDataFrame") {
-  #       m <- leaflet::addPolygons(m,
-  #                                 weight = lwd,
-  #                                 opacity = alpha,
-  #                                 fillOpacity = alpha.regions,
-  #                                 group = grp[[i]],
-  #                                 color = pal_n[[i]](vals[[i]]),
-  #                                 popup = pop,
-  #                                 label = label[[i]],
-  #                                 data = lst[[i]],
-  #                                 ...)
-  #     } else {
-  #       m <- leaflet::addPolylines(m,
-  #                                  group = grp[[i]],
-  #                                  color = pal_n[[i]](vals[[i]]),
-  #                                  popup = pop,
-  #                                  label = label[[i]],
-  #                                  data = lst[[i]],
-  #                                  weight = lwd,
-  #                                  opacity = alpha,
-  #                                  ...)
-  #     }
-  #
-  #   } else {
-  #
-  #     if (cls == "SpatialPointsDataFrame") {
-  #       m <- leaflet::addCircleMarkers(map = m,
-  #                                      lng = coordinates(lst[[i]])[, 1],
-  #                                      lat = coordinates(lst[[i]])[, 2],
-  #                                      group = grp[[i]],
-  #                                      color = pal_n[[i]](vals[[i]]),
-  #                                      weight = lwd,
-  #                                      opacity = alpha,
-  #                                      fillOpacity = alpha.regions,
-  #                                      popup = pop,
-  #                                      radius = rad_vals)
-  #     } else if (cls == "SpatialPolygonsDataFrame") {
-  #       m <- leaflet::addPolygons(m,
-  #                                 weight = lwd,
-  #                                 opacity = alpha,
-  #                                 fillOpacity = alpha.regions,
-  #                                 group = grp[[i]],
-  #                                 color = pal_n[[i]](vals[[i]]),
-  #                                 popup = pop,
-  #                                 data = lst[[i]],
-  #                                 ...)
-  #     } else {
-  #       m <- leaflet::addPolylines(m,
-  #                                  group = grp[[i]],
-  #                                  color = pal_n[[i]](vals[[i]]),
-  #                                  popup = pop,
-  #                                  data = lst[[i]],
-  #                                  weight = lwd,
-  #                                  opacity = alpha,
-  #                                  ...)
-  #     }
-  #
-  #   }
-  # }
-  #
-  # if (legend) {
-  #   m <- leaflet::addLegend(map = m, position = "topright",
-  #                           pal = pal_n[[i]],
-  #                           opacity = 1, values = vals[[i]],
-  #                           title = names(lst[[i]]),
-  #                           layerId = names(lst[[i]]))
-  # }
-  #
-  # m <- mapViewLayersControl(map = m,
-  #                           map.types = map.types,
-  #                           names = grp)
 
   if (!bbr && length(getLayerNamesFromMap(m@map)) > 1) {
     m@map <- leaflet::hideGroup(map = m@map, group = layers2bHidden(m@map))
@@ -1165,18 +1036,53 @@ leafletList <- function(x,
                        raster::ymax(x))
   }
 
-  # if (legend) {
-  #   col <- mapviewColors(x, colors = color, zcol = zcol,
-  #                        at = at, na.color = na.color)
-  #   print(col)
-  #   m <- leaflet::addLegend(map = m@map,
-  #                           position = "topright",
-  #                           pal = col,
-  #                           opacity = 1,
-  #                           values = x@data[, zcol],
-  #                           title = zcol,
-  #                           layerId = zcol)
-  # }
+  if (legend) {
+
+    if (missing(at)) {
+      if (is.fact) {
+        at <- vals
+      } else {
+        at <- lattice::do.breaks(range(vals,
+                                       na.rm = TRUE),
+                                 length(vals))
+      }
+    }
+
+    if (is.fact) {
+      pal <- leaflet::colorFactor(palette = col.regions(length(at)),
+                                  domain = at,
+                                  na.color = col2Hex(na.color))
+      pal2 <- pal
+    } else {
+      pal <- mapview:::rasterColors(col.regions,
+                                    at = at,
+                                    na.color = col2Hex(na.color))
+
+      if (length(at) > 11) {
+        pal2 <- leaflet::colorNumeric(palette = col.regions(length(at)),
+                                      domain = at,
+                                      na.color = col2Hex(na.color))
+      } else {
+        pal2 <- leaflet::colorBin(palette = col.regions(length(at)),
+                                  bins = at, #length(at),
+                                  domain = at,
+                                  na.color = col2Hex(na.color))
+      }
+
+    }
+    if (any(is.na(vals))) {
+      leg_vals <- c(at, NA)
+    } else leg_vals <- at
+
+    m@map <- leaflet::addLegend(map = m@map,
+                                position = "topright",
+                                values = leg_vals,
+                                pal = pal2,
+                                opacity = 1,
+                                labFormat = labelFormat(big.mark = ""),
+                                title = zcol)
+
+  }
 
   return(m)
 

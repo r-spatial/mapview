@@ -53,7 +53,7 @@
   color = mapviewGetOption("vector.palette"), alpha = 0.8,
   col.regions = color, alpha.regions = 0.2,
   na.color = mapviewGetOption("na.color"), at, cex = 8, lwd = 4,
-  popup = popupTable(x), label, legend = FALSE, legend.opacity = 1,
+  popup = popupTable(x), label, legend = TRUE, legend.opacity = 1,
   layer.name = deparse(substitute(x, env = parent.frame())),
   verbose = mapviewGetOption("verbose"), ...)
 
@@ -70,7 +70,7 @@
   color = mapviewGetOption("vector.palette"), alpha = 0.8,
   col.regions = color, alpha.regions = 0.2,
   na.color = mapviewGetOption("na.color"), at, cex = 8, lwd = 2,
-  popup = popupTable(x), label, legend = FALSE, legend.opacity = 1,
+  popup = popupTable(x), label, legend = TRUE, legend.opacity = 1,
   layer.name = deparse(substitute(x, env = parent.frame())),
   verbose = mapviewGetOption("verbose"), ...)
 
@@ -86,7 +86,7 @@
   color = mapviewGetOption("vector.palette"), alpha = 0.8,
   col.regions = color, alpha.regions = 0.2,
   na.color = mapviewGetOption("na.color"), at, cex = 8, lwd = 2,
-  popup = popupTable(x), label, legend = FALSE, legend.opacity = 1,
+  popup = popupTable(x), label, legend = TRUE, legend.opacity = 1,
   layer.name = deparse(substitute(x, env = parent.frame())),
   verbose = mapviewGetOption("verbose"), ...)
 
