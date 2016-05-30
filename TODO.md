@@ -2,10 +2,6 @@
 
 * include `popupOptions(maxWidth = "100%")` in mapviewOptions, see e.g. above example with `width = 400 * 0.01334`. **UPDATE: this is currently not possible as `addCircleMarkers` has no argument `popupOptions`**
 
-### spplot (Flo, Tim)
-
-* implement webshot solution
-
 ### cubeView (Stefan, Tim)
 
 * rotation issue
