@@ -15,9 +15,12 @@
 #' \url{http://leaflet-extras.github.io/leaflet-providers/preview/} for possible
 #' values
 #' @param raster.size numeric. see the maxBytes argument in \code{\link{addRasterImage}}
-#' @param maxpixels numeric. The maximum amount of pixels allowed for Raster*
-#' objects to be rendered. Defaults to 500000. Set this higher if you have a
-#' potent machine or are patient enough to wait a little
+#' @param mapview.maxpixels numeric. The maximum amount of pixels allowed for Raster*
+#' objects to be rendered with \code{mapview}. Defaults to 500000.
+#' Set this higher if you have a potent machine or are patient enough to wait a little.
+#' @param plainview.maxpixels numeric. The maximum amount of pixels allowed for Raster*
+#' objects to be rendered with \code{plainview}. Defaults to 10000000.
+#' Set this higher if you have a potent machine or are patient enough to wait a little.
 #' @param maxpolygons numeric. Maximum number of polygons allowed for leaflet overlay
 #' rendering. If this number is exceeded rendering will be done
 #' using special functionality which will provide much more speed and better handling.
@@ -40,9 +43,11 @@
 #' Should be a function that takes an integer as input and returns a vector of colors.
 #' See \code{\link{colorRampPalette}} for details.
 #' @param verbose logical. Many functions in mapview provide details about their
-#' behaviour. Set this to TRUE if you want to see these printed to the console
+#' behaviour. Set this to TRUE if you want to see these printed to the console.
 #' @param na.color character. The default color to be used for NA values.
-#' This is relevant for Raster* objects
+#' @param legend logical. Whether or not to show a legend for the layer(s).
+#' @param legend.pos Where should the legend be placed?
+#' One of "topleft", "topright", "bottomleft", "bottomright".
 #' @param default logical. If TRUE all options are set to their default values
 #' @param console logical. Should the options be printed to the console
 #' @param layers.control.pos character. Where should the layer control be
@@ -91,6 +96,8 @@ mapviewOptions <- function(platform,
                            vector.palette,
                            verbose,
                            na.color,
+                           legend,
+                           legend.pos,
                            layers.control.pos,
                            default = FALSE,
                            console = TRUE,
@@ -162,6 +169,16 @@ mapviewOptions <- function(platform,
     options(mapviewNAColor = na.color)
   }
 
+  ## legend
+  setLegend <- function(legend) {
+    options(mapviewLegend = legend)
+  }
+
+  ## legend.pos
+  setLegendPos <- function(legend.pos) {
+    options(mapviewLegendPos = legend.pos)
+  }
+
   ## layers control position
   setLayersControlPos <- function(layers.control.pos) {
     options(mapviewLayersControlPos = layers.control.pos)
@@ -197,6 +214,8 @@ mapviewOptions <- function(platform,
     options(mapviewVectorPalette = mapviewPalette(name = "mapviewVectorColors"))
     options(mapviewVerbose = FALSE)
     options(mapviewNAColor = "#BEBEBE80")
+    options(mapviewLegend = FALSE)
+    options(mapviewLegendPos = "topright")
     options(mapviewLayersControlPos = "topleft")
     options(mapviewleafletWidth = NULL)
     options(mapviewleafletHeight = NULL)
@@ -219,6 +238,8 @@ mapviewOptions <- function(platform,
     setVectorPalette(vector.palette); cnt <- cnt + 1 }
   if (!missing(verbose)) { setVerbose(verbose); cnt <- cnt + 1 }
   if (!missing(na.color)) { setNAColor(na.color); cnt <- cnt + 1 }
+  if (!missing(legend)) { setLegend(legend); cnt <- cnt + 1 }
+  if (!missing(legend.pos)) { setLegendPos(legend.pos); cnt <- cnt + 1 }
   if (!missing(layers.control.pos)) {
     setLayersControlPos(layers.control.pos); cnt <- cnt + 1 }
   if (!missing(leafletWidth)) { setleafletWidth(leafletWidth); cnt <- cnt + 1 }
@@ -236,6 +257,8 @@ mapviewOptions <- function(platform,
               vector.palette = .vectorPalette(),
               verbose = .verbose(),
               na.color = .naColor(),
+              legend = .Legend(),
+              legend.pos = .legendPos(),
               layers.control.pos = .layersControlPos(),
               leafletWidth = .leafletWidth(),
               leafletHeight = .leafletHeight())
@@ -260,6 +283,8 @@ mapviewOptions <- function(platform,
       cat("\n")
       cat('verbose             :', lst$verbose, '\n')
       cat('na.color            :', lst$na.color, '\n')
+      cat('legend              :', lst$legend, '\n')
+      cat('legend.pos          :', lst$legend.pos, '\n')
       cat('layers.control.pos  :', lst$layers.control.pos, '\n')
       cat('leafletWidth  :', lst$leafletWidth, '\n')
       cat('leafletHeight  :', lst$leafletHeight, '\n')
@@ -403,6 +428,28 @@ mapviewOptions <- function(platform,
     return(default)
   } else {
     return(nc)
+  }
+}
+
+
+.Legend <- function() {
+  default <- FALSE
+  sl <- getOption('mapviewLegend')
+  if (is.null(sl)) {
+    return(default)
+  } else {
+    return(sl)
+  }
+}
+
+
+.legendPos <- function() {
+  default <- "topright"
+  lp <- getOption('mapviewLegendPos')
+  if (is.null(lp)) {
+    return(default)
+  } else {
+    return(lp)
   }
 }
 

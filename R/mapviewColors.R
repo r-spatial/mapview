@@ -46,9 +46,8 @@ mapviewColors <- function(x,
 
   } else {
 
-    if (missing(at)) at <- lattice::do.breaks(range(x, na.rm = TRUE),
-                                              length(x))
-
+    if (is.null(at)) at <- lattice::do.breaks(range(x, na.rm = TRUE),
+                                              length(unique(x)))
     cols <- lattice::level.colors(x,
                                   at = at,
                                   col.regions = colors,

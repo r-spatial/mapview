@@ -938,23 +938,32 @@ leafletList <- function(x,
                         row.nms,
                         ...) {
 
-  if (is.factor(x@data[, zcol])) {
-    vals <- as.character(x@data[, zcol])
-  } else {
-    vals <- x@data[, zcol] # orig values needed for legend creation later on
-  }
-  is.fact <- is.factor(x@data[, zcol])
+  # if (is.factor(x@data[, zcol])) {
+  #   vals <- as.character(x@data[, zcol])
+  # } else {
+  #   vals <- x@data[, zcol] # orig values needed for legend creation later on
+  # }
+  # is.fact <- is.factor(x@data[, zcol])
   pop <- popup
   #cls <- class(x)[1]
   bbr <- length(zcol) == 1L && usr_burst
 
   if(bbr) {
 
-    #is.fact <- TRUE
+    map <- initBaseMaps()
+
+    if (legend) {
+      map <- createLegend(x,
+                          map = map,
+                          zcol = zcol,
+                          at = at,
+                          col.regions = col.regions,
+                          na.color = na.color)
+    }
+
     x@data[, zcol] <- as.factor(x@data[, zcol])
     lst <- split(x, x@data[, zcol])
     col <- mapviewColors(lst, colors = color, at = at, na.color = na.color)
-
     if (length(cex) == 1 & is.numeric(cex)) cex <- rep(cex, length(x))
     if (length(layer.name) < length(lst)) {
       layer.name <- sapply(seq(lst), function(i) paste(zcol, names(lst)[i]))
@@ -990,16 +999,32 @@ leafletList <- function(x,
 
     lst <- lapply(names(x), function(j) x[j])
     zcol <- names(x)
-    col <- lapply(lst, mapviewColors, zcol = zcol, colors = color,
-                  at = at, na.color = na.color)
+    col <- vector("list", length(lst))
+    for (i in seq(lst)) {
+      col[[i]] <- mapviewColors(lst[[i]], zcol = zcol[i],
+                                colors = color, at = at,
+                                na.color = na.color)
+    }
+
     if (length(layer.name) < length(lst) |
         length(find(layer.name[1], mode = "S4")) > 0) {
       layer.name <- paste(layer.name, names(x))
     }
 
+    map <- initBaseMaps()
+
     m <- Reduce("+", lapply(seq(lst), function(i) {
       ind <- which(row.nms %in% row.names(lst[[i]]))
       pop <- popup[ind]
+
+      if (legend) {
+        map <- createLegend(lst[[i]],
+                            map = map,
+                            zcol = zcol[i],
+                            at = at,
+                            col.regions = col.regions,
+                            na.color = na.color)
+      }
 
       mapView(x = lst[[i]],
               map = map,
@@ -1036,53 +1061,53 @@ leafletList <- function(x,
                        raster::ymax(x))
   }
 
-  if (legend) {
-
-    if (missing(at)) {
-      if (is.fact) {
-        at <- vals
-      } else {
-        at <- lattice::do.breaks(range(vals,
-                                       na.rm = TRUE),
-                                 length(vals))
-      }
-    }
-
-    if (is.fact) {
-      pal <- leaflet::colorFactor(palette = col.regions(length(at)),
-                                  domain = at,
-                                  na.color = col2Hex(na.color))
-      pal2 <- pal
-    } else {
-      pal <- mapview:::rasterColors(col.regions,
-                                    at = at,
-                                    na.color = col2Hex(na.color))
-
-      if (length(at) > 11) {
-        pal2 <- leaflet::colorNumeric(palette = col.regions(length(at)),
-                                      domain = at,
-                                      na.color = col2Hex(na.color))
-      } else {
-        pal2 <- leaflet::colorBin(palette = col.regions(length(at)),
-                                  bins = at, #length(at),
-                                  domain = at,
-                                  na.color = col2Hex(na.color))
-      }
-
-    }
-    if (any(is.na(vals))) {
-      leg_vals <- c(at, NA)
-    } else leg_vals <- at
-
-    m@map <- leaflet::addLegend(map = m@map,
-                                position = "topright",
-                                values = leg_vals,
-                                pal = pal2,
-                                opacity = 1,
-                                labFormat = labelFormat(big.mark = ""),
-                                title = zcol)
-
-  }
+  # if (legend) {
+  #
+  #   if (is.null(at)) {
+  #     if (is.fact) {
+  #       at <- vals
+  #     } else {
+  #       at <- lattice::do.breaks(range(vals,
+  #                                      na.rm = TRUE),
+  #                                length(vals))
+  #     }
+  #   }
+  #
+  #   if (is.fact) {
+  #     pal <- leaflet::colorFactor(palette = col.regions(length(at)),
+  #                                 domain = at,
+  #                                 na.color = col2Hex(na.color))
+  #     pal2 <- pal
+  #   } else {
+  #     pal <- mapview:::rasterColors(col.regions,
+  #                                   at = at,
+  #                                   na.color = col2Hex(na.color))
+  #
+  #     if (length(at) > 11) {
+  #       pal2 <- leaflet::colorNumeric(palette = col.regions(length(at)),
+  #                                     domain = at,
+  #                                     na.color = col2Hex(na.color))
+  #     } else {
+  #       pal2 <- leaflet::colorBin(palette = col.regions(length(at)),
+  #                                 bins = at, #length(at),
+  #                                 domain = at,
+  #                                 na.color = col2Hex(na.color))
+  #     }
+  #
+  #   }
+  #   if (any(is.na(vals))) {
+  #     leg_vals <- c(at, NA)
+  #   } else leg_vals <- at
+  #
+  #   m@map <- leaflet::addLegend(map = m@map,
+  #                               position = "topright",
+  #                               values = leg_vals,
+  #                               pal = pal2,
+  #                               opacity = 1,
+  #                               labFormat = labelFormat(big.mark = ""),
+  #                               title = zcol)
+  #
+  # }
 
   return(m)
 

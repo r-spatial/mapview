@@ -7,8 +7,8 @@
 \usage{
 mapviewOptions(platform, basemaps, raster.size, mapview.maxpixels,
   plainview.maxpixels, maxpoints, maxpolygons, maxlines, raster.palette,
-  vector.palette, verbose, na.color, layers.control.pos, default = FALSE,
-  console = TRUE, leafletWidth, leafletHeight)
+  vector.palette, verbose, na.color, legend, legend.pos, layers.control.pos,
+  default = FALSE, console = TRUE, leafletWidth, leafletHeight)
 
 mapviewGetOption(param)
 }
@@ -21,6 +21,14 @@ is allowed)}
 values}
 
 \item{raster.size}{numeric. see the maxBytes argument in \code{\link{addRasterImage}}}
+
+\item{mapview.maxpixels}{numeric. The maximum amount of pixels allowed for Raster*
+objects to be rendered with \code{mapview}. Defaults to 500000.
+Set this higher if you have a potent machine or are patient enough to wait a little.}
+
+\item{plainview.maxpixels}{numeric. The maximum amount of pixels allowed for Raster*
+objects to be rendered with \code{plainview}. Defaults to 10000000.
+Set this higher if you have a potent machine or are patient enough to wait a little.}
 
 \item{maxpoints}{numeric. Maximum number of points allowed for leaflet overlay
 rendering. If this number is exceeded rendering will be done
@@ -49,10 +57,14 @@ Should be a function that takes an integer as input and returns a vector of colo
 See \code{\link{colorRampPalette}} for details.}
 
 \item{verbose}{logical. Many functions in mapview provide details about their
-behaviour. Set this to TRUE if you want to see these printed to the console}
+behaviour. Set this to TRUE if you want to see these printed to the console.}
 
-\item{na.color}{character. The default color to be used for NA values.
-This is relevant for Raster* objects}
+\item{na.color}{character. The default color to be used for NA values.}
+
+\item{legend}{logical. Whether or not to show a legend for the layer(s).}
+
+\item{legend.pos}{Where should the legend be placed?
+One of "topleft", "topright", "bottomleft", "bottomright".}
 
 \item{layers.control.pos}{character. Where should the layer control be
 placed? One of "topleft", "topright", "bottomleft", "bottomright".}
@@ -62,10 +74,6 @@ placed? One of "topleft", "topright", "bottomleft", "bottomright".}
 \item{console}{logical. Should the options be printed to the console}
 
 \item{param}{character. parameter to be queried.}
-
-\item{maxpixels}{numeric. The maximum amount of pixels allowed for Raster*
-objects to be rendered. Defaults to 500000. Set this higher if you have a
-potent machine or are patient enough to wait a little}
 }
 \value{
 list of the current options (invisibly).
