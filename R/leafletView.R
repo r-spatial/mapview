@@ -1,6 +1,7 @@
 #### functions for leaflet based rendering by spatial class
 
 lab_avl <- "label" %in% names(as.list(args(leaflet::addCircleMarkers)))
+scl_avl <- "addScaleBar" %in% ls(getNamespace("leaflet"))
 
 ### leaflet w RasterLayer =================================================
 
@@ -99,6 +100,8 @@ leafletRL <- function(x,
   m <- mapViewLayersControl(map = m,
                             map.types = map.types,
                             names = grp)
+
+  if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
 
   out <- new('mapview', object = list(x), map = m)
 
@@ -334,6 +337,8 @@ leafletPointsDF <- function(x,
                               map.types = map.types,
                               names = grp)
 
+    if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+
     out <- new('mapview', object = list(x), map = m)
 
     return(out)
@@ -403,6 +408,8 @@ leafletPoints <- function(x,
   m <- mapViewLayersControl(map = m,
                             map.types = map.types,
                             names = grp)
+
+  if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
 
   out <- new('mapview', object = list(x), map = m)
 
@@ -535,6 +542,8 @@ leafletPolygonsDF <- function(x,
                               map.types = map.types,
                               names = grp)
 
+    if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+
     out <- new('mapview', object = list(x), map = m)
 
     return(out)
@@ -600,6 +609,8 @@ leafletPolygons <- function(x,
   m <- mapViewLayersControl(map = m,
                             map.types = map.types,
                             names = grp)
+
+  if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
 
   out <- new('mapview', object = list(x), map = m)
 
@@ -789,6 +800,8 @@ leafletLinesDF <- function(x,
                               map.types = map.types,
                               names = grp)
 
+    if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+
     out <- new('mapview', object = list(x), map = m)
 
     return(out)
@@ -906,6 +919,8 @@ leafletLines <- function(x,
   m <- mapViewLayersControl(map = m,
                             map.types = map.types,
                             names = grp)
+
+  if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
 
   out <- new('mapview', object = list(x), map = m)
 
