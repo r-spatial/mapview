@@ -7,7 +7,7 @@ output:
             
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{mapview - interactive viewing of spatial data in R}
+  %\VignetteIndexEntry{mapview - popup functions}
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
