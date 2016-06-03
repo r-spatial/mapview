@@ -18,11 +18,10 @@
 
 * add option to save html map to specified folder
 
-### mapviewColors (Tim)
-
-* clean leafletView functions, i.e. move all color related stuff to above created functions
-* add legend option to leafletList
-
 ### miscellaneous (Tim)
 
 * clean `leafletControls` -> `mapviewControls`
+
+### mapshot
+
+* add option to save objects

@@ -11,7 +11,7 @@ Authors@R: c(
       person("Spaska", "Forteva", email = "spaska.forteva@geo.uni-marburg.de", role = c("ctb")),
       person("Thomas", "Nauss", email = "nauss@staff.uni-marburg.de", role = c("ctb")),
       person("Edzer", "Pebesma", role = c("ctb")),
-      person("Kenton", "Russel", role = c("ctb")),
+      person("Kenton", "Russell", role = c("ctb")),
       person("Environmental Informatics Marburg", role = c("ctb"))
     )
 Maintainer: Tim Appelhans <admin@environmentalinformatics-marburg.de>

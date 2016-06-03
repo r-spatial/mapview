@@ -2,17 +2,21 @@ mapview (upcoming release - end May)
 --------------------------------------------------------------------------------
 
 new features:
-  * addMouseCoordinates: add cursor position information to mapview or leaflet map. (thanks to Kent Russel).
-  * latticeView: view mapview or leaflet maps as small multiple and sync some, all or none (thanks to Kent Russel).
-  * knitr integration.
+  * addMouseCoordinates: add cursor position information to mapview or leaflet map. (thanks to Kent Russell).
+  * if available from leaflet version, a scalebar is added to the map.
+  * latticeView: view mapview or leaflet maps as small multiples and sync some, all or none (thanks to Kent Russell).
+  * sync: synchronise two or more leaflet maps (thanks to Kenton Russell).
+  * mapshot: to save maps as html page or static image or both.
+  * knitr integration (i.e. no need to call the @map slot anymore to render in knitr).
   * cubeView: view raster bricks or stacks hovmoeller style, use keys up & down, left & right, page up & page down to navigate through y, x, z dimensions, respectively.
-  * labels: if zcol is set, mouseover will now show the repesctive values of zcol, if zcol is not set moseover shows feature ID.
+  * labels: if zcol is set, mouseover will now show the repesctive values of zcol, if zcol is not set moseover shows feature ID. Only available if suitable leaflet package version is installed.
   * new popup functions popupTable, popupGraph and popupImage.
   * functions to turn coordinates into spatial lines or spatial polygons.
   * mapview objects now work natively on shiny applications (i.e. renderMapview and mapviewOutput now available).
-  * zcol + burst now plots one layer for each unique value of zcol.
+  * "zcol = Var" in combination with burst = TRUE now plots one layer for each unique value of the variable supplied to zcol.
 
 changes:
+  * spplot method has been removed.
   * colors: viridis based colors now default if viridisLite package is available.
   * basemaps: new default basemap is "CartoDB.Positron" as colors of features are better visible on the grey background.
   * layer names now include the name of the object they originate from (e.g. "meuse lead" instead of "lead").
