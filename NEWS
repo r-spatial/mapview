@@ -2,7 +2,8 @@ mapview (upcoming release - end May)
 --------------------------------------------------------------------------------
 
 new features:
-  * latticeView: view mapview or leaflet maps as small multiple and sync some, all or none.
+  * addMouseCoordinates: add cursor position information to mapview or leaflet map. (thanks to Kent Russel).
+  * latticeView: view mapview or leaflet maps as small multiple and sync some, all or none (thanks to Kent Russel).
   * knitr integration.
   * cubeView: view raster bricks or stacks hovmoeller style, use keys up & down, left & right, page up & page down to navigate through y, x, z dimensions, respectively.
   * labels: if zcol is set, mouseover will now show the repesctive values of zcol, if zcol is not set moseover shows feature ID.
