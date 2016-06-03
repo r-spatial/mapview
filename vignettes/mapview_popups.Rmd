@@ -40,7 +40,7 @@ It also works with **leaflet** and can be controlled to only show selected colum
 
 ```{r leaflet popupTable, echo=TRUE, message=FALSE}
 leaflet() %>% addTiles() %>% 
-  addCircleMarkers(data = breweries91, popup = popupTable(breweries91, zcol = c("brewery", "founded")))
+  addCircleMarkers(data = breweries91, popup = popupTable(breweries91, zcol = c("brewery", "village", "founded")))
 ```
 
 ------
