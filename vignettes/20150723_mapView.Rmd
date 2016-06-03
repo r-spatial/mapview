@@ -327,7 +327,7 @@ Here's a toy example using one of the header images from the Environmental Infor
 ## get image from the web page
 library(jpeg)
 
-web_image <- "http://umweltinformatik-marburg.de/uploads/tx_rzslider/teaching_header_kili_resized.jpg"
+web_image <- "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Goode-homolosine-projection.jpg/1024px-Goode-homolosine-projection.jpg"
 
 jpg <- readJPEG(readBin(web_image, "raw", 1e6))
 
