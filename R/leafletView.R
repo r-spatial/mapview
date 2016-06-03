@@ -102,6 +102,7 @@ leafletRL <- function(x,
                             names = grp)
 
   if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+  m <- addMouseCoordinates(m)
 
   out <- new('mapview', object = list(x), map = m)
 
@@ -338,6 +339,7 @@ leafletPointsDF <- function(x,
                               names = grp)
 
     if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+    m <- addMouseCoordinates(m)
 
     out <- new('mapview', object = list(x), map = m)
 
@@ -410,6 +412,7 @@ leafletPoints <- function(x,
                             names = grp)
 
   if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+  m <- addMouseCoordinates(m)
 
   out <- new('mapview', object = list(x), map = m)
 
@@ -543,6 +546,7 @@ leafletPolygonsDF <- function(x,
                               names = grp)
 
     if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+    m <- addMouseCoordinates(m)
 
     out <- new('mapview', object = list(x), map = m)
 
@@ -611,6 +615,7 @@ leafletPolygons <- function(x,
                             names = grp)
 
   if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+  m <- addMouseCoordinates(m)
 
   out <- new('mapview', object = list(x), map = m)
 
@@ -801,6 +806,7 @@ leafletLinesDF <- function(x,
                               names = grp)
 
     if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+    m <- addMouseCoordinates(m)
 
     out <- new('mapview', object = list(x), map = m)
 
@@ -921,6 +927,7 @@ leafletLines <- function(x,
                             names = grp)
 
   if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+  m <- addMouseCoordinates(m)
 
   out <- new('mapview', object = list(x), map = m)
 
@@ -1188,7 +1195,7 @@ leafletMissing <- function(map.types,
                  "<br>",
                  '<a target="_blank" href="http://environmentalinformatics-marburg.de/">Environmental Informatics Marburg</a>',
                  "<br>", "by ", "<br>",
-                 '<a target="_blank" href="http://umweltinformatik-marburg.de/en/staff/tim-appelhans/">Tim Appelhans</a>',
+                 '<a target="_blank" href="http://www.uni-marburg.de/fb19/fachgebiete/umweltinformatik/appelhanst/index.html">Tim Appelhans</a>',
                  "<br>", "and is released under", "<br>",
                  strsplit(utils::packageDescription("mapview", fields = "License"), "\\|")[[1]][1],
                  "<br>", "<br>",
@@ -1225,13 +1232,17 @@ leafletMissing <- function(map.types,
     m <- mapViewLayersControl(map = m, map.types = map.types,
                               names = "envinMR")
     m <- leaflet::setView(map = m, 8.771676, 50.814891, zoom = 18)
+    if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+    m <- addMouseCoordinates(m)
     out <- new('mapview', object = list(NULL), map = m)
   } else {
     m <- initBaseMaps(map.types)
     m <- leaflet::setView(map = m, 8.770862, 50.814772, zoom = 18)
     m <- leaflet::addLayersControl(map = m, baseGroups = map.types,
                                    position = mapviewGetOption(
-                                     "layerscontrolpos"))
+                                     "layers.control.pos"))
+    if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+    m <- addMouseCoordinates(m)
     out <- new('mapview', object = list(NULL), map = m)
   }
   return(out)
