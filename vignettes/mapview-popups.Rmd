@@ -1,14 +1,14 @@
 ---
-title: "mapview - popup functions"
+title: "mapview-popups"
 author: "Tim Appelhans"
 output:
   html_document:
     toc: yes
-            
-vignette: >
-  %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{mapview - popup functions}
-  %\VignetteEngine{knitr::rmarkdown}
+    toc_float: true
+    code_folding: "hide"
+    fig_width: 8.4
+    clean: false
+    self_contained: false
 ---
 
 
@@ -17,10 +17,6 @@ vignette: >
 This document was produced on _`r format(Sys.time(), "%a %b %d %Y")`_ using **mapview** version **`r packageVersion("mapview")`**
 
 ------
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.width = 9.47)
-```
 
 **mapview** provides a few convenience functions for popup creation. These popups can be used with both **mapview** and **leaflet**.
 
@@ -39,7 +35,8 @@ mapview(breweries91, zcol = "founded")
 It also works with **leaflet** and can be controlled to only show selected columns of the attribute table
 
 ```{r leaflet popupTable, echo=TRUE, message=FALSE}
-leaflet() %>% addTiles() %>% 
+leaflet() %>% 
+  addTiles() %>% 
   addCircleMarkers(data = breweries91, popup = popupTable(breweries91, zcol = c("brewery", "village", "founded")))
 ```
 
@@ -79,7 +76,6 @@ coordinates(meuse) <- ~ x + y
 proj4string(meuse) <- CRS("+init=epsg:28992")
 
 ## create plots with points colored according to feature id
-library(ggplot2)
 p <- xyplot(copper ~ cadmium, data = meuse@data, col = "grey")
 p <- mget(rep("p", length(meuse)))
 
@@ -120,7 +116,7 @@ mapview(pt, popup = popupImage(img))
 ```{r mapview popupImage remote, echo=TRUE, message=FALSE}
 img <- "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Mount_Eden.jpg/640px-Mount_Eden.jpg"
 
-mapview(pt, popup = popupImage(img, src = "remote"))
+mapview(pt, map.types = "Esri.WorldImagery", popup = popupImage(img, src = "remote"))
 ```
 
 ------
@@ -132,5 +128,3 @@ But let the Dude show us how this can be used...
 ```{r mapview popupIrame, echo=TRUE, message=FALSE}
 mapview(pt, popup = mapview:::popupIframe("https://www.youtube.com/embed/iApz08Bh53w?autoplay=1", width = 300, height = 225))
 ```
-
-<br>
