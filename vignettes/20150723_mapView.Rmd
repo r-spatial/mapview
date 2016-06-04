@@ -1,7 +1,6 @@
 ---
 title: "mapview - interactive viewing of spatial data in R"
 author: "Tim Appelhans"
-date: "July 23, 2015"
 output:
   html_document:
     toc: yes
@@ -25,12 +24,12 @@ The easiest way to install `mapview` is to use `library("devtools")`. With `devt
 
 For the stable release of `mapview`:
 ```{r, eval = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-install_github("environmentalinformatics-marburg/mapview")
+install.packages("mapview")
 ```
 
 For the devolpment version:
 ```{r, eval = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-install_github("environmentalinformatics-marburg/mapview", ref = "develop")
+devtools::install_github("environmentalinformatics-marburg/mapview", ref = "develop")
 ```
 
 ------  
@@ -88,10 +87,6 @@ library(raster)
 mapView(poppendorf[[10]])
 ```
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(poppendorf[[10]])@map
-```
-
 ------
 
 ### RasterStack/Brick
@@ -99,10 +94,6 @@ If you pass a RasterStack/Brick to `mapView()` this will create one map layer + 
 
 ```{r, warning=FALSE, message=FALSE, fig.width=9.47}
 mapView(poppendorf)
-```
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(poppendorf)@map
 ```
 
 There is (to my knowledge) currently no way to provide this functionality in the leaflet package, though I have seen <a href="http://gis.stackexchange.com/questions/68941/how-to-add-remove-legend-with-leaflet-layers-control" target="_blank">solutions for this</a> in JavaScript which means that this will likely be available in the future. 
@@ -113,7 +104,7 @@ There is (to my knowledge) currently no way to provide this functionality in the
 
 Given that a SpatialPixelsDataFrame has an attribute table we can use argument `zcol = "column_name"` to plot specific columns of the table. The `zcol` argument can be used with the ...DataFrame versions of all Spatial* objects that are currently supported (see below).
 
-```{r, eval = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
+```{r, eval = TRUE, warning=FALSE, message=FALSE, fig.width=9.47}
 library(sp)
 
 data(meuse.grid)
@@ -122,17 +113,6 @@ proj4string(meuse.grid) <- CRS("+init=epsg:28992")
 gridded(meuse.grid) <- TRUE
 
 mapView(meuse.grid, zcol = "soil")
-```
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-library(sp)
-
-data(meuse.grid)
-coordinates(meuse.grid) <- ~x+y
-proj4string(meuse.grid) <- CRS("+init=epsg:28992")
-gridded(meuse.grid) <- TRUE
-
-mapView(meuse.grid, zcol = "soil")@map
 ```
 
 ------
@@ -155,18 +135,10 @@ proj4string(meuse) <- CRS("+init=epsg:28992")
 mapView(meuse)
 ```
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(meuse)@map
-```
-
 Another argument you can use with SpatialPointsDataFrame is `cex` which takes either an integer value (default is 10) or the character name of one of the columns in the attribute table. If the latter is provided, circles are scaled relative to the respective values in the column provided.
 
 ```{r, warning=FALSE, message=FALSE, fig.width=9.47}
 mapView(meuse, cex = "lead")
-```
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(meuse, cex = "lead")@map
 ```
 
 ------
@@ -179,20 +151,12 @@ data("gadmCHE")
 mapView(gadmCHE)
 ```
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(gadmCHE)@map
-```
-
 and 
 
 ### SpatialLines(DataFrame)
 ```{r, warning=FALSE, message=FALSE, fig.width=9.47}
 data("atlStorms2005")
 mapView(atlStorms2005, burst = TRUE)
-```
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(atlStorms2005, burst = TRUE)@map
 ```
 
 ------
@@ -214,19 +178,11 @@ data("poppendorf")
 viewRGB(poppendorf, 4, 3, 2) #Bands 4,3,2 correspond to Red Green Blue
 ```
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-viewRGB(poppendorf, 4, 3, 2)@map
-```
-
 Note, by default the color to render `NA` values is set to `"transparent"`, so let's change that to `"black"`
 
 #### False color example
 ```{r, warning=FALSE, message=FALSE, fig.width=9.47}
 viewRGB(poppendorf, 5, 4, 3, na.color = "black") #Bands 5,4,3 correspond to NIR Red Green
-```
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-viewRGB(poppendorf, 5, 4, 3, na.color = "black")@map
 ```
 
 **Fun fact:** within this tiny area one can find at least five breweries (see below)...
@@ -241,17 +197,9 @@ As mentioned above, it is possible to view only the extent of Raster and bbox of
 viewExtent(poppendorf)
 ```
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-viewExtent(poppendorf)@map
-```
-
 #### Spatial* object bbox
 ```{r, warning=FALSE, message=FALSE, fig.width=9.47}
 viewExtent(meuse, color = "black")
-```
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-viewExtent(meuse, color = "black")@map
 ```
 
 ### Overlays
@@ -268,11 +216,6 @@ This means you can easily combine objects by enabling things like
 mapView(meuse.grid, zcol = "soil") + meuse
 ```
 
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-"+"(mapView(meuse.grid, zcol = "soil"), meuse)@map
-```
-
 Basically, any combination is possible. 
 
 The zoom will be set to the extent of the objected that was added last. Also, layers are overlaid according to the order of calls. Note, however, that `leaflet` will always render vector data on top of raster data, 
@@ -282,11 +225,6 @@ data("breweries91")
 mapView(breweries91, color = "red") + viewRGB(poppendorf, 4, 3, 2) + viewExtent(poppendorf)
 ```
 
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-m1 <- "+"(mapView(breweries91, color = "red"), viewRGB(poppendorf, 4, 3, 2))
-"+"(m1, viewExtent(poppendorf))@map
-```
 
 So here you have it, 5 breweries within the extent of the RGB image
 
@@ -311,10 +249,6 @@ Yet, even though it has no CRS, we can still visulize it. Though we obviously ca
 
 ```{r, fig.width=9.47}
 mapView(meuse)
-```
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(meuse)@map
 ```
 
 Note, how the coordinates have been rescaled.
@@ -342,10 +276,6 @@ img <- brick(rst_red, rst_green, rst_blue)
 viewRGB(img)
 ```
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-viewRGB(img)@map
-```
-
 In case you are interested, under the hood, the rendering of unprojected `Raster*` data works similar to that of `Spatial*` objects. Corner coordinates of the extent are rescaled (y-coordinates are multiplied with the ratio of `nrow / ncol` to preserve dimensions). In this case, however, we need to provide a `CRS` as `leaflet` expects one. Therefore, we set this to standard latitude/longitude `EPSG:4236`. This means, that the rendered image actually does have a spatial reference but `mapview` simply does not provide basemaps. If we were to provide one, we would see that our data lies somewhere in the Gulf of Guinea.
 
 Applications for non-projected data are obviously limited, yet, especially the possibility to view standard images interactively provides a nice tool for checking parts of an image(stack) in more detail. 
@@ -369,11 +299,6 @@ proj4string(meuse) <- CRS("+init=epsg:28992")
 m <- leaflet() %>%
   addProviderTiles("Stamen.Toner")
 m + meuse
-```
-
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-"+"(m, meuse)@map
 ```
 
 ### mapview + leaflet
@@ -424,10 +349,6 @@ Note how we
 
 I hope this highlights that despite providing sensible default behaviour for viewing spatial data `mapview` also provides a fair deal of flexibility.
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47, fig.height = 8}
-"+"("+"(m1, m2), m3)@map
-```
-
 ------
 
 ## And for those who...
@@ -440,10 +361,6 @@ Here's the `mapview` version:
 
 ```{r, fig.width=9.47}
 mapView(meuse)
-```
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.width=9.47}
-mapView(meuse)@map
 ```
 
 And now let's get the identical result using `leaflet`:
