@@ -107,7 +107,7 @@ popupGraph <- function(graphs, type = c("png", "svg", "html"), ...) {
 ### svg -----
 popupSVGraph <- function(graphs, dsn = tempdir(), ...) {
   lapply(1:length(graphs), function(i) {
-    nm <- paste0("tmp_", i, ".png")
+    nm <- paste0("tmp_", i, ".svg")
     fls <- file.path(dsn, nm)
 
     svg(filename = fls, ...)
