@@ -198,15 +198,16 @@ initBaseMaps <- function(map.types) {
   if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
   leafletHeight <- mapviewGetOption("leafletHeight")
   leafletWidth <- mapviewGetOption("leafletWidth")
-    m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth)
-    m <- leaflet::addProviderTiles(m, provider = map.types[1],
-                                   group = map.types[1])
-    if (length(map.types) > 1) {
-      for (i in 2:length(map.types)) {
-        m <- leaflet::addProviderTiles(m, provider = map.types[i],
-                                       group = map.types[i])
-      }
+  lid <- 1:length(map.types)
+  m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth)
+  m <- leaflet::addProviderTiles(m, provider = map.types[1],
+                                 layerId = lid[1], group = map.types[1])
+  if (length(map.types) > 1) {
+    for (i in 2:length(map.types)) {
+      m <- leaflet::addProviderTiles(m, provider = map.types[i],
+                                     layerId = lid[i], group = map.types[i])
     }
+  }
   return(m)
 }
 

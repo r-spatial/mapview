@@ -972,7 +972,7 @@ leafletList <- function(x,
 
   if(bbr) {
 
-    map <- initBaseMaps()
+    map <- initBaseMaps(map.types = map.types)
 
     if (legend) {
       map <- createLegend(x,
@@ -1033,7 +1033,7 @@ leafletList <- function(x,
       layer.name <- paste(layer.name, names(x))
     }
 
-    map <- initBaseMaps()
+    map <- initBaseMaps(map.types = map.types)
 
     m <- Reduce("+", lapply(seq(lst), function(i) {
       ind <- which(row.nms %in% row.names(lst[[i]]))
