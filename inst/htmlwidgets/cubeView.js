@@ -48,6 +48,23 @@ function b64toArray(data) {
 	return buffer;
 }
 
+function flipY(data) {
+  var buffer = new Uint8Array(XYZ_SIZE);
+  var yMax = Y_SIZE-1;
+  for(var z=0;z<Z_SIZE;z++) {
+    var zBase = z*XY_SIZE;
+    for(var y=0;y<Y_SIZE;y++) {
+      var yBase = zBase+y*X_SIZE;
+      var yBaseFlip = zBase+(yMax-y)*X_SIZE;
+      for(var x=0;x<X_SIZE;x++) {
+        buffer[yBase+x] = data[yBaseFlip+x];
+        //buffer[yBase+x] = data[yBase+x];
+      }
+    }
+  }
+  return buffer;
+}
+
 function Hovmoeller(root, json) {
 	X_SIZE = json.x_size;
   Y_SIZE = json.y_size;
@@ -62,19 +79,19 @@ function Hovmoeller(root, json) {
 
 
   if (json.grey !== undefined) {
-    dR = dG = dB = b64toArray(json.grey);
+    dR = dG = dB = flipY(b64toArray(json.grey));
   }
 
   if (json.red !== undefined) {
-    dR = b64toArray(json.red);
+    dR = flipY(b64toArray(json.red));
   }
 
   if (json.green !== undefined) {
-    dG = b64toArray(json.green);
+    dG = flipY(b64toArray(json.green));
   }
 
   if (json.blue !== undefined) {
-    dB = b64toArray(json.blue);
+    dB = flipY(b64toArray(json.blue));
   }
 
 	this.scene = new THREE.Scene();
