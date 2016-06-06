@@ -95,7 +95,7 @@ function Hovmoeller(root, json) {
   }
 
 	this.scene = new THREE.Scene();
-	this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+	this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 	this.renderer = new THREE.WebGLRenderer({/*antialias: true*/});
 	this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -198,7 +198,7 @@ function Hovmoeller(root, json) {
   this.scene.add(line_y);
   this.scene.add(line_z);
 
-	this.camera.position.z = 1;
+	this.camera.position.z = 1.5;
 
 	document.body.addEventListener('keydown', this.onKeyDown, false);
 

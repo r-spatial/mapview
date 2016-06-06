@@ -28,7 +28,7 @@
 #'
 #' library(RColorBrewer)
 #' clr <- colorRampPalette(brewer.pal(9, "BrBG"))
-#' cubeView(kiliNDVI, at = seq(-0.2, 1, 0.1), col.regions = clr)
+#' cubeView(kiliNDVI, at = seq(-0.15, 0.95, 0.1), col.regions = clr)
 #' }
 #'
 #' @export cubeView
