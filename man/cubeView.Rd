@@ -27,7 +27,11 @@ move mouse down/up to zoom the cube.
 }
 \examples{
 \dontrun{
-cubeView(poppendorf)
+cubeView(kiliNDVI)
+
+library(RColorBrewer)
+clr <- colorRampPalette(brewer.pal(9, "BrBG"))
+cubeView(kiliNDVI, at = seq(-0.2, 1, 0.1), col.regions = clr)
 }
 
 }
