@@ -1,41 +1,47 @@
-#' View a RasterStack as 3-dimensional cube.
+#' View a RasterStack or RasterBrick as 3-dimensional data cube.
 #'
-#' see details of cubeView: \link{cubeViewRaw}
+#' @description
+#' Create a 3D data cube from a RasterStack or RasterBrick. The cube can be
+#' freely rotated so that Hovmoller views of x - z and y - z are possible.
 #'
-#' @author
-#' Stephan Woellauer
+#' @details
+#' The visible layers are alterable by keys: \cr
+#' x-axis: LEFT / RIGHT arrow key \cr
+#' y-axis: DOWN / UP arrow key \cr
+#' z-axis: PAGE_DOWN / PAGE_UP key \cr
 #'
-#' @export
-cubeView_RasterStack <- function(r) {
-  v <- as.integer(values(r))
-  v <- as.integer(v %/% (max(v)%/%255))
-
-  x_size <- ncol(r)
-  y_size <- nrow(r)
-  z_size <- nlayers(r)
-
-  cubeViewRaw(grey=v, x_size=x_size, y_size=y_size, z_size=z_size)
-}
-
-#' View a RasterBrick as 3-dimensional cube.
+#' Note: Because of key focus issues key-press-events are not always
+#' recognised within RStudio at Windows. In this case open the view in
+#' a web-browser (RStudio button: "show in new window").
 #'
-#' see details of cubeView: \link{cubeViewRaw}
+#' Press and hold left mouse-button to rotate the cube.
+#' Press and hold right mouse-button to move the cube.
+#' Spin mouse-wheel or press and hold middle mouse-button and
+#' move mouse down/up to zoom the cube.
 #'
 #' @author
-#' Stephan Woellauer
+#' Stephan Woellauer and Tim Appelhans
 #'
-#' @export
-cubeView_RasterBrick <- function(x,
-                                 at,
-                                 col.regions = mapviewGetOption("raster.palette")) {
-  #v <- as.numeric(flip(r, direction = "y")[])
+#' @examples
+#' \dontrun{
+#' cubeView(poppendorf)
+#' }
+#'
+#' @export cubeView
+#' @name cubeView
+
+cubeView <- function(x,
+                     at,
+                     col.regions = mapviewGetOption("raster.palette")) {
+
+  stopifnot(inherits(x, "RasterStack") | inherits(x, "RasterBrick"))
+
   v <- raster::as.matrix(flip(x, direction = "y"))
   if (missing(at)) at <- lattice::do.breaks(range(v, na.rm = TRUE), 256)
   cols <- lattice::level.colors(v,
                                 at = at,
                                 col.regions)
   tst <- grDevices::col2rgb(cols, alpha = TRUE)
-  #v <- as.integer(v %/% (max(v)%/%255))
 
   x_size <- raster::ncol(x)
   y_size <- raster::nrow(x)
@@ -47,63 +53,63 @@ cubeView_RasterBrick <- function(x,
               x_size = x_size,
               y_size = y_size,
               z_size = z_size)
-#  cubeViewRaw(grey=v, x_size=x_size, y_size=y_size, z_size=z_size)
+
 }
 
-#' View a cube of 3-dimensional data filled with points (voxels).
-#'
-#' A variation of Hovmoeller diagram: Each voxel is colored with a RGB-color (or grey) value.
-#'
-#' @param x_size integer. size of x-dimension
-#'
-#' @param y_size integer. size of y-dimension
-#'
-#' @param z_size integer. size of z-dimension
-#'
-#' @param grey optional integer vector with 0 <= value <= 255.
-#'
-#' @param red optional integer vector with 0 <= value <= 255.
-#'
-#' @param green optional integer vector with 0 <= value <= 255.
-#'
-#' @param blue optional integer vector with 0 <= value <= 255.
-#'
-#' @details
-#'
-#' The cube faces show a selectable layer of data within the cube.
-#'
-#' The visible layers are alterable by keys:
-#'
-#' x-axis: LEFT / RIGHT arrow key
-#'
-#' y-axis: DOWN / UP arrow key
-#'
-#' z-axis: PAGE_DOWN / PAGE_UP key
-#'
-#' Note: Because of key focus issues key-press-events are not always recognised within RStudio at Windows.
-#' In this case open the view in a web-browser (RStudio button: "show in new window").
-#'
-#'
-#' Press and hold left mouse-button to rotate the cube.
-#'
-#' Press and hold right mouse-button to move the cube.
-#'
-#' Spin mouse-wheel or press and hold middle mouse-button and move mouse down/up to zoom the cube.
-#'
-#' The color resp. grey vectors contain sequentially values of each voxel. So each vector is length == x_size * y_size * z_size.
-#' Color component values overwrite grey values.
-#'
-#' Sequence of coordinates (x,y,z) for values in vectors:
-#'
-#' (1,1,1), (2,1,1), (3,1,1), ... (1,2,1), (2,2,1), (3,2,1), ... (1,1,2), (2,1,2), (3,1,2), ...
-#'
-#'
-#' @author
-#' Stephan Woellauer
-#'
-#' @import htmlwidgets
-#'
-#' @export
+# ' View a cube of 3-dimensional data filled with points (voxels).
+# '
+# ' A variation of Hovmoeller diagram: Each voxel is colored with a RGB-color (or grey) value.
+# '
+# ' @param x_size integer. size of x-dimension
+# '
+# ' @param y_size integer. size of y-dimension
+# '
+# ' @param z_size integer. size of z-dimension
+# '
+# ' @param grey optional integer vector with 0 <= value <= 255.
+# '
+# ' @param red optional integer vector with 0 <= value <= 255.
+# '
+# ' @param green optional integer vector with 0 <= value <= 255.
+# '
+# ' @param blue optional integer vector with 0 <= value <= 255.
+# '
+# ' @details
+# '
+# ' The cube faces show a selectable layer of data within the cube.
+# '
+# ' The visible layers are alterable by keys:
+# '
+# ' x-axis: LEFT / RIGHT arrow key
+# '
+# ' y-axis: DOWN / UP arrow key
+# '
+# ' z-axis: PAGE_DOWN / PAGE_UP key
+# '
+# ' Note: Because of key focus issues key-press-events are not always recognised within RStudio at Windows.
+# ' In this case open the view in a web-browser (RStudio button: "show in new window").
+# '
+# '
+# ' Press and hold left mouse-button to rotate the cube.
+# '
+# ' Press and hold right mouse-button to move the cube.
+# '
+# ' Spin mouse-wheel or press and hold middle mouse-button and move mouse down/up to zoom the cube.
+# '
+# ' The color resp. grey vectors contain sequentially values of each voxel. So each vector is length == x_size * y_size * z_size.
+# ' Color component values overwrite grey values.
+# '
+# ' Sequence of coordinates (x,y,z) for values in vectors:
+# '
+# ' (1,1,1), (2,1,1), (3,1,1), ... (1,2,1), (2,2,1), (3,2,1), ... (1,1,2), (2,1,2), (3,1,2), ...
+# '
+# '
+# ' @author
+# ' Stephan Woellauer
+# '
+# ' @import htmlwidgets
+# '
+# ' @export
 cubeViewRaw <- function(grey=NULL, red=NULL, green=NULL, blue=NULL, x_size, y_size, z_size, width = NULL, height = NULL) {
 
   total_size <- x_size*y_size*z_size
@@ -153,7 +159,8 @@ cubeViewRaw <- function(grey=NULL, red=NULL, green=NULL, blue=NULL, x_size, y_si
 #'
 #' @export
 cubeViewOutput <- function(outputId, width = '100%', height = '400px'){
-  shinyWidgetOutput(outputId, 'cubeView', width, height, package = 'mapview')
+  htmlwidgets::shinyWidgetOutput(outputId, 'cubeView',
+                                 width, height, package = 'mapview')
 }
 
 #' Widget render function for use in Shiny
@@ -161,5 +168,5 @@ cubeViewOutput <- function(outputId, width = '100%', height = '400px'){
 #' @export
 renderCubeView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
-  shinyRenderWidget(expr, cubeViewOutput, env, quoted = TRUE)
+  htmlwidgets::shinyRenderWidget(expr, cubeViewOutput, env, quoted = TRUE)
 }
