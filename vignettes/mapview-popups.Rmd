@@ -1,5 +1,5 @@
 ---
-title: "mapview-popups"
+title: "popups"
 author: "Tim Appelhans"
 output:
   html_document:
@@ -56,14 +56,14 @@ To include **lattice** or **ggplot2** or **htmlwidgets** based graphs in our pop
 library(sp)
 library(lattice)
 
-pt <- data.frame(x = 174.764474, y = -36.877245)
+pnt <- data.frame(x = 174.764474, y = -36.877245)
 
-coordinates(pt) <- ~ x + y
-proj4string(pt) <- "+init=epsg:4326"
+coordinates(pnt) <- ~ x + y
+proj4string(pnt) <- "+init=epsg:4326"
 
 p2 <- levelplot(t(volcano), col.regions = terrain.colors(100))
 
-mapview(pt, popup = popupGraph(p2, width = 200, height = 300))
+mapview(pnt, popup = popupGraph(p2, width = 200, height = 300))
 ```
 
 <br>
@@ -92,8 +92,15 @@ mapview(meuse, popup = popupGraph(p, type = "svg", width = 3, height = 2.5))
 
 * __html__ example:
 
+First we create a cubeView widget of the `poppendorf` RasterBrick, then we assign that to our popup, then we create a transparent `viewExtent` of the RasterBrick with the creatd popup and finally we plot this together with one layer of the RasterBrick. 
+
+Try clicking anywhere on the RasterLayer, click into the popup and use keys `left, right, up, down, page up, page down` to navigate through the cubeView.
+
 ```{r mapview popupGraph html, echo=TRUE, message=FALSE}
-mapview(pt, map.types = "Esri.WorldImagery", popup = popupGraph(mapview(pt)@map, type = "html"))
+cube <- cubeView_RasterBrick(poppendorf)
+pop <- popupGraph(cube, type = "html", width = 300, height = 300)
+ext <- viewExtent(poppendorf, fillOpacity = 0, opacity = 0, popup = pop)
+ext + poppendorf[[9]]
 ```
 
 ------
@@ -106,7 +113,7 @@ Finally, it is possible to include local (on our local hard drive) or remote (fr
 
 ```{r mapview popupImage local, echo=TRUE, message=FALSE}
 img <- system.file("img","Rlogo.png", package="png")
-mapview(pt, popup = popupImage(img))
+mapview(pnt, popup = popupImage(img))
 ```
 
 <br>
@@ -116,7 +123,7 @@ mapview(pt, popup = popupImage(img))
 ```{r mapview popupImage remote, echo=TRUE, message=FALSE}
 img <- "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Mount_Eden.jpg/640px-Mount_Eden.jpg"
 
-mapview(pt, map.types = "Esri.WorldImagery", popup = popupImage(img, src = "remote"))
+mapview(pnt, map.types = "Esri.WorldImagery", popup = popupImage(img, src = "remote"))
 ```
 
 ------
@@ -126,5 +133,5 @@ There's also a hidden function that enables us to include all sorts of things vi
 But let the Dude show us how this can be used...
 
 ```{r mapview popupIrame, echo=TRUE, message=FALSE}
-mapview(pt, popup = mapview:::popupIframe("https://www.youtube.com/embed/iApz08Bh53w?autoplay=1", width = 300, height = 225))
+mapview(pnt, popup = mapview:::popupIframe("https://www.youtube.com/embed/iApz08Bh53w?autoplay=1", width = 300, height = 225))
 ```
