@@ -92,15 +92,15 @@ mapview(meuse, popup = popupGraph(p, type = "svg", width = 3, height = 2.5))
 
 * __html__ example:
 
-First we create a cubeView widget of the `poppendorf` RasterBrick, then we assign that to our popup, then we create a transparent `viewExtent` of the RasterBrick with the creatd popup and finally we plot this together with one layer of the RasterBrick. 
+First we create a cubeView widget of the `kiliNDVI` RasterBrick, then we assign that to our popup, then we create a transparent `viewExtent` of the RasterBrick with the creatd popup and finally we plot this together with one layer of the RasterBrick. 
 
-Try clicking anywhere on the RasterLayer, click into the popup and use keys `left, right, up, down, page up, page down` to navigate through the cubeView.
+Try clicking anywhere on the RasterLayer, click into the popup and use keys `left & right, up & down, page up & page down` to navigate through the cubeView in x, y and z dimension, respectively.
 
 ```{r mapview popupGraph html, echo=TRUE, message=FALSE}
-cube <- cubeView_RasterBrick(poppendorf)
+cube <- cubeView(kiliNDVI)
 pop <- popupGraph(cube, type = "html", width = 300, height = 300)
-ext <- viewExtent(poppendorf, fillOpacity = 0, opacity = 0, popup = pop)
-ext + poppendorf[[9]]
+ext <- viewExtent(kiliNDVI, fillOpacity = 0, opacity = 0, popup = pop)
+ext + kiliNDVI[[1]]
 ```
 
 ------
