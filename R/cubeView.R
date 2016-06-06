@@ -40,7 +40,8 @@ cubeView <- function(x,
 
   stopifnot(inherits(x, "RasterStack") | inherits(x, "RasterBrick"))
 
-  v <- raster::as.matrix(flip(x, direction = "y"))
+  #v <- raster::as.matrix(flip(x, direction = "y"))
+  v <- raster::as.matrix(x)
   if (missing(at)) at <- lattice::do.breaks(range(v, na.rm = TRUE), 256)
   cols <- lattice::level.colors(v,
                                 at = at,
