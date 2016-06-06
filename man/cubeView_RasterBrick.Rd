@@ -4,7 +4,7 @@
 \alias{cubeView_RasterBrick}
 \title{View a RasterBrick as 3-dimensional cube.}
 \usage{
-cubeView_RasterBrick(r)
+cubeView_RasterBrick(x, at, col.regions = mapviewGetOption("raster.palette"))
 }
 \description{
 see details of cubeView: \link{cubeViewRaw}

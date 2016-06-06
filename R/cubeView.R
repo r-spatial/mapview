@@ -25,15 +25,29 @@ cubeView_RasterStack <- function(r) {
 #' Stephan Woellauer
 #'
 #' @export
-cubeView_RasterBrick <- function(r) {
-  v <- as.integer(r@data@values)
-  v <- as.integer(v %/% (max(v)%/%255))
+cubeView_RasterBrick <- function(x,
+                                 at,
+                                 col.regions = mapviewGetOption("raster.palette")) {
+  #v <- as.numeric(flip(r, direction = "y")[])
+  v <- raster::as.matrix(flip(x, direction = "y"))
+  if (missing(at)) at <- lattice::do.breaks(range(v, na.rm = TRUE), 256)
+  cols <- lattice::level.colors(v,
+                                at = at,
+                                col.regions)
+  tst <- grDevices::col2rgb(cols, alpha = TRUE)
+  #v <- as.integer(v %/% (max(v)%/%255))
 
-  x_size <- r@ncols
-  y_size <- r@nrows
-  z_size <- r@data@nlayers
+  x_size <- raster::ncol(x)
+  y_size <- raster::nrow(x)
+  z_size <- raster::nlayers(x)
 
-  cubeViewRaw(grey=v, x_size=x_size, y_size=y_size, z_size=z_size)
+  cubeViewRaw(red = tst[1, ],
+              green = tst[2, ],
+              blue = tst[3, ],
+              x_size = x_size,
+              y_size = y_size,
+              z_size = z_size)
+#  cubeViewRaw(grey=v, x_size=x_size, y_size=y_size, z_size=z_size)
 }
 
 #' View a cube of 3-dimensional data filled with points (voxels).
