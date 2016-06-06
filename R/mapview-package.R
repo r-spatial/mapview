@@ -45,23 +45,17 @@ NULL
 NULL
 #'
 #' @docType data
-#' @name hillshadeCHE
-#' @title Hillshade raster of Switzerland
-#' @description Hillshade raster of Switzerland
-#' @details This dataset was created following the example
-#' at \code{\link{hillShade}}.
-#' @format \code{"RasterLayer-class"}
-NULL
-#'
-#' @docType data
-#' @name tmeanCHE
-#' @title Mean January temperature for Switzerland
-#' @description Mean January temperature for Switzerland
-#' @details This dataset was modified (resampled) from the example
-#' at \code{\link{getData}}.
-#' @format \code{"RasterLayer-class"}
-#' @source
-#' \url{http://worldclim.org}
+#' @name kiliNDVI
+#' @title 16-day NDVI of Kilimanjaro
+#' @description 16-day NDVI of Kilimanjaro from January to December 2013
+#' @details 16-day Aqua-MODIS NDVI (MYD13Q1, Collection 6) from 2013,
+#' quality-controlled and Whittaker-smoothed as described in Detsch et al.
+#' (2016; see References).
+#' @references Detsch F, Otte I, Appelhans T, Hemp A, Nauss T (2016) Seasonal
+#' and long-term vegetation dynamics from 1-km GIMMS-based NDVI time series at
+#' Mt. Kilimanjaro, Tanzania. Remote Sensing of Environment 178: 70--83,
+#' doi:10.1016/j.rse.2016.03.007
+#' @format \code{"RasterStack-class"}
 NULL
 #'
 #' @docType data
