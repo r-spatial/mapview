@@ -102,7 +102,7 @@ function Hovmoeller(root, json) {
 
   this.controls = new THREE.TrackballControls(this.camera);
 
-  this.controls.rotateSpeed = 6.0;
+  this.controls.rotateSpeed = 3.0;
 	this.controls.zoomSpeed = 1.0;
 	this.controls.panSpeed = 1.0;
   this.controls.staticMoving = true;
@@ -171,7 +171,7 @@ function Hovmoeller(root, json) {
 	var origin_y = -Y_BOX/2-origin_gap;
 	var origin_z = -Z_BOX/2-origin_gap;
 	var origin = new THREE.Vector3(origin_x, origin_y, origin_z);
-	var line_size = 1 + origin_gap;
+	var line_size = 0.05 + origin_gap;
 
   var line_geometry_x = new THREE.Geometry();
   line_geometry_x.vertices.push(
