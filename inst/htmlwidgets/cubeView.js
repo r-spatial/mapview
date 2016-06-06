@@ -27,9 +27,9 @@ var dR;
 var dG;
 var dB;
 
-var x_pos = iDiv(X_SIZE*2,3);
-var y_pos = iDiv(Y_SIZE*2,3);
-var z_pos = iDiv(Z_SIZE*2,3);
+var x_pos = 0;
+var y_pos = 0;
+var z_pos = 0;
 
 function init(root, json) {
 	hovmoeller = new Hovmoeller(root, json);
@@ -56,9 +56,9 @@ function Hovmoeller(root, json) {
   XZ_SIZE = X_SIZE*Z_SIZE;
   ZY_SIZE = Z_SIZE*Y_SIZE;
   XYZ_SIZE = X_SIZE*Y_SIZE*Z_SIZE;
-  x_pos = iDiv(X_SIZE*2,3);
-  y_pos = iDiv(Y_SIZE*2,3);
-  z_pos = iDiv(Z_SIZE*2,3);
+  x_pos = 0;
+  y_pos = 0;
+  z_pos = 0;
 
 
   if (json.grey !== undefined) {
@@ -96,10 +96,21 @@ function Hovmoeller(root, json) {
 	root.innerHTML = "";
 	root.appendChild(this.renderer.domElement);
 
-	var MIN_SIZE = Math.min(X_SIZE, Y_SIZE, Z_SIZE);
-	var X_BOX = X_SIZE/MIN_SIZE;
-	var Y_BOX = Y_SIZE/MIN_SIZE;
-	var Z_BOX = Z_SIZE/MIN_SIZE;
+	var MAX_SIZE = Math.max(X_SIZE, Y_SIZE, Z_SIZE);
+	var X_BOX = X_SIZE/MAX_SIZE;
+	var Y_BOX = Y_SIZE/MAX_SIZE;
+	var Z_BOX = Z_SIZE/MAX_SIZE;
+	var MIN_RATIO = 0.1;
+	if(X_BOX<MIN_RATIO) {
+	  X_BOX = MIN_RATIO;
+	}
+	if(Y_BOX<MIN_RATIO) {
+	  Y_BOX = MIN_RATIO;
+	}
+	if(Z_BOX<MIN_RATIO) {
+	  Z_BOX = MIN_RATIO;
+	}
+
 	var geometry = new THREE.BoxGeometry(X_BOX, Y_BOX,  Z_BOX);
 
 	geometry.faceVertexUvs =
@@ -138,12 +149,12 @@ function Hovmoeller(root, json) {
 	var line_material_y = new THREE.LineBasicMaterial({color:0x55ff55, linewidth:3});
 	var line_material_z = new THREE.LineBasicMaterial({color:0x5555ff, linewidth:3});
 
-	var origin_gap = 0.3;
+	var origin_gap = 0.05;
 	var origin_x = -X_BOX/2-origin_gap;
 	var origin_y = -Y_BOX/2-origin_gap;
 	var origin_z = -Z_BOX/2-origin_gap;
 	var origin = new THREE.Vector3(origin_x, origin_y, origin_z);
-	var line_size = 2;
+	var line_size = 1 + origin_gap;
 
   var line_geometry_x = new THREE.Geometry();
   line_geometry_x.vertices.push(
@@ -170,7 +181,7 @@ function Hovmoeller(root, json) {
   this.scene.add(line_y);
   this.scene.add(line_z);
 
-	this.camera.position.z = 15;
+	this.camera.position.z = 1;
 
 	document.body.addEventListener('keydown', this.onKeyDown, false);
 
@@ -272,12 +283,12 @@ updateMaterialZY: function () {
 onKeyDown: function(e) {
 	switch (e.keyCode) {
 		case 33: // PAGE_UP
-			z_pos =  z_pos===Z_SIZE-1?Z_SIZE-1:z_pos+1;
+      z_pos = z_pos===0?0:z_pos-1;
 			e.preventDefault();
 			e.stopPropagation();
 			break;
 		case 34: // PAGE_DOWN
-			z_pos = z_pos===0?0:z_pos-1;
+      z_pos = z_pos===Z_SIZE-1?Z_SIZE-1:z_pos+1;
 			e.preventDefault();
 			e.stopPropagation();
 			break;
