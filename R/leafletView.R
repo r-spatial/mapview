@@ -1101,7 +1101,7 @@ leafletList <- function(x,
   #                                 na.color = col2Hex(na.color))
   #     pal2 <- pal
   #   } else {
-  #     pal <- mapview:::rasterColors(col.regions,
+  #     pal <- rasterColors(col.regions,
   #                                   at = at,
   #                                   na.color = col2Hex(na.color))
   #

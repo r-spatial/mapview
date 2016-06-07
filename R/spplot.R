@@ -50,7 +50,7 @@
 #
 #               ## compare crs
 #               crs_obj <- CRS(sp::proj4string(obj_osm))
-#               crs_ref <- CRS(mapview:::llcrs)
+#               crs_ref <- CRS(llcrs)
 #
 #               ## if required, transform 'obj' to epsg:4326
 #               if (!raster::compareCRS(crs_obj, crs_ref) &

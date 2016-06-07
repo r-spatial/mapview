@@ -2,6 +2,6 @@
 #           function(x)
 #           {
 #             print.mapview(x)
-#             #htmlwidgets::print.htmlwidget(mapview2leaflet(x))
+#             #htmlwidgets:::print.htmlwidget(mapview2leaflet(x))
 #           }
 # )

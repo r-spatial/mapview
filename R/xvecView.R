@@ -58,7 +58,7 @@ if (!isGeneric('xVecView')) {
 #   coordinates(big) <- ~x+y
 #   proj4string(big) <- CRS("+init=epsg:4326")
 
-#   mapview:::fpView(big, color = 'blue')
+#   fpView(big, color = 'blue')
 
 
 # ### some benchmarks
