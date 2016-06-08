@@ -90,17 +90,56 @@ mapview(meuse, popup = popupGraph(p, type = "svg", width = 3, height = 2.5))
 
 <br>
 
-* __html__ example:
+* __html__ example 1:
 
 First we create a cubeView widget of the `kiliNDVI` RasterBrick, then we assign that to our popup, then we create a transparent `viewExtent` of the RasterBrick with the creatd popup and finally we plot this together with one layer of the RasterBrick. 
 
 Try clicking anywhere on the RasterLayer, click into the popup and use keys `left & right, up & down, page up & page down` to navigate through the cubeView in x, y and z dimension, respectively.
 
-```{r mapview popupGraph html, echo=TRUE, message=FALSE}
+```{r mapview popupGraph html1, echo=TRUE, message=FALSE}
 cube <- cubeView(kiliNDVI)
 pop <- popupGraph(cube, type = "html", width = 300, height = 300)
 ext <- viewExtent(kiliNDVI, fillOpacity = 0, opacity = 0, popup = pop)
 ext + kiliNDVI[[1]]
+```
+
+* __html__ example 2:
+
+```{r mapview popupGraph html2}
+library(sp)
+library(jpeg)
+library(raster)
+
+aral <- data.frame(x = 59.250327, 
+                   y = 45.082526)
+coordinates(aral) <- ~ x + y
+proj4string(aral) <- "+init=epsg:4326"
+
+web_img2000 <- "http://cdn.newsapi.com.au/image/v1/68565a36c0fccb1bc43c09d96e8fb029"
+
+jpg2000 <- readJPEG(readBin(web_img2000, "raw", 1e6))
+
+# Convert imagedata to raster
+rst_blue2000 <- raster(jpg2000[, , 1])
+rst_green2000 <- raster(jpg2000[, , 2])
+rst_red2000 <- raster(jpg2000[, , 3])
+
+img2000 <- brick(rst_red2000, rst_green2000, rst_blue2000)
+
+web_img2013 <- "http://cdn.newsapi.com.au/image/v1/5707499d769db4b8ec76e8df61933f2a"
+
+jpg2013 <- readJPEG(readBin(web_img2013, "raw", 1e6))
+
+# Convert imagedata to raster
+rst_blue2013 <- raster(jpg2013[, , 1])
+rst_green2013 <- raster(jpg2013[, , 2])
+rst_red2013 <- raster(jpg2013[, , 3])
+
+img2013 <- brick(rst_red2013, rst_green2013, rst_blue2013)
+
+slide <- slideView(img2000, img2013)
+
+mapview(aral, map.types = "Esri.WorldImagery", popup = popupGraph(slide, type = "html"))
 ```
 
 ------
