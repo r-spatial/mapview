@@ -4,7 +4,7 @@
 \name{poppendorf}
 \alias{poppendorf}
 \title{Landsat 8 detail of Franconian Switzerland centered on Poppendorf}
-\format{\code{"RasterBrick-class"} with 10 bands (layers 8 and 12 have been dropped).}
+\format{\code{"RasterBrick-class"} with 5 bands (bands 1 to 5).}
 \source{
 \url{http://earthexplorer.usgs.gov/}
 }

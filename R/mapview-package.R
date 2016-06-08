@@ -35,8 +35,8 @@ NULL
 #'
 #' @docType data
 #' @name gadmCHE
-#' @title Administrative borders of Switzerland (level 2)
-#' @description Administrative borders of Switzerland (level 2)
+#' @title Administrative borders of Switzerland (level 1)
+#' @description Administrative borders of Switzerland (level 1)
 #' @details This dataset comes from \url{http://gadm.org}.
 #' It was downloaded using \code{\link{getData}}.
 #' @format \code{sp::SpatialPolygonsDataFrame}
@@ -45,26 +45,12 @@ NULL
 NULL
 #'
 #' @docType data
-#' @name kiliNDVI
-#' @title 16-day NDVI of Kilimanjaro
-#' @description 16-day NDVI of Kilimanjaro from January to December 2013
-#' @details 16-day Aqua-MODIS NDVI (MYD13Q1, Collection 6) from 2013,
-#' quality-controlled and Whittaker-smoothed as described in Detsch et al.
-#' (2016; see References).
-#' @references Detsch F, Otte I, Appelhans T, Hemp A, Nauss T (2016) Seasonal
-#' and long-term vegetation dynamics from 1-km GIMMS-based NDVI time series at
-#' Mt. Kilimanjaro, Tanzania. Remote Sensing of Environment 178: 70--83,
-#' doi:10.1016/j.rse.2016.03.007
-#' @format \code{"RasterStack-class"}
-NULL
-#'
-#' @docType data
 #' @name poppendorf
 #' @title Landsat 8 detail of Franconian Switzerland centered on Poppendorf
 #' @description Landsat 8 detail of Franconian Switzerland centered on Poppendorf
 #' @details Use of this data requires your agreement to the USGS regulations on
 #' using Landsat data.
-#' @format \code{"RasterBrick-class"} with 10 bands (layers 8 and 12 have been dropped).
+#' @format \code{"RasterBrick-class"} with 5 bands (bands 1 to 5).
 #' @source
 #' \url{http://earthexplorer.usgs.gov/}
 NULL

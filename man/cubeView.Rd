@@ -35,6 +35,11 @@ move mouse down/up to zoom the cube.
 }
 \examples{
 \dontrun{
+library(raster)
+
+kili_data <- system.file("extdata", "kiliNDVI.tif", package = "mapview")
+kiliNDVI <- stack(kili_data)
+
 cubeView(kiliNDVI)
 
 library(RColorBrewer)
