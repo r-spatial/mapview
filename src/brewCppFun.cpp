@@ -106,8 +106,9 @@ std::string mergePopupRows(CharacterVector names, CharacterVector values) {
     ssName << names[i];
     ssValue << values[i];
 
-    // coords
-    if (names[i] == "Longitude" | names[i] == "Latitude") {
+    // feature id or coords
+    if (names[i] == "Feature ID" |
+          names[i] == "Longitude" | names[i] == "Latitude") {
       chOut = chOut + brewPopupCoords(ssName.str(), ssValue.str());
     } else {
 
@@ -193,14 +194,14 @@ List listPopupTemplates(CharacterMatrix x, CharacterVector names,
 // /*** R
 // # odd version
 // identical(
-//   mapview:::brewPopupRow("carat", .5),
-//   mapview:::brewPopupRowC("carat", .5)
+//   brewPopupRow("carat", .5),
+//   brewPopupRowC("carat", .5)
 // )
 //
 // # even version
 // identical(
-//   mapview:::brewPopupRowAlt("price", 23.75),
-//   mapview:::brewPopupRowAltC("price", 23.75)
+//   brewPopupRowAlt("price", 23.75),
+//   brewPopupRowAltC("price", 23.75)
 // )
 // */
 

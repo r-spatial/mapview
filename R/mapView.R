@@ -9,8 +9,23 @@ if ( !isGeneric('mapView') ) {
 #' this function produces an interactive view of the specified
 #' spatial object(s) on top of the specified base maps.
 #'
+#' @details
+#' If \code{zcol} is not \code{NULL} but a length one character vector
+#' (referring to a column name of the attribute table)
+#' and \code{burst} is \code{TRUE}, one layer for each unique value
+#' of \code{zcol} will be drawn. The same will happen if \code{burst} is
+#' a length one character vector (again referring to a column of
+#' the attribute table). \cr
+#' \cr
+#' The usage of big data sets is performed by loading local copies
+#' of json files from temporary storage. This works fine for most of
+#' the current browsers. If you are using Google's chrome browser you have to
+#' start the browser with the flag \code{-allow-file-access-from-files} (i.e
+#' for windows: "path_to_your_chrome_installation\\chrome.exe --allow-file-access-from-files",
+#' for linux: "/usr/bin/google-chrome --allow-access-from-files").
+#' See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
 #'
-#' @param x a \code{\link{raster}}* object
+#' @param x a \code{Raster*} or \code{Spatial*} object.
 #' @param map an optional existing map to be updated/added to
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
@@ -33,7 +48,10 @@ if ( !isGeneric('mapView') ) {
 #' @param trim should the raster be trimmed in case there are NAs on the egdes
 #' @param verbose should some details be printed during the process
 #' @param layer.name the name of the layer to be shown on the map
-#' @param popup a character vector of the HTML content for the popups. See
+#' @param popup a \code{list} of HTML strings with the popup contents, usually
+#' created from \code{\link{popupTable}}. See \code{\link{addControl}} for
+#' details.
+#' @param label a character vector of labels to be shown on mouseover. See
 #' \code{\link{addControl}} for details.
 #' @param ... additional arguments passed on to repective functions.
 #' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
@@ -59,7 +77,7 @@ if ( !isGeneric('mapView') ) {
 #' mapView(meuse.grid, zcol = "soil")
 #'
 #' # raster stack
-#' m1 <- mapview(poppendorf[[10]])
+#' m1 <- mapview(poppendorf[[5]])
 #' m1
 #'
 #' ### point vector data ###
@@ -73,6 +91,11 @@ if ( !isGeneric('mapView') ) {
 #'
 #' # only one layer, all info in popups
 #' mapview(meuse)
+#'
+#' # one specific layer
+#' mapview(meuse, zcol = "soil") # one layer
+#' mapview(meuse, zcol = "soil", burst = TRUE) # three layers
+#' mapview(meuse, burst = "soil") # identical to above
 #'
 #' ## SpatialPoints ##
 #' meuse_pts <- as(meuse, "SpatialPoints")
@@ -106,20 +129,21 @@ if ( !isGeneric('mapView') ) {
 #' @rdname mapView
 #' @aliases mapView,RasterLayer-method
 
+
 ## RasterLayer ============================================================
 
 setMethod('mapView', signature(x = 'RasterLayer'),
           function(x,
                    map = NULL,
-                   maxpixels = mapviewGetOption("maxpixels"),
+                   maxpixels = mapviewGetOption("mapview.maxpixels"),
                    col.regions = mapviewGetOption("raster.palette")(256),
-                   at,
+                   at = NULL,
                    na.color = mapviewGetOption("na.color"),
                    use.layer.names = FALSE,
                    values = NULL,
                    map.types = mapviewGetOption("basemaps"),
                    alpha.regions = 0.8,
-                   legend = TRUE,
+                   legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
@@ -127,7 +151,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                                                    env = parent.frame())),
                    ...) {
 
-            if (missing(at)) at <- lattice::do.breaks(
+            if (is.null(at)) at <- lattice::do.breaks(
               lattice:::extend.limits(range(x[], na.rm = TRUE)), 256)
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -161,13 +185,13 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 setMethod('mapView', signature(x = 'RasterStackBrick'),
           function(x,
                    map = NULL,
-                   maxpixels = mapviewGetOption("maxpixels"),
+                   maxpixels = mapviewGetOption("mapview.maxpixels"),
                    col.regions = mapviewGetOption("raster.palette")(256),
-                   at,
+                   at = NULL,
                    na.color = mapviewGetOption("na.color"),
                    values = NULL,
                    map.types = mapviewGetOption("basemaps"),
-                   legend = FALSE,
+                   legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
@@ -201,29 +225,36 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
 
 setMethod('mapView', signature(x = 'Satellite'),
           function(x,
+                   map = NULL,
+                   maxpixels = mapviewGetOption("mapview.maxpixels"),
+                   col.regions = mapviewGetOption("raster.palette")(256),
+                   at = NULL,
+                   na.color = mapviewGetOption("na.color"),
+                   values = NULL,
+                   map.types = mapviewGetOption("basemaps"),
+                   legend = mapviewGetOption("legend"),
+                   legend.opacity = 1,
+                   trim = TRUE,
+                   verbose = mapviewGetOption("verbose"),
                    ...) {
 
-            pkgs <- c("leaflet", "satellite", "magrittr")
-            tst <- sapply(pkgs, "requireNamespace",
-                          quietly = TRUE, USE.NAMES = FALSE)
-
-            lyrs <- x@layers
-
-            m <- mapView(lyrs[[1]], ...)
-
-            if (length(lyrs) > 1) {
-              for (i in 2:length(lyrs)) {
-                m <- mapView(lyrs[[i]], m, ...)
-              }
+            if (mapviewGetOption("platform") == "leaflet") {
+              leafletSatellite(x,
+                               map,
+                               maxpixels,
+                               col.regions,
+                               at,
+                               na.color,
+                               values,
+                               map.types,
+                               legend,
+                               legend.opacity,
+                               trim,
+                               verbose,
+                               ...)
+            } else {
+              NULL
             }
-
-            if (length(getLayerNamesFromMap(m)) > 1) {
-              m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
-            }
-
-            out <- new('mapview', object = list(x), map = m)
-
-            return(out)
 
           }
 
@@ -248,55 +279,80 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
 
           }
 )
+## SpatialGridDataFrame =================================================
+#' @describeIn mapView \code{\link{SpatialGridDataFrame}}
+#'
+setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
+          function(x,
+                   zcol = NULL,
+                   ...) {
+
+            if (mapviewGetOption("platform") == "leaflet") {
+              leafletPixelsDF(as(x, "SpatialPixelsDataFrame"),
+                              zcol,
+                              ...)
+            } else {
+              NULL
+            }
+
+          }
+)
 
 
 ## SpatialPointsDataFrame =================================================
 #' @describeIn mapView \code{\link{SpatialPointsDataFrame}}
-#' @param burst whether to show all (TRUE) or only one (FALSE) layers
+#' @param burst whether to show all (TRUE) or only one (FALSE) layer(s).
+#' See also Details.
 #' @param zcol attribute name(s) or column number(s) in attribute table
-#' of the column(s) to be rendered
+#' of the column(s) to be rendered. See also Details.
 #' @param cex attribute name(s) or column number(s) in attribute table
 #' of the column(s) to be used for defining the size of circles
 #' @param lwd line width
 
 setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
           function(x,
-                   zcol = NULL,
                    map = NULL,
-                   burst = FALSE,
-                   color = mapviewGetOption("vector.palette")(256),
-                   na.color = mapviewGetOption("na.color"),
-                   cex = 10,
-                   lwd = 2,
-                   alpha = 0.6,
-                   alpha.regions = 0.2,
                    map.types = mapviewGetOption("basemaps"),
-                   legend = FALSE,
+                   zcol = NULL,
+                   burst = FALSE,
+                   color = mapviewGetOption("vector.palette"),
+                   alpha = 0.8,
+                   col.regions = color,
+                   alpha.regions = 0.2,
+                   na.color = mapviewGetOption("na.color"),
+                   at = NULL,
+                   cex = 8,
+                   lwd = 4,
+                   popup = popupTable(x),
+                   label,
+                   legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
-                   verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   popup = NULL,
+                   verbose = mapviewGetOption("verbose"),
                    ...) {
 
             if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletPointsDF(x,
-                                zcol = zcol,
                                 map = map,
+                                map.types = map.types,
+                                zcol = zcol,
                                 burst = burst,
                                 color = color,
+                                alpha = alpha,
+                                col.regions = col.regions,
+                                alpha.regions = alpha.regions,
                                 na.color = na.color,
+                                at = at,
                                 cex = cex,
                                 lwd = lwd,
-                                alpha = alpha,
-                                alpha.regions = alpha.regions,
-                                map.types = map.types,
+                                popup = popup,
+                                label = label,
                                 legend = legend,
                                 legend.opacity = legend.opacity,
-                                verbose = verbose,
                                 layer.name = layer.name,
-                                popup = popup,
+                                verbose = verbose,
                                 ...)
               } else {
                 NULL
@@ -312,7 +368,8 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                      weight = cex,
                      verbose = verbose,
                      layer.name = layer.name,
-                     popup = popup)
+                     popup = popup,
+                     )
             }
 
           }
@@ -328,17 +385,18 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
           function(x,
                    map = NULL,
                    zcol = NULL,
-                   color = "#460000",
+                   color = mapviewGetOption("vector.palette")(1),
                    na.color = mapviewGetOption("na.color"),
-                   cex = 10,
-                   lwd = 2,
-                   alpha = 0.6,
-                   alpha.regions = 0.2,
+                   cex = 8,
+                   lwd = 4,
+                   alpha = 0.9,
+                   alpha.regions = 0.4,
                    map.types = mapviewGetOption("basemaps"),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   ...) {
+                   label,
+                  ...) {
 
             if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
               if (mapviewGetOption("platform") == "leaflet") {
@@ -346,10 +404,15 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                               map = map,
                               color = color,
                               na.color = na.color,
+                              cex = cex,
+                              lwd = lwd,
+                              alpha = alpha,
+                              alpha.regions = alpha.regions,
                               map.types = map.types,
                               verbose = verbose,
                               layer.name = layer.name,
-                              ...)
+                              label = label,
+                             ...)
               } else {
                 NULL
               }
@@ -363,8 +426,8 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                      alpha = alpha,
                      weight = cex,
                      verbose = verbose,
-                     layer.name = layer.name,
-                     popup = NULL)
+                     layer.name = layer.name
+                    )
             }
 
 
@@ -379,42 +442,48 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
 
 setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
           function(x,
-                   zcol = NULL,
                    map = NULL,
-                   burst = FALSE,
-                   color = mapviewGetOption("vector.palette")(256),
-                   na.color = mapviewGetOption("na.color"),
-                   lwd = 2,
-                   alpha = 0.8,
-                   alpha.regions = 0.2,
-                   values = NULL,
                    map.types = mapviewGetOption("basemaps"),
-                   legend = FALSE,
+                   zcol = NULL,
+                   burst = FALSE,
+                   color = mapviewGetOption("vector.palette"),
+                   alpha = 0.8,
+                   col.regions = color,
+                   alpha.regions = 0.2,
+                   na.color = mapviewGetOption("na.color"),
+                   at = NULL,
+                   cex = 8,
+                   lwd = 2,
+                   popup = popupTable(x),
+                   label,
+                   legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
-                   verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   popup = NULL,
+                   verbose = mapviewGetOption("verbose"),
                    ...) {
 
             if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletPolygonsDF(x,
-                                  zcol = zcol,
                                   map = map,
+                                  map.types = map.types,
+                                  zcol = zcol,
                                   burst = burst,
                                   color = color,
-                                  na.color = na.color,
-                                  lwd = lwd,
                                   alpha = alpha,
+                                  col.regions = col.regions,
                                   alpha.regions = alpha.regions,
-                                  values = values,
-                                  map.types = map.types,
+                                  na.color = na.color,
+                                  at = at,
+                                  cex = cex,
+                                  lwd = lwd,
+                                  popup = popup,
+                                  label = label,
                                   legend = legend,
                                   legend.opacity = legend.opacity,
-                                  verbose = verbose,
                                   layer.name = layer.name,
-                                  popup = popup,
+                                  verbose = verbose,
                                   ...)
               } else {
                 NULL
@@ -445,15 +514,17 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 setMethod('mapView', signature(x = 'SpatialPolygons'),
           function(x,
                    map = NULL,
-                   color = "#460000",
+                   color = mapviewGetOption("vector.palette")(1),
                    na.color = mapviewGetOption("na.color"),
                    map.types = mapviewGetOption("basemaps"),
                    lwd = 2,
-                   alpha.regions = 0.8,
+                   alpha = 0.8,
+                   alpha.regions = 0.2,
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   ...) {
+                   label,
+                  ...) {
 
             if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
               if (mapviewGetOption("platform") == "leaflet") {
@@ -467,7 +538,8 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                                 map.types = map.types,
                                 verbose = verbose,
                                 layer.name = layer.name,
-                                ...)
+                                label = label,
+                               ...)
               } else {
                 NULL
               }
@@ -481,8 +553,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                     alpha.regions = alpha.regions,
                     lwd = lwd,
                     verbose = verbose,
-                    layer.name = layer.name,
-                    popup = NULL)
+                    layer.name = layer.name)
             }
 
           }
@@ -494,40 +565,48 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
 
 setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
           function(x,
-                   zcol = NULL,
                    map = NULL,
-                   burst = FALSE,
-                   color = mapviewGetOption("vector.palette")(256),
-                   na.color = mapviewGetOption("na.color"),
-                   lwd = 2,
-                   alpha = 0.8,
-                   values = NULL,
                    map.types = mapviewGetOption("basemaps"),
-                   legend = FALSE,
+                   zcol = NULL,
+                   burst = FALSE,
+                   color = mapviewGetOption("vector.palette"),
+                   alpha = 0.8,
+                   col.regions = color,
+                   alpha.regions = 0.2,
+                   na.color = mapviewGetOption("na.color"),
+                   at = NULL,
+                   cex = 8,
+                   lwd = 2,
+                   popup = popupTable(x),
+                   label,
+                   legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
-                   verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   popup = NULL,
+                   verbose = mapviewGetOption("verbose"),
                    ...) {
 
             if (length(x@lines) < mapviewGetOption("maxlines")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletLinesDF(x,
-                               zcol = zcol,
                                map = map,
+                               map.types = map.types,
+                               zcol = zcol,
                                burst = burst,
                                color = color,
-                               na.color = na.color,
-                               lwd = lwd,
                                alpha = alpha,
-                               values = values,
-                               map.types = map.types,
+                               col.regions = col.regions,
+                               alpha.regions = alpha.regions,
+                               na.color = na.color,
+                               at = at,
+                               cex = cex,
+                               lwd = lwd,
+                               popup = popup,
+                               label = label,
                                legend = legend,
                                legend.opacity = legend.opacity,
-                               verbose = verbose,
                                layer.name = layer.name,
-                               popup = popup,
+                               verbose = verbose,
                                ...)
               } else {
                 NULL
@@ -560,7 +639,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
           function(x,
                    map = NULL,
                    zcol = NULL,
-                   color = "#460000",
+                   color = mapviewGetOption("vector.palette")(1),
                    na.color = mapviewGetOption("na.color"),
                    lwd = 2,
                    alpha = 0.8,
@@ -568,7 +647,8 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   ...) {
+                   label,
+                  ...) {
 
             if (length(x@lines) < mapviewGetOption("maxlines")) {
               if (mapviewGetOption("platform") == "leaflet") {
@@ -581,7 +661,8 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                              map.types = map.types,
                              verbose = verbose,
                              layer.name = layer.name,
-                             ...)
+                             label = label,
+                            ...)
               } else {
                 NULL
               }
@@ -595,8 +676,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                     alpha.regions = alpha,
                     lwd = lwd,
                     verbose = verbose,
-                    layer.name = layer.name,
-                    popup = NULL)
+                    layer.name = layer.name)
             }
 
           }

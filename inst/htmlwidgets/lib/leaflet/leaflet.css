@@ -21,6 +21,7 @@
 .leaflet-container {
 	overflow: hidden;
 	-ms-touch-action: none;
+	touch-action: none;
 	}
 .leaflet-tile,
 .leaflet-marker-icon,
@@ -476,11 +477,3 @@
 	background: #fff;
 	border: 1px solid #666;
 	}
-
-.leaflet-lnlt {
-    position: absolute;
-    top: 0;
-    right:  30px;
-    color: 	black;
-    font-size: xx-small;
-      }

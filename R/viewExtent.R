@@ -16,6 +16,7 @@
 #' Tim Appelhans
 #'
 #' @examples
+#' \dontrun{
 #' ### raster data ###
 #' library(sp)
 #' library(raster)
@@ -26,6 +27,7 @@
 #' gridded(meuse.grid) = TRUE
 #'
 #' viewExtent(meuse.grid)
+#' }
 #'
 #' @export viewExtent
 #' @name viewExtent
@@ -53,6 +55,9 @@ viewExtent <- function(x,
   m <- mapViewLayersControl(map = m,
                             map.types = map.types,
                             names = grp)
+
+  if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+  m <- addMouseCoordinates(m)
 
   out <- methods::new('mapview', object = out_obj, map = m)
 
@@ -122,26 +127,26 @@ addExtent <- function(x, map, popup, ...) {
 
 
 
-### extent without crs ====================================================
-
-viewExtentNoRef <- function(x,
-                            popup = NULL,
-                            ...) {
-
-  ext <- raster::extent(x)
-
-  m <- leaflet::leaflet()
-  m <- leaflet::addRectangles(map = m,
-                              lng1 = ext@xmin,
-                              lat1 = ext@ymin,
-                              lng2 = ext@xmax,
-                              lat2 = ext@ymax,
-                              popup = popup,
-                              ...)
-
-  out <- methods::new('mapview', object = list(ext), map = m)
-
-  return(out)
-}
-
+# ### extent without crs ====================================================
+#
+# viewExtentNoRef <- function(x,
+#                             popup = NULL,
+#                             ...) {
+#
+#   ext <- raster::extent(x)
+#
+#   m <- leaflet::leaflet()
+#   m <- leaflet::addRectangles(map = m,
+#                               lng1 = ext@xmin,
+#                               lat1 = ext@ymin,
+#                               lng2 = ext@xmax,
+#                               lat2 = ext@ymax,
+#                               popup = popup,
+#                               ...)
+#
+#   out <- methods::new('mapview', object = list(ext), map = m)
+#
+#   return(out)
+# }
+#
 

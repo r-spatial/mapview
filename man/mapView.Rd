@@ -6,6 +6,7 @@
 \alias{mapView,RasterLayer-method}
 \alias{mapView,RasterStackBrick-method}
 \alias{mapView,Satellite-method}
+\alias{mapView,SpatialGridDataFrame-method}
 \alias{mapView,SpatialLines-method}
 \alias{mapView,SpatialLinesDataFrame-method}
 \alias{mapView,SpatialPixelsDataFrame-method}
@@ -19,70 +20,82 @@
 \title{View spatial objects interactively}
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL,
-  maxpixels = mapviewGetOption("maxpixels"),
-  col.regions = mapviewGetOption("raster.palette")(256), at,
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
+  col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
   na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
   values = NULL, map.types = mapviewGetOption("basemaps"),
-  alpha.regions = 0.8, legend = TRUE, legend.opacity = 1, trim = TRUE,
-  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), ...)
+  alpha.regions = 0.8, legend = mapviewGetOption("legend"),
+  legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
+  layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
-  maxpixels = mapviewGetOption("maxpixels"),
-  col.regions = mapviewGetOption("raster.palette")(256), at,
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
+  col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
   na.color = mapviewGetOption("na.color"), values = NULL,
-  map.types = mapviewGetOption("basemaps"), legend = FALSE,
-  legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
-  ...)
+  map.types = mapviewGetOption("basemaps"),
+  legend = mapviewGetOption("legend"), legend.opacity = 1, trim = TRUE,
+  verbose = mapviewGetOption("verbose"), ...)
 
-\S4method{mapView}{Satellite}(x, ...)
+\S4method{mapView}{Satellite}(x, map = NULL,
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
+  col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
+  na.color = mapviewGetOption("na.color"), values = NULL,
+  map.types = mapviewGetOption("basemaps"),
+  legend = mapviewGetOption("legend"), legend.opacity = 1, trim = TRUE,
+  verbose = mapviewGetOption("verbose"), ...)
 
 \S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL, ...)
 
-\S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapviewGetOption("vector.palette")(256),
-  na.color = mapviewGetOption("na.color"), cex = 10, lwd = 2,
-  alpha = 0.6, alpha.regions = 0.2,
-  map.types = mapviewGetOption("basemaps"), legend = FALSE,
-  legend.opacity = 1, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
-  ...)
+\S4method{mapView}{SpatialGridDataFrame}(x, zcol = NULL, ...)
+
+\S4method{mapView}{SpatialPointsDataFrame}(x, map = NULL,
+  map.types = mapviewGetOption("basemaps"), zcol = NULL, burst = FALSE,
+  color = mapviewGetOption("vector.palette"), alpha = 0.8,
+  col.regions = color, alpha.regions = 0.2,
+  na.color = mapviewGetOption("na.color"), at = NULL, cex = 8, lwd = 4,
+  popup = popupTable(x), label, legend = mapviewGetOption("legend"),
+  legend.opacity = 1, layer.name = deparse(substitute(x, env =
+  parent.frame())), verbose = mapviewGetOption("verbose"), ...)
 
 \S4method{mapView}{SpatialPoints}(x, map = NULL, zcol = NULL,
-  color = "#460000", na.color = mapviewGetOption("na.color"), cex = 10,
-  lwd = 2, alpha = 0.6, alpha.regions = 0.2,
+  color = mapviewGetOption("vector.palette")(1),
+  na.color = mapviewGetOption("na.color"), cex = 8, lwd = 4,
+  alpha = 0.9, alpha.regions = 0.4,
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), ...)
+  env = parent.frame())), label, ...)
 
-\S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapviewGetOption("vector.palette")(256),
-  na.color = mapviewGetOption("na.color"), lwd = 2, alpha = 0.8,
-  alpha.regions = 0.2, values = NULL,
-  map.types = mapviewGetOption("basemaps"), legend = FALSE,
-  legend.opacity = 1, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
-  ...)
+\S4method{mapView}{SpatialPolygonsDataFrame}(x, map = NULL,
+  map.types = mapviewGetOption("basemaps"), zcol = NULL, burst = FALSE,
+  color = mapviewGetOption("vector.palette"), alpha = 0.8,
+  col.regions = color, alpha.regions = 0.2,
+  na.color = mapviewGetOption("na.color"), at = NULL, cex = 8, lwd = 2,
+  popup = popupTable(x), label, legend = mapviewGetOption("legend"),
+  legend.opacity = 1, layer.name = deparse(substitute(x, env =
+  parent.frame())), verbose = mapviewGetOption("verbose"), ...)
 
-\S4method{mapView}{SpatialPolygons}(x, map = NULL, color = "#460000",
+\S4method{mapView}{SpatialPolygons}(x, map = NULL,
+  color = mapviewGetOption("vector.palette")(1),
   na.color = mapviewGetOption("na.color"),
-  map.types = mapviewGetOption("basemaps"), lwd = 2, alpha.regions = 0.8,
-  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), ...)
+  map.types = mapviewGetOption("basemaps"), lwd = 2, alpha = 0.8,
+  alpha.regions = 0.2, verbose = mapviewGetOption("verbose"),
+  layer.name = deparse(substitute(x, env = parent.frame())), label, ...)
 
-\S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, map = NULL,
-  burst = FALSE, color = mapviewGetOption("vector.palette")(256),
-  na.color = mapviewGetOption("na.color"), lwd = 2, alpha = 0.8,
-  values = NULL, map.types = mapviewGetOption("basemaps"), legend = FALSE,
-  legend.opacity = 1, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())), popup = NULL,
-  ...)
+\S4method{mapView}{SpatialLinesDataFrame}(x, map = NULL,
+  map.types = mapviewGetOption("basemaps"), zcol = NULL, burst = FALSE,
+  color = mapviewGetOption("vector.palette"), alpha = 0.8,
+  col.regions = color, alpha.regions = 0.2,
+  na.color = mapviewGetOption("na.color"), at = NULL, cex = 8, lwd = 2,
+  popup = popupTable(x), label, legend = mapviewGetOption("legend"),
+  legend.opacity = 1, layer.name = deparse(substitute(x, env =
+  parent.frame())), verbose = mapviewGetOption("verbose"), ...)
 
 \S4method{mapView}{SpatialLines}(x, map = NULL, zcol = NULL,
-  color = "#460000", na.color = mapviewGetOption("na.color"), lwd = 2,
-  alpha = 0.8, map.types = mapviewGetOption("basemaps"),
+  color = mapviewGetOption("vector.palette")(1),
+  na.color = mapviewGetOption("na.color"), lwd = 2, alpha = 0.8,
+  map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), ...)
+  env = parent.frame())), label, ...)
 
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
   easter.egg = FALSE)
@@ -90,7 +103,7 @@
 \S4method{mapview}{ANY}(...)
 }
 \arguments{
-\item{x}{a \code{\link{raster}}* object}
+\item{x}{a \code{Raster*} or \code{Spatial*} object.}
 
 \item{map}{an optional existing map to be updated/added to}
 
@@ -131,20 +144,25 @@ See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
 
 \item{zcol}{attribute name(s) or column number(s) in attribute table
-of the column(s) to be rendered}
+of the column(s) to be rendered. See also Details.}
 
-\item{burst}{whether to show all (TRUE) or only one (FALSE) layers}
+\item{burst}{whether to show all (TRUE) or only one (FALSE) layer(s).
+See also Details.}
 
 \item{color}{color (palette) for points/polygons/lines}
+
+\item{alpha}{opacity of the lines or points}
 
 \item{cex}{attribute name(s) or column number(s) in attribute table
 of the column(s) to be used for defining the size of circles}
 
 \item{lwd}{line width}
 
-\item{alpha}{opacity of the lines or points}
+\item{popup}{a \code{list} of HTML strings with the popup contents, usually
+created from \code{\link{popupTable}}. See \code{\link{addControl}} for
+details.}
 
-\item{popup}{a character vector of the HTML content for the popups. See
+\item{label}{a character vector of labels to be shown on mouseover. See
 \code{\link{addControl}} for details.}
 
 \item{easter.egg}{well, you might find out if you set this to TRUE}
@@ -153,6 +171,22 @@ of the column(s) to be used for defining the size of circles}
 this function produces an interactive view of the specified
 spatial object(s) on top of the specified base maps.
 }
+\details{
+If \code{zcol} is not \code{NULL} but a length one character vector
+(referring to a column name of the attribute table)
+and \code{burst} is \code{TRUE}, one layer for each unique value
+of \code{zcol} will be drawn. The same will happen if \code{burst} is
+a length one character vector (again referring to a column of
+the attribute table). \cr
+\cr
+The usage of big data sets is performed by loading local copies
+of json files from temporary storage. This works fine for most of
+the current browsers. If you are using Google's chrome browser you have to
+start the browser with the flag \code{-allow-file-access-from-files} (i.e
+for windows: "path_to_your_chrome_installation\\chrome.exe --allow-file-access-from-files",
+for linux: "/usr/bin/google-chrome --allow-access-from-files").
+See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
+}
 \section{Methods (by class)}{
 \itemize{
 \item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{brick}}
@@ -160,6 +194,8 @@ spatial object(s) on top of the specified base maps.
 \item \code{Satellite}: \code{\link{satellite}}
 
 \item \code{SpatialPixelsDataFrame}: \code{\link{SpatialPixelsDataFrame}}
+
+\item \code{SpatialGridDataFrame}: \code{\link{SpatialGridDataFrame}}
 
 \item \code{SpatialPointsDataFrame}: \code{\link{SpatialPointsDataFrame}}
 
@@ -194,7 +230,7 @@ gridded(meuse.grid) <- TRUE
 mapView(meuse.grid, zcol = "soil")
 
 # raster stack
-m1 <- mapview(poppendorf[[10]])
+m1 <- mapview(poppendorf[[5]])
 m1
 
 ### point vector data ###
@@ -208,6 +244,11 @@ mapview(meuse, burst = TRUE)
 
 # only one layer, all info in popups
 mapview(meuse)
+
+# one specific layer
+mapview(meuse, zcol = "soil") # one layer
+mapview(meuse, zcol = "soil", burst = TRUE) # three layers
+mapview(meuse, burst = "soil") # identical to above
 
 ## SpatialPoints ##
 meuse_pts <- as(meuse, "SpatialPoints")

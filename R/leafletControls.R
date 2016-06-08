@@ -146,7 +146,7 @@ wmcrs <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=
 llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
 
 
-# Check size of Raster* objects for mapView -------------------------------
+# Check size of out <- methods::new('mapview', object = out_obj, map = m)out <- methods::new('mapview', object = out_obj, map = m)out <- methods::new('mapview', object = out_obj, map = m)* objects for mapView -------------------------------
 
 rasterCheckSize <- function(x, maxpixels) {
   if (maxpixels < raster::ncell(x)) {
@@ -195,17 +195,19 @@ rasterCheckAdjustProjection <- function(x) {
 
 initBaseMaps <- function(map.types) {
   ## create base map using specified map types
-  if (missing(map.types)) map.types <- c("OpenStreetMap",
-                                         "Esri.WorldImagery")
-    m <- leaflet::leaflet()
-    m <- leaflet::addProviderTiles(m, provider = map.types[1],
-                                   group = map.types[1])
-    if (length(map.types) > 1) {
-      for (i in 2:length(map.types)) {
-        m <- leaflet::addProviderTiles(m, provider = map.types[i],
-                                       group = map.types[i])
-      }
+  if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
+  leafletHeight <- mapviewGetOption("leafletHeight")
+  leafletWidth <- mapviewGetOption("leafletWidth")
+  lid <- 1:length(map.types)
+  m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth)
+  m <- leaflet::addProviderTiles(m, provider = map.types[1],
+                                 layerId = lid[1], group = map.types[1])
+  if (length(map.types) > 1) {
+    for (i in 2:length(map.types)) {
+      m <- leaflet::addProviderTiles(m, provider = map.types[i],
+                                     layerId = lid[i], group = map.types[i])
     }
+  }
   return(m)
 }
 
@@ -214,18 +216,21 @@ initBaseMaps <- function(map.types) {
 
 initMap <- function(map, map.types, proj4str) {
 
-  if (missing(map.types)) map.types <- c("OpenStreetMap",
-                                         "Esri.WorldImagery")
+  if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
+
   if (missing(map) & missing(map.types)) {
     map <- NULL
-    map.types <- c("OpenStreetMap",
-                   "Esri.WorldImagery")
+    map.types <- mapviewGetOption("basemaps")
   }
+
+  leafletHeight <- mapviewGetOption("leafletHeight")
+  leafletWidth <- mapviewGetOption("leafletWidth")
+
   if (missing(proj4str)) proj4str <- NA
   ## create base map using specified map types
   if (is.null(map)) {
     if (is.na(proj4str)) {
-      m <- leaflet::leaflet()
+      m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth)
     } else {
       m <- initBaseMaps(map.types)
     }
@@ -240,9 +245,13 @@ initMap <- function(map, map.types, proj4str) {
 
 scaleCoordinates <- function(x.coords, y.coords) {
 
-  ratio <- diff(range(y.coords)) / diff(range(x.coords))
-  x_sc <- scales::rescale(x.coords, to = c(0, 1))
-  y_sc <- scales::rescale(y.coords, to = c(0, 1)) * ratio
+  if (length(x.coords) == 1) {
+    x_sc <- y_sc <- 0
+  } else {
+    ratio <- diff(range(y.coords)) / diff(range(x.coords))
+    x_sc <- scales::rescale(x.coords, to = c(0, 1))
+    y_sc <- scales::rescale(y.coords, to = c(0, 1)) * ratio
+  }
   return(cbind(x_sc, y_sc))
 
 }
@@ -288,16 +297,31 @@ scalePolygonsCoordinates <- function(x) {
   y_mn <- min(ycoords, na.rm = TRUE)
   y_mx <- max(ycoords - min(ycoords, na.rm = TRUE), na.rm = TRUE)
 
-  for (j in seq(coord_lst)) {
-    for (h in seq(coord_lst[[j]])) {
-      methods::slot(x@polygons[[j]]@Polygons[[h]], "coords") <-
-        cbind((sp::coordinates(x@polygons[[j]]@Polygons[[h]])[, 1] - x_mn) / x_mx,
-              (sp::coordinates(x@polygons[[j]]@Polygons[[h]])[, 2] - y_mn) / y_mx)
-    }
-  }
+  do.call("rbind", lapply(seq(coord_lst), function(j) {
 
-  return(x)
+    ## extract current 'Polygons'
+    pys <- x@polygons[[j]]
 
+    lst <- lapply(seq(pys@Polygons), function(h) {
+
+      # extract current 'Polygon'
+      py <- pys@Polygons[[h]]
+
+      # rescale coordinates
+      crd <- sp::coordinates(py)
+      coords_rscl <- cbind((crd[, 1] - x_mn) / x_mx,
+                           (crd[, 2] - y_mn) / y_mx * ratio)
+
+      # assign new coordinates and label point
+      methods::slot(py, "coords") <- coords_rscl
+      methods::slot(py, "labpt") <- range(coords_rscl)
+
+      return(py)
+    })
+
+    sp::SpatialPolygons(list(sp::Polygons(lst, ID = pys@ID)),
+                        proj4string = sp::CRS(sp::proj4string(x)))
+  }))
 }
 
 
@@ -329,16 +353,30 @@ scaleLinesCoordinates <- function(x) {
   y_mn <- min(ycoords, na.rm = TRUE)
   y_mx <- max(ycoords - min(ycoords, na.rm = TRUE), na.rm = TRUE)
 
-  for (j in seq(coord_lst)) {
-    for (h in seq(coord_lst[[j]])) {
-      methods::slot(x@lines[[j]]@Lines[[h]], "coords") <-
-        cbind((sp::coordinates(x@lines[[j]]@Lines[[h]])[, 1] - x_mn) / x_mx,
-              (sp::coordinates(x@lines[[j]]@Lines[[h]])[, 2] - y_mn) / y_mx)
-    }
-  }
+  do.call("rbind", lapply(seq(coord_lst), function(j) {
 
-  return(x)
+    ## extract current 'Lines'
+    lns <- x@lines[[j]]
 
+    lst <- lapply(seq(lns@Lines), function(h) {
+
+      # extract current 'Line'
+      ln <- lns@Lines[[h]]
+
+      # rescale coordinates
+      crd <- sp::coordinates(ln)
+      coords_rscl <- cbind((crd[, 1] - x_mn) / x_mx,
+                           (crd[, 2] - y_mn) / y_mx * ratio)
+
+      # assign new coordinates and label point
+      methods::slot(ln, "coords") <- coords_rscl
+
+      return(ln)
+    })
+
+    sp::SpatialLines(list(sp::Lines(lst, ID = lns@ID)),
+                        proj4string = sp::CRS(sp::proj4string(x)))
+  }))
 }
 
 
@@ -428,10 +466,16 @@ checkAdjustProjection <- function(x) {
 
 mapViewLayersControl <- function(map, map.types, names) {
 
+  if (!length(getLayerControlEntriesFromMap(map))) {
+    bgm <- map.types
+  } else {
+    bgm <- map$x$calls[[getLayerControlEntriesFromMap(map)[1]]]$args[[1]]
+  }
+
   m <- leaflet::addLayersControl(map = map,
                                  position = mapviewGetOption(
                                    "layers.control.pos"),
-                                 baseGroups = map.types,
+                                 baseGroups = bgm,
                                  overlayGroups = c(
                                    getLayerNamesFromMap(map),
                                    names))
@@ -468,11 +512,12 @@ mapViewLayersControl <- function(map, map.types, names) {
 
 # Set or calculate circle radius ------------------------------------------
 
-circleRadius <- function(x, radius) {
-  if (is.character(radius)) {
-    rad <- scales::rescale(as.numeric(x@data[, radius]), to = c(3, 20))
-  } else rad <- radius
+circleRadius <- function(x, radius = 8, min.rad = 3, max.rad = 20) {
 
+  if (is.character(radius)) {
+    rad <- scales::rescale(as.numeric(x@data[, radius]),
+                           to = c(min.rad, max.rad))
+  } else rad <- radius
   return(rad)
 }
 
@@ -480,26 +525,52 @@ circleRadius <- function(x, radius) {
 
 # Check sp objects --------------------------------------------------------
 
-spCheckObject <- function(x, verbose) {
+spCheckObject <- function(x) {
 
-  ## check and remove data columns where all NA
+  ## convert chracter columns to factor columns
+  for (i in names(x)) {
+    if (is.character(x@data[, i])) {
+      x@data[, i] <- as.factor(x@data[, i])
+    }
+  }
+
+  ## check and remove data columns where all NA; if all columns solely contain
+  ## NA values, the data columns are not omitted
   if (any(methods::slotNames(x) %in% "data")) {
     all_na_index <- sapply(seq(x@data), function(i) {
       all(is.na(x@data[, i]))
     })
-    if(verbose & any(all_na_index)) {
-      cat(paste("columns:",
-                paste(colnames(x@data)[all_na_index],
-                      collapse = "and"),
-                "in attribute table only have NA values and are dropped"))
+    if (any(all_na_index)) {
+      if (all(all_na_index)) {
+        cl <- gsub("DataFrame", "", class(x)[1])
+        warning("Attribute table associated with 'x' contains only NA values. Converting to '", cl, "' object.")
+        x <- as(x, cl)
+      } else {
+        warning("Columns ",
+                paste(colnames(x@data)[all_na_index], collapse = ", "),
+                " in attribute table contain only NA values and are dropped.")
+        x <- x[, !all_na_index]
+      }
     }
-    x <- x[, !all_na_index]
   }
+
   return(x)
 }
 
+### print.saveas --------------------------------------------------------
 
+#print.saveas <- function(x, ...){
+#  class(x) = class(x)[class(x)!="saveas"]
+#  htmltools::save_html(x, file=attr(x,"filesave"))
+#}
 
+### print.saveas --------------------------------------------------------
+
+#saveas <- function(map, file){
+#  class(map) <- c("saveas",class(map))
+#  attr(map,"filesave")=file
+#  map
+#}
 
 
 

@@ -14,9 +14,10 @@
 #' \cr
 #' \emph{Maintainer:} Tim Appelhans \email{admin@@environmentalinformatics-marburg.de}
 #'
-#' @import leaflet sp raster satellite scales Rcpp methods png lattice rgdal gdalUtils latticeExtra rasterVis OpenStreetMap
-#' @importFrom grDevices rgb
-#' @importFrom utils write.table
+#' @import leaflet sp raster satellite scales Rcpp methods png lattice rgdal gdalUtils latticeExtra viridisLite
+#' @importFrom grDevices rgb dev.off png svg
+#' @importFrom utils write.table find
+#' @importFrom webshot webshot
 #'
 #' @useDynLib mapview
 #' @keywords package
@@ -34,8 +35,8 @@ NULL
 #'
 #' @docType data
 #' @name gadmCHE
-#' @title Administrative borders of Switzerland (level 2)
-#' @description Administrative borders of Switzerland (level 2)
+#' @title Administrative borders of Switzerland (level 1)
+#' @description Administrative borders of Switzerland (level 1)
 #' @details This dataset comes from \url{http://gadm.org}.
 #' It was downloaded using \code{\link{getData}}.
 #' @format \code{sp::SpatialPolygonsDataFrame}
@@ -44,32 +45,12 @@ NULL
 NULL
 #'
 #' @docType data
-#' @name hillshadeCHE
-#' @title Hillshade raster of Switzerland
-#' @description Hillshade raster of Switzerland
-#' @details This dataset was created following the example
-#' at \code{\link{hillShade}}.
-#' @format \code{"RasterLayer-class"}
-NULL
-#'
-#' @docType data
-#' @name tmeanCHE
-#' @title Mean January temperature for Switzerland
-#' @description Mean January temperature for Switzerland
-#' @details This dataset was modified (resampled) from the example
-#' at \code{\link{getData}}.
-#' @format \code{"RasterLayer-class"}
-#' @source
-#' \url{http://worldclim.org}
-NULL
-#'
-#' @docType data
 #' @name poppendorf
 #' @title Landsat 8 detail of Franconian Switzerland centered on Poppendorf
 #' @description Landsat 8 detail of Franconian Switzerland centered on Poppendorf
 #' @details Use of this data requires your agreement to the USGS regulations on
 #' using Landsat data.
-#' @format \code{"RasterBrick-class"} with 10 bands (layers 8 and 12 have been dropped).
+#' @format \code{"RasterBrick-class"} with 5 bands (bands 1 to 5).
 #' @source
 #' \url{http://earthexplorer.usgs.gov/}
 NULL

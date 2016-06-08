@@ -69,13 +69,12 @@ if ( !isGeneric('viewRGB') ) {
 #' @name viewRGB
 #' @rdname viewRGB
 #' @aliases viewRGB,RasterStackBrick-method
-NULL
 
 setMethod("viewRGB", signature(x = "RasterStackBrick"),
           function(x, r = 3, g = 2, b = 1,
                    quantiles = c(0.02, 0.98),
                    map = NULL,
-                   maxpixels = mapviewGetOption("maxpixels"),
+                   maxpixels = mapviewGetOption("mapview.maxpixels"),
                    map.types = mapviewGetOption("basemaps"),
                    na.color = mapviewGetOption("na.color"),
                    layer.name = deparse(substitute(x,
@@ -115,6 +114,9 @@ setMethod("viewRGB", signature(x = "RasterStackBrick"),
             m <- mapViewLayersControl(map = m,
                                       map.types = map.types,
                                       names = grp)
+
+            if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+            m <- addMouseCoordinates(m)
 
             out <- methods::new('mapview', object = list(xout), map = m)
 

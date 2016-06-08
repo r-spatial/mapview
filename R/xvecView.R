@@ -58,7 +58,7 @@ if (!isGeneric('xVecView')) {
 #   coordinates(big) <- ~x+y
 #   proj4string(big) <- CRS("+init=epsg:4326")
 
-#   mapview:::fpView(big, color = 'blue')
+#   fpView(big, color = 'blue')
 
 
 # ### some benchmarks
@@ -70,6 +70,7 @@ if (!isGeneric('xVecView')) {
 fpView <- function(x,
                    zcol = NULL,
                    color = mapviewGetOption("vector.palette")(256),
+                   at = NULL,
                    na.color = mapviewGetOption("na.color"),
                    values = NULL,
                    map.types = mapviewGetOption("basemaps"),
@@ -142,6 +143,8 @@ fpView <- function(x,
       }
     }
 
+    color <- mapviewColors(x, colors = color, at = at, na.color = na.color)
+
     # create list of user data that is passed to the widget
     lst_x = list(
       color = col2Hex(color),
@@ -182,7 +185,10 @@ fpViewInternal <- function(jFn = NULL, x = NULL) {
   sizing = htmlwidgets::sizingPolicy(
     browser.fill = TRUE,
     viewer.fill = TRUE,
-    viewer.padding = 5
+    viewer.padding = 5,
+    defaultWidth =  mapviewGetOption("leafletWidth"),
+    defaultHeight = mapviewGetOption("leafletHeight")
+
   )
 
 
@@ -200,7 +206,7 @@ fpViewInternal <- function(jFn = NULL, x = NULL) {
 
 ### fpViewOutput Widget output function for use in Shiny =================================================
 #
-fpViewOutput <- function(outputId, width = '100%', height = '400px') {
+fpViewOutput <- function(outputId, width = mapviewGetOption("leafletWidth"), height = mapviewGetOption("leafletHeight")) {
   htmlwidgets::shinyWidgetOutput(outputId, 'fpView', width, height, package = 'mapview')
 }
 
@@ -287,16 +293,19 @@ renderfpView <- function(expr, env = parent.frame(), quoted = FALSE) {
 ### bView  function Leaflet maps for big line and polygon data sets =================================================
 
 bView <- function(x,
-                  zcol,
-                  color,
-                  na.color,
+                  zcol = NULL,
+                  color = mapviewGetOption("vector.palette"),
+                  at = NULL,
+                  na.color = mapviewGetOption("na.color"),
                   values,
-                  map.types,
-                  alpha.regions,
-                  lwd,
-                  verbose,
-                  layer.name,
-                  popup) {
+                  map.types = mapviewGetOption("basemaps"),
+                  alpha.regions = 0.2,
+                  lwd = 2,
+                  verbose = mapviewGetOption("verbose"),
+                  layer.name = deparse(substitute(x,
+                                                  env = parent.frame())),
+                  popup = NULL)
+  {
 
 
   ## temp dir
@@ -378,6 +387,8 @@ bView <- function(x,
     NULL
   }
 
+  color <- mapviewColors(x, colors = color, at = at, na.color = na.color)
+
   # create list of user data that is passed to the widget
   lst_x <- list(color = col2Hex(color),
                 layer = map.types,
@@ -416,7 +427,11 @@ bViewInternal <- function(jFn = NULL, x = NULL) {
   sizing = htmlwidgets::sizingPolicy(
     browser.fill = TRUE,
     viewer.fill = TRUE,
-    viewer.padding = 5
+    viewer.padding = 5,
+    defaultWidth =  mapviewGetOption("leafletWidth"),
+    defaultHeight = mapviewGetOption("leafletHeight")
+
+
   )
   # create widget
   htmlwidgets::createWidget(
@@ -430,7 +445,7 @@ bViewInternal <- function(jFn = NULL, x = NULL) {
 
 ### Widget output function for use in Shiny =================================================
 #
-bViewOutput <- function(outputId, width = '100%', height = '400px') {
+bViewOutput <- function(outputId, width = mapviewGetOption("leafletWidth"), height = mapviewGetOption("leafletHeight")) {
   htmlwidgets::shinyWidgetOutput(outputId, 'bView', width, height, package = 'mapview')
 }
 

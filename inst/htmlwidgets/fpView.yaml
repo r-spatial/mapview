@@ -23,6 +23,18 @@ dependencies:
           - leaflet.label.css
           - gh-fork-ribbon.css
           - gh-fork-ribbon.ie.css
+  - name: tiles
+    version: 0.0.1
+    src: "htmlwidgets/lib/gdaltiles"
+    script:
+      - rastercoords.js
+  - name: proj4leafet
+    version: 0.7.2
+    src: "htmlwidgets/lib/proj4leaflet"
+    script:
+      - proj4-compressed.js
+      - proj4.js
+      - proj4leaflet.js
   - name: glify
     version: 0.0.1
     src: "htmlwidgets/lib/glify"
