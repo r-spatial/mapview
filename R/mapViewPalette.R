@@ -1,8 +1,8 @@
-#' Default color palette for mapview
+#' Color palettes for mapview
 #'
-#' @param n the number of colours to be created
-#' @param name name of the color palette to be used. One of
-#' "mapviewSpectralColors" (default) or "mapviewTopoColors"
+#' @param name Name of the color palette to be used. One of
+#' "mapviewVectorColors" (default), "mapviewRasterColors",
+#' "mapviewSpectralColors" or "mapviewTopoColors".
 #'
 #' @author
 #' Tim Appelhans
@@ -14,7 +14,7 @@
 #' @export mapviewPalette
 #' @aliases mapviewPalette
 
-mapviewPalette <- function(name, ...) {
+mapviewPalette <- function(name = "mapviewVectorColors") {
 
   switch(name,
          mapviewRasterColors = viridisLite::inferno,
@@ -40,7 +40,7 @@ mapviewPalette <- function(name, ...) {
 #' @aliases mapViewPalette
 #' @export mapViewPalette
 
-mapViewPalette <- function(name, ...) {
+mapViewPalette <- function(name) {
   mapviewPalette(name)
 }
 

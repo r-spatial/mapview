@@ -101,7 +101,7 @@ leafletRL <- function(x,
                             map.types = map.types,
                             names = grp)
 
-  if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+  if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
 
   out <- new('mapview', object = list(x), map = m)
@@ -338,7 +338,7 @@ leafletPointsDF <- function(x,
                               map.types = map.types,
                               names = grp)
 
-    if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+    if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
 
     out <- new('mapview', object = list(x), map = m)
@@ -411,7 +411,7 @@ leafletPoints <- function(x,
                             map.types = map.types,
                             names = grp)
 
-  if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+  if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
 
   out <- new('mapview', object = list(x), map = m)
@@ -545,7 +545,7 @@ leafletPolygonsDF <- function(x,
                               map.types = map.types,
                               names = grp)
 
-    if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+    if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
 
     out <- new('mapview', object = list(x), map = m)
@@ -614,7 +614,7 @@ leafletPolygons <- function(x,
                             map.types = map.types,
                             names = grp)
 
-  if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+  if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
 
   out <- new('mapview', object = list(x), map = m)
@@ -805,7 +805,7 @@ leafletLinesDF <- function(x,
                               map.types = map.types,
                               names = grp)
 
-    if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+    if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
 
     out <- new('mapview', object = list(x), map = m)
@@ -926,7 +926,7 @@ leafletLines <- function(x,
                             map.types = map.types,
                             names = grp)
 
-  if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+  if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
 
   out <- new('mapview', object = list(x), map = m)
@@ -1232,7 +1232,7 @@ leafletMissing <- function(map.types,
     m <- mapViewLayersControl(map = m, map.types = map.types,
                               names = "envinMR")
     m <- leaflet::setView(map = m, 8.771676, 50.814891, zoom = 18)
-    if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+    if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
     out <- new('mapview', object = list(NULL), map = m)
   } else {
@@ -1241,7 +1241,7 @@ leafletMissing <- function(map.types,
     m <- leaflet::addLayersControl(map = m, baseGroups = map.types,
                                    position = mapviewGetOption(
                                      "layers.control.pos"))
-    if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+    if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
     out <- new('mapview', object = list(NULL), map = m)
   }

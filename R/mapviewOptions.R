@@ -52,6 +52,7 @@
 #' @param console logical. Should the options be printed to the console
 #' @param layers.control.pos character. Where should the layer control be
 #' placed? One of "topleft", "topright", "bottomleft", "bottomright".
+#' @param leafletWidth,leafletHeight height and width of the htmlwidget in px.
 #'
 #' @author
 #' Tim Appelhans

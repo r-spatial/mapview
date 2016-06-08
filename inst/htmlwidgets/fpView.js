@@ -55,7 +55,7 @@ HTMLWidgets.widget({
     var maxcorner = L.marker([x.ymax, x.xmax]);
     var group = new L.featureGroup([maxcorner, mincorner]);
     map.fitBounds(group.getBounds());
-
+    var layerControl = L.control.layers(baseLayers).addTo(map);
     // get the file locations from the shaders and the static external file
     var vertexshader = HTMLWidgets.getAttachmentUrl('vertex-shader', 'vertex-shader');
     var fragmentshader = HTMLWidgets.getAttachmentUrl('fragment-shader', 'fragment-shader');

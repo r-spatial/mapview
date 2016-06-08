@@ -1,8 +1,8 @@
-#' @export
-#'
-print.mapview <- function(x, ...) {
-  htmlwidgets:::print.htmlwidget(mapview2leaflet(x), ...)
-}
+# #' @export
+# #'
+# print.mapview <- function(x, ...) {
+#   htmlwidgets:::print.htmlwidget(mapview2leaflet(x), ...)
+# }
 
 
 
