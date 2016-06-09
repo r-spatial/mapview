@@ -115,7 +115,7 @@ setMethod("viewRGB", signature(x = "RasterStackBrick"),
                                       map.types = map.types,
                                       names = grp)
 
-            if (scl_avl) m <- addScaleBar(map = m, position = "bottomleft")
+            if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
             m <- addMouseCoordinates(m)
 
             out <- methods::new('mapview', object = list(xout), map = m)

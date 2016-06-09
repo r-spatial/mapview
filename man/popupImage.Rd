@@ -30,7 +30,7 @@ pt <- data.frame(x = 174.764474, y = -36.877245)
 coordinates(pt) <- ~ x + y
 proj4string(pt) <- "+init=epsg:4326"
 
-img <- "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Mount_Eden.jpg/640px-Mount_Eden.jpg"
+img <- "http://bit.ly/1TVwRiR"
 
 mapview(pt, popup = popupImage(img, src = "remote"))
 

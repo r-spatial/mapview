@@ -4,7 +4,8 @@
 \alias{mapviewColors}
 \title{mapview version of leaflet::colorNumeric}
 \usage{
-mapviewColors(x, zcol = NULL, colors, at, na.color, ...)
+mapviewColors(x, zcol = NULL, colors = mapviewGetOption("vector.palette"),
+  at = NULL, na.color = mapviewGetOption("na.color"), ...)
 }
 \arguments{
 \item{x}{Spatial* or Raster* object}

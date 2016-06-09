@@ -3,13 +3,13 @@
 \docType{data}
 \name{gadmCHE}
 \alias{gadmCHE}
-\title{Administrative borders of Switzerland (level 2)}
+\title{Administrative borders of Switzerland (level 1)}
 \format{\code{sp::SpatialPolygonsDataFrame}}
 \source{
 \url{http://gadm.org}
 }
 \description{
-Administrative borders of Switzerland (level 2)
+Administrative borders of Switzerland (level 1)
 }
 \details{
 This dataset comes from \url{http://gadm.org}.

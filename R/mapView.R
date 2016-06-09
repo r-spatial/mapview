@@ -77,7 +77,7 @@ if ( !isGeneric('mapView') ) {
 #' mapView(meuse.grid, zcol = "soil")
 #'
 #' # raster stack
-#' m1 <- mapview(poppendorf[[10]])
+#' m1 <- mapview(poppendorf[[5]])
 #' m1
 #'
 #' ### point vector data ###

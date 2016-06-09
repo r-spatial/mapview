@@ -73,6 +73,8 @@ placed? One of "topleft", "topright", "bottomleft", "bottomright".}
 
 \item{console}{logical. Should the options be printed to the console}
 
+\item{leafletWidth, leafletHeight}{height and width of the htmlwidget in px.}
+
 \item{param}{character. parameter to be queried.}
 }
 \value{

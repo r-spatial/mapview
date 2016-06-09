@@ -33,17 +33,17 @@ createLegend <- function(x,
   if (is.fact) {
     pal2 <- leaflet::colorFactor(palette = col.regions,
                                  domain = at,
-                                 na.color = mapview:::col2Hex(na.color))
+                                 na.color = col2Hex(na.color))
   } else {
     if (length(at) > 11) {
       pal2 <- leaflet::colorNumeric(palette = col.regions,
                                     domain = at,
-                                    na.color = mapview:::col2Hex(na.color))
+                                    na.color = col2Hex(na.color))
     } else {
       pal2 <- leaflet::colorBin(palette = col.regions,
                                 bins = at, #length(at),
                                 domain = at,
-                                na.color = mapview:::col2Hex(na.color))
+                                na.color = col2Hex(na.color))
     }
 
   }

@@ -58,7 +58,7 @@ if (!isGeneric('xVecView')) {
 #   coordinates(big) <- ~x+y
 #   proj4string(big) <- CRS("+init=epsg:4326")
 
-#   mapview:::fpView(big, color = 'blue')
+#   fpView(big, color = 'blue')
 
 
 # ### some benchmarks
@@ -70,6 +70,7 @@ if (!isGeneric('xVecView')) {
 fpView <- function(x,
                    zcol = NULL,
                    color = mapviewGetOption("vector.palette")(256),
+                   at = NULL,
                    na.color = mapviewGetOption("na.color"),
                    values = NULL,
                    map.types = mapviewGetOption("basemaps"),
@@ -292,15 +293,17 @@ renderfpView <- function(expr, env = parent.frame(), quoted = FALSE) {
 ### bView  function Leaflet maps for big line and polygon data sets =================================================
 
 bView <- function(x,
-                  zcol,
-                  color,
-                  na.color,
+                  zcol = NULL,
+                  color = mapviewGetOption("vector.palette"),
+                  at = NULL,
+                  na.color = mapviewGetOption("na.color"),
                   values,
-                  map.types,
-                  alpha.regions,
-                  lwd,
-                  verbose,
-                  layer.name,
+                  map.types = mapviewGetOption("basemaps"),
+                  alpha.regions = 0.2,
+                  lwd = 2,
+                  verbose = mapviewGetOption("verbose"),
+                  layer.name = deparse(substitute(x,
+                                                  env = parent.frame())),
                   popup = NULL)
   {
 

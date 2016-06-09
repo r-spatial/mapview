@@ -26,7 +26,7 @@ Add a layer to a mapview or leaflet map
 library(sp)
 library(raster)
 
-m1 <- mapView(poppendorf[[10]])
+m1 <- mapView(poppendorf[[5]])
 
 ### point vector data ###
 m2 <- mapView(breweries91)

@@ -19,9 +19,9 @@
 #' @aliases mapviewColors
 mapviewColors <- function(x,
                           zcol = NULL,
-                          colors,
-                          at,
-                          na.color,
+                          colors = mapviewGetOption("vector.palette"),
+                          at = NULL,
+                          na.color = mapviewGetOption("na.color"),
                           ...) {
 
   if (typeof(x) == "list") {

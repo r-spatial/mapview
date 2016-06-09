@@ -56,7 +56,7 @@ if ( !isGeneric('plainView') ) {
 #' meuse_rst <- stack(meuse.grid)
 #'
 #' # raster stack
-#' m1 <- plainView(poppendorf[[10]])
+#' m1 <- plainView(poppendorf[[5]])
 #' m1
 #'
 #' # SpatialPixelsDataFrame

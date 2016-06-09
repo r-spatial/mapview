@@ -6,6 +6,14 @@
 \usage{
 cubeView(x, at, col.regions = mapviewGetOption("raster.palette"))
 }
+\arguments{
+\item{x}{a RasterStack or RasterBrick}
+
+\item{at}{the breakpoints used for the visualisation. See
+\code{\link{levelplot}} for details.}
+
+\item{col.regions}{color (palette).See \code{\link{levelplot}} for details.}
+}
 \description{
 Create a 3D data cube from a RasterStack or RasterBrick. The cube can be
 freely rotated so that Hovmoller views of x - z and y - z are possible.
@@ -27,6 +35,11 @@ move mouse down/up to zoom the cube.
 }
 \examples{
 \dontrun{
+library(raster)
+
+kili_data <- system.file("extdata", "kiliNDVI.tif", package = "mapview")
+kiliNDVI <- stack(kili_data)
+
 cubeView(kiliNDVI)
 
 library(RColorBrewer)

@@ -3,20 +3,19 @@
 \name{mapviewPalette}
 \alias{mapViewPalette}
 \alias{mapviewPalette}
-\title{Default color palette for mapview}
+\title{Color palettes for mapview}
 \usage{
-mapviewPalette(name, ...)
+mapviewPalette(name = "mapviewVectorColors")
 
-mapViewPalette(name, ...)
+mapViewPalette(name)
 }
 \arguments{
-\item{name}{name of the color palette to be used. One of
-"mapviewSpectralColors" (default) or "mapviewTopoColors"}
-
-\item{n}{the number of colours to be created}
+\item{name}{Name of the color palette to be used. One of
+"mapviewVectorColors" (default), "mapviewRasterColors",
+"mapviewSpectralColors" or "mapviewTopoColors".}
 }
 \description{
-Default color palette for mapview
+Color palettes for mapview
 }
 \section{Functions}{
 \itemize{

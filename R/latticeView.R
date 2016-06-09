@@ -48,7 +48,7 @@
 #' ## view multiple data sets
 #' m1 <- mapview(meuse, zcol = "soil", burst = TRUE)
 #' m2 <- mapview(atlStorms2005, zcol = "Name")
-#' m3 <- mapview(poppendorf[[10]], use.layer.names = TRUE)
+#' m3 <- mapview(poppendorf[[5]], use.layer.names = TRUE)
 #' m4 <- mapview(gadmCHE, color = "black")
 #'
 #' latticeView(m1, m2, m3, m4) # not synced
