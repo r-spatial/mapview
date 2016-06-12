@@ -9,11 +9,9 @@ Interactive viewing of spatial objects in R
 
 ====
 
-See 
+The online manual for **mapview** can be found at
 
-http://environmentalinformatics-marburg.github.io/web-presentations/20150723_mapView.html
-
-for a demo
+<a href="http://environmentalinformatics-marburg.github.io/mapview/introduction.html" target="_blank">http://environmentalinformatics-marburg.github.io/mapview/introduction.html</a>
 
 ====
 
