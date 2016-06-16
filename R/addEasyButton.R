@@ -27,10 +27,21 @@ leafletEasyButtonDependencies <- function() {
 #   invokeMethod(map, leaflet::getMapData(map), 'addControlFullScreen')
 # }
 
+addHomeButton <- function(map, ext, layer.name) {
 
-addEasyButton = function(map, xmin, ymin, xmax, ymax, layer.name) {
+  if (class(extent) == "matrix") ext <- raster::extent(ext)
+  label <- paste("Zoom to", layer.name)
 
-  label <- paste("zoom to", layer.name)
+  addEasyButton(map = map,
+                xmin = ext@xmin,
+                ymin = ext@ymin,
+                xmax = ext@xmax,
+                ymax = ext@ymax,
+                label = label)
+}
+
+
+addEasyButton = function(map, xmin, ymin, xmax, ymax, label) {
 
   map$dependencies <- c(map$dependencies, leafletEasyButtonDependencies())
   invokeMethod(map, leaflet::getMapData(map), 'addEasyButton',
