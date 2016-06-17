@@ -30,6 +30,7 @@ leafletRL <- function(x,
                 quietly = TRUE, USE.NAMES = FALSE)
 
   is.fact <- raster::is.factor(x)
+  ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
 
   m <- initMap(map, map.types, sp::proj4string(x))
   x <- rasterCheckSize(x, maxpixels = maxpixels)
@@ -106,6 +107,7 @@ leafletRL <- function(x,
 
   if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
+  m <- addHomeButton(m, ext, layer.name = layer.name)
 
   out <- new('mapview', object = list(x), map = m)
 
@@ -273,7 +275,12 @@ leafletPointsDF <- function(x,
   }
 
   x <- spCheckAdjustProjection(x)
-
+  if (length(x) > 1) {
+    ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
+  } else {
+    ext <- extent(xmin(x) - 0.05, xmax(x) + 0.05,
+                  ymin(x) - 0.05, ymax(x) + 0.05)
+  }
   m <- initMap(map, map.types, sp::proj4string(x))
 
   if (burst) {
@@ -343,6 +350,7 @@ leafletPointsDF <- function(x,
 
     if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
+    m <- addHomeButton(m, ext, layer.name = layer.name)
 
     out <- new('mapview', object = list(x), map = m)
 
@@ -376,7 +384,7 @@ leafletPoints <- function(x,
                 quietly = TRUE, USE.NAMES = FALSE)
 
   x <- spCheckAdjustProjection(x)
-
+  ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
   m <- initMap(map, map.types, sp::proj4string(x))
 
   grp <- layer.name
@@ -416,6 +424,7 @@ leafletPoints <- function(x,
 
   if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
+  m <- addHomeButton(m, ext, layer.name = layer.name)
 
   out <- new('mapview', object = list(x), map = m)
 
@@ -484,7 +493,7 @@ leafletPolygonsDF <- function(x,
   }
 
   x <- spCheckAdjustProjection(x)
-
+  ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
   m <- initMap(map, map.types, sp::proj4string(x))
 
   if (burst) {
@@ -550,6 +559,7 @@ leafletPolygonsDF <- function(x,
 
     if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
+    m <- addHomeButton(m, ext, layer.name = layer.name)
 
     out <- new('mapview', object = list(x), map = m)
 
@@ -583,7 +593,7 @@ leafletPolygons <- function(x,
                 quietly = TRUE, USE.NAMES = FALSE)
 
   x <- spCheckAdjustProjection(x)
-
+  ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
   m <- initMap(map, map.types, sp::proj4string(x))
 
   grp <- layer.name
@@ -619,6 +629,7 @@ leafletPolygons <- function(x,
 
   if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
+  m <- addHomeButton(m, ext, layer.name = layer.name)
 
   out <- new('mapview', object = list(x), map = m)
 
@@ -686,7 +697,7 @@ leafletLinesDF <- function(x,
   }
 
   x <- spCheckAdjustProjection(x)
-
+  ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
   m <- initMap(map, map.types, sp::proj4string(x))
 
   if (burst) {
@@ -810,6 +821,7 @@ leafletLinesDF <- function(x,
 
     if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
+    m <- addHomeButton(m, ext, layer.name = layer.name)
 
     out <- new('mapview', object = list(x), map = m)
 
@@ -843,7 +855,7 @@ leafletLines <- function(x,
   #llcrs <- CRS("+init=epsg:4326")@projargs
 
   x <- spCheckAdjustProjection(x)
-
+  ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
   m <- initMap(map, map.types, sp::proj4string(x))
 
   grp <- layer.name
@@ -931,6 +943,7 @@ leafletLines <- function(x,
 
   if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
+  m <- addHomeButton(m, ext, layer.name = layer.name)
 
   out <- new('mapview', object = list(x), map = m)
 

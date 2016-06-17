@@ -32,19 +32,22 @@ addHomeButton <- function(map, ext, layer.name) {
   if (class(extent) == "matrix") ext <- raster::extent(ext)
   label <- paste("Zoom to", layer.name)
 
+  txt <- paste('<strong>', layer.name, '</strong>')
+
   addEasyButton(map = map,
                 xmin = ext@xmin,
                 ymin = ext@ymin,
                 xmax = ext@xmax,
                 ymax = ext@ymax,
-                label = label)
+                label = label,
+                icon = txt)
 }
 
 
-addEasyButton = function(map, xmin, ymin, xmax, ymax, label) {
+addEasyButton = function(map, xmin, ymin, xmax, ymax, label, icon) {
 
   map$dependencies <- c(map$dependencies, leafletEasyButtonDependencies())
   invokeMethod(map, leaflet::getMapData(map), 'addEasyButton',
-               xmin, ymin, xmax, ymax, label)
+               xmin, ymin, xmax, ymax, label, icon)
 }
 
