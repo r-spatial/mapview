@@ -10,6 +10,7 @@
   text-align: center;
   text-decoration: none;
   color: balck;
+  cursor: pointer;
 }
 
 .leaflet-bar button {
