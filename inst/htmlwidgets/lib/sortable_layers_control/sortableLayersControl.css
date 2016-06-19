@@ -1,0 +1,167 @@
+/*
+
+html,
+body,
+#map {
+  height: 100%;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
+.dotLegend {
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+}
+
+.bdotColor {
+  background: #20a0ff;
+}
+
+.gdotColor {
+  background: #40b060;
+}
+
+.rdotColor {
+  background: #b04040;
+}
+
+.iLegend {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+}
+
+.iColor {
+  background: #ccb;
+}
+
+.sliderContainer {
+  background: #fff;
+}
+
+.zSlider {
+  height: 200px;
+  display: inline-block;
+  margin: 12px;
+}
+
+#rdotSlider .ui-slider-range {
+  background: #fff;
+}
+
+#rdotSlider .ui-slider-handle {
+  background: #b04040;
+  border-radius: 50%;
+}
+
+#gdotSlider .ui-slider-range {
+  background: #fff;
+}
+
+#gdotSlider .ui-slider-handle {
+  background: #40b060;
+  border-radius: 50%;
+}
+
+#bdotSlider .ui-slider-range {
+  background: #fff;
+}
+
+#bdotSlider .ui-slider-handle {
+  background: #20a0ff;
+  border-radius: 50%;
+}
+
+#imageSlider .ui-slider-range {
+  background: #000000;
+}
+
+#imageSlider .ui-slider-handle {
+  background: #eed;
+  border-radius: 0%;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+  min-width: 110px;
+  max-width: 130px;
+  position: relative;
+}
+
+@media (min-width: 750px) and (max-width: 970px) {
+  .container {
+    width: 100%;
+    min-width: 750px;
+  }
+}
+
+.sortable-ghost {
+  opacity: 1;
+}
+
+.title {
+  width: 50px;
+  font-size: 12px;
+  font-weight: 300;
+  font-family: 'Roboto', sans-serif;
+  color: #989898;
+  padding: 0px 5px;
+  display: inline-block;
+  position: relative;
+  background-color:rgba(0, 0, 0, 0);
+  z-index: 1000;
+}
+
+.sortableContainer {
+  max-height: 500px;
+  width: 100%;
+  overflow: auto;
+}
+
+.block__list {
+  //padding: 2px 2px 2px 2px;
+  max-width: 300px;
+  margin-top: 0px;
+  margin-left: 0px;
+  background-color: #BEBEBE;
+  border-style: solid;
+  border-width: 2px 2px 3px 2px;
+  border-color: #BEBEBE;
+  border-radius: 3%;
+}
+
+.block__list li {
+  cursor: move;
+}
+
+.block__list_words li {
+  font-size: 12px;
+  font-weight: 300;
+  color: #000;
+  font-family: 'Roboto', sans-serif;
+  background-color: #fff;
+  padding: 8px 10px;
+  border-style: solid;
+  border-width: 1px 1px 0px 1px;
+  border-color: #BEBEBE;
+  border-radius: 3%;
+}
+
+.block__list_words .sortable-ghost {
+  opacity: 0.3;
+  background-color: #BEBEBE;
+}
+
+//.block__list_words li:first-letter {
+//  text-transform: uppercase;
+//}
