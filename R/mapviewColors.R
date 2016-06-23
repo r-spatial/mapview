@@ -24,13 +24,15 @@ mapviewColors <- function(x,
                           na.color = mapviewGetOption("na.color"),
                           ...) {
 
+  stnd_col <- "black"
+
   if (typeof(x) == "list") {
     if (is.function(colors)) colors <- colors(length(x))
     return(col2Hex(colors))
   }
 
   if (typeof(x) == "S4" && is.null(zcol)) {
-    if (is.function(colors)) colors <- colors(1)
+    if (is.function(colors)) colors <- stnd_col #colors(1)
     return(col2Hex(colors))
   }
 
@@ -75,9 +77,10 @@ rasterColors <- function(col.regions,
     cols <- lattice::level.colors(x,
                                   at = at,
                                   col.regions = col.regions)
+    #cols <- col2Hex(cols)
     cols[is.na(cols)] <- na.color
 
-    return(col2Hex(cols))
+    return(col2Hex(cols, alpha = TRUE))
 
   }
 
@@ -91,10 +94,15 @@ rasterColors <- function(col.regions,
 
 
 ## hex color conversion
-col2Hex <- function(col) {
+col2Hex <- function(col, alpha = FALSE) {
 
-  mat <- grDevices::col2rgb(col)
-  hx <- grDevices::rgb(mat[1, ]/255, mat[2, ]/255, mat[3, ]/255)
+  mat <- grDevices::col2rgb(col, alpha = TRUE)
+  if (alpha) {
+    hx <- grDevices::rgb(mat[1, ]/255, mat[2, ]/255,
+                         mat[3, ]/255, mat[4, ]/255)
+  } else {
+    hx <- grDevices::rgb(mat[1, ]/255, mat[2, ]/255, mat[3, ]/255)
+  }
   return(hx)
 
 }
