@@ -59,15 +59,7 @@ mapshot <- function(x, url = NULL, file = NULL, remove_url = TRUE, ...) {
 
   ## save to file
   if (avl_file) {
-
-    # if working under windows, append 'file:///' to url
-    os <- Sys.info()[["sysname"]]
-    if (os == "Windows" & substr(url, 1, 8) != "file:///")
-      url_os <- paste0("file:///", url)
-    else
-      url_os <- url
-
-    webshot::webshot(url = url_os, file = file, ...)
+    webshot::webshot(url = url, file = file, ...)
   }
 
   ## if url was missing, remove temporary .html file
