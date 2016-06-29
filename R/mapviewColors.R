@@ -24,7 +24,7 @@ mapviewColors <- function(x,
                           na.color = mapviewGetOption("na.color"),
                           ...) {
 
-  stnd_col <- "black"
+  stnd_col <- "#6666ff"
 
   if (typeof(x) == "list") {
     if (is.function(colors)) colors <- colors(length(x))
