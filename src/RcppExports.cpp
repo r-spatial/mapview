@@ -123,3 +123,25 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// anyNA
+bool anyNA(NumericVector x);
+RcppExport SEXP mapview_anyNA(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    __result = Rcpp::wrap(anyNA(x));
+    return __result;
+END_RCPP
+}
+// rowNA
+LogicalVector rowNA(NumericMatrix x);
+RcppExport SEXP mapview_rowNA(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    __result = Rcpp::wrap(rowNA(x));
+    return __result;
+END_RCPP
+}

@@ -41,3 +41,11 @@ all2JSONlist <- function(x) {
     .Call('mapview_all2JSONlist', PACKAGE = 'mapview', x)
 }
 
+anyNA <- function(x) {
+    .Call('mapview_anyNA', PACKAGE = 'mapview', x)
+}
+
+rowNA <- function(x) {
+    .Call('mapview_rowNA', PACKAGE = 'mapview', x)
+}
+

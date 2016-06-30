@@ -98,3 +98,21 @@ List all2JSONlist(CharacterMatrix x) {
   // return concatenated string
   return lsOut;
 }
+
+//// functions to identify rows containing na values
+// [[Rcpp::export]]
+bool anyNA(NumericVector x) {
+  return is_true(any(is_na(x)));
+}
+
+// [[Rcpp::export]]
+LogicalVector rowNA(NumericMatrix x) {
+  int nRow = x.nrow();
+  LogicalVector nOut(nRow);
+
+  for (int i = 0; i < nRow; i++) {
+    nOut[i] = anyNA(x(i, _));
+  }
+
+  return nOut;
+}
