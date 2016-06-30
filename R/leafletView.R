@@ -765,9 +765,20 @@ leafletLinesDF <- function(x,
           for (j in seq(segments)) {
 
             col <- rep(color[i], length(segments[i]))
+
+            # when dealing with a single-column data.frame, argument 'data'
+            # passed on to sp::SpatialLinesDataFrame needs to be defined
+            # manually as data.frame with uniform column and row names
+            dat <- x@data[i, ]
+            if (!is.data.frame(dat)) {
+              dat <- data.frame(dat)
+              names(dat) <- names(x@data)
+              rownames(dat) <- rownames(x@data)[i]
+            }
+
             slndf <- coords2Lines(x[i, ]@lines[[1]]@Lines[[j]]
-                                  , ID = rownames(x@data[i, ])
-                                  , data = x@data[i, ]
+                                  , ID = rownames(x@data)[i]
+                                  , data = dat
                                   , proj4string = sp::CRS(sp::proj4string(x)))
 
             m <- leaflet::addPolylines(m,
@@ -797,9 +808,17 @@ leafletLinesDF <- function(x,
 
           # add one segment after another
           for (j in seq(segments)) {
+
+            dat <- x@data[i, ]
+            if (!is.data.frame(dat)) {
+              dat <- data.frame(dat)
+              names(dat) <- names(x@data)
+              rownames(dat) <- rownames(x@data)[i]
+            }
+
             slndf <- coords2Lines(x[i, ]@lines[[1]]@Lines[[j]]
-                                  , ID = rownames(x@data[i, ])
-                                  , data = x@data[i, ]
+                                  , ID = rownames(x@data)[i]
+                                  , data = dat
                                   , proj4string = sp::CRS(sp::proj4string(x)))
 
             m <- leaflet::addPolylines(m,
