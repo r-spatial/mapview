@@ -4,6 +4,9 @@ mapview (upcoming)
 TO DO:
 
 * add function to addOptions()
+* add option to select whether to view large rasters on map or plain
+* add decorateMap() to add things like scale bar, mouse coordinates, zoom-to-layer buttons etc
+* add removeMouseCoordinates() and removeHomeButton()
 
 
 mapview 1.1.0
