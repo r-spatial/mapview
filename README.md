@@ -69,7 +69,7 @@ By default `mapView()` provides five base layers between which one can toggle:
 * Thunderforest.Landscape
 * OpenTopoMap
 
-A preview of leaflet layers can be found [here](http://leaflet-extras.github.io/leaflet-providers/preview/))
+A preview of possible leaflet layers to use with **mapview** can be found [here](http://leaflet-extras.github.io/leaflet-providers/preview/)
 
 Furthermore, a mouse coordinates strip is displayed at the top of the map giving information about the current mouse position and zoom level. Additionally, if the installed **leaflet** version permits, a scale bar is provided and labels are shown when hovering over a feature.
 
