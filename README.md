@@ -25,15 +25,15 @@ install.packages("mapview")
 ```
 
 
-To install the development version install and load the [devtools](http://cran.r-project.org/package=devtools) package.
+To install the development version install the [devtools](http://cran.r-project.org/package=devtools) package.
 
 ```S
-install_github("environmentalinformatics-marburg/mapview", ref = "develop")
+devtools::install_github("environmentalinformatics-marburg/mapview", ref = "develop")
 ```
 
 ====
 
-## Introduction
+### Introduction
 
 **mapview** is an R package created to help researchers during their spatial data analysis workflow. It provides functions to very quickly and conveniently create interactive visualisations of spatial data.
 
@@ -52,22 +52,24 @@ The main workhorse function is `mapView()` and is currently defined for:
 
 ====
 
-## General design
+### General design
 
 For small to moderately sized spatial objects, a call to `mapView()` will return an object of class `mapview`. This class has 2 slots:
 
 * @object - a list of the objects that are displayed on the map. This means that this slot will contain the re-projected (and in the case of Raster objects possibly re-sampled) objects which enables tracing of the modifications that took place.
 * @map - the **leaflet** map. This is an S3 class object (see **leaflet** package documentation for details on the specifics).
 
-**NOTE:** For big spatial objects, only the map widget is returned. The distinction between small/moderate and big is made with respect to the number of features. The thresholds are 20k features for points and 30k features for polygons and lines. These values can be adjusted by setting the respective [options](options/options.html).
+**NOTE:** For big spatial objects, only the map widget is returned. The distinction between small/moderate and big is made with respect to the number of features. The thresholds are 20k features for points and 30k features for polygons and lines. These values can be adjusted by setting the respective [options](http://environmentalinformatics-marburg.github.io/mapview/options/options.html).
 
-By default `mapView()` provides five base layers between which one can toggle (a preview of leaflet layers can be found [here](http://leaflet-extras.github.io/leaflet-providers/preview/)):
+By default `mapView()` provides five base layers between which one can toggle:
 
 * CartoDB.Positron (the default active layer)
 * OpenStreetMap
 * Esri.WorldImagery
 * Thunderforest.Landscape
 * OpenTopoMap
+
+A preview of leaflet layers can be found [here](http://leaflet-extras.github.io/leaflet-providers/preview/))
 
 Furthermore, a mouse coordinates strip is displayed at the top of the map giving information about the current mouse position and zoom level. Additionally, if the installed **leaflet** version permits, a scale bar is provided and labels are shown when hovering over a feature.
 
@@ -78,6 +80,8 @@ Depending on the object and/or argument settings one or several layers are creat
 which in the case of large Raster* objects or Spatial objects with lots of features can be time consuming.
 
 ====
+
+### Under development
 
 See
 
