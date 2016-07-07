@@ -1,4 +1,4 @@
-LeafletWidget.methods.addEasyButton = function (xmin, ymin, xmax, ymax, label, icon) {
+LeafletWidget.methods.addHomeButton = function (xmin, ymin, xmax, ymax, label, icon) {
 
   if (this.easyButton) {
 		this.easyButton.removeFrom(this);
@@ -25,3 +25,9 @@ LeafletWidget.methods.addEasyButton = function (xmin, ymin, xmax, ymax, label, i
 };
 
 
+LeafletWidget.methods.removeHomeButton = function () {
+  if (this.currentEasyButton) {
+    this.currentEasyButton.removeFrom(this);
+    this.currentEasyButton = null;
+  }
+};

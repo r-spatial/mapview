@@ -4,8 +4,8 @@ leafletEasyButtonDependencies <- function() {
       "Leaflet.EasyButton",
       '0.0.1',
       system.file("htmlwidgets/lib/Leaflet.EasyButton", package = "mapview"),
-      script = c("easy-button.js", 'easy-button-src.js'),
-      stylesheet = 'easy-button.css'
+      script = c("home-button.js", 'easy-button-src.js'),
+      stylesheet = 'home-button.css'
     ))
 }
 
@@ -34,20 +34,29 @@ addHomeButton <- function(map, ext, layer.name) {
 
   txt <- paste('<strong>', layer.name, '</strong>')
 
-  addEasyButton(map = map,
-                xmin = ext@xmin,
-                ymin = ext@ymin,
-                xmax = ext@xmax,
-                ymax = ext@ymax,
-                label = label,
-                icon = txt)
+  # xmin = ext@xmin,
+  # ymin = ext@ymin,
+  # xmax = ext@xmax,
+  # ymax = ext@ymax,
+  # label = label,
+  # icon = txt
+
+  map$dependencies <- c(map$dependencies, leafletEasyButtonDependencies())
+  invokeMethod(map, leaflet::getMapData(map), 'addHomeButton',
+               ext@xmin, ext@ymin, ext@xmax, ext@ymax, label, txt)
+
 }
 
 
-addEasyButton = function(map, xmin, ymin, xmax, ymax, label, icon) {
+# addEasyButton = function(map, xmin, ymin, xmax, ymax, label, icon) {
+#
+#   map$dependencies <- c(map$dependencies, leafletEasyButtonDependencies())
+#   invokeMethod(map, leaflet::getMapData(map), 'addEasyButton',
+#                xmin, ymin, xmax, ymax, label, icon)
+# }
 
-  map$dependencies <- c(map$dependencies, leafletEasyButtonDependencies())
-  invokeMethod(map, leaflet::getMapData(map), 'addEasyButton',
-               xmin, ymin, xmax, ymax, label, icon)
+
+removeHomeButton <- function(map) {
+  invokeMethod(map, NULL, 'removeHomeButton')
 }
 
