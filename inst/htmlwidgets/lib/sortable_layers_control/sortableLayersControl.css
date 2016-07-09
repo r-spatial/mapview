@@ -1,4 +1,4 @@
-/*
+
 
 html,
 body,
@@ -162,6 +162,6 @@ ul {
   background-color: #BEBEBE;
 }
 
-//.block__list_words li:first-letter {
-//  text-transform: uppercase;
-//}
+.block__list_words li:first-letter {
+  text-transform: uppercase;
+}

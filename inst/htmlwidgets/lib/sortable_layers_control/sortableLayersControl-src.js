@@ -1,4 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////////////////// taken from this jsfiddle: http://jsfiddle.net/nathansnider/7r763xaq/
+////////////////////////////////////////////////////////////////////////////////////
+//taken from this jsfiddle: http://jsfiddle.net/nathansnider/7r763xaq/
 //setting up the map//
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -16,7 +17,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 /*
-
 //add layer control/legend
 var overlayMaps = {
   '<div class="dotLegend bdotColor"></div> The Blue Dots': bdotLayer,
@@ -24,11 +24,9 @@ var overlayMaps = {
   '<div class="dotLegend rdotColor"></div> The Red Dots': rdotLayer,
   '<div class="iLegend iColor"></div> Image Overlay': imageLayer
 };
-
 layerbox = L.control.layers(null, overlayMaps, {
   collapsed: false
 }).addTo(map);
-
 */
 
 (function(){
@@ -66,7 +64,7 @@ Sortable.create(layerList, {
 
 function sortLayers(layArr) {
   for (var i = 0; i < layArr.length; i++) {
-  	map.getPane(layArr[i]).style.zIndex = 400 - i;
+  	map._getMapPanePos(layArr[i]).style.zIndex = 400 - i;
   }
 }
 
@@ -94,4 +92,3 @@ $( "input" ).change(function( event ) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 //synthetic GeoJSON functions//
 ////////////////////////////////////////////////////////////////////////////////////////////
-

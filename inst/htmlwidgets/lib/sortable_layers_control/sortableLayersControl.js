@@ -34,8 +34,8 @@ Sortable.create(layerList, {
 
 function sortLayers(layArr) {
   for (var i = 0; i < layArr.length; i++) {
-    map.createPane(layArr[i]);
-  	map.getPane(layArr[i]).style.zIndex = 400 - i;
+    var p = map._createPane(layArr[i]);
+  	p.style.zIndex = 400 - i;
   }
 }
 
@@ -61,5 +61,3 @@ $( "input" ).change(function( event ) {
 
 
 };
-
-

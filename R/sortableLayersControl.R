@@ -1,12 +1,19 @@
 sortableLayersControlDependencies <- function() {
   list(
     htmltools::htmlDependency(
+      "Sortable",
+      '1.4.2',
+      system.file("htmlwidgets/lib/sortable_layers_control", package = "mapview"),
+      script = c("Sortable.js")
+    ),
+    htmltools::htmlDependency(
       "sortableLayersControl",
       '0.0.1',
       system.file("htmlwidgets/lib/sortable_layers_control", package = "mapview"),
-      script = c("sortableLayersControl.js"),
+      script = c("sortableLayersControl.js", "sortableLayersControl-src.js"),
       stylesheet = 'sortableLayersControl.css'
-    ))
+    )
+  )
 }
 
 
@@ -48,5 +55,3 @@ sortableLayersControl <- function(map, layer.names) {
                inner_html)
 
 }
-
-
