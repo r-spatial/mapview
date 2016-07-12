@@ -11,7 +11,7 @@ leafletEasyButtonDependencies <- function() {
 
 
 
-addHomeButton <- function(map, ext, layer.name) {
+addHomeButton <- function(map, ext, layer.name = "layer") {
 
   if (class(extent) == "matrix") ext <- raster::extent(ext)
   label <- paste("Zoom to", layer.name)
