@@ -17,6 +17,9 @@ Authors@R: c(
 Maintainer: Tim Appelhans <admin@environmentalinformatics-marburg.de>
 Description: Methods to view spatial objects interactively.
 License: GPL (>= 3) | file LICENSE
+URL: https://github.com/environmentalinformatics-marburg/mapview
+    http://environmentalinformatics-marburg.github.io/mapview/introduction.html
+BugReports: https://github.com/environmentalinformatics-marburg/mapview/issues
 LazyData: TRUE
 Depends:
     leaflet,

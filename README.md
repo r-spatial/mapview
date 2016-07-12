@@ -44,9 +44,9 @@ devtools::install_github("environmentalinformatics-marburg/mapview", ref = "deve
 
 The main workhorse function is `mapView()` and is currently defined for:
 
-* [raster](https://cran.r-project.org/web/packages/raster/index.html) *objects (Layer, Stack, Brick) and SpatialPixelsDataFrame
-* [sp](https://cran.r-project.org/web/packages/sp/index.html) *objects (Points, Polygons, Lines and their DataFrame version)
-* [satellite](https://cran.r-project.org/web/packages/satellite/index.html) *objects
+* [raster](https://cran.r-project.org/package=raster) *objects (Layer, Stack, Brick) and SpatialPixelsDataFrame
+* [sp](https://cran.r-project.org/package=sp) *objects (Points, Polygons, Lines and their DataFrame version)
+* [satellite](https://cran.r-project.org/package=satellite) *objects
 
 **mapview** is in large parts based on RStudios **leaflet** package, though in order to aid general spatial analysis workflow, we have added a few special functions.
 
