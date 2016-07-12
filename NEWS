@@ -10,7 +10,8 @@ TO DO:
 * remove lat lon in popups for polygons as we now have mousecoordinates
 
 new features:
-  * addHomeButton: add zoom-to-layer buttons to a map
+  * garnishMap: function to add multiple decoration elements, such as leaflet::addLayersControl or addHomeButton to a map.
+  * addHomeButton: add zoom-to-layer buttons to a map.
 
 mapview 1.1.0
 --------------------------------------------------------------------------------
