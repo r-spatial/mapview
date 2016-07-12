@@ -51,7 +51,7 @@ sortableLayersControl <- function(map, layer.names) {
     "</ul></div>")
 
   map$dependencies <- c(map$dependencies, sortableLayersControlDependencies())
-  invokeMethod(map, leaflet::getMapData(map), 'sortableLayersControl',
-               inner_html)
+  leaflet::invokeMethod(map, leaflet:::getMapData(map), 'sortableLayersControl',
+                        inner_html)
 
 }
