@@ -29,6 +29,12 @@ library(raster)
 m1 <- garnishMap(m, addMouseCoordinates, mapview:::addHomeButton,
                  ext = extent(breweries91))
 m1
+
+## even more flexible
+m2 <- garnishMap(m1, addCircleMarkers, data = breweries91)
+garnishMap(m2, addPolygons, data = gadmCHE, popup = popupTable(gadmCHE),
+           fillOpacity = 0.8, color = "black", fillColor = "#BEBEBE")
+
 }
 
 }

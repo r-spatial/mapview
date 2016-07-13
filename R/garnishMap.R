@@ -21,6 +21,12 @@
 #' m1 <- garnishMap(m, addMouseCoordinates, mapview:::addHomeButton,
 #'                  ext = extent(breweries91))
 #' m1
+#'
+#' ## even more flexible
+#' m2 <- garnishMap(m1, addCircleMarkers, data = breweries91)
+#' garnishMap(m2, addPolygons, data = gadmCHE, popup = popupTable(gadmCHE),
+#'            fillOpacity = 0.8, color = "black", fillColor = "#BEBEBE")
+#'
 #' }
 #'
 #' @export garnishMap
@@ -34,9 +40,7 @@ garnishMap <- function(map, ...) {
 
   ls <- list(...)
 
-  funs <- sapply(ls, function(i) {
-    is.function(i)
-  })
+  funs <- sapply(ls, is.function)
 
   fn_lst <- lapply(ls, function(i) {
     tst <- try(match.fun(i), silent = TRUE)
