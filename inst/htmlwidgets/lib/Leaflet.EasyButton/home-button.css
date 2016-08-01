@@ -3,8 +3,8 @@
   background-color: #fff;
   border: none;
   width: 100%;
-  height: 26px;
-  line-height: 26px;
+  height: 20px;
+  line-height: 20px;
   /*display: block;*/
   text-align: center;
   text-decoration: none;
@@ -21,7 +21,7 @@
 }
 
 .leaflet-bar button:hover {
-  background-color: #909090;
+  background-color: #00ffff; /* #909090 */;
   text-decoration: underline;
 }
 
@@ -53,8 +53,8 @@
 
 .leaflet-touch .leaflet-bar button {
   width: 100%;
-  height: 22px;
-  line-height: 20px;
+  height: 20px;
+  line-height: 18px;
   overflow-y: hidden;
   opacity: .6;
   white-space: nowrap;
