@@ -14,7 +14,8 @@ new features:
   * addHomeButton: add zoom-to-layer buttons to a map.
 
 bugfixes:
-  * na.color was not respected for Raster* and SpatialPiXelsDF
+  * na.color was not respected for Raster* and SpatialPiXelsDF.
+  * removed lat and lon entries in popupTable for polygons as we now have mousecoordinates.
 
 mapview 1.1.0
 --------------------------------------------------------------------------------
