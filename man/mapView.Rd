@@ -31,8 +31,8 @@
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
-  na.color = mapviewGetOption("na.color"), values = NULL,
-  map.types = mapviewGetOption("basemaps"),
+  na.color = mapviewGetOption("na.color"), use.layer.names = TRUE,
+  values = NULL, map.types = mapviewGetOption("basemaps"),
   legend = mapviewGetOption("legend"), legend.opacity = 1, trim = TRUE,
   verbose = mapviewGetOption("verbose"), ...)
 
@@ -44,7 +44,9 @@
   legend = mapviewGetOption("legend"), legend.opacity = 1, trim = TRUE,
   verbose = mapviewGetOption("verbose"), ...)
 
-\S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL, ...)
+\S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL,
+  na.color = mapviewGetOption("na.color"),
+  legend = mapviewGetOption("legend"), ...)
 
 \S4method{mapView}{SpatialGridDataFrame}(x, zcol = NULL, ...)
 

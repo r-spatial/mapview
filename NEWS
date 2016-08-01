@@ -13,6 +13,9 @@ new features:
   * garnishMap: function to add multiple decoration elements, such as leaflet::addLayersControl or addHomeButton to a map.
   * addHomeButton: add zoom-to-layer buttons to a map.
 
+bugfixes:
+  * na.color was not respected for Raster* and SpatialPiXelsDF
+
 mapview 1.1.0
 --------------------------------------------------------------------------------
 

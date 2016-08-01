@@ -79,6 +79,7 @@ leafletRL <- function(x,
 
   if (use.layer.names) {
     grp <- names(x)
+    layer.name <- names(x)
   } else {
     grp <- layer.name
   }
@@ -125,12 +126,14 @@ leafletRSB <- function(x,
                        col.regions,
                        at,
                        na.color,
+                       use.layer.names,
                        values,
                        map.types,
                        legend,
                        legend.opacity,
                        trim,
                        verbose,
+                       layer.name,
                        ...) {
 
   pkgs <- c("leaflet", "raster", "magrittr")
@@ -141,15 +144,40 @@ leafletRSB <- function(x,
 
   if (nlayers(x) == 1) {
     x <- raster(x, layer = 1)
-    m <- mapView(x, map = m, maxpixels = maxpixels, map.types = map.types,
-                 use.layer.names = TRUE, at = at, col.regions, ...)
+    m <- mapView(x,
+                 map = m,
+                 maxpixels = maxpixels,
+                 map.types = map.types,
+                 use.layer.names = use.layer.names,
+                 at = at,
+                 col.regions = col.regions,
+                 na.color = na.color,
+                 legend = legend,
+                 layer.name = layer.name,
+                 ...)
     out <- new('mapview', object = list(x), map = m@map)
   } else {
-    m <- mapView(x[[1]], map = m, maxpixels = maxpixels, map.types = map.types,
-                 use.layer.names = TRUE, at = at, col.regions, ...)
+    m <- mapView(x[[1]],
+                 map = m,
+                 maxpixels = maxpixels,
+                 map.types = map.types,
+                 use.layer.names = use.layer.names,
+                 at = at,
+                 col.regions = col.regions,
+                 na.color = na.color,
+                 legend = legend,
+                 ...)
     for (i in 2:nlayers(x)) {
-      m <- mapView(x[[i]], map = m@map, maxpixels = maxpixels, map.types = map.types,
-                   use.layer.names = TRUE, at = at, col.regions, ...)
+      m <- mapView(x[[i]],
+                   map = m@map,
+                   maxpixels = maxpixels,
+                   map.types = map.types,
+                   use.layer.names = use.layer.names,
+                   at = at,
+                   col.regions = col.regions,
+                   na.color = na.color,
+                   legend = legend,
+                   ...)
     }
 
     if (length(getLayerNamesFromMap(m@map)) > 1) {
@@ -169,6 +197,7 @@ leafletRSB <- function(x,
 
 leafletPixelsDF <- function(x,
                             zcol,
+                            na.color,
                             ...) {
 
   pkgs <- c("leaflet", "sp", "magrittr")
@@ -183,7 +212,10 @@ leafletPixelsDF <- function(x,
     return(r)
   }))
 
-  m <- mapView(stck, ...)
+  m <- mapView(stck,
+               na.color = na.color,
+               use.layer.names = TRUE,
+               ...)
 
   out <- new('mapview', object = list(x), map = m@map)
 
