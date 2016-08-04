@@ -16,7 +16,7 @@ LeafletWidget.methods.addHomeButton = function (xmin, ymin, xmax, ymax, label, i
                 btn.state(label);
             }
     }]
-  })
+  });
 
   easyButton.addTo(this);
 
