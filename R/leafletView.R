@@ -58,22 +58,22 @@ leafletRL <- function(x,
     pal <- leaflet::colorFactor(palette = col.regions,
                                 domain = values,
                                 na.color = na.color)
-    pal2 <- pal
+    # pal2 <- pal
   } else {
     pal <- rasterColors(col.regions,
-                         at = at,
-                         na.color = na.color)
+                        at = at,
+                        na.color = na.color)
 
-    if (length(at) > 11) {
-      pal2 <- leaflet::colorNumeric(palette = col.regions,
-                                    domain = at,
-                                    na.color = na.color)
-    } else {
-      pal2 <- leaflet::colorBin(palette = col.regions,
-                                bins = length(at),
-                                domain = at,
-                                na.color = na.color)
-    }
+    # if (length(at) > 11) {
+    #   pal2 <- leaflet::colorNumeric(palette = col.regions,
+    #                                 domain = at,
+    #                                 na.color = na.color)
+    # } else {
+    #   pal2 <- leaflet::colorBin(palette = col.regions,
+    #                             bins = length(at),
+    #                             domain = at,
+    #                             na.color = na.color)
+    # }
 
   }
 
@@ -95,11 +95,18 @@ leafletRL <- function(x,
 
   if (legend) {
     ## add legend
-    m <- leaflet::addLegend(map = m,
-                            pal = pal2,
-                            opacity = legend.opacity,
-                            values = at,
-                            title = grp)
+    # m <- leaflet::addLegend(map = m,
+    #                         pal = pal2,
+    #                         opacity = legend.opacity,
+    #                         values = at,
+    #                         title = grp)
+
+    m <- addRasterLegend(x = x,
+                         map = m,
+                         title = grp,
+                         at = at,
+                         col.regions = col.regions,
+                         na.color = na.color)
   }
 
   m <- mapViewLayersControl(map = m,
@@ -1042,12 +1049,12 @@ leafletList <- function(x,
     map <- initBaseMaps(map.types = map.types)
 
     if (legend) {
-      map <- createLegend(x,
-                          map = map,
-                          zcol = zcol,
-                          at = at,
-                          col.regions = col.regions,
-                          na.color = na.color)
+      map <- addVectorLegend(x,
+                             map = map,
+                             zcol = zcol,
+                             at = at,
+                             col.regions = col.regions,
+                             na.color = na.color)
     }
 
     x@data[, zcol] <- as.factor(x@data[, zcol])
@@ -1107,12 +1114,12 @@ leafletList <- function(x,
       pop <- popup[ind]
 
       if (legend) {
-        map <- createLegend(lst[[i]],
-                            map = map,
-                            zcol = zcol[i],
-                            at = at,
-                            col.regions = col.regions,
-                            na.color = na.color)
+        map <- addVectorLegend(lst[[i]],
+                               map = map,
+                               zcol = zcol[i],
+                               at = at,
+                               col.regions = col.regions,
+                               na.color = na.color)
       }
 
       mapView(x = lst[[i]],
