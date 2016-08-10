@@ -29,7 +29,7 @@ layerbox = L.control.layers(null, overlayMaps, {
 }).addTo(map);
 */
 
-(function(){
+(function(inner_html){
 
 //create sortable control
 L.ControlSort = L.Control.extend({

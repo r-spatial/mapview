@@ -123,13 +123,13 @@ ul {
 }
 
 .sortableContainer {
-  max-height: 500px;
+  max-height: 350px;
   width: 100%;
   overflow: auto;
 }
 
 .block__list {
-  //padding: 2px 2px 2px 2px;
+  padding: 2px 2px 2px 2px;
   max-width: 300px;
   margin-top: 0px;
   margin-left: 0px;
