@@ -287,8 +287,8 @@ mapviewOptions <- function(platform,
       cat('legend              :', lst$legend, '\n')
       cat('legend.pos          :', lst$legend.pos, '\n')
       cat('layers.control.pos  :', lst$layers.control.pos, '\n')
-      cat('leafletWidth  :', lst$leafletWidth, '\n')
-      cat('leafletHeight  :', lst$leafletHeight, '\n')
+      cat('leafletWidth        :', lst$leafletWidth, '\n')
+      cat('leafletHeight       :', lst$leafletHeight, '\n')
     }
   }
 
