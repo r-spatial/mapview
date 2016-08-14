@@ -297,7 +297,8 @@ scalePolygonsCoordinates <- function(x) {
   y_mn <- min(ycoords, na.rm = TRUE)
   y_mx <- max(ycoords - min(ycoords, na.rm = TRUE), na.rm = TRUE)
 
-  do.call("rbind", lapply(seq(coord_lst), function(j) {
+  #do.call("rbind",
+  pols <- lapply(seq(coord_lst), function(j) {
 
     ## extract current 'Polygons'
     pys <- x@polygons[[j]]
@@ -319,9 +320,18 @@ scalePolygonsCoordinates <- function(x) {
       return(py)
     })
 
-    sp::SpatialPolygons(list(sp::Polygons(lst, ID = pys@ID)),
-                        proj4string = sp::CRS(sp::proj4string(x)))
-  }))
+    sp::Polygons(lst, ID = pys@ID)
+    # sp::SpatialPolygons(list(sp::Polygons(lst, ID = pys@ID)),
+    #                     proj4string = sp::CRS(sp::proj4string(x)))
+  })#)
+
+  x@polygons <- pols
+
+  x_rng <- range(sapply(pols, function(i) bbox(i)[1, ]))
+  y_rng <- range(sapply(pols, function(i) bbox(i)[2, ]))
+  x@bbox <- matrix(c(x_rng[1], x_rng[2], y_rng[1], y_rng[2]),
+                   ncol = 2, byrow = TRUE)
+  return(x)
 }
 
 
@@ -353,7 +363,8 @@ scaleLinesCoordinates <- function(x) {
   y_mn <- min(ycoords, na.rm = TRUE)
   y_mx <- max(ycoords - min(ycoords, na.rm = TRUE), na.rm = TRUE)
 
-  do.call("rbind", lapply(seq(coord_lst), function(j) {
+  #do.call("rbind",
+  lins <- lapply(seq(coord_lst), function(j) {
 
     ## extract current 'Lines'
     lns <- x@lines[[j]]
@@ -374,9 +385,19 @@ scaleLinesCoordinates <- function(x) {
       return(ln)
     })
 
-    sp::SpatialLines(list(sp::Lines(lst, ID = lns@ID)),
-                        proj4string = sp::CRS(sp::proj4string(x)))
-  }))
+    sp::Lines(lst, ID = lns@ID)
+
+    # sp::SpatialLines(list(sp::Lines(lst, ID = lns@ID)),
+    #                     proj4string = sp::CRS(sp::proj4string(x)))
+  })#)
+
+  x@lines <- lins
+
+  x_rng <- range(sapply(lins, function(i) bbox(i)[1, ]))
+  y_rng <- range(sapply(lins, function(i) bbox(i)[2, ]))
+  x@bbox <- matrix(c(x_rng[1], x_rng[2], y_rng[1], y_rng[2]),
+                   ncol = 2, byrow = TRUE)
+  return(x)
 }
 
 
@@ -400,6 +421,9 @@ spCheckAdjustProjection <- function(x) {
                                   "SpatialLines")) {
       x <- scaleLinesCoordinates(x)
     }
+
+    raster::projection(x) <- llcrs
+
   } else if (!identical(raster::projection(x), llcrs)) {
     x <- sp::spTransform(x, CRSobj = llcrs)
   }
