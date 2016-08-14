@@ -329,7 +329,7 @@ leafletPointsDF <- function(x,
     row_nms <- row.names(x)
 
     leafletList(x,
-                map = map,
+                map = m,
                 map.types = map.types,
                 zcol = zcol,
                 usr_burst = usr_burst,
@@ -543,7 +543,7 @@ leafletPolygonsDF <- function(x,
     row_nms <- row.names(x)
 
     leafletList(x,
-                map = map,
+                map = m,
                 map.types = map.types,
                 zcol = zcol,
                 usr_burst = usr_burst,
@@ -747,7 +747,7 @@ leafletLinesDF <- function(x,
     row_nms <- row.names(x)
 
     leafletList(x,
-                map = map,
+                map = m,
                 map.types = map.types,
                 zcol = zcol,
                 usr_burst = usr_burst,
@@ -1049,7 +1049,8 @@ leafletList <- function(x,
 
   if(bbr) {
 
-    map <- initBaseMaps(map.types = map.types)
+    #map <- initBaseMaps(map.types = map.types)
+    #map <- initMap(map, map.types, sp::proj4string(x))
 
     if (legend) {
       map <- addVectorLegend(x,
@@ -1110,7 +1111,8 @@ leafletList <- function(x,
       layer.name <- paste(layer.name, names(x))
     }
 
-    map <- initBaseMaps(map.types = map.types)
+    #map <- initBaseMaps(map.types = map.types)
+    #map <- initMap(map, map.types, sp::proj4string(x))
 
     m <- Reduce("+", lapply(seq(lst), function(i) {
       ind <- which(row.nms %in% row.names(lst[[i]]))
