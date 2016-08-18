@@ -424,9 +424,15 @@ leafletPoints <- function(x,
   tst <- sapply(pkgs, "requireNamespace",
                 quietly = TRUE, USE.NAMES = FALSE)
 
-  x <- spCheckAdjustProjection(x)
-  ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
   m <- initMap(map, map.types, sp::proj4string(x))
+  x <- spCheckAdjustProjection(x)
+
+  if (length(x) > 1) {
+    ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
+  } else {
+    ext <- extent(xmin(x) - 0.05, xmax(x) + 0.05,
+                  ymin(x) - 0.05, ymax(x) + 0.05)
+  }
 
   grp <- layer.name
   label <- makeLabels(row.names(x))
