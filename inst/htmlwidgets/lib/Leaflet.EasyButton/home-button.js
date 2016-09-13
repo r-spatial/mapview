@@ -1,4 +1,5 @@
-LeafletWidget.methods.addHomeButton = function (xmin, ymin, xmax, ymax, label, icon) {
+LeafletWidget.methods.addHomeButton = function (xmin, ymin, xmax, ymax,
+                                                label, icon, position) {
 
   if (this.easyButton) {
 		this.easyButton.removeFrom(this);
@@ -7,6 +8,7 @@ LeafletWidget.methods.addHomeButton = function (xmin, ymin, xmax, ymax, label, i
   var bx = [[ymin, xmin], [ymax, xmax]];
 
   var easyButton = new L.easyButton({
+    position: position,
     states: [{
             stateName: label,   // name the state
             icon:      icon,          // and define its properties
