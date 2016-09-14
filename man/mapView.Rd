@@ -26,7 +26,8 @@
   values = NULL, map.types = mapviewGetOption("basemaps"),
   alpha.regions = 0.8, legend = mapviewGetOption("legend"),
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+  layer.name = deparse(substitute(x, env = parent.frame())),
+  homebutton = TRUE, ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -34,7 +35,7 @@
   na.color = mapviewGetOption("na.color"), use.layer.names = TRUE,
   values = NULL, map.types = mapviewGetOption("basemaps"),
   legend = mapviewGetOption("legend"), legend.opacity = 1, trim = TRUE,
-  verbose = mapviewGetOption("verbose"), ...)
+  verbose = mapviewGetOption("verbose"), homebutton = TRUE, ...)
 
 \S4method{mapView}{Satellite}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -42,7 +43,7 @@
   na.color = mapviewGetOption("na.color"), values = NULL,
   map.types = mapviewGetOption("basemaps"),
   legend = mapviewGetOption("legend"), legend.opacity = 1, trim = TRUE,
-  verbose = mapviewGetOption("verbose"), ...)
+  verbose = mapviewGetOption("verbose"), homebutton = TRUE, ...)
 
 \S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL,
   na.color = mapviewGetOption("na.color"),
@@ -57,7 +58,8 @@
   na.color = mapviewGetOption("na.color"), at = NULL, cex = 8, lwd = 4,
   popup = popupTable(x), label, legend = mapviewGetOption("legend"),
   legend.opacity = 1, layer.name = deparse(substitute(x, env =
-  parent.frame())), verbose = mapviewGetOption("verbose"), ...)
+  parent.frame())), verbose = mapviewGetOption("verbose"),
+  homebutton = TRUE, ...)
 
 \S4method{mapView}{SpatialPoints}(x, map = NULL, zcol = NULL,
   color = mapviewGetOption("vector.palette")(1),
@@ -65,7 +67,7 @@
   alpha = 0.9, alpha.regions = 0.4,
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), label, ...)
+  env = parent.frame())), label, homebutton = TRUE, ...)
 
 \S4method{mapView}{SpatialPolygonsDataFrame}(x, map = NULL,
   map.types = mapviewGetOption("basemaps"), zcol = NULL, burst = FALSE,
@@ -74,14 +76,16 @@
   na.color = mapviewGetOption("na.color"), at = NULL, cex = 8, lwd = 2,
   popup = popupTable(x), label, legend = mapviewGetOption("legend"),
   legend.opacity = 1, layer.name = deparse(substitute(x, env =
-  parent.frame())), verbose = mapviewGetOption("verbose"), ...)
+  parent.frame())), verbose = mapviewGetOption("verbose"),
+  homebutton = TRUE, ...)
 
 \S4method{mapView}{SpatialPolygons}(x, map = NULL,
   color = mapviewGetOption("vector.palette")(1),
   na.color = mapviewGetOption("na.color"),
   map.types = mapviewGetOption("basemaps"), lwd = 2, alpha = 0.8,
   alpha.regions = 0.2, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())), label, ...)
+  layer.name = deparse(substitute(x, env = parent.frame())), label,
+  homebutton = TRUE, ...)
 
 \S4method{mapView}{SpatialLinesDataFrame}(x, map = NULL,
   map.types = mapviewGetOption("basemaps"), zcol = NULL, burst = FALSE,
@@ -90,14 +94,15 @@
   na.color = mapviewGetOption("na.color"), at = NULL, cex = 8, lwd = 2,
   popup = popupTable(x), label, legend = mapviewGetOption("legend"),
   legend.opacity = 1, layer.name = deparse(substitute(x, env =
-  parent.frame())), verbose = mapviewGetOption("verbose"), ...)
+  parent.frame())), verbose = mapviewGetOption("verbose"),
+  homebutton = TRUE, ...)
 
 \S4method{mapView}{SpatialLines}(x, map = NULL, zcol = NULL,
   color = mapviewGetOption("vector.palette")(1),
   na.color = mapviewGetOption("na.color"), lwd = 2, alpha = 0.8,
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), label, ...)
+  env = parent.frame())), label, homebutton = TRUE, ...)
 
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
   easter.egg = FALSE)

@@ -23,6 +23,7 @@ leafletRL <- function(x,
                       trim,
                       verbose,
                       layer.name,
+                      homebutton,
                       ...) {
 
   pkgs <- c("leaflet", "raster", "magrittr")
@@ -116,7 +117,8 @@ leafletRL <- function(x,
 
   if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
-  m <- addHomeButton(m, ext, layer.name = layer.name)
+
+  if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
 
   out <- new('mapview', object = list(x), map = m)
 
@@ -142,6 +144,7 @@ leafletRSB <- function(x,
                        trim,
                        verbose,
                        layer.name,
+                       homebutton,
                        ...) {
 
   pkgs <- c("leaflet", "raster", "magrittr")
@@ -162,6 +165,7 @@ leafletRSB <- function(x,
                  na.color = na.color,
                  legend = legend,
                  layer.name = layer.name,
+                 homebutton = homebutton,
                  ...)
     out <- new('mapview', object = list(x), map = m@map)
   } else {
@@ -174,6 +178,7 @@ leafletRSB <- function(x,
                  col.regions = col.regions,
                  na.color = na.color,
                  legend = legend,
+                 homebutton = homebutton,
                  ...)
     for (i in 2:nlayers(x)) {
       m <- mapView(x[[i]],
@@ -185,6 +190,7 @@ leafletRSB <- function(x,
                    col.regions = col.regions,
                    na.color = na.color,
                    legend = legend,
+                   homebutton = FALSE,
                    ...)
     }
 
@@ -276,6 +282,7 @@ leafletPointsDF <- function(x,
                             legend.opacity,
                             layer.name,
                             verbose,
+                            homebutton,
                             ...) {
 
   if(!lab_avl && verbose) warning(warn)
@@ -310,6 +317,7 @@ leafletPointsDF <- function(x,
                          verbose = verbose,
                          layer.name = layer.name,
                          label = label,
+                         homebutton = homebutton,
                          ...)
     )
   }
@@ -348,6 +356,7 @@ leafletPointsDF <- function(x,
                 layer.name = layer.name,
                 verbose = verbose,
                 row.nms = row_nms,
+                homebutton = homebutton,
                 ...)
 
   } else {
@@ -391,7 +400,8 @@ leafletPointsDF <- function(x,
 
     if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
-    m <- addHomeButton(m, ext, layer.name = layer.name)
+
+    if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
 
     out <- new('mapview', object = list(x), map = m)
 
@@ -416,6 +426,7 @@ leafletPoints <- function(x,
                           verbose,
                           layer.name,
                           label,
+                          homebutton,
                           ...) {
 
   if(!lab_avl && verbose) warning(warn)
@@ -471,7 +482,8 @@ leafletPoints <- function(x,
 
   if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
-  m <- addHomeButton(m, ext, layer.name = layer.name)
+
+  if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
 
   out <- new('mapview', object = list(x), map = m)
 
@@ -502,6 +514,7 @@ leafletPolygonsDF <- function(x,
                               legend.opacity,
                               layer.name,
                               verbose,
+                              homebutton,
                               ...) {
 
   if(!lab_avl && verbose) warning(warn)
@@ -523,6 +536,7 @@ leafletPolygonsDF <- function(x,
                            verbose = verbose,
                            layer.name = layer.name,
                            label = label,
+                           homebutton = homebutton,
                            ...)
     )
   }
@@ -568,6 +582,7 @@ leafletPolygonsDF <- function(x,
                 layer.name = layer.name,
                 verbose = verbose,
                 row.nms = row_nms,
+                homebutton = homebutton,
                 ...)
 
   } else {
@@ -607,7 +622,8 @@ leafletPolygonsDF <- function(x,
 
     if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
-    m <- addHomeButton(m, ext, layer.name = layer.name)
+
+    if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
 
     out <- new('mapview', object = list(x), map = m)
 
@@ -632,6 +648,7 @@ leafletPolygons <- function(x,
                             verbose,
                             layer.name,
                             label,
+                            homebutton,
                             ...) {
 
   if(!lab_avl && verbose) warning(warn)
@@ -677,7 +694,8 @@ leafletPolygons <- function(x,
 
   if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
-  m <- addHomeButton(m, ext, layer.name = layer.name)
+
+  if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
 
   out <- new('mapview', object = list(x), map = m)
 
@@ -708,6 +726,7 @@ leafletLinesDF <- function(x,
                            legend.opacity,
                            layer.name,
                            verbose,
+                           homebutton,
                            ...) {
 
   if(!lab_avl && verbose) warning(warn)
@@ -740,6 +759,7 @@ leafletLinesDF <- function(x,
                         verbose = verbose,
                         layer.name = layer.name,
                         label = label,
+                        homebutton = homebutton,
                         ...)
     )
   }
@@ -772,6 +792,7 @@ leafletLinesDF <- function(x,
                 layer.name = layer.name,
                 verbose = verbose,
                 row.nms = row_nms,
+                homebutton = homebutton,
                 ...)
 
   } else {
@@ -888,7 +909,8 @@ leafletLinesDF <- function(x,
 
     if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
-    m <- addHomeButton(m, ext, layer.name = layer.name)
+
+    if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
 
     out <- new('mapview', object = list(x), map = m)
 
@@ -911,6 +933,7 @@ leafletLines <- function(x,
                          verbose,
                          layer.name,
                          label,
+                         homebutton,
                          ...) {
 
   if(!lab_avl && verbose) warning(warn)
@@ -1010,7 +1033,8 @@ leafletLines <- function(x,
 
   if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
-  m <- addHomeButton(m, ext, layer.name = layer.name)
+
+  if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
 
   out <- new('mapview', object = list(x), map = m)
 
@@ -1041,6 +1065,7 @@ leafletList <- function(x,
                         layer.name,
                         verbose,
                         row.nms,
+                        homebutton,
                         ...) {
 
   # if (is.factor(x@data[, zcol])) {
@@ -1098,6 +1123,7 @@ leafletList <- function(x,
               legend.opacity = legend.opacity,
               layer.name = layer.name[i],
               verbose = verbose,
+              homebutton = homebutton,
               ...)
     }))
 
@@ -1152,12 +1178,21 @@ leafletList <- function(x,
               legend.opacity = legend.opacity,
               layer.name = layer.name[i],
               verbose = verbose,
+              homebutton = FALSE,
               ...)
     }))
+
   }
 
   if (!bbr && length(getLayerNamesFromMap(m@map)) > 1) {
     m@map <- leaflet::hideGroup(map = m@map, group = layers2bHidden(m@map))
+  }
+
+  if (!bbr & homebutton) {
+    ln <- strsplit(layer.name[1], " ")[[1]][1]
+    m@map <- addHomeButton(m@map,
+                           ext = raster::extent(x),
+                           layer.name = ln)
   }
 
   if (bbr) {

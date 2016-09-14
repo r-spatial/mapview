@@ -149,6 +149,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
+                   homebutton = TRUE,
                    ...) {
 
             if (is.null(at)) at <- lattice::do.breaks(
@@ -170,6 +171,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                         trim = trim,
                         verbose = verbose,
                         layer.name = layer.name,
+                        homebutton = homebutton,
                         ...)
             } else {
               NULL
@@ -196,6 +198,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                    legend.opacity = 1,
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
+                   homebutton = TRUE,
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -212,6 +215,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                          legend.opacity = legend.opacity,
                          trim = trim,
                          verbose = verbose,
+                         homebutton = homebutton,
                          ...)
             } else {
               NULL
@@ -238,6 +242,7 @@ setMethod('mapView', signature(x = 'Satellite'),
                    legend.opacity = 1,
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
+                   homebutton = TRUE,
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -253,6 +258,7 @@ setMethod('mapView', signature(x = 'Satellite'),
                                legend.opacity = legend.opacity,
                                trim = trim,
                                verbose = verbose,
+                               homebutton = homebutton,
                                ...)
             } else {
               NULL
@@ -336,6 +342,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    verbose = mapviewGetOption("verbose"),
+                   homebutton = TRUE,
                    ...) {
 
             if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
@@ -359,6 +366,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                 legend.opacity = legend.opacity,
                                 layer.name = layer.name,
                                 verbose = verbose,
+                                homebutton = homebutton,
                                 ...)
               } else {
                 NULL
@@ -402,6 +410,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    label,
+                   homebutton = TRUE,
                   ...) {
 
             if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
@@ -418,6 +427,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                               verbose = verbose,
                               layer.name = layer.name,
                               label = label,
+                              homebutton = homebutton,
                              ...)
               } else {
                 NULL
@@ -467,6 +477,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    verbose = mapviewGetOption("verbose"),
+                   homebutton = TRUE,
                    ...) {
 
             if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
@@ -490,6 +501,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                                   legend.opacity = legend.opacity,
                                   layer.name = layer.name,
                                   verbose = verbose,
+                                  homebutton = homebutton,
                                   ...)
               } else {
                 NULL
@@ -530,6 +542,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    label,
+                   homebutton = TRUE,
                   ...) {
 
             if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
@@ -545,6 +558,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                                 verbose = verbose,
                                 layer.name = layer.name,
                                 label = label,
+                                homebutton = homebutton,
                                ...)
               } else {
                 NULL
@@ -590,6 +604,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    verbose = mapviewGetOption("verbose"),
+                   homebutton = TRUE,
                    ...) {
 
             if (length(x@lines) < mapviewGetOption("maxlines")) {
@@ -613,6 +628,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                                legend.opacity = legend.opacity,
                                layer.name = layer.name,
                                verbose = verbose,
+                               homebutton = homebutton,
                                ...)
               } else {
                 NULL
@@ -654,6 +670,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    label,
+                   homebutton = TRUE,
                   ...) {
 
             if (length(x@lines) < mapviewGetOption("maxlines")) {
@@ -668,6 +685,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                              verbose = verbose,
                              layer.name = layer.name,
                              label = label,
+                             homebutton = homebutton,
                             ...)
               } else {
                 NULL
