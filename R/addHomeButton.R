@@ -46,7 +46,7 @@ addHomeButton <- function(map, ext, layer.name = "layer",
   # label = label,
   # icon = txt
 
-  map$dependencies <- c(map$dependencies, leafletEasyButtonDependencies())
+  map$dependencies <- c(map$dependencies, leafletHomeButtonDependencies())
   leaflet::invokeMethod(map, leaflet:::getMapData(map), 'addHomeButton',
                         ext@xmin, ext@ymin, ext@xmax, ext@ymax, label, txt,
                         position)
@@ -68,12 +68,12 @@ removeHomeButton <- function(map) {
 
 
 
-leafletEasyButtonDependencies <- function() {
+leafletHomeButtonDependencies <- function() {
   list(
     htmltools::htmlDependency(
-      "Leaflet.EasyButton",
+      "HomeButton",
       '0.0.1',
-      system.file("htmlwidgets/lib/Leaflet.EasyButton", package = "mapview"),
+      system.file("htmlwidgets/lib/HomeButton", package = "mapview"),
       script = c("home-button.js", 'easy-button-src.js'),
       stylesheet = 'home-button.css'
     ))
