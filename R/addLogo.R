@@ -19,11 +19,18 @@
 #' @examples
 #' \dontrun{
 #' ## default position is topleft next to zoom control
+#' library(mapview)
+#'
 #' img <- "https://www.r-project.org/logo/Rlogo.svg"
 #' leaflet() %>% addTiles() %>% addLogo(img, url = "https://www.r-project.org/logo/")
 #'
+#' ## with local image
+#' library(png)
+#'
+#' img <- system.file("img", "Rlogo.png", package="png")
+#' leaflet() %>% addTiles() %>% addLogo(img, src = "local")
+#'
 #' ## dancing banana gif :-)
-#' library(mapview)
 #' library(magick)
 #'
 #' m <- mapview(breweries91)
