@@ -1,9 +1,55 @@
+#' add a local or remote image (png, jpg, gif, bmp, ...) to a leaflet map
+#'
+#' @description
+#' This function adds an image to a map. Both local and remote (web) image
+#' sources are supported. Position on the map is completely controllable.
+#'
+#' @param map a mapview or leaflet object.
+#' @param img the image to be added to the map.
+#' @param src character specifying the source location ("local" for images from
+#' the disk, "remote" for web image sources).
+#' @param url an optional URL to be opened when clicking on the image
+#' (e.g. company's homepage).
+#' @param position one of "topleft", "topright", "bottomleft", "bottomright".
+#' @param offset.x the offset in x direction from the chosen position (in pixels).
+#' @param offset.y the offset in y direction from the chosen position (in pixels).
+#' @param width width of the rendered image in pixels.
+#' @param height height of the rendered image in pixels.
+#'
+#' @examples
+#' \dontrun{
+#' ## default position is topleft next to zoom control
+#' img <- "https://www.r-project.org/logo/Rlogo.svg"
+#' leaflet() %>% addTiles() %>% addLogo(img, url = "https://www.r-project.org/logo/")
+#'
+#' ## dancing banana gif :-)
+#' library(mapview)
+#' library(magick)
+#'
+#' m <- mapview(breweries91)
+#'
+#' mapview:::addLogo(m, "https://jeroenooms.github.io/images/banana.gif",
+#'                   position = "bottomleft",
+#'                   offset.x = 5,
+#'                   offset.y = 40,
+#'                   width = 100,
+#'                   height = 100)
+#'
+#' }
+#'
+#'
+#' @export addLogo
+#' @name addLogo
+#' @rdname addLogo
+#' @aliases addLogo
+
 ## courtesy of
 ## http://gis.stackexchange.com/questions/203265/add-logo-to-a-map-using-leaflet-mapbox
 ## http://jsfiddle.net/3v7hd2vx/76/
 
 addLogo <- function(map,
                     img,
+                    src = c("remote", "local"),
                     url,
                     position = c("topleft", "topright",
                                  "bottomleft", "bottomright"),
@@ -13,14 +59,14 @@ addLogo <- function(map,
                     height = 60) {
   # check for duplication?
   #  not sure of a good way to do this
+  if (inherits(map, "mapview")) map <- mapview2leaflet(map)
+  stopifnot(inherits(map, "leaflet"))
 
-  img <- paste0('"', img, '"')
   if (!missing(url)) url <- paste0('"', url, '"')
 
   position <- position[1]
+  src <- src[1]
 
-  if (inherits(map, "mapview")) map <- mapview2leaflet(map)
-  stopifnot(inherits(map, "leaflet"))
 
   div_topleft <- paste0("newDiv.css({
     'position': 'absolute',
@@ -88,23 +134,76 @@ addLogo <- function(map,
                     if(!logo.length) {
                       logo = addElement();")
 
-  if (missing(url)) {
-    div_html <- paste0("logo.html('<img src=", img,
-                       ", width=", width, "height=", height, "></a>');
-                       var map = HTMLWidgets.find('#' + el.id);
-                       };
-                       }")
-  } else {
-    div_html <- paste0("logo.html('<a href=", url, "><img src=", img,
-                       ", width=", width, "height=", height, "></a>');
-                       var map = HTMLWidgets.find('#' + el.id);
-                       };
-                       }")
-  }
+  # if (missing(url)) {
+  #   div_html <- paste0("logo.html('<img src=", img,
+  #                      ", width=", width, "height=", height, "></a>');
+  #                      var map = HTMLWidgets.find('#' + el.id);
+  #                      };
+  #                      }")
+  # } else {
+  #   div_html <- paste0("logo.html('<a href=", url, "><img src=", img,
+  #                      ", width=", width, "height=", height, "></a>');
+  #                      var map = HTMLWidgets.find('#' + el.id);
+  #                      };
+  #                      }")
+  # }
+
+  div_html <- switch(src,
+                     remote = remoteImage(img, url, width, height),
+                     local = localImage(img, url, width, height))
 
   render_stuff <- paste0(div_funk, div_add, div_html)
 
   map <- htmlwidgets::onRender(map, render_stuff)
 
   return(map)
+}
+
+
+### local image
+localImage <- function(img, url, width, height) {
+  nm <- basename(img)
+  drs <- file.path(tempdir(), "graphs")
+  if (!dir.exists(drs)) dir.create(drs)
+  fls <- file.path(drs, nm)
+  invisible(file.copy(img, file.path(drs, nm)))
+  rel_path <- paste0('"', file.path("..", basename(drs), basename(img)), '"')
+
+  if (missing(url)) {
+    div_html <- paste0("logo.html('<img src=", rel_path,
+                       ", width=", width, ", height=", height, "></a>');
+                       var map = HTMLWidgets.find('#' + el.id);
+                       };
+                       }")
+  } else {
+    div_html <- paste0("logo.html('<a href=", url, "><img src=", rel_path,
+                       ", width=", width, ", height=", height, "></a>');
+                       var map = HTMLWidgets.find('#' + el.id);
+                       };
+                       }")
+  }
+
+  return(div_html)
+}
+
+### remote image
+remoteImage <- function(img, url, width, height) {
+
+  img <- paste0('"', img, '"')
+
+  if (missing(url)) {
+    div_html <- paste0("logo.html('<img src=", img,
+                       ", width=", width, ", height=", height, "></a>');
+                       var map = HTMLWidgets.find('#' + el.id);
+                       };
+                       }")
+  } else {
+    div_html <- paste0("logo.html('<a href=", url, "><img src=", img,
+                       ", width=", width, ", height=", height, "></a>');
+                       var map = HTMLWidgets.find('#' + el.id);
+                       };
+                       }")
+  }
+
+  return(div_html)
 }
