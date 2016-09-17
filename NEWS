@@ -9,6 +9,7 @@ new features:
   * garnishMap: function to add multiple decoration elements, such as leaflet::addLayersControl or addHomeButton to a map.
   * addHomeButton: add a zoom-to-layer button to a map.
   * addLogo: add an image to a map.
+  * added CRS and dimension info to plainview.
 
 bugfixes:
   * na.color was not respected for Raster* and SpatialPiXelsDF.
