@@ -151,9 +151,9 @@ llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
 rasterCheckSize <- function(x, maxpixels) {
   if (maxpixels < raster::ncell(x)) {
     warning(paste("maximum number of pixels for Raster* viewing is",
-                  maxpixels, "the supplied Raster* has", ncell(x), "\n",
+                  maxpixels, "; \nthe supplied Raster* has", ncell(x), "\n",
                   "... decreasing Raster* resolution to", maxpixels, "pixels\n",
-                  "to view full resolution adjust 'maxpixels = ...'"))
+                  "to view full resolution set 'maxpixels = ", ncell(x), "'"))
     x <- raster::sampleRegular(x, maxpixels, asRaster = TRUE, useGDAL = TRUE)
   }
   return(x)
