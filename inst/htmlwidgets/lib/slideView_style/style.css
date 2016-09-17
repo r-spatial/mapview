@@ -1,21 +1,58 @@
 #htmlwidget_container {
-  background-color: #0c0c0c;
+  background-color: #202020 /*#3d3d3d /*#0c0c0c*/;
   color: #f7f7f7;
 }
 
-#divInfo {
-  position:absolute;
-  /*margin-left: 100px;*/
-  opacity:0.75;
+#divInfoSlide {
+  position: absolute;
+  background-color: transparent;
+  width: 100%;
+  left: 0;
+  top: 0;
+  opacity: 0.7;
   z-index: 1;
+  font-size: small;
 }
 
-.image_name {
-  background-color: #3d3d3d;
-}
-
-.zoom_factor {
+.slide {
   background-color: #787878;
+}
+
+#divInfo {
+  position: absolute;
+  background-color: #787878;
+  width: 100%;
+  box-shadow: 0 0 2px #bbb;
+  left: 0;
+  top: 0;
+  opacity:0.5;
+  z-index: 1;
+  font-size: small;
+}
+
+#divInfoZoom {
+  position: absolute;
+  background-color: transparent;
+  box-shadow: 0 0 2px #bbb;
+  right: 0;
+  top: 0;
+  opacity:0.5;
+  z-index: 1;
+  font-size: small;
+}
+
+#divInfoCRS {
+  position: absolute;
+  background-color: #787878;
+  width: 100%;
+  box-shadow: 0 0 2px #bbb;
+  bottom:  0;
+  left: 0;
+  background-clip: padding-box;
+  margin: 0;
+  opacity:0.5;
+  z-index: 1;
+  font-size: small;
 }
 
 #divDraw {

@@ -73,7 +73,16 @@ the viewer/browser. This is fast for large rasters. In this case, argument
 \code{maxpixels} is not used, instead the image is rendered in original resolution.
 However, this means that RasterLayers will be shown in greyscale.
 If you want to set a color palette manually, use \code{gdal = FALSE} and
-(optionally provide) \code{col.regions}.
+(optionally provide) \code{col.regions}.\cr
+\cr
+For plainView there are a few keyboard shortcuts defined:
+\itemize{
+  \item plus/minus - zoom in/out
+  \item space - toggle antialiasing
+  \item esc - zoom to layer extent
+  \item enter - set zoom to 1
+  \item ctrl - increase panning speed by 10
+}
 }
 \section{Methods (by class)}{
 \itemize{
@@ -97,51 +106,17 @@ proj4string(meuse.grid) <- CRS("+init=epsg:28992")
 gridded(meuse.grid) = TRUE
 meuse_rst <- stack(meuse.grid)
 
-# raster stack
+# SpatialPixelsDataFrame
+plainView(meuse.grid, zcol = "dist")
+
+
+# raster layer
 m1 <- plainView(poppendorf[[5]])
 m1
 
-# SpatialPixelsDataFrame
-plainView(meuse.grid, zcol = "soil")
+# raster stack
+plainview(poppendorf, 4, 3, 2)
 
-
-### point vector data ###
-## SpatialPointsDataFrame ##
-data(meuse)
-coordinates(meuse) <- ~x+y
-proj4string(meuse) <- CRS("+init=epsg:28992")
-
-# all layers of meuse
-plainView(meuse, burst = TRUE)
-
-# only one layer, all info in popups
-plainView(meuse)
-
-## SpatialPoints ##
-meuse_pts <- as(meuse, "SpatialPoints")
-plainView(meuse_pts)
-
-
-
-### overlay vector on top of raster ###
-plainView(meuse.grid, zcol = "ffreq") + meuse
-
-### polygon vector data ###
-data("gadmCHE")
-m <- plainView(gadmCHE)
-m
-
-## points on polygons ##
-centres <- data.frame(coordinates(gadmCHE))
-names(centres) <- c("x", "y")
-coordinates(centres) <- ~ x + y
-projection(centres) <- projection(gadmCHE)
-m + centres
-
-### lines vector data
-data("atlStorms2005")
-plainView(atlStorms2005)
-plainView(atlStorms2005, burst = TRUE)
 }
 
 }
