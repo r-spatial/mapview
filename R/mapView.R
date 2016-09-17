@@ -48,6 +48,8 @@ if ( !isGeneric('mapView') ) {
 #' @param trim should the raster be trimmed in case there are NAs on the egdes
 #' @param verbose should some details be printed during the process
 #' @param layer.name the name of the layer to be shown on the map
+#' @param homebutton logical, whether to add a zoom-to-layer button to the map.
+#' Defaults to TRUE
 #' @param popup a \code{list} of HTML strings with the popup contents, usually
 #' created from \code{\link{popupTable}}. See \code{\link{addControl}} for
 #' details.
@@ -156,23 +158,34 @@ setMethod('mapView', signature(x = 'RasterLayer'),
               lattice:::extend.limits(range(x[], na.rm = TRUE)), 256)
 
             if (mapviewGetOption("platform") == "leaflet") {
-              leafletRL(x,
-                        map = map,
-                        maxpixels = maxpixels,
-                        col.regions = col.regions,
-                        at = at,
-                        na.color, na.color,
-                        use.layer.names = use.layer.names,
-                        values = values,
-                        map.types = map.types,
-                        alpha.regions = alpha.regions,
-                        legend = legend,
-                        legend.opacity = legend.opacity,
-                        trim = trim,
-                        verbose = verbose,
-                        layer.name = layer.name,
-                        homebutton = homebutton,
-                        ...)
+              # if (maxpixels < raster::ncell(x)) {
+              #   plainview(x,
+              #             maxpixels = maxpixels,
+              #             col.regions = col.regions,
+              #             at = at,
+              #             na.color = na.color,
+              #             verbose = verbose,
+              #             layer.name = layer.name,
+              #             ...)
+              # } else {
+                leafletRL(x,
+                          map = map,
+                          maxpixels = maxpixels,
+                          col.regions = col.regions,
+                          at = at,
+                          na.color, na.color,
+                          use.layer.names = use.layer.names,
+                          values = values,
+                          map.types = map.types,
+                          alpha.regions = alpha.regions,
+                          legend = legend,
+                          legend.opacity = legend.opacity,
+                          trim = trim,
+                          verbose = verbose,
+                          layer.name = layer.name,
+                          homebutton = homebutton,
+                          ...)
+              #}
             } else {
               NULL
             }

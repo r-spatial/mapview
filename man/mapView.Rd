@@ -146,6 +146,9 @@ for available options.}
 
 \item{layer.name}{the name of the layer to be shown on the map}
 
+\item{homebutton}{logical, whether to add a zoom-to-layer button to the map.
+Defaults to TRUE}
+
 \item{...}{additional arguments passed on to repective functions.
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
