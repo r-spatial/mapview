@@ -32,6 +32,9 @@ Use removeHomeButton to remove home button
 }}
 \examples{
 \dontrun{
+library(mapview)
+library(raster)
+
 m <- leaflet() \%>\% addTiles() \%>\% addCircleMarkers(data = breweries91) \%>\%
   addHomeButton(extent(breweries91), "breweries91")
 m
