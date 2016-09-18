@@ -15,7 +15,7 @@ var speed = 1;
 var crisp = true;
 
 var rootNode;
-var divInfo;
+var divInfoSlide;
 var divDraw;
 var divBefore;
 
@@ -39,23 +39,23 @@ HTMLWidgets.widget({
   renderValue: function(el, x, instance) {
     rootNode = el;
 
-    divInfo = document.createElement("div");
-    divInfo.id ="divInfo";
-    el.appendChild(divInfo);
+    divInfoSlide = document.createElement("div");
+    divInfoSlide.id ="divInfoSlide";
+    el.appendChild(divInfoSlide);
 
     spanLeft = document.createElement("span");
     spanLeft.id ="spanLeft";
-    spanLeft.className = "image_name";
+    spanLeft.className = "slide";
     spanMid = document.createElement("span");
     spanMid.id ="spanMid";
-    spanMid.className ="zoom_factor";
+    spanMid.className ="slide";
     spanRight = document.createElement("span");
     spanRight.id ="spanRight";
-    spanRight.className = "image_name";
+    spanRight.className = "slide";
 
-    divInfo.appendChild(spanLeft);
-    divInfo.appendChild(spanMid);
-    divInfo.appendChild(spanRight);
+    divInfoSlide.appendChild(spanLeft);
+    divInfoSlide.appendChild(spanMid);
+    divInfoSlide.appendChild(spanRight);
 
     spanLeft.innerHTML = x.img1+"&nbsp;&nbsp;&nbsp;";
     spanRight.innerHTML = "&nbsp;&nbsp;&nbsp;"+x.img2;
@@ -133,7 +133,7 @@ function mousemove(e) {
 	  nx = window.innerWidth - w;
 	}
 
-	divInfo.style.marginLeft = nx + "px";
+	divInfoSlide.style.marginLeft = nx + "px";
 }
 
 function mousedown(e) {

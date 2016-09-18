@@ -1,8 +1,8 @@
 Package: mapview
 Type: Package
 Title: Interactive Viewing of Spatial Objects in R
-Version: 1.1.1
-Date: 2016-06-14
+Version: 1.2.0
+Date: 2016-09-18
 Authors@R: c(
       person("Tim", "Appelhans", email = "admin@environmentalinformatics-marburg.de", role = c("cre", "aut")),
       person("Florian", "Detsch", email = "florian.detsch@staff.uni-marburg.de", role = c("aut")),
@@ -17,6 +17,9 @@ Authors@R: c(
 Maintainer: Tim Appelhans <admin@environmentalinformatics-marburg.de>
 Description: Methods to view spatial objects interactively.
 License: GPL (>= 3) | file LICENSE
+URL: https://github.com/environmentalinformatics-marburg/mapview
+    http://environmentalinformatics-marburg.github.io/mapview/introduction.html
+BugReports: https://github.com/environmentalinformatics-marburg/mapview/issues
 LazyData: TRUE
 Depends:
     leaflet,

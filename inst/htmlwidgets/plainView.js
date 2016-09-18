@@ -7,7 +7,9 @@ HTMLWidgets.widget({
     var root = el;
     var filename = document.getElementById("image-1-attachment").href;
     var name = x.imgnm;
-    init(root, filename, name);
+    var crs = x.crs;
+    var dims = x.dims;
+    init(root, filename, name, crs, dims);
   },
 
   resize: function(el, width, height, instance) {}
@@ -35,16 +37,28 @@ function ca(root, name, text) {
   return e;
 }
 
-function init(root, filename, name) {
+function init(root, filename, name, crs, dims) {
   rootNode = root;
   var divInfo = ca(root, "div");
   divInfo.id = "divInfo";
-  ca(divInfo, "span", "x").className = "zoom_factor";
-  spanFactor = ca(divInfo, "span", "?");
+  var divInfoCRS = ca(root, "div");
+  divInfoCRS.id = "divInfoCRS";
+  var divInfoZoom = ca(root, "div");
+  divInfoZoom.id = "divInfoZoom";
+
+  ca(divInfoZoom, "span", "Zoom: ").className = "zoom_factor";
+  spanFactor = ca(divInfoZoom, "span", "?");
   spanFactor.className = "zoom_factor";
+
   ca(divInfo, "span", "&nbsp;&nbsp;");
-  var spanName = ca(divInfo, "span", name);
+  var spanName = ca(divInfo, "span", "Layer: " + name +
+                    "  |  Dimensions (nrow, ncol, ncell): " + dims);
   spanName.className = "image_name";
+
+  ca(divInfoCRS, "span", "&nbsp;&nbsp;");
+  var spanCRS = ca(divInfoCRS, "span", "CRS: " + '"' + crs + '"');
+  spanCRS.className = "image_crs";
+
   canvas = ca(root, "canvas");
 
   image = new Image();
@@ -182,9 +196,17 @@ function onkeydown(e) {
   }
 
   if(e.which==13) { // enter key
-    offsetX = 0;
-    offsetY = 0;
-    scale = 1;
+  var iw = image.width;
+  var ih = image.height;
+  var cw = rootNode.clientWidth;
+  var ch = rootNode.clientHeight;
+  var fw = cw/iw;
+  var fh = ch/ih;
+  scale = 1;
+  var sw = iw*scale;
+  var sh = ih*scale;
+  offsetX = sw<cw?(cw-sw)/scale/2:0;
+  offsetY = sh<ch?(ch-sh)/scale/2:0;
     draw();
   }
 

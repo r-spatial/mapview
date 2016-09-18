@@ -1,3 +1,19 @@
+mapview 1.2.0
+--------------------------------------------------------------------------------
+
+new features:
+  * garnishMap: function to add multiple decoration elements, such as leaflet::addLayersControl or addHomeButton to a map (mainly for internal use).
+  * addHomeButton: add a zoom-to-layer button to a map.
+  * addLogo: add an image to a map.
+  * plainview now shows CRS and dimension info.
+
+bugfixes:
+  * na.color was not respected for Raster* and SpatialPiXelsDF.
+  * removed lat and lon entries in popupTable for polygons as we now have mousecoordinates.
+  * for raster objects the legend did not respect the intervals specified by 'at'.
+  * mapview working again for objects with no projection (NA).
+  * mapview for SPoints* with only one point did through an error #36.
+
 mapview 1.1.0
 --------------------------------------------------------------------------------
 

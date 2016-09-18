@@ -23,6 +23,7 @@ leafletRL <- function(x,
                       trim,
                       verbose,
                       layer.name,
+                      homebutton,
                       ...) {
 
   pkgs <- c("leaflet", "raster", "magrittr")
@@ -30,10 +31,12 @@ leafletRL <- function(x,
                 quietly = TRUE, USE.NAMES = FALSE)
 
   is.fact <- raster::is.factor(x)
+  # ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
 
   m <- initMap(map, map.types, sp::proj4string(x))
   x <- rasterCheckSize(x, maxpixels = maxpixels)
   x <- rasterCheckAdjustProjection(x)
+  ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
 
   if (!is.na(raster::projection(x)) & trim) x <- trim(x)
 
@@ -57,27 +60,28 @@ leafletRL <- function(x,
     pal <- leaflet::colorFactor(palette = col.regions,
                                 domain = values,
                                 na.color = na.color)
-    pal2 <- pal
+    # pal2 <- pal
   } else {
     pal <- rasterColors(col.regions,
-                         at = at,
-                         na.color = na.color)
+                        at = at,
+                        na.color = na.color)
 
-    if (length(at) > 11) {
-      pal2 <- leaflet::colorNumeric(palette = col.regions,
-                                    domain = at,
-                                    na.color = na.color)
-    } else {
-      pal2 <- leaflet::colorBin(palette = col.regions,
-                                bins = length(at),
-                                domain = at,
-                                na.color = na.color)
-    }
+    # if (length(at) > 11) {
+    #   pal2 <- leaflet::colorNumeric(palette = col.regions,
+    #                                 domain = at,
+    #                                 na.color = na.color)
+    # } else {
+    #   pal2 <- leaflet::colorBin(palette = col.regions,
+    #                             bins = length(at),
+    #                             domain = at,
+    #                             na.color = na.color)
+    # }
 
   }
 
   if (use.layer.names) {
     grp <- names(x)
+    layer.name <- names(x)
   } else {
     grp <- layer.name
   }
@@ -93,11 +97,18 @@ leafletRL <- function(x,
 
   if (legend) {
     ## add legend
-    m <- leaflet::addLegend(map = m,
-                            pal = pal2,
-                            opacity = legend.opacity,
-                            values = at,
-                            title = grp)
+    # m <- leaflet::addLegend(map = m,
+    #                         pal = pal2,
+    #                         opacity = legend.opacity,
+    #                         values = at,
+    #                         title = grp)
+
+    m <- addRasterLegend(x = x,
+                         map = m,
+                         title = grp,
+                         at = at,
+                         col.regions = col.regions,
+                         na.color = na.color)
   }
 
   m <- mapViewLayersControl(map = m,
@@ -106,6 +117,8 @@ leafletRL <- function(x,
 
   if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
+
+  if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
 
   out <- new('mapview', object = list(x), map = m)
 
@@ -123,12 +136,15 @@ leafletRSB <- function(x,
                        col.regions,
                        at,
                        na.color,
+                       use.layer.names,
                        values,
                        map.types,
                        legend,
                        legend.opacity,
                        trim,
                        verbose,
+                       layer.name,
+                       homebutton,
                        ...) {
 
   pkgs <- c("leaflet", "raster", "magrittr")
@@ -139,15 +155,43 @@ leafletRSB <- function(x,
 
   if (nlayers(x) == 1) {
     x <- raster(x, layer = 1)
-    m <- mapView(x, map = m, maxpixels = maxpixels, map.types = map.types,
-                 use.layer.names = TRUE, at = at, col.regions, ...)
+    m <- mapView(x,
+                 map = m,
+                 maxpixels = maxpixels,
+                 map.types = map.types,
+                 use.layer.names = use.layer.names,
+                 at = at,
+                 col.regions = col.regions,
+                 na.color = na.color,
+                 legend = legend,
+                 layer.name = layer.name,
+                 homebutton = homebutton,
+                 ...)
     out <- new('mapview', object = list(x), map = m@map)
   } else {
-    m <- mapView(x[[1]], map = m, maxpixels = maxpixels, map.types = map.types,
-                 use.layer.names = TRUE, at = at, col.regions, ...)
+    m <- mapView(x[[1]],
+                 map = m,
+                 maxpixels = maxpixels,
+                 map.types = map.types,
+                 use.layer.names = use.layer.names,
+                 at = at,
+                 col.regions = col.regions,
+                 na.color = na.color,
+                 legend = legend,
+                 homebutton = homebutton,
+                 ...)
     for (i in 2:nlayers(x)) {
-      m <- mapView(x[[i]], map = m@map, maxpixels = maxpixels, map.types = map.types,
-                   use.layer.names = TRUE, at = at, col.regions, ...)
+      m <- mapView(x[[i]],
+                   map = m@map,
+                   maxpixels = maxpixels,
+                   map.types = map.types,
+                   use.layer.names = use.layer.names,
+                   at = at,
+                   col.regions = col.regions,
+                   na.color = na.color,
+                   legend = legend,
+                   homebutton = FALSE,
+                   ...)
     }
 
     if (length(getLayerNamesFromMap(m@map)) > 1) {
@@ -167,6 +211,7 @@ leafletRSB <- function(x,
 
 leafletPixelsDF <- function(x,
                             zcol,
+                            na.color,
                             ...) {
 
   pkgs <- c("leaflet", "sp", "magrittr")
@@ -181,7 +226,10 @@ leafletPixelsDF <- function(x,
     return(r)
   }))
 
-  m <- mapView(stck, ...)
+  m <- mapView(stck,
+               na.color = na.color,
+               use.layer.names = TRUE,
+               ...)
 
   out <- new('mapview', object = list(x), map = m@map)
 
@@ -234,6 +282,7 @@ leafletPointsDF <- function(x,
                             legend.opacity,
                             layer.name,
                             verbose,
+                            homebutton,
                             ...) {
 
   if(!lab_avl && verbose) warning(warn)
@@ -268,20 +317,27 @@ leafletPointsDF <- function(x,
                          verbose = verbose,
                          layer.name = layer.name,
                          label = label,
+                         homebutton = homebutton,
                          ...)
     )
   }
 
+  m <- initMap(map, map.types, sp::proj4string(x))
   x <- spCheckAdjustProjection(x)
 
-  m <- initMap(map, map.types, sp::proj4string(x))
+  if (length(x) > 1) {
+    ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
+  } else {
+    ext <- extent(xmin(x) - 0.05, xmax(x) + 0.05,
+                  ymin(x) - 0.05, ymax(x) + 0.05)
+  }
 
   if (burst) {
 
     row_nms <- row.names(x)
 
     leafletList(x,
-                map = map,
+                map = m,
                 map.types = map.types,
                 zcol = zcol,
                 usr_burst = usr_burst,
@@ -300,6 +356,7 @@ leafletPointsDF <- function(x,
                 layer.name = layer.name,
                 verbose = verbose,
                 row.nms = row_nms,
+                homebutton = homebutton,
                 ...)
 
   } else {
@@ -344,6 +401,8 @@ leafletPointsDF <- function(x,
     if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
 
+    if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
+
     out <- new('mapview', object = list(x), map = m)
 
     return(out)
@@ -367,6 +426,7 @@ leafletPoints <- function(x,
                           verbose,
                           layer.name,
                           label,
+                          homebutton,
                           ...) {
 
   if(!lab_avl && verbose) warning(warn)
@@ -375,9 +435,15 @@ leafletPoints <- function(x,
   tst <- sapply(pkgs, "requireNamespace",
                 quietly = TRUE, USE.NAMES = FALSE)
 
+  m <- initMap(map, map.types, sp::proj4string(x))
   x <- spCheckAdjustProjection(x)
 
-  m <- initMap(map, map.types, sp::proj4string(x))
+  if (length(x) > 1) {
+    ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
+  } else {
+    ext <- extent(xmin(x) - 0.05, xmax(x) + 0.05,
+                  ymin(x) - 0.05, ymax(x) + 0.05)
+  }
 
   grp <- layer.name
   label <- makeLabels(row.names(x))
@@ -417,6 +483,8 @@ leafletPoints <- function(x,
   if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
 
+  if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
+
   out <- new('mapview', object = list(x), map = m)
 
   return(out)
@@ -446,6 +514,7 @@ leafletPolygonsDF <- function(x,
                               legend.opacity,
                               layer.name,
                               verbose,
+                              homebutton,
                               ...) {
 
   if(!lab_avl && verbose) warning(warn)
@@ -467,6 +536,7 @@ leafletPolygonsDF <- function(x,
                            verbose = verbose,
                            layer.name = layer.name,
                            label = label,
+                           homebutton = homebutton,
                            ...)
     )
   }
@@ -483,16 +553,17 @@ leafletPolygonsDF <- function(x,
     burst <- TRUE
   }
 
+  m <- initMap(map, map.types, sp::proj4string(x))
   x <- spCheckAdjustProjection(x)
 
-  m <- initMap(map, map.types, sp::proj4string(x))
+  ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
 
   if (burst) {
 
     row_nms <- row.names(x)
 
     leafletList(x,
-                map = map,
+                map = m,
                 map.types = map.types,
                 zcol = zcol,
                 usr_burst = usr_burst,
@@ -511,6 +582,7 @@ leafletPolygonsDF <- function(x,
                 layer.name = layer.name,
                 verbose = verbose,
                 row.nms = row_nms,
+                homebutton = homebutton,
                 ...)
 
   } else {
@@ -551,6 +623,8 @@ leafletPolygonsDF <- function(x,
     if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
 
+    if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
+
     out <- new('mapview', object = list(x), map = m)
 
     return(out)
@@ -574,6 +648,7 @@ leafletPolygons <- function(x,
                             verbose,
                             layer.name,
                             label,
+                            homebutton,
                             ...) {
 
   if(!lab_avl && verbose) warning(warn)
@@ -582,9 +657,9 @@ leafletPolygons <- function(x,
   tst <- sapply(pkgs, "requireNamespace",
                 quietly = TRUE, USE.NAMES = FALSE)
 
-  x <- spCheckAdjustProjection(x)
-
   m <- initMap(map, map.types, sp::proj4string(x))
+  x <- spCheckAdjustProjection(x)
+  ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
 
   grp <- layer.name
   if (missing(label)) label <- makeLabels(row.names(x))
@@ -620,6 +695,8 @@ leafletPolygons <- function(x,
   if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
 
+  if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
+
   out <- new('mapview', object = list(x), map = m)
 
   return(out)
@@ -649,6 +726,7 @@ leafletLinesDF <- function(x,
                            legend.opacity,
                            layer.name,
                            verbose,
+                           homebutton,
                            ...) {
 
   if(!lab_avl && verbose) warning(warn)
@@ -681,20 +759,21 @@ leafletLinesDF <- function(x,
                         verbose = verbose,
                         layer.name = layer.name,
                         label = label,
+                        homebutton = homebutton,
                         ...)
     )
   }
 
-  x <- spCheckAdjustProjection(x)
-
   m <- initMap(map, map.types, sp::proj4string(x))
+  x <- spCheckAdjustProjection(x)
+  ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
 
   if (burst) {
 
     row_nms <- row.names(x)
 
     leafletList(x,
-                map = map,
+                map = m,
                 map.types = map.types,
                 zcol = zcol,
                 usr_burst = usr_burst,
@@ -713,6 +792,7 @@ leafletLinesDF <- function(x,
                 layer.name = layer.name,
                 verbose = verbose,
                 row.nms = row_nms,
+                homebutton = homebutton,
                 ...)
 
   } else {
@@ -754,9 +834,20 @@ leafletLinesDF <- function(x,
           for (j in seq(segments)) {
 
             col <- rep(color[i], length(segments[i]))
+
+            # when dealing with a single-column data.frame, argument 'data'
+            # passed on to sp::SpatialLinesDataFrame needs to be defined
+            # manually as data.frame with uniform column and row names
+            dat <- x@data[i, ]
+            if (!is.data.frame(dat)) {
+              dat <- data.frame(dat)
+              names(dat) <- names(x@data)
+              rownames(dat) <- rownames(x@data)[i]
+            }
+
             slndf <- coords2Lines(x[i, ]@lines[[1]]@Lines[[j]]
-                                  , ID = rownames(x@data[i, ])
-                                  , data = x@data[i, ]
+                                  , ID = rownames(x@data)[i]
+                                  , data = dat
                                   , proj4string = sp::CRS(sp::proj4string(x)))
 
             m <- leaflet::addPolylines(m,
@@ -786,9 +877,17 @@ leafletLinesDF <- function(x,
 
           # add one segment after another
           for (j in seq(segments)) {
+
+            dat <- x@data[i, ]
+            if (!is.data.frame(dat)) {
+              dat <- data.frame(dat)
+              names(dat) <- names(x@data)
+              rownames(dat) <- rownames(x@data)[i]
+            }
+
             slndf <- coords2Lines(x[i, ]@lines[[1]]@Lines[[j]]
-                                  , ID = rownames(x@data[i, ])
-                                  , data = x@data[i, ]
+                                  , ID = rownames(x@data)[i]
+                                  , data = dat
                                   , proj4string = sp::CRS(sp::proj4string(x)))
 
             m <- leaflet::addPolylines(m,
@@ -811,6 +910,8 @@ leafletLinesDF <- function(x,
     if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
 
+    if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
+
     out <- new('mapview', object = list(x), map = m)
 
     return(out)
@@ -832,6 +933,7 @@ leafletLines <- function(x,
                          verbose,
                          layer.name,
                          label,
+                         homebutton,
                          ...) {
 
   if(!lab_avl && verbose) warning(warn)
@@ -842,9 +944,9 @@ leafletLines <- function(x,
 
   #llcrs <- CRS("+init=epsg:4326")@projargs
 
-  x <- spCheckAdjustProjection(x)
-
   m <- initMap(map, map.types, sp::proj4string(x))
+  x <- spCheckAdjustProjection(x)
+  ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
 
   grp <- layer.name
   if (missing(label)) label <- makeLabels(row.names(x))
@@ -932,6 +1034,8 @@ leafletLines <- function(x,
   if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
 
+  if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
+
   out <- new('mapview', object = list(x), map = m)
 
   return(out)
@@ -961,6 +1065,7 @@ leafletList <- function(x,
                         layer.name,
                         verbose,
                         row.nms,
+                        homebutton,
                         ...) {
 
   # if (is.factor(x@data[, zcol])) {
@@ -975,15 +1080,16 @@ leafletList <- function(x,
 
   if(bbr) {
 
-    map <- initBaseMaps(map.types = map.types)
+    #map <- initBaseMaps(map.types = map.types)
+    #map <- initMap(map, map.types, sp::proj4string(x))
 
     if (legend) {
-      map <- createLegend(x,
-                          map = map,
-                          zcol = zcol,
-                          at = at,
-                          col.regions = col.regions,
-                          na.color = na.color)
+      map <- addVectorLegend(x,
+                             map = map,
+                             zcol = zcol,
+                             at = at,
+                             col.regions = col.regions,
+                             na.color = na.color)
     }
 
     x@data[, zcol] <- as.factor(x@data[, zcol])
@@ -1017,6 +1123,7 @@ leafletList <- function(x,
               legend.opacity = legend.opacity,
               layer.name = layer.name[i],
               verbose = verbose,
+              homebutton = homebutton,
               ...)
     }))
 
@@ -1036,19 +1143,20 @@ leafletList <- function(x,
       layer.name <- paste(layer.name, names(x))
     }
 
-    map <- initBaseMaps(map.types = map.types)
+    #map <- initBaseMaps(map.types = map.types)
+    #map <- initMap(map, map.types, sp::proj4string(x))
 
     m <- Reduce("+", lapply(seq(lst), function(i) {
       ind <- which(row.nms %in% row.names(lst[[i]]))
       pop <- popup[ind]
 
       if (legend) {
-        map <- createLegend(lst[[i]],
-                            map = map,
-                            zcol = zcol[i],
-                            at = at,
-                            col.regions = col.regions,
-                            na.color = na.color)
+        map <- addVectorLegend(lst[[i]],
+                               map = map,
+                               zcol = zcol[i],
+                               at = at,
+                               col.regions = col.regions,
+                               na.color = na.color)
       }
 
       mapView(x = lst[[i]],
@@ -1070,12 +1178,21 @@ leafletList <- function(x,
               legend.opacity = legend.opacity,
               layer.name = layer.name[i],
               verbose = verbose,
+              homebutton = FALSE,
               ...)
     }))
+
   }
 
   if (!bbr && length(getLayerNamesFromMap(m@map)) > 1) {
     m@map <- leaflet::hideGroup(map = m@map, group = layers2bHidden(m@map))
+  }
+
+  if (!bbr & homebutton) {
+    ln <- strsplit(layer.name[1], " ")[[1]][1]
+    m@map <- addHomeButton(m@map,
+                           ext = raster::extent(x),
+                           layer.name = ln)
   }
 
   if (bbr) {

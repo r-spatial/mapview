@@ -50,9 +50,9 @@ rgbStack2PNG <- function(x, r, g, b,
     mat[, i] <- z
   }
 
-  na_indx <- apply(mat, 1, anyNA)
-  cols <- mat[, 1]
-  cols[na_indx] <- na.color
+  na_indx <- rowNA(mat) #apply(mat, 1, base::anyNA) #
+  cols <- rep(na.color, nrow(mat)) #mat[, 1] #
+  #cols[na_indx] <- na.color
   cols[!na_indx] <- grDevices::rgb(mat[!na_indx, ], alpha = 1)
   png_dat <- as.raw(grDevices::col2rgb(cols, alpha = TRUE))
   dim(png_dat) <- c(4, ncol(x), nrow(x))
