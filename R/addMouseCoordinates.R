@@ -8,12 +8,28 @@
 #' on the map.
 #'
 #' @param map a mapview or leaflet object.
+#' @param style whether to show 'detailed' or 'basic' mouse position info.
+#' See Details for an explanation.
+#'
+#' @details
+#' If style is set to "detailed", the following information will be displayed:
+#' \itemize{
+#'   \item x: x-position of the mouse cursor in projected coordinates
+#'   \item y: y-position of the mouse cursor in projected coordinates
+#'   \item epsg: the epsg code of the coordinate reference system of the map
+#'   \item proj4: the proj4 definition of the coordinate reference system of the map
+#'   \item lat: latitude position of the mouse cursor
+#'   \item lon: longitude position of the mouse cursor
+#'   \item zoom: the current zoom level
+#' }
+#'
+#' If style is set to "basic", only 'lat', 'lon' and 'zoom' are shown.
 #'
 #' @examples
 #' \dontrun{
 #' leaflet() %>% addTiles() # without mouse position info
-#' leaflet() %>% addTiles() %>% addMouseCoordinates() # with mouse position info
-#' mapview(easter.egg = TRUE) # mouse position info by default
+#' leaflet() %>% addTiles() %>% addMouseCoordinates(style = "basic") # with basic mouse position info
+#' mapview(easter.egg = TRUE) # detailed mouse position info by default
 #' }
 #'
 #'
@@ -22,15 +38,36 @@
 #' @rdname addMouseCoordinates
 #' @aliases addMouseCoordinates
 
-addMouseCoordinates <- function(map) {
+addMouseCoordinates <- function(map, style = c("detailed", "basic")) {
   # check for duplication?
   #  not sure of a good way to do this
+
+  style <- style[1]
 
   if (inherits(map, "mapview")) map <- mapview2leaflet(map)
   stopifnot(inherits(map, "leaflet"))
 
+  txt_detailed <- paste0("
+    ' x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +
+    ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +
+    ' | epsg: 3857 ' +
+    ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ' +
+    ' | lat: ' + (e.latlng.lat).toFixed(5) +
+    ' | lon: ' + (e.latlng.lng).toFixed(5) +
+    ' | zoom: ' + map.getZoom() + ' '")
+
+  txt_basic <- paste0("
+    ' lat: ' + (e.latlng.lat).toFixed(5) +
+    ' | lon: ' + (e.latlng.lng).toFixed(5) +
+    ' | zoom: ' + map.getZoom() + ' '")
+
+  txt <- switch(style,
+                detailed = txt_detailed,
+                basic = txt_basic)
+
   map <- htmlwidgets::onRender(
     map,
+    paste0(
 "
 function(el, x, data) {
   // we need a new div element because we have to handle
@@ -61,20 +98,19 @@ function(el, x, data) {
   if(!lnlt.length) {
     lnlt = addElement();
     // get the leaflet map
-    var map = HTMLWidgets.find('#' + el.id);
+    var map = this; //HTMLWidgets.find('#' + el.id);
 
     // grab the special div we generated in the beginning
     // and put the mousmove output there
     map.on('mousemove', function (e) {
-      lnlt.text(' Latitude: ' + (e.latlng.lat).toFixed(5) +
-      ' | Longitude: ' + (e.latlng.lng).toFixed(5) +
-      ' | Zoom: ' + map.getZoom() + ' '
-      );
+      lnlt.text(", txt, ");
     })
   };
 }
 "
   )
+)
   map
 }
 
+#

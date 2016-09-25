@@ -4,10 +4,13 @@
 \alias{addMouseCoordinates}
 \title{Add mouse coordinate information at top of map.}
 \usage{
-addMouseCoordinates(map)
+addMouseCoordinates(map, style = c("detailed", "basic"))
 }
 \arguments{
 \item{map}{a mapview or leaflet object.}
+
+\item{style}{whether to show 'detailed' or 'basic' mouse position info.
+See Details for an explanation.}
 }
 \description{
 This function adds a box displaying the current cursor location
@@ -16,11 +19,25 @@ mapview or leaflet map. In case of mapview, this is automatically added.
 NOTE: The information will only render once a mouse movement has happened
 on the map.
 }
+\details{
+If style is set to "detailed", the following information will be displayed:
+\itemize{
+  \item x: x-position of the mouse cursor in projected coordinates
+  \item y: y-position of the mouse cursor in projected coordinates
+  \item epsg: the epsg code of the coordinate reference system of the map
+  \item proj4: the proj4 definition of the coordinate reference system of the map
+  \item lat: latitude position of the mouse cursor
+  \item lon: longitude position of the mouse cursor
+  \item zoom: the current zoom level
+}
+
+If style is set to "basic", only 'lat', 'lon' and 'zoom' are shown.
+}
 \examples{
 \dontrun{
 leaflet() \%>\% addTiles() # without mouse position info
-leaflet() \%>\% addTiles() \%>\% addMouseCoordinates() # with mouse position info
-mapview(easter.egg = TRUE) # mouse position info by default
+leaflet() \%>\% addTiles() \%>\% addMouseCoordinates(style = "basic") # with basic mouse position info
+mapview(easter.egg = TRUE) # detailed mouse position info by default
 }
 
 
