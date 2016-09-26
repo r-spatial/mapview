@@ -38,23 +38,33 @@
 #' @rdname addMouseCoordinates
 #' @aliases addMouseCoordinates
 
-addMouseCoordinates <- function(map, style = c("detailed", "basic")) {
-  # check for duplication?
-  #  not sure of a good way to do this
+addMouseCoordinates <- function(map, style = c("detailed", "basic"),
+                                epsg = NULL, proj4string = NULL) {
 
   style <- style[1]
 
   if (inherits(map, "mapview")) map <- mapview2leaflet(map)
   stopifnot(inherits(map, "leaflet"))
 
-  txt_detailed <- paste0("
-    ' x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +
-    ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +
-    ' | epsg: 3857 ' +
-    ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ' +
-    ' | lat: ' + (e.latlng.lat).toFixed(5) +
-    ' | lon: ' + (e.latlng.lng).toFixed(5) +
-    ' | zoom: ' + map.getZoom() + ' '")
+  if (style == "detailed" && is.null(epsg) && is.null(proj4string)) {
+    txt_detailed <- paste0("
+      ' x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +
+      ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +
+      ' | epsg: 3857 ' +
+      ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ' +
+      ' | lat: ' + (e.latlng.lat).toFixed(5) +
+      ' | lon: ' + (e.latlng.lng).toFixed(5) +
+      ' | zoom: ' + map.getZoom() + ' '")
+  } else {
+    txt_detailed <- paste0("
+      ' x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +
+      ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +
+      ' | epsg: ", epsg, " ' +
+      ' | proj4: ", proj4string, " ' +
+      ' | lat: ' + (e.latlng.lat).toFixed(5) +
+      ' | lon: ' + (e.latlng.lng).toFixed(5) +
+      ' | zoom: ' + map.getZoom() + ' '")
+  }
 
   txt_basic <- paste0("
     ' lat: ' + (e.latlng.lat).toFixed(5) +
@@ -87,6 +97,7 @@ function(el, x, data) {
       'box-shadow': '0 0 2px #bbb',
       'background-clip': 'padding-box',
       'margin': '0',
+      'padding-left': '5px',
       'color': '#333',
       'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',
     });

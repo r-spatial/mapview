@@ -4,7 +4,8 @@
 \alias{addMouseCoordinates}
 \title{Add mouse coordinate information at top of map.}
 \usage{
-addMouseCoordinates(map, style = c("detailed", "basic"))
+addMouseCoordinates(map, style = c("detailed", "basic"), epsg = NULL,
+  proj4string = NULL)
 }
 \arguments{
 \item{map}{a mapview or leaflet object.}
