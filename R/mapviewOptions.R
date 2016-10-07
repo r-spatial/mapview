@@ -107,7 +107,7 @@ mapviewOptions <- function(platform,
 
   ## platform
   setPlatform <- function(platform) {
-    if (!platform %in% c("leaflet")) {
+    if (!platform %in% c("leaflet", "base")) {
       warning("currently only platform leaflet is allowed")
       options(mapviewPlatform = "leaflet")
     } else {
