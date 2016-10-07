@@ -1,10 +1,12 @@
-mapview 1.2.3
+mapview 1.2.4
 --------------------------------------------------------------------------------
 
 new features:
   * addMouseCoordinates has gained argument 'style' to specify whether to show 'basic' (lat, lon, zoom) or 'detailed' (x, y, epsg, proj4, lat, lon, zoom) information. Factory-fresh default is 'detailed'.
   * addLogo has gained argument 'alpha' to set the opacity of the image.
   * Well, someone draws quickest, that's for sure...
+  * added new method for list of objects so that mapview(list(x, y, z)) works now.
+  * added new platform 'base' to render things using library('quickmapr').
 
 mapview 1.2.0
 --------------------------------------------------------------------------------
