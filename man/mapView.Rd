@@ -14,6 +14,7 @@
 \alias{mapView,SpatialPointsDataFrame-method}
 \alias{mapView,SpatialPolygons-method}
 \alias{mapView,SpatialPolygonsDataFrame-method}
+\alias{mapView,list-method}
 \alias{mapView,missing-method}
 \alias{mapview}
 \alias{mapview,ANY-method}
@@ -106,6 +107,8 @@
 
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
   easter.egg = FALSE)
+
+\S4method{mapView}{list}(x, ...)
 
 \S4method{mapview}{ANY}(...)
 }
@@ -220,6 +223,8 @@ See \url{http://www.chrome-allow-file-access-from-file.com/} for further details
 \item \code{SpatialLines}: \code{\link{SpatialLines}}
 
 \item \code{missing}: initiate a map without an object
+
+\item \code{list}: \code{\link{list}}
 
 \item \code{ANY}: alias for ease of typing
 }}

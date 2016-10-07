@@ -780,6 +780,32 @@ setMethod('mapView', signature(x = 'missing'),
 
 
 
+## list ===================================================================
+
+if ( !isGeneric('mapview') ) {
+  setGeneric('mapview', function(...)
+    standardGeneric('mapview'))
+}
+
+#' @describeIn mapView \code{\link{list}}
+#'
+setMethod('mapView', signature(x = 'list'),
+          function(x, ...) {
+            lyrnms <- paste0("layer_", sprintf("%02.0f", seq(x)))
+            if (mapviewGetOption("platform") == "leaflet") {
+              Reduce("+", lapply(seq(x), function(i) {
+                mapView(x = x[[i]], layer.name = lyrnms[i], ...)
+              }))
+            } else {
+              if (mapviewGetOption("platform") == "base") {
+                qmap(x, ...)
+              } else {
+                NULL
+              }
+            }
+          }
+)
+
 ## mapview ================================================================
 
 if ( !isGeneric('mapview') ) {
