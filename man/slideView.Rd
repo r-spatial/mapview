@@ -66,6 +66,15 @@ This is a modified implementation of http://bl.ocks.org/rfriberg/8327361
 }
 \details{
 Compare two images trough interactive swiping overlay
+
+
+For slideView there are a few keyboard shortcuts defined:
+\itemize{
+  \item space - toggle antialiasing
+  \item esc - zoom to layer extent
+  \item enter - set zoom to 1
+  \item ctrl - increase panning speed by 10
+}
 }
 \section{Methods (by class)}{
 \itemize{
@@ -116,7 +125,7 @@ rst_red2013 <- raster(jpg2013[, , 3])
 
 img2013 <- brick(rst_red2013, rst_green2013, rst_blue2013)
 
-slideView(img2000, img2013)
+slideView(img2000, img2013, label1 = "before", label2 = "after")
 }
 
 }

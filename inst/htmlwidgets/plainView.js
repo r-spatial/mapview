@@ -196,17 +196,17 @@ function onkeydown(e) {
   }
 
   if(e.which==13) { // enter key
-  var iw = image.width;
-  var ih = image.height;
-  var cw = rootNode.clientWidth;
-  var ch = rootNode.clientHeight;
-  var fw = cw/iw;
-  var fh = ch/ih;
-  scale = 1;
-  var sw = iw*scale;
-  var sh = ih*scale;
-  offsetX = sw<cw?(cw-sw)/scale/2:0;
-  offsetY = sh<ch?(ch-sh)/scale/2:0;
+    var iw = image.width;
+    var ih = image.height;
+    var cw = rootNode.clientWidth;
+    var ch = rootNode.clientHeight;
+    var fw = cw/iw;
+    var fh = ch/ih;
+    scale = 1;
+    var sw = iw*scale;
+    var sh = ih*scale;
+    offsetX = sw<cw?(cw-sw)/scale/2:0;
+    offsetY = sh<ch?(ch-sh)/scale/2:0;
     draw();
   }
 
