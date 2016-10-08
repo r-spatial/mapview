@@ -10,16 +10,22 @@
 \alias{slideview,ANY-method}
 \title{slideView}
 \usage{
-\S4method{slideView}{RasterStackBrick,RasterStackBrick}(img1, img2, r = 3,
-  g = 2, b = 1, na.color = mapviewGetOption("na.color"),
+\S4method{slideView}{RasterStackBrick,RasterStackBrick}(img1, img2,
+  label1 = deparse(substitute(img1, env = parent.frame())),
+  label2 = deparse(substitute(img2, env = parent.frame())), r = 3, g = 2,
+  b = 1, na.color = mapviewGetOption("na.color"),
   maxpixels = mapviewGetOption("plainview.maxpixels"), ...)
 
 \S4method{slideView}{RasterLayer,RasterLayer}(img1, img2,
+  label1 = deparse(substitute(img1, env = parent.frame())),
+  label2 = deparse(substitute(img2, env = parent.frame())),
   col.regions = mapviewGetOption("raster.palette")(256),
   na.color = mapviewGetOption("na.color"),
   maxpixels = mapviewGetOption("plainview.maxpixels"))
 
-\S4method{slideView}{character,character}(img1, img2)
+\S4method{slideView}{character,character}(img1, img2,
+  label1 = deparse(substitute(img1, env = parent.frame())),
+  label2 = deparse(substitute(img2, env = parent.frame())))
 
 \S4method{slideview}{ANY}(...)
 }
@@ -27,6 +33,10 @@
 \item{img1}{a RasterStack/Brick, RasterLayer or path to a .png file}
 
 \item{img2}{a RasterStack/Brick, RasterLayer or path to a .png file}
+
+\item{label1}{slider label for img1 (defaults to object name)}
+
+\item{label2}{slider label for img2 (defaults to object name)}
 
 \item{r}{integer. Index of the Red channel, between 1 and nlayers(x)}
 
