@@ -52,8 +52,8 @@ addMouseCoordinates <- function(map, style = c("detailed", "basic"),
       ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +
       ' | epsg: 3857 ' +
       ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ' +
-      ' | lat: ' + (e.latlng.lat).toFixed(5) +
       ' | lon: ' + (e.latlng.lng).toFixed(5) +
+      ' | lat: ' + (e.latlng.lat).toFixed(5) +
       ' | zoom: ' + map.getZoom() + ' '")
   } else {
     txt_detailed <- paste0("
@@ -61,14 +61,14 @@ addMouseCoordinates <- function(map, style = c("detailed", "basic"),
       ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +
       ' | epsg: ", epsg, " ' +
       ' | proj4: ", proj4string, " ' +
-      ' | lat: ' + (e.latlng.lat).toFixed(5) +
       ' | lon: ' + (e.latlng.lng).toFixed(5) +
+      ' | lat: ' + (e.latlng.lat).toFixed(5) +
       ' | zoom: ' + map.getZoom() + ' '")
   }
 
   txt_basic <- paste0("
-    ' lat: ' + (e.latlng.lat).toFixed(5) +
-    ' | lon: ' + (e.latlng.lng).toFixed(5) +
+    ' lon: ' + (e.latlng.lng).toFixed(5) +
+    ' | lat: ' + (e.latlng.lat).toFixed(5) +
     ' | zoom: ' + map.getZoom() + ' '")
 
   txt <- switch(style,
@@ -80,9 +80,13 @@ addMouseCoordinates <- function(map, style = c("detailed", "basic"),
     paste0(
 "
 function(el, x, data) {
+
+  // get the leaflet map
+  var map = this; //HTMLWidgets.find('#' + el.id);
+
   // we need a new div element because we have to handle
   // the mouseover output seperately
-  debugger;
+  // debugger;
   function addElement () {
     // generate new div Element
     var newDiv = $(document.createElement('div'));
@@ -108,8 +112,6 @@ function(el, x, data) {
   var lnlt = $(el).find('.lnlt');
   if(!lnlt.length) {
     lnlt = addElement();
-    // get the leaflet map
-    var map = this; //HTMLWidgets.find('#' + el.id);
 
     // grab the special div we generated in the beginning
     // and put the mousmove output there
