@@ -1,4 +1,4 @@
-mapview 1.2.5
+mapview 1.2.6
 --------------------------------------------------------------------------------
 
 new features:
@@ -8,6 +8,7 @@ new features:
   * added new method for list of objects so that mapview(list(x, y, z)) works now.
   * added new platform 'base' to render things using library('quickmapr').
   * slideView has gained arguments 'label1' and 'label2' to supply slider names for the respective images, img1 and img2.
+  * new popupTable layout (making more use of the space available).
 
 mapview 1.2.0
 --------------------------------------------------------------------------------
