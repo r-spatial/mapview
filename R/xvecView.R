@@ -346,7 +346,8 @@ bView <- function(x,
     file.remove(paste0(tmpPath,"/",dir(path = tmpPath, pattern = "shape")))
 
     # for fastet json read in a html document we wrap it with var data = {};
-    lns <- data.table::fread(pathJsonFn, header = FALSE, sep = "\n", data.table = FALSE)
+    lns <- data.table::fread(pathJsonFn, header = FALSE, sep = "\n",
+                             data.table = FALSE, blank.lines.skip = TRUE)
     lns[1,] <- 'var data = {'
     lns[length(lns[,1]),]<- '};'
     write.table(lns, pathJsonFn, sep="\n", row.names=FALSE, col.names=FALSE, quote = FALSE)
@@ -427,7 +428,7 @@ bViewInternal <- function(jFn = NULL, x = NULL) {
   sizing = htmlwidgets::sizingPolicy(
     browser.fill = TRUE,
     viewer.fill = TRUE,
-    viewer.padding = 5,
+    viewer.padding = 0,
     defaultWidth =  mapviewGetOption("leafletWidth"),
     defaultHeight = mapviewGetOption("leafletHeight")
 
