@@ -45,24 +45,16 @@ addLargePolygons <- function(map,
                            at = at,
                            na.color = na.color)
     x@data$color <- color
-    print(x@data)
     # write to a file to be able to use ogr2ogr
-    rgdal::writeOGR(x, dsn = tmpPath, layer = "shape", driver="ESRI Shapefile", overwrite_layer = TRUE)
-
-    # convert it to geojson with ogr2ogr
-    gdalUtils::ogr2ogr(src_datasource_name = paste0(tmpPath,"/shape.shp"), dst_datasource_name = pathJsonFn, f = "GeoJSON")
-
-    # alternative way needs about the same time because it engage the same tools
-    #geojsonio::geojson_write(x,file = pathJsonFn, precision = 5)
-
-    # get rid of tmp file
-    file.remove(paste0(tmpPath,"/",dir(path = tmpPath, pattern = "shape")))
-
+    rgdal::writeOGR(x, paste(tmpPath, "data.geojson", sep=.Platform$file.sep), "OGRGeoJSON", driver="GeoJSON")
+    
     # for fastet json read in a html document we wrap it with var data = {};
+    #lns<-paste('var data = ', paste(readLines(pathJsonFn), collapse="\n"),';')
     lns <- data.table::fread(pathJsonFn, header = FALSE, sep = "\n",
-                             data.table = FALSE, blank.lines.skip = TRUE)
+                             data.table = FALSE)
     lns[1,] <- 'var data = {'
     lns[length(lns[,1]),]<- '};'
+    
     write.table(lns, pathJsonFn, sep="\n", row.names=FALSE, col.names=FALSE, quote = FALSE)
 
     if (class(x)[1] == 'SpatialPolygonsDataFrame'){
@@ -102,7 +94,6 @@ addLargePolygons <- function(map,
     NULL
   }
 
-print(color)
   # create list of user data that is passed to the widget
   lst_x <- list(color = col2Hex(color),
                 layer = map.types,
