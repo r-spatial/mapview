@@ -516,7 +516,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    homebutton = TRUE,
                    ...) {
 
-            if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
+            # if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletPolygonsDF(x,
                                   map = map,
@@ -546,19 +546,19 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                   NULL
                 }
               }
-            } else {
-              bView(x,
-                    zcol = NULL,
-                    color = color,
-                    na.color = na.color,
-                    values = values,
-                    map.types = map.types,
-                    alpha.regions = alpha.regions,
-                    lwd = lwd,
-                    verbose = verbose,
-                    layer.name = layer.name,
-                    popup = NULL)
-            }
+            # } else {
+            #   bView(x,
+            #         zcol = NULL,
+            #         color = color,
+            #         na.color = na.color,
+            #         values = values,
+            #         map.types = map.types,
+            #         alpha.regions = alpha.regions,
+            #         lwd = lwd,
+            #         verbose = verbose,
+            #         layer.name = layer.name,
+            #         popup = NULL)
+            # }
 
           }
 

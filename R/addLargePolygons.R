@@ -6,7 +6,7 @@ addLargePolygons <- function(map,
                              na.color = mapviewGetOption("na.color"),
                              values,
                              map.types = mapviewGetOption("basemaps"),
-                             alpha.regions = 0.2,
+                             alpha.regions = 0.9,
                              lwd = 2,
                              verbose = mapviewGetOption("verbose"),
                              layer.name = deparse(substitute(x,
@@ -39,7 +39,13 @@ addLargePolygons <- function(map,
       keep <- c(zcol)
     }
     x@data <- x@data[(names(x@data) %in% keep)]
-
+    color <- mapviewColors(x,
+                           zcol = zcol,
+                           colors = color,
+                           at = at,
+                           na.color = na.color)
+    x@data$color <- color
+    print(x@data)
     # write to a file to be able to use ogr2ogr
     rgdal::writeOGR(x, dsn = tmpPath, layer = "shape", driver="ESRI Shapefile", overwrite_layer = TRUE)
 
@@ -64,6 +70,7 @@ addLargePolygons <- function(map,
     } else if (class(x)[1] == 'SpatialLinesDataFrame'){
       noFeature <- length(x@lines)
     } else {
+      noFeature <- length(x@coords)
       # nrow(coordinates(x)
     }
     # to be done
@@ -94,13 +101,8 @@ addLargePolygons <- function(map,
   } else {
     NULL
   }
-  color <- mapviewColors(x,
-                         zcol = zcol,
-                         colors = color,
-                         at = at,
-                         na.color = na.color)
-  print(color)
 
+print(color)
   # create list of user data that is passed to the widget
   lst_x <- list(color = col2Hex(color),
                 layer = map.types,

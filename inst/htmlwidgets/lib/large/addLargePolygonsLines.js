@@ -16,11 +16,16 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
     // define a dummy layer for the geojson data
     var myLayer = L.geoJson(undefined,{style:style,onEachFeature:onEachFeature}).addTo(map);
 
+    var southWest = L.latLng([x.ymin, x.xmin]),
+    northEast = L.latLng([x.ymax, x.xmax]),
+    bounds = L.latLngBounds(southWest, northEast);
+    map.fitBounds(bounds);
+
     // create a pseudo layer for applying fitBounds
-    var mincorner = L.marker([x.ymin, x.xmin]);
-    var maxcorner = L.marker([x.ymax, x.xmax]);
-    var group = new L.featureGroup([maxcorner, mincorner]);
-    map.fitBounds(group.getBounds());
+    //var mincorner = L.marker([x.ymin, x.xmin]);
+    //var maxcorner = L.marker([x.ymax, x.xmax]);
+    //var group = new L.featureGroup([maxcorner, mincorner]);
+    //map.fitBounds(group.getBounds());
 
     //legend.addToMap( pal = x.color, values = x.values.name, opacity = legend.opacity)
 
@@ -34,20 +39,22 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
               }
             }
             else {
-              var col =  x.color[x.color.length-1];
+              var col =  [x.color.length-1];
             }
 
 
-    var baseZ =  x.zoom-1 ;
-    var maxZ =  x.zoom-1  ;
-    var color = col;
+    //var baseZ =  x.zoom ;
+
+    var zoom = x.zoom;
+    var maxZ =  x.zoom + 1; //switch for RTree geojson reder zoonm level
+    var color = x.color;
     var opacity = x.opacity;
     var lnWidth = x.weight;
     var tileOptions = {
-	        baseZoom: x.zoom,   // max zoom to preserve detail on
-	        maxZoom: x.zoom,    // zoom to slice down to on first pass
+	        //baseZoom: x.zoom,   // max zoom to preserve detail on
+	        //maxZoom: x.zoom - 1,    // zoom to slice down to on first pass
 	        maxPoints: 100, // stop slicing each tile below this number of points
-          tolerance: 3,   // simplification tolerance (higher means simpler)
+          tolerance: 1,   // simplification tolerance (higher means simpler)
           extent: 4096,   // tile extent (both width and height)
           buffer: 64,   	// tile buffer on each sidey
           debug: 0,     	// logging level (0 to disable, 1 or 2)
@@ -78,9 +85,10 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
         layer.bindPopup(popupContent);
     }
   }
+
 	// The styles of the layer
 	function style(feature) {
-	  //return feature.properties.color;
+
 	        if (feature.properties.ELEV != "" && feature.properties.ELEV != "<Null>" && feature.properties.ELEV != null) {
 	           /* if (feature.properties.ELEV == "1000") {
 	                return {
@@ -102,14 +110,20 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
 	                    opacity: 0.9
 	                }
 	            }
-	        */
+              */
 	        } else {
-	            return {
-	                color: "magenta",
-	                weight: lnWidth,
-	                opacity: opacity
-	            };
+	          return {
+	    color: feature.properties.color,
+	    weight: 4,
+	    opacity: 0.9
+	  };
+	           // return {
+	             //   color: "magenta",
+	               // weight: lnWidth,
+	                //opacity: opacity
+	            //};
 	        }
+
 	    }
 /*	//   If you want to filter the layer, if not delete the function here and on the var myLayer
 	function filter(feature, layer) {
@@ -156,7 +170,7 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
 	map.on("boxselected", function(e) {
 	    // Define here the zoom level of change
 
-	    if (map.getZoom() > maxZ) {
+	    if (map.getZoom() >= maxZ) {
 	        if (layerType == "vectortiles") {
 	            map.removeLayer(canvasTiles);
 	            layerType = "geojson";
@@ -171,7 +185,7 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
 	});
 
 	function showLayer() {
-	    if (map.getZoom() > maxZ) {
+	    if (map.getZoom() >= maxZ) {
 	        if (layerType == "vectortiles") {
 	            map.removeLayer(canvasTiles);
 	            layerType = "geojson";
@@ -200,6 +214,7 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
   var tileIndex = geojsonvt(data,tileOptions);
 
 	// The canvas tile layer for low zoom level
+	//var zoom = x.zoom;
   var canvasTiles = L.tileLayer.canvas();
 
 
@@ -208,10 +223,10 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
 	        var ctx = canvas.getContext('2d');
 	        extent = 4096;
 	        padding = 0;
-	        totalExtent = 4096 * (1 + padding * 2);
+	        totalExtent = extent * (1 + padding * 2);
 	        height = canvas.height = canvas.width = 256;
 	        ratio = height / totalExtent;
-	        pad = 4096 * padding * ratio;
+	        pad = extent * padding * ratio;
 
 	        var x = tilePoint.x;
 	        var y = tilePoint.y;
@@ -270,6 +285,7 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
              */
 	           for (var j = 0; j < feature.geometry.length; j++) {
 	              var ring = feature.geometry[j];
+	              ctx.strokeStyle = feature.tags.color;
 
 	                for (var k = 0; k < ring.length; k++) {
 	                    var p = ring[k];
@@ -279,8 +295,12 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
 	                }
 	           }
 	           // polygons
-            if (type === 3) { ctx.fill(); }
+            if (type === 3) { ctx.fillStyle = feature.tags.color;
+                              ctx.strokeStyle = feature.tags.color;
+
+            }
 	              ctx.stroke();
+
 
           }
           }
