@@ -18,6 +18,8 @@ if ( !isGeneric('slideView') ) {
 #'
 #' @param img1 a RasterStack/Brick, RasterLayer or path to a .png file
 #' @param img2 a RasterStack/Brick, RasterLayer or path to a .png file
+#' @param label1 slider label for img1 (defaults to object name)
+#' @param label2 slider label for img2 (defaults to object name)
 #' @param r integer. Index of the Red channel, between 1 and nlayers(x)
 #' @param g integer. Index of the Green channel, between 1 and nlayers(x)
 #' @param b integer. Index of the Blue channel, between 1 and nlayers(x)
@@ -26,6 +28,15 @@ if ( !isGeneric('slideView') ) {
 #' @param color the color palette to be used for visualising RasterLayers
 #' @param na.color the color to be used for NA pixels
 #' @param ... additional arguments passed on to repective functions.
+#'
+#' @details
+#' For slideView there are a few keyboard shortcuts defined:
+#' \itemize{
+#'   \item space - toggle antialiasing
+#'   \item esc - zoom to layer extent
+#'   \item enter - set zoom to 1
+#'   \item ctrl - increase panning speed by 10
+#' }
 #'
 #' @author
 #' Tim Appelhans
@@ -73,7 +84,7 @@ if ( !isGeneric('slideView') ) {
 #'
 #' img2013 <- brick(rst_red2013, rst_green2013, rst_blue2013)
 #'
-#' slideView(img2000, img2013)
+#' slideView(img2000, img2013, label1 = "before", label2 = "after")
 #' }
 #'
 #' @export
@@ -84,7 +95,13 @@ if ( !isGeneric('slideView') ) {
 
 setMethod("slideView", signature(img1 = "RasterStackBrick",
                                  img2 = "RasterStackBrick"),
-          function(img1, img2, r = 3, g = 2, b = 1,
+          function(img1,
+                   img2,
+                   label1 = deparse(substitute(img1, env = parent.frame())),
+                   label2 = deparse(substitute(img2, env = parent.frame())),
+                   r = 3,
+                   g = 2,
+                   b = 1,
                    na.color = mapviewGetOption("na.color"),
                    maxpixels = mapviewGetOption("plainview.maxpixels"),
                    ...) {
@@ -108,12 +125,9 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
-            img1nm <- deparse(substitute(img1, env = parent.frame()))
-            img2nm <- deparse(substitute(img2, env = parent.frame()))
-
             slideViewInternal(list(a="a", b="b"),
-                              img1nm = img1nm,
-                              img2nm = img2nm,
+                              img1nm = label1,
+                              img2nm = label2,
                               filename1 = fl1,
                               filename2 = fl2)
           }
@@ -129,6 +143,8 @@ setMethod("slideView", signature(img1 = "RasterLayer",
                                  img2 = "RasterLayer"),
           function(img1,
                    img2,
+                   label1 = deparse(substitute(img1, env = parent.frame())),
+                   label2 = deparse(substitute(img2, env = parent.frame())),
                    col.regions = mapviewGetOption("raster.palette")(256),
                    na.color = mapviewGetOption("na.color"),
                    maxpixels = mapviewGetOption("plainview.maxpixels")) {
@@ -150,12 +166,9 @@ setMethod("slideView", signature(img1 = "RasterLayer",
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
-            img1nm <- deparse(substitute(img1, env = parent.frame()))
-            img2nm <- deparse(substitute(img2, env = parent.frame()))
-
             slideViewInternal(list(a="a", b="b"),
-                              img1nm = img1nm,
-                              img2nm = img2nm,
+                              img1nm = label1,
+                              img2nm = label2,
                               filename1 = fl1,
                               filename2 = fl2)
           }
@@ -168,7 +181,9 @@ setMethod("slideView", signature(img1 = "RasterLayer",
 
 setMethod("slideView", signature(img1 = "character",
                                  img2 = "character"),
-          function(img1, img2) {
+          function(img1, img2,
+                   label1 = deparse(substitute(img1, env = parent.frame())),
+                   label2 = deparse(substitute(img2, env = parent.frame()))) {
 
             png1 <- png::readPNG(img1)
             png2 <- png::readPNG(img2)
@@ -183,12 +198,9 @@ setMethod("slideView", signature(img1 = "character",
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
-            img1nm <- deparse(substitute(img1, env = parent.frame()))
-            img2nm <- deparse(substitute(img2, env = parent.frame()))
-
             slideViewInternal(list(a="a", b="b"),
-                              img1nm = img1nm,
-                              img2nm = img2nm,
+                              img1nm = label1,
+                              img2nm = label2,
                               filename1 = fl1,
                               filename2 = fl2)
           }

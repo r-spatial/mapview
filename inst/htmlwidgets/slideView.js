@@ -177,17 +177,32 @@ function keydown(e) {
 	  draw();
   }
 
+  if(e.which==13) { // enter key
+    var iw = imageBefore.width;
+    var ih = imageBefore.height;
+    var cw = rootNode.clientWidth;
+    var ch = rootNode.clientHeight;
+    var fw = cw/iw;
+    var fh = ch/ih;
+    scale = 1;
+    var sw = iw*scale;
+    var sh = ih*scale;
+    offsetX = sw<cw?(cw-sw)/scale/2:0;
+    offsetY = sh<ch?(ch-sh)/scale/2:0;
+    draw();
+  }
+
   if(e.which==27) { // escape
     init_image();
   }
 
-  if(e.which==13) { // enter key
+/*  if(e.which==13) { // enter key
     offsetX = 0;
     offsetY = 0;
     scale = 1;
     draw();
   }
-
+*/
   if(e.which==17) { // control key
     speed=speed==1?10:1;
   }

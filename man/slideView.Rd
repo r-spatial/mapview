@@ -10,16 +10,22 @@
 \alias{slideview,ANY-method}
 \title{slideView}
 \usage{
-\S4method{slideView}{RasterStackBrick,RasterStackBrick}(img1, img2, r = 3,
-  g = 2, b = 1, na.color = mapviewGetOption("na.color"),
+\S4method{slideView}{RasterStackBrick,RasterStackBrick}(img1, img2,
+  label1 = deparse(substitute(img1, env = parent.frame())),
+  label2 = deparse(substitute(img2, env = parent.frame())), r = 3, g = 2,
+  b = 1, na.color = mapviewGetOption("na.color"),
   maxpixels = mapviewGetOption("plainview.maxpixels"), ...)
 
 \S4method{slideView}{RasterLayer,RasterLayer}(img1, img2,
+  label1 = deparse(substitute(img1, env = parent.frame())),
+  label2 = deparse(substitute(img2, env = parent.frame())),
   col.regions = mapviewGetOption("raster.palette")(256),
   na.color = mapviewGetOption("na.color"),
   maxpixels = mapviewGetOption("plainview.maxpixels"))
 
-\S4method{slideView}{character,character}(img1, img2)
+\S4method{slideView}{character,character}(img1, img2,
+  label1 = deparse(substitute(img1, env = parent.frame())),
+  label2 = deparse(substitute(img2, env = parent.frame())))
 
 \S4method{slideview}{ANY}(...)
 }
@@ -27,6 +33,10 @@
 \item{img1}{a RasterStack/Brick, RasterLayer or path to a .png file}
 
 \item{img2}{a RasterStack/Brick, RasterLayer or path to a .png file}
+
+\item{label1}{slider label for img1 (defaults to object name)}
+
+\item{label2}{slider label for img2 (defaults to object name)}
 
 \item{r}{integer. Index of the Red channel, between 1 and nlayers(x)}
 
@@ -56,6 +66,15 @@ This is a modified implementation of http://bl.ocks.org/rfriberg/8327361
 }
 \details{
 Compare two images trough interactive swiping overlay
+
+
+For slideView there are a few keyboard shortcuts defined:
+\itemize{
+  \item space - toggle antialiasing
+  \item esc - zoom to layer extent
+  \item enter - set zoom to 1
+  \item ctrl - increase panning speed by 10
+}
 }
 \section{Methods (by class)}{
 \itemize{
@@ -106,7 +125,7 @@ rst_red2013 <- raster(jpg2013[, , 3])
 
 img2013 <- brick(rst_red2013, rst_green2013, rst_blue2013)
 
-slideView(img2000, img2013)
+slideView(img2000, img2013, label1 = "before", label2 = "after")
 }
 
 }

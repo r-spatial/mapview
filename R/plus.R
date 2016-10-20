@@ -124,3 +124,30 @@ setMethod("+",
             return(out)
           }
 )
+
+
+#' @name +
+#' @docType methods
+#' @rdname plus
+#' @aliases +,leaflet,character-method
+#'
+setMethod("+",
+          signature(e1 = "mapview",
+                    e2 = "character"),
+          function (e1, e2) {
+
+            if (e2 %in% c("easteregg", "easter.egg", "easter_egg",
+                          "easter", "easterEgg", "EasterEgg", "eegg",
+                          "easter", "egg", "Easter", "Egg", "Nobody",
+                          "Terence Hill", "trinity", "Trinity",
+                          "easter egg", "Easter Egg", "Easter egg")) {
+              cat("\nBehold! Someone's drawing quicker than the rest...\n\n")
+              leafletMissing(map.types = "Thunderforest.Pioneer", #mapviewGetOption("basemaps"),
+                             easter.egg = TRUE)
+            } else {
+              stop("\n\nSorry, but there seems to be someone who draws quicker than you...\n\n
+                   Try again!")
+            }
+
+          }
+)

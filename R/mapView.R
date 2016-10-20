@@ -185,9 +185,12 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                           layer.name = layer.name,
                           homebutton = homebutton,
                           ...)
-              #}
             } else {
-              NULL
+              if (mapviewGetOption("platform") == "base") {
+                qmap(x, ...)
+              } else {
+                NULL
+              }
             }
 
           }
@@ -231,7 +234,11 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                          homebutton = homebutton,
                          ...)
             } else {
-              NULL
+              if (mapviewGetOption("platform") == "base") {
+                qmap(x, ...)
+              } else {
+                NULL
+              }
             }
 
           }
@@ -299,7 +306,11 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                               legend = legend,
                               ...)
             } else {
-              NULL
+              if (mapviewGetOption("platform") == "base") {
+                qmap(x, ...)
+              } else {
+                NULL
+              }
             }
 
           }
@@ -317,7 +328,11 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                               zcol,
                               ...)
             } else {
-              NULL
+              if (mapviewGetOption("platform") == "base") {
+                qmap(x, ...)
+              } else {
+                NULL
+              }
             }
 
           }
@@ -382,7 +397,11 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                 homebutton = homebutton,
                                 ...)
               } else {
-                NULL
+                if (mapviewGetOption("platform") == "base") {
+                  qmap(x, ...)
+                } else {
+                  NULL
+                }
               }
             } else {
               fpView(x,
@@ -443,7 +462,11 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                               homebutton = homebutton,
                              ...)
               } else {
-                NULL
+                if (mapviewGetOption("platform") == "base") {
+                  qmap(x, ...)
+                } else {
+                  NULL
+                }
               }
             } else {
               fpView(x,
@@ -493,7 +516,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                    homebutton = TRUE,
                    ...) {
 
-            if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
+            # if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletPolygonsDF(x,
                                   map = map,
@@ -517,21 +540,25 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                                   homebutton = homebutton,
                                   ...)
               } else {
-                NULL
+                if (mapviewGetOption("platform") == "base") {
+                  qmap(x, ...)
+                } else {
+                  NULL
+                }
               }
-            } else {
-              bView(x,
-                    zcol = NULL,
-                    color = color,
-                    na.color = na.color,
-                    values = values,
-                    map.types = map.types,
-                    alpha.regions = alpha.regions,
-                    lwd = lwd,
-                    verbose = verbose,
-                    layer.name = layer.name,
-                    popup = NULL)
-            }
+            # } else {
+            #   bView(x,
+            #         zcol = NULL,
+            #         color = color,
+            #         na.color = na.color,
+            #         values = values,
+            #         map.types = map.types,
+            #         alpha.regions = alpha.regions,
+            #         lwd = lwd,
+            #         verbose = verbose,
+            #         layer.name = layer.name,
+            #         popup = NULL)
+            # }
 
           }
 
@@ -574,7 +601,11 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                                 homebutton = homebutton,
                                ...)
               } else {
-                NULL
+                if (mapviewGetOption("platform") == "base") {
+                  qmap(x, ...)
+                } else {
+                  NULL
+                }
               }
             } else {
               bView(x,
@@ -644,7 +675,11 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                                homebutton = homebutton,
                                ...)
               } else {
-                NULL
+                if (mapviewGetOption("platform") == "base") {
+                  qmap(x, ...)
+                } else {
+                  NULL
+                }
               }
             } else {
               bView(x,
@@ -701,7 +736,11 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                              homebutton = homebutton,
                             ...)
               } else {
-                NULL
+                if (mapviewGetOption("platform") == "base") {
+                  qmap(x, ...)
+                } else {
+                  NULL
+                }
               }
             } else {
               bView(x,
@@ -740,6 +779,32 @@ setMethod('mapView', signature(x = 'missing'),
 )
 
 
+
+## list ===================================================================
+
+if ( !isGeneric('mapview') ) {
+  setGeneric('mapview', function(...)
+    standardGeneric('mapview'))
+}
+
+#' @describeIn mapView \code{\link{list}}
+#'
+setMethod('mapView', signature(x = 'list'),
+          function(x, ...) {
+            lyrnms <- paste0("layer_", sprintf("%02.0f", seq(x)))
+            if (mapviewGetOption("platform") == "leaflet") {
+              Reduce("+", lapply(seq(x), function(i) {
+                mapView(x = x[[i]], layer.name = lyrnms[i], ...)
+              }))
+            } else {
+              if (mapviewGetOption("platform") == "base") {
+                qmap(x, ...)
+              } else {
+                NULL
+              }
+            }
+          }
+)
 
 ## mapview ================================================================
 

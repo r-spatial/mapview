@@ -4,6 +4,7 @@
 \name{+}
 \alias{+}
 \alias{+,leaflet,ANY-method}
+\alias{+,leaflet,character-method}
 \alias{+,mapview,ANY-method}
 \alias{+,mapview,mapview-method}
 \title{Add a layer to a mapview or leaflet map}
@@ -11,6 +12,8 @@
 \S4method{+}{mapview,ANY}(e1, e2)
 
 \S4method{+}{leaflet,ANY}(e1, e2)
+
+\S4method{+}{mapview,character}(e1, e2)
 }
 \arguments{
 \item{e1}{the map to which the layer should be added}

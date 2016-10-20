@@ -1316,19 +1316,11 @@ leafletMissing <- function(map.types,
                  '<a target="_blank" href="http://environmentalinformatics-marburg.de/">Environmental Informatics Marburg</a>',
                  "<br>", "by ", "<br>",
                  '<a target="_blank" href="http://www.uni-marburg.de/fb19/fachgebiete/umweltinformatik/appelhanst/index.html">Tim Appelhans</a>',
-                 "<br>", "and is released under", "<br>",
-                 strsplit(utils::packageDescription("mapview", fields = "License"), "\\|")[[1]][1],
                  "<br>", "<br>",
                  '<hr width=50% style="border: none; height: 1px; color: #D8D8D8; background: #D8D8D8;"/>',
                  "<br>",
                  "Please cite as: ", "<br>",
                  attr(unclass(utils::citation("mapview"))[[1]], "textVersion"),
-                 "<br>", "<br>",
-                 'A BibTeX entry for LaTeX users can be created with',
-                 "<br>",
-                 '<font face="courier">',
-                 'citation("mapview")',
-                 '</font face="courier">',
                  "<br>", "<br>",
                  '<hr width=50% style="border: none; height: 1px; color: #D8D8D8; background: #D8D8D8;"/>',
                  "<br>",
@@ -1353,7 +1345,8 @@ leafletMissing <- function(map.types,
                               names = "envinMR")
     m <- leaflet::setView(map = m, 8.771676, 50.814891, zoom = 18)
     if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
-    m <- addMouseCoordinates(m)
+    m <- addMouseCoordinates(m) %>% addHomeButton(extent(envinMR),
+                                                  "mapview home")
     out <- new('mapview', object = list(NULL), map = m)
   } else {
     m <- initBaseMaps(map.types)
