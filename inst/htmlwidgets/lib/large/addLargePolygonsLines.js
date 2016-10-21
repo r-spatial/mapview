@@ -54,7 +54,7 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
 	        //baseZoom: x.zoom,   // max zoom to preserve detail on
 	        //maxZoom: x.zoom - 1,    // zoom to slice down to on first pass
 	        maxPoints: 100, // stop slicing each tile below this number of points
-          tolerance: 1,   // simplification tolerance (higher means simpler)
+          tolerance: 3,   // simplification tolerance (higher means simpler)
           extent: 4096,   // tile extent (both width and height)
           buffer: 64,   	// tile buffer on each sidey
           debug: 0,     	// logging level (0 to disable, 1 or 2)
@@ -297,6 +297,7 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
 	           // polygons
             if (type === 3) { ctx.fillStyle = feature.tags.color;
                               ctx.strokeStyle = feature.tags.color;
+                              ctx.fill();
 
             }
 	              ctx.stroke();

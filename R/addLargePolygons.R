@@ -46,15 +46,17 @@ addLargePolygons <- function(map,
                            na.color = na.color)
     x@data$color <- color
     # write to a file to be able to use ogr2ogr
-    rgdal::writeOGR(x, paste(tmpPath, "data.geojson", sep=.Platform$file.sep), "OGRGeoJSON", driver="GeoJSON")
-    
+    fl <- pathJsonFn #paste(tmpPath, "data.geojson", sep = .Platform$file.sep)
+    rgdal::writeOGR(obj = x, dsn = fl, layer = "OGRGeoJSON", driver = "GeoJSON",
+                    check_exists = FALSE)
+
     # for fastet json read in a html document we wrap it with var data = {};
     #lns<-paste('var data = ', paste(readLines(pathJsonFn), collapse="\n"),';')
     lns <- data.table::fread(pathJsonFn, header = FALSE, sep = "\n",
-                             data.table = FALSE)
+                             data.table = FALSE, fill = TRUE)
     lns[1,] <- 'var data = {'
     lns[length(lns[,1]),]<- '};'
-    
+
     write.table(lns, pathJsonFn, sep="\n", row.names=FALSE, col.names=FALSE, quote = FALSE)
 
     if (class(x)[1] == 'SpatialPolygonsDataFrame'){
