@@ -33,21 +33,21 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
     // var loc = HTMLWidgets.getAttachmentUrl('data', 'jsondata');
     // var data = $.parseJSON(HTMLWidgets.getAttachmentUrl('data', 'jsondata'));
             // check if an array of colors (palette) or a single color is provided
-            if (x.color.length <= 7 ) {
-              if (x.color[1].substring(0,1) != "#" ) {
-                var col =  x.color;
-              }
-            }
-            else {
-              var col =  [x.color.length-1];
-            }
+    //        if (x.color.length <= 7 ) {
+    //          if (x.color[1].substring(0,1) != "#" ) {
+    //            var col =  x.color;
+    //          }
+    //        }
+    //        else {
+    //          var col =  [x.color.length-1];
+    //        }
 
 
     //var baseZ =  x.zoom ;
 
     var zoom = x.zoom;
     var maxZ =  x.zoom + 1; //switch for RTree geojson reder zoonm level
-    var color = x.color;
+    var color =  data.features[0].properties.color;
     var opacity = x.opacity;
     var lnWidth = x.weight;
     var tileOptions = {
@@ -234,6 +234,8 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
 	        var tile = tileIndex.getTile(z, x, y);
 	        if (typeof tile != "undefined") {
 	          var features = tile.features;
+	          var color = features[0].tags.color
+
            // color to the lines
            // create gradients
 		      //var grdp = ctx.createRadialGradient(75,50,5,90,60,100);

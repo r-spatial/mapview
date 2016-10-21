@@ -100,7 +100,7 @@ addLargePolygons <- function(map,
   }
 
   # create list of user data that is passed to the widget
-  lst_x <- list(color = col2Hex(color),
+  lst_x <- list(color = NULL,
                 layer = map.types,
                 data  = 'undefined',
                 html = getPopupStyle(),
@@ -114,7 +114,7 @@ addLargePolygons <- function(map,
                 xmin = ext@xmin,
                 ymin = ext@ymin,
                 zoom = zoom,
-                values = x@data)
+                values = NULL)
 
   # creating the widget
   # bViewInternal(jFn = pathJsonFn,  x = lst_x)
