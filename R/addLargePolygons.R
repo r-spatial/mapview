@@ -73,13 +73,13 @@ addLargePolygons <- function(map,
 
     if (class(x)[1] == 'SpatialPolygonsDataFrame'){
       noFeature <- length(x@polygons)
-      multi<-12
+      multi<-7
     } else if (class(x)[1] == 'SpatialLinesDataFrame'){
       noFeature <- length(x@lines)
-      multi<-12
+      multi<-7
     } else {
       noFeature <- length(x@coords)
-      multi<-6
+      multi<-40
       # nrow(coordinates(x)
     }
     # to be done
@@ -94,28 +94,28 @@ addLargePolygons <- function(map,
     # estimate minum zoomlevel for the rtree part
     # it is roughly calculated by the number of feature/km**2
     # multi scales empirically the tresholds for polygons lines and points
-    tmp <- (noFeature )
-    if (tmp > ceiling(20000*multi)) {
-      zoom <- 14
-    } else if (tmp <= ceiling(20000*multi) & tmp > ceiling(15000*multi)){
-      zoom<- 13
-    } else if (tmp <= ceiling(15000*multi) & tmp > ceiling(12500*multi)){
+    tmp <- (noFeature/multi)
+    if (tmp > ceiling(20000 )) {
+      zoom <- 13
+    } else if (tmp <= ceiling(20000 ) & tmp > ceiling(15000 )){
       zoom<- 12
-    }else if (tmp <= ceiling(12500*multi) & tmp > ceiling(10000*multi)){
+    } else if (tmp <= ceiling(15000 ) & tmp > ceiling(12500 )){
       zoom<- 11
-    } else if (tmp <= ceiling(10000*multi) & tmp > ceiling(7500*multi) ){
+    }else if (tmp <= ceiling(12500 ) & tmp > ceiling(10000 )){
       zoom<- 10
-    } else if (tmp <= ceiling(7500*multi) & tmp > ceiling(5000*multi) ){
+    } else if (tmp <= ceiling(10000 ) & tmp > ceiling(7500 ) ){
       zoom<- 9
-    } else if (tmp <= ceiling(5000*multi) & tmp > ceiling(2500*multi) ){
+    } else if (tmp <= ceiling(7500 ) & tmp > ceiling(5000 ) ){
       zoom<- 8
-    } else if (tmp <= ceiling(2500*multi) & tmp > ceiling(1000*multi) ){
+    } else if (tmp <= ceiling(5000 ) & tmp > ceiling(2500 ) ){
       zoom<- 7
-    } else if (tmp <= ceiling(1000*multi) & tmp > ceiling(500*multi) ){
+    } else if (tmp <= ceiling(2500 ) & tmp > ceiling(1000 ) ){
       zoom<- 6
+    } else if (tmp <= ceiling(1000 ) & tmp > ceiling(500 ) ){
+      zoom<- 5
     }
   } else {
-    zoom<-5
+    zoom<-4
   }
 
   # create list of user data that is passed to the widget
