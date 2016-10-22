@@ -6,8 +6,10 @@ addLargePolygons <- function(map,
                              na.color = mapviewGetOption("na.color"),
                              values,
                              map.types = mapviewGetOption("basemaps"),
-                             alpha.regions = 0.9,
+                             alpha.regions = 0.4,
+                             alpha = 0.9,
                              lwd = 2,
+                             cex = 5,
                              verbose = mapviewGetOption("verbose"),
                              layer.name = deparse(substitute(x,
                                                              env = parent.frame())),
@@ -31,21 +33,28 @@ addLargePolygons <- function(map,
     # check and transform projection
     x <- spCheckAdjustProjection(x)
 
-    # get the variable names
-    keep <- colnames(x@data)
-
-    # apply zcol
-    if (!is.null(zcol)) {
-      keep <- c(zcol)
-    }
-    x@data <- x@data[(names(x@data) %in% keep)]
     color <- mapviewColors(x,
                            zcol = zcol,
                            colors = color,
                            at = at,
                            na.color = na.color)
+
+    # get the variable names
+    keep <- colnames(x@data)
+
+    # apply zcol
+    if (!is.null(zcol)) {
+      keep <- c(zcol,"color")
+       x@data$color <- color
+       col<-color[1]
+    }
+    else
+    {col<-color
     x@data$color <- color
-    # write to a file to be able to use ogr2ogr
+    keep <- c(keep,"color")}
+    x@data <- x@data[(names(x@data) %in% keep)]
+
+        # write to a file to be able to use ogr2ogr
     # fl <- pathJsonFn #paste(tmpPath, "data.geojson", sep = .Platform$file.sep)
     # rgdal::writeOGR(obj = x, dsn = fl, layer = "OGRGeoJSON", driver = "GeoJSON",
     #                 check_exists = FALSE)
@@ -64,10 +73,13 @@ addLargePolygons <- function(map,
 
     if (class(x)[1] == 'SpatialPolygonsDataFrame'){
       noFeature <- length(x@polygons)
+      multi<-2
     } else if (class(x)[1] == 'SpatialLinesDataFrame'){
       noFeature <- length(x@lines)
+      multi<-3
     } else {
       noFeature <- length(x@coords)
+      multi<-9
       # nrow(coordinates(x)
     }
     # to be done
@@ -79,34 +91,44 @@ addLargePolygons <- function(map,
     yc <- (ext@ymax-ext@ymin) * 0.5 + ext@ymin
     xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
 
+    # estimate minum zoomlevel for the rtree part
+    # it is roughly calculated by the number of feature/km**2
+    # multi scales empirically the tresholds for polygons lines and points
     tmp <- (noFeature / xArea)
-    if (tmp > 15000) {
+    if (tmp > ceiling(15000*multi)) {
       zoom <- 14
-    } else if (tmp <= 15000 & tmp > 12500){
+    } else if (tmp <= ceiling(15000*multi) & tmp > ceiling(12500*multi)){
       zoom<- 13
-    } else if (tmp <= 12500 & tmp > 10000){
+    } else if (tmp <= ceiling(12500*multi) & tmp > ceiling(10000*multi)){
       zoom<- 12
-    }else if (tmp <= 10000 & tmp > 7500){
+    }else if (tmp <= ceiling(10000*multi) & tmp > ceiling(7500*multi)){
       zoom<- 11
-    } else if (tmp <= 7500 & tmp > 5000 ){
+    } else if (tmp <= ceiling(7500*multi) & tmp > ceiling(5000*multi) ){
       zoom<- 10
-    } else if (tmp <= 5000 & tmp > 2000 ){
+    } else if (tmp <= ceiling(5000*multi) & tmp > ceiling(2000*multi) ){
       zoom<- 9
-    } else if (tmp <= 2000 ){
+    } else if (tmp <= ceiling(2000*multi) & tmp > ceiling(1000*multi) ){
       zoom<- 8
+    } else if (tmp <= ceiling(1000*multi) & tmp > ceiling(500*multi) ){
+      zoom<- 7
+    } else if (tmp <= ceiling(500*multi) & tmp > ceiling(250*multi) ){
+      zoom<- 6
     }
   } else {
-    NULL
+    zoom<-5
   }
 
   # create list of user data that is passed to the widget
-  lst_x <- list(color = NULL,
+  lst_x <- list(color = col,
                 layer = map.types,
                 data  = 'undefined',
                 html = getPopupStyle(),
                 centerLat = yc,
                 centerLon = xc,
-                opacity = alpha.regions,
+                opacity = alpha,
+                alpharegions=alpha.regions,
+                at = at,
+                cex = cex,
                 weight = lwd,
                 layername = layer.name,
                 xmax = ext@xmax,
