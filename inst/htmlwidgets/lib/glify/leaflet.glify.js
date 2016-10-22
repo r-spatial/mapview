@@ -5,9 +5,10 @@
             settings = {},
             i;
 
-        for (i in defaults) if (defaults.hasOwnProperty(i)) {
-            settings[i] = (userSettings.hasOwnProperty(i) ? userSettings[i] : defaults[i]);
-        }
+        for (i in defaults)
+            if (defaults.hasOwnProperty(i)) {
+                settings[i] = (userSettings.hasOwnProperty(i) ? userSettings[i] : defaults[i]);
+            }
 
         return settings;
     }
@@ -26,29 +27,33 @@
         if (!settings.map) throw new Error('no leaflet "map" object setting defined');
 
         var glLayer = this.glLayer = L.canvasOverlay()
-                .drawing(function(params) {
-                    this.drawOnCanvas(params);
-                }.bind(this))
-                .addTo(settings.map),
+            .drawing(function(params) {
+                this.drawOnCanvas(params);
+            }.bind(this))
+            .addTo(settings.map),
             canvas = this.canvas = glLayer.canvas();
-            canvas.width = canvas.clientWidth;
-            canvas.height = canvas.clientHeight;
-//            newLayer = {"Points":this.glLayer};
-//            var bounds = L.latLngBounds(glLayer._map);
-//            settings.map.fitBounds(bounds);//works!
-            //settings.map.fitBounds(glLayer._map.getBounds());
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+        //            newLayer = {"Points":this.glLayer};
+        //            var bounds = L.latLngBounds(glLayer._map);
+        //            settings.map.fitBounds(bounds);//works!
+        //settings.map.fitBounds(glLayer._map.getBounds());
 
         if (!window.WebGLRenderingContext) {
-        // the browser doesn't even know what WebGL is
+            // the browser doesn't even know what WebGL is
             window.location = "http://get.webgl.org";
         } else {
-        canvas = this.canvas = glLayer.canvas();
+            canvas = this.canvas = glLayer.canvas();
 
-        this.gl  = this.canvas.getContext('webgl',{ antialias: true }) || canvas.getContext('experimental-webgl',{ antialias: true });
-          if (!this.gl) {
-            // browser supports WebGL but initialization failed.
-            window.location = "http://get.webgl.org/troubleshooting";
-        }
+            this.gl = this.canvas.getContext('webgl', {
+                antialias: true
+            }) || canvas.getContext('experimental-webgl', {
+                antialias: true
+            });
+            if (!this.gl) {
+                // browser supports WebGL but initialization failed.
+                window.location = "http://get.webgl.org/troubleshooting";
+            }
         }
 
         this.pixelsToWebGLMatrix = new Float32Array(16);
@@ -78,18 +83,18 @@
         baseLayers: []
     };
 
-      function switchLayer() {
-         this.glLayer.clearLayers();
-       };
+    function switchLayer() {
+        this.glLayer.clearLayers();
+    };
 
     function hexToRgb(hex) {
-                var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-                return result ? {
-                                r: parseInt(result[1], 16)/255,
-                                g: parseInt(result[2], 16)/255,
-                                b: parseInt(result[3], 16)/255
-                                } : null;
-              };
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16) / 255,
+            g: parseInt(result[2], 16) / 255,
+            b: parseInt(result[3], 16) / 255
+        } : null;
+    };
 
 
     Glify.prototype = {
@@ -97,20 +102,20 @@
          *
          * @returns {Glify}
          */
-        setup: function () {
+        setup: function() {
             var self = this,
                 settings = this.settings;
 
-            if (settings.toggleLayer){
-               settings.map.on('viewreset', function (e) {
-                   if(!toggle) {
-                              map.removeLayer(glLayer);
+            if (settings.toggleLayer) {
+                settings.map.on('viewreset', function(e) {
+                    if (!toggle) {
+                        map.removeLayer(glLayer);
                     } else {
-                    map.addLayer(glLayer);
-                  }
-                  toggle = !toggle;
-                  }
-            )};
+                        map.addLayer(glLayer);
+                    }
+                    toggle = !toggle;
+                })
+            };
 
             if (settings.clickPoint) {
                 settings.map.on('click', function(e) {
@@ -139,13 +144,8 @@
 
             //this.layerControl = L.control.layers(this.settings.baseLayers).addTo(this.settings.map);
             //this.layerControl.addOverlay(this.glLayer,"points");
-      var txt2 = $("<div id='lnlt'></div>").text('<button onclick="switchLayer()">Append text</button>');
-      $('lnlt').append(txt2);
-
-
-
-
-
+            var txt2 = $("<div id='lnlt'></div>").text('<button onclick="switchLayer()">Append text</button>');
+            $('lnlt').append(txt2);
 
 
 
@@ -155,26 +155,25 @@
             this.latLngLookup = {};
             // -- data
             // check if an array of colors (palette) or a single color is provided
-            if (this.settings.color.length <= 7 ) {
-              if (this.settings.color[1].substring(0,1) != "#" ) {
-                var col =  hexToRgb(this.settings.color);
-              }
-            }
-            else {
+            if (this.settings.color.length <= 7) {
+                if (this.settings.color[1].substring(0, 1) != "#") {
+                    var col = hexToRgb(this.settings.color);
+                }
+            } else {
 
-            //var col = [];
-            //  for (i = 0; i < this.settings.color.length; i++)
-            //  {
-                col = hexToRgb(this.settings.color[this.settings.color.length-1]);
-            //}
+                //var col = [];
+                //  for (i = 0; i < this.settings.color.length; i++)
+                //  {
+                col = hexToRgb(this.settings.color[this.settings.color.length - 1]);
+                //}
 
             }
 
             var settings = this.settings,
                 colorKey = settings.color,
-                colorFn  = "#460000",
-                color =  col; //Glify.color[ colorKey ];
-             this.settings.colorkey =  col;
+                colorFn = "#460000",
+                color = col; //Glify.color[ colorKey ];
+            this.settings.colorkey = col;
             if (color === undefined) {
                 color = colorKey;
             }
@@ -187,12 +186,12 @@
             if (colorKey.call !== undefined) {
                 colorFn = colorKey;
 
-                this.settings.data.map(function (latLng, i) {
+                this.settings.data.map(function(latLng, i) {
 
-                  var a = [];
-                  for (var z = 2; z < latLng.length; z++) {
-                    a[z-2] = latLng[z];
-                  }
+                    var a = [];
+                    for (var z = 2; z < latLng.length; z++) {
+                        a[z - 2] = latLng[z];
+                    }
                     var pixel = this.latLngToPixelXY(latLng[1], latLng[0], a),
                         color = colorFn(10);
 
@@ -200,26 +199,25 @@
                     this.verts.push(pixel.x, pixel.y, color.r, color.g, color.b);
                 }.bind(this));
             } else {
-                this.settings.data.map(function (latLng, i) {
-                  var a = [];
-                  for (var i = 2; i < latLng.length; i++) {
-                    a[i-2] = latLng[i];
-                  }
-                  if (a.length < 6){
-                  var pixel = this.latLngToPixelXY(latLng[1], latLng[0], a.slice(3,a.length));
-                 r = a[0];
-                  g = a[1];
-                  b = a[2];
-                  }
-                  else
-                  {var pixel = this.latLngToPixelXY(latLng[1], latLng[0], a);
-                  r = this.settings.colorkey.r;
-                  g = this.settings.colorkey.g;
-                  b = this.settings.colorkey.b;
+                this.settings.data.map(function(latLng, i) {
+                    var a = [];
+                    for (var i = 2; i < latLng.length; i++) {
+                        a[i - 2] = latLng[i];
+                    }
+                    if (a.length < 6) {
+                        var pixel = this.latLngToPixelXY(latLng[1], latLng[0], a.slice(3, a.length));
+                        r = a[0] / 255;
+                        g = a[1] / 255;
+                        b = a[2] / 255;
+                    } else {
+                        var pixel = this.latLngToPixelXY(latLng[1], latLng[0], a);
+                        r = this.settings.colorkey.r;
+                        g = this.settings.colorkey.g;
+                        b = this.settings.colorkey.b;
 
-                  }
+                    }
                     //-- 2 coord, 3 rgb colors interleaved buffer
-                    this.verts.push(pixel.x, pixel.y,r, g, b);
+                    this.verts.push(pixel.x, pixel.y, r, g, b);
                 }.bind(this));
             }
 
@@ -246,7 +244,7 @@
             gl.uniformMatrix4fv(uMatrix, false, this.pixelsToWebGLMatrix);
             gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, vertexArray, gl.STATIC_DRAW);
-            gl.vertexAttribPointer(vertexLocation, 2, gl.FLOAT, false, fsize *5  ,0);
+            gl.vertexAttribPointer(vertexLocation, 2, gl.FLOAT, false, fsize * 5, 0);
             gl.enableVertexAttribArray(vertexLocation);
 
             //offset for color buffer
@@ -317,7 +315,7 @@
             gl.useProgram(program);
             //gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
             gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
-            //gl.BlendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+                //gl.BlendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
             gl.enable(gl.BLEND);
 
             this.program = program;
@@ -342,7 +340,7 @@
                 offset = this.latLngToPixelXY(topLeft.lat, topLeft.lng),
                 // -- Scale to current zoom
                 scale = Math.pow(2, zoom),
-                pointSize = zoom / 10 * zoom   ;
+                pointSize = zoom / 10 * zoom;
 
             gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -372,7 +370,7 @@
          * @param longitude
          * @returns {{x: number, y: number}}
          */
-        latLngToPixelXY: function(latitude, longitude, a){
+        latLngToPixelXY: function(latitude, longitude, a) {
             var pi180 = Math.PI / 180.0,
                 pi4 = Math.PI * 4,
                 sinLatitude = Math.sin(latitude * pi180),
@@ -384,7 +382,7 @@
             pixel = {
                 lat: latitude,
                 lng: longitude,
-                a:a,
+                a: a,
                 x: pixelX,
                 y: pixelY,
                 key: key
@@ -445,7 +443,7 @@
          */
         addTo: function(map) {
             this.glLayer.addTo(map);
-            this.layerControl.addOverlay(this.glLayer,"points");
+            this.layerControl.addOverlay(this.glLayer, "points");
 
             //L.control.layers(newLayer).addTo(map);
 
@@ -459,7 +457,7 @@
          */
         lookup: function(coords) {
             var x = coords.lat - 0.004,
-                y ,
+                y,
 
                 xMax = coords.lat + 0.003,
                 yMax = coords.lng + 0.003,
@@ -471,9 +469,9 @@
                 found,
                 key;
 
-            for (; x <= xMax; x+=0.00001) {
+            for (; x <= xMax; x += 0.00001) {
                 y = coords.lng - 0.004;
-                for (; y <= yMax; y+=0.00001) {
+                for (; y <= yMax; y += 0.00001) {
                     key = x.toFixed(5) + 'x' + y.toFixed(5);
                     found = this.latLngLookup[key];
                     if (found) {
@@ -509,8 +507,8 @@
             }
 
             return points.reduce(function(prev, curr) {
-                var prevDistance = locationDistance(targetLocation , prev),
-                    currDistance = locationDistance(targetLocation , curr);
+                var prevDistance = locationDistance(targetLocation, prev),
+                    currDistance = locationDistance(targetLocation, curr);
                 return (prevDistance < currDistance) ? prev : curr;
             });
         },
@@ -525,7 +523,7 @@
             s.width = '100px';
             s.height = '100px';
             s.position = 'absolute';
-            s.backgroundColor = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+            s.backgroundColor = '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
 
             document.body.appendChild(el);
 

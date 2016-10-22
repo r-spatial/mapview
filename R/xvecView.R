@@ -113,9 +113,9 @@ fpView <- function(x,
 
     # apply zcol
     if (!is.null(zcol)) {
-      x@data$r<-col2rgb(color)[1,]/255
-      x@data$g<-col2rgb(color)[2,]/255
-      x@data$b<-col2rgb(color)[3,]/255
+      x@data$r<-col2rgb(color)[1,]
+      x@data$g<-col2rgb(color)[2,]
+      x@data$b<-col2rgb(color)[3,]
       x@data$x<-x@coords[,1]
       x@data$y<-x@coords[,2]
       # get the variable names

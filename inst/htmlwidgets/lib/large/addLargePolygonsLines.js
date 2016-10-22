@@ -1,4 +1,4 @@
-LeafletWidget.methods.addLargePolygonsLines = function (x) {
+LeafletWidget.methods.addLargePolygonsLines = function(x) {
 
     //#########################################################
 
@@ -55,10 +55,6 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
         var col = data.features[0].properties.color;
     }
 
-
-    //var baseZ =  x.zoom ;
-
-
     var zoom = x.zoom;
     var maxZ = x.zoom + 1; //switch for RTree geojson reder zoonm level
     var color = col;
@@ -66,8 +62,6 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
     var globalAlpha = x.alpharegions;
     var lnWidth = x.weight;
     var tileOptions = {
-        //baseZoom: x.zoom,   // max zoom to preserve detail on
-        //maxZoom: x.zoom - 1,    // zoom to slice down to on first pass
         maxPoints: 100, // stop slicing each tile below this number of points
         tolerance: 3, // simplification tolerance (higher means simpler)
         extent: 4096, // tile extent (both width and height)
@@ -76,13 +70,13 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
         indexMaxZoom: 0, // max zoom in the initial tile index
         indexMaxPoints: 100000, // max number of points per tile in the index
     };
-
+    // construct the rtree object
     var rt = RTree();
     var bd;
 
+    // make leaflet circleobjects
     function pointToLayer(feature, latlng) {
         return L.circleMarker(latlng);
-
     }
 
     // The onEachFeature function provides functionality when oneEchfeature is activated
@@ -157,8 +151,9 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
     	}
     */
 
+    // function for retrieving the correct box according to the rtree object
     var BoxSelect = L.Map.BoxZoom.extend({
-        _onMouseUp: function (e) {
+        _onMouseUp: function(e) {
             this._pane.removeChild(this._box);
             this._container.style.cursor = '';
             L.DomUtil.enableTextSelection();
@@ -187,11 +182,13 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
             });
         }
     });
-    var boxSelect = new BoxSelect(map); //new box select
 
-    boxSelect.enable(); //add it
+    //construct boxselect object
+    var boxSelect = new BoxSelect(map);
+    //add it
+    boxSelect.enable();
 
-    map.on("boxselected", function (e) {
+    map.on("boxselected", function(e) {
         // Define here the zoom level of change
 
         if (map.getZoom() >= maxZ) {
@@ -208,6 +205,7 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
         }
     });
 
+    // recursive call of layerswitch
     function showLayer() {
         if (map.getZoom() >= maxZ) {
             if (layerType == "vectortiles") {
@@ -233,7 +231,7 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
             layerType = "vectortiles";
         }
     }
-    map.on("moveend", function (e) {
+    map.on("moveend", function(e) {
         showLayer();
     });
 
@@ -249,7 +247,7 @@ LeafletWidget.methods.addLargePolygonsLines = function (x) {
 
 
     // Draw the canvas tiles
-    canvasTiles.drawTile = function (canvas, tilePoint, zoom) {
+    canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
         var ctx = canvas.getContext('2d');
         extent = 4096;
         padding = 0;
