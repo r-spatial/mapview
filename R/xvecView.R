@@ -102,18 +102,37 @@ fpView <- function(x,
     # check projection
     x <- spCheckAdjustProjection(x)
 
-    # get the variable names
-    cnames <- colnames(x@data)
+    color <- mapviewColors(x,
+                           zcol = zcol,
+                           colors = color,
+                           at = at,
+                           na.color = na.color)
+
+
+
 
     # apply zcol
     if (!is.null(zcol)) {
-      cnames <- zcol
+      x@data$r<-col2rgb(color)[1,]/255
+      x@data$g<-col2rgb(color)[2,]/255
+      x@data$b<-col2rgb(color)[3,]/255
+      x@data$x<-x@coords[,1]
+      x@data$y<-x@coords[,2]
+      # get the variable names
+      cnames <- c("r","g","b",zcol)
+      x@data<-x@data[,c("x","y",cnames)]
+    }
+    else{
+      cnames <- colnames(x@data)
+      x@data$x<-x@coords[,1]
+      x@data$y<-x@coords[,2]
+      x@data<-x@data[,c("x","y",cnames) ]
+
     }
 
     # integrate the coordinates
-    x@data$x<-x@coords[,1]
-    x@data$y<-x@coords[,2]
-    x@data <- x@data[,c("x","y",cnames)]
+
+
 
     # generate reduced geojson string
     data.json <- coords2JSON(as.matrix(x@data))
@@ -147,7 +166,7 @@ fpView <- function(x,
 
     # create list of user data that is passed to the widget
     lst_x = list(
-      color = col2Hex(color),
+      color = color, #col2Hex(color),
       layer = map.types,
       data  = "undefined",
       cnames = cnames,
