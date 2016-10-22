@@ -79,7 +79,7 @@ addLargePolygons <- function(map,
       multi<-3
     } else {
       noFeature <- length(x@coords)
-      multi<-9
+      multi<-20
       # nrow(coordinates(x)
     }
     # to be done
