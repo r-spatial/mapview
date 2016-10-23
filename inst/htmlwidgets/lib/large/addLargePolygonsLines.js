@@ -55,8 +55,10 @@ LeafletWidget.methods.addLargePolygonsLines = function(x) {
         var col = data.features[0].properties.color;
     }
 
-    if (lzoom < x.zoom-1) {
-        zoom = Math.round((x.zoom-lzoom)*1.5 + x.zoom);
+    if (lzoom < x.zoom) {
+        zoom = Math.round((x.zoom-lzoom) + x.zoom);
+        if (lzoom < 14 && zoom > 14){zoom=14}
+        if (zoom > 16) {zoom = 16}
     }   else {
     var zoom = x.zoom;
     }
