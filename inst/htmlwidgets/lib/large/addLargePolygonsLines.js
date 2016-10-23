@@ -54,12 +54,15 @@ LeafletWidget.methods.addLargePolygonsLines = function(x) {
     } else {
         var col = data.features[0].properties.color;
     }
-
-    if (lzoom < x.zoom) {
+    // second (first is on R side) coarse spatial zoom adaption
+    // if there is a
+    var difZoom = x.zoom - lzoom;
+    if (difZoom >= 3 &&  (lzoom<x.zoom)) {
         zoom = Math.round((x.zoom-lzoom) + x.zoom);
-        if (lzoom < 14 && zoom > 14){zoom=14}
-        if (zoom > 16) {zoom = 16}
-    }   else {
+        if (lzoom < 13 && zoom > 13){zoom=13}
+        if (lzoom >= 13 && zoom > 18) {zoom = 17}
+    }
+    else {
     var zoom = x.zoom;
     }
     var maxZ = zoom; //switch for RTree geojson reder zoonm level
