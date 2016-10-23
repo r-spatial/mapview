@@ -81,7 +81,7 @@ addLargePolygons <- function(map,
       noF<-  noFeature / 1
     } else if (class(x)[1] == 'SpatialLinesDataFrame'){
       noFeature <- length(x@lines)
-      noF<-  noFeature / 1.5
+      noF<-  noFeature / 1
     } else {
       noFeature <- length(x@coords)
       noF<-  noFeature / 5
@@ -89,7 +89,7 @@ addLargePolygons <- function(map,
 
     zoom<- floor(-0.000000000429*(noF**2) + 0.000148 * noF +1)
     if (zoom > 14) {zoom<-14}
-    if (zoom < 3) {zoom<-3}
+    if (zoom < 8) {zoom<-8}
     # to be done
 
     # getting the extent and map center
@@ -100,34 +100,7 @@ addLargePolygons <- function(map,
     xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
 
 
-    #tmp <- (noFeature/multi)
-  # if ( tmp > ceiling(60000 )) {
-  #   zoom <- 14
-  # }else if (tmp <= ceiling(60000 ) & tmp > ceiling(40000 )) {
-  #   zoom <- 13
-  #   }else if (tmp <= ceiling(40000 ) & tmp > ceiling(30000 )) {
-  #   zoom <- 12
-  #   }else if (tmp <= ceiling(30000 ) & tmp > ceiling(20000 )) {
-  #     zoom <- 11
-  #   } else if (tmp <= ceiling(20000 ) & tmp > ceiling(15000 )){
-  #     zoom<- 10
-  #   } else if (tmp <= ceiling(15000 ) & tmp > ceiling(12500 )){
-  #     zoom<- 9
-  #   }else if (tmp <= ceiling(12500 ) & tmp > ceiling(10000 )){
-  #     zoom<- 8
-  #   } else if (tmp <= ceiling(10000 ) & tmp > ceiling(7500 ) ){
-  #     zoom<- 7
-  #   } else if (tmp <= ceiling(7500 ) & tmp > ceiling(5000 ) ){
-  #     zoom<- 6
-  #   } else if (tmp <= ceiling(5000 ) & tmp > ceiling(2500 ) ){
-  #     zoom<- 5
-  #   } else if (tmp <= ceiling(2500 ) & tmp > ceiling(1000 ) ){
-  #     zoom<- 4
-  #   } else if (tmp <= ceiling(1000 ) & tmp > ceiling(500 ) ){
-  #     zoom<- 3
-  #   }
-  # } else {
-  #   zoom<-2
+
   }
 
   # create list of user data that is passed to the widget
