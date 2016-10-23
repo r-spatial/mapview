@@ -57,7 +57,7 @@ LeafletWidget.methods.addLargePolygonsLines = function(x) {
     // second (first is on R side) coarse spatial zoom adaption
     // if there is a
     var difZoom = x.zoom - lzoom;
-    if (difZoom >= 3 &&  (lzoom<x.zoom)) {
+    if (difZoom >= 1 &&  (lzoom<x.zoom)) {
         zoom = Math.round((x.zoom-lzoom) + x.zoom);
         if (lzoom < 13 && zoom > 13){zoom=13}
         if (lzoom >= 13 && zoom > 18) {zoom = 17}
