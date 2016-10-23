@@ -56,7 +56,7 @@ LeafletWidget.methods.addLargePolygonsLines = function(x) {
     }
 
     var zoom = x.zoom;
-    var maxZ = x.zoom + 1; //switch for RTree geojson reder zoonm level
+    var maxZ = x.zoom; //switch for RTree geojson reder zoonm level
     var color = col;
     var opacity = x.opacity;
     var globalAlpha = x.alpharegions;
