@@ -89,7 +89,7 @@ addLargePolygons <- function(map,
 
     zoom<- floor(-0.000000000429*(noF**2) + 0.000148 * noF +1)
     if (zoom > 14) {zoom<-14}
-    if (zoom < 8) {zoom<-8}
+    if (zoom < 9) {zoom<-9}
     # to be done
 
     # getting the extent and map center

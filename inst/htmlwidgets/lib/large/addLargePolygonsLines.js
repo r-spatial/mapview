@@ -34,7 +34,7 @@ LeafletWidget.methods.addLargePolygonsLines = function(x) {
         northEast = L.latLng([x.ymax, x.xmax]),
         bounds = L.latLngBounds(southWest, northEast);
     map.fitBounds(bounds);
-
+    var lzoom = map.getZoom();
     // create a pseudo layer for applying fitBounds
     //var mincorner = L.marker([x.ymin, x.xmin]);
     //var maxcorner = L.marker([x.ymax, x.xmax]);
@@ -55,8 +55,12 @@ LeafletWidget.methods.addLargePolygonsLines = function(x) {
         var col = data.features[0].properties.color;
     }
 
+    if (lzoom < x.zoom-1) {
+        zoom = Math.round((x.zoom-lzoom)*1.5 + x.zoom);
+    }   else {
     var zoom = x.zoom;
-    var maxZ = x.zoom; //switch for RTree geojson reder zoonm level
+    }
+    var maxZ = zoom; //switch for RTree geojson reder zoonm level
     var color = col;
     var opacity = x.opacity;
     var globalAlpha = x.alpharegions;
