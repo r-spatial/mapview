@@ -479,15 +479,15 @@ renderbView <- function(expr, env = parent.frame(), quoted = FALSE) {
 }
 
 ### makepath creates temp paths and filenames =================================================
-makepath <- function (){
-  tmpPath <- tempfile()
-  dir.create(tmpPath)
-  baseFn <- "data"
-  extFn <- "geojson"
-  jsonFn <- paste0(baseFn,".",extFn)
-  pathJsonFn <- paste0(tmpPath,"/",jsonFn)
-  return(list(tmpPath,pathJsonFn,jsonFn))
-}
+# makepath <- function (){
+#   tmpPath <- tempfile()
+#   dir.create(tmpPath)
+#   baseFn <- "data"
+#   extFn <- "geojson"
+#   jsonFn <- paste0(baseFn,".",extFn)
+#   pathJsonFn <- paste0(tmpPath,"/",jsonFn)
+#   return(list(tmpPath,pathJsonFn,jsonFn))
+# }
 
 # ### getPopupStyle creates popup style =================================================
 # getPopupStyle <- function(){

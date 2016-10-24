@@ -22,3 +22,15 @@ getPopupStyle <- function() {
   end <- grep("<%=pop%>", pop)
   return(paste(pop[1:(end-2)], collapse = ""))
 }
+
+
+### make path
+makepath <- function (){
+  tmpPath <- tempfile()
+  dir.create(tmpPath)
+  baseFn <- "data"
+  extFn <- "geojson"
+  jsonFn <- paste0(baseFn,".",extFn)
+  pathJsonFn <- paste0(tmpPath,"/",jsonFn)
+  return(list(tmpPath,pathJsonFn,jsonFn))
+}
