@@ -169,58 +169,27 @@
 
             }
 
-            var settings = this.settings,
-                colorKey = settings.color,
-                colorFn = "#460000",
-                color = col; //Glify.color[ colorKey ];
-            this.settings.colorkey = col;
-            if (color === undefined) {
-                color = colorKey;
-            }
 
-            if (color.call !== undefined) {
-                colorKey = color;
-            }
-
-            //see if colorKey is actually a function
-            if (colorKey.call !== undefined) {
-                colorFn = colorKey;
-
-                this.settings.data.map(function(latLng, i) {
-
-                    var a = [];
-                    for (var z = 2; z < latLng.length; z++) {
-                        a[z - 2] = latLng[z];
-                    }
-                    var pixel = this.latLngToPixelXY(latLng[1], latLng[0], a),
-                        color = colorFn(10);
-
-                    //-- 2 coord, 3 rgb colors interleaved buffer
-                    this.verts.push(pixel.x, pixel.y, color.r, color.g, color.b);
-                }.bind(this));
-            } else {
                 this.settings.data.map(function(latLng, i) {
                     var a = [];
                     for (var i = 2; i < latLng.length; i++) {
                         a[i - 2] = latLng[i];
                     }
-                    if (a.length < 6) {
+//                    if (a.length < 6) {
                         var pixel = this.latLngToPixelXY(latLng[1], latLng[0], a.slice(3, a.length));
                         r = a[0] / 255;
                         g = a[1] / 255;
                         b = a[2] / 255;
-                    } else {
-                        var pixel = this.latLngToPixelXY(latLng[1], latLng[0], a);
-                        r = this.settings.colorkey.r;
-                        g = this.settings.colorkey.g;
-                        b = this.settings.colorkey.b;
-
-                    }
+  //                  }
+                    //else {
+                    //    var pixel = this.latLngToPixelXY(latLng[1], latLng[0], a);
+                    //    r = this.settings.colorkey.r;
+                    //    g = this.settings.colorkey.g;
+                    //    b = this.settings.colorkey.b;
+                    //}
                     //-- 2 coord, 3 rgb colors interleaved buffer
                     this.verts.push(pixel.x, pixel.y, r, g, b);
                 }.bind(this));
-            }
-
 
 
             //look up the locations for the inputs to our shaders.

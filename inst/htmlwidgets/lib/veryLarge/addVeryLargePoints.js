@@ -72,19 +72,7 @@ LeafletWidget.methods.addVeryLargePoints = function(x) {
                     clickPoint: function(point) {
                         //set up a standalone popup (use a popup as a layer)
                         contentToHtml = x.popTemplate;
-                        if (point.a.length < 6) {
-                            for (var i = 0; i < x.cHelp.length; i++) {
-                                if (i == 0) {
-                                    contentToHtml += x.cHelp[i] + point.lng + "</td></tr>";
-                                }
-                                if (i == 1) {
-                                    contentToHtml += x.cHelp[i] + point.lat + "</td></tr>";
-                                }
-                                if (i > 4) {
-                                    contentToHtml += x.cHelp[i] + point.a[i - 5] + "</td></tr>";
-                                }
-                            }
-                        } else {
+
                             for (var i = 0; i < x.cHelp.length; i++) {
                                 if (i == 0) {
                                     contentToHtml += x.cHelp[i] + point.lng + "</td></tr>";
@@ -96,7 +84,7 @@ LeafletWidget.methods.addVeryLargePoints = function(x) {
                                     contentToHtml += x.cHelp[i] + point.a[i - 2] + "</td></tr>";
                                 }
                             }
-                        }
+
 
 
                         contentToHtml += "</table></body></html>";

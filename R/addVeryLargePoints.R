@@ -40,24 +40,15 @@ addVeryLargePoints <- function(map,
                            at = at,
                            na.color = na.color)
 
-    # apply zcol
-    if (!is.null(zcol)) {
+      # create dataframe
+      cnames <- colnames(x@data)
       x@data$r<-col2rgb(color)[1,]
       x@data$g<-col2rgb(color)[2,]
       x@data$b<-col2rgb(color)[3,]
       x@data$x<-x@coords[,1]
       x@data$y<-x@coords[,2]
-      # get the variable names
-      cnames <- c("r","g","b",zcol)
-      x@data<-x@data[,c("x","y",cnames)]
-    }
-    else{
-      cnames <- colnames(x@data)
-      x@data$x<-x@coords[,1]
-      x@data$y<-x@coords[,2]
-      x@data<-x@data[,c("x","y",cnames) ]
+      x@data<-x@data[,c("x","y","r","g","b",cnames)]
 
-    }
 
     # integrate the coordinates
 
@@ -97,7 +88,7 @@ addVeryLargePoints <- function(map,
 
     # create list of user data that is passed to the widget
     lst_x = list(
-      color = color, #col2Hex(color),
+      color = "undefined",  # color, #col2Hex(color),
       layer = map.types,
       data  = "undefined",
       #cnames = cnames,
