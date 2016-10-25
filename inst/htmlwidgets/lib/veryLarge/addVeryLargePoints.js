@@ -56,6 +56,7 @@ LeafletWidget.methods.addVeryLargePoints = function(x) {
         var vertexshader = HTMLWidgets.getAttachmentUrl('vertex-shader');
         var fragmentshader = HTMLWidgets.getAttachmentUrl('fragment-shader');
         var color = x.color;
+        var layername = x.layername;
 
         // after reading the shader files data, popuptemplates and shaders are passed to the
         // L.Glify leaflet extension that handles the webGL shading process
@@ -107,6 +108,7 @@ LeafletWidget.methods.addVeryLargePoints = function(x) {
                     },
                     data: JSON.parse(data),
                     color: color
+                    //size: 100
                     //baseLayers: baseLayers
 
                 });

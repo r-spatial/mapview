@@ -1,7 +1,7 @@
 addVeryLargePoints <- function(map,
                                x,
                                zcol = NULL,
-                               color = mapviewGetOption("vector.palette")(256),
+                               color = mapviewGetOption("vector.palette"),
                                at = NULL,
                                na.color = mapviewGetOption("na.color"),
                                values = NULL,
@@ -39,9 +39,6 @@ addVeryLargePoints <- function(map,
                            colors = color,
                            at = at,
                            na.color = na.color)
-
-
-
 
     # apply zcol
     if (!is.null(zcol)) {
@@ -103,7 +100,7 @@ addVeryLargePoints <- function(map,
       color = color, #col2Hex(color),
       layer = map.types,
       data  = "undefined",
-      cnames = cnames,
+      #cnames = cnames,
       centerLat = yc,
       centerLon = xc,
       popTemplate = getPopupStyle(),

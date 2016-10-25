@@ -455,12 +455,14 @@
          * @param {L.LatLng} coords
          * @returns {*}
          */
+
         lookup: function(coords) {
-            var x = coords.lat - 0.004,
+            var buff = 0.001;
+            var x = coords.lat - buff,
                 y,
 
-                xMax = coords.lat + 0.003,
-                yMax = coords.lng + 0.003,
+                xMax = coords.lat + buff,
+                yMax = coords.lng + buff,
 
                 foundI,
                 foundMax,
@@ -470,7 +472,7 @@
                 key;
 
             for (; x <= xMax; x += 0.00001) {
-                y = coords.lng - 0.004;
+                y = coords.lng - buff;
                 for (; y <= yMax; y += 0.00001) {
                     key = x.toFixed(5) + 'x' + y.toFixed(5);
                     found = this.latLngLookup[key];
