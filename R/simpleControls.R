@@ -23,7 +23,7 @@
 #' @aliases polygonData.sf
 
 
-polygonData.sf <- function(obj) {
+"polygonData.sf" <- function(obj) {
 
   if (inherits(geometry(obj)[[1]], "MULTIPOLYGON")) {
     tmp <- lapply(geometry(obj), function(i) {
@@ -58,12 +58,43 @@ polygonData.sf <- function(obj) {
 #' @export pointData.sf
 #' @describeIn polygonData.sf method for point data
 #' @aliases pointData.sf
-pointData.sf <- function(obj) {
+# pointData.sf <- function(obj) {
+#
+#   tmp <- do.call("rbind", lapply(geometry(obj), function(i) {
+#     lng = i[[1]]
+#     lat = i[[2]]
+#     data.frame(lng = lng, lat = lat)
+#   }))
+#
+# }
 
+"pointData.sf" <- function(obj) {
   tmp <- do.call("rbind", lapply(geometry(obj), function(i) {
     lng = i[[1]]
     lat = i[[2]]
     data.frame(lng = lng, lat = lat)
   }))
-
+  return(tmp)
 }
+
+#' @export pointData.MULTIPOINT
+#' @describeIn polygonData.sf method for point data
+#' @aliases pointData.MULTIPOINT,pointData.MULTIPOINT Z,pointData.MULTIPOINT M,pointData.MULTIPOINT ZM
+"pointData.MULTIPOINT" <-
+  "pointData.MULTIPOINT Z" <-
+  "pointData.MULTIPOINT M" <-
+  "pointData.MULTIPOINT ZM" <- function(obj) {
+    lng <- obj[, 1]
+    lat <- obj[, 2]
+    data.frame(lng = lng, lat = lat)
+  }
+
+#' @export pointData.POINT
+#' @describeIn polygonData.sf method for point data
+#' @aliases pointData.POINT,"pointData.POINT Z","pointData.POINT M","pointData.POINT ZM"
+"pointData.POINT" <-
+  "pointData.POINT Z" <-
+  "pointData.POINT M" <-
+  "pointData.POINT ZM" <- function(obj) {
+    data.frame(lng = obj[1], lat = obj[2])
+  }
