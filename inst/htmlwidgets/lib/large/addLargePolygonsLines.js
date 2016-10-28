@@ -354,7 +354,7 @@ LeafletWidget.methods.addLargePolygonsLines = function(x) {
         .addTo(map);
 
     // ADD LAYER CONTRLS
-    //var layerControl = L.control.layers(baseLayers, overlayLayers, {collapsed: true}).addTo(map);
+    // var layerControl = L.control.layers(overlayLayers, {collapsed: true}).addTo(map);
     // map.setView([x.centerLat[0], x.centerLon[0], x.zoom[0]]);
 
     showLayer();

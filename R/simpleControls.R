@@ -20,6 +20,7 @@
 #' @export polygonData.sf
 #' @name polygonData.sf
 #' @rdname polygonData.sf
+#' @method polygonData sf
 #' @aliases polygonData.sf
 
 
@@ -57,6 +58,7 @@
 
 #' @export pointData.sf
 #' @describeIn polygonData.sf method for point data
+#' @method pointData sf
 #' @aliases pointData.sf
 # pointData.sf <- function(obj) {
 #
@@ -79,6 +81,10 @@
 
 #' @export pointData.MULTIPOINT
 #' @describeIn polygonData.sf method for point data
+#' @method pointData MULTIPOINT
+#' @method pointData MULTIPOINT Z
+#' @method pointData MULTIPOINT M
+#' @method pointData MULTIPOINT ZM
 #' @aliases pointData.MULTIPOINT,pointData.MULTIPOINT Z,pointData.MULTIPOINT M,pointData.MULTIPOINT ZM
 "pointData.MULTIPOINT" <-
   "pointData.MULTIPOINT Z" <-
@@ -91,7 +97,11 @@
 
 #' @export pointData.POINT
 #' @describeIn polygonData.sf method for point data
-#' @aliases pointData.POINT,"pointData.POINT Z","pointData.POINT M","pointData.POINT ZM"
+#' @method pointData POINT
+#' @method pointData POINT Z
+#' @method pointData POINT M
+#' @method pointData POINT ZM
+#' @aliases "pointData.POINT","pointData.POINT Z","pointData.POINT M","pointData.POINT ZM"
 "pointData.POINT" <-
   "pointData.POINT Z" <-
   "pointData.POINT M" <-

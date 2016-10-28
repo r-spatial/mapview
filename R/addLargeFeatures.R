@@ -1,21 +1,15 @@
-addLargePolygons <- function(map,
+addLargeFeatures <- function(map,
                              x,
-                             zcol = NULL,
-                             color = mapviewGetOption("vector.palette"),
-                             at = NULL,
-                             na.color = mapviewGetOption("na.color"),
-                             values,
-                             map.types = mapviewGetOption("basemaps"),
-                             alpha.regions = 0.4,
-                             alpha = 0.9,
-                             lwd = 2,
-                             cex = 5,
+                             color = "#03F",
+                             weight = 4,
+                             fillOpacity = 0.4,
+                             opacity = 0.9,
+                             radius = 8,
                              verbose = mapviewGetOption("verbose"),
-                             layer.name = deparse(substitute(x)),
-                             popup = NULL)
+                             group = deparse(substitute(x)),
+                             ...)
 {
 
-print(layer.name)
   ## temp dir
   tmp <- makepath()
   tmpPath <- tmp[[1]][1]
@@ -32,25 +26,20 @@ print(layer.name)
     # check and transform projection
     x <- spCheckAdjustProjection(x)
 
-    color <- mapviewColors(x,
-                           zcol = zcol,
-                           colors = color,
-                           at = at,
-                           na.color = na.color)
-
     # get the variable names
     keep <- colnames(x@data)
 
     # apply zcol
-    if (!is.null(zcol)) {
-      keep <- c(zcol,"color")
+    # if (!is.null(zcol)) {
+    #   keep <- c(keep, "color")
+    #   x@data$color <- color
+    #   col <- color[1]
+    # } else {
+      col <- color
       x@data$color <- color
-      col<-color[1]
-    }
-    else
-    {col<-color
-    x@data$color <- color
-    keep <- c(keep,"color")}
+      keep <- c(keep, "color")
+    # }
+
     x@data <- x@data[(names(x@data) %in% keep)]
 
     # write to a file to be able to use ogr2ogr
@@ -77,22 +66,22 @@ print(layer.name)
     # that leads to something like the divisor 1 2 5
     if (class(x)[1] == 'SpatialPolygonsDataFrame'){
       noFeature <- length(x@polygons)
-      noF<-  noFeature / 1
+      noF <- noFeature / 1
     } else if (class(x)[1] == 'SpatialLinesDataFrame'){
       noFeature <- length(x@lines)
-      noF<-  noFeature / 1
+      noF <- noFeature / 1
     } else {
-      noFeature <- length(x@coords)
-      noF<-  noFeature / 5
+      noFeature <- nrow(x) #length(x@coords)
+      noF <- noFeature / 5
     }
 
-    zoom<- floor(-0.000000000429*(noF**2) + 0.000148 * noF +1)
-    if (zoom > 14) {zoom<-14}
-    if (zoom < 9) {zoom<-9}
+    zoom <- floor(-0.000000000429 * (noF^2) + 0.000148 * noF + 1)
+    if (zoom > 14) {zoom <- 14}
+    if (zoom < 9) {zoom <- 9}
     # to be done
 
     # getting the extent and map center
-    ext <- extent(x)
+    ext <- raster::extent(x)
     xArea <- (ext@ymax-ext@ymin)*(ext@xmax-ext@xmin)
     yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
     yc <- (ext@ymax-ext@ymin) * 0.5 + ext@ymin
@@ -104,17 +93,16 @@ print(layer.name)
 
   # create list of user data that is passed to the widget
   lst_x <- list(color = col,
-                layer = map.types,
+                #layer = map.types,
                 data  = 'undefined',
                 html = getPopupStyle(),
                 centerLat = yc,
                 centerLon = xc,
-                opacity = alpha,
-                alpharegions=alpha.regions,
-                at = at,
-                cex = cex,
-                weight = lwd,
-                layername = layer.name,
+                opacity = opacity,
+                alpharegions=fillOpacity,
+                cex = radius,
+                weight = weight,
+                layername = group,
                 xmax = ext@xmax,
                 ymax = ext@ymax,
                 xmin = ext@xmin,
