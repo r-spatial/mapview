@@ -30,7 +30,7 @@ std::string gsubC(const std::string& pattern, const std::string& replacement,
 std::string brewPopupRowC(std::string colname, std::string value) {
 
   std::string chColString;
-  chColString = std::string("<td>") + colname + "</td>";
+  chColString = std::string("<td>") + "<b>" + colname + "<b>" + "</td>";
 
   std::ostringstream ssVal;
   ssVal << value;
@@ -52,7 +52,7 @@ std::string brewPopupRowC(std::string colname, std::string value) {
 std::string brewPopupRowAltC(std::string colname, std::string value) {
 
   std::string chColString;
-  chColString = std::string("<td>") + colname + "</td>";
+  chColString = std::string("<td>") + "<b>" + colname + "<b>" + "</td>";
 
   std::ostringstream ssVal;
   ssVal << value;
@@ -74,7 +74,7 @@ std::string brewPopupRowAltC(std::string colname, std::string value) {
 std::string brewPopupCoords(std::string colname, std::string value) {
 
   std::string chColString;
-  chColString = std::string("<td>") + colname + "</td>";
+  chColString = std::string("<td>") + "<b>" + colname + "<b>" + "</td>";
 
   std::ostringstream ssVal;
   ssVal << value;

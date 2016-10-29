@@ -74,13 +74,13 @@ addVeryLargePoints <- function(map,
 
     # create the popups
     cHelp <- list()
-    cHelp[1] <- "<tr class='coord'><td>Longitude</td><td>"
-    cHelp[2] <- "<tr class='coord'><td>Latitude</td><td>"
+    cHelp[1] <- "<tr class='coord'><td><b>Longitude<b></td><td>"
+    cHelp[2] <- "<tr class='coord'><td><b>Latitude<b></td><td>"
     for (i in 1:length(cnames)) {
       if (i %% 2 == 1) {
-        cHelp[i + 2] <- paste0("<tr><td> ",cnames[i]," </td><td>")
+        cHelp[i + 2] <- paste0("<tr><td>", "<b>", cnames[i], "<b>", "</td><td>")
       } else {
-        cHelp[i + 2] <- paste0("<tr class='alt'><td> ",cnames[i]," </td><td>")
+        cHelp[i + 2] <- paste0("<tr class='alt'><td>", "<b>", cnames[i], "<b>", "</td><td>")
       }
     }
 

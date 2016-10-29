@@ -96,9 +96,9 @@ LeafletWidget.methods.addLargePolygonsLines = function(x) {
         if (feature.properties) {
             for (var key in feature.properties) {
                 if (isEven(i)) {
-                    content += "<tr><td> " + key + " </td><td>" + feature.properties[key] + " </td></tr>";
+                    content += "<tr><td>" + "<b>" + key + "<b>" + "</td><td>" + feature.properties[key] + "</td></tr>";
                 } else {
-                    content += "<tr class='alt'><td> " + key + " </td><td>" + feature.properties[key] + " </td></tr>";
+                    content += "<tr class='alt'><td>" + "<b>" + key + "<b>" + "</td><td>" + feature.properties[key] + "</td></tr>";
                 }
                 i = i + 1;
             };
