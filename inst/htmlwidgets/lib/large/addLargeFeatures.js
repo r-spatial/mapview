@@ -1,4 +1,4 @@
-/*LeafletWidget.methods.addLargePolygonsLines = function(x) {
+LeafletWidget.methods.addLargeFeatures = function(x) {
 
     //#########################################################
 
@@ -57,7 +57,7 @@
     // second (first is on R side) coarse spatial zoom adaption
     // if there is a
     var difZoom = x.zoom - lzoom;
-    if (difZoom >= 1 &&  (lzoom<x.zoom)) {
+    if (difZoom >= 1 &&  (lzoom < x.zoom)) {
         zoom = Math.round((x.zoom-lzoom) + x.zoom);
         if (lzoom < 13 && zoom > 13){zoom=13}
         if (lzoom >= 13 && zoom > 18) {zoom = 17}
@@ -81,7 +81,6 @@
     };
     // construct the rtree object
     var rt = RTree();
-    var bd;
 
     // make leaflet circleobjects
     function pointToLayer(feature, latlng) {
@@ -113,39 +112,40 @@
     function style(feature) {
 
         // polygon style
-        if (feature.geometry.type == "Polygon") {
+        if (feature.geometry.type == "MultiPolygon" || feature.geometry.type == "Polygon") {
             return {
+                fillColor: feature.properties.color,
                 color: feature.properties.color,
-                weight: x.lwd,
+                weight: x.weight,
                 opacity: x.opacity,
                 fillOpacity: x.alpharegions
             };
         }
 
         // line style
-        if (feature.geometry.type == "LineString") {
+        if (feature.geometry.type == "MultiLineString" || feature.geometry.type == "LineString") {
             return {
                 color: feature.properties.color,
-                weight: x.lwd,
+                weight: x.weight,
                 opacity: x.opacity,
             };
 
         }
         // point style
-        if (feature.geometry.type == "Point") {
+        if (feature.geometry.type == "MultiPooint" || feature.geometry.type == "Point") {
             return {
                 radius: x.cex,
                 fillColor: feature.properties.color,
                 color: feature.properties.color,
-                weight: x.lwd,
+                weight: x.weight,
                 opacity: opacity,
-                fillOpacity: x.alpharegions * 0.5
+                fillOpacity: x.alpharegions
             };
         }
     }
 
 
-    //  function to filter the layer, if not delete the function here and on the var myLayer
+    /*//  function to filter the layer, if not delete the function here and on the var myLayer
     	function filter(feature, layer) {
     	    if (theFilter != "none") {
     	        layerFilter = feature.height;
@@ -158,7 +158,7 @@
     	        return true;
     	    }
     	}
-
+    */
 
     // function for retrieving the correct box according to the rtree object
     var BoxSelect = L.Map.BoxZoom.extend({
@@ -301,7 +301,7 @@
                     ctx.lineWidth = 0.0;
                     ctx.strokeStyle = "black";
                     ctx.fillStyle="brown";
-
+                    */
                     for (var j = 0; j < feature.geometry.length; j++) {
                         var ring = feature.geometry[j];
                         ctx.arc(ring[0] * ratio + pad, ring[1] * ratio + pad, 4 - 1 / zoom * 10, 0, 2 * Math.PI);
@@ -321,7 +321,7 @@
                 } else {
 	                   ctx.strokeStyle = "black";
 	              }
-
+             */
                 for (var j = 0; j < feature.geometry.length; j++) {
                     var ring = feature.geometry[j];
                     ctx.strokeStyle = feature.tags.color;

@@ -35,7 +35,7 @@ addLargeFeatures <- function(map,
     #   x@data$color <- color
     #   col <- color[1]
     # } else {
-      col <- color
+      col <- color[1]
       x@data$color <- color
       keep <- c(keep, "color")
     # }
@@ -99,7 +99,7 @@ addLargeFeatures <- function(map,
                 centerLat = yc,
                 centerLon = xc,
                 opacity = opacity,
-                alpharegions=fillOpacity,
+                alpharegions = fillOpacity,
                 cex = radius,
                 weight = weight,
                 layername = group,
@@ -107,26 +107,25 @@ addLargeFeatures <- function(map,
                 ymax = ext@ymax,
                 xmin = ext@xmin,
                 ymin = ext@ymin,
-                zoom = zoom,
-                values = NULL)
+                zoom = zoom)
 
   # creating the widget
   # bViewInternal(jFn = pathJsonFn,  x = lst_x)
   map$dependencies <- c(map$dependencies,
-                        largePolygonsLinesDependencies(),
+                        largeFeaturesDependencies(),
                         dataDependency(jFn = pathJsonFn))
   leaflet::invokeMethod(map, leaflet:::getMapData(map),
-                        'addLargePolygonsLines', lst_x)
+                        'addLargeFeatures', lst_x)
 
 }
 
-largePolygonsLinesDependencies <- function() {
+largeFeaturesDependencies <- function() {
   list(
     htmltools::htmlDependency(
-      "LargePolygonsLines",
+      "LargeFeatures",
       '0.0.1',
       system.file("htmlwidgets/lib/large", package = "mapview"),
-      script = c("addLargePolygonsLines.js",
+      script = c("addLargeFeatures.js",
                  "leaflet.label.js",
                  "leaflet.ajax.js",
                  "leaflet-providers.js",
