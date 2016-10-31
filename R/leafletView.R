@@ -1307,7 +1307,10 @@ leafletMissing <- function(map.types,
                           envinMR = "envinMR")
     sp::coordinates(envinMR) <- ~x+y
     sp::proj4string(envinMR) <- sp::CRS(llcrs)
-    m <- initBaseMaps(map.types)
+    m <- leaflet() %>% # attribution taken from https://www.mapbox.com/help/attribution/#other-mapping-frameworks
+      addTiles(urlTemplate = "http://{s}.tiles.mapbox.com/v3/gvenech.m13knc8e/{z}/{x}/{y}.png",
+               attribution = '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
+               options = tileOptions(minZoom = 1, maxZoom = 18))  #initBaseMaps(map.types)
 
     fl <- 'http://cdn.makeagif.com/media/8-11-2015/n2JwUG.gif'
 
@@ -1329,21 +1332,23 @@ leafletMissing <- function(map.types,
                  paste('<img src =', fl, 'width="95%">'),
                  '<a target="_blank" href="http://makeagif.com/n2JwUG">Source: MakeAGIF.com</a>',
                  "</center>")
-    m <- leaflet::addCircles(data = envinMR, map = m,
-                             fillColor = "white",
-                             color = "black",
-                             weight = 6,
-                             opacity = 0.8,
-                             fillOpacity = 0.5,
-                             group = "envinMR",
-                             popup = pop)
+    m <- leaflet::addCircleMarkers(data = envinMR, map = m,
+                                   fillColor = "cyan",
+                                   color = "black",
+                                   radius = 15,
+                                   weight = 4,
+                                   opacity = 0.8,
+                                   fillOpacity = 0.8,
+                                   group = "envinMR",
+                                   popup = pop)
     m <- leaflet::addPopups(map = m,
                             lng = 8.771676,
                             lat = 50.814891,
                             popup = pop)
-    m <- mapViewLayersControl(map = m, map.types = map.types,
-                              names = "envinMR")
-    m <- leaflet::setView(map = m, 8.771676, 50.814891, zoom = 18)
+    m <- leaflet::addLayersControl(map = m,
+                                   position = "topleft",
+                                   overlayGroups = "envinMR")
+    m <- leaflet::setView(map = m, 8.771676, 50.814891, zoom = 4)
     if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m) %>% addHomeButton(extent(envinMR),
                                                   "mapview home")
@@ -1351,7 +1356,8 @@ leafletMissing <- function(map.types,
   } else {
     m <- initBaseMaps(map.types)
     m <- leaflet::setView(map = m, 8.770862, 50.814772, zoom = 18)
-    m <- leaflet::addLayersControl(map = m, baseGroups = map.types,
+    m <- leaflet::addLayersControl(map = m,
+                                   baseGroups = map.types,
                                    position = mapviewGetOption(
                                      "layers.control.pos"))
     if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
