@@ -9,12 +9,14 @@ addLargeFeatures <- function(map,
                              group = deparse(substitute(x)),
                              ...)
 {
-
+print(group)
   ## temp dir
-  tmp <- makepath()
+  tmp <- mapview:::makepathLarge()
   tmpPath <- tmp[[1]][1]
   pathJsonFn <- tmp[[2]][1]
   jsonFn <- tmp[[3]][1]
+
+  cntr <- 1
 
   if (!is.null(x)) {
     # check and correct if sp object is of type dataframe
@@ -113,7 +115,8 @@ addLargeFeatures <- function(map,
   # bViewInternal(jFn = pathJsonFn,  x = lst_x)
   map$dependencies <- c(map$dependencies,
                         largeFeaturesDependencies(),
-                        dataDependency(jFn = pathJsonFn))
+                        largeDataDependency(jFn = pathJsonFn,
+                                            counter = cntr))
   leaflet::invokeMethod(map, leaflet:::getMapData(map),
                         'addLargeFeatures', lst_x)
 
@@ -142,13 +145,13 @@ largeFeaturesDependencies <- function() {
 }
 
 
-dataDependency <- function(jFn) {
+largeDataDependency <- function(jFn, counter) {
   data_dir <- dirname(jFn)
   data_file <- basename(jFn)
   list(
     htmltools::htmlDependency(
-      name = "data",
-      version = "1",
+      name = "data_large",
+      version = counter,
       src = c(file = data_dir),
       script = list(data_file)))
 }

@@ -2,7 +2,8 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
 
     //#########################################################
 
-    map = this;
+    var map = this;
+    var tst = map.layerManager;
 
     addCanvas();
 
@@ -350,12 +351,13 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
     // create overlay Layers variables
     var overlayLayers = {};
     overlayLayers[x.layername] = myLayer;
-    overlayLayers[x.layername + "_static"] = (canvasTiles)
-        .addTo(map);
+    overlayLayers[x.layername + "_static"] = (canvasTiles).addTo(map);
+
+    //overlayLayers.addTo(tst)
 
     // ADD LAYER CONTRLS
-    // var layerControl = L.control.layers(overlayLayers, {collapsed: true}).addTo(map);
-    // map.setView([x.centerLat[0], x.centerLon[0], x.zoom[0]]);
+    //var layerControl = L.control.layers(null, overlayLayers, {collapsed: true}).addTo(tst);
+    //map.setView([x.centerLat[0], x.centerLon[0], x.zoom[0]]);
 
     showLayer();
 
