@@ -1302,14 +1302,30 @@ leafletMissing <- function(map.types,
                            easter.egg) {
 
   if(easter.egg) {
+
+    tilesets <- list(
+      ts = c(
+        'http://{s}.tiles.mapbox.com/v3/gvenech.m13knc8e/{z}/{x}/{y}.png',
+        'http://{s}.tile.thunderforest.com/pioneer/{z}/{x}/{y}.png'
+        ),
+      attr = c(
+        '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
+        '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        )
+    )
+
+    ind <- sample(length(tilesets$ts), 1L)
+    ts <- tilesets$ts[ind]
+    attr <- tilesets$attr[ind]
+
     envinMR <- data.frame(x = 8.771676,
                           y = 50.814891,
                           envinMR = "envinMR")
     sp::coordinates(envinMR) <- ~x+y
     sp::proj4string(envinMR) <- sp::CRS(llcrs)
     m <- leaflet() %>% # attribution taken from https://www.mapbox.com/help/attribution/#other-mapping-frameworks
-      addTiles(urlTemplate = "http://{s}.tiles.mapbox.com/v3/gvenech.m13knc8e/{z}/{x}/{y}.png",
-               attribution = '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
+      addTiles(urlTemplate = ts, #"http://{s}.tiles.mapbox.com/v3/gvenech.m13knc8e/{z}/{x}/{y}.png",
+               attribution = attr, #'© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
                options = tileOptions(minZoom = 1, maxZoom = 18))  #initBaseMaps(map.types)
 
     fl <- 'http://cdn.makeagif.com/media/8-11-2015/n2JwUG.gif'
