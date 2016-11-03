@@ -1306,11 +1306,17 @@ leafletMissing <- function(map.types,
     tilesets <- list(
       ts = c(
         'http://{s}.tiles.mapbox.com/v3/gvenech.m13knc8e/{z}/{x}/{y}.png',
-        'http://{s}.tile.thunderforest.com/pioneer/{z}/{x}/{y}.png'
+        'http://{s}.tile.thunderforest.com/pioneer/{z}/{x}/{y}.png',
+        'http://a.gps-tile.openstreetmap.org/lines/{z}/{x}/{y}.png',
+        'http://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+        'http://a.tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png'
         ),
       attr = c(
         '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
-        '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        '<a href="https://openstreetmap.org/">© OpenStreetMap contributors, CC-BY-SA</a>',
+        '<a href="http://hot.openstreetmap.org/">© OpenStreetMap contributors, tiles courtesy of Humanitarian OpenStreetMap Team</a>',
+        '<a href="http://hikebikemap.org/">© OpenStreetMap contributors, CC-BY-SA</a>'
         )
     )
 
