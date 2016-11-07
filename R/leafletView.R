@@ -602,6 +602,9 @@ leafletPolygonsDF <- function(x,
                                 popup = popup,
                                 label = label,
                                 data = x,
+                                highlightOptions =
+                                  mapviewHighlightOptions(weight = lwd,
+                                                          fillOpacity = alpha.regions),
                                 ...)
     } else {
 
@@ -613,6 +616,9 @@ leafletPolygonsDF <- function(x,
                                 color = color,
                                 popup = popup,
                                 data = x,
+                                highlightOptions =
+                                  mapviewHighlightOptions(weight = lwd,
+                                                          fillOpacity = alpha.regions),
                                 ...)
     }
 
@@ -675,6 +681,9 @@ leafletPolygons <- function(x,
                               opacity = alpha,
                               fillOpacity = alpha.regions,
                               label = label,
+                              highlightOptions =
+                                mapviewHighlightOptions(weight = lwd,
+                                                        fillOpacity = alpha.regions),
                               ...)
   } else {
 
@@ -685,6 +694,9 @@ leafletPolygons <- function(x,
                               data = x,
                               opacity = alpha,
                               fillOpacity = alpha.regions,
+                              highlightOptions =
+                                mapviewHighlightOptions(weight = lwd,
+                                                        fillOpacity = alpha.regions),
                               ...)
   }
 
@@ -825,6 +837,9 @@ leafletLinesDF <- function(x,
                                      data = x[i, ],
                                      weight = lwd,
                                      opacity = alpha,
+                                     highlightOptions =
+                                       mapviewHighlightOptions(weight = lwd,
+                                                               fill = FALSE),
                                      ...)
 
           # disjunct line
@@ -858,6 +873,9 @@ leafletLinesDF <- function(x,
                                        data = slndf,
                                        weight = lwd,
                                        opacity = alpha,
+                                       highlightOptions =
+                                         mapviewHighlightOptions(weight = lwd,
+                                                                 fill = FALSE),
                                        ...)
           }
         }
@@ -870,6 +888,9 @@ leafletLinesDF <- function(x,
                                      data = x[i, ],
                                      weight = lwd,
                                      opacity = alpha,
+                                     highlightOptions =
+                                       mapviewHighlightOptions(weight = lwd,
+                                                               fill = FALSE),
                                      ...)
 
           # disjunct line
@@ -897,6 +918,9 @@ leafletLinesDF <- function(x,
                                        data = slndf,
                                        weight = lwd,
                                        opacity = alpha,
+                                       highlightOptions =
+                                         mapviewHighlightOptions(weight = lwd,
+                                                                 fill = FALSE),
                                        ...)
           }
         }

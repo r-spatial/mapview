@@ -27,6 +27,50 @@ makeLabels <- function(col) {
 }
 
 
+### higlight options
+mapviewHighlightOptions <- function(stroke = TRUE,
+                                    color = "cyan",
+                                    weight = 4,
+                                    opacity = 1,
+                                    fill = TRUE,
+                                    fillColor = NULL,
+                                    fillOpacity = 0,
+                                    dashArray = NULL,
+                                    bringToFront = TRUE,
+                                    sendToBack = TRUE) {
+
+  if (length(fillColor) != 1) fillColor <- color
+
+  return(
+    list(
+      stroke = stroke,
+      color = color,
+      weight = weight,
+      opacity = opacity,
+      fill = fill,
+      fillColor = fillColor,
+      fillOpacity = fillOpacity,
+      dashArray = dashArray,
+      bringToFront = bringToFront,
+      sendToBack = sendToBack
+    )
+  )
+}
+
+### decorateMap
+decorateMap <- function(map, ext, layer.name, ...) {
+
+  m <- garnishMap(map,
+                  addMouseCoordinates,
+                  addScaleBar,
+                    position = "bottomleft",
+                  addHomeButton,
+                    ext = ext,
+                    layer.name = layer.name)
+
+}
+
+
 ### burst
 # burst <- function(x, zcol, ...) {
 #
