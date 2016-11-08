@@ -1,8 +1,8 @@
 Package: mapview
 Type: Package
 Title: Interactive Viewing of Spatial Objects in R
-Version: 1.2.7
-Date: 2016-11-07
+Version: 1.2.8
+Date: 2016-11-08
 Authors@R: c(
       person("Tim", "Appelhans", email = "admin@environmentalinformatics-marburg.de", role = c("cre", "aut")),
       person("Florian", "Detsch", email = "florian.detsch@staff.uni-marburg.de", role = c("aut")),
@@ -35,7 +35,6 @@ Imports:
     png,
     Rcpp (>= 0.11.3),
     lattice,
-    latticeExtra,
     rgdal,
     gdalUtils,
     data.table,
@@ -45,4 +44,5 @@ LinkingTo: Rcpp
 RoxygenNote: 5.0.1
 SystemRequirements: GNU make
 Suggests: knitr,
-    rmarkdown
+    rmarkdown,
+    quickmapr

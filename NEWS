@@ -1,4 +1,4 @@
-mapview 1.2.7
+mapview 1.2.8
 --------------------------------------------------------------------------------
 
 new features:
@@ -6,9 +6,10 @@ new features:
   * addLogo has gained argument 'alpha' to set the opacity of the image.
   * Well, someone draws quickest, that's for sure...
   * added new method for list of objects so that mapview(list(x, y, z)) works now.
-  * added new platform 'base' to render things using library('quickmapr').
+  * added new platform 'quickmapr' to render things using library('quickmapr').
   * slideView has gained arguments 'label1' and 'label2' to supply slider names for the respective images, img1 and img2.
   * new popupTable layout (making more use of the space available).
+  * added new function addLargeFeatures to render large datasets of up to ~100k features which is used automatically in mapview of data larger than max* thresholds in mapviewOptions.
 
 mapview 1.2.0
 --------------------------------------------------------------------------------
