@@ -186,8 +186,8 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                           homebutton = homebutton,
                           ...)
             } else {
-              if (mapviewGetOption("platform") == "base") {
-                qmap(x, ...)
+              if (mapviewGetOption("platform") == "quickmapr") {
+                quickmapr::qmap(x, ...)
               } else {
                 NULL
               }
@@ -234,8 +234,8 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                          homebutton = homebutton,
                          ...)
             } else {
-              if (mapviewGetOption("platform") == "base") {
-                qmap(x, ...)
+              if (mapviewGetOption("platform") == "quickmapr") {
+                quickmapr::qmap(x, ...)
               } else {
                 NULL
               }
@@ -306,8 +306,8 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                               legend = legend,
                               ...)
             } else {
-              if (mapviewGetOption("platform") == "base") {
-                qmap(x, ...)
+              if (mapviewGetOption("platform") == "quickmapr") {
+                quickmapr::qmap(x, ...)
               } else {
                 NULL
               }
@@ -328,8 +328,8 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                               zcol,
                               ...)
             } else {
-              if (mapviewGetOption("platform") == "base") {
-                qmap(x, ...)
+              if (mapviewGetOption("platform") == "quickmapr") {
+                quickmapr::qmap(x, ...)
               } else {
                 NULL
               }
@@ -373,7 +373,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    homebutton = TRUE,
                    ...) {
 
-            if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
+            # if (nrow(x) < mapviewGetOption("maxpoints")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletPointsDF(x,
                                 map = map,
@@ -397,26 +397,26 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                                 homebutton = homebutton,
                                 ...)
               } else {
-                if (mapviewGetOption("platform") == "base") {
-                  qmap(x, ...)
+                if (mapviewGetOption("platform") == "quickmapr") {
+                  quickmapr::qmap(x, ...)
                 } else {
                   NULL
                 }
               }
-            } else {
-              fpView(x,
-                     zcol = zcol,
-                     color = color,
-                     na.color = na.color,
-                     values = values,
-                     map.types = map.types,
-                     alpha = alpha,
-                     weight = cex,
-                     verbose = verbose,
-                     layer.name = layer.name,
-                     popup = popup,
-                     )
-            }
+            # } else {
+            #   fpView(x,
+            #          zcol = zcol,
+            #          color = color,
+            #          na.color = na.color,
+            #          values = values,
+            #          map.types = map.types,
+            #          alpha = alpha,
+            #          weight = cex,
+            #          verbose = verbose,
+            #          layer.name = layer.name,
+            #          popup = popup,
+            #          )
+            # }
 
           }
 
@@ -431,7 +431,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
           function(x,
                    map = NULL,
                    zcol = NULL,
-                   color = mapviewGetOption("vector.palette")(1),
+                   color = mapviewGetOption("vector.palette"),
                    na.color = mapviewGetOption("na.color"),
                    cex = 8,
                    lwd = 4,
@@ -445,7 +445,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                    homebutton = TRUE,
                   ...) {
 
-            if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
+            # if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletPoints(x,
                               map = map,
@@ -462,25 +462,25 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                               homebutton = homebutton,
                              ...)
               } else {
-                if (mapviewGetOption("platform") == "base") {
-                  qmap(x, ...)
+                if (mapviewGetOption("platform") == "quickmapr") {
+                  quickmapr::qmap(x, ...)
                 } else {
                   NULL
                 }
               }
-            } else {
-              fpView(x,
-                     zcol = NULL,
-                     color = color,
-                     na.color = na.color,
-                     values = values,
-                     map.types = map.types,
-                     alpha = alpha,
-                     weight = cex,
-                     verbose = verbose,
-                     layer.name = layer.name
-                    )
-            }
+            # } else {
+            #   fpView(x,
+            #          zcol = NULL,
+            #          color = color,
+            #          na.color = na.color,
+            #          values = values,
+            #          map.types = map.types,
+            #          alpha = alpha,
+            #          weight = cex,
+            #          verbose = verbose,
+            #          layer.name = layer.name
+            #         )
+            # }
 
 
           }
@@ -540,8 +540,8 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
                                   homebutton = homebutton,
                                   ...)
               } else {
-                if (mapviewGetOption("platform") == "base") {
-                  qmap(x, ...)
+                if (mapviewGetOption("platform") == "quickmapr") {
+                  quickmapr::qmap(x, ...)
                 } else {
                   NULL
                 }
@@ -572,7 +572,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 setMethod('mapView', signature(x = 'SpatialPolygons'),
           function(x,
                    map = NULL,
-                   color = mapviewGetOption("vector.palette")(1),
+                   color = mapviewGetOption("vector.palette"),
                    na.color = mapviewGetOption("na.color"),
                    map.types = mapviewGetOption("basemaps"),
                    lwd = 2,
@@ -585,7 +585,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                    homebutton = TRUE,
                   ...) {
 
-            if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
+            # if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletPolygons(x,
                                 map = map,
@@ -601,24 +601,24 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                                 homebutton = homebutton,
                                ...)
               } else {
-                if (mapviewGetOption("platform") == "base") {
-                  qmap(x, ...)
+                if (mapviewGetOption("platform") == "quickmapr") {
+                  quickmapr::qmap(x, ...)
                 } else {
                   NULL
                 }
               }
-            } else {
-              bView(x,
-                    zcol = NULL,
-                    color = color,
-                    na.color = na.color,
-                    values = values,
-                    map.types = map.types,
-                    alpha.regions = alpha.regions,
-                    lwd = lwd,
-                    verbose = verbose,
-                    layer.name = layer.name)
-            }
+            # } else {
+            #   bView(x,
+            #         zcol = NULL,
+            #         color = color,
+            #         na.color = na.color,
+            #         values = values,
+            #         map.types = map.types,
+            #         alpha.regions = alpha.regions,
+            #         lwd = lwd,
+            #         verbose = verbose,
+            #         layer.name = layer.name)
+            # }
 
           }
 )
@@ -651,7 +651,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                    homebutton = TRUE,
                    ...) {
 
-            if (length(x@lines) < mapviewGetOption("maxlines")) {
+            # if (length(x@lines) < mapviewGetOption("maxlines")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletLinesDF(x,
                                map = map,
@@ -675,25 +675,25 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
                                homebutton = homebutton,
                                ...)
               } else {
-                if (mapviewGetOption("platform") == "base") {
-                  qmap(x, ...)
+                if (mapviewGetOption("platform") == "quickmapr") {
+                  quickmapr::qmap(x, ...)
                 } else {
                   NULL
                 }
               }
-            } else {
-              bView(x,
-                    zcol = zcol,
-                    color = color,
-                    na.color = na.color,
-                    values = values,
-                    map.types = map.types,
-                    alpha.regions = alpha,
-                    lwd = lwd,
-                    verbose = verbose,
-                    layer.name = layer.name,
-                    popup = NULL)
-            }
+            # } else {
+            #   bView(x,
+            #         zcol = zcol,
+            #         color = color,
+            #         na.color = na.color,
+            #         values = values,
+            #         map.types = map.types,
+            #         alpha.regions = alpha,
+            #         lwd = lwd,
+            #         verbose = verbose,
+            #         layer.name = layer.name,
+            #         popup = NULL)
+            # }
 
           }
 
@@ -709,7 +709,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
           function(x,
                    map = NULL,
                    zcol = NULL,
-                   color = mapviewGetOption("vector.palette")(1),
+                   color = mapviewGetOption("vector.palette"),
                    na.color = mapviewGetOption("na.color"),
                    lwd = 2,
                    alpha = 0.8,
@@ -721,7 +721,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                    homebutton = TRUE,
                   ...) {
 
-            if (length(x@lines) < mapviewGetOption("maxlines")) {
+            # if (length(x@lines) < mapviewGetOption("maxlines")) {
               if (mapviewGetOption("platform") == "leaflet") {
                 leafletLines(x,
                              map = map,
@@ -736,24 +736,24 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                              homebutton = homebutton,
                             ...)
               } else {
-                if (mapviewGetOption("platform") == "base") {
-                  qmap(x, ...)
+                if (mapviewGetOption("platform") == "quickmapr") {
+                  quickmapr::qmap(x, ...)
                 } else {
                   NULL
                 }
               }
-            } else {
-              bView(x,
-                    zcol = zcol,
-                    color = color,
-                    na.color = na.color,
-                    values = values,
-                    map.types = map.types,
-                    alpha.regions = alpha,
-                    lwd = lwd,
-                    verbose = verbose,
-                    layer.name = layer.name)
-            }
+            # } else {
+            #   bView(x,
+            #         zcol = zcol,
+            #         color = color,
+            #         na.color = na.color,
+            #         values = values,
+            #         map.types = map.types,
+            #         alpha.regions = alpha,
+            #         lwd = lwd,
+            #         verbose = verbose,
+            #         layer.name = layer.name)
+            # }
 
           }
 
@@ -797,8 +797,8 @@ setMethod('mapView', signature(x = 'list'),
                 mapView(x = x[[i]], layer.name = lyrnms[i], ...)
               }))
             } else {
-              if (mapviewGetOption("platform") == "base") {
-                qmap(x, ...)
+              if (mapviewGetOption("platform") == "quickmapr") {
+                quickmapr::qmap(x, ...)
               } else {
                 NULL
               }

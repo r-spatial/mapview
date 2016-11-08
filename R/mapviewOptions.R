@@ -9,8 +9,8 @@
 #' to change the default number of pixels to be visualised for Raster* objects,
 #' add a line like this: options(mapviewMaxPixels = 700000) to that file.
 #'
-#' @param platform character. The platform to be used (currently only "leaflet"
-#' is allowed)
+#' @param platform character. The platform to be used.
+#' Current options are "leaflet" and "quickmapr".
 #' @param basemaps character. The basemaps to be used for rendering data. See
 #' \url{http://leaflet-extras.github.io/leaflet-providers/preview/} for possible
 #' values
@@ -107,7 +107,7 @@ mapviewOptions <- function(platform,
 
   ## platform
   setPlatform <- function(platform) {
-    if (!platform %in% c("leaflet", "base")) {
+    if (!platform %in% c("leaflet", "quickmapr")) {
       warning("currently only platform leaflet is allowed")
       options(mapviewPlatform = "leaflet")
     } else {

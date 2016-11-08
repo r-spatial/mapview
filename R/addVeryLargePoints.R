@@ -9,14 +9,13 @@ addVeryLargePoints <- function(map,
                                alpha = 0.8,
                                weight = 2,
                                verbose = mapviewGetOption("verbose"),
-                               layer.name = deparse(substitute(x,
-                                                               env = parent.frame())),
+                               group = deparse(substitute(x)),
                                popup = NULL,
                                ...) {
-
+print(group)
   ## temp dir
   ## temp dir
-  tmp <- makepath()
+  tmp <- makepathLarge()
   tmpPath <- tmp[[1]][1]
   pathJsonFn <- tmp[[2]][1]
   jsonFn <- tmp[[3]][1]
@@ -97,7 +96,7 @@ addVeryLargePoints <- function(map,
       popTemplate = getPopupStyle(),
       cHelp = cHelp,
       layer.opacity = alpha,
-      layername = layer.name,
+      layername = as.character(group),
       xmax = ext@xmax,
       ymax = ext@ymax,
       xmin = ext@xmin,

@@ -63,7 +63,7 @@
   homebutton = TRUE, ...)
 
 \S4method{mapView}{SpatialPoints}(x, map = NULL, zcol = NULL,
-  color = mapviewGetOption("vector.palette")(1),
+  color = mapviewGetOption("vector.palette"),
   na.color = mapviewGetOption("na.color"), cex = 8, lwd = 4,
   alpha = 0.9, alpha.regions = 0.4,
   map.types = mapviewGetOption("basemaps"),
@@ -81,7 +81,7 @@
   homebutton = TRUE, ...)
 
 \S4method{mapView}{SpatialPolygons}(x, map = NULL,
-  color = mapviewGetOption("vector.palette")(1),
+  color = mapviewGetOption("vector.palette"),
   na.color = mapviewGetOption("na.color"),
   map.types = mapviewGetOption("basemaps"), lwd = 2, alpha = 0.8,
   alpha.regions = 0.2, verbose = mapviewGetOption("verbose"),
@@ -99,7 +99,7 @@
   homebutton = TRUE, ...)
 
 \S4method{mapView}{SpatialLines}(x, map = NULL, zcol = NULL,
-  color = mapviewGetOption("vector.palette")(1),
+  color = mapviewGetOption("vector.palette"),
   na.color = mapviewGetOption("na.color"), lwd = 2, alpha = 0.8,
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,

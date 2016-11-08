@@ -13,8 +13,8 @@ mapviewOptions(platform, basemaps, raster.size, mapview.maxpixels,
 mapviewGetOption(param)
 }
 \arguments{
-\item{platform}{character. The platform to be used (currently only "leaflet"
-is allowed)}
+\item{platform}{character. The platform to be used.
+Current options are "leaflet" and "quickmapr".}
 
 \item{basemaps}{character. The basemaps to be used for rendering data. See
 \url{http://leaflet-extras.github.io/leaflet-providers/preview/} for possible

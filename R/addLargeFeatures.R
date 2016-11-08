@@ -1,15 +1,62 @@
+#' Add moderately large datasets with up to ~100k features to a map.
+#'
+#' @description
+#' This function allows users to add moderately sized datasets to a leaflet
+#' or mapview map. Things are drawn on a html canvas for performance. Feature
+#' querying is supported but only at higher zoom levels to preserve performance.
+#'
+#' @param map a mapview or leaflet object.
+#' @param data the data to be added to the map.
+#' @param color color of the features. This can be a single character value,
+#' a vector of character values or a function that takes argument \code{n} to
+#' create a vector of \code{n} colors.
+#' @param weight the weight of the lines.
+#' @param radius the radius of the circleMarkers (ignored for lines/polygons).
+#' @param opacity the opacity of the stroke paths.
+#' @param fillOpacity opacity of the fill (for circleMarkers and polygons).
+#' @param group the name of the group the data layer should belong to.
+#'
+#' @examples
+#' \dontrun{
+#' library(mapview)
+#' library(ggplot2)
+#'
+#' ### blow diamonds up a bit
+#' big <- data.frame(diamonds[rep(seq_len(nrow(diamonds)), 2),])
+#' big$cut <- as.character(big$cut)
+#' big$color <- as.character(big$color)
+#' big$clarity <- as.character(big$clarity)
+#'
+#' ### provide some random positions
+#' big$x <- rnorm(nrow(big), 0, 10)
+#' big$y <- rnorm(nrow(big), 0, 10)
+#' coordinates(big) <- ~x+y
+#' proj4string(big) <- CRS("+init=epsg:4326")
+#'
+#' leaflet() %>%
+#' addProviderTiles("CartoDB.Positron") %>%
+#'   addLargeFeatures(big, group = "big") %>%
+#'   addLayersControl(overlayGroups = "big", position = "topleft")
+#' }
+#'
+#'
+#' @export addLargeFeatures
+#' @name addLargeFeatures
+#' @rdname addLargeFeatures
+#' @aliases addLargeFeatures
+#'
 addLargeFeatures <- function(map,
-                             x,
+                             data,
                              color = "#03F",
                              weight = 4,
-                             fillOpacity = 0.4,
-                             opacity = 0.9,
                              radius = 8,
-                             verbose = mapviewGetOption("verbose"),
-                             group = deparse(substitute(x)),
+                             opacity = 0.9,
+                             fillOpacity = 0.4,
+                             canvasOpacity = 0.4,
+                             group = NULL,
                              ...)
 {
-print(group)
+
   ## temp dir
   tmp <- mapview:::makepathLarge()
   tmpPath <- tmp[[1]][1]
@@ -18,35 +65,35 @@ print(group)
 
   cntr <- 1
 
-  if (!is.null(x)) {
+  if (!is.null(data)) {
     # check and correct if sp object is of type dataframe
-    x <- toSPDF(x)
+    data <- toSPDF(data)
 
     # check if a correct WGSS84 proj4 string exist
-    x@proj4string@projargs<-compareProjCode(strsplit(x@proj4string@projargs,split = " "))
+    data@proj4string@projargs<-compareProjCode(strsplit(data@proj4string@projargs,split = " "))
 
     # check and transform projection
-    x <- spCheckAdjustProjection(x)
+    data <- spCheckAdjustProjection(data)
 
     # get the variable names
-    keep <- colnames(x@data)
+    keep <- colnames(data@data)
 
     # apply zcol
     # if (!is.null(zcol)) {
     #   keep <- c(keep, "color")
-    #   x@data$color <- color
+    #   data@data$color <- color
     #   col <- color[1]
     # } else {
       col <- color[1]
-      x@data$color <- color
+      data@data$color <- color
       keep <- c(keep, "color")
     # }
 
-    x@data <- x@data[(names(x@data) %in% keep)]
+    data@data <- data@data[(names(data@data) %in% keep)]
 
     # write to a file to be able to use ogr2ogr
     # fl <- pathJsonFn #paste(tmpPath, "data.geojson", sep = .Platform$file.sep)
-    # rgdal::writeOGR(obj = x, dsn = fl, layer = "OGRGeoJSON", driver = "GeoJSON",
+    # rgdal::writeOGR(obj = data, dsn = fl, layer = "OGRGeoJSON", driver = "GeoJSON",
     #                 check_exists = FALSE)
     #
     # # for fastet json read in a html document we wrap it with var data = {};
@@ -58,22 +105,22 @@ print(group)
     #
     # write.table(lns, pathJsonFn, sep="\n", row.names=FALSE, col.names=FALSE, quote = FALSE)
 
-    gj <- paste('var data = ', geojsonio::geojson_json(x), ';', sep = "\n")
+    gj <- paste('var data = ', geojsonio::geojson_json(data), ';', sep = "\n")
     writeLines(gj, con = pathJsonFn)
 
     # estimate the minimum zoomlevel for the rtree part
-    # using an empirically (from OSM data) derived function with noFeatures as f(x)
+    # using an empirically (from OSM data) derived function with noFeatures as f(data)
     # scaled by the coarse assumption that a polygons lines and points
     # have an formal relationship of at least 1 to 2 to 3 points each
     # that leads to something like the divisor 1 2 5
-    if (class(x)[1] == 'SpatialPolygonsDataFrame'){
-      noFeature <- length(x@polygons)
+    if (class(data)[1] == 'SpatialPolygonsDataFrame'){
+      noFeature <- length(data@polygons)
       noF <- noFeature / 1
-    } else if (class(x)[1] == 'SpatialLinesDataFrame'){
-      noFeature <- length(x@lines)
+    } else if (class(data)[1] == 'SpatialLinesDataFrame'){
+      noFeature <- length(data@lines)
       noF <- noFeature / 1
     } else {
-      noFeature <- nrow(x) #length(x@coords)
+      noFeature <- nrow(data) #length(data@coords)
       noF <- noFeature / 5
     }
 
@@ -83,13 +130,11 @@ print(group)
     # to be done
 
     # getting the extent and map center
-    ext <- raster::extent(x)
+    ext <- raster::extent(data)
     xArea <- (ext@ymax-ext@ymin)*(ext@xmax-ext@xmin)
     yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
     yc <- (ext@ymax-ext@ymin) * 0.5 + ext@ymin
     xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
-
-
 
   }
 
@@ -102,9 +147,10 @@ print(group)
                 centerLon = xc,
                 opacity = opacity,
                 alpharegions = fillOpacity,
+                canvasOpacity = canvasOpacity,
                 cex = radius,
                 weight = weight,
-                layername = group,
+                layername = as.character(group),
                 xmax = ext@xmax,
                 ymax = ext@ymax,
                 xmin = ext@xmin,

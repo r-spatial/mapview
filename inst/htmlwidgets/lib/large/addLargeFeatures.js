@@ -3,7 +3,6 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
     //#########################################################
 
     var map = this;
-    var tst = map.layerManager;
 
     addCanvas();
 
@@ -60,7 +59,7 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
     var difZoom = x.zoom - lzoom;
     if (difZoom >= 1 &&  (lzoom < x.zoom)) {
         zoom = Math.round((x.zoom-lzoom) + x.zoom);
-        if (lzoom < 13 && zoom > 13){zoom=13}
+        if (lzoom < 13 && zoom > 13){zoom = 13}
         if (lzoom >= 13 && zoom > 18) {zoom = 17}
     }
     else {
@@ -69,8 +68,10 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
     var maxZ = zoom; //switch for RTree geojson reder zoonm level
     var color = col;
     var opacity = x.opacity;
-    var globalAlpha = x.alpharegions;
+    //var globalAlpha = x.alpharegions;
+    var canvasAlpha = x.canvasOpacity;
     var lnWidth = x.weight;
+    var rad = x.cex;
     var tileOptions = {
         maxPoints: 100, // stop slicing each tile below this number of points
         tolerance: 3, // simplification tolerance (higher means simpler)
@@ -101,7 +102,7 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
                     content += "<tr class='alt'><td>" + "<b>" + key + "<b>" + "</td><td>" + feature.properties[key] + "</td></tr>";
                 }
                 i = i + 1;
-            };
+            }
             var popupContent = x.html + content + "</table></body></html>";
             //console.log(popupContent);
             layer.bindPopup(popupContent);
@@ -133,7 +134,7 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
 
         }
         // point style
-        if (feature.geometry.type == "MultiPooint" || feature.geometry.type == "Point") {
+        if (feature.geometry.type == "MultiPoint" || feature.geometry.type == "Point") {
             return {
                 radius: x.cex,
                 fillColor: feature.properties.color,
@@ -202,10 +203,10 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
         // Define here the zoom level of change
 
         if (map.getZoom() >= maxZ) {
-            if (layerType == "vectortiles") {
+            //if (layerType == "vectortiles") {
                 map.removeLayer(canvasTiles);
                 layerType = "geojson";
-            }
+            //}
             myLayer.clearLayers();
             myLayer.addData(rt.bbox(e.boxSelectBounds));
         } else {
@@ -217,11 +218,11 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
 
     // recursive call of layerswitch
     function showLayer() {
-        if (map.getZoom() >= maxZ) {
-            if (layerType == "vectortiles") {
-                map.removeLayer(canvasTiles);
-                layerType = "geojson";
-            }
+        if (map.getZoom() > maxZ) {
+            //if (layerType == "vectortiles") {
+            map.removeLayer(canvasTiles);
+            layerType = "geojson";
+            //}
             //layerType.clearLayers();
             myLayer.clearLayers();
             var bounds = map.getBounds();
@@ -272,14 +273,14 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
         var tile = tileIndex.getTile(z, x, y);
         if (typeof tile != "undefined") {
             var features = tile.features;
-            var color = features[0].tags.color
+            var color = features[0].tags.color;
 
             // color to the lines
             // create gradients
             //var grdp = ctx.createRadialGradient(75,50,5,90,60,100);
             //var grd = ctx.createLinearGradient(0, 0, 170, 0);
             // define opacity
-            ctx.globalAlpha = globalAlpha;
+            ctx.globalAlpha = canvasAlpha;
             // apply gradient to colors
             //grd.addColorStop(0, color[0]);
             //grd.addColorStop(1, color[color.length-1]);
@@ -303,9 +304,14 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
                     ctx.strokeStyle = "black";
                     ctx.fillStyle="brown";
                     */
+
                     for (var j = 0; j < feature.geometry.length; j++) {
                         var ring = feature.geometry[j];
-                        ctx.arc(ring[0] * ratio + pad, ring[1] * ratio + pad, 4 - 1 / zoom * 10, 0, 2 * Math.PI);
+                        ctx.arc(ring[0] * ratio + pad,
+                                ring[1] * ratio + pad,
+                                rad - 1 / zoom * 10,
+                                0,
+                                2 * Math.PI);
                     }
                 }
                 //
@@ -349,9 +355,14 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
     };
 
     // create overlay Layers variables
-    var overlayLayers = {};
-    overlayLayers[x.layername] = myLayer;
-    overlayLayers[x.layername + "_static"] = (canvasTiles).addTo(map);
+    //var overlayLayers = {};
+    //overlayLayers[x.layername] = myLayer;
+    //overlayLayers[x.layername + "_static"] = (canvasTiles).addTo(map);
+
+    staticLayer = (canvasTiles).addTo(map);
+
+    map.layerManager.addLayer(myLayer, null, null, x.layername);
+    map.layerManager.addLayer(staticLayer, null, null, x.layername);
 
     //overlayLayers.addTo(tst)
 

@@ -366,32 +366,46 @@ leafletPointsDF <- function(x,
 
     color <- mapviewColors(x, colors = color, at = at, na.color = na.color)
 
-    if(lab_avl) {
-      m <- leaflet::addCircleMarkers(map = m,
-                                     lng = coordinates(x)[, 1],
-                                     lat = coordinates(x)[, 2],
-                                     group = grp,
-                                     color = color,
-                                     weight = lwd,
-                                     opacity = alpha,
-                                     fillOpacity = alpha.regions,
-                                     popup = popup,
-                                     label = label,
-                                     radius = cex,
-                                     ...)
-    } else {
+    if (nrow(x) < mapviewGetOption("maxpoints")) {
 
-      m <- leaflet::addCircleMarkers(map = m,
-                                     lng = coordinates(x)[, 1],
-                                     lat = coordinates(x)[, 2],
-                                     group = grp,
-                                     color = color,
-                                     weight = lwd,
-                                     opacity = alpha,
-                                     fillOpacity = alpha.regions,
-                                     popup = popup,
-                                     radius = cex,
-                                     ...)
+      if(lab_avl) {
+        m <- leaflet::addCircleMarkers(map = m,
+                                       lng = coordinates(x)[, 1],
+                                       lat = coordinates(x)[, 2],
+                                       group = grp,
+                                       color = color,
+                                       weight = lwd,
+                                       opacity = alpha,
+                                       fillOpacity = alpha.regions,
+                                       popup = popup,
+                                       label = label,
+                                       radius = cex,
+                                       ...)
+      } else {
+
+        m <- leaflet::addCircleMarkers(map = m,
+                                       lng = coordinates(x)[, 1],
+                                       lat = coordinates(x)[, 2],
+                                       group = grp,
+                                       color = color,
+                                       weight = lwd,
+                                       opacity = alpha,
+                                       fillOpacity = alpha.regions,
+                                       popup = popup,
+                                       radius = cex,
+                                       ...)
+      }
+
+    } else {
+      m <- addLargeFeatures(m,
+                            data = x,
+                            color = color,
+                            weight = lwd,
+                            radius = cex,
+                            opacity = alpha,
+                            fillOpacity = alpha.regions,
+                            group = grp,
+                            ...)
     }
 
     m <- mapViewLayersControl(map = m,
@@ -450,30 +464,44 @@ leafletPoints <- function(x,
 
   color <- mapviewColors(x, colors = color)
 
-  if(lab_avl) {
-    m <- leaflet::addCircleMarkers(m,
-                                   lng = coordinates(x)[, 1],
-                                   lat = coordinates(x)[, 2],
-                                   radius = cex,
-                                   weight = lwd,
-                                   opacity = alpha,
-                                   color = color,
-                                   fillOpacity = alpha.regions,
-                                   group = grp,
-                                   label = label,
-                                   ...)
-  } else {
+  if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
 
-    m <- leaflet::addCircleMarkers(m,
-                                   lng = coordinates(x)[, 1],
-                                   lat = coordinates(x)[, 2],
-                                   radius = cex,
-                                   weight = lwd,
-                                   opacity = alpha,
-                                   color = color[1],
-                                   fillOpacity = alpha.regions,
-                                   group = grp,
-                                   ...)
+    if(lab_avl) {
+      m <- leaflet::addCircleMarkers(m,
+                                     lng = coordinates(x)[, 1],
+                                     lat = coordinates(x)[, 2],
+                                     radius = cex,
+                                     weight = lwd,
+                                     opacity = alpha,
+                                     color = color,
+                                     fillOpacity = alpha.regions,
+                                     group = grp,
+                                     label = label,
+                                     ...)
+    } else {
+
+      m <- leaflet::addCircleMarkers(m,
+                                     lng = coordinates(x)[, 1],
+                                     lat = coordinates(x)[, 2],
+                                     radius = cex,
+                                     weight = lwd,
+                                     opacity = alpha,
+                                     color = color[1],
+                                     fillOpacity = alpha.regions,
+                                     group = grp,
+                                     ...)
+    }
+
+  } else {
+    m <- addLargeFeatures(m,
+                          data = x,
+                          color = color,
+                          weight = lwd,
+                          radius = cex,
+                          opacity = alpha,
+                          fillOpacity = alpha.regions,
+                          group = grp,
+                          ...)
   }
 
   m <- mapViewLayersControl(map = m,
@@ -593,6 +621,7 @@ leafletPolygonsDF <- function(x,
     color <- mapviewColors(x, colors = color, at = at, na.color = na.color)
 
     if (lab_avl) {
+      if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
       m <- leaflet::addPolygons(m,
                                 weight = lwd,
                                 opacity = alpha,
@@ -606,6 +635,16 @@ leafletPolygonsDF <- function(x,
                                   mapviewHighlightOptions(weight = lwd,
                                                           fillOpacity = alpha.regions),
                                 ...)
+      } else {
+        m <- addLargeFeatures(m,
+                              data = x,
+                              color = color,
+                              weight = lwd,
+                              opacity = alpha,
+                              fillOpacity = alpha.regions,
+                              group = grp,
+                              ...)
+      }
     } else {
 
       m <- leaflet::addPolygons(m,
@@ -673,18 +712,29 @@ leafletPolygons <- function(x,
   color <- mapviewColors(x, colors = color)
 
   if (lab_avl) {
-    m <- leaflet::addPolygons(m,
-                              weight = lwd,
-                              group = grp,
-                              color = color,
-                              data = x,
-                              opacity = alpha,
-                              fillOpacity = alpha.regions,
-                              label = label,
-                              highlightOptions =
-                                mapviewHighlightOptions(weight = lwd,
-                                                        fillOpacity = alpha.regions),
-                              ...)
+    if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
+      m <- leaflet::addPolygons(m,
+                                weight = lwd,
+                                group = grp,
+                                color = color,
+                                data = x,
+                                opacity = alpha,
+                                fillOpacity = alpha.regions,
+                                label = label,
+                                highlightOptions =
+                                  mapviewHighlightOptions(weight = lwd,
+                                                          fillOpacity = alpha.regions),
+                                ...)
+    } else {
+      m <- addLargeFeatures(m,
+                            data = x,
+                            color = color,
+                            weight = lwd,
+                            opacity = alpha,
+                            fillOpacity = alpha.regions,
+                            group = grp,
+                            ...)
+    }
   } else {
 
     m <- leaflet::addPolygons(m,
@@ -819,112 +869,126 @@ leafletLinesDF <- function(x,
 
     ### test -----
 
-    for (i in 1:length(x)) {
+    if (length(x@lines) < mapviewGetOption("maxlines")) {
 
-      # individual popup
-      #if (missing(popup)) popup <- brewPopupTable(x[i, ])
+      for (i in 1:length(x)) {
 
-      # continuous line
-      segments <- length(x[i, ]@lines[[1]]@Lines)
+        # individual popup
+        #if (missing(popup)) popup <- brewPopupTable(x[i, ])
 
-      if (lab_avl) {
-        if (segments == 1) {
-          m <- leaflet::addPolylines(m,
-                                     group = grp,
-                                     color = color[i],
-                                     popup = popup[i],
-                                     label = label[i],
-                                     data = x[i, ],
-                                     weight = lwd,
-                                     opacity = alpha,
-                                     highlightOptions =
-                                       mapviewHighlightOptions(weight = lwd,
-                                                               fill = FALSE),
-                                     ...)
+        # continuous line
+        segments <- length(x[i, ]@lines[[1]]@Lines)
 
-          # disjunct line
-        } else {
-
-          # add one segment after another
-          for (j in seq(segments)) {
-
-            col <- rep(color[i], length(segments[i]))
-
-            # when dealing with a single-column data.frame, argument 'data'
-            # passed on to sp::SpatialLinesDataFrame needs to be defined
-            # manually as data.frame with uniform column and row names
-            dat <- x@data[i, ]
-            if (!is.data.frame(dat)) {
-              dat <- data.frame(dat)
-              names(dat) <- names(x@data)
-              rownames(dat) <- rownames(x@data)[i]
-            }
-
-            slndf <- coords2Lines(x[i, ]@lines[[1]]@Lines[[j]]
-                                  , ID = rownames(x@data)[i]
-                                  , data = dat
-                                  , proj4string = sp::CRS(sp::proj4string(x)))
-
+        if (lab_avl) {
+          if (segments == 1) {
             m <- leaflet::addPolylines(m,
                                        group = grp,
-                                       color = col[i],
+                                       color = color[i],
                                        popup = popup[i],
                                        label = label[i],
-                                       data = slndf,
+                                       data = x[i, ],
                                        weight = lwd,
                                        opacity = alpha,
                                        highlightOptions =
                                          mapviewHighlightOptions(weight = lwd,
                                                                  fill = FALSE),
                                        ...)
-          }
-        }
-      } else {
-        if (segments == 1) {
-          m <- leaflet::addPolylines(m,
-                                     group = grp,
-                                     color = color[i],
-                                     popup = popup[i],
-                                     data = x[i, ],
-                                     weight = lwd,
-                                     opacity = alpha,
-                                     highlightOptions =
-                                       mapviewHighlightOptions(weight = lwd,
-                                                               fill = FALSE),
-                                     ...)
 
-          # disjunct line
-        } else {
+            # disjunct line
+          } else {
 
-          # add one segment after another
-          for (j in seq(segments)) {
+            # add one segment after another
+            for (j in seq(segments)) {
 
-            dat <- x@data[i, ]
-            if (!is.data.frame(dat)) {
-              dat <- data.frame(dat)
-              names(dat) <- names(x@data)
-              rownames(dat) <- rownames(x@data)[i]
+              col <- rep(color[i], length(segments[i]))
+
+              # when dealing with a single-column data.frame, argument 'data'
+              # passed on to sp::SpatialLinesDataFrame needs to be defined
+              # manually as data.frame with uniform column and row names
+              dat <- x@data[i, ]
+              if (!is.data.frame(dat)) {
+                dat <- data.frame(dat)
+                names(dat) <- names(x@data)
+                rownames(dat) <- rownames(x@data)[i]
+              }
+
+              slndf <- coords2Lines(x[i, ]@lines[[1]]@Lines[[j]]
+                                    , ID = rownames(x@data)[i]
+                                    , data = dat
+                                    , proj4string = sp::CRS(sp::proj4string(x)))
+
+              m <- leaflet::addPolylines(m,
+                                         group = grp,
+                                         color = col[i],
+                                         popup = popup[i],
+                                         label = label[i],
+                                         data = slndf,
+                                         weight = lwd,
+                                         opacity = alpha,
+                                         highlightOptions =
+                                           mapviewHighlightOptions(weight = lwd,
+                                                                   fill = FALSE),
+                                         ...)
             }
+          }
 
-            slndf <- coords2Lines(x[i, ]@lines[[1]]@Lines[[j]]
-                                  , ID = rownames(x@data)[i]
-                                  , data = dat
-                                  , proj4string = sp::CRS(sp::proj4string(x)))
 
+
+        } else {
+          if (segments == 1) {
             m <- leaflet::addPolylines(m,
                                        group = grp,
-                                       color = color,
+                                       color = color[i],
                                        popup = popup[i],
-                                       data = slndf,
+                                       data = x[i, ],
                                        weight = lwd,
                                        opacity = alpha,
                                        highlightOptions =
                                          mapviewHighlightOptions(weight = lwd,
                                                                  fill = FALSE),
                                        ...)
+
+            # disjunct line
+          } else {
+
+            # add one segment after another
+            for (j in seq(segments)) {
+
+              dat <- x@data[i, ]
+              if (!is.data.frame(dat)) {
+                dat <- data.frame(dat)
+                names(dat) <- names(x@data)
+                rownames(dat) <- rownames(x@data)[i]
+              }
+
+              slndf <- coords2Lines(x[i, ]@lines[[1]]@Lines[[j]]
+                                    , ID = rownames(x@data)[i]
+                                    , data = dat
+                                    , proj4string = sp::CRS(sp::proj4string(x)))
+
+              m <- leaflet::addPolylines(m,
+                                         group = grp,
+                                         color = color,
+                                         popup = popup[i],
+                                         data = slndf,
+                                         weight = lwd,
+                                         opacity = alpha,
+                                         highlightOptions =
+                                           mapviewHighlightOptions(weight = lwd,
+                                                                   fill = FALSE),
+                                         ...)
+            }
           }
         }
       }
+    } else {
+      m <- addLargeFeatures(m,
+                            data = x,
+                            color = color,
+                            weight = lwd,
+                            opacity = alpha,
+                            group = grp,
+                            ...)
     }
 
     m <- mapViewLayersControl(map = m,
@@ -978,77 +1042,87 @@ leafletLines <- function(x,
   color <- mapviewColors(x, colors = color)
 
   ### test -----
+  if (length(x@lines) < mapviewGetOption("maxlines")) {
+    if(lab_avl) {
+      for (i in 1:length(x)) {
 
-  if(lab_avl) {
-    for (i in 1:length(x)) {
+        # continuous line
+        segments <- length(x[i, ]@lines[[1]]@Lines)
 
-      # continuous line
-      segments <- length(x[i, ]@lines[[1]]@Lines)
-
-      if (segments == 1) {
-        m <- leaflet::addPolylines(m,
-                                   group = grp,
-                                   color = color,
-                                   data = x[i, ],
-                                   weight = lwd,
-                                   opacity = alpha,
-                                   label = label[i],
-                                   ...)
-
-        # disjunct line
-      } else {
-
-        # add one segment after another
-        for (j in seq(segments)) {
-          ln <- x[i, ]@lines[[1]]@Lines[[j]]
-          lns <- sp::Lines(list(ln), ID = i)
-          sln <- sp::SpatialLines(list(lns),
-                                  proj4string = sp::CRS(sp::proj4string(x)))
+        if (segments == 1) {
           m <- leaflet::addPolylines(m,
                                      group = grp,
                                      color = color,
-                                     data = sln,
+                                     data = x[i, ],
                                      weight = lwd,
                                      opacity = alpha,
                                      label = label[i],
                                      ...)
+
+          # disjunct line
+        } else {
+
+          # add one segment after another
+          for (j in seq(segments)) {
+            ln <- x[i, ]@lines[[1]]@Lines[[j]]
+            lns <- sp::Lines(list(ln), ID = i)
+            sln <- sp::SpatialLines(list(lns),
+                                    proj4string = sp::CRS(sp::proj4string(x)))
+            m <- leaflet::addPolylines(m,
+                                       group = grp,
+                                       color = color,
+                                       data = sln,
+                                       weight = lwd,
+                                       opacity = alpha,
+                                       label = label[i],
+                                       ...)
+          }
         }
       }
-    }
-  } else {
-    for (i in 1:length(x)) {
+    } else {
+      for (i in 1:length(x)) {
 
-      # continuous line
-      segments <- length(x[i, ]@lines[[1]]@Lines)
+        # continuous line
+        segments <- length(x[i, ]@lines[[1]]@Lines)
 
-      if (segments == 1) {
-        m <- leaflet::addPolylines(m,
-                                   group = grp,
-                                   color = color,
-                                   data = x[i, ],
-                                   weight = lwd,
-                                   opacity = alpha,
-                                   ...)
-
-        # disjunct line
-      } else {
-
-        # add one segment after another
-        for (j in seq(segments)) {
-          ln <- x[i, ]@lines[[1]]@Lines[[j]]
-          lns <- sp::Lines(list(ln), ID = i)
-          sln <- sp::SpatialLines(list(lns),
-                                  proj4string = sp::CRS(sp::proj4string(x)))
+        if (segments == 1) {
           m <- leaflet::addPolylines(m,
                                      group = grp,
                                      color = color,
-                                     data = sln,
+                                     data = x[i, ],
                                      weight = lwd,
                                      opacity = alpha,
                                      ...)
+
+          # disjunct line
+        } else {
+
+          # add one segment after another
+          for (j in seq(segments)) {
+            ln <- x[i, ]@lines[[1]]@Lines[[j]]
+            lns <- sp::Lines(list(ln), ID = i)
+            sln <- sp::SpatialLines(list(lns),
+                                    proj4string = sp::CRS(sp::proj4string(x)))
+            m <- leaflet::addPolylines(m,
+                                       group = grp,
+                                       color = color,
+                                       data = sln,
+                                       weight = lwd,
+                                       opacity = alpha,
+                                       ...)
+          }
         }
       }
     }
+
+  } else {
+    m <- addLargeFeatures(m,
+                          data = x,
+                          color = color,
+                          weight = lwd,
+                          opacity = alpha,
+                          group = grp,
+                          ...)
   }
 
   m <- mapViewLayersControl(map = m,
