@@ -14,10 +14,11 @@
 #' \cr
 #' \emph{Maintainer:} Tim Appelhans \email{admin@@environmentalinformatics-marburg.de}
 #'
-#' @import leaflet sp raster satellite scales Rcpp methods png lattice rgdal gdalUtils latticeExtra viridisLite
+#' @import leaflet sp raster satellite scales Rcpp methods png lattice rgdal gdalUtils viridisLite
 #' @importFrom grDevices rgb dev.off png svg
 #' @importFrom utils write.table find
 #' @importFrom webshot webshot
+#' @importFrom geojsonio geojson_json
 #'
 #' @useDynLib mapview
 #' @keywords package
