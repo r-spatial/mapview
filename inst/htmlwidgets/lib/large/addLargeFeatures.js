@@ -210,9 +210,9 @@ function countProperties(obj) {
 
     map.on("boxselected", function(e) {
         // Define here the zoom level of change
-         myLayer.addData(rt.bbox(e.boxSelectBounds));
-        var noF = countProperties(myLayers._layers);
-        if (noF < 10000) {
+        // myLayer.addData(rt.bbox(e.boxSelectBounds));
+        //var noF = countProperties(myLayers._layers);
+        if (x.nof < 500) {
             //if (layerType == "vectortiles") {
                 map.removeLayer(canvasTiles);
                 layerType = "geojson";
@@ -229,7 +229,8 @@ function countProperties(obj) {
     // recursive call of layerswitch
     function showLayer() {
       var bounds = map.getBounds();
-      myLayer.addData(rt.bbox([
+
+       var noF = rt.bbox([
                 [bounds.getSouthWest()
                     .lng, bounds.getSouthWest()
                     .lat
@@ -238,9 +239,8 @@ function countProperties(obj) {
                     .lng, bounds.getNorthEast()
                     .lat
                 ]
-            ]));
-       var noF = countProperties(myLayer._layers);
-        if (noF < 10000) {
+            ]).length;
+        if (noF > 0 & noF < 500) {
             //if (layerType == "vectortiles") {
             map.removeLayer(canvasTiles);
             layerType = "geojson";

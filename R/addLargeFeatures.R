@@ -143,7 +143,8 @@ addLargeFeatures <- function(map,
                 ymax = ext@ymax,
                 xmin = ext@xmin,
                 ymin = ext@ymin,
-                zoom = zoom)
+                zoom = zoom,
+                nof = 500)
 
   # creating the widget
   # bViewInternal(jFn = pathJsonFn,  x = lst_x)
