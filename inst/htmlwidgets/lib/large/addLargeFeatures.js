@@ -56,16 +56,10 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
     }
     // second (first is on R side) coarse spatial zoom adaption
     // if there is a
-    var difZoom = x.zoom - lzoom;
-    if (difZoom >= 1 &&  (lzoom < x.zoom)) {
-        zoom = Math.round((x.zoom-lzoom) + x.zoom);
-        if (lzoom < 13 && zoom > 13){zoom = 13}
-        if (lzoom >= 13 && zoom > 18) {zoom = 17}
-    }
-    else {
-    var zoom = x.zoom;
-    }
-    var maxZ = zoom; //switch for RTree geojson reder zoonm level
+
+    //var zoom = lzoom;
+
+
     var color = col;
     var opacity = x.opacity;
     //var globalAlpha = x.alpharegions;
@@ -73,13 +67,13 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
     var lnWidth = x.weight;
     var rad = x.cex;
     var tileOptions = {
-        maxPoints: 100, // stop slicing each tile below this number of points
+        maxPoints: 10, // stop slicing each tile below this number of points
         tolerance: 3, // simplification tolerance (higher means simpler)
         extent: 4096, // tile extent (both width and height)
         buffer: 128, // tile buffer on each sidey
         debug: 0, // logging level (0 to disable, 1 or 2)
         indexMaxZoom: 0, // max zoom in the initial tile index
-        indexMaxPoints: 100000, // max number of points per tile in the index
+        indexMaxPoints: 1000000, // max number of points per tile in the index
     };
     // construct the rtree object
     var rt = RTree();
@@ -159,7 +153,16 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
     	    } else {
     	        return true;
     	    }
-    	}
+    	}rt.bbox([
+                [bounds.getSouthWest()
+                    .lng, bounds.getSouthWest()
+                    .lat
+                ],
+                [bounds.getNorthEast()
+                    .lng, bounds.getNorthEast()
+                    .lat
+                ]
+            ])
     */
 function countProperties(obj) {
     var count = 0;
@@ -209,15 +212,22 @@ function countProperties(obj) {
     boxSelect.enable();
 
     map.on("boxselected", function(e) {
-        // Define here the zoom level of change
-        // myLayer.addData(rt.bbox(e.boxSelectBounds));
-        //var noF = countProperties(myLayers._layers);
-        if (x.nof < 500) {
+        // Define here number of features as tipping point for rtree
+        if (x.nof < x.maxFeatures) {
             //if (layerType == "vectortiles") {
                 map.removeLayer(canvasTiles);
                 layerType = "geojson";
             //}
-            myLayer.clearLayers();
+            myLayer.clearLayers();rt.bbox([
+                [bounds.getSouthWest()
+                    .lng, bounds.getSouthWest()
+                    .lat
+                ],
+                [bounds.getNorthEast()
+                    .lng, bounds.getNorthEast()
+                    .lat
+                ]
+            ])
             myLayer.addData(rt.bbox(e.boxSelectBounds));
         } else {
             myLayer.clearLayers();
@@ -228,8 +238,8 @@ function countProperties(obj) {
 
     // recursive call of layerswitch
     function showLayer() {
-      var bounds = map.getBounds();
-
+       // get number of features in current bounds
+       var bounds = map.getBounds();
        var noF = rt.bbox([
                 [bounds.getSouthWest()
                     .lng, bounds.getSouthWest()
@@ -240,7 +250,8 @@ function countProperties(obj) {
                     .lat
                 ]
             ]).length;
-        if (noF > 0 & noF < 500) {
+
+        if ( noF < x.maxFeatures) {
             //if (layerType == "vectortiles") {
             map.removeLayer(canvasTiles);
             layerType = "geojson";
@@ -273,9 +284,6 @@ function countProperties(obj) {
 
     // Add to the GeoJson Vector Tiles
     var tileIndex = geojsonvt(data, tileOptions);
-
-    // The canvas tile layer for low zoom level
-    //var zoom = x.zoom;
     var canvasTiles = L.tileLayer.canvas();
 
 

@@ -54,7 +54,7 @@ addLargeFeatures <- function(map,
                              fillOpacity = 0.4,
                              canvasOpacity = 0.4,
                              group = NULL,
-                             zoom = calcZoom(data),
+                             maxFeatures = 5000,
                              ...)
 {
 
@@ -144,7 +144,7 @@ addLargeFeatures <- function(map,
                 xmin = ext@xmin,
                 ymin = ext@ymin,
                 zoom = zoom,
-                nof = 500)
+                maxFeatures = maxFeatures)
 
   # creating the widget
   # bViewInternal(jFn = pathJsonFn,  x = lst_x)
