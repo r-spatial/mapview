@@ -25,12 +25,12 @@ before_install:
   - sudo make install
   - cd /home/travis/build/environmentalinformatics-marburg/mapview
 
-install:
-  - ./pkg-build.sh install_deps
-
 r_packages:
   - geojsonio
   - quickmapr
+
+install:
+  - ./pkg-build.sh install_deps
 
 script:
   - ./pkg-build.sh run_tests
