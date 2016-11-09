@@ -161,7 +161,16 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
     	    }
     	}
     */
+function countProperties(obj) {
+    var count = 0;
 
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop))
+            ++count;
+    }
+
+    return count;
+}
     // function for retrieving the correct box according to the rtree object
     var BoxSelect = L.Map.BoxZoom.extend({
         _onMouseUp: function(e) {
@@ -201,8 +210,9 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
 
     map.on("boxselected", function(e) {
         // Define here the zoom level of change
-
-        if (map.getZoom() >= maxZ) {
+         myLayer.addData(rt.bbox(e.boxSelectBounds));
+        var noF = countProperties(myLayers._layers);
+        if (noF < 10000) {
             //if (layerType == "vectortiles") {
                 map.removeLayer(canvasTiles);
                 layerType = "geojson";
@@ -218,7 +228,19 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
 
     // recursive call of layerswitch
     function showLayer() {
-        if (map.getZoom() > maxZ) {
+      var bounds = map.getBounds();
+      myLayer.addData(rt.bbox([
+                [bounds.getSouthWest()
+                    .lng, bounds.getSouthWest()
+                    .lat
+                ],
+                [bounds.getNorthEast()
+                    .lng, bounds.getNorthEast()
+                    .lat
+                ]
+            ]));
+       var noF = countProperties(myLayer._layers);
+        if (noF < 10000) {
             //if (layerType == "vectortiles") {
             map.removeLayer(canvasTiles);
             layerType = "geojson";
