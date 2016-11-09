@@ -54,6 +54,7 @@ addLargeFeatures <- function(map,
                              fillOpacity = 0.4,
                              canvasOpacity = 0.4,
                              group = NULL,
+                             zoom = calcZoom(data),
                              ...)
 {
 
@@ -113,25 +114,12 @@ addLargeFeatures <- function(map,
     # scaled by the coarse assumption that a polygons lines and points
     # have an formal relationship of at least 1 to 2 to 3 points each
     # that leads to something like the divisor 1 2 5
-    if (class(data)[1] == 'SpatialPolygonsDataFrame'){
-      noFeature <- length(data@polygons)
-      noF <- noFeature / 1
-    } else if (class(data)[1] == 'SpatialLinesDataFrame'){
-      noFeature <- length(data@lines)
-      noF <- noFeature / 1
-    } else {
-      noFeature <- nrow(data) #length(data@coords)
-      noF <- noFeature / 5
-    }
 
-    zoom <- floor(-0.000000000429 * (noF^2) + 0.000148 * noF + 1)
-    if (zoom > 14) {zoom <- 14}
-    if (zoom < 9) {zoom <- 9}
     # to be done
 
     # getting the extent and map center
     ext <- raster::extent(data)
-    xArea <- (ext@ymax-ext@ymin)*(ext@xmax-ext@xmin)
+    # xArea <- (ext@ymax-ext@ymin)*(ext@xmax-ext@xmin)
     yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
     yc <- (ext@ymax-ext@ymin) * 0.5 + ext@ymin
     xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin

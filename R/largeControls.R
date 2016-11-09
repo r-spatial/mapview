@@ -38,3 +38,26 @@ makepathLarge <- function() {
   pathJsonFn <- paste0(tmpPath, "/", jsonFn)
   return(list(tmpPath, pathJsonFn, jsonFn))
 }
+
+
+### calculate zoom
+calcZoom <- function(data) {
+
+  if (inherits(data, 'SpatialPolygons')) {
+    noFeature <- length(data@polygons)
+    noF <- noFeature / 1
+  } else if (inherits(data, 'SpatialLines')) {
+    noFeature <- length(data@lines)
+    noF <- noFeature / 1
+  } else {
+    noFeature <- length(data@coords)
+    noF <- noFeature / 5
+  }
+
+  zoom <- floor(-0.000000000429 * (noF^2) + 0.000148 * noF + 1)
+  if (zoom > 14) {zoom <- 16}
+  if (zoom < 9) {zoom <- 9}
+
+  return(zoom)
+}
+
