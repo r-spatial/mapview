@@ -19,6 +19,7 @@
 #' @importFrom utils write.table find
 #' @importFrom webshot webshot
 #' @importFrom geojsonio geojson_json
+#' @importFrom quickmapr qmap
 #'
 #' @useDynLib mapview
 #' @keywords package

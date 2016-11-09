@@ -40,10 +40,10 @@ Imports:
     data.table,
     webshot,
     viridisLite,
-    geojsonio
+    geojsonio,
+    quickmapr
 LinkingTo: Rcpp
 RoxygenNote: 5.0.1
 SystemRequirements: GNU make
 Suggests: knitr,
-    rmarkdown,
-    quickmapr
+    rmarkdown
