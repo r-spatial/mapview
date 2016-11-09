@@ -28,6 +28,10 @@ before_install:
 install:
   - ./pkg-build.sh install_deps
 
+r_packages:
+  - geojsonio
+  - quickmapr
+
 script:
   - ./pkg-build.sh run_tests
 
