@@ -238,6 +238,7 @@ function countProperties(obj) {
 
     // recursive call of layerswitch
     function showLayer() {
+      if (map.hasLayer(staticLayer) || map.hasLayer(myLayer)) {
        // get number of features in current bounds
        var bounds = map.getBounds();
        var noF = rt.bbox([
@@ -268,17 +269,20 @@ function countProperties(obj) {
                     .lng, bounds.getNorthEast()
                     .lat
                 ]
-            ]));
+            ])).addTo(map);
         } else {
             myLayer.clearLayers();
             canvasTiles.addTo(map);
             layerType = "vectortiles";
         }
+      }
     }
     map.on("moveend", function(e) {
         showLayer();
     });
-
+    map.on("load", function(e) {
+        showLayer();
+    });
     // Add to the r-tree
     rt.geoJSON(data);
 

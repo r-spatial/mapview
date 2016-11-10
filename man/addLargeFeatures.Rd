@@ -6,7 +6,7 @@
 \usage{
 addLargeFeatures(map, data, color = "#03F", weight = 4, radius = 8,
   opacity = 0.9, fillOpacity = 0.4, canvasOpacity = 0.4, group = NULL,
-  zoom = calcZoom(data), ...)
+  maxFeatures = 5000, ...)
 }
 \arguments{
 \item{map}{a mapview or leaflet object.}
