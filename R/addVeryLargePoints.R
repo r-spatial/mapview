@@ -1,14 +1,9 @@
 addVeryLargePoints <- function(map,
                                x,
-                               zcol = NULL,
-                               color = mapviewGetOption("vector.palette"),
-                               at = NULL,
-                               na.color = mapviewGetOption("na.color"),
-                               values = NULL,
-                               map.types = mapviewGetOption("basemaps"),
-                               alpha = 0.8,
+                               color = "#0033ff",
+                               na.color = "transparent",
+                               opacity = 0.8,
                                weight = 2,
-                               verbose = mapviewGetOption("verbose"),
                                group = deparse(substitute(x)),
                                popup = NULL,
                                ...) {
@@ -33,20 +28,14 @@ print(group)
     # check projection
     x <- spCheckAdjustProjection(x)
 
-    color <- mapviewColors(x,
-                           zcol = zcol,
-                           colors = color,
-                           at = at,
-                           na.color = na.color)
-
-      # create dataframe
-      cnames <- colnames(x@data)
-      x@data$r<-col2rgb(color)[1,]
-      x@data$g<-col2rgb(color)[2,]
-      x@data$b<-col2rgb(color)[3,]
-      x@data$x<-x@coords[,1]
-      x@data$y<-x@coords[,2]
-      x@data<-x@data[,c("x","y","r","g","b",cnames)]
+    # create dataframe
+    cnames <- colnames(x@data)
+    x@data$r <- grDevices::col2rgb(color)[1,]
+    x@data$g <- grDevices::col2rgb(color)[2,]
+    x@data$b <- grDevices::col2rgb(color)[3,]
+    x@data$x <- x@coords[,1]
+    x@data$y <- x@coords[,2]
+    x@data <- x@data[,c("x","y","r","g","b",cnames)]
 
 
     # integrate the coordinates
@@ -65,7 +54,7 @@ print(group)
     close(fileConn)
 
     # get extent and center of area
-    ext <- extent(x)
+    ext <- raster::extent(x)
     yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
     xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
 
@@ -88,20 +77,18 @@ print(group)
     # create list of user data that is passed to the widget
     lst_x = list(
       color = "undefined",  # color, #col2Hex(color),
-      layer = map.types,
       data  = "undefined",
       #cnames = cnames,
       centerLat = yc,
       centerLon = xc,
       popTemplate = getPopupStyle(),
       cHelp = cHelp,
-      layer.opacity = alpha,
+      layer.opacity = opacity,
       layername = as.character(group),
       xmax = ext@xmax,
       ymax = ext@ymax,
       xmin = ext@xmin,
-      ymin = ext@ymin,
-      values = values
+      ymin = ext@ymin
     )
   }
 

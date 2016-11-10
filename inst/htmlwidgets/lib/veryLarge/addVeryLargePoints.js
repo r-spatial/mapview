@@ -64,7 +64,7 @@ LeafletWidget.methods.addVeryLargePoints = function(x) {
         // leaflet https://robertleeplummerjr.github.io/Leaflet.glify
         if (x.data === 'undefined') {
             var data = HTMLWidgets.getAttachmentUrl('data');
-            tst = wget([fragmentshader, vertexshader, data], function(fragmentshader, vertexshader, data) {
+            wget([fragmentshader, vertexshader, data], function(fragmentshader, vertexshader, data) {
                 L.glify({
                     map: map,
                     vertexShader: vertexshader,
@@ -101,10 +101,11 @@ LeafletWidget.methods.addVeryLargePoints = function(x) {
 
                 });
             });
-            map.layerManager.addLayer(tst, null, "1", x.layername);
+            //map.layerManager.addLayer(tst, null, "1", x.layername);
         } else {
           var data = x.data;
         }
+
 };
 
 
