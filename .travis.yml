@@ -27,9 +27,11 @@ before_install:
   - sudo make install
   - cd /home/travis/build/environmentalinformatics-marburg/mapview
 
-r_packages:
+r_binary_packages:
   - rgeos
   - V8
+
+r_packages:
   - geojsonio
   - quickmapr
 
