@@ -9,7 +9,7 @@ before_install:
   - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
   - chmod 755 pkg-build.sh
   - ./pkg-build.sh bootstrap
-  - sudo apt-get install libproj-dev libgeos++-dev
+  - sudo apt-get install libproj-dev libgeos-3.3.8 libgeos++-dev
   - sudo apt-get install libv8-dev
   - cd
   - wget http://download.osgeo.org/gdal/2.0.1/gdal-2.0.1.tar.gz
