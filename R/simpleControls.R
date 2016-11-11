@@ -11,31 +11,31 @@
 #'
 #' m <- leaflet() %>% addTiles()
 #'
-#' garnishMap(m, addPolylines, data = as.sf(atlStorms2005))
-#' garnishMap(m, addPolygons, data = as.sf(gadmCHE))
-#' garnishMap(m, addCircleMarkers, data = as.sf(breweries91))
+#' garnishMap(m, addPolylines, data = st_as_sfc(atlStorms2005))
+#' garnishMap(m, addPolygons, data = st_as_sfc(gadmCHE))
+#' garnishMap(m, addCircleMarkers, data = st_as_sfc(breweries91))
 #'
 #' }
 #'
-#' @export polygonData.sf
-#' @name polygonData.sf
-#' @rdname polygonData.sf
-#' @method polygonData sf
-#' @aliases polygonData.sf
+#' @export polygonData.sfc
+#' @name polygonData.sfc
+#' @rdname polygonData.sfc
+#' @method polygonData sfc
+#' @aliases polygonData.sfc
+#' @importFrom sf st_geometry
+"polygonData.sfc" <- function(obj) {
 
-
-"polygonData.sf" <- function(obj) {
-
-  if (inherits(geometry(obj)[[1]], "MULTIPOLYGON")) {
-    tmp <- lapply(geometry(obj), function(i) {
+  obj_geom <- sf::st_geometry(obj)
+  if (inherits(obj_geom[[1]], "MULTIPOLYGON")) {
+    tmp <- lapply(obj_geom, function(i) {
       lapply(i, function(j) {
         lng <- j[[1]][, 1]
         lat <- j[[1]][, 2]
         list(lng = lng, lat = lat)
       })
     })
-  } else if (inherits(geometry(obj)[[1]], "LINESTRING")) {
-    tmp <- lapply(geometry(obj), function(i) {
+  } else if (inherits(obj_geom[[1]], "LINESTRING")) {
+    tmp <- lapply(obj_geom, function(i) {
       #lapply(i, function(j) {
       lng <- i[, 1]
       lat <- i[, 2]
@@ -44,7 +44,7 @@
     })
   }
 
-  bb <- attributes(geometry(obj))$bbox
+  bb <- attributes(obj_geom)$bbox
 
   bbx <- matrix(bb, ncol = 2, byrow = TRUE)
   attr(bbx, "dimnames") <- list(c("x", "y"),
@@ -56,11 +56,11 @@
 
 }
 
-#' @export pointData.sf
-#' @describeIn polygonData.sf method for point data
-#' @method pointData sf
-#' @aliases pointData.sf
-# pointData.sf <- function(obj) {
+#' @export pointData.sfc
+#' @describeIn polygonData.sfc method for point data
+#' @method pointData sfc
+#' @aliases pointData.sfc
+# pointData.sfc <- function(obj) {
 #
 #   tmp <- do.call("rbind", lapply(geometry(obj), function(i) {
 #     lng = i[[1]]
@@ -70,8 +70,8 @@
 #
 # }
 
-"pointData.sf" <- function(obj) {
-  tmp <- do.call("rbind", lapply(geometry(obj), function(i) {
+"pointData.sfc" <- function(obj) {
+  tmp <- do.call("rbind", lapply(st_geometry(obj), function(i) {
     lng = i[[1]]
     lat = i[[2]]
     data.frame(lng = lng, lat = lat)
@@ -80,7 +80,7 @@
 }
 
 #' @export pointData.MULTIPOINT
-#' @describeIn polygonData.sf method for point data
+#' @describeIn polygonData.sfc method for point data
 #' @method pointData MULTIPOINT
 #' @method pointData MULTIPOINT Z
 #' @method pointData MULTIPOINT M
@@ -95,16 +95,18 @@
     data.frame(lng = lng, lat = lat)
   }
 
-#' @export pointData.POINT
-#' @describeIn polygonData.sf method for point data
-#' @method pointData POINT
-#' @method pointData POINT Z
-#' @method pointData POINT M
-#' @method pointData POINT ZM
-#' @aliases "pointData.POINT","pointData.POINT Z","pointData.POINT M","pointData.POINT ZM"
-"pointData.POINT" <-
-  "pointData.POINT Z" <-
-  "pointData.POINT M" <-
-  "pointData.POINT ZM" <- function(obj) {
-    data.frame(lng = obj[1], lat = obj[2])
+## This is NOT RIGHT yet MDS
+##
+#' @export pointData.sfc_POINT
+#' @describeIn polygonData.sfc method for point data
+#' @method pointData sfc_POINT
+#' @method pointData sfc_POINT Z
+#' @method pointData sfc_POINT M
+#' @method pointData sfc_POINT ZM
+#' @aliases "pointData.sfc_POINT","pointData.POINT Z","pointData.POINT M","pointData.POINT ZM"
+"pointData.sfc_POINT" <-
+  "pointData.sfc_POINT Z" <-
+  "pointData.sfc_POINT M" <-
+  "pointData.sfc_POINT ZM" <- function(obj) {
+    data.frame(lng = obj[[1]][[1]], lat = obj[[1]][[2]])
   }
