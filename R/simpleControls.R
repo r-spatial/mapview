@@ -11,19 +11,19 @@
 #'
 #' m <- leaflet() %>% addTiles()
 #'
-#' garnishMap(m, addPolylines, data = st_as_sfc(atlStorms2005))
-#' garnishMap(m, addPolygons, data = st_as_sfc(gadmCHE))
-#' garnishMap(m, addCircleMarkers, data = st_as_sfc(breweries91))
+#' garnishMap(m, addPolylines, data = st_as_sf(atlStorms2005))
+#' garnishMap(m, addPolygons, data = st_as_sf(gadmCHE))
+#' garnishMap(m, addCircleMarkers, data = st_as_sf(breweries91))
 #'
 #' }
 #'
-#' @export polygonData.sfc
-#' @name polygonData.sfc
-#' @rdname polygonData.sfc
-#' @method polygonData sfc
-#' @aliases polygonData.sfc
+#' @export polygonData.sf
+#' @name polygonData.sf
+#' @rdname polygonData.sf
+#' @method polygonData sf
+#' @aliases polygonData.sf
 #' @importFrom sf st_geometry
-"polygonData.sfc" <- function(obj) {
+"polygonData.sf" <- function(obj) {
 
   obj_geom <- sf::st_geometry(obj)
   if (inherits(obj_geom[[1]], "MULTIPOLYGON")) {
@@ -56,11 +56,11 @@
 
 }
 
-#' @export pointData.sfc
-#' @describeIn polygonData.sfc method for point data
-#' @method pointData sfc
-#' @aliases pointData.sfc
-# pointData.sfc <- function(obj) {
+#' @export pointData.sf
+#' @describeIn polygonData.sf method for point data
+#' @method pointData sf
+#' @aliases pointData.sf
+# pointData.sf <- function(obj) {
 #
 #   tmp <- do.call("rbind", lapply(geometry(obj), function(i) {
 #     lng = i[[1]]
@@ -70,7 +70,7 @@
 #
 # }
 
-"pointData.sfc" <- function(obj) {
+"pointData.sf" <- function(obj) {
   tmp <- do.call("rbind", lapply(st_geometry(obj), function(i) {
     lng = i[[1]]
     lat = i[[2]]
@@ -80,7 +80,7 @@
 }
 
 #' @export pointData.MULTIPOINT
-#' @describeIn polygonData.sfc method for point data
+#' @describeIn polygonData.sf method for point data
 #' @method pointData MULTIPOINT
 #' @method pointData MULTIPOINT Z
 #' @method pointData MULTIPOINT M
@@ -97,16 +97,16 @@
 
 ## This is NOT RIGHT yet MDS
 ##
-#' @export pointData.sfc_POINT
-#' @describeIn polygonData.sfc method for point data
-#' @method pointData sfc_POINT
-#' @method pointData sfc_POINT Z
-#' @method pointData sfc_POINT M
-#' @method pointData sfc_POINT ZM
-#' @aliases "pointData.sfc_POINT","pointData.POINT Z","pointData.POINT M","pointData.POINT ZM"
-"pointData.sfc_POINT" <-
-  "pointData.sfc_POINT Z" <-
-  "pointData.sfc_POINT M" <-
-  "pointData.sfc_POINT ZM" <- function(obj) {
+#' @export pointData.sf_POINT
+#' @describeIn polygonData.sf method for point data
+#' @method pointData sf_POINT
+#' @method pointData sf_POINT Z
+#' @method pointData sf_POINT M
+#' @method pointData sf_POINT ZM
+#' @aliases "pointData.sf_POINT","pointData.POINT Z","pointData.POINT M","pointData.POINT ZM"
+"pointData.sf_POINT" <-
+  "pointData.sf_POINT Z" <-
+  "pointData.sf_POINT M" <-
+  "pointData.sf_POINT ZM" <- function(obj) {
     data.frame(lng = obj[[1]][[1]], lat = obj[[1]][[2]])
   }
