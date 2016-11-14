@@ -71,6 +71,15 @@ decorateMap <- function(map, ext, layer.name, ...) {
 }
 
 
+### getFeatureIds
+getFeatureIds <- function(att_data) {
+  if (inherits(att_data, "Spatial")) {
+    ids <- row.names(att_data)
+  }
+
+  return(ids)
+}
+
 ### burst
 # burst <- function(x, zcol, ...) {
 #

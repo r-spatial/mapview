@@ -31,7 +31,7 @@ create a vector of \code{n} colors.}
 
 \item{maxFeatures}{the maximum number of features to be drawn using svg.
 If for a given zoom the number of visible features is greater than maxFeatures
-things will be rendered on canvas and won't be queryable. Tweak this
+things will be rendered on canvas and won't be queryable. Tweak (reduce) this
 threshold in case your map becomes unresponsive when zooming in. This is
 mainly an issue for lines and polygons with many vertices, e.g. polygons
 derived from a raster.}
@@ -46,24 +46,21 @@ querying is supported but only at higher zoom levels to preserve performance.
 \examples{
 \dontrun{
 library(mapview)
-library(ggplot2)
+library(sp)
+library(ggmap)
 
-### blow diamonds up a bit
-big <- data.frame(diamonds[rep(seq_len(nrow(diamonds)), 2),])
-big$cut <- as.character(big$cut)
-big$color <- as.character(big$color)
-big$clarity <- as.character(big$clarity)
-
-### provide some random positions
-big$x <- rnorm(nrow(big), 0, 10)
-big$y <- rnorm(nrow(big), 0, 10)
-coordinates(big) <- ~x+y
-proj4string(big) <- CRS("+init=epsg:4326")
+data(crime)
+crime <- crime[complete.cases(crime), ]
+coordinates(crime) <- ~ lon + lat
+proj4string(crime) <- "+init=epsg:4326"
 
 leaflet() \%>\%
 addProviderTiles("CartoDB.Positron") \%>\%
-  addLargeFeatures(big, group = "big") \%>\%
-  addLayersControl(overlayGroups = "big", position = "topleft")
+  addLargeFeatures(crime, group = "crime") \%>\%
+  addMouseCoordinates() \%>\%
+  addLayersControl(overlayGroups = "crime", position = "topleft")
+
+
 }
 
 

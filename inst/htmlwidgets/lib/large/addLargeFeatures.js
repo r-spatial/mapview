@@ -67,6 +67,7 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
     var lnWidth = x.weight;
     var rad = x.cex;
     var tileOptions = {
+        maxZoom: 21,  // max zoom to preserve detail on
         maxPoints: 10, // stop slicing each tile below this number of points
         tolerance: 3, // simplification tolerance (higher means simpler)
         extent: 4096, // tile extent (both width and height)
@@ -85,13 +86,26 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
 
     // The onEachFeature function provides functionality when oneEchfeature is activated
     function onEachFeature(feature, layer) {
+      Object.size = function(obj) {
+        var size = 0, key;
+        for (key in obj) {
+          if (obj.hasOwnProperty(key)) size++;
+        }
+      return size;
+      };
+
+        var len = Object.size(feature.properties)-1;
         var i = 1;
         var content = '';
         // does this feature have a property named popupContent?
         if (feature.properties) {
             for (var key in feature.properties) {
-                if (isEven(i)) {
+              if (i === 1) {
+                content += "<tr class='coord'><td>" + "<b>" + key + "<b>" + "</td><td>" + feature.properties[key] + "</td></tr>";
+              } else if (!isEven(i)) {
                     content += "<tr><td>" + "<b>" + key + "<b>" + "</td><td>" + feature.properties[key] + "</td></tr>";
+                } else if (i === len) {
+                  break;
                 } else {
                     content += "<tr class='alt'><td>" + "<b>" + key + "<b>" + "</td><td>" + feature.properties[key] + "</td></tr>";
                 }
@@ -212,13 +226,15 @@ function countProperties(obj) {
     boxSelect.enable();
 
     map.on("boxselected", function(e) {
+      var noF = rt.bbox(e.boxSelectBounds).length;
         // Define here number of features as tipping point for rtree
-        if (x.nof < x.maxFeatures) {
+        if (noF <= x.maxFeatures) {
             //if (layerType == "vectortiles") {
                 map.removeLayer(canvasTiles);
                 layerType = "geojson";
             //}
-            myLayer.clearLayers();rt.bbox([
+            myLayer.clearLayers();
+            rt.bbox([
                 [bounds.getSouthWest()
                     .lng, bounds.getSouthWest()
                     .lat
@@ -227,7 +243,7 @@ function countProperties(obj) {
                     .lng, bounds.getNorthEast()
                     .lat
                 ]
-            ])
+            ]);
             myLayer.addData(rt.bbox(e.boxSelectBounds));
         } else {
             myLayer.clearLayers();
@@ -252,7 +268,7 @@ function countProperties(obj) {
                 ]
             ]).length;
 
-        if ( noF < x.maxFeatures) {
+        if (noF <= x.maxFeatures) {
             //if (layerType == "vectortiles") {
             map.removeLayer(canvasTiles);
             layerType = "geojson";
