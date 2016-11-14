@@ -46,7 +46,7 @@
 
   bb <- attributes(obj_geom)$bbox
 
-  bbx <- matrix(bb, ncol = 2, byrow = TRUE)
+  bbx <- matrix(bb, ncol = 2, byrow = FALSE)
   attr(bbx, "dimnames") <- list(c("x", "y"),
                                 c("min", "max"))
 
@@ -82,14 +82,8 @@
 #' @export pointData.MULTIPOINT
 #' @describeIn polygonData.sf method for point data
 #' @method pointData MULTIPOINT
-#' @method pointData MULTIPOINT Z
-#' @method pointData MULTIPOINT M
-#' @method pointData MULTIPOINT ZM
-#' @aliases pointData.MULTIPOINT,pointData.MULTIPOINT Z,pointData.MULTIPOINT M,pointData.MULTIPOINT ZM
-"pointData.MULTIPOINT" <-
-  "pointData.MULTIPOINT Z" <-
-  "pointData.MULTIPOINT M" <-
-  "pointData.MULTIPOINT ZM" <- function(obj) {
+#' @aliases pointData.MULTIPOINT
+"pointData.MULTIPOINT" <- function(obj) {
     lng <- obj[, 1]
     lat <- obj[, 2]
     data.frame(lng = lng, lat = lat)
@@ -97,16 +91,61 @@
 
 ## This is NOT RIGHT yet MDS
 ##
-#' @export pointData.sf_POINT
+#' @export pointData.POINT
 #' @describeIn polygonData.sf method for point data
-#' @method pointData sf_POINT
-#' @method pointData sf_POINT Z
-#' @method pointData sf_POINT M
-#' @method pointData sf_POINT ZM
-#' @aliases "pointData.sf_POINT","pointData.POINT Z","pointData.POINT M","pointData.POINT ZM"
-"pointData.sf_POINT" <-
-  "pointData.sf_POINT Z" <-
-  "pointData.sf_POINT M" <-
-  "pointData.sf_POINT ZM" <- function(obj) {
-    data.frame(lng = obj[[1]][[1]], lat = obj[[1]][[2]])
+#' @method pointData POINT
+#' @aliases "pointData.POINT"
+"pointData.POINT" <- function(obj) {
+    data.frame(lng = obj[[1]], lat = obj[[2]])
   }
+
+
+
+#### polygons
+nestPolygons <- function(obj) {
+  tmp <- lapply(obj, function(i) {
+    lng <- i[, 1]
+    lat <- i[, 2]
+    list(lng = lng, lat = lat)
+  })
+  tmp <- list(tmp)
+  return(tmp)
+}
+
+
+
+#' @export polygonData.POLYGON
+#' @describeIn polygonData.sf method for polygon data
+#' @method polygonData POLYGON
+#' @aliases "polygonData.POLYGON"
+"polygonData.POLYGON" <- function(obj) {
+  tmp <- nestPolygons(obj)
+
+  bb <- st_bbox(obj)
+  bbx <- matrix(bb, ncol = 2, byrow = FALSE)
+  attr(bbx, "dimnames") <- list(c("x", "y"),
+                                c("min", "max"))
+  attributes(tmp) <- list(bbox = bbx)
+
+  return(tmp)
+}
+
+
+#' @export polygonData.MULTIPOLYGON
+#' @describeIn polygonData.sf method for polygon data
+#' @method polygonData MULTIPOLYGON
+#' @aliases "polygonData.MULTIPOLYGON"
+"polygonData.MULTIPOLYGON" <- function(obj) {
+  tmp <- sapply(obj, function(i) {
+    mapview:::nestPolygons(i)
+  })
+
+  bb <- st_bbox(obj)
+  bbx <- matrix(bb, ncol = 2, byrow = FALSE)
+  attr(bbx, "dimnames") <- list(c("x", "y"),
+                                c("min", "max"))
+  attributes(tmp) <- list(bbox = bbx)
+
+  return(tmp)
+}
+
