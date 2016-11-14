@@ -12,6 +12,10 @@ addMouseCoordinates(map, style = c("detailed", "basic"), epsg = NULL,
 
 \item{style}{whether to show 'detailed' or 'basic' mouse position info.
 See Details for an explanation.}
+
+\item{epsg}{the epsg string to be shown.}
+
+\item{proj4string}{the proj4string to be shown.}
 }
 \description{
 This function adds a box displaying the current cursor location

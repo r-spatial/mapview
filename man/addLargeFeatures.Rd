@@ -25,7 +25,18 @@ create a vector of \code{n} colors.}
 
 \item{fillOpacity}{opacity of the fill (for circleMarkers and polygons).}
 
+\item{canvasOpacity}{the opacity of features when rendered on canvas.}
+
 \item{group}{the name of the group the data layer should belong to.}
+
+\item{maxFeatures}{the maximum number of features to be drawn using svg.
+If for a given zoom the number of visible features is greater than maxFeatures
+things will be rendered on canvas and won't be queryable. Tweak this
+threshold in case your map becomes unresponsive when zooming in. This is
+mainly an issue for lines and polygons with many vertices, e.g. polygons
+derived from a raster.}
+
+\item{...}{currently not used.}
 }
 \description{
 This function allows users to add moderately sized datasets to a leaflet

@@ -10,6 +10,8 @@
 #' @param map a mapview or leaflet object.
 #' @param style whether to show 'detailed' or 'basic' mouse position info.
 #' See Details for an explanation.
+#' @param epsg the epsg string to be shown.
+#' @param proj4string the proj4string to be shown.
 #'
 #' @details
 #' If style is set to "detailed", the following information will be displayed:

@@ -14,7 +14,15 @@
 #' @param radius the radius of the circleMarkers (ignored for lines/polygons).
 #' @param opacity the opacity of the stroke paths.
 #' @param fillOpacity opacity of the fill (for circleMarkers and polygons).
+#' @param canvasOpacity the opacity of features when rendered on canvas.
 #' @param group the name of the group the data layer should belong to.
+#' @param maxFeatures the maximum number of features to be drawn using svg.
+#' If for a given zoom the number of visible features is greater than maxFeatures
+#' things will be rendered on canvas and won't be queryable. Tweak this
+#' threshold in case your map becomes unresponsive when zooming in. This is
+#' mainly an issue for lines and polygons with many vertices, e.g. polygons
+#' derived from a raster.
+#' @param ... currently not used.
 #'
 #' @examples
 #' \dontrun{
@@ -59,7 +67,7 @@ addLargeFeatures <- function(map,
 {
 
   ## temp dir
-  tmp <- mapview:::makepathLarge()
+  tmp <- makepathLarge()
   tmpPath <- tmp[[1]][1]
   pathJsonFn <- tmp[[2]][1]
   jsonFn <- tmp[[3]][1]

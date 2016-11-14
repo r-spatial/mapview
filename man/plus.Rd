@@ -4,8 +4,8 @@
 \name{+}
 \alias{+}
 \alias{+,leaflet,ANY-method}
-\alias{+,leaflet,character-method}
 \alias{+,mapview,ANY-method}
+\alias{+,mapview,character-method}
 \alias{+,mapview,mapview-method}
 \title{Add a layer to a mapview or leaflet map}
 \usage{

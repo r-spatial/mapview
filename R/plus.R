@@ -129,7 +129,7 @@ setMethod("+",
 #' @name +
 #' @docType methods
 #' @rdname plus
-#' @aliases +,leaflet,character-method
+#' @aliases +,mapview,character-method
 #'
 setMethod("+",
           signature(e1 = "mapview",
