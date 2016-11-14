@@ -1427,10 +1427,10 @@ leafletMissing <- function(map.types,
                           envinMR = "envinMR")
     sp::coordinates(envinMR) <- ~x+y
     sp::proj4string(envinMR) <- sp::CRS(llcrs)
-    m <- leaflet() %>% # attribution taken from https://www.mapbox.com/help/attribution/#other-mapping-frameworks
-      addTiles(urlTemplate = ts, #"http://{s}.tiles.mapbox.com/v3/gvenech.m13knc8e/{z}/{x}/{y}.png",
-               attribution = attr, #'© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
-               options = tileOptions(minZoom = 1, maxZoom = 18))  #initBaseMaps(map.types)
+    m <- leaflet() %>%
+      addTiles(urlTemplate = ts,
+               attribution = attr,
+               options = tileOptions(minZoom = 1, maxZoom = 18))
 
     fl <- 'http://cdn.makeagif.com/media/8-11-2015/n2JwUG.gif'
 

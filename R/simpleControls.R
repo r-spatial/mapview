@@ -137,7 +137,7 @@ nestPolygons <- function(obj) {
 #' @aliases "polygonData.MULTIPOLYGON"
 "polygonData.MULTIPOLYGON" <- function(obj) {
   tmp <- sapply(obj, function(i) {
-    mapview:::nestPolygons(i)
+    nestPolygons(i)
   })
 
   bb <- st_bbox(obj)
