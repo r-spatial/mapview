@@ -1,4 +1,4 @@
-mapview 1.2.8
+mapview 1.2.9
 --------------------------------------------------------------------------------
 
 new features:
@@ -10,6 +10,7 @@ new features:
   * slideView has gained arguments 'label1' and 'label2' to supply slider names for the respective images, img1 and img2.
   * new popupTable layout (making more use of the space available).
   * added new function addLargeFeatures to render large datasets of up to ~100k features which is used automatically in mapview of data larger than max* thresholds in mapviewOptions.
+  * first definition of simple features methods for leaflet. With mapview loaded you should be able to use leaflet add* functions with 'data = *_sf(c)'.
 
 mapview 1.2.0
 --------------------------------------------------------------------------------
