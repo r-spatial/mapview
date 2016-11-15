@@ -60,6 +60,8 @@ addProviderTiles("CartoDB.Positron") \%>\%
   addMouseCoordinates() \%>\%
   addLayersControl(overlayGroups = "crime", position = "topleft")
 
+### or use mapview which uses this by default for large features
+mapview(crime, zcol = "offense", cex = 3)
 
 }
 

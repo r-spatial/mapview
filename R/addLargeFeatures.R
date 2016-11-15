@@ -41,6 +41,8 @@
 #'   addMouseCoordinates() %>%
 #'   addLayersControl(overlayGroups = "crime", position = "topleft")
 #'
+#' ### or use mapview which uses this by default for large features
+#' mapview(crime, zcol = "offense", cex = 3)
 #'
 #' }
 #'
@@ -90,10 +92,10 @@ addLargeFeatures <- function(map,
     #   data@data$color <- color
     #   col <- color[1]
     # } else {
-      col <- color[1]
-      data@data$color <- color
-      data@data$"Feature ID" <- getFeatureIds(data)
-      keep <- c("Feature ID", keep, "color")
+    col <- color[1]
+    data@data$color <- color
+    data@data$"Feature ID" <- getFeatureIds(data)
+    keep <- c("Feature ID", keep, "color")
     # }
 
     data@data <- data@data[, keep]

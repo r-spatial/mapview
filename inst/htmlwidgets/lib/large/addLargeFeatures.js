@@ -100,16 +100,16 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
         // does this feature have a property named popupContent?
         if (feature.properties) {
             for (var key in feature.properties) {
-              if (i === 1) {
-                content += "<tr class='coord'><td>" + "<b>" + key + "<b>" + "</td><td>" + feature.properties[key] + "</td></tr>";
-              } else if (!isEven(i)) {
-                    content += "<tr><td>" + "<b>" + key + "<b>" + "</td><td>" + feature.properties[key] + "</td></tr>";
-                } else if (i === len) {
-                  break;
-                } else {
-                    content += "<tr class='alt'><td>" + "<b>" + key + "<b>" + "</td><td>" + feature.properties[key] + "</td></tr>";
+              if (key !== "color") {
+                if (i === 1) {
+                  content += "<tr class='coord'><td>" + "<b>" + key + "<b>" + "</td><td>" + feature.properties[key] + "</td></tr>";
+                } else if (!isEven(i)) {
+                  content += "<tr><td>" + "<b>" + key + "<b>" + "</td><td>" + feature.properties[key] + "</td></tr>";
+                } else if (isEven(i)) {
+                  content += "<tr class='alt'><td>" + "<b>" + key + "<b>" + "</td><td>" + feature.properties[key] + "</td></tr>";
                 }
                 i = i + 1;
+              }
             }
             var popupContent = x.html + content + "</table></body></html>";
             //console.log(popupContent);
