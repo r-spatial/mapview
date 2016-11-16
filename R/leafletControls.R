@@ -199,7 +199,12 @@ initBaseMaps <- function(map.types) {
   leafletHeight <- mapviewGetOption("leafletHeight")
   leafletWidth <- mapviewGetOption("leafletWidth")
   lid <- 1:length(map.types)
-  m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth)
+  m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth,
+                        options = leafletOptions(minZoom = 2,
+                                                 maxZoom = 19,
+                                                 bounceAtZoomLimits = FALSE,
+                                                 maxBounds = list(list(c(-90, -185)),
+                                                                  list(c(90, 190)))))
   m <- leaflet::addProviderTiles(m, provider = map.types[1],
                                  layerId = lid[1], group = map.types[1])
   if (length(map.types) > 1) {
@@ -230,7 +235,12 @@ initMap <- function(map, map.types, proj4str) {
   ## create base map using specified map types
   if (is.null(map)) {
     if (is.na(proj4str)) {
-      m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth)
+      m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth,
+                            options = leafletOptions(minZoom = 1,
+                                                     maxZoom = 19,
+                                                     bounceAtZoomLimits = FALSE,
+                                                     maxBounds = list(list(c(-90, -185)),
+                                                                      list(c(90, 190)))))
     } else {
       m <- initBaseMaps(map.types)
     }
