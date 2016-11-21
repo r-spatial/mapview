@@ -70,13 +70,11 @@ brewPopupTable <- function(x, use_cpp = TRUE) {
         # data.frame with multiple columns
       } else {
 
-        # extract class per column
-        cls <- lapply(x@data, class)
-        ids <- sapply(cls, function(i) any(i %in% c("POSIXt", "POSIXct", "POSIXlt")))
+        # check for 'POSIXlt' columns and, if required, convert them to 'character'
+        ids <- sapply(x@data, function(x) inherits(x, "POSIXlt"))
 
-        # convert 'POSIX*' columns to 'character' before moving on to Rcpp
         if (any(ids)) {
-          x@data[, ids] <- as.character(x@data[, ids])
+          x@data[, ids] <- as.POSIXct(x@data[, ids])
         }
 
         mat <- df2String(x@data)
