@@ -44,7 +44,7 @@ mapshot <- function(x, url = NULL, file = NULL, remove_url = TRUE, ...) {
     stop("Please provide a valid 'url' or 'file' argument (or both).")
 
   ## if a 'mapview' object is supplied, extract map
-  if (class(x) == "mapview") {
+  if (inherits(x, "mapview")) {
     x <- mapview2leaflet(x)
   }
 
