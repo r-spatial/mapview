@@ -149,3 +149,50 @@ nestPolygons <- function(obj) {
   return(tmp)
 }
 
+
+
+### lines
+nestLines <- function(obj) {
+  lng <- obj[, 1]
+  lat <- obj[, 2]
+  tmp <- list(lng = lng, lat = lat)
+  return(list(list(tmp)))
+}
+
+
+#' @export polygonData.LINESTRING
+#' @describeIn polygonData.sf method for line data
+#' @method polygonData LINESTRING
+#' @aliases "polygonData.LINESTRING"
+"polygonData.LINESTRING" <- function(obj) {
+  tmp <- nestLines(obj)
+
+  bb <- st_bbox(obj)
+  bbx <- matrix(bb, ncol = 2, byrow = FALSE)
+  attr(bbx, "dimnames") <- list(c("x", "y"),
+                                c("min", "max"))
+  attributes(tmp) <- list(bbox = bbx)
+
+  return(tmp)
+}
+
+
+#' @export polygonData.MULTILINESTRING
+#' @describeIn polygonData.sf method for line data
+#' @method polygonData MULTILINESTRING
+#' @aliases "polygonData.MULTILINESTRING"
+"polygonData.MULTILINESTRING" <- function(obj) {
+  tmp <- sapply(obj, function(i) {
+    nestLines(i)
+  })
+
+  bb <- st_bbox(obj)
+  bbx <- matrix(bb, ncol = 2, byrow = FALSE)
+  attr(bbx, "dimnames") <- list(c("x", "y"),
+                                c("min", "max"))
+  attributes(tmp) <- list(bbox = bbx)
+
+  return(tmp)
+}
+
+
