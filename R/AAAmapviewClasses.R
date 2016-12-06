@@ -11,3 +11,4 @@ setClass('mapview',
 NULL
 
 setOldClass("leaflet")
+setOldClass("XY")

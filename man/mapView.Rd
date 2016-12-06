@@ -14,6 +14,7 @@
 \alias{mapView,SpatialPointsDataFrame-method}
 \alias{mapView,SpatialPolygons-method}
 \alias{mapView,SpatialPolygonsDataFrame-method}
+\alias{mapView,XY-method}
 \alias{mapView,list-method}
 \alias{mapView,missing-method}
 \alias{mapview}
@@ -105,6 +106,14 @@
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), label, homebutton = TRUE, ...)
 
+\S4method{mapView}{XY}(x, map = NULL, zcol = NULL,
+  color = mapviewGetOption("vector.palette"),
+  na.color = mapviewGetOption("na.color"), cex = 8, lwd = 4,
+  alpha = 0.9, alpha.regions = 0.4,
+  map.types = mapviewGetOption("basemaps"),
+  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
+  env = parent.frame())), label, homebutton = TRUE, ...)
+
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
   easter.egg = FALSE)
 
@@ -113,7 +122,8 @@
 \S4method{mapview}{ANY}(...)
 }
 \arguments{
-\item{x}{a \code{Raster*} or \code{Spatial*} object.}
+\item{x}{a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
+\code{sf} object.}
 
 \item{map}{an optional existing map to be updated/added to}
 
@@ -221,6 +231,8 @@ See \url{http://www.chrome-allow-file-access-from-file.com/} for further details
 \item \code{SpatialLinesDataFrame}: \code{\link{SpatialLinesDataFrame}}
 
 \item \code{SpatialLines}: \code{\link{SpatialLines}}
+
+\item \code{XY}: \code{\link{st}}
 
 \item \code{missing}: initiate a map without an object
 

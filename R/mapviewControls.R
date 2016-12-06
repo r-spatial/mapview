@@ -80,6 +80,29 @@ getFeatureIds <- function(att_data) {
   return(ids)
 }
 
+
+### createExtent
+createExtent <- function(x, offset = 0.05) {
+
+  if (inherits(x, "Spatial")) {
+    if (length(x) > 1) {
+      ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
+    } else {
+      ext <- raster::extent(raster::xmin(x) - offset,
+                            raster::xmax(x) + offset,
+                            raster::ymin(x) - offset,
+                            raster::ymax(x) + offset)
+    }
+  } else if (inherits(x, "sfg")) {
+    bb <- sf::st_bbox(x)
+    ext <- raster::extent(bb[1] - offset,
+                          bb[3] + offset,
+                          bb[2] - offset,
+                          bb[4] + offset)
+  }
+
+}
+
 ### burst
 # burst <- function(x, zcol, ...) {
 #

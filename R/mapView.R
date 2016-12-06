@@ -25,7 +25,8 @@ if ( !isGeneric('mapView') ) {
 #' for linux: "/usr/bin/google-chrome --allow-access-from-files").
 #' See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
 #'
-#' @param x a \code{Raster*} or \code{Spatial*} object.
+#' @param x a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
+#' \code{sf} object.
 #' @param map an optional existing map to be updated/added to
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
@@ -757,6 +758,60 @@ setMethod('mapView', signature(x = 'SpatialLines'),
 
           }
 
+)
+
+
+## XY ==================================================================
+#' @describeIn mapView \code{\link{st}}
+
+setMethod('mapView', signature(x = 'XY'),
+          function(x,
+                   map = NULL,
+                   zcol = NULL,
+                   color = mapviewGetOption("vector.palette"),
+                   na.color = mapviewGetOption("na.color"),
+                   cex = 8,
+                   lwd = 4,
+                   alpha = 0.9,
+                   alpha.regions = 0.4,
+                   map.types = mapviewGetOption("basemaps"),
+                   verbose = mapviewGetOption("verbose"),
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
+                   label,
+                   homebutton = TRUE,
+                   ...) {
+
+            # if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
+            if (mapviewGetOption("platform") == "leaflet") {
+              if (inherits(x, "POINT")) {
+                leafletPOINT(x,
+                             map = map,
+                             color = color,
+                             na.color = na.color,
+                             cex = cex,
+                             lwd = lwd,
+                             alpha = alpha,
+                             alpha.regions = alpha.regions,
+                             map.types = map.types,
+                             verbose = verbose,
+                             layer.name = layer.name,
+                             label = label,
+                             homebutton = homebutton,
+                             ...)
+              } else if (inherits(x, "LINESTRING")) {
+                NULL
+              } else if (inherits(x, "POLYGON")) {
+                NULL
+              }
+            } else {
+              if (mapviewGetOption("platform") == "quickmapr") {
+                quickmapr::qmap(x, ...)
+              } else {
+                NULL
+              }
+            }
+          }
 )
 
 
