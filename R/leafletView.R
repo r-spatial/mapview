@@ -1151,22 +1151,25 @@ leafletLines <- function(x,
 
 #### SIMPLE FEATURES ######################################################
 ###########################################################################
-### POINT #################################################################
+### MULTIPOINT ############################################################
 
-leafletPOINT <- function(x,
-                         map,
-                         cex,
-                         lwd,
-                         alpha,
-                         alpha.regions,
-                         color,
-                         na.color,
-                         map.types,
-                         verbose,
-                         layer.name,
-                         label,
-                         homebutton,
-                         ...) {
+leafletMULTIPOINT <- function(x,
+                              map,
+                              cex,
+                              lwd,
+                              alpha,
+                              alpha.regions,
+                              color,
+                              na.color,
+                              map.types,
+                              verbose,
+                              popup,
+                              layer.name,
+                              label,
+                              legend,
+                              legend.opacity,
+                              homebutton,
+                              ...) {
 
   if(!lab_avl && verbose) warning(warn)
 
@@ -1175,19 +1178,15 @@ leafletPOINT <- function(x,
   ext <- createExtent(x)
 
   grp <- layer.name
-  label <- "1" #makeLabels(row.names(x))
-
-  if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
-  m <- addMouseCoordinates(m)
+  if (is.null(label)) label <- makeLabels(x)
 
   if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
 
   color <- mapviewColors(x, colors = color)
 
+
   if(lab_avl) {
     m <- leaflet::addCircleMarkers(m,
-                                   # lng = coordinates(x)[, 1],
-                                   # lat = coordinates(x)[, 2],
                                    data = x,
                                    radius = cex,
                                    weight = lwd,
@@ -1196,12 +1195,11 @@ leafletPOINT <- function(x,
                                    fillOpacity = alpha.regions,
                                    group = grp,
                                    label = label,
+                                   popup = popup,
                                    ...)
   } else {
 
     m <- leaflet::addCircleMarkers(m,
-                                   # lng = coordinates(x)[, 1],
-                                   # lat = coordinates(x)[, 2],
                                    data = x,
                                    radius = cex,
                                    weight = lwd,
@@ -1209,12 +1207,24 @@ leafletPOINT <- function(x,
                                    color = color,
                                    fillOpacity = alpha.regions,
                                    group = grp,
+                                   popup = popup,
                                    ...)
+  }
+
+  if(!is.na(sf::st_crs(x)$proj4string)) {
+    crs <- TRUE
+    if (scl_avl)
+      m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+    m <- addMouseCoordinates(m)
+  } else {
+    crs <- FALSE
+    m <- addMouseCoordinates(m, style = "basic")
   }
 
   m <- mapViewLayersControl(map = m,
                             map.types = map.types,
-                            names = grp)
+                            names = grp,
+                            hasCRS = crs)
 
   out <- new('mapview', object = list(x), map = m)
 

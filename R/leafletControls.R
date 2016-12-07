@@ -500,7 +500,7 @@ checkAdjustProjection <- function(x) {
 
 # Add leaflet control button to map ---------------------------------------
 
-mapViewLayersControl <- function(map, map.types, names) {
+mapViewLayersControl <- function(map, map.types, names, hasCRS = TRUE) {
 
   if (!length(getLayerControlEntriesFromMap(map))) {
     bgm <- map.types
@@ -508,13 +508,22 @@ mapViewLayersControl <- function(map, map.types, names) {
     bgm <- map$x$calls[[getLayerControlEntriesFromMap(map)[1]]]$args[[1]]
   }
 
-  m <- leaflet::addLayersControl(map = map,
-                                 position = mapviewGetOption(
-                                   "layers.control.pos"),
-                                 baseGroups = bgm,
-                                 overlayGroups = c(
-                                   getLayerNamesFromMap(map),
-                                   names))
+  if (hasCRS) {
+    m <- leaflet::addLayersControl(map = map,
+                                   position = mapviewGetOption(
+                                     "layers.control.pos"),
+                                   baseGroups = bgm,
+                                   overlayGroups = c(
+                                     getLayerNamesFromMap(map),
+                                     names))
+  } else {
+    m <- leaflet::addLayersControl(map = map,
+                                   position = mapviewGetOption(
+                                     "layers.control.pos"),
+                                   overlayGroups = c(
+                                     getLayerNamesFromMap(map),
+                                     names))
+  }
   return(m)
 
 }

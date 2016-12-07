@@ -31,34 +31,38 @@ mapviewColors <- function(x,
     return(col2Hex(colors))
   }
 
-  if (typeof(x) == "S4" && is.null(zcol)) {
+  if (inherits(x, "Spatial") && is.null(zcol)) {
     if (is.function(colors)) colors <- stnd_col #colors(1)
     return(col2Hex(colors))
   }
 
-  if (typeof(x) == "S4" && !is.null(zcol)) x <- x@data[, zcol]
+  if (isSingleFeature(x)) {
+    colors <- stnd_col
+    return(col2Hex(colors))
+  }
+
+  if (!isSingleFeature(x) && is.null(zcol)) {
+    if (is.function(colors)) colors <- stnd_col #colors(1)
+    return(col2Hex(colors))
+  }
+
+  if (inherits(x, "Spatial") && !is.null(zcol)) x <- x@data[, zcol]
 
   if (is.character(x)) x <- factor(x)
   x <- as.numeric(x)
 
   if (length(unique(x)) == 1) {
-
     if (is.function(colors)) colors <- colors(1)
     return(col2Hex(colors[1]))
-
-  } else {
-
-    if (is.null(at)) at <- lattice::do.breaks(range(x, na.rm = TRUE),
-                                              length(unique(x)))
+  } else if (is.null(at)) {
+    at <- lattice::do.breaks(range(x, na.rm = TRUE),
+                             length(unique(x)))
     cols <- lattice::level.colors(x,
                                   at = at,
                                   col.regions = colors,
                                   ...)
-
     cols[is.na(cols)] <- na.color
-
     return(col2Hex(cols))
-
   }
 
   # attributes(f) <- list(colorType = "bin",

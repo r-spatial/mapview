@@ -23,7 +23,11 @@ getSimpleClass <- function(obj) {
 
 ### labels
 makeLabels <- function(col) {
-  as.character(col)
+  if (inherits(col, "POINT")) {
+    lab <- "1"
+  } else if (inherits(col, "MULTIPOINT")) {
+    lab <- as.character(seq(nrow(col)))
+  } else lab <- as.character(col)
 }
 
 
@@ -82,7 +86,7 @@ getFeatureIds <- function(att_data) {
 
 
 ### createExtent
-createExtent <- function(x, offset = 0.05) {
+createExtent <- function(x, offset = 0.005) {
 
   if (inherits(x, "Spatial")) {
     if (length(x) > 1) {
@@ -101,6 +105,20 @@ createExtent <- function(x, offset = 0.05) {
                           bb[4] + offset)
   }
 
+}
+
+
+isSingleFeature <- function(x) {
+  #stopifnot(inherits(x, "sfg"))
+  if (inherits(x, "POINT") |
+      inherits(x, "LINESTRING") |
+      inherits(x, "POLYGON")) {
+    TRUE
+  } else if (inherits(x, "MULTIPOINT") |
+             inherits(x, "MULTILINESTRING") |
+             inherits(x, "MULTIPOLYGON")) {
+    FALSE
+  } else FALSE
 }
 
 ### burst

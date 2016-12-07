@@ -106,13 +106,15 @@
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), label, homebutton = TRUE, ...)
 
-\S4method{mapView}{XY}(x, map = NULL, zcol = NULL,
+\S4method{mapView}{XY}(x, map = NULL,
   color = mapviewGetOption("vector.palette"),
   na.color = mapviewGetOption("na.color"), cex = 8, lwd = 4,
   alpha = 0.9, alpha.regions = 0.4,
   map.types = mapviewGetOption("basemaps"),
-  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), label, homebutton = TRUE, ...)
+  verbose = mapviewGetOption("verbose"), popup = NULL,
+  layer.name = deparse(substitute(x, env = parent.frame())), label = NULL,
+  legend = mapviewGetOption("legend"), legend.opacity = 1,
+  homebutton = TRUE, ...)
 
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
   easter.egg = FALSE)
