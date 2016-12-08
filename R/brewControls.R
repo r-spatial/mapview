@@ -2,26 +2,29 @@
 
 brewPopupTable <- function(x, use_cpp = TRUE) {
 
+  if (inherits(x, "Spatial")) x <- x@data
+  if (inherits(x, "sf")) x <- sf2DataFrame(x)
+
   if (!use_cpp) {
 
     # data.frame with 1 column
-    if (ncol(x@data) == 1) {
-      df <- data.frame(as.character(x@data[, 1]))
+    if (ncol(x) == 1) {
+      df <- data.frame(as.character(x[, 1]))
     # data.frame with multiple columns
     } else {
-      df <- data.frame(df2String(x@data), stringsAsFactors = FALSE)
+      df <- data.frame(df2String(x), stringsAsFactors = FALSE)
     }
 
-    names(df) <- names(x@data)
+    names(df) <- names(x)
 
     if (nrow(x) == 1) df <- t(df)
 
-    df$x <- as.character(round(sp::coordinates(x)[, 1], 2))
-    df$y <- as.character(round(sp::coordinates(x)[, 2], 2))
+    # df$x <- as.character(round(sp::coordinates(x)[, 1], 2))
+    # df$y <- as.character(round(sp::coordinates(x)[, 2], 2))
 
     cols <- colnames(df)
 
-    vals <- sapply(seq(nrow(x@data)), function(i) {
+    vals <- sapply(seq(nrow(x)), function(i) {
       df[i, ]
     })
 
@@ -65,39 +68,39 @@ brewPopupTable <- function(x, use_cpp = TRUE) {
     #     }
 
       # data.frame with 1 column
-      if (ncol(x@data) == 1) {
-        mat <- matrix(as.character(x@data[, 1]))
+      if (ncol(x) == 1) {
+        mat <- matrix(as.character(x[, 1]))
         # data.frame with multiple columns
       } else {
 
         # check for 'POSIXlt' columns and, if required, convert them to 'character'
-        ids <- sapply(x@data, function(x) inherits(x, "POSIXlt"))
+        ids <- sapply(x, function(x) inherits(x, "POSIXlt"))
 
         if (any(ids)) {
-          x@data[, ids] <- as.POSIXct(x@data[, ids])
+          x[, ids] <- as.POSIXct(x[, ids])
         }
 
-        mat <- df2String(x@data)
+        mat <- df2String(x)
       }
 
-      colnames(mat) <- names(x@data)
+      colnames(mat) <- names(x)
       # if (nrow(x) == 1) mat <- t(mat)
     }
 
-    if (!class(x)[1] %in% c("SpatialLines",
-                            "SpatialLinesDataFrame",
-                            "SpatialPolygons",
-                            "SpatialPolygonsDataFrame")) {
-      mat <- cbind(Longitude = as.character(round(sp::coordinates(x)[, 1], 2)),
-                   Latitude = as.character(round(sp::coordinates(x)[, 2], 2)),
-                   mat)
-    }
+    # if (!class(x)[1] %in% c("SpatialLines",
+    #                         "SpatialLinesDataFrame",
+    #                         "SpatialPolygons",
+    #                         "SpatialPolygonsDataFrame")) {
+    #   mat <- cbind(Longitude = as.character(round(sp::coordinates(x)[, 1], 2)),
+    #                Latitude = as.character(round(sp::coordinates(x)[, 2], 2)),
+    #                mat)
+    # }
 
     ## add 'feature id' in case of spydf, slndf
-    if (length(grep("DataFrame", class(x))) > 0) {
-      fid <- rownames(x@data)
+    #if (length(grep("DataFrame", class(x))) > 0) {
+      fid <- rownames(x)
       mat <- cbind("Feature ID" = fid, mat)
-    }
+    #}
 
     ## create list with row-specific html code
     cols <- colnames(mat)

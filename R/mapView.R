@@ -803,9 +803,9 @@ setMethod('mapView', signature(x = 'XY'),
                                   legend.opacity = legend.opacity,
                                   homebutton = homebutton,
                                   ...)
-              } else if (inherits(x, "LINESTRING")) {
+              } else if (inherits(x, "LINESTRING") | inherits(x, "MULTILINESTRING")) {
                 NULL
-              } else if (inherits(x, "POLYGON")) {
+              } else if (inherits(x, "POLYGON") | inherits(x, "MULTIPOLYGON")) {
                 NULL
               }
             } else {

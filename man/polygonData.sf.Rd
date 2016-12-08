@@ -2,6 +2,7 @@
 % Please edit documentation in R/sfControls.R
 \name{polygonData.sf}
 \alias{"pointData.POINT"}
+\alias{"pointData.sfc_POINT"}
 \alias{"polygonData.LINESTRING"}
 \alias{"polygonData.MULTILINESTRING"}
 \alias{"polygonData.MULTIPOLYGON"}
@@ -9,6 +10,7 @@
 \alias{pointData.MULTIPOINT}
 \alias{pointData.POINT}
 \alias{pointData.sf}
+\alias{pointData.sfc_POINT}
 \alias{polygonData.LINESTRING}
 \alias{polygonData.MULTILINESTRING}
 \alias{polygonData.MULTIPOLYGON}
@@ -23,6 +25,8 @@
 \method{pointData}{MULTIPOINT}(obj)
 
 \method{pointData}{POINT}(obj)
+
+\method{pointData}{sfc_POINT}(obj)
 
 \method{polygonData}{POLYGON}(obj)
 
@@ -40,6 +44,8 @@ These functions provide methods for simple features.
 }
 \section{Methods (by generic)}{
 \itemize{
+\item \code{pointData}: method for point data
+
 \item \code{pointData}: method for point data
 
 \item \code{pointData}: method for point data

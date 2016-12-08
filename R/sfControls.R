@@ -89,8 +89,7 @@
     data.frame(lng = lng, lat = lat)
   }
 
-## This is NOT RIGHT yet MDS
-##
+
 #' @export pointData.POINT
 #' @describeIn polygonData.sf method for point data
 #' @method pointData POINT
@@ -99,6 +98,19 @@
     data.frame(lng = obj[[1]], lat = obj[[2]])
   }
 
+
+#' @export pointData.sfc_POINT
+#' @describeIn polygonData.sf method for point data
+#' @method pointData sfc_POINT
+#' @aliases "pointData.sfc_POINT"
+"pointData.sfc_POINT" <- function(obj) {
+  tmp <- do.call("rbind", lapply(st_geometry(obj), function(i) {
+    lng = i[[1]]
+    lat = i[[2]]
+    data.frame(lng = lng, lat = lat)
+  }))
+  return(tmp)
+}
 
 
 #### polygons
@@ -196,3 +208,8 @@ nestLines <- function(obj) {
 }
 
 
+sf2DataFrame <- function(x) {
+  stopifnot(inherits(x, "sf"))
+  geompos <- which(names(x) == "geometry")
+  return(x[, -geompos])
+}
