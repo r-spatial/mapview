@@ -1,4 +1,4 @@
-mapview 1.2.14
+mapview 1.2.15
 --------------------------------------------------------------------------------
 
 new features:
@@ -11,7 +11,7 @@ new features:
   * new popupTable layout (making more use of the space available).
   * added new function addLargeFeatures to render large datasets of up to ~100k features which is used automatically in mapview of data larger than max* thresholds in mapviewOptions.
   * first definition of simple features methods for leaflet. With mapview loaded you should be able to use leaflet add* functions with 'data = *_sf(c)'.
-  * mapview methods for sf: POINT, MULTIPOINT
+  * methods for sf: POINT, MULTIPOINT, sfc_POINT
 
 mapview 1.2.0
 --------------------------------------------------------------------------------
