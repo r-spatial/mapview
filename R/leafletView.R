@@ -1,7 +1,16 @@
 #### functions for leaflet based rendering by spatial class
 
-lab_avl <- "label" %in% names(as.list(args(leaflet::addCircleMarkers)))
-scl_avl <- "addScaleBar" %in% ls(getNamespace("leaflet"))
+isAvailableInLeaflet <- function() {
+  return(
+    list(
+      lab = "label" %in% names(as.list(args(leaflet::addCircleMarkers))),
+      scl = "addScaleBar" %in% ls(getNamespace("leaflet"))
+    )
+  )
+}
+
+# lab_avl <- isAvailableInLeaflet()$lab
+# scl_avl <- isAvailableInLeaflet()$scl
 
 warn <- paste("Feature labels on mouseover and 'addScaleBar' are not supported in the installed version of 'leaflet'.",
               "\nRun devtools::install_github('rstudio/leaflet') and re-install 'mapview' locally to enable these features.")
@@ -118,7 +127,7 @@ leafletRL <- function(x,
                             map.types = map.types,
                             names = grp)
 
-  if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+  if (isAvailableInLeaflet()$scl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
 
   if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
@@ -290,7 +299,7 @@ leafletPointsDF <- function(x,
                             homebutton,
                             ...) {
 
-  if(!lab_avl && verbose) warning(warn)
+  if(!isAvailableInLeaflet()$lab && verbose) warning(warn)
 
   pkgs <- c("leaflet", "sp", "magrittr")
   tst <- sapply(pkgs, "requireNamespace",
@@ -373,7 +382,7 @@ leafletPointsDF <- function(x,
 
     if (nrow(x) < mapviewGetOption("maxpoints")) {
 
-      if(lab_avl) {
+      if(isAvailableInLeaflet()$lab) {
         m <- leaflet::addCircleMarkers(map = m,
                                        lng = coordinates(x)[, 1],
                                        lat = coordinates(x)[, 2],
@@ -417,7 +426,7 @@ leafletPointsDF <- function(x,
                               map.types = map.types,
                               names = grp)
 
-    if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+    if (isAvailableInLeaflet()$scl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
 
     if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
@@ -448,7 +457,7 @@ leafletPoints <- function(x,
                           homebutton,
                           ...) {
 
-  if(!lab_avl && verbose) warning(warn)
+  if(!isAvailableInLeaflet()$lab && verbose) warning(warn)
 
   pkgs <- c("leaflet", "sp", "magrittr")
   tst <- sapply(pkgs, "requireNamespace",
@@ -471,7 +480,7 @@ leafletPoints <- function(x,
 
   if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
 
-    if(lab_avl) {
+    if(isAvailableInLeaflet()$lab) {
       m <- leaflet::addCircleMarkers(m,
                                      lng = coordinates(x)[, 1],
                                      lat = coordinates(x)[, 2],
@@ -513,7 +522,7 @@ leafletPoints <- function(x,
                             map.types = map.types,
                             names = grp)
 
-  if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+  if (isAvailableInLeaflet()$scl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
 
   if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
@@ -550,7 +559,7 @@ leafletPolygonsDF <- function(x,
                               homebutton,
                               ...) {
 
-  if(!lab_avl && verbose) warning(warn)
+  if(!isAvailableInLeaflet()$lab && verbose) warning(warn)
 
   pkgs <- c("leaflet", "sp", "magrittr")
   tst <- sapply(pkgs, "requireNamespace",
@@ -625,7 +634,7 @@ leafletPolygonsDF <- function(x,
 
     color <- mapviewColors(x, colors = color, at = at, na.color = na.color)
 
-    if (lab_avl) {
+    if (isAvailableInLeaflet()$lab) {
       if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
       m <- leaflet::addPolygons(m,
                                 weight = lwd,
@@ -670,7 +679,7 @@ leafletPolygonsDF <- function(x,
                               map.types = map.types,
                               names = grp)
 
-    if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+    if (isAvailableInLeaflet()$scl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
 
     if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
@@ -701,7 +710,7 @@ leafletPolygons <- function(x,
                             homebutton,
                             ...) {
 
-  if(!lab_avl && verbose) warning(warn)
+  if(!isAvailableInLeaflet()$lab && verbose) warning(warn)
 
   pkgs <- c("leaflet", "sp", "magrittr")
   tst <- sapply(pkgs, "requireNamespace",
@@ -716,7 +725,7 @@ leafletPolygons <- function(x,
 
   color <- mapviewColors(x, colors = color)
 
-  if (lab_avl) {
+  if (isAvailableInLeaflet()$lab) {
     if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
       m <- leaflet::addPolygons(m,
                                 weight = lwd,
@@ -759,7 +768,7 @@ leafletPolygons <- function(x,
                             map.types = map.types,
                             names = grp)
 
-  if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+  if (isAvailableInLeaflet()$scl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
 
   if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
@@ -796,7 +805,7 @@ leafletLinesDF <- function(x,
                            homebutton,
                            ...) {
 
-  if(!lab_avl && verbose) warning(warn)
+  if(!isAvailableInLeaflet()$lab && verbose) warning(warn)
 
   pkgs <- c("leaflet", "sp", "magrittr")
   tst <- sapply(pkgs, "requireNamespace",
@@ -884,7 +893,7 @@ leafletLinesDF <- function(x,
         # continuous line
         segments <- length(x[i, ]@lines[[1]]@Lines)
 
-        if (lab_avl) {
+        if (isAvailableInLeaflet()$lab) {
           if (segments == 1) {
             m <- leaflet::addPolylines(m,
                                        group = grp,
@@ -1000,7 +1009,7 @@ leafletLinesDF <- function(x,
                               map.types = map.types,
                               names = grp)
 
-    if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+    if (isAvailableInLeaflet()$scl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
 
     if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
@@ -1029,7 +1038,7 @@ leafletLines <- function(x,
                          homebutton,
                          ...) {
 
-  if(!lab_avl && verbose) warning(warn)
+  if(!isAvailableInLeaflet()$lab && verbose) warning(warn)
 
   pkgs <- c("leaflet", "sp", "magrittr")
   tst <- sapply(pkgs, "requireNamespace",
@@ -1048,7 +1057,7 @@ leafletLines <- function(x,
 
   ### test -----
   if (length(x@lines) < mapviewGetOption("maxlines")) {
-    if(lab_avl) {
+    if(isAvailableInLeaflet()$lab) {
       for (i in 1:length(x)) {
 
         # continuous line
@@ -1134,7 +1143,7 @@ leafletLines <- function(x,
                             map.types = map.types,
                             names = grp)
 
-  if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+  if (isAvailableInLeaflet()$scl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
 
   if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
@@ -1171,7 +1180,7 @@ leafletMULTIPOINT <- function(x,
                               homebutton,
                               ...) {
 
-  if(!lab_avl && verbose) warning(warn)
+  if(!isAvailableInLeaflet()$lab && verbose) warning(warn)
 
   m <- initMap(map, map.types, sf::st_crs(x)$proj4string)
 
@@ -1185,7 +1194,7 @@ leafletMULTIPOINT <- function(x,
   color <- mapviewColors(x, colors = color)
 
 
-  if(lab_avl) {
+  if(isAvailableInLeaflet()$lab) {
     m <- leaflet::addCircleMarkers(m,
                                    data = x,
                                    radius = cex,
@@ -1213,7 +1222,7 @@ leafletMULTIPOINT <- function(x,
 
   if(!is.na(sf::st_crs(x)$proj4string)) {
     crs <- TRUE
-    if (scl_avl)
+    if (isAvailableInLeaflet()$scl)
       m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
   } else {
@@ -1475,7 +1484,7 @@ leafletMissing <- function(map.types,
                                    position = "topleft",
                                    overlayGroups = "envinMR")
     m <- leaflet::setView(map = m, 8.771676, 50.814891, zoom = 4)
-    if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+    if (isAvailableInLeaflet()$scl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m) %>% addHomeButton(extent(envinMR),
                                                   "mapview home")
     out <- new('mapview', object = list(NULL), map = m)
@@ -1486,7 +1495,7 @@ leafletMissing <- function(map.types,
                                    baseGroups = map.types,
                                    position = mapviewGetOption(
                                      "layers.control.pos"))
-    if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+    if (isAvailableInLeaflet()$scl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
     m <- addMouseCoordinates(m)
     out <- new('mapview', object = list(NULL), map = m)
   }
