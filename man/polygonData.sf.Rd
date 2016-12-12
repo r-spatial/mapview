@@ -22,6 +22,8 @@
 
 \method{pointData}{sf}(obj)
 
+\method{pointData}{sfc_POINT}(obj)
+
 \method{pointData}{MULTIPOINT}(obj)
 
 \method{pointData}{POINT}(obj)
@@ -44,6 +46,8 @@ These functions provide methods for simple features.
 }
 \section{Methods (by generic)}{
 \itemize{
+\item \code{pointData}: method for point data
+
 \item \code{pointData}: method for point data
 
 \item \code{pointData}: method for point data

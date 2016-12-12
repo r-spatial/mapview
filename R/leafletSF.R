@@ -1,5 +1,37 @@
 #### SIMPLE FEATURES ######################################################
 ###########################################################################
+
+### sf ####################################################################
+leafletSF <- function(x,
+                      map,
+                      cex,
+                      lwd,
+                      alpha,
+                      alpha.regions,
+                      color,
+                      na.color,
+                      map.types,
+                      verbose,
+                      popup,
+                      layer.name,
+                      label,
+                      legend,
+                      legend.opacity,
+                      homebutton,
+                      ...) {
+
+
+  m <- initMap(map, map.types, sf::st_crs(x))
+
+
+}
+
+
+
+
+
+
+
 ### MULTIPOINT ############################################################
 
 leafletMULTIPOINT <- function(x,

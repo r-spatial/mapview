@@ -71,13 +71,29 @@
 # }
 
 "pointData.sf" <- function(obj) {
-  tmp <- do.call("rbind", lapply(st_geometry(obj), function(i) {
+  tmp <- do.call("rbind", lapply(sf::st_geometry(obj), function(i) {
     lng = i[[1]]
     lat = i[[2]]
     data.frame(lng = lng, lat = lat)
   }))
   return(tmp)
 }
+
+
+#' @export pointData.sfc_POINT
+#' @describeIn polygonData.sf method for point data
+#' @method pointData sfc_POINT
+#' @aliases pointData.sfc_POINT
+"pointData.sfc_POINT" <- function(obj) {
+  tmp <- do.call("rbind", lapply(obj, function(i) {
+    lng = i[[1]]
+    lat = i[[2]]
+    data.frame(lng = lng, lat = lat)
+  }))
+  return(tmp)
+}
+
+
 
 #' @export pointData.MULTIPOINT
 #' @describeIn polygonData.sf method for point data
