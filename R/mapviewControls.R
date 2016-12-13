@@ -62,17 +62,17 @@ mapviewHighlightOptions <- function(stroke = TRUE,
 }
 
 ### decorateMap
-decorateMap <- function(map, ext, layer.name, ...) {
-
-  m <- garnishMap(map,
-                  addMouseCoordinates,
-                  addScaleBar,
-                    position = "bottomleft",
-                  addHomeButton,
-                    ext = ext,
-                    layer.name = layer.name)
-
-}
+# decorateMap <- function(map, ext, layer.name, ...) {
+#
+#   m <- garnishMap(map,
+#                   addMouseCoordinates,
+#                   addScaleBar,
+#                     position = "bottomleft",
+#                   addHomeButton,
+#                     ext = ext,
+#                     layer.name = layer.name)
+#
+# }
 
 
 ### getFeatureIds
@@ -97,13 +97,15 @@ createExtent <- function(x, offset = 0.005) {
                             raster::ymin(x) - offset,
                             raster::ymax(x) + offset)
     }
-  } else if (inherits(x, "sfg")) {
+  } else if (inherits(x, "sfc")) {
     bb <- sf::st_bbox(x)
     ext <- raster::extent(bb[1] - offset,
                           bb[3] + offset,
                           bb[2] - offset,
                           bb[4] + offset)
   }
+
+  return(ext)
 
 }
 

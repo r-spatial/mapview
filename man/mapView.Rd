@@ -14,9 +14,9 @@
 \alias{mapView,SpatialPointsDataFrame-method}
 \alias{mapView,SpatialPolygons-method}
 \alias{mapView,SpatialPolygonsDataFrame-method}
-\alias{mapView,XY-method}
 \alias{mapView,list-method}
 \alias{mapView,missing-method}
+\alias{mapView,sfc_POINT-method}
 \alias{mapview}
 \alias{mapview,ANY-method}
 \title{View spatial objects interactively}
@@ -106,8 +106,8 @@
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), label, homebutton = TRUE, ...)
 
-\S4method{mapView}{XY}(x, map = NULL,
-  color = mapviewGetOption("vector.palette"),
+\S4method{mapView}{sfc_POINT}(x, map = NULL,
+  color = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 8, lwd = 4,
   alpha = 0.9, alpha.regions = 0.4,
   map.types = mapviewGetOption("basemaps"),
@@ -234,7 +234,7 @@ See \url{http://www.chrome-allow-file-access-from-file.com/} for further details
 
 \item \code{SpatialLines}: \code{\link{SpatialLines}}
 
-\item \code{XY}: \code{\link{st}}
+\item \code{sfc_POINT}: \code{\link{st}}
 
 \item \code{missing}: initiate a map without an object
 

@@ -66,3 +66,13 @@ garnishMap <- function(map, ...) {
   }
   return(map)
 }
+
+### decorateMap lets you pass lists of functions with respective lists of
+### named lists of arguments as in
+### decorateMap(map, list(addCircleMarkers), list(list(data = breweries91)))
+decorateMap <- function(map, funs, args) {
+  for (i in seq(funs)) {
+    map <- do.call("garnishMap", c(list(map), funs[[i]], args[[i]]))
+  }
+  return(map)
+}

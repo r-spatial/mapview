@@ -764,10 +764,11 @@ setMethod('mapView', signature(x = 'SpatialLines'),
 ## XY ==================================================================
 #' @describeIn mapView \code{\link{st}}
 
-setMethod('mapView', signature(x = 'XY'),
+setMethod('mapView', signature(x = 'sfc_POINT'),
           function(x,
                    map = NULL,
                    color = mapviewGetOption("vector.palette"),
+                   at = NULL,
                    na.color = mapviewGetOption("na.color"),
                    cex = 8,
                    lwd = 4,
@@ -785,35 +786,33 @@ setMethod('mapView', signature(x = 'XY'),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
-              if (inherits(x, "POINT") | inherits(x, "MULTIPOINT")) {
-                leafletMULTIPOINT(x,
-                                  map = map,
-                                  color = color,
-                                  na.color = na.color,
-                                  cex = cex,
-                                  lwd = lwd,
-                                  alpha = alpha,
-                                  alpha.regions = alpha.regions,
-                                  map.types = map.types,
-                                  verbose = verbose,
-                                  popup = popup,
-                                  layer.name = layer.name,
-                                  label = label,
-                                  legend = legend,
-                                  legend.opacity = legend.opacity,
-                                  homebutton = homebutton,
-                                  ...)
-              } else if (inherits(x, "LINESTRING") | inherits(x, "MULTILINESTRING")) {
-                NULL
-              } else if (inherits(x, "POLYGON") | inherits(x, "MULTIPOLYGON")) {
-                NULL
-              }
+              #if (inherits(x, "POINT") | inherits(x, "MULTIPOINT")) {
+                leaflet_sfc(x,
+                            map = map,
+                            color = color,
+                            na.color = na.color,
+                            cex = cex,
+                            lwd = lwd,
+                            alpha = alpha,
+                            alpha.regions = alpha.regions,
+                            map.types = map.types,
+                            verbose = verbose,
+                            popup = popup,
+                            layer.name = layer.name,
+                            label = label,
+                            legend = legend,
+                            legend.opacity = legend.opacity,
+                            homebutton = homebutton,
+                            ...)
+              # } else if (inherits(x, "LINESTRING") | inherits(x, "MULTILINESTRING")) {
+              #   NULL
+              # } else if (inherits(x, "POLYGON") | inherits(x, "MULTIPOLYGON")) {
+              #   NULL
+              # }
+            } else if (mapviewGetOption("platform") == "quickmapr") {
+              quickmapr::qmap(x, ...)
             } else {
-              if (mapviewGetOption("platform") == "quickmapr") {
-                quickmapr::qmap(x, ...)
-              } else {
-                NULL
-              }
+              NULL
             }
           }
 )

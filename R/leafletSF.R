@@ -1,9 +1,65 @@
 #### SIMPLE FEATURES ######################################################
 ###########################################################################
 
+### sfc ###################################################################
+leaflet_sfc <- function(x,
+                        map,
+                        cex,
+                        lwd,
+                        alpha,
+                        alpha.regions,
+                        color,
+                        na.color,
+                        map.types,
+                        verbose,
+                        popup,
+                        layer.name,
+                        label,
+                        legend,
+                        legend.opacity,
+                        homebutton,
+                        ...) {
+
+  m <- initMap(map, map.types, sf::st_crs(x))
+
+  color <- vectorColors(x = x,
+                        colors = color,
+                        at = at,
+                        na.color = na.color)
+
+  m <- addFeatures(m,
+                   x,
+                   radius = cex,
+                   weight = lwd,
+                   opacity = alpha,
+                   fillOpacity = alpha.regions,
+                   color = color,
+                   popup = popup,
+                   label = label,
+                   group = layer.name,
+                   ...)
+
+  m <- decorateMap(map = m,
+                   funs = list(leaflet::addScaleBar,
+                               addHomeButton,
+                               mapViewLayersControl),
+                   args = list(list(position = "bottomleft"),
+                               list(ext = createExtent(x),
+                                    layer.name = layer.name),
+                               list(map.types = map.types,
+                                    names = layer.name,
+                                    hasCRS = TRUE)))
+
+  out <- new("mapview", object = list(x), map = m)
+
+  return(out)
+
+}
+
 ### sf ####################################################################
 leafletSF <- function(x,
                       map,
+                      zcol,
                       cex,
                       lwd,
                       alpha,
@@ -22,7 +78,6 @@ leafletSF <- function(x,
 
 
   m <- initMap(map, map.types, sf::st_crs(x))
-
 
 }
 

@@ -111,3 +111,53 @@ col2Hex <- function(col, alpha = FALSE) {
 
 }
 
+
+## vector colors
+vectorColors <- function(x, # a sp or sf object
+                         zcol = NULL,
+                         colors = mapviewGetOption("vector.palette"),
+                         at = NULL,
+                         na.color = mapviewGetOption("na.color"),
+                         ...) {
+
+  stnd_col <- "#6666ff"
+
+  if (!is.null(zcol)) {
+    col <- zcolColors(x[[zcol]],
+                      colors,
+                      at,
+                      na.color,
+                      ...)
+  } else if (is.null(zcol) & is.function(colors)) {
+    col <- stnd_col
+  } else col <- colors
+
+  return(col2Hex(col))
+
+}
+
+### if zcol is set, we use this function to produce colors according to
+### levels of zcol or as provided by at
+zcolColors <- function(x, # a vector, not a sp or sf object
+                       colors = mapviewGetOption("vector.palette"),
+                       at = NULL,
+                       na.color = mapviewGetOption("na.color"),
+                       ...) {
+
+  if (is.character(x)) x <- as.factor(x)
+  x <- as.numeric(x)
+
+  if (is.null(at)) {
+    at <- lattice::do.breaks(range(x, na.rm = TRUE),
+                             length(unique(x)))
+  }
+
+  cols <- lattice::level.colors(x,
+                                at = at,
+                                col.regions = colors,
+                                ...)
+  cols[is.na(cols)] <- na.color
+  return(col2Hex(cols))
+
+}
+
