@@ -227,5 +227,5 @@ nestLines <- function(obj) {
 sf2DataFrame <- function(x) {
   stopifnot(inherits(x, "sf"))
   geompos <- which(names(x) == "geometry")
-  return(x[, -geompos])
+  return(data.frame(x)[, -geompos])
 }
