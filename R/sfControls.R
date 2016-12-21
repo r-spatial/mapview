@@ -79,20 +79,14 @@
   return(tmp)
 }
 
-
-#' @export pointData.sfc_POINT
+### POINT =================================================================
+#' @export pointData.POINT
 #' @describeIn polygonData.sf method for point data
-#' @method pointData sfc_POINT
-#' @aliases pointData.sfc_POINT
-"pointData.sfc_POINT" <- function(obj) {
-  tmp <- do.call("rbind", lapply(obj, function(i) {
-    lng = i[[1]]
-    lat = i[[2]]
-    data.frame(lng = lng, lat = lat)
-  }))
-  return(tmp)
+#' @method pointData POINT
+#' @aliases "pointData.POINT"
+"pointData.POINT" <- function(obj) {
+  data.frame(lng = obj[[1]], lat = obj[[2]])
 }
-
 
 
 #' @export pointData.MULTIPOINT
@@ -106,21 +100,12 @@
   }
 
 
-#' @export pointData.POINT
-#' @describeIn polygonData.sf method for point data
-#' @method pointData POINT
-#' @aliases "pointData.POINT"
-"pointData.POINT" <- function(obj) {
-    data.frame(lng = obj[[1]], lat = obj[[2]])
-  }
-
-
 #' @export pointData.sfc_POINT
 #' @describeIn polygonData.sf method for point data
 #' @method pointData sfc_POINT
 #' @aliases "pointData.sfc_POINT"
 "pointData.sfc_POINT" <- function(obj) {
-  tmp <- do.call("rbind", lapply(st_geometry(obj), function(i) {
+  tmp <- do.call("rbind", lapply(obj, function(i) {
     lng = i[[1]]
     lat = i[[2]]
     data.frame(lng = lng, lat = lat)
@@ -129,6 +114,21 @@
 }
 
 
+#' @export pointData.sfc_MULTIPOINT
+#' @describeIn polygonData.sf method for multipoint data
+#' @method pointData sfc_MULTIPOINT
+#' @aliases "pointData.sfc_MULTIPOINT"
+"pointData.sfc_MULTIPOINT" <- function(obj) {
+  tmp <- do.call("rbind", lapply(obj, function(i) {
+    lng <- i[, 1]
+    lat <- i[, 2]
+  data.frame(lng = lng, lat = lat)
+  }))
+  return(tmp)
+}
+
+
+### POLYGON ===============================================================
 #### polygons
 nestPolygons <- function(obj) {
   tmp <- lapply(obj, function(i) {
@@ -178,7 +178,48 @@ nestPolygons <- function(obj) {
 }
 
 
+#' @export polygonData.sfc_POLYGON
+#' @describeIn polygonData.sf method for polygon data
+#' @method polygonData sfc_POLYGON
+#' @aliases "polygonData.sfc_POLYGON"
+"polygonData.sfc_POLYGON" <- function(obj) {
+  tmp <- sapply(obj, function(i) {
+    nestPolygons(i)
+  })
 
+  bb <- st_bbox(obj)
+  bbx <- matrix(bb, ncol = 2, byrow = FALSE)
+  attr(bbx, "dimnames") <- list(c("x", "y"),
+                                c("min", "max"))
+  attributes(tmp) <- list(bbox = bbx)
+
+  return(tmp)
+}
+
+
+#' @export polygonData.sfc_MULTIPOLYGON
+#' @describeIn polygonData.sf method for multipolygon data
+#' @method polygonData sfc_MULTIPOLYGON
+#' @aliases "polygonData.sfc_MULTIPOLYGON"
+"polygonData.sfc_MULTIPOLYGON" <- function(obj) {
+  tmp <- lapply(obj, function(i) {
+    lapply(i, function(j) {
+      lng <- j[[1]][, 1]
+      lat <- j[[1]][, 2]
+      list(lng = lng, lat = lat)
+    })
+  })
+
+  bb <- st_bbox(obj)
+  bbx <- matrix(bb, ncol = 2, byrow = FALSE)
+  attr(bbx, "dimnames") <- list(c("x", "y"),
+                                c("min", "max"))
+  attributes(tmp) <- list(bbox = bbx)
+
+  return(tmp)
+}
+
+### LINE ==================================================================
 ### lines
 nestLines <- function(obj) {
   lng <- obj[, 1]
@@ -224,6 +265,7 @@ nestLines <- function(obj) {
 }
 
 
+### MISC ==================================================================
 sf2DataFrame <- function(x) {
   stopifnot(inherits(x, "sf"))
   geompos <- which(names(x) == "geometry")

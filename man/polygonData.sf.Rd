@@ -2,37 +2,47 @@
 % Please edit documentation in R/sfControls.R
 \name{polygonData.sf}
 \alias{"pointData.POINT"}
+\alias{"pointData.sfc_MULTIPOINT"}
 \alias{"pointData.sfc_POINT"}
 \alias{"polygonData.LINESTRING"}
 \alias{"polygonData.MULTILINESTRING"}
 \alias{"polygonData.MULTIPOLYGON"}
 \alias{"polygonData.POLYGON"}
+\alias{"polygonData.sfc_MULTIPOLYGON"}
+\alias{"polygonData.sfc_POLYGON"}
 \alias{pointData.MULTIPOINT}
 \alias{pointData.POINT}
 \alias{pointData.sf}
+\alias{pointData.sfc_MULTIPOINT}
 \alias{pointData.sfc_POINT}
 \alias{polygonData.LINESTRING}
 \alias{polygonData.MULTILINESTRING}
 \alias{polygonData.MULTIPOLYGON}
 \alias{polygonData.POLYGON}
 \alias{polygonData.sf}
+\alias{polygonData.sfc_MULTIPOLYGON}
+\alias{polygonData.sfc_POLYGON}
 \title{Methods for simple features}
 \usage{
 \method{polygonData}{sf}(obj)
 
 \method{pointData}{sf}(obj)
 
-\method{pointData}{sfc_POINT}(obj)
+\method{pointData}{POINT}(obj)
 
 \method{pointData}{MULTIPOINT}(obj)
 
-\method{pointData}{POINT}(obj)
-
 \method{pointData}{sfc_POINT}(obj)
+
+\method{pointData}{sfc_MULTIPOINT}(obj)
 
 \method{polygonData}{POLYGON}(obj)
 
 \method{polygonData}{MULTIPOLYGON}(obj)
+
+\method{polygonData}{sfc_POLYGON}(obj)
+
+\method{polygonData}{sfc_MULTIPOLYGON}(obj)
 
 \method{polygonData}{LINESTRING}(obj)
 
@@ -54,11 +64,15 @@ These functions provide methods for simple features.
 
 \item \code{pointData}: method for point data
 
-\item \code{pointData}: method for point data
+\item \code{pointData}: method for multipoint data
 
 \item \code{polygonData}: method for polygon data
 
 \item \code{polygonData}: method for polygon data
+
+\item \code{polygonData}: method for polygon data
+
+\item \code{polygonData}: method for multipolygon data
 
 \item \code{polygonData}: method for line data
 
