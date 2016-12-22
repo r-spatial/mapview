@@ -16,6 +16,8 @@
 \alias{mapView,SpatialPolygonsDataFrame-method}
 \alias{mapView,list-method}
 \alias{mapView,missing-method}
+\alias{mapView,sfc_LINESTRING-method}
+\alias{mapView,sfc_MULTIPOLYGON-method}
 \alias{mapView,sfc_POINT-method}
 \alias{mapview}
 \alias{mapview,ANY-method}
@@ -107,6 +109,26 @@
   env = parent.frame())), label, homebutton = TRUE, ...)
 
 \S4method{mapView}{sfc_POINT}(x, map = NULL,
+  color = mapviewGetOption("vector.palette"), at = NULL,
+  na.color = mapviewGetOption("na.color"), cex = 8, lwd = 4,
+  alpha = 0.9, alpha.regions = 0.4,
+  map.types = mapviewGetOption("basemaps"),
+  verbose = mapviewGetOption("verbose"), popup = NULL,
+  layer.name = deparse(substitute(x, env = parent.frame())), label = NULL,
+  legend = mapviewGetOption("legend"), legend.opacity = 1,
+  homebutton = TRUE, ...)
+
+\S4method{mapView}{sfc_LINESTRING}(x, map = NULL,
+  color = mapviewGetOption("vector.palette"), at = NULL,
+  na.color = mapviewGetOption("na.color"), cex = 8, lwd = 4,
+  alpha = 0.9, alpha.regions = 0.4,
+  map.types = mapviewGetOption("basemaps"),
+  verbose = mapviewGetOption("verbose"), popup = NULL,
+  layer.name = deparse(substitute(x, env = parent.frame())), label = NULL,
+  legend = mapviewGetOption("legend"), legend.opacity = 1,
+  homebutton = TRUE, ...)
+
+\S4method{mapView}{sfc_MULTIPOLYGON}(x, map = NULL,
   color = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 8, lwd = 4,
   alpha = 0.9, alpha.regions = 0.4,
@@ -235,6 +257,10 @@ See \url{http://www.chrome-allow-file-access-from-file.com/} for further details
 \item \code{SpatialLines}: \code{\link{SpatialLines}}
 
 \item \code{sfc_POINT}: \code{\link{st}}
+
+\item \code{sfc_LINESTRING}: \code{\link{st}}
+
+\item \code{sfc_MULTIPOLYGON}: \code{\link{st}}
 
 \item \code{missing}: initiate a map without an object
 

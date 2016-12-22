@@ -28,7 +28,7 @@ leaflet_sfc <- function(x,
                         na.color = na.color)
 
   m <- addFeatures(m,
-                   x,
+                   data = x,
                    radius = cex,
                    weight = lwd,
                    opacity = alpha,

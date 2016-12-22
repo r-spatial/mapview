@@ -265,6 +265,59 @@ nestLines <- function(obj) {
 }
 
 
+#' @export polygonData.sfc_LINESTRING
+#' @describeIn polygonData.sf method for line data
+#' @method polygonData sfc_LINESTRING
+#' @aliases "polygonData.sfc_LINESTRING"
+"polygonData.sfc_LINESTRING" <- function(obj) {
+  # tmp <- sapply(obj, function(i) {
+  #   nestLines(obj)
+  # })
+  tmp <- lapply(obj, function(i) {
+    #lapply(i, function(j) {
+    lng <- i[, 1]
+    lat <- i[, 2]
+    list(list(lng = lng, lat = lat))
+    #})
+  })
+
+  bb <- st_bbox(obj)
+  bbx <- matrix(bb, ncol = 2, byrow = FALSE)
+  attr(bbx, "dimnames") <- list(c("x", "y"),
+                                c("min", "max"))
+  attributes(tmp) <- list(bbox = bbx)
+
+  return(tmp)
+}
+
+
+#' @export polygonData.sfc_MULTILINESTRING
+#' @describeIn polygonData.sf method for line data
+#' @method polygonData sfc_MULTILINESTRING
+#' @aliases "polygonData.sfc_MULTILINESTRING"
+"polygonData.sfc_MULTILINESTRING" <- function(obj) {
+  # tmp <- sapply(obj, function(i) {
+  #   nestLines(obj)
+  # })
+  tmp <- lapply(obj, function(j) {
+    sapply(j, function(i) {
+      #lapply(i, function(j) {
+      lng <- i[, 1]
+      lat <- i[, 2]
+      list(list(lng = lng, lat = lat))
+      #})
+    })
+  })
+
+  bb <- st_bbox(obj)
+  bbx <- matrix(bb, ncol = 2, byrow = FALSE)
+  attr(bbx, "dimnames") <- list(c("x", "y"),
+                                c("min", "max"))
+  attributes(tmp) <- list(bbox = bbx)
+
+  return(tmp)
+}
+
 ### MISC ==================================================================
 sf2DataFrame <- function(x) {
   stopifnot(inherits(x, "sf"))

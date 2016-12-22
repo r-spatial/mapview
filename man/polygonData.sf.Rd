@@ -8,6 +8,8 @@
 \alias{"polygonData.MULTILINESTRING"}
 \alias{"polygonData.MULTIPOLYGON"}
 \alias{"polygonData.POLYGON"}
+\alias{"polygonData.sfc_LINESTRING"}
+\alias{"polygonData.sfc_MULTILINESTRING"}
 \alias{"polygonData.sfc_MULTIPOLYGON"}
 \alias{"polygonData.sfc_POLYGON"}
 \alias{pointData.MULTIPOINT}
@@ -20,6 +22,8 @@
 \alias{polygonData.MULTIPOLYGON}
 \alias{polygonData.POLYGON}
 \alias{polygonData.sf}
+\alias{polygonData.sfc_LINESTRING}
+\alias{polygonData.sfc_MULTILINESTRING}
 \alias{polygonData.sfc_MULTIPOLYGON}
 \alias{polygonData.sfc_POLYGON}
 \title{Methods for simple features}
@@ -47,6 +51,10 @@
 \method{polygonData}{LINESTRING}(obj)
 
 \method{polygonData}{MULTILINESTRING}(obj)
+
+\method{polygonData}{sfc_LINESTRING}(obj)
+
+\method{polygonData}{sfc_MULTILINESTRING}(obj)
 }
 \arguments{
 \item{obj}{a simple features object.}
@@ -73,6 +81,10 @@ These functions provide methods for simple features.
 \item \code{polygonData}: method for polygon data
 
 \item \code{polygonData}: method for multipolygon data
+
+\item \code{polygonData}: method for line data
+
+\item \code{polygonData}: method for line data
 
 \item \code{polygonData}: method for line data
 
