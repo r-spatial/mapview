@@ -55,11 +55,22 @@ mapshot <- function(x, url = NULL, file = NULL, remove_url = TRUE, ...) {
   if (!avl_url)
     url <- gsub("\\.png|\\.pdf|\\.jpeg|\\.jpg", ".html", file)
 
-  htmlwidgets::saveWidget(x, url)
+  args <- list(url = url, file = file, ...)
+  sw_ls <- args
+  sw_ls[names(sw_ls) == "file"] <- NULL
+  names(sw_ls)[which(names(sw_ls) == "url")] <- "file"
+  sw_args <- match.arg(names(sw_ls),
+                       names(as.list(args(htmlwidgets::saveWidget))),
+                       several.ok = TRUE)
+
+  do.call(htmlwidgets::saveWidget, append(list(x), sw_ls[sw_args]))
 
   ## save to file
   if (avl_file) {
-    webshot::webshot(url = url, file = file, ...)
+    ws_args <- match.arg(names(args),
+                         names(as.list(args(webshot::webshot))),
+                         several.ok = TRUE)
+    do.call(webshot::webshot, args[ws_args])
   }
 
   ## if url was missing, remove temporary .html file
