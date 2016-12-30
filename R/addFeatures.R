@@ -5,21 +5,21 @@
 addPointFeatures <- function(map,
                              data,
                              ...) {
-  garnishMap(map, "addCircleMarkers", data = data, ...)
+  garnishMap(map, leaflet::addCircleMarkers, data = data, ...)
 }
 
 ### Line Features =========================================================
 addLineFeatures <- function(map,
                             data,
                             ...) {
-  garnishMap(map, "addPolylines", data = data, ...)
+  garnishMap(map, leaflet::addPolylines, data = data, ...)
 }
 
 ### PolygonFeatures =======================================================
 addPolygonFeatures <- function(map,
                                data,
                                ...) {
-  garnishMap(map, "addPolygons", data = data, ...)
+  garnishMap(map, leaflet::addPolygons, data = data, ...)
 }
 
 ### addFeatures ===========================================================

@@ -97,7 +97,7 @@ createExtent <- function(x, offset = 0.005) {
                             raster::ymin(x) - offset,
                             raster::ymax(x) + offset)
     }
-  } else if (inherits(x, "sfc")) {
+  } else if (inherits(x, "sfc") | inherits(x, "sf")) {
     bb <- sf::st_bbox(x)
     ext <- raster::extent(bb[1] - offset,
                           bb[3] + offset,

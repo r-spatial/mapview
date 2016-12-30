@@ -124,9 +124,9 @@ vectorColors <- function(x, # a sp or sf object
 
   if (!is.null(zcol)) {
     col <- zcolColors(x[[zcol]],
-                      colors,
-                      at,
-                      na.color,
+                      colors = colors,
+                      at = at,
+                      na.color = na.color,
                       ...)
   } else if (is.null(zcol) & is.function(colors)) {
     col <- stnd_col
