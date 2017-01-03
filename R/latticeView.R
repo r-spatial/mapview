@@ -136,7 +136,7 @@ latticeView <- function(...,
                 Array.prototype.map.call(
                  document.querySelectorAll(".leaflet"),
                    function(ldiv){
-                     leaf_widgets[ldiv.id] = HTMLWidgets.find("#" + ldiv.id);
+                     leaf_widgets[ldiv.id] = HTMLWidgets.find("#" + ldiv.id).getMap();
                    }
                 );
                ',
@@ -192,7 +192,7 @@ sync <- function(...,
 #     paste0('var leaf_widgets = Array.prototype.map.call(
 #       document.querySelectorAll(".leaflet"),
 #         function(ldiv){
-#           return HTMLWidgets.find("#" + ldiv.id);
+#           return HTMLWidgets.find("#" + ldiv.id).getMap();
 #         }
 #       );',
 #            sync_strng

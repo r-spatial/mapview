@@ -34,8 +34,7 @@ addMouseCoordinates <- function(map) {
 "
 function(el, x, data) {
   // we need a new div element because we have to handle
-  // the mouseover output seperately
-  debugger;
+  // the mouseover output separately
   function addElement () {
     // generate new div Element
     var newDiv = $(document.createElement('div'));
@@ -61,7 +60,7 @@ function(el, x, data) {
   if(!lnlt.length) {
     lnlt = addElement();
     // get the leaflet map
-    var map = HTMLWidgets.find('#' + el.id);
+    var map = HTMLWidgets.find('#' + el.id).getMap();
 
     // grab the special div we generated in the beginning
     // and put the mousmove output there

@@ -124,7 +124,6 @@ addLogo <- function(map,
   div_funk <- paste0("function(el, x, data) {
                  // we need a new div element because we have to handle
                  // the mouseover output seperately
-                 debugger;
                  function addElement () {
                  // generate new div Element
                  var newDiv = $(document.createElement('div'));
@@ -144,13 +143,13 @@ addLogo <- function(map,
   # if (missing(url)) {
   #   div_html <- paste0("logo.html('<img src=", img,
   #                      ", width=", width, "height=", height, "></a>');
-  #                      var map = HTMLWidgets.find('#' + el.id);
+  #                      var map = HTMLWidgets.find('#' + el.id).getMap();
   #                      };
   #                      }")
   # } else {
   #   div_html <- paste0("logo.html('<a href=", url, "><img src=", img,
   #                      ", width=", width, "height=", height, "></a>');
-  #                      var map = HTMLWidgets.find('#' + el.id);
+  #                      var map = HTMLWidgets.find('#' + el.id).getMap();
   #                      };
   #                      }")
   # }
@@ -179,13 +178,13 @@ localImage <- function(img, url, width, height) {
   if (missing(url)) {
     div_html <- paste0("logo.html('<img src=", rel_path,
                        ", width=", width, ", height=", height, "></a>');
-                       var map = HTMLWidgets.find('#' + el.id);
+                       var map = HTMLWidgets.find('#' + el.id).getMap();
                        };
                        }")
   } else {
     div_html <- paste0("logo.html('<a href=", url, "><img src=", rel_path,
                        ", width=", width, ", height=", height, "></a>');
-                       var map = HTMLWidgets.find('#' + el.id);
+                       var map = HTMLWidgets.find('#' + el.id).getMap();
                        };
                        }")
   }
@@ -201,13 +200,13 @@ remoteImage <- function(img, url, width, height) {
   if (missing(url)) {
     div_html <- paste0("logo.html('<img src=", img,
                        ", width=", width, ", height=", height, "></a>');
-                       var map = HTMLWidgets.find('#' + el.id);
+                       var map = HTMLWidgets.find('#' + el.id).getMap();
                        };
                        }")
   } else {
     div_html <- paste0("logo.html('<a href=", url, "><img src=", img,
                        ", width=", width, ", height=", height, "></a>');
-                       var map = HTMLWidgets.find('#' + el.id);
+                       var map = HTMLWidgets.find('#' + el.id).getMap();
                        };
                        }")
   }
