@@ -35,7 +35,6 @@ addMouseCoordinates <- function(map) {
 function(el, x, data) {
   // we need a new div element because we have to handle
   // the mouseover output separately
-  debugger;
   function addElement () {
     // generate new div Element
     var newDiv = $(document.createElement('div'));
