@@ -87,7 +87,7 @@ function(el, x, data) {
   var map = this; //HTMLWidgets.find('#' + el.id);
 
   // we need a new div element because we have to handle
-  // the mouseover output seperately
+  // the mouseover output separately
   // debugger;
   function addElement () {
     // generate new div Element
