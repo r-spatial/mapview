@@ -1336,18 +1336,18 @@ leafletMissing <- function(map.types,
 
     tilesets <- list(
       ts = c(
-        'http://{s}.tiles.mapbox.com/v3/gvenech.m13knc8e/{z}/{x}/{y}.png',
-        'http://{s}.tile.thunderforest.com/pioneer/{z}/{x}/{y}.png',
-        'http://a.gps-tile.openstreetmap.org/lines/{z}/{x}/{y}.png',
-        'http://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
-        'http://a.tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png'
+        'http://{s}.tiles.mapbox.com/v3/gvenech.m13knc8e/{z}/{x}/{y}.png'
+        # , 'http://{s}.tile.thunderforest.com/pioneer/{z}/{x}/{y}.png'
+        # , 'http://a.gps-tile.openstreetmap.org/lines/{z}/{x}/{y}.png'
+        # , 'http://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
+        # , 'http://a.tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png'
         ),
       attr = c(
-        '&copy; <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
-        '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        '<a href="https://openstreetmap.org/"> &copy; OpenStreetMap contributors, CC-BY-SA</a>',
-        '<a href="http://hot.openstreetmap.org/"> &copy; OpenStreetMap contributors, tiles courtesy of Humanitarian OpenStreetMap Team</a>',
-        '<a href="http://hikebikemap.org/"> &copy; OpenStreetMap contributors, CC-BY-SA</a>'
+        '&copy; <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>'
+        # , '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        # , '<a href="https://openstreetmap.org/"> &copy; OpenStreetMap contributors, CC-BY-SA</a>'
+        # , '<a href="http://hot.openstreetmap.org/"> &copy; OpenStreetMap contributors, tiles courtesy of Humanitarian OpenStreetMap Team</a>'
+        # , '<a href="http://hikebikemap.org/"> &copy; OpenStreetMap contributors, CC-BY-SA</a>'
         )
     )
 
@@ -1367,16 +1367,23 @@ leafletMissing <- function(map.types,
 
     fl <- 'http://cdn.makeagif.com/media/8-11-2015/n2JwUG.gif'
 
-    pop <- paste("<center>", "<b>", "mapview", "</b>", "<br>", " was created at",
+    cit <- unclass(utils::citation("mapview", auto = NULL))[[1]]
+    cit <- attr(cit, "textVersion")
+    cit <- paste(strsplit(cit, "\\. ")[[1]][1:3], collapse = ". ")
+
+    pop <- paste("<center>", "<b>",
+                 '<a target="_blank" href="http://environmentalinformatics-marburg.github.io/mapview/introduction.html">mapview</a>',
+                 "</b>", "<br>",
+                 " was created at",
                  "<br>",
                  '<a target="_blank" href="http://environmentalinformatics-marburg.de/">Environmental Informatics Marburg</a>',
                  "<br>", "by ", "<br>",
-                 '<a target="_blank" href="http://www.uni-marburg.de/fb19/fachgebiete/umweltinformatik/appelhanst/index.html">Tim Appelhans</a>',
+                 '<a target="_blank" href="https://github.com/tim-salabim">Tim Appelhans</a>',
                  "<br>", "<br>",
                  '<hr width=50% style="border: none; height: 1px; color: #D8D8D8; background: #D8D8D8;"/>',
                  "<br>",
                  "Please cite as: ", "<br>",
-                 attr(unclass(utils::citation("mapview"))[[1]], "textVersion"),
+                 cit,
                  "<br>", "<br>",
                  '<hr width=50% style="border: none; height: 1px; color: #D8D8D8; background: #D8D8D8;"/>',
                  "<br>",
@@ -1397,7 +1404,8 @@ leafletMissing <- function(map.types,
     m <- leaflet::addPopups(map = m,
                             lng = 8.771676,
                             lat = 50.814891,
-                            popup = pop)
+                            popup = pop,
+                            options = popupOptions(closeOnClick = TRUE))
     m <- leaflet::addLayersControl(map = m,
                                    position = "topleft",
                                    overlayGroups = "envinMR")
