@@ -35,26 +35,27 @@ setMethod("+",
                     e2 = "mapview"),
           function (e1, e2)
           {
-            is.ext <- class(e2@object[[length(e2@object)]]) == "Extent"
-            if (is.ext) {
-              rst <- raster::raster(e2@object[[length(e2@object)]])
-              raster::projection(rst) <- llcrs
-            }
+            # is.ext <- class(e2@object[[length(e2@object)]]) == "Extent"
+            # if (is.ext) {
+            #   rst <- raster::raster(e2@object[[length(e2@object)]])
+            #   raster::projection(rst) <- llcrs
+            # }
             m <- e1@map
             m <- appendMapCallEntries(m, e2@map)
             out_obj <- append(e1@object, e2@object)
-            if (length(e2@object[[length(e2@object)]]) > 1) {
-              if (is.ext) ext <- raster::extent(rst) else
-                ext <- raster::extent(
-                  raster::projectExtent(out_obj[[length(out_obj)]],
-                                        crs = llcrs))
+            ext <- createExtent(out_obj[[length(out_obj)]])
+            # if (length(e2@object[[length(e2@object)]]) > 1) {
+            #   if (is.ext) ext <- raster::extent(rst) else
+            #     ext <- raster::extent(
+            #       raster::projectExtent(out_obj[[length(out_obj)]],
+            #                             crs = llcrs))
               m <- leaflet::fitBounds(map = m,
                                       lng1 = ext@xmin,
                                       lat1 = ext@ymin,
                                       lng2 = ext@xmax,
                                       lat2 = ext@ymax)
               #m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
-            }
+            # }
 
             out <- methods::new('mapview', object = out_obj, map = m)
             return(out)
@@ -76,20 +77,20 @@ setMethod("+",
             m <- mapView(e2, map = e1@map, layer.name = nm)
             out_obj <- append(e1@object, m@object)
 
-            xrng <- c(raster::xmin(e2), raster::xmax(e2))
-            yrng <- c(raster::ymin(e2), raster::ymax(e2))
+            # xrng <- c(createExtent(out_obj[[length(out_obj)]])@xmin,
+            #           createExtent(out_obj[[length(out_obj)]])@xmax)
+            # yrng <- c(createExtent(out_obj[[length(out_obj)]])@ymin,
+            #           createExtent(out_obj[[length(out_obj)]])@ymax)
+            #
+            # if (diff(xrng) != 0 & diff(yrng) != 0) {
 
-            if (diff(xrng) != 0 & diff(yrng) != 0) {
-
-              ext <- raster::extent(
-                raster::projectExtent(out_obj[[length(out_obj)]],
-                                      crs = llcrs))
+              ext <- createExtent(out_obj[[length(out_obj)]])
               m <- leaflet::fitBounds(map = m@map,
                                       lng1 = ext@xmin,
                                       lat1 = ext@ymin,
                                       lng2 = ext@xmax,
                                       lat2 = ext@ymax)
-            }
+            # }
 
             out <- methods::new('mapview', object = out_obj, map = m)
             return(out)
@@ -110,16 +111,17 @@ setMethod("+",
             m <- mapView(e2, map = e1, layer.name = nm,
                          map.types = getProviderTileNamesFromMap(e1))
             out_obj <- list(e2)
-            if (length(e2) > 1) {
-              ext <- raster::extent(
-                raster::projectExtent(e2, crs = llcrs))
+            # if (length(e2) > 1) {
+            #   ext <- raster::extent(
+            #     raster::projectExtent(e2, crs = llcrs))
+            ext <- createExtent(e2)
               m <- leaflet::fitBounds(map = m@map,
                                       lng1 = ext@xmin,
                                       lat1 = ext@ymin,
                                       lng2 = ext@xmax,
                                       lat2 = ext@ymax)
               #m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
-            }
+            # }
             out <- methods::new('mapview', object = out_obj, map = m)
             return(out)
           }

@@ -88,15 +88,18 @@ getFeatureIds <- function(att_data) {
 ### createExtent
 createExtent <- function(x, offset = 0.005) {
 
-  if (inherits(x, "Spatial")) {
-    if (length(x) > 1) {
-      ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
-    } else {
-      ext <- raster::extent(raster::xmin(x) - offset,
-                            raster::xmax(x) + offset,
-                            raster::ymin(x) - offset,
-                            raster::ymax(x) + offset)
-    }
+  if (inherits(x, "Raster")) {
+    # ext <- raster::extent(raster::xmin(x) - offset,
+    #                       raster::xmax(x) + offset,
+    #                       raster::ymin(x) - offset,
+    #                       raster::ymax(x) + offset)
+    ext <- raster::extent(
+      raster::projectExtent(x, crs = llcrs))
+  } else if (inherits(x, "Spatial")) {
+    ext <- raster::extent(raster::xmin(x) - offset,
+                          raster::xmax(x) + offset,
+                          raster::ymin(x) - offset,
+                          raster::ymax(x) + offset)
   } else if (inherits(x, "sfc") | inherits(x, "sf")) {
     bb <- sf::st_bbox(x)
     ext <- raster::extent(bb[1] - offset,
