@@ -1,4 +1,4 @@
-mapview 1.2.21
+mapview 1.2.22
 --------------------------------------------------------------------------------
 
 new features:
@@ -12,6 +12,7 @@ new features:
   * added new function addLargeFeatures to render large datasets of up to ~100k features which is used automatically in mapview for data larger than max* thresholds in mapviewOptions.
   * definition of simple features methods for leaflet. With mapview loaded you should be able to use leaflet add* functions with 'data = ...' for sf: POINT, MULTIPOINT, sfc_POINT, sfc_MULTIPOINT, POLYGON, MULTIPOLYGON, sfc_POLYGON, sfc_MULTIPOLYGON, LINESTRING, MULTILINESTRING, sfc_LINESTRING, sfc_MULTILINESTRING
   * mapview methods for sfc_POINT, sfc_LINESTRING, sfc_MULTIPOLYGON
+  * added support for sf to "+"
 
 bugfixes:
   * sync, addMouseCoordinates and addLogo did not work anymore. Now fixed thanks to @timelyportfolio
