@@ -47,16 +47,28 @@ querying is supported but only at higher zoom levels to preserve performance.
 \dontrun{
 library(mapview)
 library(sp)
+library(sf)
 library(ggmap)
 
 data(crime)
 crime <- crime[complete.cases(crime), ]
+
+## sp version
 coordinates(crime) <- ~ lon + lat
 proj4string(crime) <- "+init=epsg:4326"
 
 leaflet() \%>\%
 addProviderTiles("CartoDB.Positron") \%>\%
   addLargeFeatures(crime, group = "crime") \%>\%
+  addMouseCoordinates() \%>\%
+  addLayersControl(overlayGroups = "crime", position = "topleft")
+
+## sf version
+crime_sf <- st_as_sf(crime, coords = c("lon", "lat"), crs = "+init=epsg:4326")
+
+leaflet() \%>\%
+addProviderTiles("CartoDB.Positron") \%>\%
+  addLargeFeatures(crime_sf, group = "crime") \%>\%
   addMouseCoordinates() \%>\%
   addLayersControl(overlayGroups = "crime", position = "topleft")
 
