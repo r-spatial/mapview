@@ -19,6 +19,8 @@ leaflet_sfc <- function(x,
                         homebutton,
                         ...) {
 
+  x <- checkAdjustProjection(x)
+
   m <- initMap(map, map.types, sf::st_crs(x))
 
   m <- addFeatures(m,
@@ -72,6 +74,8 @@ leaflet_sf <- function(x,
                        legend.opacity,
                        homebutton,
                        ...) {
+
+  x <- checkAdjustProjection(x)
 
   color <- vectorColors(x = x,
                         zcol = zcol,
