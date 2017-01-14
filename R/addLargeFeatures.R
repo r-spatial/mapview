@@ -163,7 +163,6 @@ addLargeFeatures <- function(map,
                 ymax = ext@ymax,
                 xmin = ext@xmin,
                 ymin = ext@ymin,
-                zoom = zoom,
                 maxFeatures = maxFeatures)
 
   # creating the widget

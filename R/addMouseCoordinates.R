@@ -59,12 +59,10 @@ addMouseCoordinates <- function(map, style = c("detailed", "basic"),
       ' | zoom: ' + map.getZoom() + ' '")
   } else {
     txt_detailed <- paste0("
-      ' x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +
-      ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +
+      ' x: ' + (e.latlng.lng).toFixed(5) +
+      ' | y: ' + (e.latlng.lat).toFixed(5) +
       ' | epsg: ", epsg, " ' +
       ' | proj4: ", proj4string, " ' +
-      ' | lon: ' + (e.latlng.lng).toFixed(5) +
-      ' | lat: ' + (e.latlng.lat).toFixed(5) +
       ' | zoom: ' + map.getZoom() + ' '")
   }
 

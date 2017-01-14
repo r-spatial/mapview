@@ -192,7 +192,7 @@ initBaseMaps <- function(map.types) {
 
 # Initialise mapView map --------------------------------------------------
 
-initMap <- function(map, map.types, proj4str) {
+initMap <- function(map, map.types, proj4str, native.crs = FALSE) {
 
   if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
 
@@ -207,14 +207,11 @@ initMap <- function(map, map.types, proj4str) {
   if (missing(proj4str)) proj4str <- NA
   ## create base map using specified map types
   if (is.null(map)) {
-    if (is.na(proj4str)) {
+    if (is.na(proj4str) | native.crs) {
       m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth,
                             options = leaflet::leafletOptions(
-                              minZoom = 1,
-                              maxZoom = 19,
-                              bounceAtZoomLimits = FALSE,
-                              maxBounds = list(list(c(-90, -185)),
-                                               list(c(90, 190)))))
+                              minZoom = -1000,
+                              crs = leafletCRS(crsClass = "L.CRS.Simple")))
     } else {
       m <- initBaseMaps(map.types)
     }
@@ -420,7 +417,7 @@ compareProjCode <- function (x){
 
 # Add leaflet control button to map ---------------------------------------
 
-mapViewLayersControl <- function(map, map.types, names, hasCRS = TRUE) {
+mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
 
   if (!length(getLayerControlEntriesFromMap(map))) {
     bgm <- map.types
@@ -428,7 +425,7 @@ mapViewLayersControl <- function(map, map.types, names, hasCRS = TRUE) {
     bgm <- map$x$calls[[getLayerControlEntriesFromMap(map)[1]]]$args[[1]]
   }
 
-  if (hasCRS) {
+  if (!native.crs) {
     m <- leaflet::addLayersControl(map = map,
                                    position = mapviewGetOption(
                                      "layers.control.pos"),

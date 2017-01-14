@@ -17,11 +17,12 @@ leaflet_sfc <- function(x,
                         legend,
                         legend.opacity,
                         homebutton,
+                        native.crs,
                         ...) {
 
-  x <- checkAdjustProjection(x)
+  if (!native.crs) x <- checkAdjustProjection(x)
 
-  m <- initMap(map, map.types, sf::st_crs(x))
+  m <- initMap(map, map.types, sf::st_crs(x), native.crs)
 
   m <- addFeatures(m,
                    data = x,
@@ -36,17 +37,19 @@ leaflet_sfc <- function(x,
                    ...)
 
   m <- decorateMap(map = m,
-                   funs = list(leaflet::addScaleBar,
+                   funs = list(if (!native.crs) leaflet::addScaleBar,
                                addHomeButton,
                                mapViewLayersControl,
                                addMouseCoordinates),
-                   args = list(list(position = "bottomleft"),
+                   args = list(if (!native.crs) list(position = "bottomleft"),
                                list(ext = createExtent(x),
                                     layer.name = layer.name),
                                list(map.types = map.types,
                                     names = layer.name,
-                                    hasCRS = TRUE),
-                               list(style = "detailed")))
+                                    native.crs = native.crs),
+                               list(style = "detailed",
+                                    epsg = sf::st_crs(x)$epsg,
+                                    proj4string = sf::st_crs(x)$proj4string)))
 
   out <- new("mapview", object = list(x), map = m)
 
@@ -73,9 +76,10 @@ leaflet_sf <- function(x,
                        legend,
                        legend.opacity,
                        homebutton,
+                       native.crs,
                        ...) {
 
-  x <- checkAdjustProjection(x)
+  if (!native.crs) x <- checkAdjustProjection(x)
 
   color <- vectorColors(x = x,
                         zcol = zcol,
@@ -102,7 +106,9 @@ leaflet_sf <- function(x,
                   legend = legend,
                   legend.opacity = legend.opacity,
                   homebutton = homebutton,
+                  native.crs = native.crs,
                   ...)
+
   } else {
 
     leaflet_sfc(sf::st_geometry(x),
@@ -123,6 +129,7 @@ leaflet_sf <- function(x,
                 legend = legend,
                 legend.opacity = legend.opacity,
                 homebutton = homebutton,
+                native.crs = native.crs,
                 ...)
 
   }
@@ -148,9 +155,12 @@ leaflet_large <- function(x,
                           legend,
                           legend.opacity,
                           homebutton,
+                          native.crs,
                           ...) {
 
-  m <- initMap(map, map.types, sf::st_crs(x))
+  if (!native.crs) x <- checkAdjustProjection(x)
+
+  m <- initMap(map, map.types, sf::st_crs(x), native.crs)
 
   m <- addLargeFeatures(m,
                         data = x,
@@ -165,17 +175,19 @@ leaflet_large <- function(x,
                         ...)
 
   m <- decorateMap(map = m,
-                   funs = list(leaflet::addScaleBar,
+                   funs = list(if (!native.crs) leaflet::addScaleBar,
                                addHomeButton,
                                mapViewLayersControl,
                                addMouseCoordinates),
-                   args = list(list(position = "bottomleft"),
+                   args = list(if (!native.crs) list(position = "bottomleft"),
                                list(ext = createExtent(x),
                                     layer.name = layer.name),
                                list(map.types = map.types,
                                     names = layer.name,
-                                    hasCRS = TRUE),
-                               list(style = "detailed")))
+                                    native.crs = native.crs),
+                               list(style = "detailed",
+                                    epsg = sf::st_crs(x)$epsg,
+                                    proj4string = sf::st_crs(x)$proj4string)))
 
   out <- new("mapview", object = list(x), map = m)
 

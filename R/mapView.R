@@ -56,6 +56,12 @@ if ( !isGeneric('mapView') ) {
 #' details.
 #' @param label a character vector of labels to be shown on mouseover. See
 #' \code{\link{addControl}} for details.
+#' @param native.crs logical whether to reproject to web map coordinate
+#' reference system (web mercator - epsg:3857) or render using native CRS of
+#' the supplied data (can also be NA). Default is FALSE which will render in
+#' web mercator. If set to TRUE now background maps will be drawn (but rendering
+#' may be much quicker as no reprojecting is necessary). Currently only works
+#' for simple features.
 #' @param ... additional arguments passed on to repective functions.
 #' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
@@ -955,6 +961,7 @@ setMethod('mapView', signature(x = 'sf'),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
                    homebutton = TRUE,
+                   native.crs = FALSE,
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -977,6 +984,7 @@ setMethod('mapView', signature(x = 'sf'),
                          legend = legend,
                          legend.opacity = legend.opacity,
                          homebutton = homebutton,
+                         native.crs = native.crs,
                          ...)
 
             } else if (mapviewGetOption("platform") == "quickmapr") {

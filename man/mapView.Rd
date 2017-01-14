@@ -144,7 +144,7 @@
   verbose = mapviewGetOption("verbose"), popup = popupTable(x),
   layer.name = deparse(substitute(x, env = parent.frame())), label = NULL,
   legend = mapviewGetOption("legend"), legend.opacity = 1,
-  homebutton = TRUE, ...)
+  homebutton = TRUE, native.crs = FALSE, ...)
 
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
   easter.egg = FALSE)
@@ -219,6 +219,13 @@ details.}
 
 \item{label}{a character vector of labels to be shown on mouseover. See
 \code{\link{addControl}} for details.}
+
+\item{native.crs}{logical whether to reproject to web map coordinate
+reference system (web mercator - epsg:3857) or render using native CRS of
+the supplied data (can also be NA). Default is FALSE which will render in
+web mercator. If set to TRUE now background maps will be drawn (but rendering
+may be much quicker as no reprojecting is necessary). Currently only works
+for simple features.}
 
 \item{easter.egg}{well, you might find out if you set this to TRUE}
 }
