@@ -424,7 +424,7 @@ function countProperties(obj) {
 
 };
 
-
+// this function is actually not needed I think!!
 function addCanvas() {
     var newMeta = document.createElement("meta");
     document.head.insertBefore(newMeta, null);
