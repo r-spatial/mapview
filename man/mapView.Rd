@@ -155,7 +155,7 @@
 }
 \arguments{
 \item{x}{a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
-\code{sf} object.}
+\code{sf} object or a list of any combination of those.}
 
 \item{map}{an optional existing map to be updated/added to}
 
@@ -347,6 +347,19 @@ m + centres
 data("atlStorms2005")
 mapview(atlStorms2005)
 mapview(atlStorms2005, burst = TRUE)
+
+
+### arbitrary CRS (only for simple features)
+library(sf)
+library(sp)
+
+data(meuse)
+coordinates(meuse) <- ~x+y
+proj4string(meuse) <- CRS("+init=epsg:28992")
+meuse_sf <- st_as_sf(meuse)
+
+mapview(meuse_sf, native.crs = TRUE)
+
 }
 
 }

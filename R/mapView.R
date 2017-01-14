@@ -26,7 +26,7 @@ if ( !isGeneric('mapView') ) {
 #' See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
 #'
 #' @param x a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
-#' \code{sf} object.
+#' \code{sf} object or a list of any combination of those.
 #' @param map an optional existing map to be updated/added to
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
@@ -131,6 +131,19 @@ if ( !isGeneric('mapView') ) {
 #' data("atlStorms2005")
 #' mapview(atlStorms2005)
 #' mapview(atlStorms2005, burst = TRUE)
+#'
+#'
+#' ### arbitrary CRS (only for simple features)
+#' library(sf)
+#' library(sp)
+#'
+#' data(meuse)
+#' coordinates(meuse) <- ~x+y
+#' proj4string(meuse) <- CRS("+init=epsg:28992")
+#' meuse_sf <- st_as_sf(meuse)
+#'
+#' mapview(meuse_sf, native.crs = TRUE)
+#'
 #' }
 #'
 #' @export mapView
