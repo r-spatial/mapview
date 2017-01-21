@@ -29,14 +29,26 @@ addFeatures <- function(map,
                         data,
                         ...) {
 
-  m <- switch(class(sf::st_geometry(data))[1],
-              sfc_POINT = addPointFeatures(map, data, ...),
-              sfc_MULTIPOINT = addPointFeatures(map, data, ...),
-              sfc_LINESTRING = addLineFeatures(map, data, ...),
+  m <- switch(getSFClass(data),
+              sfc_POINT           = addPointFeatures(map, data, ...),
+              sfc_MULTIPOINT      = addPointFeatures(map, data, ...),
+              sfc_LINESTRING      = addLineFeatures(map, data, ...),
               sfc_MULTILINESTRING = addLineFeatures(map, data, ...),
-              sfc_POLYGON = addPolygonFeatures(map, data, ...),
-              sfc_MULTIPOLYGON = addPolygonFeatures(map, data, ...))
+              sfc_POLYGON         = addPolygonFeatures(map, data, ...),
+              sfc_MULTIPOLYGON    = addPolygonFeatures(map, data, ...),
+              POINT               = addPointFeatures(map, data, ...),
+              MULTIPOINT          = addPointFeatures(map, data, ...),
+              LINESTRING          = addLineFeatures(map, data, ...),
+              MULTILINESTRING     = addLineFeatures(map, data, ...),
+              POLYGON             = addPolygonFeatures(map, data, ...),
+              MULTIPOLYGON        = addPolygonFeatures(map, data, ...))
 
   return(m)
 
+}
+
+
+### getSFClass
+getSFClass <- function(x) {
+  if (class(x)[1] == "XY") class(x)[2] else class(x)[1]
 }

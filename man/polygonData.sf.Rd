@@ -12,7 +12,6 @@
 \alias{"polygonData.sfc_MULTILINESTRING"}
 \alias{"polygonData.sfc_MULTIPOLYGON"}
 \alias{"polygonData.sfc_POLYGON"}
-\alias{pointData.MULTIPOINT}
 \alias{pointData.POINT}
 \alias{pointData.sf}
 \alias{pointData.sfc_MULTIPOINT}
@@ -33,8 +32,6 @@
 \method{pointData}{sf}(obj)
 
 \method{pointData}{POINT}(obj)
-
-\method{pointData}{MULTIPOINT}(obj)
 
 \method{pointData}{sfc_POINT}(obj)
 
@@ -64,8 +61,6 @@ These functions provide methods for simple features.
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{pointData}: method for point data
-
 \item \code{pointData}: method for point data
 
 \item \code{pointData}: method for point data

@@ -12,6 +12,7 @@ checkAdjustProjection <- function(x) {
               "SpatialPolygons" = spCheckAdjustProjection(x),
               "SpatialLines" = spCheckAdjustProjection(x),
               "sf" = sfCheckAdjustProjection(x),
+              "XY" = sfCheckAdjustProjection(x),
               "sfc_POINT" = sfCheckAdjustProjection(x),
               "sfc_MULTIPOINT" = sfCheckAdjustProjection(x),
               "sfc_LINESTRING" = sfCheckAdjustProjection(x),
