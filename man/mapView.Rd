@@ -14,12 +14,17 @@
 \alias{mapView,SpatialPointsDataFrame-method}
 \alias{mapView,SpatialPolygons-method}
 \alias{mapView,SpatialPolygonsDataFrame-method}
+\alias{mapView,XY-method}
 \alias{mapView,list-method}
 \alias{mapView,missing-method}
 \alias{mapView,sf-method}
+\alias{mapView,sfc-method}
 \alias{mapView,sfc_LINESTRING-method}
+\alias{mapView,sfc_MULTILINESTRING-method}
+\alias{mapView,sfc_MULTIPOINT-method}
 \alias{mapView,sfc_MULTIPOLYGON-method}
 \alias{mapView,sfc_POINT-method}
+\alias{mapView,sfc_POLYGON-method}
 \alias{mapview}
 \alias{mapview,ANY-method}
 \title{View spatial objects interactively}
@@ -109,42 +114,48 @@
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), label, homebutton = TRUE, ...)
 
-\S4method{mapView}{sfc_POINT}(x, map = NULL, color = "#6666ff", at = NULL,
-  na.color = mapviewGetOption("na.color"), cex = 8, lwd = 2,
-  alpha = 0.8, alpha.regions = 0.2,
-  map.types = mapviewGetOption("basemaps"),
-  verbose = mapviewGetOption("verbose"), popup = NULL,
-  layer.name = deparse(substitute(x, env = parent.frame())), label = NULL,
-  legend = mapviewGetOption("legend"), legend.opacity = 1,
-  homebutton = TRUE, ...)
-
-\S4method{mapView}{sfc_LINESTRING}(x, map = NULL, color = "#6666ff",
-  at = NULL, na.color = mapviewGetOption("na.color"), cex = 8, lwd = 2,
-  alpha = 0.8, alpha.regions = 0.2,
-  map.types = mapviewGetOption("basemaps"),
-  verbose = mapviewGetOption("verbose"), popup = NULL,
-  layer.name = deparse(substitute(x, env = parent.frame())), label = NULL,
-  legend = mapviewGetOption("legend"), legend.opacity = 1,
-  homebutton = TRUE, ...)
-
-\S4method{mapView}{sfc_MULTIPOLYGON}(x, map = NULL, color = "#6666ff",
-  at = NULL, na.color = mapviewGetOption("na.color"), cex = 8, lwd = 2,
-  alpha = 0.8, alpha.regions = 0.2,
-  map.types = mapviewGetOption("basemaps"),
-  verbose = mapviewGetOption("verbose"), popup = NULL,
-  layer.name = deparse(substitute(x, env = parent.frame())), label = NULL,
-  legend = mapviewGetOption("legend"), legend.opacity = 1,
-  homebutton = TRUE, ...)
-
 \S4method{mapView}{sf}(x, map = NULL, zcol = NULL,
   color = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 8, lwd = 2,
   alpha = 0.8, alpha.regions = 0.2,
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), popup = popupTable(x),
-  layer.name = deparse(substitute(x, env = parent.frame())), label = NULL,
-  legend = mapviewGetOption("legend"), legend.opacity = 1,
-  homebutton = TRUE, native.crs = FALSE, ...)
+  layer.name = deparse(substitute(x, env = parent.frame())),
+  label = makeLabels(x, zcol), legend = mapviewGetOption("legend"),
+  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
+  highlightOptions = mapviewHighlightOptions(x, ...), ...)
+
+\S4method{mapView}{sfc}(x, map = NULL, color = "#6666ff", at = NULL,
+  na.color = mapviewGetOption("na.color"), cex = 8, lwd = 2,
+  alpha = 0.8, alpha.regions = 0.2,
+  map.types = mapviewGetOption("basemaps"),
+  verbose = mapviewGetOption("verbose"), popup = NULL,
+  layer.name = deparse(substitute(x, env = parent.frame(2))),
+  label = makeLabels(x), legend = mapviewGetOption("legend"),
+  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
+  highlightOptions = mapviewHighlightOptions(x, ...), ...)
+
+\S4method{mapView}{sfc_POINT}(x, ...)
+
+\S4method{mapView}{sfc_MULTIPOINT}(x, ...)
+
+\S4method{mapView}{sfc_LINESTRING}(x, ...)
+
+\S4method{mapView}{sfc_MULTILINESTRING}(x, ...)
+
+\S4method{mapView}{sfc_POLYGON}(x, ...)
+
+\S4method{mapView}{sfc_MULTIPOLYGON}(x, ...)
+
+\S4method{mapView}{XY}(x, map = NULL, color = "#6666ff", at = NULL,
+  na.color = mapviewGetOption("na.color"), cex = 8, lwd = 2,
+  alpha = 0.8, alpha.regions = 0.2,
+  map.types = mapviewGetOption("basemaps"),
+  verbose = mapviewGetOption("verbose"), popup = NULL,
+  layer.name = deparse(substitute(x, env = parent.frame(1))),
+  label = makeLabels(x), legend = mapviewGetOption("legend"),
+  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
+  highlightOptions = mapviewHighlightOptions(x, ...), ...)
 
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
   easter.egg = FALSE)
@@ -227,6 +238,9 @@ web mercator. If set to TRUE now background maps will be drawn (but rendering
 may be much quicker as no reprojecting is necessary). Currently only works
 for simple features.}
 
+\item{highlightOptions}{a list of styling options for feature highlighting
+on mouse hover. See \code{\link{highlightOptions}} for details.}
+
 \item{easter.egg}{well, you might find out if you set this to TRUE}
 }
 \description{
@@ -271,13 +285,23 @@ See \url{http://www.chrome-allow-file-access-from-file.com/} for further details
 
 \item \code{SpatialLines}: \code{\link{SpatialLines}}
 
+\item \code{sf}: \code{\link{st_sf}}
+
+\item \code{sfc}: \code{\link{st_sfc}}
+
 \item \code{sfc_POINT}: \code{\link{st_sfc}}
+
+\item \code{sfc_MULTIPOINT}: \code{\link{st_sfc}}
 
 \item \code{sfc_LINESTRING}: \code{\link{st_sfc}}
 
+\item \code{sfc_MULTILINESTRING}: \code{\link{st_sfc}}
+
+\item \code{sfc_POLYGON}: \code{\link{st_sfc}}
+
 \item \code{sfc_MULTIPOLYGON}: \code{\link{st_sfc}}
 
-\item \code{sf}: \code{\link{st_sf}}
+\item \code{XY}: \code{\link{st_sfc}}
 
 \item \code{missing}: initiate a map without an object
 

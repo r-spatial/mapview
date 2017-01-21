@@ -18,6 +18,7 @@ leaflet_sfc <- function(x,
                         legend.opacity,
                         homebutton,
                         native.crs,
+                        highlightOptions,
                         ...) {
 
   if (!native.crs) x <- checkAdjustProjection(x)
@@ -34,6 +35,7 @@ leaflet_sfc <- function(x,
                    popup = popup,
                    label = label,
                    group = layer.name,
+                   highlightOptions = highlightOptions,
                    ...)
 
   m <- decorateMap(map = m,
@@ -77,6 +79,7 @@ leaflet_sf <- function(x,
                        legend.opacity,
                        homebutton,
                        native.crs,
+                       highlightOptions,
                        ...) {
 
   if (!native.crs) x <- checkAdjustProjection(x)
@@ -107,6 +110,7 @@ leaflet_sf <- function(x,
                   legend.opacity = legend.opacity,
                   homebutton = homebutton,
                   native.crs = native.crs,
+                  highlightOptions = highlightOptions,
                   ...)
 
   } else {
@@ -130,6 +134,7 @@ leaflet_sf <- function(x,
                 legend.opacity = legend.opacity,
                 homebutton = homebutton,
                 native.crs = native.crs,
+                highlightOptions = highlightOptions,
                 ...)
 
   }

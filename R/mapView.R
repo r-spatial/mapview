@@ -62,6 +62,8 @@ if ( !isGeneric('mapView') ) {
 #' web mercator. If set to TRUE now background maps will be drawn (but rendering
 #' may be much quicker as no reprojecting is necessary). Currently only works
 #' for simple features.
+#' @param highlightOptions a list of styling options for feature highlighting
+#' on mouse hover. See \code{\link{highlightOptions}} for details.
 #' @param ... additional arguments passed on to repective functions.
 #' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
@@ -151,6 +153,7 @@ if ( !isGeneric('mapView') ) {
 #' @rdname mapView
 #' @aliases mapView,RasterLayer-method
 
+######## RASTER ###########################################################
 
 ## RasterLayer ============================================================
 
@@ -308,6 +311,8 @@ setMethod('mapView', signature(x = 'Satellite'),
 
 )
 
+
+######## SP ###############################################################
 
 ## SpatialPixelsDataFrame =================================================
 #' @describeIn mapView \code{\link{SpatialPixelsDataFrame}}
@@ -779,177 +784,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
 
 )
 
-
-## sfc_POINT ==============================================================
-#' @describeIn mapView \code{\link{st_sfc}}
-
-setMethod('mapView', signature(x = 'sfc_POINT'),
-          function(x,
-                   map = NULL,
-                   color = "#6666ff",
-                   at = NULL,
-                   na.color = mapviewGetOption("na.color"),
-                   cex = 8,
-                   lwd = 2,
-                   alpha = 0.8,
-                   alpha.regions = 0.2,
-                   map.types = mapviewGetOption("basemaps"),
-                   verbose = mapviewGetOption("verbose"),
-                   popup = NULL,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
-                   label = NULL,
-                   legend = mapviewGetOption("legend"),
-                   legend.opacity = 1,
-                   homebutton = TRUE,
-                   ...) {
-
-            if (mapviewGetOption("platform") == "leaflet") {
-              # if (inherits(x, "POINT") | inherits(x, "MULTIPOINT")) {
-                leaflet_sfc(x,
-                            map = map,
-                            color = color,
-                            na.color = na.color,
-                            cex = cex,
-                            lwd = lwd,
-                            alpha = alpha,
-                            alpha.regions = alpha.regions,
-                            map.types = map.types,
-                            verbose = verbose,
-                            popup = popup,
-                            layer.name = layer.name,
-                            label = label,
-                            legend = legend,
-                            legend.opacity = legend.opacity,
-                            homebutton = homebutton,
-                            ...)
-              # } else if (inherits(x, "LINESTRING") | inherits(x, "MULTILINESTRING")) {
-              #   NULL
-              # } else if (inherits(x, "POLYGON") | inherits(x, "MULTIPOLYGON")) {
-              #   NULL
-              # }
-            } else if (mapviewGetOption("platform") == "quickmapr") {
-              quickmapr::qmap(x, ...)
-            } else {
-              NULL
-            }
-          }
-)
-
-
-## sfc_LINESTRING =========================================================
-#' @describeIn mapView \code{\link{st_sfc}}
-
-setMethod('mapView', signature(x = 'sfc_LINESTRING'),
-          function(x,
-                   map = NULL,
-                   color = "#6666ff",
-                   at = NULL,
-                   na.color = mapviewGetOption("na.color"),
-                   cex = 8,
-                   lwd = 2,
-                   alpha = 0.8,
-                   alpha.regions = 0.2,
-                   map.types = mapviewGetOption("basemaps"),
-                   verbose = mapviewGetOption("verbose"),
-                   popup = NULL,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
-                   label = NULL,
-                   legend = mapviewGetOption("legend"),
-                   legend.opacity = 1,
-                   homebutton = TRUE,
-                   ...) {
-
-            if (mapviewGetOption("platform") == "leaflet") {
-              # if (inherits(x, "POINT") | inherits(x, "MULTIPOINT")) {
-              leaflet_sfc(x,
-                          map = map,
-                          color = color,
-                          na.color = na.color,
-                          cex = cex,
-                          lwd = lwd,
-                          alpha = alpha,
-                          alpha.regions = alpha.regions,
-                          map.types = map.types,
-                          verbose = verbose,
-                          popup = popup,
-                          layer.name = layer.name,
-                          label = label,
-                          legend = legend,
-                          legend.opacity = legend.opacity,
-                          homebutton = homebutton,
-                          ...)
-              # } else if (inherits(x, "LINESTRING") | inherits(x, "MULTILINESTRING")) {
-              #   NULL
-              # } else if (inherits(x, "POLYGON") | inherits(x, "MULTIPOLYGON")) {
-              #   NULL
-              # }
-            } else if (mapviewGetOption("platform") == "quickmapr") {
-              quickmapr::qmap(x, ...)
-            } else {
-              NULL
-            }
-          }
-)
-
-
-## sfc_MULTIPOLYGON =======================================================
-#' @describeIn mapView \code{\link{st_sfc}}
-
-setMethod('mapView', signature(x = 'sfc_MULTIPOLYGON'),
-          function(x,
-                   map = NULL,
-                   color = "#6666ff",
-                   at = NULL,
-                   na.color = mapviewGetOption("na.color"),
-                   cex = 8,
-                   lwd = 2,
-                   alpha = 0.8,
-                   alpha.regions = 0.2,
-                   map.types = mapviewGetOption("basemaps"),
-                   verbose = mapviewGetOption("verbose"),
-                   popup = NULL,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
-                   label = NULL,
-                   legend = mapviewGetOption("legend"),
-                   legend.opacity = 1,
-                   homebutton = TRUE,
-                   ...) {
-
-            if (mapviewGetOption("platform") == "leaflet") {
-              # if (inherits(x, "POINT") | inherits(x, "MULTIPOINT")) {
-              leaflet_sfc(x,
-                          map = map,
-                          color = color,
-                          na.color = na.color,
-                          cex = cex,
-                          lwd = lwd,
-                          alpha = alpha,
-                          alpha.regions = alpha.regions,
-                          map.types = map.types,
-                          verbose = verbose,
-                          popup = popup,
-                          layer.name = layer.name,
-                          label = label,
-                          legend = legend,
-                          legend.opacity = legend.opacity,
-                          homebutton = homebutton,
-                          ...)
-              # } else if (inherits(x, "LINESTRING") | inherits(x, "MULTILINESTRING")) {
-              #   NULL
-              # } else if (inherits(x, "POLYGON") | inherits(x, "MULTIPOLYGON")) {
-              #   NULL
-              # }
-            } else if (mapviewGetOption("platform") == "quickmapr") {
-              quickmapr::qmap(x, ...)
-            } else {
-              NULL
-            }
-          }
-)
-
+######## SIMPLE FEATURES ##################################################
 
 ## sf =====================================================================
 #' @describeIn mapView \code{\link{st_sf}}
@@ -970,11 +805,12 @@ setMethod('mapView', signature(x = 'sf'),
                    popup = popupTable(x),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   label = NULL,
+                   label = makeLabels(x, zcol),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
+                   highlightOptions = mapviewHighlightOptions(x, ...),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -998,6 +834,7 @@ setMethod('mapView', signature(x = 'sf'),
                          legend.opacity = legend.opacity,
                          homebutton = homebutton,
                          native.crs = native.crs,
+                         highlightOptions = highlightOptions,
                          ...)
 
             } else if (mapviewGetOption("platform") == "quickmapr") {
@@ -1008,6 +845,190 @@ setMethod('mapView', signature(x = 'sf'),
           }
 )
 
+
+## sfc ====================================================================
+#' @describeIn mapView \code{\link{st_sfc}}
+
+setMethod('mapView', signature(x = 'sfc'),
+          function(x,
+                   map = NULL,
+                   color = "#6666ff",
+                   at = NULL,
+                   na.color = mapviewGetOption("na.color"),
+                   cex = 8,
+                   lwd = 2,
+                   alpha = 0.8,
+                   alpha.regions = 0.2,
+                   map.types = mapviewGetOption("basemaps"),
+                   verbose = mapviewGetOption("verbose"),
+                   popup = NULL,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame(2))),
+                   label = makeLabels(x),
+                   legend = mapviewGetOption("legend"),
+                   legend.opacity = 1,
+                   homebutton = TRUE,
+                   native.crs = FALSE,
+                   highlightOptions = mapviewHighlightOptions(x, ...),
+                   ...) {
+
+            if (mapviewGetOption("platform") == "leaflet") {
+              # if (inherits(x, "POINT") | inherits(x, "MULTIPOINT")) {
+              leaflet_sfc(x,
+                          map = map,
+                          color = color,
+                          na.color = na.color,
+                          cex = cex,
+                          lwd = lwd,
+                          alpha = alpha,
+                          alpha.regions = alpha.regions,
+                          map.types = map.types,
+                          verbose = verbose,
+                          popup = popup,
+                          layer.name = layer.name,
+                          label = label,
+                          legend = legend,
+                          legend.opacity = legend.opacity,
+                          homebutton = homebutton,
+                          native.crs = native.crs,
+                          highlightOptions = highlightOptions,
+                          ...)
+              # } else if (inherits(x, "LINESTRING") | inherits(x, "MULTILINESTRING")) {
+              #   NULL
+              # } else if (inherits(x, "POLYGON") | inherits(x, "MULTIPOLYGON")) {
+              #   NULL
+              # }
+            } else if (mapviewGetOption("platform") == "quickmapr") {
+              quickmapr::qmap(x, ...)
+            } else {
+              NULL
+            }
+          }
+)
+
+
+## sfc_POINT ==============================================================
+#' @describeIn mapView \code{\link{st_sfc}}
+
+setMethod('mapView', signature(x = 'sfc_POINT'),
+          function(x, ...) {
+            callNextMethod()
+          }
+)
+
+
+## sfc_MULTIPOINT =========================================================
+#' @describeIn mapView \code{\link{st_sfc}}
+
+setMethod('mapView', signature(x = 'sfc_MULTIPOINT'),
+          function(x, ...) {
+            callNextMethod()
+          }
+)
+
+
+## sfc_LINESTRING =========================================================
+#' @describeIn mapView \code{\link{st_sfc}}
+
+setMethod('mapView', signature(x = 'sfc_LINESTRING'),
+          function(x, ...) {
+            callNextMethod()
+          }
+)
+
+
+## sfc_MULTILINESTRING ====================================================
+#' @describeIn mapView \code{\link{st_sfc}}
+
+setMethod('mapView', signature(x = 'sfc_MULTILINESTRING'),
+          function(x, ...) {
+            callNextMethod()
+          }
+)
+
+
+## sfc_POLYGON =======================================================
+#' @describeIn mapView \code{\link{st_sfc}}
+
+setMethod('mapView', signature(x = 'sfc_POLYGON'),
+          function(x, ...) {
+            callNextMethod()
+          }
+)
+
+
+## sfc_MULTIPOLYGON =======================================================
+#' @describeIn mapView \code{\link{st_sfc}}
+
+setMethod('mapView', signature(x = 'sfc_MULTIPOLYGON'),
+          function(x, ...) {
+            callNextMethod()
+          }
+)
+
+
+## XY =====================================================================
+#' @describeIn mapView \code{\link{st_sfc}}
+
+setMethod('mapView', signature(x = 'XY'),
+          function(x,
+                   map = NULL,
+                   color = "#6666ff",
+                   at = NULL,
+                   na.color = mapviewGetOption("na.color"),
+                   cex = 8,
+                   lwd = 2,
+                   alpha = 0.8,
+                   alpha.regions = 0.2,
+                   map.types = mapviewGetOption("basemaps"),
+                   verbose = mapviewGetOption("verbose"),
+                   popup = NULL,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame(1))),
+                   label = makeLabels(x),
+                   legend = mapviewGetOption("legend"),
+                   legend.opacity = 1,
+                   homebutton = TRUE,
+                   native.crs = FALSE,
+                   highlightOptions = mapviewHighlightOptions(x, ...),
+                   ...) {
+
+            if (mapviewGetOption("platform") == "leaflet") {
+              # if (inherits(x, "POINT") | inherits(x, "MULTIPOINT")) {
+              leaflet_sfc(x,
+                          map = map,
+                          color = color,
+                          na.color = na.color,
+                          cex = cex,
+                          lwd = lwd,
+                          alpha = alpha,
+                          alpha.regions = alpha.regions,
+                          map.types = map.types,
+                          verbose = verbose,
+                          popup = popup,
+                          layer.name = layer.name,
+                          label = label,
+                          legend = legend,
+                          legend.opacity = legend.opacity,
+                          homebutton = homebutton,
+                          native.crs = native.crs,
+                          highlightOptions = highlightOptions,
+                          ...)
+              # } else if (inherits(x, "LINESTRING") | inherits(x, "MULTILINESTRING")) {
+              #   NULL
+              # } else if (inherits(x, "POLYGON") | inherits(x, "MULTIPOLYGON")) {
+              #   NULL
+              # }
+            } else if (mapviewGetOption("platform") == "quickmapr") {
+              quickmapr::qmap(x, ...)
+            } else {
+              NULL
+            }
+          }
+)
+
+
+######## MISC #############################################################
 
 ## Missing ================================================================
 #' @describeIn mapView initiate a map without an object

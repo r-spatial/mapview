@@ -22,44 +22,18 @@ getSimpleClass <- function(obj) {
 
 
 ### labels
-makeLabels <- function(col) {
-  if (inherits(col, "POINT")) {
+makeLabels <- function(x, zcol) {
+  if (inherits(x, "XY")) {
     lab <- "1"
-  } else if (inherits(col, "MULTIPOINT")) {
-    lab <- as.character(seq(nrow(col)))
-  } else lab <- as.character(col)
+  } else if (inherits(x, "sfc")) {
+    lab <- as.character(seq(length(x)))
+  } else if (inherits(x, "sf") & is.null(zcol)) {
+    lab <- as.character(seq(nrow(x)))
+  } else lab <- as.character(as.data.frame(x)[, zcol])
+  return(lab)
 }
 
 
-### higlight options
-mapviewHighlightOptions <- function(stroke = TRUE,
-                                    color = "cyan",
-                                    weight = 4,
-                                    opacity = 1,
-                                    fill = TRUE,
-                                    fillColor = NULL,
-                                    fillOpacity = 0,
-                                    dashArray = NULL,
-                                    bringToFront = TRUE,
-                                    sendToBack = TRUE) {
-
-  if (length(fillColor) != 1) fillColor <- color
-
-  return(
-    list(
-      stroke = stroke,
-      color = color,
-      weight = weight,
-      opacity = opacity,
-      fill = fill,
-      fillColor = fillColor,
-      fillOpacity = fillOpacity,
-      dashArray = dashArray,
-      bringToFront = bringToFront,
-      sendToBack = sendToBack
-    )
-  )
-}
 
 ### decorateMap
 # decorateMap <- function(map, ext, layer.name, ...) {
@@ -100,7 +74,7 @@ createExtent <- function(x, offset = 0.005) {
                           raster::xmax(x) + offset,
                           raster::ymin(x) - offset,
                           raster::ymax(x) + offset)
-  } else if (inherits(x, "sfc") | inherits(x, "sf")) {
+  } else if (inherits(x, "sfc") | inherits(x, "sf") | inherits(x, "XY")) {
     bb <- sf::st_bbox(x)
     ext <- raster::extent(bb[1] - offset,
                           bb[3] + offset,
