@@ -376,7 +376,7 @@ leafletPointsDF <- function(x,
   } else {
 
     grp <- layer.name
-    if (missing(label)) label <- makeLabels(row.names(x))
+    if (is.null(label)) label <- makeLabelsSP(row.names(x))
 
     color <- mapviewColors(x, colors = color, at = at, na.color = na.color)
 
@@ -474,7 +474,7 @@ leafletPoints <- function(x,
   }
 
   grp <- layer.name
-  label <- makeLabels(row.names(x))
+  if (is.null(label)) label <- makeLabelsSP(row.names(x))
 
   color <- mapviewColors(x, colors = color)
 
@@ -630,7 +630,7 @@ leafletPolygonsDF <- function(x,
   } else {
 
     grp <- layer.name
-    if (missing(label)) label <- makeLabels(row.names(x))
+    if (is.null(label)) label <- makeLabelsSP(row.names(x))
 
     color <- mapviewColors(x, colors = color, at = at, na.color = na.color)
 
@@ -646,7 +646,7 @@ leafletPolygonsDF <- function(x,
                                 label = label,
                                 data = x,
                                 highlightOptions =
-                                  mapviewHighlightOptions(weight = lwd,
+                                  mapviewHighlightOptions(x, weight = lwd,
                                                           fillOpacity = alpha.regions),
                                 ...)
       } else {
@@ -670,7 +670,7 @@ leafletPolygonsDF <- function(x,
                                 popup = popup,
                                 data = x,
                                 highlightOptions =
-                                  mapviewHighlightOptions(weight = lwd,
+                                  mapviewHighlightOptions(x, weight = lwd,
                                                           fillOpacity = alpha.regions),
                                 ...)
     }
@@ -721,7 +721,7 @@ leafletPolygons <- function(x,
   ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
 
   grp <- layer.name
-  if (missing(label)) label <- makeLabels(row.names(x))
+  if (is.null(label)) label <- makeLabelsSP(row.names(x))
 
   color <- mapviewColors(x, colors = color)
 
@@ -736,7 +736,7 @@ leafletPolygons <- function(x,
                                 fillOpacity = alpha.regions,
                                 label = label,
                                 highlightOptions =
-                                  mapviewHighlightOptions(weight = lwd,
+                                  mapviewHighlightOptions(x, weight = lwd,
                                                           fillOpacity = alpha.regions),
                                 ...)
     } else {
@@ -759,7 +759,7 @@ leafletPolygons <- function(x,
                               opacity = alpha,
                               fillOpacity = alpha.regions,
                               highlightOptions =
-                                mapviewHighlightOptions(weight = lwd,
+                                mapviewHighlightOptions(x, weight = lwd,
                                                         fillOpacity = alpha.regions),
                               ...)
   }
@@ -874,7 +874,7 @@ leafletLinesDF <- function(x,
   } else {
 
     grp <- layer.name
-    if (missing(label)) label <- makeLabels(row.names(x))
+    if (is.null(label)) label <- makeLabelsSP(row.names(x))
 
     if (missing(popup)) popup <- brewPopupTable(x)
 
@@ -904,7 +904,8 @@ leafletLinesDF <- function(x,
                                        weight = lwd,
                                        opacity = alpha,
                                        highlightOptions =
-                                         mapviewHighlightOptions(weight = lwd,
+                                         mapviewHighlightOptions(x[i, ],
+                                                                 weight = lwd,
                                                                  fill = FALSE),
                                        ...)
 
@@ -940,7 +941,7 @@ leafletLinesDF <- function(x,
                                          weight = lwd,
                                          opacity = alpha,
                                          highlightOptions =
-                                           mapviewHighlightOptions(weight = lwd,
+                                           mapviewHighlightOptions(slndf, weight = lwd,
                                                                    fill = FALSE),
                                          ...)
             }
@@ -958,7 +959,7 @@ leafletLinesDF <- function(x,
                                        weight = lwd,
                                        opacity = alpha,
                                        highlightOptions =
-                                         mapviewHighlightOptions(weight = lwd,
+                                         mapviewHighlightOptions(x[i, ], weight = lwd,
                                                                  fill = FALSE),
                                        ...)
 
@@ -988,7 +989,7 @@ leafletLinesDF <- function(x,
                                          weight = lwd,
                                          opacity = alpha,
                                          highlightOptions =
-                                           mapviewHighlightOptions(weight = lwd,
+                                           mapviewHighlightOptions(slndf, weight = lwd,
                                                                    fill = FALSE),
                                          ...)
             }
@@ -1051,7 +1052,7 @@ leafletLines <- function(x,
   ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
 
   grp <- layer.name
-  if (missing(label)) label <- makeLabels(row.names(x))
+  if (is.null(label)) label <- makeLabelsSP(row.names(x))
 
   color <- mapviewColors(x, colors = color)
 
@@ -1237,7 +1238,7 @@ leafletList <- function(x,
               cex = cex[ind],
               lwd = lwd,
               popup = pop,
-              label = makeLabels(lst[[i]]@data[, 1]),
+              label = makeLabelsSP(lst[[i]]@data[, 1]),
               legend = legend,
               legend.opacity = legend.opacity,
               layer.name = layer.name[i],
@@ -1292,7 +1293,7 @@ leafletList <- function(x,
               cex = cex,
               lwd = lwd,
               popup = pop,
-              label = makeLabels(lst[[i]]@data[, 1]),
+              label = makeLabelsSP(lst[[i]]@data[, 1]),
               legend = legend,
               legend.opacity = legend.opacity,
               layer.name = layer.name[i],

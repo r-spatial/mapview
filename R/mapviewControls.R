@@ -22,7 +22,7 @@ getSimpleClass <- function(obj) {
 
 
 ### labels
-makeLabels <- function(x, zcol) {
+makeLabels <- function(x, zcol = NULL) {
   if (inherits(x, "XY")) {
     lab <- "1"
   } else if (inherits(x, "sfc")) {
@@ -34,6 +34,9 @@ makeLabels <- function(x, zcol) {
 }
 
 
+makeLabelsSP <- function(col) {
+  as.character(col)
+}
 
 ### decorateMap
 # decorateMap <- function(map, ext, layer.name, ...) {

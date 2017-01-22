@@ -100,19 +100,29 @@ highlightPointFeatures <- function(stroke = NULL,
 mapviewHighlightOptions <- function(x,
                                     ...) {
 
-  ls <- switch(getSFClass(sf::st_geometry(x)),
-               sfc_POINT           = highlightPointFeatures(...),
-               sfc_MULTIPOINT      = highlightPointFeatures(...),
-               sfc_LINESTRING      = highlightLineFeatures(...),
-               sfc_MULTILINESTRING = highlightLineFeatures(...),
-               sfc_POLYGON         = highlightPolygonFeatures(...),
-               sfc_MULTIPOLYGON    = highlightPolygonFeatures(...),
-               POINT               = highlightPointFeatures(...),
-               MULTIPOINT          = highlightPointFeatures(...),
-               LINESTRING          = highlightLineFeatures(...),
-               MULTILINESTRING     = highlightLineFeatures(...),
-               POLYGON             = highlightPolygonFeatures(...),
-               MULTIPOLYGON        = highlightPolygonFeatures(...))
+  if (inherits(x, "Spatial")) {
+    ls <- switch(class(x),
+                 SpatialPointsDataFrame = highlightPointFeatures(...),
+                 SpatialPoints = highlightPointFeatures(...),
+                 SpatialLinesDataFrame = highlightLineFeatures(...),
+                 SpatialLines = highlightLineFeatures(...),
+                 SpatialPolygonsDataFrame = highlightPolygonFeatures(...),
+                 SpatialPolygons = highlightPolygonFeatures(...))
+  } else {
+    ls <- switch(getSFClass(sf::st_geometry(x)),
+                 sfc_POINT           = highlightPointFeatures(...),
+                 sfc_MULTIPOINT      = highlightPointFeatures(...),
+                 sfc_LINESTRING      = highlightLineFeatures(...),
+                 sfc_MULTILINESTRING = highlightLineFeatures(...),
+                 sfc_POLYGON         = highlightPolygonFeatures(...),
+                 sfc_MULTIPOLYGON    = highlightPolygonFeatures(...),
+                 POINT               = highlightPointFeatures(...),
+                 MULTIPOINT          = highlightPointFeatures(...),
+                 LINESTRING          = highlightLineFeatures(...),
+                 MULTILINESTRING     = highlightLineFeatures(...),
+                 POLYGON             = highlightPolygonFeatures(...),
+                 MULTIPOLYGON        = highlightPolygonFeatures(...))
+  }
 
   return(ls)
 
