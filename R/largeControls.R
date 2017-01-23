@@ -25,14 +25,14 @@ getPopupStyle <- function() {
 
 
 ### make path
-makepathLarge <- function() {
+makepathLarge <- function(group) {
   dirs <- list.dirs(tempdir())
   tmpPath <- grep(utils::glob2rx("*data_large*"), dirs, value = TRUE)
   if (length(tmpPath) == 0) {
     tmpPath <- tempfile(pattern = "data_large")
     dir.create(tmpPath)
   }
-  baseFn <- "data_large"
+  baseFn <- paste("data_large", group, sep = "_")
   extFn <- "geojson"
   jsonFn <- paste0(baseFn, ".", extFn)
   pathJsonFn <- paste0(tmpPath, "/", jsonFn)

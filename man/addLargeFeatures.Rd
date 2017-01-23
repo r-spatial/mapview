@@ -5,8 +5,8 @@
 \title{Add moderately large datasets with up to ~100k features to a map.}
 \usage{
 addLargeFeatures(map, data, color = "#03F", weight = 4, radius = 8,
-  opacity = 0.9, fillOpacity = 0.4, canvasOpacity = 0.4, group = NULL,
-  maxFeatures = 5000, ...)
+  opacity = 0.9, fillOpacity = 0.4, canvasOpacity = 0.4,
+  group = "layer", maxFeatures = 5000, ...)
 }
 \arguments{
 \item{map}{a mapview or leaflet object.}
@@ -27,7 +27,8 @@ create a vector of \code{n} colors.}
 
 \item{canvasOpacity}{the opacity of features when rendered on canvas.}
 
-\item{group}{the name of the group the data layer should belong to.}
+\item{group}{the name of the group the data layer should belong to.
+THIS NEEDS TO BE A VALID CHARACTER STRING, I.E. CANNOT BE 'NA' OR 'NULL'!}
 
 \item{maxFeatures}{the maximum number of features to be drawn using svg.
 If for a given zoom the number of visible features is greater than maxFeatures
@@ -68,9 +69,10 @@ crime_sf <- st_as_sf(crime, coords = c("lon", "lat"), crs = "+init=epsg:4326")
 
 leaflet() \%>\%
 addProviderTiles("CartoDB.Positron") \%>\%
-  addLargeFeatures(crime_sf, group = "crime") \%>\%
+  addLargeFeatures(crime_sf, group = "crime", color = "black") \%>\%
   addMouseCoordinates() \%>\%
-  addLayersControl(overlayGroups = "crime", position = "topleft")
+  addLayersControl(overlayGroups = c("crime", "crime2"), position = "topleft") \%>\%
+  addLargeFeatures(crime_sf, group = "crime2")
 
 ### or use mapview which uses this by default for large features
 mapview(crime, zcol = "offense", cex = 3)

@@ -3,6 +3,7 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
     //#########################################################
 
     var map = this;
+    // var data = eval(x.group);
 
     addCanvas();
 
@@ -16,7 +17,7 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
     // define a dummy layer for the geojson data
     //var myLayer = L.geoJson(undefined,{style:style,onEachFeature:onEachFeature}).addTo(map);
 
-    if (data.features[0].geometry.type == "Point") {
+    if (eval(x.group).features[0].geometry.type == "Point") {
         var myLayer = L.geoJson(undefined, {
                 pointToLayer: pointToLayer,
                 style: style,
@@ -52,7 +53,7 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
             var col = x.color;
         }
     } else {
-        var col = data.features[0].properties.color;
+        var col = eval(x.group).features[0].properties.color;
     }
     // second (first is on R side) coarse spatial zoom adaption
     // if there is a
@@ -300,10 +301,10 @@ function countProperties(obj) {
         showLayer();
     });
     // Add to the r-tree
-    rt.geoJSON(data);
+    rt.geoJSON(eval(x.group));
 
     // Add to the GeoJson Vector Tiles
-    var tileIndex = geojsonvt(data, tileOptions);
+    var tileIndex = geojsonvt(eval(x.group), tileOptions);
     var canvasTiles = L.tileLayer.canvas();
 
 

@@ -16,6 +16,7 @@
 #' @param fillOpacity opacity of the fill (for circleMarkers and polygons).
 #' @param canvasOpacity the opacity of features when rendered on canvas.
 #' @param group the name of the group the data layer should belong to.
+#' THIS NEEDS TO BE A VALID CHARACTER STRING, I.E. CANNOT BE 'NA' OR 'NULL'!
 #' @param maxFeatures the maximum number of features to be drawn using svg.
 #' If for a given zoom the number of visible features is greater than maxFeatures
 #' things will be rendered on canvas and won't be queryable. Tweak (reduce) this
@@ -49,9 +50,10 @@
 #'
 #' leaflet() %>%
 #' addProviderTiles("CartoDB.Positron") %>%
-#'   addLargeFeatures(crime_sf, group = "crime") %>%
+#'   addLargeFeatures(crime_sf, group = "crime", color = "black") %>%
 #'   addMouseCoordinates() %>%
-#'   addLayersControl(overlayGroups = "crime", position = "topleft")
+#'   addLayersControl(overlayGroups = c("crime", "crime2"), position = "topleft") %>%
+#'   addLargeFeatures(crime_sf, group = "crime2")
 #'
 #' ### or use mapview which uses this by default for large features
 #' mapview(crime, zcol = "offense", cex = 3)
@@ -72,13 +74,12 @@ addLargeFeatures <- function(map,
                              opacity = 0.9,
                              fillOpacity = 0.4,
                              canvasOpacity = 0.4,
-                             group = NULL,
+                             group = "layer",
                              maxFeatures = 5000,
                              ...) {
 
   ## temp dir
-  tmp <- makepathLarge()
-  tmpPath <- tmp[[1]][1]
+  tmp <- makepathLarge(as.character(group))
   pathJsonFn <- tmp[[2]][1]
   jsonFn <- tmp[[3]][1]
 
@@ -129,7 +130,8 @@ addLargeFeatures <- function(map,
   ### geojsonio currently does not support sf, therefore a workaround with st_write ###
   # gj <- paste('var data = ', geojsonio::geojson_json(data), ';', sep = "\n")
   sf::st_write(data, dsn = pathJsonFn, quiet = TRUE)
-  gj <- paste('var data = ', paste(readLines(pathJsonFn), collapse = "\n"), sep = "\n")
+  pre <- paste0('var ', group, ' = ')
+  gj <- paste(pre, paste(readLines(pathJsonFn), collapse = "\n"), sep = "\n")
   writeLines(gj, con = pathJsonFn)
 
   # estimate the minimum zoomlevel for the rtree part
@@ -150,6 +152,7 @@ addLargeFeatures <- function(map,
   lst_x <- list(color = col,
                 #layer = map.types,
                 data  = 'undefined',
+                group = group,
                 html = getPopupStyle(),
                 centerLat = yc,
                 centerLon = xc,
@@ -170,7 +173,8 @@ addLargeFeatures <- function(map,
   map$dependencies <- c(map$dependencies,
                         largeFeaturesDependencies(),
                         largeDataDependency(jFn = pathJsonFn,
-                                            counter = cntr))
+                                            counter = cntr,
+                                            group = group))
   leaflet::invokeMethod(map, leaflet:::getMapData(map),
                         'addLargeFeatures', lst_x)
 
@@ -199,12 +203,12 @@ largeFeaturesDependencies <- function() {
 }
 
 
-largeDataDependency <- function(jFn, counter) {
+largeDataDependency <- function(jFn, counter, group) {
   data_dir <- dirname(jFn)
   data_file <- basename(jFn)
   list(
     htmltools::htmlDependency(
-      name = "data_large",
+      name = group,
       version = counter,
       src = c(file = data_dir),
       script = list(data_file)))
