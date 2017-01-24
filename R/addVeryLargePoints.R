@@ -1,41 +1,41 @@
 addVeryLargePoints <- function(map,
-                               x,
+                               data,
                                color = "#0033ff",
                                na.color = "transparent",
                                opacity = 0.8,
                                weight = 2,
-                               group = deparse(substitute(x)),
+                               group = deparse(substitute(data)),
                                popup = NULL,
                                ...) {
-print(group)
+
   ## temp dir
   ## temp dir
-  tmp <- makepathLarge()
+  tmp <- makepathLarge(as.character(group))
   tmpPath <- tmp[[1]][1]
   pathJsonFn <- tmp[[2]][1]
   jsonFn <- tmp[[3]][1]
 
 
   # check if a sp object exist
-  if (!is.null(x)) {
+  if (!is.null(data)) {
 
     # check if  x is a dataframe
-    x <- toSPDF(x)
+    data <- toSPDF(data)
 
     # check if data has a correct latlong WGS84 proj4 string
-    x@proj4string@projargs<-compareProjCode(strsplit(x@proj4string@projargs,split = " "))
+    data@proj4string@projargs<-compareProjCode(strsplit(data@proj4string@projargs,split = " "))
 
     # check projection
-    x <- spCheckAdjustProjection(x)
+    data <- spCheckAdjustProjection(data)
 
     # create dataframe
-    cnames <- colnames(x@data)
-    x@data$r <- grDevices::col2rgb(color)[1,]
-    x@data$g <- grDevices::col2rgb(color)[2,]
-    x@data$b <- grDevices::col2rgb(color)[3,]
-    x@data$x <- x@coords[,1]
-    x@data$y <- x@coords[,2]
-    x@data <- x@data[,c("x","y","r","g","b",cnames)]
+    cnames <- colnames(data@data)
+    data@data$r <- grDevices::col2rgb(color)[1,]
+    data@data$g <- grDevices::col2rgb(color)[2,]
+    data@data$b <- grDevices::col2rgb(color)[3,]
+    data@data$x <- data@coords[,1]
+    data@data$y <- data@coords[,2]
+    data@data <- data@data[,c("x","y","r","g","b",cnames)]
 
 
     # integrate the coordinates
@@ -46,7 +46,7 @@ print(group)
     # gj <- paste('var data = ', geojsonio::geojson_json(x), ';', sep = "\n")
     # writeLines(gj, con = pathJsonFn)
     #data.json <- paste('var data = {[', coords2JSON(as.matrix(x@data)), ']};', sep = "\n")
-    data.json <- coords2JSON(as.matrix(x@data))
+    data.json <- coords2JSON(as.matrix(data@data))
     # write geojson file to temp dir
     file.create(pathJsonFn)
     fileConn <- file(pathJsonFn)
@@ -54,7 +54,7 @@ print(group)
     close(fileConn)
 
     # get extent and center of area
-    ext <- raster::extent(x)
+    ext <- raster::extent(data)
     yc <- (ext@ymax-ext@ymin) * 0.5  + ext@ymin
     xc <- (ext@xmax-ext@xmin) * 0.5 + ext@xmin
 
@@ -98,7 +98,8 @@ print(group)
                         veryLargePointsDependencies(),
                         vertexShaderDependency(),
                         fragmentShaderDependency(),
-                        veryLargeDataDependency(jFn = pathJsonFn))
+                        veryLargeDataDependency(jFn = pathJsonFn,
+                                                group = group))
   leaflet::invokeMethod(map, leaflet:::getMapData(map),
                         'addVeryLargePoints', lst_x)
 
@@ -120,14 +121,13 @@ veryLargePointsDependencies <- function() {
     ))
 }
 
-veryLargeDataDependency <- function(jFn) {
+veryLargeDataDependency <- function(jFn, group) {
 
   data_dir <- dirname(jFn)
   data_file <- basename(jFn)
-
   list(
     htmltools::htmlDependency(
-      name = "data",
+      name = group,
       version = "1",
       src = c(file = data_dir),
       attachment = data_file))

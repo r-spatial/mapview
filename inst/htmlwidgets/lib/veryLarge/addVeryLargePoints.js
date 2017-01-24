@@ -63,7 +63,7 @@ LeafletWidget.methods.addVeryLargePoints = function(x) {
         // big thanks for this to Robert Plummers version of the web gl renderer and his plugin for
         // leaflet https://robertleeplummerjr.github.io/Leaflet.glify
         if (x.data === 'undefined') {
-            var data = HTMLWidgets.getAttachmentUrl('data');
+            var data = HTMLWidgets.getAttachmentUrl(x.layername);
             wget([fragmentshader, vertexshader, data], function(fragmentshader, vertexshader, data) {
                 L.glify({
                     map: map,

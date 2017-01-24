@@ -74,7 +74,7 @@ addLargeFeatures <- function(map,
                              opacity = 0.9,
                              fillOpacity = 0.4,
                              canvasOpacity = 0.4,
-                             group = "layer",
+                             group = deparse(substitute(data)),
                              maxFeatures = 5000,
                              ...) {
 
