@@ -2,7 +2,7 @@
 
 ### line features =========================================================
 highlightLineFeatures <- function(stroke = TRUE,
-                                  color = "cyan",
+                                  color = "#00ffff",
                                   weight = 4,
                                   opacity = 1,
                                   fill = FALSE,
@@ -34,11 +34,11 @@ highlightLineFeatures <- function(stroke = TRUE,
 
 ### polygon features ======================================================
 highlightPolygonFeatures <- function(stroke = TRUE,
-                                     color = "cyan",
+                                     color = "#00ffff",
                                      weight = 4,
                                      opacity = 1,
                                      fill = TRUE,
-                                     fillColor = NULL,
+                                     fillColor = "#ff0000",
                                      fillOpacity = 0.2,
                                      dashArray = NULL,
                                      bringToFront = TRUE,
