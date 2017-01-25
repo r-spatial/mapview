@@ -63,6 +63,13 @@ mapviewColors <- function(x,
                                   ...)
     cols[is.na(cols)] <- na.color
     return(col2Hex(cols))
+  } else {
+    cols <- lattice::level.colors(x,
+                                  at = at,
+                                  col.regions = colors,
+                                  ...)
+    cols[is.na(cols)] <- na.color
+    return(col2Hex(cols))
   }
 
   # attributes(f) <- list(colorType = "bin",
