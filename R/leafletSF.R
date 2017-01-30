@@ -90,7 +90,7 @@ leaflet_sf <- function(x,
                         at = at,
                         na.color = na.color)
 
-  if (nrow(x) > mapviewGetOption("maxpoints")) {
+  if (npts(x) > getMaxFeatures(x)) {
     leaflet_large(x,
                   map = map,
                   zcol = zcol,
@@ -98,7 +98,7 @@ leaflet_sf <- function(x,
                   at = at,
                   na.color = na.color,
                   cex = cex,
-                  lwd = lwd,
+                  lwd = 1,
                   alpha = alpha,
                   alpha.regions = alpha.regions,
                   map.types = map.types,

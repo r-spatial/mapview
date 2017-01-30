@@ -36,12 +36,12 @@ mapviewColors <- function(x,
     return(col2Hex(colors))
   }
 
-  if (isSingleFeature(x)) {
+  if (!isMultiFeature(x)) {
     colors <- stnd_col
     return(col2Hex(colors))
   }
 
-  if (!isSingleFeature(x) && is.null(zcol)) {
+  if (isMultiFeature(x) && is.null(zcol)) {
     if (is.function(colors)) colors <- stnd_col #colors(1)
     return(col2Hex(colors))
   }

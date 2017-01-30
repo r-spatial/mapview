@@ -90,18 +90,45 @@ createExtent <- function(x, offset = 0.005) {
 }
 
 
-isSingleFeature <- function(x) {
+isMultiFeature <- function(x) {
   #stopifnot(inherits(x, "sfg"))
   if (inherits(x, "POINT") |
       inherits(x, "LINESTRING") |
       inherits(x, "POLYGON")) {
-    TRUE
+    FALSE
   } else if (inherits(x, "MULTIPOINT") |
              inherits(x, "MULTILINESTRING") |
              inherits(x, "MULTIPOLYGON")) {
-    FALSE
+    TRUE
   } else FALSE
 }
+
+
+getGeometryType <- function(x) {
+  # sf
+  if (inherits(sf::st_geometry(x), "POINT") |
+      inherits(sf::st_geometry(x), "MULTIPOINT") |
+      inherits(sf::st_geometry(x), "sfc_POINT") |
+      inherits(sf::st_geometry(x), "sfc_MULTIPOINT")) type <- "pt"
+  if (inherits(sf::st_geometry(x), "LINESTRING") |
+      inherits(sf::st_geometry(x), "MULTILINESTRING") |
+      inherits(sf::st_geometry(x), "sfc_LINESTRING") |
+      inherits(sf::st_geometry(x), "sfc_MULTILINESTRING")) type <- "ln"
+  if (inherits(sf::st_geometry(x), "POLYGON") |
+      inherits(sf::st_geometry(x), "MULTIPOLYGON") |
+      inherits(sf::st_geometry(x), "sfc_POLYGON") |
+      inherits(sf::st_geometry(x), "sfc_MULTIPOLYGON")) type <- "pl"
+  return(type)
+}
+
+
+getMaxFeatures <- function(x) {
+  switch(getGeometryType(x),
+         "pt" = 40000,
+         "ln" = 100000,
+         "pl" = 100000)
+}
+
 
 ### burst
 # burst <- function(x, zcol, ...) {

@@ -4,9 +4,10 @@
 \alias{addLargeFeatures}
 \title{Add moderately large datasets with up to ~100k features to a map.}
 \usage{
-addLargeFeatures(map, data, color = "#03F", weight = 4, radius = 8,
+addLargeFeatures(map, data, color = "#03F", weight = 1, radius = 8,
   opacity = 0.9, fillOpacity = 0.4, canvasOpacity = 0.4,
-  group = deparse(substitute(data)), maxFeatures = 5000, ...)
+  group = deparse(substitute(data)), maxfeatures = getMaxFeatures(data),
+  ...)
 }
 \arguments{
 \item{map}{a mapview or leaflet object.}
@@ -30,14 +31,14 @@ create a vector of \code{n} colors.}
 \item{group}{the name of the group the data layer should belong to.
 THIS NEEDS TO BE A VALID CHARACTER STRING, I.E. CANNOT BE 'NA' OR 'NULL'!}
 
+\item{...}{currently not used.}
+
 \item{maxFeatures}{the maximum number of features to be drawn using svg.
 If for a given zoom the number of visible features is greater than maxFeatures
 things will be rendered on canvas and won't be queryable. Tweak (reduce) this
 threshold in case your map becomes unresponsive when zooming in. This is
 mainly an issue for lines and polygons with many vertices, e.g. polygons
 derived from a raster.}
-
-\item{...}{currently not used.}
 }
 \description{
 This function allows users to add moderately sized datasets to a leaflet

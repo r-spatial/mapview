@@ -70,7 +70,7 @@ LeafletWidget.methods.addLargeFeatures = function(x) {
     var tileOptions = {
         maxZoom: 21,  // max zoom to preserve detail on
         maxPoints: 10, // stop slicing each tile below this number of points
-        tolerance: 3, // simplification tolerance (higher means simpler)
+        tolerance: 1, // simplification tolerance (higher means simpler)
         extent: 4096, // tile extent (both width and height)
         buffer: 128, // tile buffer on each sidey
         debug: 0, // logging level (0 to disable, 1 or 2)

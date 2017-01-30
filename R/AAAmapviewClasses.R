@@ -11,8 +11,8 @@ setClass('mapview',
 NULL
 
 setOldClass("leaflet")
-setOldClass(c(#"sf", "sfc", "sfg",
-              "XY", #"XYZ", "XYM", "XYZM",
+setOldClass(c("XY", #"XYZ", "XYM", "XYZM",
+              #"sf", "sfc", "sfg",
               "POINT", "MULTIPOINT",
               "POLYGON", "MULTIPOLYGON",
               "LINESTRING", "MULTILINESTRING",

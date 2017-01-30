@@ -69,13 +69,13 @@
 addLargeFeatures <- function(map,
                              data,
                              color = "#03F",
-                             weight = 4,
+                             weight = 1,
                              radius = 8,
                              opacity = 0.9,
                              fillOpacity = 0.4,
                              canvasOpacity = 0.4,
                              group = deparse(substitute(data)),
-                             maxFeatures = 5000,
+                             maxfeatures = getMaxFeatures(data),
                              ...) {
 
   ## temp dir
@@ -86,6 +86,11 @@ addLargeFeatures <- function(map,
   cntr <- 1
 
   if (inherits(data, "Spatial")) data <- sf::st_as_sf(data)
+
+  # calculate the maximum number of features to be rendered using RTree
+  # based on the mean number of vertices per feature
+  maxFeatures <- maxfeatures / (npts(data) / length(sf::st_geometry(data)))
+
   # check and correct if sp object is of type dataframe
   #data <- toSPDF(data)
 
@@ -128,9 +133,9 @@ addLargeFeatures <- function(map,
   # write.table(lns, pathJsonFn, sep="\n", row.names=FALSE, col.names=FALSE, quote = FALSE)
 
   ### geojsonio currently does not support sf, therefore a workaround with st_write ###
-  # gj <- paste('var data = ', geojsonio::geojson_json(data), ';', sep = "\n")
-  sf::st_write(data, dsn = pathJsonFn, quiet = TRUE)
   pre <- paste0('var ', group, ' = ')
+  # gj <- paste(pre, geojsonio::geojson_json(data), ';', sep = "\n")
+  sf::st_write(data, dsn = pathJsonFn, quiet = TRUE)
   gj <- paste(pre, paste(readLines(pathJsonFn), collapse = "\n"), sep = "\n")
   writeLines(gj, con = pathJsonFn)
 
@@ -166,7 +171,7 @@ addLargeFeatures <- function(map,
                 ymax = ext@ymax,
                 xmin = ext@xmin,
                 ymin = ext@ymin,
-                maxFeatures = maxFeatures)
+                maxFeatures = as.integer(maxFeatures))
 
   # creating the widget
   # bViewInternal(jFn = pathJsonFn,  x = lst_x)
