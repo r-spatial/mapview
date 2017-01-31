@@ -75,7 +75,7 @@ addLargeFeatures <- function(map,
                              fillOpacity = 0.4,
                              canvasOpacity = 0.4,
                              group = deparse(substitute(data)),
-                             maxfeatures = getMaxFeatures(data),
+                             maxpoints = getMaxFeatures(data),
                              ...) {
 
   ## temp dir
@@ -89,7 +89,7 @@ addLargeFeatures <- function(map,
 
   # calculate the maximum number of features to be rendered using RTree
   # based on the mean number of vertices per feature
-  maxFeatures <- maxfeatures / (npts(data) / length(sf::st_geometry(data)))
+  maxFeatures <- maxpoints / (npts(data) / length(sf::st_geometry(data)))
 
   # check and correct if sp object is of type dataframe
   #data <- toSPDF(data)
@@ -102,6 +102,12 @@ addLargeFeatures <- function(map,
 
   # get the variable names
   #geompos <- which(names(data) == "geometry")
+  if (inherits(data, "sfc")) {
+    d <- sf2DataFrame(data)
+    d$geom <- data
+    data <- sf::st_as_sf(d)
+  }
+
   keep <- colnames(data)#[-geompos]
 
   # apply zcol
@@ -113,8 +119,12 @@ addLargeFeatures <- function(map,
   col <- color[1]
   data$color <- color
   data$"Feature ID" <- getFeatureIds(data)
-  keep <- c("Feature ID", keep, "color")
+  # if (inherits(data, "sf")) {
+  keep <- unique(c("Feature ID", keep, "color"))
+  # } else {
+  #   keep <- c(keep, "color")
   # }
+  # # }
 
   data <- data[, keep]
 

@@ -123,7 +123,8 @@
   layer.name = deparse(substitute(x, env = parent.frame())),
   label = makeLabels(x, zcol), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
-  highlightOptions = mapviewHighlightOptions(x, ...), ...)
+  highlightOptions = mapviewHighlightOptions(x, ...),
+  maxpoints = getMaxFeatures(x), ...)
 
 \S4method{mapView}{sfc}(x, map = NULL, color = "#6666ff", at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 8, lwd = 2,
@@ -133,7 +134,8 @@
   layer.name = deparse(substitute(x, env = parent.frame(2))),
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
-  highlightOptions = mapviewHighlightOptions(x, ...), ...)
+  highlightOptions = mapviewHighlightOptions(x, ...),
+  maxpoints = getMaxFeatures(x), ...)
 
 \S4method{mapView}{sfc_POINT}(x, ...)
 
@@ -241,6 +243,10 @@ for simple features.}
 \item{highlightOptions}{a list of styling options for feature highlighting
 on mouse hover. See \code{\link{highlightOptions}} for details.}
 
+\item{maxpoints}{the maximum number of points making up the geometry.
+In case of lines and polygons this refers to the number of vertices. See
+Details for more information.}
+
 \item{easter.egg}{well, you might find out if you set this to TRUE}
 }
 \description{
@@ -262,6 +268,21 @@ start the browser with the flag \code{-allow-file-access-from-files} (i.e
 for windows: "path_to_your_chrome_installation\\chrome.exe --allow-file-access-from-files",
 for linux: "/usr/bin/google-chrome --allow-access-from-files").
 See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
+
+\code{maxpoints} is taken to determine when to switch rendering from svg
+to canvas overlay for perfomance. The threshold calculation is done as follows: \cr
+if the number of points (in case of point data) or vertices (in case of
+polygon or line data) > \code{maxpoints} then render using special render
+function. Within this render function we approximate the complexity of
+fetures by \cr
+\cr
+\code{maxFeatures <- maxfeatures / (npts(data) / length(data))} \cr
+\cr
+where \code{npts} determines the umber of points/vertices and \code{length}
+the number of features (points, lines or polygons). When the number of
+fetures in the current view window is larger than \code{maxFeatures} then
+features are rendered on the canvas, otherwise they are rendered as svg objects
+and fully queriable.
 }
 \section{Methods (by class)}{
 \itemize{

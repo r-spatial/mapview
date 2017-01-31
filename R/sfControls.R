@@ -310,9 +310,15 @@ nestLines <- function(obj) {
 
 ### MISC ==================================================================
 sf2DataFrame <- function(x) {
-  stopifnot(inherits(x, "sf"))
-  geompos <- which(names(x) == "geometry")
-  return(data.frame(x)[, -geompos, drop = FALSE])
+  stopifnot(inherits(x, "sf") | inherits(x, "sfc"))
+  if (inherits(x, "sf")) {
+    geompos <- which(names(x) == "geometry")
+    return(data.frame(x)[, -geompos, drop = FALSE])
+  } else {
+    d <- data.frame("a" = seq(length(x)))
+    names(d) <- "Feature ID"
+    return(d)
+  }
 }
 
 

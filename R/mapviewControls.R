@@ -56,6 +56,8 @@ makeLabelsSP <- function(col) {
 getFeatureIds <- function(att_data) {
   if (inherits(att_data, "Spatial") | inherits(att_data, "sf")) {
     ids <- row.names(att_data)
+  } else if (inherits(att_data, "sfc")) {
+    ids <- seq(length(att_data))
   }
 
   return(ids)

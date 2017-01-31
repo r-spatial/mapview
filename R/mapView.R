@@ -64,9 +64,28 @@ if ( !isGeneric('mapView') ) {
 #' for simple features.
 #' @param highlightOptions a list of styling options for feature highlighting
 #' on mouse hover. See \code{\link{highlightOptions}} for details.
+#' @param maxpoints the maximum number of points making up the geometry.
+#' In case of lines and polygons this refers to the number of vertices. See
+#' Details for more information.
 #' @param ... additional arguments passed on to repective functions.
 #' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
+#'
+#' @details
+#' \code{maxpoints} is taken to determine when to switch rendering from svg
+#' to canvas overlay for perfomance. The threshold calculation is done as follows: \cr
+#' if the number of points (in case of point data) or vertices (in case of
+#' polygon or line data) > \code{maxpoints} then render using special render
+#' function. Within this render function we approximate the complexity of
+#' fetures by \cr
+#' \cr
+#' \code{maxFeatures <- maxfeatures / (npts(data) / length(data))} \cr
+#' \cr
+#' where \code{npts} determines the umber of points/vertices and \code{length}
+#' the number of features (points, lines or polygons). When the number of
+#' fetures in the current view window is larger than \code{maxFeatures} then
+#' features are rendered on the canvas, otherwise they are rendered as svg objects
+#' and fully queriable.
 #'
 #' @author
 #' Tim Appelhans
@@ -811,6 +830,7 @@ setMethod('mapView', signature(x = 'sf'),
                    homebutton = TRUE,
                    native.crs = FALSE,
                    highlightOptions = mapviewHighlightOptions(x, ...),
+                   maxpoints = getMaxFeatures(x),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -835,6 +855,7 @@ setMethod('mapView', signature(x = 'sf'),
                          homebutton = homebutton,
                          native.crs = native.crs,
                          highlightOptions = highlightOptions,
+                         maxpoints = maxpoints,
                          ...)
 
             } else if (mapviewGetOption("platform") == "quickmapr") {
@@ -870,6 +891,7 @@ setMethod('mapView', signature(x = 'sfc'),
                    homebutton = TRUE,
                    native.crs = FALSE,
                    highlightOptions = mapviewHighlightOptions(x, ...),
+                   maxpoints = getMaxFeatures(x),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -892,6 +914,7 @@ setMethod('mapView', signature(x = 'sfc'),
                           homebutton = homebutton,
                           native.crs = native.crs,
                           highlightOptions = highlightOptions,
+                          maxpoints = maxpoints,
                           ...)
               # } else if (inherits(x, "LINESTRING") | inherits(x, "MULTILINESTRING")) {
               #   NULL
