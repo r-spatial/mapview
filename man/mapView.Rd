@@ -137,6 +137,16 @@
   highlightOptions = mapviewHighlightOptions(x, ...),
   maxpoints = getMaxFeatures(x), ...)
 
+\S4method{mapView}{XY}(x, map = NULL, color = "#6666ff", at = NULL,
+  na.color = mapviewGetOption("na.color"), cex = 8, lwd = 2,
+  alpha = 0.8, alpha.regions = 0.2,
+  map.types = mapviewGetOption("basemaps"),
+  verbose = mapviewGetOption("verbose"), popup = NULL,
+  layer.name = deparse(substitute(x, env = parent.frame(1))),
+  label = makeLabels(x), legend = mapviewGetOption("legend"),
+  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
+  highlightOptions = mapviewHighlightOptions(x, ...), ...)
+
 \S4method{mapView}{sfc_POINT}(x, ...)
 
 \S4method{mapView}{sfc_MULTIPOINT}(x, ...)
@@ -148,16 +158,6 @@
 \S4method{mapView}{sfc_POLYGON}(x, ...)
 
 \S4method{mapView}{sfc_MULTIPOLYGON}(x, ...)
-
-\S4method{mapView}{XY}(x, map = NULL, color = "#6666ff", at = NULL,
-  na.color = mapviewGetOption("na.color"), cex = 8, lwd = 2,
-  alpha = 0.8, alpha.regions = 0.2,
-  map.types = mapviewGetOption("basemaps"),
-  verbose = mapviewGetOption("verbose"), popup = NULL,
-  layer.name = deparse(substitute(x, env = parent.frame(1))),
-  label = makeLabels(x), legend = mapviewGetOption("legend"),
-  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
-  highlightOptions = mapviewHighlightOptions(x, ...), ...)
 
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
   easter.egg = FALSE)
@@ -310,6 +310,8 @@ and fully queriable.
 
 \item \code{sfc}: \code{\link{st_sfc}}
 
+\item \code{XY}: \code{\link{st_sfc}}
+
 \item \code{sfc_POINT}: \code{\link{st_sfc}}
 
 \item \code{sfc_MULTIPOINT}: \code{\link{st_sfc}}
@@ -321,8 +323,6 @@ and fully queriable.
 \item \code{sfc_POLYGON}: \code{\link{st_sfc}}
 
 \item \code{sfc_MULTIPOLYGON}: \code{\link{st_sfc}}
-
-\item \code{XY}: \code{\link{st_sfc}}
 
 \item \code{missing}: initiate a map without an object
 

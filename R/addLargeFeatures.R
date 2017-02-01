@@ -17,12 +17,9 @@
 #' @param canvasOpacity the opacity of features when rendered on canvas.
 #' @param group the name of the group the data layer should belong to.
 #' THIS NEEDS TO BE A VALID CHARACTER STRING, I.E. CANNOT BE 'NA' OR 'NULL'!
-#' @param maxFeatures the maximum number of features to be drawn using svg.
-#' If for a given zoom the number of visible features is greater than maxFeatures
-#' things will be rendered on canvas and won't be queryable. Tweak (reduce) this
-#' threshold in case your map becomes unresponsive when zooming in. This is
-#' mainly an issue for lines and polygons with many vertices, e.g. polygons
-#' derived from a raster.
+#' @param maxpoints see \code\link{mapview}} for details.
+#' @param attributes an optional attribute table (data.frame) to be used for
+#' popups. If NULL (the default) popups will show only the feature ID.
 #' @param ... currently not used.
 #'
 #' @examples
@@ -76,6 +73,7 @@ addLargeFeatures <- function(map,
                              canvasOpacity = 0.4,
                              group = deparse(substitute(data)),
                              maxpoints = getMaxFeatures(data),
+                             attributes = NULL,
                              ...) {
 
   ## temp dir
@@ -103,7 +101,11 @@ addLargeFeatures <- function(map,
   # get the variable names
   #geompos <- which(names(data) == "geometry")
   if (inherits(data, "sfc")) {
-    d <- sf2DataFrame(data)
+    if (!is.null(attributes)) {
+      d <- cbind(sf2DataFrame(data), attributes)
+    } else {
+      d <- sf2DataFrame(data)
+    }
     d$geom <- data
     data <- sf::st_as_sf(d)
   }
@@ -146,7 +148,7 @@ addLargeFeatures <- function(map,
   pre <- paste0('var ', group, ' = ')
   # gj <- paste(pre, geojsonio::geojson_json(data), ';', sep = "\n")
   sf::st_write(data, dsn = pathJsonFn, quiet = TRUE)
-  gj <- paste(pre, paste(readLines(pathJsonFn), collapse = "\n"), sep = "\n")
+  gj <- paste(pre, paste(readLines(pathJsonFn), collapse = ""), sep = "")
   writeLines(gj, con = pathJsonFn)
 
   # estimate the minimum zoomlevel for the rtree part

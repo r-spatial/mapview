@@ -8,7 +8,7 @@
 
 ### mapview to leaflet ----------------------------------------------------
 mapview2leaflet <- function(x) {
-  slot(x, "map")
+  methods::slot(x, "map")
 }
 
 
@@ -108,18 +108,19 @@ isMultiFeature <- function(x) {
 
 getGeometryType <- function(x) {
   # sf
-  if (inherits(sf::st_geometry(x), "POINT") |
-      inherits(sf::st_geometry(x), "MULTIPOINT") |
-      inherits(sf::st_geometry(x), "sfc_POINT") |
-      inherits(sf::st_geometry(x), "sfc_MULTIPOINT")) type <- "pt"
-  if (inherits(sf::st_geometry(x), "LINESTRING") |
-      inherits(sf::st_geometry(x), "MULTILINESTRING") |
-      inherits(sf::st_geometry(x), "sfc_LINESTRING") |
-      inherits(sf::st_geometry(x), "sfc_MULTILINESTRING")) type <- "ln"
-  if (inherits(sf::st_geometry(x), "POLYGON") |
-      inherits(sf::st_geometry(x), "MULTIPOLYGON") |
-      inherits(sf::st_geometry(x), "sfc_POLYGON") |
-      inherits(sf::st_geometry(x), "sfc_MULTIPOLYGON")) type <- "pl"
+  g <- sf::st_geometry(x)
+  if (inherits(g, "POINT") |
+      inherits(g, "MULTIPOINT") |
+      inherits(g, "sfc_POINT") |
+      inherits(g, "sfc_MULTIPOINT")) type <- "pt"
+  if (inherits(g, "LINESTRING") |
+      inherits(g, "MULTILINESTRING") |
+      inherits(g, "sfc_LINESTRING") |
+      inherits(g, "sfc_MULTILINESTRING")) type <- "ln"
+  if (inherits(g, "POLYGON") |
+      inherits(g, "MULTIPOLYGON") |
+      inherits(g, "sfc_POLYGON") |
+      inherits(g, "sfc_MULTIPOLYGON")) type <- "pl"
   return(type)
 }
 
