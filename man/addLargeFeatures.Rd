@@ -31,6 +31,8 @@ create a vector of \code{n} colors.}
 \item{group}{the name of the group the data layer should belong to.
 THIS NEEDS TO BE A VALID CHARACTER STRING, I.E. CANNOT BE 'NA' OR 'NULL'!}
 
+\item{maxpoints}{see \code{\link{mapview}} for details.}
+
 \item{attributes}{an optional attribute table (data.frame) to be used for
 popups. If NULL (the default) popups will show only the feature ID.}
 

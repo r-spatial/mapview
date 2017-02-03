@@ -59,3 +59,11 @@ rgbStack2PNG <- function(x, r, g, b,
 
   return(png_dat)
 }
+
+
+## legend
+rasterLegend <- function(col, at, ...) {
+  draw.colorkey(key = list(col = col,
+                           at = at,
+                           ...), draw = TRUE)
+}

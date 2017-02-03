@@ -17,7 +17,7 @@
 #' @param canvasOpacity the opacity of features when rendered on canvas.
 #' @param group the name of the group the data layer should belong to.
 #' THIS NEEDS TO BE A VALID CHARACTER STRING, I.E. CANNOT BE 'NA' OR 'NULL'!
-#' @param maxpoints see \code\link{mapview}} for details.
+#' @param maxpoints see \code{\link{mapview}} for details.
 #' @param attributes an optional attribute table (data.frame) to be used for
 #' popups. If NULL (the default) popups will show only the feature ID.
 #' @param ... currently not used.
