@@ -1071,7 +1071,12 @@ setMethod('mapView', signature(x = 'missing'),
 #'
 setMethod('mapView', signature(x = 'list'),
           function(x, ...) {
-            lyrnms <- paste0("layer_", sprintf("%02.0f", seq(x)))
+            nms <- names(x)
+            if (is.null(nms)) {
+              lyrnms <- paste0("layer_", sprintf("%02.0f", seq(x)))
+            } else {
+              lyrnms <- nms
+            }
             if (mapviewGetOption("platform") == "leaflet") {
               Reduce("+", lapply(seq(x), function(i) {
                 mapView(x = x[[i]], layer.name = lyrnms[i], ...)
