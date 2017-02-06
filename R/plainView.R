@@ -249,16 +249,19 @@ plainViewInternal <- function(filename, imgnm, crs, dims, leg_fl) {
 
   x <- list(imgnm = imgnm,
             crs = crs,
-            dims = dims,
-            leg_fl = leg_fl)
+            dims = dims)
 
   image_dir <- dirname(filename)
   image_file <- basename(filename)
 
+  legend_dir <- dirname(leg_fl)  #same as image_dir  not checked
+  legend_file <- basename(leg_fl)
+
   dep1 <- htmltools::htmlDependency(name = "image",
                                     version = "1",
                                     src = c(file = image_dir),
-                                    attachment = list(image_file))
+                                    attachment = list(image_file, legend_file))
+
   deps <- list(dep1)
 
   sizing <- htmlwidgets::sizingPolicy(padding = 0, browser.fill = TRUE)

@@ -41,6 +41,18 @@
   font-size: small;
 }
 
+#divLegend {
+  position: absolute;
+  pointer-events: none; /*pass mouse events to parent*/
+  background-color: transparent;
+  box-shadow: 0 0 2px #bbb;
+  right: 0;
+  top: 0;
+  opacity:0.5;
+  z-index: 1;
+  font-size: small;
+}
+
 #divInfoCRS {
   position: absolute;
   background-color: #787878;
