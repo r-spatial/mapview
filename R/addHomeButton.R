@@ -33,26 +33,40 @@
 #' @rdname addHomeButton
 #' @aliases addHomeButton
 addHomeButton <- function(map, ext, layer.name = "layer",
-                          position = 'bottomright') {
+                          position = 'bottomright', add = TRUE) {
   if (inherits(map, "mapview")) map <- mapview2leaflet(map)
   stopifnot(inherits(map, "leaflet"))
 
-  if (class(extent) == "matrix") ext <- raster::extent(ext)
-  label <- paste("Zoom to", layer.name)
+  hb <- try(getCallEntryFromMap(map, "addHomeButton"), silent = TRUE)
+  if (!inherits(hb, "try-error") & length(hb) == 1) {
+    ext_coords <- unlist(map$x$calls[[hb]][["args"]][1:4])
+    ext_map <- raster::extent(ext_coords[1] + 0.005,
+                              ext_coords[3] - 0.005,
+                              ext_coords[2] + 0.005,
+                              ext_coords[4] - 0.005)
+    if (identical(ext, ext_map)) add = FALSE
+  }
 
-  txt <- paste('<strong>', layer.name, '</strong>')
+  if (add) {
+    if (class(extent) == "matrix") ext <- raster::extent(ext)
+    label <- paste("Zoom to", layer.name)
 
-  # xmin = ext@xmin,
-  # ymin = ext@ymin,
-  # xmax = ext@xmax,
-  # ymax = ext@ymax,
-  # label = label,
-  # icon = txt
+    txt <- paste('<strong>', layer.name, '</strong>')
 
-  map$dependencies <- c(map$dependencies, leafletHomeButtonDependencies())
-  leaflet::invokeMethod(map, leaflet:::getMapData(map), 'addHomeButton',
-                        ext@xmin, ext@ymin, ext@xmax, ext@ymax, label, txt,
-                        position)
+    # xmin = ext@xmin,
+    # ymin = ext@ymin,
+    # xmax = ext@xmax,
+    # ymax = ext@ymax,
+    # label = label,
+    # icon = txt
+
+    map$dependencies <- c(map$dependencies, leafletHomeButtonDependencies())
+    leaflet::invokeMethod(map, leaflet:::getMapData(map), 'addHomeButton',
+                          ext@xmin, ext@ymin, ext@xmax, ext@ymax, label, txt,
+                          position)
+  }
+
+  else map
 
 }
 
