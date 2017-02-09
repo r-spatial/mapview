@@ -6,7 +6,7 @@ HTMLWidgets.widget({
   renderValue: function(el, x, instance) {
     var root = el;
     var filename = document.getElementById("image-1-attachment").href;
-    var legend_filename = document.getElementById("image-2-attachment").href;
+    var legend_filename = x.legend ? document.getElementById("image-2-attachment").href : undefined;
     var name = x.imgnm;
     var crs = x.crs;
     var dims = x.dims;
@@ -76,9 +76,11 @@ function init(root, filename, name, crs, dims, legend_filename) {
 
 	window.addEventListener("keydown", onkeydown, true);
 
-	var legend_image = new Image();
-	legend_image.src = legend_filename;
-	divLegend.appendChild(legend_image);
+	if(legend_filename !== undefined) {
+  	var legend_image = new Image();
+  	legend_image.src = legend_filename;
+  	divLegend.appendChild(legend_image);
+	}
 }
 
 function init_image() {
