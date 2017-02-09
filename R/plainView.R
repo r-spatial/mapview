@@ -245,22 +245,28 @@ setMethod('plainView', signature(x = 'RasterLayer'),
 # #'
 # #' @export
 
-plainViewInternal <- function(filename, imgnm, crs, dims, leg_fl) {
+plainViewInternal <- function(filename, imgnm, crs, dims, leg_fl = NULL) {
 
   x <- list(imgnm = imgnm,
             crs = crs,
-            dims = dims)
+            dims = dims,
+            legend = !is.null(leg_fl))
 
   image_dir <- dirname(filename)
   image_file <- basename(filename)
 
-  legend_dir <- dirname(leg_fl)  #same as image_dir  not checked
-  legend_file <- basename(leg_fl)
+  attachments <- list(image_file)
+
+  if(!is.null(leg_fl)) {
+    legend_dir <- dirname(leg_fl)  #same as image_dir  not checked
+    legend_file <- basename(leg_fl)
+    attachments <- c(attachments, legend_file)
+  }
 
   dep1 <- htmltools::htmlDependency(name = "image",
                                     version = "1",
                                     src = c(file = image_dir),
-                                    attachment = list(image_file, legend_file))
+                                    attachment = attachments)
 
   deps <- list(dep1)
 
