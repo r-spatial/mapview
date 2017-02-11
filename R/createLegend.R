@@ -1,3 +1,22 @@
+factorPalette <- function(palette,
+                          domain,
+                          ...) {
+  leaflet::colorFactor(palette, domain, ...)
+}
+
+factorLegend <- function(map,
+                         values,
+                         colors,
+                         ...) {
+  pal <- factorPalette(colors(length(levels(values))), values)
+  leaflet::addLegend(map = map,
+                    pal = pal,
+                    values = values,
+                    opacity = 1,
+                    ...)
+}
+
+
 
 addVectorLegend <- function(x,
                             map,
