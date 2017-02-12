@@ -203,7 +203,6 @@ mapviewOptions <- function(platform,
     options(mapviewBasemaps = c("CartoDB.Positron",
                                 "OpenStreetMap",
                                 "Esri.WorldImagery",
-                                "Thunderforest.Landscape",
                                 "OpenTopoMap"))
     options(mapviewraster.size = 8 * 1024 * 1024)
     options(mapviewMaxPixels = 500000)
@@ -312,7 +311,6 @@ mapviewOptions <- function(platform,
   default <- c("CartoDB.Positron",
                "OpenStreetMap",
                "Esri.WorldImagery",
-               "Thunderforest.Landscape",
                "OpenTopoMap")
 
   bm <- getOption('mapviewBasemaps')
