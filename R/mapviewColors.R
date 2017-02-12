@@ -130,6 +130,10 @@ vectorColors <- function(x, # a sp or sf object
   stnd_col <- "#6666ff"
 
   if (!is.null(zcol)) {
+    if (!inherits(x[[zcol]], c("numeric", "integer")) & !is.null(at)) {
+      warning("ignoring 'at' which is only supported for numeric/integer values")
+      at <- NULL
+    }
     col <- zcolColors(x[[zcol]],
                       colors = colors,
                       at = at,

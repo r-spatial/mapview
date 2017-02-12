@@ -74,6 +74,7 @@ leaflet_sfc <- function(x,
                                     epsg = sf::st_crs(x)$epsg,
                                     proj4string = sf::st_crs(x)$proj4string)))
 
+  if (is.function(legend)) m <- legend(m, ...)
   out <- new("mapview", object = list(x), map = m)
 
   return(out)
@@ -105,8 +106,14 @@ leaflet_sf <- function(x,
                        ...) {
 
   if (!native.crs) x <- checkAdjustProjection(x)
+  if (legend & !is.null(zcol)) {
+    legend <- mapviewLegend(values = x[[zcol]],
+                            colors = color,
+                            at = at,
+                            na.color = col2Hex(na.color))
+  }
 
-  color <- vectorColors(x = x,
+  clrs <- vectorColors(x = x,
                         zcol = zcol,
                         colors = color,
                         at = at,
@@ -115,7 +122,7 @@ leaflet_sf <- function(x,
   leaflet_sfc(sf::st_geometry(x),
               map = map,
               zcol = zcol,
-              color = color,
+              color = clrs,
               at = at,
               na.color = na.color,
               cex = cex,
