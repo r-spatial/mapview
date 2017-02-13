@@ -74,10 +74,12 @@ brewPopupTable <- function(x, use_cpp = TRUE) {
       } else {
 
         # check for 'POSIXlt' columns and, if required, convert them to 'character'
-        ids <- sapply(x, function(x) inherits(x, "POSIXlt"))
+        ids <- sapply(x, function(i) is.list(i))
 
         if (any(ids)) {
-          x[, ids] <- as.POSIXct(x[, ids])
+          x[, ids] <- suppressWarnings(
+            paste("object of class", class(x[, ids])[1])
+          ) #as.POSIXct(x[, ids])
         }
 
         mat <- df2String(x)

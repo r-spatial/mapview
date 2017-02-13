@@ -1,10 +1,12 @@
 
 ### MISC ==================================================================
-sf2DataFrame <- function(x) {
+sf2DataFrame <- function(x, remove_sf_column = FALSE) {
   stopifnot(inherits(x, "sf") | inherits(x, "sfc"))
   if (inherits(x, "sf")) {
-    geompos <- which(names(x) == "geometry")
-    return(data.frame(x)[, -geompos, drop = FALSE])
+    if (remove_sf_column) {
+      geompos <- which(names(x) == attr(x, "sf_column"))
+      return(data.frame(x)[, -geompos, drop = FALSE])
+    } else return(x)
   } else {
     d <- data.frame("a" = seq(length(x)))
     names(d) <- "Feature ID"
