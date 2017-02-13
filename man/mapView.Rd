@@ -115,9 +115,10 @@
   env = parent.frame())), label = NULL, homebutton = TRUE, ...)
 
 \S4method{mapView}{sf}(x, map = NULL, zcol = NULL,
-  color = mapviewGetOption("vector.palette"), at = NULL,
-  na.color = mapviewGetOption("na.color"), cex = 8, lwd = 3, alpha = 1,
-  alpha.regions = 0.6, map.types = mapviewGetOption("basemaps"),
+  color = mapviewGetOption("vector.palette"), col.regions = color,
+  at = NULL, na.color = mapviewGetOption("na.color"), cex = 8, lwd = 3,
+  alpha = 1, alpha.regions = 0.6,
+  map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), popup = popupTable(x),
   layer.name = deparse(substitute(x, env = parent.frame())),
   label = makeLabels(x, zcol), legend = mapviewGetOption("legend"),
@@ -125,9 +126,10 @@
   highlightOptions = mapviewHighlightOptions(x, ...),
   maxpoints = getMaxFeatures(x), ...)
 
-\S4method{mapView}{sfc}(x, map = NULL, color = "#6666ff", at = NULL,
-  na.color = mapviewGetOption("na.color"), cex = 8, lwd = 3, alpha = 1,
-  alpha.regions = 0.6, map.types = mapviewGetOption("basemaps"),
+\S4method{mapView}{sfc}(x, map = NULL, color = "#6666ff",
+  col.regions = color, at = NULL, na.color = mapviewGetOption("na.color"),
+  cex = 8, lwd = 3, alpha = 1, alpha.regions = 0.6,
+  map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), popup = NULL,
   layer.name = deparse(substitute(x, env = parent.frame(2))),
   label = makeLabels(x), legend = mapviewGetOption("legend"),
