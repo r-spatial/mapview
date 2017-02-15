@@ -77,8 +77,11 @@ brewPopupTable <- function(x, use_cpp = TRUE) {
         ids <- sapply(x, function(i) is.list(i))
 
         if (any(ids)) {
-          x[, ids] <- suppressWarnings(
-            paste("object of class", class(x[, ids])[1])
+          nms <- attr(ids, "names")[ids]
+          x[, nms] <- suppressWarnings(
+            do.call(c, lapply(nms, function(i) {
+              paste("object of class", class(x[[i]])[1])
+            }))
           ) #as.POSIXct(x[, ids])
         }
 
