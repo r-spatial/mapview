@@ -201,6 +201,7 @@ mapviewOptions <- function(platform,
     cnt <- 1
     options(mapviewPlatform = "leaflet")
     options(mapviewBasemaps = c("CartoDB.Positron",
+                                "CartoDB.DarkMatter",
                                 "OpenStreetMap",
                                 "Esri.WorldImagery",
                                 "OpenTopoMap"))
@@ -309,6 +310,7 @@ mapviewOptions <- function(platform,
 
 .basemaps <- function() {
   default <- c("CartoDB.Positron",
+               "CartoDB.DarkMatter",
                "OpenStreetMap",
                "Esri.WorldImagery",
                "OpenTopoMap")

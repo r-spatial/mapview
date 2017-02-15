@@ -172,3 +172,9 @@ zcolColors <- function(x, # a vector, not a sp or sf object
 
 }
 
+
+# from https://en.wikipedia.org/wiki/Relative_luminance
+luminence <- function(color) {
+  rgbcols <- as.numeric(grDevices::col2rgb(color))
+  (0.2126 * rgbcols[1] + 0.7152 * rgbcols[2] + 0.0722 * rgbcols[3]) / 255
+}

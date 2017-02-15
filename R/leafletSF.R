@@ -26,6 +26,8 @@ leaflet_sfc <- function(x,
 
   if (!native.crs) x <- checkAdjustProjection(x)
 
+  if (is.null(map.types)) map.types <- basemaps(color)
+
   m <- initMap(map, map.types, sf::st_crs(x), native.crs)
 
   if (npts(x) > maxpoints) {

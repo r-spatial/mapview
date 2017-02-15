@@ -133,6 +133,13 @@ getMaxFeatures <- function(x) {
 }
 
 
+basemaps <- function(colors) {
+  ml <- mean(as.numeric(sapply(colors, luminence)))
+  if (ml > 0.8) mapviewGetOption("basemaps")[c(2, 1, 3:5)] else
+    mapviewGetOption("basemaps")
+}
+
+
 ### burst
 # burst <- function(x, zcol, ...) {
 #
