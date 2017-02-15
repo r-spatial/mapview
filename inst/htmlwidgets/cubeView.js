@@ -31,6 +31,8 @@ var x_pos = 0;
 var y_pos = 0;
 var z_pos = 0;
 
+var show_cross_section_lines = true;
+
 function init(root, json) {
 	hovmoeller = new Hovmoeller(root, json);
 }
@@ -240,7 +242,7 @@ updateMaterialXY: function () {
 			data[tex_b+1] = dG[b];
 			data[tex_b+2] = dB[b];
 			data[tex_b+3] = 255;
-			if(y==y_pos || x==x_pos) {
+			if(show_cross_section_lines && (y==y_pos || x==x_pos)) {
 				data[tex_b] = ~data[tex_b];
 				data[tex_b+1] = ~data[tex_b+1];
 				data[tex_b+2] = ~data[tex_b+2];
@@ -263,7 +265,7 @@ updateMaterialXZ: function () {
 			data[tex_b+1] = dG[b];
 			data[tex_b+2] = dB[b];
 			data[tex_b+3] = 255;
-			if(z==z_pos || x==x_pos) {
+			if(show_cross_section_lines && (z==z_pos || x==x_pos)) {
 				data[tex_b] = ~data[tex_b];
 				data[tex_b+1] = ~data[tex_b+1];
 				data[tex_b+2] = ~data[tex_b+2];
@@ -286,7 +288,7 @@ updateMaterialZY: function () {
 			data[tex_b+1] = dG[b];
 			data[tex_b+2] = dB[b];
 			data[tex_b+3] = 255;
-			if(z==z_pos || y==y_pos) {
+			if(show_cross_section_lines && (z==z_pos || y==y_pos)) {
 				data[tex_b] = ~data[tex_b];
 				data[tex_b+1] = ~data[tex_b+1];
 				data[tex_b+2] = ~data[tex_b+2];
@@ -328,6 +330,9 @@ onKeyDown: function(e) {
 			y_pos = y_pos===0?0:y_pos-1;
 			e.preventDefault();
 			e.stopPropagation();
+			break;
+		case 32: //SPACE
+		  show_cross_section_lines = !show_cross_section_lines;
 			break;
 		default:
 			//console.log(e.keyCode);
