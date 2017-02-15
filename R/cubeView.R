@@ -111,6 +111,8 @@ cubeView <- function(x,
 # '
 # ' Spin mouse-wheel or press and hold middle mouse-button and move mouse down/up to zoom the cube.
 # '
+# ' Press SPACE to toggle showing cross section lines on the cube.
+# '
 # ' The color resp. grey vectors contain sequentially values of each voxel. So each vector is length == x_size * y_size * z_size.
 # ' Color component values overwrite grey values.
 # '
