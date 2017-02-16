@@ -73,16 +73,14 @@ brewPopupTable <- function(x, use_cpp = TRUE) {
         # data.frame with multiple columns
       } else {
 
-        # check for 'POSIXlt' columns and, if required, convert them to 'character'
+        # check for list columns, if found supply suitable class info for printing
         ids <- sapply(x, function(i) is.list(i))
 
         if (any(ids)) {
           nms <- attr(ids, "names")[ids]
-          x[, nms] <- suppressWarnings(
-            do.call(c, lapply(nms, function(i) {
-              paste("object of class", class(x[[i]])[1])
-            }))
-          ) #as.POSIXct(x[, ids])
+          for (i in nms) {
+            x[, i] <- paste("object of class", class(x[[i]])[1])
+          }
         }
 
         mat <- df2String(x)
