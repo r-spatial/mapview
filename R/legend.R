@@ -12,39 +12,34 @@ factorPalette <- function(palette,
 factorLegend <- function(map,
                          values,
                          colors,
-                         na.color,
-                         ...) {
+                         na.color) {
   pal <- factorPalette(palette = colors(length(levels(values))),
                        domain = values,
                        na.color = na.color)
   leaflet::addLegend(map = map,
                      pal = pal,
                      values = values,
-                     opacity = 1,
-                     ...)
+                     opacity = 1)
 }
 
 ### character =============================================================
 characterLegend <- function(map,
                             values,
                             colors,
-                            na.color,
-                            ...) {
+                            na.color) {
   pal <- factorPalette(palette = colors(length(unique(values))),
                        domain = values,
                        na.color = na.color)
   leaflet::addLegend(map = map,
                      pal = pal,
                      values = values,
-                     opacity = 1,
-                     ...)
+                     opacity = 1)
 }
 
 
 ### numeric ===============================================================
 numericPalette <- function(palette,
                            domain,
-                           at,
                            na.color,
                            ...) {
   leaflet::colorNumeric(palette = palette,
@@ -69,9 +64,9 @@ numericLegend <- function(map,
                           values,
                           colors,
                           at,
-                          na.color,
-                          ...) {
+                          na.color) {
   n_unique <- ifelse(is.null(at), length(unique(values)), length(at))
+  if (is.null(at)) at <- unique(values)
   if (n_unique <= 11) {
     if (anyNA(values)) leg_vals <- c(at, NA) else leg_vals <- at
     pal <- binPalette(palette = colors(n_unique),
@@ -81,8 +76,7 @@ numericLegend <- function(map,
     leaflet::addLegend(map = map,
                        pal = pal,
                        values = leg_vals,
-                       opacity = 1,
-                       ...)
+                       opacity = 1)
   } else {
     pal <- numericPalette(palette = colors(n_unique),
                           domain = values,
@@ -90,8 +84,7 @@ numericLegend <- function(map,
     leaflet::addLegend(map = map,
                        pal = pal,
                        values = values,
-                       opacity = 1,
-                       ...)
+                       opacity = 1)
   }
 }
 
@@ -100,33 +93,28 @@ numericLegend <- function(map,
 mapviewLegend <- function(values,
                           colors,
                           at,
-                          na.color,
-                          ...) {
+                          na.color) {
 
-  function(map, ...) {
+  function(map) {
     switch(class(values),
            factor = factorLegend(map,
                                  values = values,
                                  colors = colors,
-                                 na.color = na.color,
-                                 ...),
+                                 na.color = na.color),
            character = characterLegend(map,
                                        values = values,
                                        colors = colors,
-                                       na.color = na.color,
-                                       ...),
+                                       na.color = na.color),
            numeric = numericLegend(map,
                                    values = values,
                                    colors = colors,
                                    at = at,
-                                   na.color = na.color,
-                                   ...),
+                                   na.color = na.color),
            integer = numericLegend(map,
                                    values = values,
                                    colors = colors,
                                    at = at,
-                                   na.color = na.color,
-                                   ...))
+                                   na.color = na.color))
   }
 }
 

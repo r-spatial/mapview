@@ -79,7 +79,7 @@ leaflet_sfc <- function(x,
                                     epsg = sf::st_crs(x)$epsg,
                                     proj4string = sf::st_crs(x)$proj4string)))
 
-  if (is.function(legend)) m <- legend(m, ...)
+  if (is.function(legend)) m <- legend(m)
   out <- new("mapview", object = list(x), map = m)
 
   return(out)
