@@ -79,7 +79,8 @@ addLargeFeatures <- function(map,
   ## temp dir
   tmp <- makepathLarge(as.character(group))
   pathJsonFn <- tmp[[2]][1]
-  jsonFn <- tmp[[3]][1]
+  sfpathJsonFn <- tmp[[3]][1]
+  jsonFn <- tmp[[4]][1]
 
   cntr <- 1
 
@@ -146,10 +147,17 @@ addLargeFeatures <- function(map,
 
   ### geojsonio currently does not support sf, therefore a workaround with st_write ###
   pre <- paste0('var ', group, ' = ')
+  writeLines(pre, pathJsonFn)
   # gj <- paste(pre, geojsonio::geojson_json(data), ';', sep = "\n")
-  sf::st_write(data, dsn = pathJsonFn, quiet = TRUE)
-  gj <- paste(pre, paste(readLines(pathJsonFn), collapse = ""), sep = "")
-  writeLines(gj, con = pathJsonFn)
+  sf::st_write(data, dsn = sfpathJsonFn, quiet = TRUE)
+  file.append(pathJsonFn, sfpathJsonFn)
+  # gj <- paste(pre, paste(readLines(pathJsonFn), collapse = ""), sep = "")
+  # writeLines(gj, con = pathJsonFn)
+  # gdalUtils::ogr2ogr(src_datasource_name = sfpathJsonFn,
+  #                    dst_datasource_name = pathJsonFn,
+  #                    f = "GeoJSON",
+  #                    append = TRUE,
+  #                    overwrite = TRUE)
 
   # estimate the minimum zoomlevel for the rtree part
   # using an empirically (from OSM data) derived function with noFeatures as f(data)

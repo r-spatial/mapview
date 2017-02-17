@@ -34,9 +34,10 @@ makepathLarge <- function(group) {
   }
   baseFn <- paste("data_large", group, sep = "_")
   extFn <- "geojson"
-  jsonFn <- paste0(baseFn, ".", extFn)
+  jsonFn <- paste0(baseFn, htmlwidgets:::createWidgetId(3), ".", extFn)
   pathJsonFn <- paste0(tmpPath, "/", jsonFn)
-  return(list(tmpPath, pathJsonFn, jsonFn))
+  sfpathJsonFn <- paste0(tmpPath, "/", "sf_", jsonFn)
+  return(list(tmpPath, pathJsonFn, sfpathJsonFn, jsonFn))
 }
 
 
