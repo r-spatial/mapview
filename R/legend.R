@@ -66,12 +66,21 @@ numericLegend <- function(map,
                           at,
                           na.color) {
   n_unique <- ifelse(is.null(at), length(unique(values)), length(at))
-  if (is.null(at)) at <- unique(values)
-  if (n_unique <= 11) {
-    if (anyNA(values)) leg_vals <- c(at, NA) else leg_vals <- at
+  if (is.null(at)) {
+    atc <- lattice::do.breaks(range(values, na.rm = TRUE),
+                              length(unique(values)))
+  } else atc <- at
+
+  if (is.null(at) & n_unique <= 11 & all(unique(values) %% 1 == 0, na.rm = TRUE)) {
+    factorLegend(map = map,
+                 values = as.factor(unique(values)),
+                 colors = colors,
+                 na.color = na.color)
+  } else if (n_unique <= 11) {
+    if (anyNA(values)) leg_vals <- c(atc, NA) else leg_vals <- atc
     pal <- binPalette(palette = colors(n_unique),
-                      domain = at,
-                      bins = at,
+                      domain = atc,
+                      bins = atc,
                       na.color = na.color)
     leaflet::addLegend(map = map,
                        pal = pal,
