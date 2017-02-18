@@ -1259,7 +1259,7 @@ leafletList <- function(x,
     }
 
     if (length(layer.name) < length(lst) |
-        length(find(layer.name[1], mode = "S4")) > 0) {
+        length(utils::find(layer.name[1], mode = "S4")) > 0) {
       layer.name <- paste(layer.name, names(x))
     }
 
