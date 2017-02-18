@@ -70,19 +70,21 @@ addLargeFeatures <- function(map,
                              radius = 8,
                              opacity = 0.9,
                              fillOpacity = 0.4,
-                             canvasOpacity = 0.4,
+                             canvasOpacity = 0.9,
                              group = deparse(substitute(data)),
                              maxpoints = getMaxFeatures(data),
                              attributes = NULL,
+                             counter = 1,
                              ...) {
 
+  jsgroup <- gsub(".", "", make.names(group), fixed = TRUE)
   ## temp dir
-  tmp <- makepathLarge(as.character(group))
+  tmp <- makepathLarge(as.character(jsgroup))
   pathJsonFn <- tmp[[2]][1]
   sfpathJsonFn <- tmp[[3]][1]
   jsonFn <- tmp[[4]][1]
 
-  cntr <- 1
+  cntr <- counter
 
   if (inherits(data, "Spatial")) data <- sf::st_as_sf(data)
 
@@ -146,11 +148,12 @@ addLargeFeatures <- function(map,
   # write.table(lns, pathJsonFn, sep="\n", row.names=FALSE, col.names=FALSE, quote = FALSE)
 
   ### geojsonio currently does not support sf, therefore a workaround with st_write ###
-  pre <- paste0('var ', group, ' = ')
+  pre <- paste0('var ', jsgroup, ' = ')
   writeLines(pre, pathJsonFn)
   # gj <- paste(pre, geojsonio::geojson_json(data), ';', sep = "\n")
   sf::st_write(data, dsn = sfpathJsonFn, quiet = TRUE)
   file.append(pathJsonFn, sfpathJsonFn)
+  file.remove(sfpathJsonFn)
   # gj <- paste(pre, paste(readLines(pathJsonFn), collapse = ""), sep = "")
   # writeLines(gj, con = pathJsonFn)
   # gdalUtils::ogr2ogr(src_datasource_name = sfpathJsonFn,
@@ -177,7 +180,7 @@ addLargeFeatures <- function(map,
   lst_x <- list(color = col,
                 #layer = map.types,
                 data  = 'undefined',
-                group = group,
+                group = jsgroup,
                 html = getPopupStyle(),
                 centerLat = yc,
                 centerLon = xc,
@@ -199,7 +202,7 @@ addLargeFeatures <- function(map,
                         largeFeaturesDependencies(),
                         largeDataDependency(jFn = pathJsonFn,
                                             counter = cntr,
-                                            group = group))
+                                            group = jsgroup))
   leaflet::invokeMethod(map, leaflet:::getMapData(map),
                         'addLargeFeatures', lst_x)
 
