@@ -19,15 +19,18 @@
 #' \dontrun{
 #' ## remote images -----
 #' ### one image
-#' pt <- data.frame(x = 174.764474, y = -36.877245)
-#' coordinates(pt) <- ~ x + y
-#' proj4string(pt) <- "+init=epsg:4326"
+#' library(sf)
+#'
+#' pnt <- st_as_sf(data.frame(x = 174.764474, y = -36.877245),
+#'                 coords = c("x", "y"),
+#'                 crs = 4326)
 #'
 #' img <- "http://bit.ly/1TVwRiR"
 #'
-#' mapview(pt, popup = popupImage(img, src = "remote"))
+#' mapview(pnt, popup = popupImage(img, src = "remote"))
 #'
 #' ### multiple file (types)
+#' library(sp)
 #' images <- c(img,
 #'             "https://upload.wikimedia.org/wikipedia/commons/1/1b/R_logo.svg",
 #'             "https://www.r-project.org/logo/Rlogo.png",
@@ -69,7 +72,8 @@ popupLocalImage <- function(img, width, height) {
   invisible(file.copy(img, file.path(drs, nm)))
   rel_path <- file.path("..", basename(drs), basename(img))
 
-  info <- sapply(img, function(...) rgdal::GDALinfo(..., silent = TRUE))
+  # info <- sapply(img, function(...) rgdal::GDALinfo(..., silent = TRUE))
+  info <- sapply(img, function(...) gdalUtils::gdalinfo(..., raw_output = FALSE))
   yx_ratio <- as.numeric(info["rows", ]) / as.numeric(info["columns", ])
   xy_ratio <- as.numeric(info["columns", ]) / as.numeric(info["rows", ])
 

@@ -26,15 +26,18 @@ Create HTML strings for \code{popup} graphs used as input for
 \dontrun{
 ## remote images -----
 ### one image
-pt <- data.frame(x = 174.764474, y = -36.877245)
-coordinates(pt) <- ~ x + y
-proj4string(pt) <- "+init=epsg:4326"
+library(sf)
+
+pnt <- st_as_sf(data.frame(x = 174.764474, y = -36.877245),
+                coords = c("x", "y"),
+                crs = 4326)
 
 img <- "http://bit.ly/1TVwRiR"
 
-mapview(pt, popup = popupImage(img, src = "remote"))
+mapview(pnt, popup = popupImage(img, src = "remote"))
 
 ### multiple file (types)
+library(sp)
 images <- c(img,
             "https://upload.wikimedia.org/wikipedia/commons/1/1b/R_logo.svg",
             "https://www.r-project.org/logo/Rlogo.png",
