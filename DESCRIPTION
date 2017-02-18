@@ -4,7 +4,7 @@ Title: Interactive Viewing of Spatial Objects in R
 Version: 1.2.31
 Date: 2017-02-12
 Authors@R: c(
-      person("Tim", "Appelhans", email = "admin@environmentalinformatics-marburg.de", role = c("cre", "aut")),
+      person("Tim", "Appelhans", email = "tim.appelhans@gmail.com", role = c("cre", "aut")),
       person("Florian", "Detsch", email = "florian.detsch@staff.uni-marburg.de", role = c("aut")),
       person("Christoph", "Reudenbach", email = "reudenbach@geo.uni-marburg.de", role = c("aut")),
       person("Stefan", "Woellauer", email = "stephan.woellauer@geo.uni-marburg.de", role = c("aut")),
@@ -36,12 +36,10 @@ Imports:
     png,
     Rcpp (>= 0.11.3),
     lattice,
-    rgdal,
     gdalUtils,
     data.table,
     webshot,
     viridisLite,
-    geojsonio,
     quickmapr,
     sf
 LinkingTo: Rcpp
