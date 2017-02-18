@@ -3,7 +3,7 @@
 ### line features =========================================================
 highlightLineFeatures <- function(stroke = TRUE,
                                   color = "#00ffff",
-                                  weight = 4,
+                                  weight = 2,
                                   opacity = 1,
                                   fill = FALSE,
                                   fillColor = NULL,
@@ -35,11 +35,11 @@ highlightLineFeatures <- function(stroke = TRUE,
 ### polygon features ======================================================
 highlightPolygonFeatures <- function(stroke = TRUE,
                                      color = "#00ffff",
-                                     weight = 4,
+                                     weight = 2,
                                      opacity = 1,
                                      fill = TRUE,
-                                     fillColor = "#00ffff",
-                                     fillOpacity = 0.2,
+                                     fillColor = "#CCFFFF",
+                                     fillOpacity = 0.8,
                                      dashArray = NULL,
                                      bringToFront = TRUE,
                                      sendToBack = TRUE) {
@@ -97,33 +97,40 @@ highlightPointFeatures <- function(stroke = NULL,
 
 
 ### higlight options
-mapviewHighlightOptions <- function(x,
-                                    ...) {
+mapviewHighlightOptions <- function(x) {
 
   if (inherits(x, "Spatial")) {
     ls <- switch(class(x),
-                 SpatialPointsDataFrame = highlightPointFeatures(...),
-                 SpatialPoints = highlightPointFeatures(...),
-                 SpatialLinesDataFrame = highlightLineFeatures(...),
-                 SpatialLines = highlightLineFeatures(...),
-                 SpatialPolygonsDataFrame = highlightPolygonFeatures(...),
-                 SpatialPolygons = highlightPolygonFeatures(...))
+                 SpatialPointsDataFrame = highlightPointFeatures(),
+                 SpatialPoints = highlightPointFeatures(),
+                 SpatialLinesDataFrame = highlightLineFeatures(),
+                 SpatialLines = highlightLineFeatures(),
+                 SpatialPolygonsDataFrame = highlightPolygonFeatures(),
+                 SpatialPolygons = highlightPolygonFeatures())
   } else {
     ls <- switch(getSFClass(sf::st_geometry(x)),
-                 sfc_POINT           = highlightPointFeatures(...),
-                 sfc_MULTIPOINT      = highlightPointFeatures(...),
-                 sfc_LINESTRING      = highlightLineFeatures(...),
-                 sfc_MULTILINESTRING = highlightLineFeatures(...),
-                 sfc_POLYGON         = highlightPolygonFeatures(...),
-                 sfc_MULTIPOLYGON    = highlightPolygonFeatures(...),
-                 POINT               = highlightPointFeatures(...),
-                 MULTIPOINT          = highlightPointFeatures(...),
-                 LINESTRING          = highlightLineFeatures(...),
-                 MULTILINESTRING     = highlightLineFeatures(...),
-                 POLYGON             = highlightPolygonFeatures(...),
-                 MULTIPOLYGON        = highlightPolygonFeatures(...))
+                 sfc_POINT           = highlightPointFeatures(),
+                 sfc_MULTIPOINT      = highlightPointFeatures(),
+                 sfc_LINESTRING      = highlightLineFeatures(),
+                 sfc_MULTILINESTRING = highlightLineFeatures(),
+                 sfc_POLYGON         = highlightPolygonFeatures(),
+                 sfc_MULTIPOLYGON    = highlightPolygonFeatures(),
+                 POINT               = highlightPointFeatures(),
+                 MULTIPOINT          = highlightPointFeatures(),
+                 LINESTRING          = highlightLineFeatures(),
+                 MULTILINESTRING     = highlightLineFeatures(),
+                 POLYGON             = highlightPolygonFeatures(),
+                 MULTIPOLYGON        = highlightPolygonFeatures())
   }
 
   return(ls)
 
 }
+
+
+# highlight <- function(col, fact = 1.1) {
+#   hsv3 <- rgb2hsv(col2rgb(color))
+#   hsv3[3, ] <- hsv3[3, ] * fact
+#   hsv(h = hsv3[1,], s = hsv3[2,], v = hsv3[3,])
+# }
+
