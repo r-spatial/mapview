@@ -15,7 +15,7 @@ Authors@R: c(
       person("Michael", "Sumner", role = c("ctb")),
       person("Environmental Informatics Marburg", role = c("ctb"))
     )
-Maintainer: Tim Appelhans <admin@environmentalinformatics-marburg.de>
+Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
 Description: Methods to view spatial objects interactively.
 License: GPL (>= 3) | file LICENSE
 URL: https://github.com/environmentalinformatics-marburg/mapview

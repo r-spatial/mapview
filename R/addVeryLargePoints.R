@@ -100,7 +100,7 @@ addVeryLargePoints <- function(map,
                         fragmentShaderDependency(),
                         veryLargeDataDependency(jFn = pathJsonFn,
                                                 group = group))
-  leaflet::invokeMethod(map, leaflet:::getMapData(map),
+  leaflet::invokeMethod(map, leaflet::getMapData(map),
                         'addVeryLargePoints', lst_x)
 
 }

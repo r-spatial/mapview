@@ -61,7 +61,7 @@ addHomeButton <- function(map, ext, layer.name = "layer",
     # icon = txt
 
     map$dependencies <- c(map$dependencies, leafletHomeButtonDependencies())
-    leaflet::invokeMethod(map, leaflet:::getMapData(map), 'addHomeButton',
+    leaflet::invokeMethod(map, leaflet::getMapData(map), 'addHomeButton',
                           ext@xmin, ext@ymin, ext@xmax, ext@ymax, label, txt,
                           position)
   }

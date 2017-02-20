@@ -1,20 +1,5 @@
 #### functions for leaflet based rendering by spatial class
 
-isAvailableInLeaflet <- function() {
-  return(
-    list(
-      lab = "label" %in% names(as.list(args(leaflet::addCircleMarkers))),
-      scl = "addScaleBar" %in% ls(getNamespace("leaflet"))
-    )
-  )
-}
-
-# lab_avl <- isAvailableInLeaflet()$lab
-# scl_avl <- isAvailableInLeaflet()$scl
-
-warn <- paste("Feature labels on mouseover and 'addScaleBar' are not supported in the installed version of 'leaflet'.",
-              "\nRun devtools::install_github('rstudio/leaflet') and re-install 'mapview' locally to enable these features.")
-
 
 #### RASTER ###############################################################
 ###########################################################################

@@ -203,7 +203,7 @@ addLargeFeatures <- function(map,
                         largeDataDependency(jFn = pathJsonFn,
                                             counter = cntr,
                                             group = jsgroup))
-  leaflet::invokeMethod(map, leaflet:::getMapData(map),
+  leaflet::invokeMethod(map, leaflet::getMapData(map),
                         'addLargeFeatures', lst_x)
 
 }

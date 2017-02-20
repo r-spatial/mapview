@@ -56,7 +56,8 @@ viewExtent <- function(x,
                             map.types = map.types,
                             names = grp)
 
-  if (scl_avl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+  if (isAvailableInLeaflet()$scl)
+    m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- addMouseCoordinates(m)
 
   out <- methods::new('mapview', object = out_obj, map = m)
