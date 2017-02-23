@@ -1,4 +1,4 @@
-mapview 1.2.31
+mapview 1.2.32
 --------------------------------------------------------------------------------
 
 new features:
@@ -15,6 +15,7 @@ new features:
   * added support for sf to "+"
   * addLargeFeatures now also defined for sf and also multilayer compatible (i.e. more than one layer can be rendered at once using either '%>%' or '+')
   * simple features can now be rendered with arbitrary CRS (without map background)
+  * mapview will now decide which default base map to use based on average luminence of rendered colors. If lighter than 0.7 (with 1 being white an d 0 being black) a dark basemap - CartoDB.DarkMatter - will be used.
 
 bugfixes:
   * sync, addMouseCoordinates and addLogo did not work anymore. Now fixed thanks to @timelyportfolio
