@@ -12,28 +12,36 @@ factorPalette <- function(palette,
 factorLegend <- function(map,
                          values,
                          colors,
-                         na.color) {
-  pal <- factorPalette(palette = colors(length(levels(values))),
+                         na.color,
+                         layer.name) {
+  pal <- factorPalette(palette = zcolColors(x = values,
+                                            colors = colors,
+                                            na.color = na.color),
                        domain = values,
                        na.color = na.color)
   leaflet::addLegend(map = map,
                      pal = pal,
                      values = values,
-                     opacity = 1)
+                     opacity = 1,
+                     title = layer.name)
 }
 
 ### character =============================================================
 characterLegend <- function(map,
                             values,
                             colors,
-                            na.color) {
-  pal <- factorPalette(palette = colors(length(unique(values))),
+                            na.color,
+                            layer.name) {
+  pal <- factorPalette(palette = zcolColors(x = values,
+                                            colors = colors,
+                                            na.color = na.color),
                        domain = values,
                        na.color = na.color)
   leaflet::addLegend(map = map,
                      pal = pal,
                      values = values,
-                     opacity = 1)
+                     opacity = 1,
+                     title = layer.name)
 }
 
 
@@ -64,7 +72,8 @@ numericLegend <- function(map,
                           values,
                           colors,
                           at,
-                          na.color) {
+                          na.color,
+                          layer.name) {
   n_unique <- ifelse(is.null(at), length(unique(values)), length(at))
   if (is.null(at)) {
     atc <- lattice::do.breaks(range(values, na.rm = TRUE),
@@ -85,7 +94,8 @@ numericLegend <- function(map,
     leaflet::addLegend(map = map,
                        pal = pal,
                        values = leg_vals,
-                       opacity = 1)
+                       opacity = 1,
+                       title = layer.name)
   } else {
     pal <- numericPalette(palette = colors(n_unique),
                           domain = values,
@@ -93,7 +103,8 @@ numericLegend <- function(map,
     leaflet::addLegend(map = map,
                        pal = pal,
                        values = values,
-                       opacity = 1)
+                       opacity = 1,
+                       title = layer.name)
   }
 }
 
@@ -102,28 +113,33 @@ numericLegend <- function(map,
 mapviewLegend <- function(values,
                           colors,
                           at,
-                          na.color) {
+                          na.color,
+                          layer.name) {
 
   function(map) {
     switch(class(values),
            factor = factorLegend(map,
                                  values = values,
                                  colors = colors,
-                                 na.color = na.color),
+                                 na.color = na.color,
+                                 layer.name = layer.name),
            character = characterLegend(map,
                                        values = values,
                                        colors = colors,
-                                       na.color = na.color),
+                                       na.color = na.color,
+                                       layer.name = layer.name),
            numeric = numericLegend(map,
                                    values = values,
                                    colors = colors,
                                    at = at,
-                                   na.color = na.color),
+                                   na.color = na.color,
+                                   layer.name = layer.name),
            integer = numericLegend(map,
                                    values = values,
                                    colors = colors,
                                    at = at,
-                                   na.color = na.color))
+                                   na.color = na.color,
+                                   layer.name = layer.name))
   }
 }
 
