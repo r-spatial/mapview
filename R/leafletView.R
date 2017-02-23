@@ -631,8 +631,7 @@ leafletPolygonsDF <- function(x,
                                 label = label,
                                 data = x,
                                 highlightOptions =
-                                  mapviewHighlightOptions(x, weight = lwd,
-                                                          fillOpacity = alpha.regions),
+                                  mapviewHighlightOptions(x),
                                 ...)
       } else {
         m <- addLargeFeatures(m,
@@ -655,8 +654,7 @@ leafletPolygonsDF <- function(x,
                                 popup = popup,
                                 data = x,
                                 highlightOptions =
-                                  mapviewHighlightOptions(x, weight = lwd,
-                                                          fillOpacity = alpha.regions),
+                                  mapviewHighlightOptions(x),
                                 ...)
     }
 
@@ -721,8 +719,7 @@ leafletPolygons <- function(x,
                                 fillOpacity = alpha.regions,
                                 label = label,
                                 highlightOptions =
-                                  mapviewHighlightOptions(x, weight = lwd,
-                                                          fillOpacity = alpha.regions),
+                                  mapviewHighlightOptions(x),
                                 ...)
     } else {
       m <- addLargeFeatures(m,
@@ -744,8 +741,7 @@ leafletPolygons <- function(x,
                               opacity = alpha,
                               fillOpacity = alpha.regions,
                               highlightOptions =
-                                mapviewHighlightOptions(x, weight = lwd,
-                                                        fillOpacity = alpha.regions),
+                                mapviewHighlightOptions(x),
                               ...)
   }
 
@@ -889,9 +885,7 @@ leafletLinesDF <- function(x,
                                        weight = lwd,
                                        opacity = alpha,
                                        highlightOptions =
-                                         mapviewHighlightOptions(x[i, ],
-                                                                 weight = lwd,
-                                                                 fill = FALSE),
+                                         mapviewHighlightOptions(x[i, ]),
                                        ...)
 
             # disjunct line
@@ -926,8 +920,7 @@ leafletLinesDF <- function(x,
                                          weight = lwd,
                                          opacity = alpha,
                                          highlightOptions =
-                                           mapviewHighlightOptions(slndf, weight = lwd,
-                                                                   fill = FALSE),
+                                           mapviewHighlightOptions(slndf),
                                          ...)
             }
           }
@@ -944,8 +937,7 @@ leafletLinesDF <- function(x,
                                        weight = lwd,
                                        opacity = alpha,
                                        highlightOptions =
-                                         mapviewHighlightOptions(x[i, ], weight = lwd,
-                                                                 fill = FALSE),
+                                         mapviewHighlightOptions(x[i, ]),
                                        ...)
 
             # disjunct line
@@ -974,8 +966,7 @@ leafletLinesDF <- function(x,
                                          weight = lwd,
                                          opacity = alpha,
                                          highlightOptions =
-                                           mapviewHighlightOptions(slndf, weight = lwd,
-                                                                   fill = FALSE),
+                                           mapviewHighlightOptions(slndf),
                                          ...)
             }
           }
