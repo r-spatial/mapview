@@ -111,12 +111,26 @@ leaflet_sf <- function(x,
                        maxpoints,
                        ...) {
 
+  if (!is.null(zcol)) {
+    layer.name <- paste(layer.name, zcol)
+    if (length(unique(x[[zcol]])) <= 1) {
+      warning(
+        sprintf(
+          "column %s has only one unique value/level, ignoring coloring and legend",
+          zcol
+        )
+      )
+      zcol <- NULL
+    }
+  }
+
   if (!native.crs) x <- checkAdjustProjection(x)
   if (legend & !is.null(zcol)) {
     legend <- mapviewLegend(values = x[[zcol]],
                             colors = color,
                             at = at,
-                            na.color = col2Hex(na.color))
+                            na.color = col2Hex(na.color),
+                            layer.name = layer.name)
   }
 
   clrs <- vectorColors(x = x,
