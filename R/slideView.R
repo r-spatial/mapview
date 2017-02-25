@@ -166,11 +166,42 @@ setMethod("slideView", signature(img1 = "RasterLayer",
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
+            leg_flr <- NULL
+            leg_fll <- NULL
+
+            if (legend) {
+              ## legend one (right)
+              rngr <- range(img1[], na.rm = TRUE)
+              # if (missing(at)) at <- lattice::do.breaks(rng, 256)
+              leg_flr <- paste0(dir, "/legendr", ".png")
+              png(leg_flr, height = 200, width = 80, units = "px",
+                  bg = "transparent", pointsize = 14)
+              rasterLegend(col = col.regions,
+                           # at = at,
+                           height = 0.9,
+                           space = "right")
+              dev.off()
+
+              ## legend two (left)
+              rngl <- range(imgl[], na.rm = TRUE)
+              # if (missing(at)) at <- lattice::do.breaks(rng, 256)
+              leg_fll <- paste0(dir, "/legendl", ".png")
+              png(leg_fll, height = 200, width = 80, units = "px",
+                  bg = "transparent", pointsize = 14)
+              rasterLegend(col = col.regions,
+                           # at = at,
+                           height = 0.9,
+                           space = "left")
+              dev.off()
+            }
+
             slideViewInternal(list(a="a", b="b"),
                               img1nm = label1,
                               img2nm = label2,
                               filename1 = fl1,
-                              filename2 = fl2)
+                              filename2 = fl2,
+                              leg_flr = leg_flr,
+                              leg_fll = leg_fll)
           }
 
 )
@@ -216,13 +247,17 @@ slideViewInternal <- function(message,
                               width = NULL,
                               height = NULL,
                               filename1 = NULL,
-                              filename2 = NULL) {
+                              filename2 = NULL
+                              leg_flr = NULL,
+                              leg_fll = NULL) {
 
   # forward options using x
   x <- list(
     message = message,
     img1 = img1nm,
     img2 = img2nm
+    leg_flr = leg_flr,
+    leg_fll = leg_fll
   )
 
   #filename1 and filename2 need to have same directory!

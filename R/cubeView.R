@@ -46,7 +46,8 @@
 
 cubeView <- function(x,
                      at,
-                     col.regions = mapviewGetOption("raster.palette")) {
+                     col.regions = mapviewGetOption("raster.palette"),
+                     legend = TRUE)) {
 
   stopifnot(inherits(x, "RasterStack") | inherits(x, "RasterBrick"))
 
@@ -62,12 +63,29 @@ cubeView <- function(x,
   y_size <- raster::nrow(x)
   z_size <- raster::nlayers(x)
 
+  leg_fl <- NULL
+
+  if (legend) {
+    rng <- range(x[], na.rm = TRUE)
+    if (missing(at)) at <- lattice::do.breaks(rng, 256)
+    leg_fl <- paste0(dir, "/legend", ".png")
+    png(leg_fl, height = 200, width = 80, units = "px",
+        bg = "transparent", pointsize = 14)
+    rasterLegend(col = col.regions,
+                 at = at,
+                 height = 0.9,
+                 space = "right")
+    dev.off()
+  }
+
+
   cubeViewRaw(red = tst[1, ],
               green = tst[2, ],
               blue = tst[3, ],
               x_size = x_size,
               y_size = y_size,
-              z_size = z_size)
+              z_size = z_size,
+              leg_fl = leg_fl)
 
 }
 
@@ -101,7 +119,8 @@ cubeView <- function(x,
 # '
 # ' z-axis: PAGE_DOWN / PAGE_UP key
 # '
-# ' Note: Because of key focus issues key-press-events are not always recognised within RStudio at Windows.
+# ' Note: Because of key focus issues key-press-events are not always
+# ' recognised within RStudio at Windows.
 # ' In this case open the view in a web-browser (RStudio button: "show in new window").
 # '
 # '
@@ -109,11 +128,13 @@ cubeView <- function(x,
 # '
 # ' Press and hold right mouse-button to move the cube.
 # '
-# ' Spin mouse-wheel or press and hold middle mouse-button and move mouse down/up to zoom the cube.
+# ' Spin mouse-wheel or press and hold middle mouse-button and move mouse
+# ' down/up to zoom the cube.
 # '
 # ' Press SPACE to toggle showing cross section lines on the cube.
 # '
-# ' The color resp. grey vectors contain sequentially values of each voxel. So each vector is length == x_size * y_size * z_size.
+# ' The color resp. grey vectors contain sequentially values of each voxel.
+# ' So each vector is length == x_size * y_size * z_size.
 # ' Color component values overwrite grey values.
 # '
 # ' Sequence of coordinates (x,y,z) for values in vectors:
@@ -127,11 +148,23 @@ cubeView <- function(x,
 # ' @import htmlwidgets
 # '
 # ' @export
-cubeViewRaw <- function(grey=NULL, red=NULL, green=NULL, blue=NULL, x_size, y_size, z_size, width = NULL, height = NULL) {
+cubeViewRaw <- function(grey = NULL,
+                        red = NULL,
+                        green = NULL,
+                        blue = NULL,
+                        x_size,
+                        y_size,
+                        z_size,
+                        width = NULL,
+                        height = NULL,
+                        leg_fl) {
 
   total_size <- x_size*y_size*z_size
 
-  object_list <- list(x_size=x_size, y_size=y_size, z_size=z_size)
+  object_list <- list(x_size = x_size,
+                      y_size = y_size,
+                      z_size = z_size,
+                      leg_fl = leg_fl)
 
   if(!is.null(grey)) {
     if(length(grey)!=total_size) {
@@ -196,3 +229,19 @@ renderCubeView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
   htmlwidgets::shinyRenderWidget(expr, cubeViewOutput, env, quoted = TRUE)
 }
+
+
+## cubeview ===============================================================
+
+if ( !isGeneric('cubeview') ) {
+  setGeneric('cubeview', function(...)
+    standardGeneric('cubeview'))
+}
+
+#' @describeIn cubeView alias for ease of typing
+#' @aliases cubeview
+#' @export cubeview
+
+setMethod('cubeview', signature('ANY'),
+          function(...) cubeView(...))
+
