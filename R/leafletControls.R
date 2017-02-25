@@ -146,7 +146,7 @@ wmcrs <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=
 llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
 
 
-# Check size of out <- methods::new('mapview', object = out_obj, map = m)out <- methods::new('mapview', object = out_obj, map = m)out <- methods::new('mapview', object = out_obj, map = m)* objects for mapView -------------------------------
+
 
 rasterCheckSize <- function(x, maxpixels) {
   if (maxpixels < raster::ncell(x)) {
