@@ -85,7 +85,10 @@ popupGraph <- function(graphs, type = c("png", "svg", "html"), ...) {
   drs <- file.path(tempdir(), "graphs")
   if (!dir.exists(drs)) dir.create(drs)
 
-  type <- type[1]
+  # type <- type[1]
+  if (inherits(graphs[[1]], c("htmlwidget"))) {
+    type <- "html"
+  } else type <- type[1]
 
   pop <- switch(type,
                 png = popupPNGraph(graphs = graphs, dsn = drs, ...),
