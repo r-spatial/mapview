@@ -153,6 +153,7 @@ zcolColors <- function(x, # a vector, not a sp or sf object
                        colors = mapviewGetOption("vector.palette"),
                        at = NULL,
                        na.color = mapviewGetOption("na.color"),
+                       return.sorted = FALSE,
                        ...) {
 
   if (is.character(x)) x <- as.factor(x)
@@ -167,6 +168,8 @@ zcolColors <- function(x, # a vector, not a sp or sf object
                                 at = at,
                                 col.regions = colors,
                                 ...)
+  if (return.sorted) cols <- cols[order(x)]
+
   cols[is.na(cols)] <- na.color
   return(col2Hex(cols))
 
