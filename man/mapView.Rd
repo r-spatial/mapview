@@ -159,7 +159,16 @@
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
   easter.egg = FALSE)
 
-\S4method{mapView}{list}(x, ...)
+\S4method{mapView}{list}(x, map = NULL, zcol = NULL,
+  color = mapviewGetOption("vector.palette"), col.regions = color,
+  at = NULL, na.color = mapviewGetOption("na.color"), cex = 8,
+  lwd = lineWidth(x), alpha = 1, alpha.regions = 0.6, map.types = NULL,
+  verbose = mapviewGetOption("verbose"), popup = popupTable(x),
+  layer.name = deparse(substitute(x, env = parent.frame())),
+  label = makeLabels(x, zcol), legend = mapviewGetOption("legend"),
+  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
+  highlightOptions = mapviewHighlightOptions(x),
+  maxpoints = getMaxFeatures(x), ...)
 
 \S4method{mapview}{ANY}(...)
 }

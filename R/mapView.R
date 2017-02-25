@@ -417,50 +417,72 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
                    homebutton = TRUE,
                    ...) {
 
-            # if (nrow(x) < mapviewGetOption("maxpoints")) {
-              if (mapviewGetOption("platform") == "leaflet") {
-                leafletPointsDF(x,
-                                map = map,
-                                map.types = map.types,
-                                zcol = zcol,
-                                burst = burst,
-                                color = color,
-                                alpha = alpha,
-                                col.regions = col.regions,
-                                alpha.regions = alpha.regions,
-                                na.color = na.color,
-                                at = at,
-                                cex = cex,
-                                lwd = lwd,
-                                popup = popup,
-                                label = label,
-                                legend = legend,
-                                legend.opacity = legend.opacity,
-                                layer.name = layer.name,
-                                verbose = verbose,
-                                homebutton = homebutton,
-                                ...)
-              } else {
-                if (mapviewGetOption("platform") == "quickmapr") {
-                  quickmapr::qmap(x, ...)
-                } else {
-                  NULL
-                }
-              }
-            # } else {
-            #   fpView(x,
-            #          zcol = zcol,
-            #          color = color,
-            #          na.color = na.color,
-            #          values = values,
-            #          map.types = map.types,
-            #          alpha = alpha,
-            #          weight = cex,
-            #          verbose = verbose,
-            #          layer.name = layer.name,
-            #          popup = popup,
-            #          )
-            # }
+            mapView(sf::st_as_sf(x),
+                    map = map,
+                    map.types = map.types,
+                    zcol = zcol,
+                    burst = burst,
+                    color = color,
+                    alpha = alpha,
+                    col.regions = col.regions,
+                    alpha.regions = alpha.regions,
+                    na.color = na.color,
+                    at = at,
+                    cex = cex,
+                    lwd = lwd,
+                    popup = popup,
+                    label = label,
+                    legend = legend,
+                    legend.opacity = legend.opacity,
+                    layer.name = layer.name,
+                    verbose = verbose,
+                    homebutton = homebutton,
+                    ...)
+
+            # # if (nrow(x) < mapviewGetOption("maxpoints")) {
+            #   if (mapviewGetOption("platform") == "leaflet") {
+            #     leafletPointsDF(x,
+            #                     map = map,
+            #                     map.types = map.types,
+            #                     zcol = zcol,
+            #                     burst = burst,
+            #                     color = color,
+            #                     alpha = alpha,
+            #                     col.regions = col.regions,
+            #                     alpha.regions = alpha.regions,
+            #                     na.color = na.color,
+            #                     at = at,
+            #                     cex = cex,
+            #                     lwd = lwd,
+            #                     popup = popup,
+            #                     label = label,
+            #                     legend = legend,
+            #                     legend.opacity = legend.opacity,
+            #                     layer.name = layer.name,
+            #                     verbose = verbose,
+            #                     homebutton = homebutton,
+            #                     ...)
+            #   } else {
+            #     if (mapviewGetOption("platform") == "quickmapr") {
+            #       quickmapr::qmap(x, ...)
+            #     } else {
+            #       NULL
+            #     }
+            #   }
+            # # } else {
+            # #   fpView(x,
+            # #          zcol = zcol,
+            # #          color = color,
+            # #          na.color = na.color,
+            # #          values = values,
+            # #          map.types = map.types,
+            # #          alpha = alpha,
+            # #          weight = cex,
+            # #          verbose = verbose,
+            # #          layer.name = layer.name,
+            # #          popup = popup,
+            # #          )
+            # # }
 
           }
 
@@ -1074,16 +1096,60 @@ setMethod('mapView', signature(x = 'missing'),
 #' @describeIn mapView \code{\link{list}}
 #'
 setMethod('mapView', signature(x = 'list'),
-          function(x, ...) {
+          function(x,
+                   map = NULL,
+                   zcol = NULL,
+                   color = mapviewGetOption("vector.palette"),
+                   col.regions = color,
+                   at = NULL,
+                   na.color = mapviewGetOption("na.color"),
+                   cex = 8,
+                   lwd = lineWidth(x),
+                   alpha = 1,
+                   alpha.regions = 0.6,
+                   map.types = NULL,
+                   verbose = mapviewGetOption("verbose"),
+                   popup = popupTable(x),
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
+                   label = makeLabels(x, zcol),
+                   legend = mapviewGetOption("legend"),
+                   legend.opacity = 1,
+                   homebutton = TRUE,
+                   native.crs = FALSE,
+                   highlightOptions = mapviewHighlightOptions(x),
+                   maxpoints = getMaxFeatures(x),
+                   ...) {
+            makeLayerNames <- function(v1) {
+              #chr <- as.character(deparse(substitute(v1)))
+              chr <- gsub(glob2rx("*list(*"), "", v1)
+              chr <- unlist(strsplit(x = gsub(")", "", chr), ","))
+              gsub(" ", "", chr)
+            }
+
             nms <- names(x)
             if (is.null(nms)) {
-              lyrnms <- paste0("layer_", sprintf("%02.0f", seq(x)))
+              lyrnms <- makeLayerNames(layer.name) #paste0("layer_", sprintf("%02.0f", seq(x)))
             } else {
               lyrnms <- nms
             }
             if (mapviewGetOption("platform") == "leaflet") {
               Reduce("+", lapply(seq(x), function(i) {
-                mapView(x = x[[i]], layer.name = lyrnms[i], ...)
+                mapView(x = x[[i]],
+                        layer.name = lyrnms[i],
+                        zcol = zcol[i],
+                        color = color,
+                        na.color = na.color,
+                        cex = cex,
+                        alpha = alpha,
+                        alpha.regions = alpha.regions,
+                        map.types = map.types,
+                        verbose = verbose,
+                        legend = legend,
+                        legend.opacity = legend.opacity,
+                        homebutton = homebutton,
+                        native.crs = native.crs,
+                        ...)
               }))
             } else {
               if (mapviewGetOption("platform") == "quickmapr") {
