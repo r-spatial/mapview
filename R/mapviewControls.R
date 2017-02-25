@@ -21,7 +21,7 @@ warn <- paste("Feature labels on mouseover and 'addScaleBar' are not supported i
 
 
 
-### mapview to leaflet ----------------------------------------------------
+### mapview to leaflet
 mapview2leaflet <- function(x) {
   methods::slot(x, "map")
 }
