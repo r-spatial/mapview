@@ -47,7 +47,7 @@
 cubeView <- function(x,
                      at,
                      col.regions = mapviewGetOption("raster.palette"),
-                     legend = TRUE)) {
+                     legend = TRUE) {
 
   stopifnot(inherits(x, "RasterStack") | inherits(x, "RasterBrick"))
 
@@ -66,6 +66,7 @@ cubeView <- function(x,
   leg_fl <- NULL
 
   if (legend) {
+    dir <- tempdir()
     rng <- range(x[], na.rm = TRUE)
     if (missing(at)) at <- lattice::do.breaks(rng, 256)
     leg_fl <- paste0(dir, "/legend", ".png")
@@ -232,16 +233,9 @@ renderCubeView <- function(expr, env = parent.frame(), quoted = FALSE) {
 
 
 ## cubeview ===============================================================
-
-if ( !isGeneric('cubeview') ) {
-  setGeneric('cubeview', function(...)
-    standardGeneric('cubeview'))
-}
-
 #' @describeIn cubeView alias for ease of typing
 #' @aliases cubeview
 #' @export cubeview
 
-setMethod('cubeview', signature('ANY'),
-          function(...) cubeView(...))
+cubeview <-  function(...) cubeView(...)
 

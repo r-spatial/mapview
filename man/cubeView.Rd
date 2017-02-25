@@ -2,9 +2,13 @@
 % Please edit documentation in R/cubeView.R
 \name{cubeView}
 \alias{cubeView}
+\alias{cubeview}
 \title{View a RasterStack or RasterBrick as 3-dimensional data cube.}
 \usage{
-cubeView(x, at, col.regions = mapviewGetOption("raster.palette"))
+cubeView(x, at, col.regions = mapviewGetOption("raster.palette"),
+  legend = TRUE)
+
+cubeview(...)
 }
 \arguments{
 \item{x}{a RasterStack or RasterBrick}
@@ -33,6 +37,10 @@ Press and hold right mouse-button to move the cube.
 Spin mouse-wheel or press and hold middle mouse-button and
 move mouse down/up to zoom the cube.
 }
+\section{Functions}{
+\itemize{
+\item \code{cubeview}: alias for ease of typing
+}}
 \examples{
 \dontrun{
 library(raster)

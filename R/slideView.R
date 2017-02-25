@@ -247,7 +247,7 @@ slideViewInternal <- function(message,
                               width = NULL,
                               height = NULL,
                               filename1 = NULL,
-                              filename2 = NULL
+                              filename2 = NULL,
                               leg_flr = NULL,
                               leg_fll = NULL) {
 
@@ -255,7 +255,7 @@ slideViewInternal <- function(message,
   x <- list(
     message = message,
     img1 = img1nm,
-    img2 = img2nm
+    img2 = img2nm,
     leg_flr = leg_flr,
     leg_fll = leg_fll
   )
