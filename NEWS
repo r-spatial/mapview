@@ -1,4 +1,4 @@
-mapview 1.2.32
+mapview 1.2.33
 --------------------------------------------------------------------------------
 
 new features:
@@ -9,12 +9,11 @@ new features:
   * added new platform 'quickmapr' to render things using library('quickmapr').
   * slideView has gained arguments 'label1' and 'label2' to supply slider names for the respective images, img1 and img2.
   * new popupTable layout (making more use of the space available).
-  * added new function addLargeFeatures to render large datasets of up to ~100k features which is used automatically in mapview for data larger than max* thresholds in mapviewOptions.
-  * definition of simple features methods for leaflet. With mapview loaded you should be able to use leaflet add* functions with 'data = ...' for sf: POINT, MULTIPOINT, sfc_POINT, sfc_MULTIPOINT, POLYGON, MULTIPOLYGON, sfc_POLYGON, sfc_MULTIPOLYGON, LINESTRING, MULTILINESTRING, sfc_LINESTRING, sfc_MULTILINESTRING
+  * added new function addLargeFeatures to render large datasets of up to ~100k features which is used automatically. To lower/elevate the threshold use maxpoints = ... (See ?mapview for details).
   * mapview methods for all basic sf classes (XY, sfc, sf)
   * added support for sf to "+"
   * addLargeFeatures now also defined for sf and also multilayer compatible (i.e. more than one layer can be rendered at once using either '%>%' or '+')
-  * simple features can now be rendered with arbitrary CRS (without map background)
+  * simple features can now be rendered with arbitrary CRS (without map background) by setting native.crs = TRUE.
   * mapview will now decide which default base map to use based on average luminence of rendered colors. If lighter than 0.7 (with 1 being white an d 0 being black) a dark basemap - CartoDB.DarkMatter - will be used.
 
 bugfixes:
