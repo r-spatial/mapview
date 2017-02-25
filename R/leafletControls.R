@@ -173,11 +173,11 @@ initBaseMaps <- function(map.types) {
   lid <- 1:length(map.types)
   m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth,
                         options = leaflet::leafletOptions(
-                          minZoom = 2,
+                          minZoom = 1,
                           maxZoom = 19,
                           bounceAtZoomLimits = FALSE,
-                          maxBounds = list(list(c(-90, -185)),
-                                           list(c(90, 190)))))
+                          maxBounds = list(list(c(-90, -370)),
+                                           list(c(90, 370)))))
   m <- leaflet::addProviderTiles(m, provider = map.types[1],
                                  layerId = lid[1], group = map.types[1])
   if (length(map.types) > 1) {
