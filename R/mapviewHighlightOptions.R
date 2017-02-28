@@ -17,7 +17,7 @@ highlightLineFeatures <- function(lwd = 2,
   weight <- lwd + 2
 
   return(
-    leaflet:::filterNULL(
+    dropNULL(
       list(
         stroke = stroke,
         color = color,
@@ -57,7 +57,7 @@ highlightPolygonFeatures <- function(alpha.regions = 0.6,
   }
 
   return(
-    leaflet:::filterNULL(
+    dropNULL(
       list(
         stroke = stroke,
         color = color,
@@ -137,6 +137,14 @@ mapviewHighlightOptions <- function(x, alpha.regions, lwd) {
 
   return(ls)
 
+}
+
+
+
+dropNULL <- function (x) {
+  if (length(x) == 0 || !is.list(x))
+    return(x)
+  x[!unlist(lapply(x, is.null))]
 }
 
 
