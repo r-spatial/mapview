@@ -1,10 +1,10 @@
-mapview 1.2.33
+mapview 1.2.34
 --------------------------------------------------------------------------------
 
 new features:
   * addMouseCoordinates has gained argument 'style' to specify whether to show 'basic' (lat, lon, zoom) or 'detailed' (x, y, epsg, proj4, lat, lon, zoom) information. Factory-fresh default is 'detailed'.
   * addLogo has gained argument 'alpha' to set the opacity of the image.
-  * Well, someone draws quickest, that's for sure...
+  * Someone draws quickest...
   * added new method for list of objects so that mapview(list(x, y, z)) works now.
   * added new platform 'quickmapr' to render things using library('quickmapr').
   * slideView has gained arguments 'label1' and 'label2' to supply slider names for the respective images, img1 and img2.
@@ -15,6 +15,7 @@ new features:
   * addLargeFeatures now also defined for sf and also multilayer compatible (i.e. more than one layer can be rendered at once using either '%>%' or '+')
   * simple features can now be rendered with arbitrary CRS (without map background) by setting native.crs = TRUE.
   * mapview will now decide which default base map to use based on average luminence of rendered colors. If lighter than 0.7 (with 1 being white an d 0 being black) a dark basemap - CartoDB.DarkMatter - will be used.
+  * mapview now provides subtle highlighting of polygons (changing opacity slightly) and lines (changing thickness).
 
 bugfixes:
   * sync, addMouseCoordinates and addLogo did not work anymore. Now fixed thanks to @timelyportfolio
