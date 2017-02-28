@@ -81,3 +81,10 @@ toSPDF <- function(x) {
   return(x)
 
 }
+
+
+## get sf point coordinates
+sfPointCoordinates <- function(x) {
+  stopifnot(is.matrix(x) || inherits(x, "XY"))
+  structure(as.data.frame(unclass(x)), names = c("x", "y"))
+}
