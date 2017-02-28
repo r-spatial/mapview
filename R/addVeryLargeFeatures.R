@@ -25,8 +25,8 @@ addVeryLargeFeatures <- function(map,
   # check projection
   data <- checkAdjustProjection(data)
 
-  nd1 <- nrow(data)
-  nd2 <- nrow(data) * 2
+  ind1 <- seq(1, nrow(data), 2)
+  ind2 <- seq(2, nrow(data), 2)
   # create dataframe
   cnames <- colnames(sf2DataFrame(data, remove_sf_column = TRUE))
   data$r <- grDevices::col2rgb(color)[1, ]
@@ -34,8 +34,8 @@ addVeryLargeFeatures <- function(map,
   data$b <- grDevices::col2rgb(color)[3, ]
   # data$x <- t(sapply(sf::st_geometry(data), function(i) as.matrix(i)))[, 1]
   # data$y <- t(sapply(sf::st_geometry(data), function(i) as.matrix(i)))[, 2]
-  data$x <- unlist(sf::st_geometry(data))[1:nd1]
-  data$y <- unlist(sf::st_geometry(data))[(nd1 + 1):nd2]
+  data$x <- unlist(sf::st_geometry(data))[ind1]
+  data$y <- unlist(sf::st_geometry(data))[ind2]
   data <- data[, c("x", "y", "r", "g", "b", cnames)]
 
   # generate reduced geojson string
