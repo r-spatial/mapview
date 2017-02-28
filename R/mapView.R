@@ -852,7 +852,7 @@ setMethod('mapView', signature(x = 'sf'),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlightOptions = mapviewHighlightOptions(x),
+                   highlightOptions = mapviewHighlightOptions(x, alpha.regions, lwd),
                    maxpoints = getMaxFeatures(x),
                    ...) {
 
@@ -915,7 +915,7 @@ setMethod('mapView', signature(x = 'sfc'),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlightOptions = mapviewHighlightOptions(x),
+                   highlightOptions = mapviewHighlightOptions(x, alpha.regions, lwd),
                    maxpoints = getMaxFeatures(x),
                    ...) {
 
@@ -975,7 +975,7 @@ setMethod('mapView', signature(x = 'XY'),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlightOptions = mapviewHighlightOptions(x),
+                   highlightOptions = mapviewHighlightOptions(x, alpha.regions, lwd),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {

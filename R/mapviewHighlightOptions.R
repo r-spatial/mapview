@@ -1,8 +1,9 @@
 ### define highlighting of features added via mapview
 
 ### line features =========================================================
-highlightLineFeatures <- function(stroke = TRUE,
-                                  color = "#00ffff",
+highlightLineFeatures <- function(lwd = 2,
+                                  stroke = TRUE,
+                                  color = NULL,
                                   weight = 2,
                                   opacity = 1,
                                   fill = FALSE,
@@ -13,19 +14,22 @@ highlightLineFeatures <- function(stroke = TRUE,
                                   sendToBack = TRUE) {
 
   if (length(fillColor) != 1) fillColor <- color
+  weight <- lwd + 2
 
   return(
-    list(
-      stroke = stroke,
-      color = color,
-      weight = weight,
-      opacity = opacity,
-      fill = fill,
-      fillColor = fillColor,
-      fillOpacity = fillOpacity,
-      dashArray = dashArray,
-      bringToFront = bringToFront,
-      sendToBack = sendToBack
+    leaflet:::filterNULL(
+      list(
+        stroke = stroke,
+        color = color,
+        weight = weight,
+        opacity = opacity,
+        fill = fill,
+        fillColor = fillColor,
+        fillOpacity = fillOpacity,
+        dashArray = dashArray,
+        bringToFront = bringToFront,
+        sendToBack = sendToBack
+      )
     )
   )
 
@@ -33,31 +37,39 @@ highlightLineFeatures <- function(stroke = TRUE,
 
 
 ### polygon features ======================================================
-highlightPolygonFeatures <- function(stroke = TRUE,
-                                     color = "#00ffff",
+highlightPolygonFeatures <- function(alpha.regions = 0.6,
+                                     stroke = TRUE,
+                                     color = NULL,
                                      weight = 2,
                                      opacity = 1,
-                                     fill = TRUE,
-                                     fillColor = "#CCFFFF",
-                                     fillOpacity = 0.8,
+                                     fill = NULL,
+                                     fillColor = NULL,
+                                     fillOpacity = 0.7,
                                      dashArray = NULL,
                                      bringToFront = TRUE,
                                      sendToBack = TRUE) {
 
   if (length(fillColor) != 1) fillColor <- color
+  if (alpha.regions >= 0.8) {
+    fillOpacity <- alpha.regions - 0.2
+  } else {
+    fillOpacity <- alpha.regions + 0.2
+  }
 
   return(
-    list(
-      stroke = stroke,
-      color = color,
-      weight = weight,
-      opacity = opacity,
-      fill = fill,
-      fillColor = fillColor,
-      fillOpacity = fillOpacity,
-      dashArray = dashArray,
-      bringToFront = bringToFront,
-      sendToBack = sendToBack
+    leaflet:::filterNULL(
+      list(
+        stroke = stroke,
+        color = color,
+        weight = weight,
+        opacity = opacity,
+        fill = fill,
+        fillColor = fillColor,
+        fillOpacity = fillOpacity,
+        dashArray = dashArray,
+        bringToFront = bringToFront,
+        sendToBack = sendToBack
+      )
     )
   )
 
@@ -97,7 +109,7 @@ highlightPointFeatures <- function(stroke = NULL,
 
 
 ### higlight options
-mapviewHighlightOptions <- function(x) {
+mapviewHighlightOptions <- function(x, alpha.regions, lwd) {
 
   if (inherits(x, "Spatial")) {
     ls <- switch(class(x),
@@ -111,16 +123,16 @@ mapviewHighlightOptions <- function(x) {
     ls <- switch(getSFClass(sf::st_geometry(x)),
                  sfc_POINT           = highlightPointFeatures(),
                  sfc_MULTIPOINT      = highlightPointFeatures(),
-                 sfc_LINESTRING      = highlightLineFeatures(),
-                 sfc_MULTILINESTRING = highlightLineFeatures(),
-                 sfc_POLYGON         = highlightPolygonFeatures(),
-                 sfc_MULTIPOLYGON    = highlightPolygonFeatures(),
+                 sfc_LINESTRING      = highlightLineFeatures(lwd),
+                 sfc_MULTILINESTRING = highlightLineFeatures(lwd),
+                 sfc_POLYGON         = highlightPolygonFeatures(alpha.regions),
+                 sfc_MULTIPOLYGON    = highlightPolygonFeatures(alpha.regions),
                  POINT               = highlightPointFeatures(),
                  MULTIPOINT          = highlightPointFeatures(),
-                 LINESTRING          = highlightLineFeatures(),
-                 MULTILINESTRING     = highlightLineFeatures(),
-                 POLYGON             = highlightPolygonFeatures(),
-                 MULTIPOLYGON        = highlightPolygonFeatures())
+                 LINESTRING          = highlightLineFeatures(lwd),
+                 MULTILINESTRING     = highlightLineFeatures(lwd),
+                 POLYGON             = highlightPolygonFeatures(alpha.regions),
+                 MULTIPOLYGON        = highlightPolygonFeatures(alpha.regions))
   }
 
   return(ls)
