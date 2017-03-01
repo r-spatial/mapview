@@ -174,7 +174,7 @@ initBaseMaps <- function(map.types) {
   m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth,
                         options = leaflet::leafletOptions(
                           minZoom = 1,
-                          maxZoom = 19,
+                          maxZoom = 100,
                           bounceAtZoomLimits = FALSE,
                           maxBounds = list(list(c(-90, -370)),
                                            list(c(90, 370)))))
