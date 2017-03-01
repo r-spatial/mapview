@@ -24,88 +24,87 @@ leaflet_sf <- function(x,
                        ...) {
 ### 1. if zcol -> x <- x[, zcol]
 ### 2. if burst -> burst(x)
-  if (length(zcol) > 1) {
-    tst <- burst(x[, zcol])
-    ind <- which(names(tst) == attr(x, "sf_column"))
-    tst <- tst[-ind]
-    mapview(tst,
-            map = map,
-            zcol = zcol,
-            color = color,
-            col.regions = col.regions,
-            at = at,
-            na.color = na.color,
-            cex = cex,
-            lwd = lwd,
-            alpha = alpha,
-            alpha.regions = alpha.regions,
-            map.types = map.types,
-            verbose = verbose,
-            popup = popup,
-            layer.name = layer.name,
-            label = label,
-            legend = legend,
-            legend.opacity = legend.opacity,
-            homebutton = homebutton,
-            native.crs = native.crs,
-            highlightOptions = highlightOptions,
-            maxpoints = maxpoints,
-            ...)
-  } else {
+  # if (length(zcol) > 1) {
+  #   tst <- burst(x[, zcol])
+  #   ind <- which(names(tst) == attr(x, "sf_column"))
+  #   tst <- tst[-ind]
+  #   mapview(tst,
+  #           map = map,
+  #           zcol = zcol,
+  #           color = color,
+  #           col.regions = col.regions,
+  #           at = at,
+  #           na.color = na.color,
+  #           cex = cex,
+  #           lwd = lwd,
+  #           alpha = alpha,
+  #           alpha.regions = alpha.regions,
+  #           map.types = map.types,
+  #           verbose = verbose,
+  #           popup = popup,
+  #           layer.name = layer.name,
+  #           label = label,
+  #           legend = legend,
+  #           legend.opacity = legend.opacity,
+  #           homebutton = homebutton,
+  #           native.crs = native.crs,
+  #           highlightOptions = highlightOptions,
+  #           maxpoints = maxpoints,
+  #           ...)
+  # } else {
 
-    if (!is.null(zcol)) {
-      layer.name <- paste(layer.name, zcol)
-      if (length(unique(x[[zcol]])) <= 1) {
-        warning(
-          sprintf(
-            "column %s has only one unique value/level, ignoring coloring and legend",
-            zcol
-          )
+  if (!is.null(zcol)) {
+    layer.name <- paste(layer.name, zcol)
+    if (length(unique(x[[zcol]])) <= 1) {
+      warning(
+        sprintf(
+          "column %s has only one unique value/level, ignoring coloring and legend",
+          zcol
         )
-        zcol <- NULL
-      }
+      )
+      zcol <- NULL
     }
-
-    if (!native.crs) x <- checkAdjustProjection(x)
-    if (legend & !is.null(zcol)) {
-      legend <- mapviewLegend(values = x[[zcol]],
-                              colors = color,
-                              at = at,
-                              na.color = col2Hex(na.color),
-                              layer.name = layer.name)
-    }
-
-    clrs <- vectorColors(x = x,
-                         zcol = zcol,
-                         colors = color,
-                         at = at,
-                         na.color = na.color)
-
-    leaflet_sfc(sf::st_geometry(x),
-                map = map,
-                zcol = zcol,
-                color = clrs,
-                col.regions = clrs,
-                at = at,
-                na.color = na.color,
-                cex = cex,
-                lwd = lwd,
-                alpha = alpha,
-                alpha.regions = alpha.regions,
-                map.types = map.types,
-                verbose = verbose,
-                popup = popup,
-                layer.name = layer.name,
-                label = label,
-                legend = legend,
-                legend.opacity = legend.opacity,
-                homebutton = homebutton,
-                native.crs = native.crs,
-                highlightOptions = highlightOptions,
-                maxpoints = maxpoints,
-                attributes = sf2DataFrame(x, remove_sf_column = TRUE),
-                ...)
   }
+
+  if (!native.crs) x <- checkAdjustProjection(x)
+  if (legend & !is.null(zcol)) {
+    legend <- mapviewLegend(values = x[[zcol]],
+                            colors = color,
+                            at = at,
+                            na.color = col2Hex(na.color),
+                            layer.name = layer.name)
+  }
+
+  clrs <- vectorColors(x = x,
+                       zcol = zcol,
+                       colors = color,
+                       at = at,
+                       na.color = na.color)
+
+  leaflet_sfc(sf::st_geometry(x),
+              map = map,
+              zcol = zcol,
+              color = clrs,
+              col.regions = clrs,
+              at = at,
+              na.color = na.color,
+              cex = cex,
+              lwd = lwd,
+              alpha = alpha,
+              alpha.regions = alpha.regions,
+              map.types = map.types,
+              verbose = verbose,
+              popup = popup,
+              layer.name = layer.name,
+              label = label,
+              legend = legend,
+              legend.opacity = legend.opacity,
+              homebutton = homebutton,
+              native.crs = native.crs,
+              highlightOptions = highlightOptions,
+              maxpoints = maxpoints,
+              attributes = sf2DataFrame(x, remove_sf_column = TRUE),
+              ...)
 
 }
 

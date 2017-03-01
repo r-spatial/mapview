@@ -834,6 +834,7 @@ setMethod('mapView', signature(x = 'sf'),
           function(x,
                    map = NULL,
                    zcol = NULL,
+                   burst = FALSE,
                    color = mapviewGetOption("vector.palette"),
                    col.regions = color,
                    at = NULL,
@@ -855,32 +856,65 @@ setMethod('mapView', signature(x = 'sf'),
                    highlightOptions = mapviewHighlightOptions(x, alpha.regions, lwd),
                    maxpoints = getMaxFeatures(x),
                    ...) {
-
+            popup <- popup # without this popup is not passed to mapView further down!!!???
             if (mapviewGetOption("platform") == "leaflet") {
 
-              leaflet_sf(x,
-                         map = map,
-                         zcol = zcol,
-                         color = color,
-                         col.regions = col.regions,
-                         at = at,
-                         na.color = na.color,
-                         cex = cex,
-                         lwd = lwd,
-                         alpha = alpha,
-                         alpha.regions = alpha.regions,
-                         map.types = map.types,
-                         verbose = verbose,
-                         popup = popup,
-                         layer.name = layer.name,
-                         label = label,
-                         legend = legend,
-                         legend.opacity = legend.opacity,
-                         homebutton = homebutton,
-                         native.crs = native.crs,
-                         highlightOptions = highlightOptions,
-                         maxpoints = maxpoints,
-                         ...)
+              x <- prepareData(x = x, zcol = zcol, burst = burst)
+
+              if (!inherits(x, "list")) {
+
+                leaflet_sf(x,
+                           map = map,
+                           zcol = zcol,
+                           color = color,
+                           col.regions = col.regions,
+                           at = at,
+                           na.color = na.color,
+                           cex = cex,
+                           lwd = lwd,
+                           alpha = alpha,
+                           alpha.regions = alpha.regions,
+                           map.types = map.types,
+                           verbose = verbose,
+                           popup = popup,
+                           layer.name = layer.name,
+                           label = label,
+                           legend = legend,
+                           legend.opacity = legend.opacity,
+                           homebutton = homebutton,
+                           native.crs = native.crs,
+                           highlightOptions = highlightOptions,
+                           maxpoints = maxpoints,
+                           ...)
+
+              } else {
+
+                mapView(x,
+                        map = map,
+                        zcol = NULL,
+                        burst = FALSE,
+                        color = color,
+                        col.regions = col.regions,
+                        at = at,
+                        na.color = na.color,
+                        cex = cex,
+                        lwd = lwd,
+                        alpha = alpha,
+                        alpha.regions = alpha.regions,
+                        map.types = map.types,
+                        verbose = verbose,
+                        popup = popup,
+                        layer.name = layer.name,
+                        label = label,
+                        legend = legend,
+                        legend.opacity = legend.opacity,
+                        homebutton = homebutton,
+                        native.crs = native.crs,
+                        highlightOptions = highlightOptions,
+                        maxpoints = maxpoints,
+                        ...)
+
+              }
 
             } else if (mapviewGetOption("platform") == "quickmapr") {
               quickmapr::qmap(x, ...)
@@ -1149,6 +1183,7 @@ setMethod('mapView', signature(x = 'list'),
                         legend.opacity = legend.opacity,
                         homebutton = homebutton,
                         native.crs = native.crs,
+                        popup = popup,
                         ...)
               }))
             } else {

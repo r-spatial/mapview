@@ -114,7 +114,7 @@
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), label = NULL, homebutton = TRUE, ...)
 
-\S4method{mapView}{sf}(x, map = NULL, zcol = NULL,
+\S4method{mapView}{sf}(x, map = NULL, zcol = NULL, burst = FALSE,
   color = mapviewGetOption("vector.palette"), col.regions = color,
   at = NULL, na.color = mapviewGetOption("na.color"), cex = 8,
   lwd = lineWidth(x), alpha = 0.9, alpha.regions = 0.6,
