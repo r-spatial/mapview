@@ -38,6 +38,7 @@ highlightLineFeatures <- function(lwd = 2,
 
 ### polygon features ======================================================
 highlightPolygonFeatures <- function(alpha.regions = 0.6,
+                                     lwd = 2,
                                      stroke = TRUE,
                                      color = NULL,
                                      weight = 2,
@@ -55,6 +56,8 @@ highlightPolygonFeatures <- function(alpha.regions = 0.6,
   } else {
     fillOpacity <- alpha.regions + 0.2
   }
+
+  weight <- lwd + 1
 
   return(
     dropNULL(
@@ -125,14 +128,14 @@ mapviewHighlightOptions <- function(x, alpha.regions, lwd) {
                  sfc_MULTIPOINT      = highlightPointFeatures(),
                  sfc_LINESTRING      = highlightLineFeatures(lwd),
                  sfc_MULTILINESTRING = highlightLineFeatures(lwd),
-                 sfc_POLYGON         = highlightPolygonFeatures(alpha.regions),
-                 sfc_MULTIPOLYGON    = highlightPolygonFeatures(alpha.regions),
+                 sfc_POLYGON         = highlightPolygonFeatures(alpha.regions, lwd),
+                 sfc_MULTIPOLYGON    = highlightPolygonFeatures(alpha.regions, lwd),
                  POINT               = highlightPointFeatures(),
                  MULTIPOINT          = highlightPointFeatures(),
                  LINESTRING          = highlightLineFeatures(lwd),
                  MULTILINESTRING     = highlightLineFeatures(lwd),
-                 POLYGON             = highlightPolygonFeatures(alpha.regions),
-                 MULTIPOLYGON        = highlightPolygonFeatures(alpha.regions))
+                 POLYGON             = highlightPolygonFeatures(alpha.regions, lwd),
+                 MULTIPOLYGON        = highlightPolygonFeatures(alpha.regions, lwd))
   }
 
   return(ls)
