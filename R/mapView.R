@@ -1167,23 +1167,29 @@ setMethod('mapView', signature(x = 'list'),
             } else {
               lyrnms <- nms
             }
+
+            if (!is.list(color)) color <- rep(list(color), length(x))
+            if (!is.list(legend)) legend <- rep(list(legend), length(x))
+            # if (!is.list(maxpoints)) maxpoints <- rep(list(maxpoints), length(x))
+
             if (mapviewGetOption("platform") == "leaflet") {
               Reduce("+", lapply(seq(x), function(i) {
                 mapView(x = x[[i]],
                         layer.name = lyrnms[i],
-                        zcol = zcol[i],
-                        color = color,
+                        zcol = zcol[[i]],
+                        color = color[[i]],
                         na.color = na.color,
                         cex = cex,
                         alpha = alpha,
                         alpha.regions = alpha.regions,
                         map.types = map.types,
                         verbose = verbose,
-                        legend = legend,
+                        legend = legend[[i]],
                         legend.opacity = legend.opacity,
                         homebutton = homebutton,
                         native.crs = native.crs,
-                        popup = popup,
+                        # maxpoints = maxpoints[[i]],
+                        # popup = popup,
                         ...)
               }))
             } else {
