@@ -15,9 +15,12 @@
 #' y-axis: DOWN / UP arrow key \cr
 #' z-axis: PAGE_DOWN / PAGE_UP key \cr
 #'
+#' Note: In RStudio cubeView may show a blank viewer window. In this case open the view in
+#' a web-browser (RStudio button at viewer: "show in new window").#'
+#'
 #' Note: Because of key focus issues key-press-events are not always
 #' recognised within RStudio at Windows. In this case open the view in
-#' a web-browser (RStudio button: "show in new window").
+#' a web-browser (RStudio button at viewer: "show in new window").
 #'
 #' Press and hold left mouse-button to rotate the cube.
 #' Press and hold right mouse-button to move the cube.
@@ -66,7 +69,9 @@ cubeView <- function(x,
   leg_fl <- NULL
 
   if (legend) {
-    dir <- tempdir()
+    ## unique temp dir
+    dir <- tempfile()
+    dir.create(dir)
     rng <- range(x[], na.rm = TRUE)
     if (missing(at)) at <- lattice::do.breaks(rng, 256)
     leg_fl <- paste0(dir, "/legend", ".png")
@@ -158,14 +163,14 @@ cubeViewRaw <- function(grey = NULL,
                         z_size,
                         width = NULL,
                         height = NULL,
-                        leg_fl) {
+                        leg_fl = NULL) {
 
   total_size <- x_size*y_size*z_size
 
   object_list <- list(x_size = x_size,
                       y_size = y_size,
                       z_size = z_size,
-                      leg_fl = leg_fl)
+                      legend = !is.null(leg_fl))
 
   if(!is.null(grey)) {
     if(length(grey)!=total_size) {
@@ -195,6 +200,16 @@ cubeViewRaw <- function(grey = NULL,
     object_list <- c(object_list, list(blue=as.raw(as.integer(blue))))
   }
 
+  deps <- list()
+
+  if(!is.null(leg_fl)) {
+    images_dir <- dirname(leg_fl)
+    legend_file <- basename(leg_fl)
+    attachments <- list(legend=legend_file)
+    dep1 <- htmltools::htmlDependency(name = "images", version = "1", src = c(file = images_dir), attachment = attachments, all_files = FALSE)
+    deps <- list(dep1)
+  }
+
   # create widget
   htmlwidgets::createWidget(
     name = 'cubeView',
@@ -202,7 +217,8 @@ cubeViewRaw <- function(grey = NULL,
     width = width,
     height = height,
     package = 'mapview',
-    sizingPolicy = htmlwidgets::sizingPolicy(padding = 0, browser.fill = TRUE)
+    sizingPolicy = htmlwidgets::sizingPolicy(padding = 0, browser.fill = TRUE),
+    dependencies = deps
   )
 }
 

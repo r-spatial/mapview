@@ -6,7 +6,8 @@ HTMLWidgets.widget({
   },
 
   renderValue: function(root, json, instance) {
-    init(root, json);
+    var legend_filename = json.legend ? document.getElementById("images-legend-attachment").href : undefined;
+    init(root, json, legend_filename);
   },
 
   resize: function(el, width, height, instance) {
@@ -33,8 +34,8 @@ var z_pos = 0;
 
 var show_cross_section_lines = true;
 
-function init(root, json) {
-	hovmoeller = new Hovmoeller(root, json);
+function init(root, json, legend_filename) {
+	hovmoeller = new Hovmoeller(root, json, legend_filename);
 }
 
 function iDiv(a,b) {
@@ -67,7 +68,7 @@ function flipY(data) {
   return buffer;
 }
 
-function Hovmoeller(root, json) {
+function Hovmoeller(root, json, legend_filename) {
 	X_SIZE = json.x_size;
   Y_SIZE = json.y_size;
   Z_SIZE = json.z_size;
@@ -113,6 +114,14 @@ function Hovmoeller(root, json) {
 	this.controls.addEventListener('change', function mov() {self.render();});
 
 	root.innerHTML = "";
+	if(legend_filename !== undefined) {
+	  var divLegend = document.createElement("div");
+	  divLegend.id = "divLegend";
+  	var legend_image = new Image();
+  	legend_image.src = legend_filename;
+  	divLegend.appendChild(legend_image);
+  	root.appendChild(divLegend);
+	}
 	root.appendChild(this.renderer.domElement);
 
 	var MAX_SIZE = Math.max(X_SIZE, Y_SIZE, Z_SIZE);

@@ -169,27 +169,30 @@ setMethod("slideView", signature(img1 = "RasterLayer",
             leg_flr <- NULL
             leg_fll <- NULL
 
+            legend <- TRUE # !! testing !!
             if (legend) {
               ## legend one (right)
               rngr <- range(img1[], na.rm = TRUE)
               # if (missing(at)) at <- lattice::do.breaks(rng, 256)
+              atr <- lattice::do.breaks(rngr, 256)
               leg_flr <- paste0(dir, "/legendr", ".png")
               png(leg_flr, height = 200, width = 80, units = "px",
                   bg = "transparent", pointsize = 14)
               rasterLegend(col = col.regions,
-                           # at = at,
+                           at = atr,
                            height = 0.9,
                            space = "right")
               dev.off()
 
               ## legend two (left)
-              rngl <- range(imgl[], na.rm = TRUE)
+              rngl <- range(img2[], na.rm = TRUE)
               # if (missing(at)) at <- lattice::do.breaks(rng, 256)
+              atl <- lattice::do.breaks(rngl, 256)
               leg_fll <- paste0(dir, "/legendl", ".png")
               png(leg_fll, height = 200, width = 80, units = "px",
                   bg = "transparent", pointsize = 14)
               rasterLegend(col = col.regions,
-                           # at = at,
+                           at = atl,
                            height = 0.9,
                            space = "left")
               dev.off()
@@ -256,8 +259,7 @@ slideViewInternal <- function(message,
     message = message,
     img1 = img1nm,
     img2 = img2nm,
-    leg_flr = leg_flr,
-    leg_fll = leg_fll
+    legend = (!is.null(leg_flr)) && (!is.null(leg_fll))
   )
 
   #filename1 and filename2 need to have same directory!
@@ -266,11 +268,20 @@ slideViewInternal <- function(message,
   image_file1 <- basename(filename1)
   image_file2 <- basename(filename2)
 
+  attachments = list(imager = image_file1, imagel = image_file2)
+
+  if( (!is.null(leg_flr)) && (!is.null(leg_fll)) ) {
+    legendr_dir <- dirname(leg_flr)  #same as image_dir  not checked
+    legendl_dir <- dirname(leg_fll)  #same as image_dir  not checked
+    legendr_file <- basename(leg_flr)
+    legendl_file <- basename(leg_fll)
+    attachments <- c(attachments, legendr = legendr_file, legendl = legendl_file)
+  }
+
   dep1 <- htmltools::htmlDependency(name = "image",
                                     version = "1",
                                     src = c(file = image_dir),
-                                    attachment = list(image_file1,
-                                                      image_file2))
+                                    attachment = attachments)
   deps <- list(dep1)
 
   sizing <- htmlwidgets::sizingPolicy(padding = 0, browser.fill = TRUE)

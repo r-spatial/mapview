@@ -39,6 +39,12 @@ HTMLWidgets.widget({
   renderValue: function(el, x, instance) {
     rootNode = el;
 
+    var filename1 = document.getElementById("image-imager-attachment").href;
+    var filename2 = document.getElementById("image-imagel-attachment").href;
+
+    var legendr_filename = x.legend ? document.getElementById("image-legendr-attachment").href : undefined;
+    var legendl_filename = x.legend ? document.getElementById("image-legendl-attachment").href : undefined;
+
     divInfoSlide = document.createElement("div");
     divInfoSlide.id ="divInfoSlide";
     el.appendChild(divInfoSlide);
@@ -62,6 +68,24 @@ HTMLWidgets.widget({
 
     spanMid.innerHTML = "?";
 
+    if(legendr_filename !== undefined) {
+      var divLegendr = document.createElement("div");
+      divLegendr.id ="divLegendr";
+      el.appendChild(divLegendr);
+    	var legendr_image = new Image();
+    	legendr_image.src = legendr_filename;
+    	divLegendr.appendChild(legendr_image);
+	  }
+
+	  if(legendl_filename !== undefined) {
+      var divLegendl = document.createElement("div");
+      divLegendl.id ="divLegendl";
+      el.appendChild(divLegendl);
+    	var legendl_image = new Image();
+    	legendl_image.src = legendl_filename;
+    	divLegendl.appendChild(legendl_image);
+	  }
+
     divDraw = document.createElement("div");
     divDraw.id ="divDraw";
     divDraw.style.cursor = "col-resize";
@@ -78,10 +102,6 @@ HTMLWidgets.widget({
     canvasBefore = document.createElement("canvas");
     canvasBefore.id = "canvasBefore";
     divBefore.appendChild(canvasBefore);
-
-
-    var filename1 = document.getElementById("image-1-attachment").href;
-    var filename2 = document.getElementById("image-2-attachment").href;
 
     init(filename1, filename2);
   },
