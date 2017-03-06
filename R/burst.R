@@ -30,3 +30,28 @@ burst <- function(x, zcol = NULL, ...) {
   return(lst)
 }
 
+
+burstByColumn <- function(x,
+                          color,
+                          popup,
+                          ...) {
+
+  nms <- colnames(sf2DataFrame(x))
+  x_lst <- lapply(nms, function(i) {
+    x[, i, drop = FALSE]
+  })
+  names(x_lst) <- nms
+
+  color_lst <- lapply(nms, function(i) {
+    zcolColors(x[[i]], color = color)
+  })
+
+  popup_lst <- lapply(seq(nms), function(i) {
+    popupTable(x)
+  })
+
+  return(list(x = x_lst,
+              color = color_lst,
+              popup = popup_lst))
+
+}
