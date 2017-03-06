@@ -1138,27 +1138,28 @@ setMethod('mapView', signature(x = 'list'),
                    at = NULL,
                    na.color = mapviewGetOption("na.color"),
                    cex = 8,
-                   lwd = lineWidth(x),
+                   lwd = NULL, #lineWidth(x),
                    alpha = 1,
                    alpha.regions = 0.6,
                    map.types = NULL,
                    verbose = mapviewGetOption("verbose"),
-                   popup = popupTable(x),
+                   popup = NULL, #popupTable(x),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   label = makeLabels(x, zcol),
+                   label = NULL, #makeLabels(x, zcol),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlightOptions = mapviewHighlightOptions(x),
+                   highlightOptions = NULL, #mapviewHighlightOptions(x),
                    maxpoints = getMaxFeatures(x),
                    ...) {
+
             makeLayerNames <- function(v1) {
-              #chr <- as.character(deparse(substitute(v1)))
+              #chr <- as.character(dargs(graphics::plot.default)eparse(substitute(v1)))
               chr <- gsub(glob2rx("*list(*"), "", v1)
               chr <- unlist(strsplit(x = gsub(")", "", chr), ","))
-              gsub(" ", "", chr)
+              as.list(gsub(" ", "", chr))
             }
 
             nms <- names(x)
@@ -1170,26 +1171,23 @@ setMethod('mapView', signature(x = 'list'),
 
             if (!is.list(color)) color <- rep(list(color), length(x))
             if (!is.list(legend)) legend <- rep(list(legend), length(x))
-            # if (!is.list(maxpoints)) maxpoints <- rep(list(maxpoints), length(x))
+            if (!is.list(homebutton)) homebutton <- rep(list(homebutton), length(x))
+            if (!is.list(cex)) cex <- rep(list(cex), length(x))
+            if (!is.list(lwd)) lwd <- rep(list(lwd), length(x))
 
             if (mapviewGetOption("platform") == "leaflet") {
               Reduce("+", lapply(seq(x), function(i) {
+                if (is.null(popup)) popup <- popupTable(x[[i]])
                 mapView(x = x[[i]],
-                        layer.name = lyrnms[i],
+                        layer.name = lyrnms[[i]],
                         zcol = zcol[[i]],
                         color = color[[i]],
-                        na.color = na.color,
-                        cex = cex,
-                        alpha = alpha,
-                        alpha.regions = alpha.regions,
-                        map.types = map.types,
-                        verbose = verbose,
                         legend = legend[[i]],
-                        legend.opacity = legend.opacity,
-                        homebutton = homebutton,
+                        popup = popup,
+                        homebutton = homebutton[[i]],
                         native.crs = native.crs,
-                        # maxpoints = maxpoints[[i]],
-                        # popup = popup,
+                        cex = cex[[i]],
+                        lwd = lwd[[i]],
                         ...)
               }))
             } else {
