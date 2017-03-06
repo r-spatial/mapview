@@ -28,9 +28,12 @@ x-axis: LEFT / RIGHT arrow key \cr
 y-axis: DOWN / UP arrow key \cr
 z-axis: PAGE_DOWN / PAGE_UP key \cr
 
+Note: In RStudio cubeView may show a blank viewer window. In this case open the view in
+a web-browser (RStudio button at viewer: "show in new window").#'
+
 Note: Because of key focus issues key-press-events are not always
 recognised within RStudio at Windows. In this case open the view in
-a web-browser (RStudio button: "show in new window").
+a web-browser (RStudio button at viewer: "show in new window").
 
 Press and hold left mouse-button to rotate the cube.
 Press and hold right mouse-button to move the cube.
