@@ -1138,7 +1138,7 @@ setMethod('mapView', signature(x = 'list'),
                    at = NULL,
                    na.color = mapviewGetOption("na.color"),
                    cex = 8,
-                   lwd = NULL, #lineWidth(x),
+                   lwd = lapply(x, lineWidth),
                    alpha = 1,
                    alpha.regions = 0.6,
                    map.types = NULL,
@@ -1151,8 +1151,12 @@ setMethod('mapView', signature(x = 'list'),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlightOptions = NULL, #mapviewHighlightOptions(x),
-                   maxpoints = getMaxFeatures(x),
+                   highlightOptions = lapply(seq(x), function(i) {
+                     mapviewHighlightOptions(x[[i]],
+                                             alpha.regions = alpha.regions,
+                                             lwd = lwd[[i]])
+                   }),
+                   maxpoints = NULL, #lapply(x, getMaxFeatures),
                    ...) {
 
             makeLayerNames <- function(v1) {
@@ -1169,11 +1173,20 @@ setMethod('mapView', signature(x = 'list'),
               lyrnms <- nms
             }
 
-            if (!is.list(color)) color <- rep(list(color), length(x))
-            if (!is.list(legend)) legend <- rep(list(legend), length(x))
-            if (!is.list(homebutton)) homebutton <- rep(list(homebutton), length(x))
-            if (!is.list(cex)) cex <- rep(list(cex), length(x))
-            if (!is.list(lwd)) lwd <- rep(list(lwd), length(x))
+            if (!is.list(color))
+              color <- rep(list(color), length(x))
+            if (!is.list(legend))
+              legend <- rep(list(legend), length(x))
+            if (!is.list(homebutton))
+              homebutton <- rep(list(homebutton), length(x))
+            if (!is.list(cex))
+              cex <- rep(list(cex), length(x))
+            if (!is.list(lwd))
+              lwd <- rep(list(lwd), length(x))
+            if (!is.list(highlightOptions))
+              highlightOptions <- rep(list(highlightOptions), length(x))
+            # if (!is.list(maxpoints))
+            #   maxpoints <- rep(list(maxpoints), length(x))
 
             if (mapviewGetOption("platform") == "leaflet") {
               Reduce("+", lapply(seq(x), function(i) {
@@ -1188,6 +1201,7 @@ setMethod('mapView', signature(x = 'list'),
                         native.crs = native.crs,
                         cex = cex[[i]],
                         lwd = lwd[[i]],
+                        highlightOptions = highlightOptions[[i]],
                         ...)
               }))
             } else {
