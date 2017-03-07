@@ -14,7 +14,7 @@ highlightLineFeatures <- function(lwd = 2,
                                   sendToBack = TRUE) {
 
   if (length(fillColor) != 1) fillColor <- color
-  weight <- lwd + 2
+  weight <- lwd + 1
 
   return(
     dropNULL(
