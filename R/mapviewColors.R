@@ -159,18 +159,22 @@ zcolColors <- function(x, # a vector, not a sp or sf object
   if (is.character(x)) x <- as.factor(x)
   x <- as.numeric(x)
 
-  if (is.null(at)) {
-    at <- lattice::do.breaks(range(x, na.rm = TRUE),
-                             length(unique(x)))
+  if (length(unique(x)) == 1) {
+    cols <- "#6666ff"
+  } else {
+    if (is.null(at)) {
+      at <- lattice::do.breaks(range(x, na.rm = TRUE),
+                               length(unique(x)))
+    }
+
+    cols <- lattice::level.colors(x,
+                                  at = at,
+                                  col.regions = colors,
+                                  ...)
+    if (return.sorted) cols <- cols[order(x)]
+
+    cols[is.na(cols)] <- na.color
   }
-
-  cols <- lattice::level.colors(x,
-                                at = at,
-                                col.regions = colors,
-                                ...)
-  if (return.sorted) cols <- cols[order(x)]
-
-  cols[is.na(cols)] <- na.color
   return(col2Hex(cols))
 
 }

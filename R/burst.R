@@ -1,17 +1,21 @@
-prepareData <- function(x, zcol, burst, ...) {
+prepareData <- function(x,
+                        zcol,
+                        burst,
+                        color,
+                        popup,
+                        ...) {
 
   if (is.null(zcol) & !burst) {
-    return(x)
-  } else return(x)
-  # } else if (burst) {
-  #   return(burst(x, zcol, ...))
+    x
+  } else if (is.null(zcol) & burst) {
+    function() burstByColumn(x = x, color = color, popup = popup)
   # } else {
   #   lst <- lapply(zcol, function(i) {
   #     x[, i, drop = FALSE]
   #   })
   #   names(lst) <- zcol
   #   return(lst)
-  # }
+  }
 
 }
 
@@ -33,25 +37,26 @@ burst <- function(x, zcol = NULL, ...) {
 
 burstByColumn <- function(x,
                           color,
-                          popup,
+                          popup = popupTable(x),
                           ...) {
 
-  nms <- colnames(sf2DataFrame(x))
+  nms <- colnames(sf2DataFrame(x, remove_sf_column = TRUE))
   x_lst <- lapply(nms, function(i) {
     x[, i, drop = FALSE]
   })
   names(x_lst) <- nms
 
   color_lst <- lapply(nms, function(i) {
-    zcolColors(x[[i]], color = color)
+    vectorColors(x, zcol = i, color = color)
   })
 
-  popup_lst <- lapply(seq(nms), function(i) {
-    popupTable(x)
+  labs <- lapply(nms, function(i) {
+    makeLabels(x, zcol = i)
   })
 
-  return(list(x = x_lst,
+  return(list(obj = x_lst,
               color = color_lst,
-              popup = popup_lst))
+              popup = popup,
+              labs = labs))
 
 }

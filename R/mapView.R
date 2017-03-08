@@ -856,10 +856,21 @@ setMethod('mapView', signature(x = 'sf'),
                    highlightOptions = mapviewHighlightOptions(x, alpha.regions, lwd),
                    maxpoints = getMaxFeatures(x),
                    ...) {
-            popup <- popup # without this popup is not passed to mapView further down!!!???
+            #popup <- popup # without this popup is not passed to mapView further down!!!???
             if (mapviewGetOption("platform") == "leaflet") {
 
-              x <- prepareData(x = x, zcol = zcol, burst = burst)
+              tmp <- prepareData(x = x,
+                                 zcol = zcol,
+                                 burst = burst,
+                                 color = color,
+                                 popup = popup)
+
+              if (is.function(tmp)) {
+                x <- tmp()$obj
+                color <- tmp()$color
+                popup <- tmp()$popup
+                label <- tmp()$labs
+              }
 
               if (!inherits(x, "list")) {
 
@@ -890,28 +901,11 @@ setMethod('mapView', signature(x = 'sf'),
               } else {
 
                 mapView(x,
-                        map = map,
                         zcol = NULL,
                         burst = FALSE,
                         color = color,
-                        col.regions = col.regions,
-                        at = at,
-                        na.color = na.color,
-                        cex = cex,
-                        lwd = lwd,
-                        alpha = alpha,
-                        alpha.regions = alpha.regions,
-                        map.types = map.types,
-                        verbose = verbose,
                         popup = popup,
-                        layer.name = layer.name,
                         label = label,
-                        legend = legend,
-                        legend.opacity = legend.opacity,
-                        homebutton = homebutton,
-                        native.crs = native.crs,
-                        highlightOptions = highlightOptions,
-                        maxpoints = maxpoints,
                         ...)
 
               }
@@ -1146,7 +1140,7 @@ setMethod('mapView', signature(x = 'list'),
                    popup = NULL, #popupTable(x),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   label = NULL, #makeLabels(x, zcol),
+                   label = NULL, #lapply(x, makeLabels),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
                    homebutton = TRUE,
@@ -1189,13 +1183,14 @@ setMethod('mapView', signature(x = 'list'),
             #   maxpoints <- rep(list(maxpoints), length(x))
 
             if (mapviewGetOption("platform") == "leaflet") {
-              Reduce("+", lapply(seq(x), function(i) {
+              m <- Reduce("+", lapply(seq(x), function(i) {
                 if (is.null(popup)) popup <- popupTable(x[[i]])
                 mapView(x = x[[i]],
                         layer.name = lyrnms[[i]],
                         zcol = zcol[[i]],
                         color = color[[i]],
                         legend = legend[[i]],
+                        label = label[[i]],
                         popup = popup,
                         homebutton = homebutton[[i]],
                         native.crs = native.crs,
@@ -1203,7 +1198,11 @@ setMethod('mapView', signature(x = 'list'),
                         lwd = lwd[[i]],
                         highlightOptions = highlightOptions[[i]],
                         ...)
-              }))
+              }))@map
+              m <- leaflet::hideGroup(map = m,
+                                      group = layers2bHidden(m))
+              out <- new("mapview", object = x, map = m)
+              return(out)
             } else {
               if (mapviewGetOption("platform") == "quickmapr") {
                 quickmapr::qmap(x, ...)
