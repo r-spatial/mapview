@@ -1200,7 +1200,7 @@ setMethod('mapView', signature(x = 'list'),
                         ...)
               }))@map
               m <- leaflet::hideGroup(map = m,
-                                      group = layers2bHidden(m))
+                                      group = layers2bHidden(m, ...))
               out <- new("mapview", object = x, map = m)
               return(out)
             } else {

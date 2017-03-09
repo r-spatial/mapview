@@ -71,10 +71,11 @@ updateLayerControlNames <- function(map1, map2) {
 
 # Identify layers to be hidden from initial map rendering -----------------
 
-layers2bHidden <- function(map) {
+layers2bHidden <- function(map, hide = FALSE, ...) {
 
   nms <- getLayerNamesFromMap(map)
-  nms[-c(1)]
+
+  if (hide) nms[-c(1)] else NULL
 
 }
 
