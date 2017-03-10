@@ -1179,6 +1179,11 @@ setMethod('mapView', signature(x = 'list'),
               lwd <- rep(list(lwd), length(x))
             if (!is.list(highlightOptions))
               highlightOptions <- rep(list(highlightOptions), length(x))
+            if (!is.list(label))
+              label <- rep(list(label), length(x))
+            if (!is.list(popup))
+              popup <- rep(list(popup), length(x))
+
             # if (!is.list(maxpoints))
             #   maxpoints <- rep(list(maxpoints), length(x))
 
@@ -1191,7 +1196,7 @@ setMethod('mapView', signature(x = 'list'),
                         color = color[[i]],
                         legend = legend[[i]],
                         label = label[[i]],
-                        popup = popup,
+                        popup = popup[[i]],
                         homebutton = homebutton[[i]],
                         native.crs = native.crs,
                         cex = cex[[i]],

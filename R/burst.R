@@ -9,12 +9,8 @@ prepareData <- function(x,
     x
   } else if (is.null(zcol) & burst) {
     function() burstByColumn(x = x, color = color, popup = popup)
-  # } else {
-  #   lst <- lapply(zcol, function(i) {
-  #     x[, i, drop = FALSE]
-  #   })
-  #   names(lst) <- zcol
-  #   return(lst)
+  } else {
+    function() burstByRow(x = x, zcol = zcol, burst = burst, color = color)
   }
 
 }
@@ -60,3 +56,29 @@ burstByColumn <- function(x,
               labs = labs))
 
 }
+
+# implement as.factor!!!
+# implement legend
+
+burstByRow <- function(x,
+                       zcol,
+                       burst,
+                       color,
+                       ...) {
+
+  if (is.character(burst)) zcol <- burst
+
+  color <- as.list(vectorColors(x, zcol, color))
+  popup <- popupTable(x)
+
+  x <- x[, zcol, drop = FALSE]
+  lst <- split(x, x[[zcol]])
+
+  labs <- lapply(lst, makeLabels, zcol = 1)
+
+  return(list(obj = lst,
+              color = color,
+              popup = popup,
+              labs = labs))
+}
+
