@@ -1,9 +1,14 @@
-prepareData <- function(x,
-                        zcol,
-                        burst,
-                        color,
-                        popup,
-                        ...) {
+burst <- function(x,
+                  zcol,
+                  burst,
+                  color,
+                  popup,
+                  ...) {
+
+  if (is.character(burst)) {
+    zcol <- burst
+    burst <- TRUE
+  }
 
   if (is.null(zcol) & !burst) {
     x
@@ -13,21 +18,6 @@ prepareData <- function(x,
     function() burstByRow(x = x, zcol = zcol, burst = burst, color = color)
   }
 
-}
-
-
-burst <- function(x, zcol = NULL, ...) {
-  if (is.null(zcol)) {
-    nms <- colnames(sf2DataFrame(x))
-    lst <- lapply(nms, function(i) {
-      x[, i, drop = FALSE]
-    })
-    names(lst) <- nms
-  } else {
-    f <- as.factor(x[[zcol]])
-    lst <- split(x[, zcol, drop = FALSE], f = f, drop = TRUE)
-  }
-  return(lst)
 }
 
 
@@ -66,15 +56,16 @@ burstByRow <- function(x,
                        color,
                        ...) {
 
-  if (is.character(burst)) zcol <- burst
-
-  color <- as.list(vectorColors(x, zcol, color))
   popup <- popupTable(x)
+  color <- as.list(vectorColors(x, zcol, color))
+
+  x[[zcol]] <- as.character(x[[zcol]])
+  x[[zcol]][is.na(x[[zcol]])] <- "NA"
 
   x <- x[, zcol, drop = FALSE]
-  lst <- split(x, x[[zcol]])
+  lst <- split(x, x[[zcol]])[as.character(x[[zcol]])]
 
-  labs <- lapply(lst, makeLabels, zcol = 1)
+  labs <- lapply(lst, makeLabels, zcol = zcol)
 
   return(list(obj = lst,
               color = color,

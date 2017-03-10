@@ -859,11 +859,11 @@ setMethod('mapView', signature(x = 'sf'),
             #popup <- popup # without this popup is not passed to mapView further down!!!???
             if (mapviewGetOption("platform") == "leaflet") {
 
-              tmp <- prepareData(x = x,
-                                 zcol = zcol,
-                                 burst = burst,
-                                 color = color,
-                                 popup = popup)
+              tmp <- burst(x = x,
+                           zcol = zcol,
+                           burst = burst,
+                           color = color,
+                           popup = popup)
 
               if (is.function(tmp)) {
                 x <- tmp()$obj
@@ -906,6 +906,8 @@ setMethod('mapView', signature(x = 'sf'),
                         color = color,
                         popup = popup,
                         label = label,
+                        homebutton = homebutton,
+                        legend = legend,
                         ...)
 
               }
