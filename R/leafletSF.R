@@ -22,36 +22,6 @@ leaflet_sf <- function(x,
                        highlightOptions,
                        maxpoints,
                        ...) {
-### 1. if zcol -> x <- x[, zcol]
-### 2. if burst -> burst(x)
-  # if (length(zcol) > 1) {
-  #   tst <- burst(x[, zcol])
-  #   ind <- which(names(tst) == attr(x, "sf_column"))
-  #   tst <- tst[-ind]
-  #   mapview(tst,
-  #           map = map,
-  #           zcol = zcol,
-  #           color = color,
-  #           col.regions = col.regions,
-  #           at = at,
-  #           na.color = na.color,
-  #           cex = cex,
-  #           lwd = lwd,
-  #           alpha = alpha,
-  #           alpha.regions = alpha.regions,
-  #           map.types = map.types,
-  #           verbose = verbose,
-  #           popup = popup,
-  #           layer.name = layer.name,
-  #           label = label,
-  #           legend = legend,
-  #           legend.opacity = legend.opacity,
-  #           homebutton = homebutton,
-  #           native.crs = native.crs,
-  #           highlightOptions = highlightOptions,
-  #           maxpoints = maxpoints,
-  #           ...)
-  # } else {
 
   if (!is.null(zcol)) {
     layer.name <- paste(layer.name, zcol)
@@ -175,20 +145,26 @@ leaflet_sfc <- function(x,
 
   }
 
+  funs <- list(if (!native.crs) leaflet::addScaleBar,
+               if (homebutton) addHomeButton,
+               mapViewLayersControl,
+               addMouseCoordinates)
+  funs <- funs[!sapply(funs, is.null)]
+
+  args <- list(if (!native.crs) list(position = "bottomleft"),
+               if (homebutton) list(ext = createExtent(x),
+                                    layer.name = layer.name),
+               list(map.types = map.types,
+                    names = layer.name,
+                    native.crs = native.crs),
+               list(style = "detailed",
+                    epsg = sf::st_crs(x)$epsg,
+                    proj4string = sf::st_crs(x)$proj4string))
+  args <- args[!sapply(args, is.null)]
+
   m <- decorateMap(map = m,
-                   funs = list(if (!native.crs) leaflet::addScaleBar,
-                               if (homebutton) addHomeButton,
-                               mapViewLayersControl,
-                               addMouseCoordinates),
-                   args = list(if (!native.crs) list(position = "bottomleft"),
-                               if (homebutton) list(ext = createExtent(x),
-                                                    layer.name = layer.name),
-                               list(map.types = map.types,
-                                    names = layer.name,
-                                    native.crs = native.crs),
-                               list(style = "detailed",
-                                    epsg = sf::st_crs(x)$epsg,
-                                    proj4string = sf::st_crs(x)$proj4string)))
+                   funs = funs,
+                   args = args)
 
   if (is.function(legend)) m <- legend(m)
   out <- new("mapview", object = list(x), map = m)

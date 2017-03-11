@@ -53,19 +53,6 @@ makeLabelsSP <- function(col) {
   as.character(col)
 }
 
-### decorateMap
-# decorateMap <- function(map, ext, layer.name, ...) {
-#
-#   m <- garnishMap(map,
-#                   addMouseCoordinates,
-#                   addScaleBar,
-#                     position = "bottomleft",
-#                   addHomeButton,
-#                     ext = ext,
-#                     layer.name = layer.name)
-#
-# }
-
 
 ### getFeatureIds
 getFeatureIds <- function(att_data) {
@@ -163,27 +150,14 @@ basemaps <- function(colors) {
 }
 
 
-### burst
-# burst <- function(x, zcol, ...) {
-#
-#   lst <- lapply(seq(zcol), function(i) {
-#     if (!is.factor(x@data[, zcol[i]])) {
-#       x@data[, zcol[i]] <- as.factor(x@data[, zcol[i]])
-#     }
-#     f <- x@data[, zcol[i]]
-#     ls_out <- split(x[, zcol[i]], f, ...)
-#     names(ls_out) <- paste(zcol[i], names(ls_out), sep = "_")
-#     return(ls_out)
-#   })
-#
-#   names(lst) <- zcol
-#
-#   if (length(lst) > 1) {
-#     ls <- lst[[1]]
-#     for (i in 2:length(lst)) ls <- append(ls, lst[[i]])
-#   } else {
-#     ls <- lst[[1]]
-#   }
-#
-#   return(ls)
-# }
+getProjection <- function(x) {
+
+  if (inherits(x, c("Raster", "Spatial"))) {
+    prj <- raster::projection(x)
+  } else {
+    prj <- sf::st_crs(x)[["proj4string"]]
+  }
+
+  return(prj)
+
+}

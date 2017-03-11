@@ -16,7 +16,7 @@
 #'
 #' @import leaflet sp sf raster satellite scales Rcpp methods png lattice gdalUtils viridisLite
 #' @importFrom grDevices rgb dev.off png svg
-#' @importFrom utils find
+#' @importFrom utils find glob2rx
 #' @importFrom webshot webshot
 #' @importFrom quickmapr qmap
 #'
