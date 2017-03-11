@@ -40,7 +40,6 @@ Imports:
     data.table,
     webshot,
     viridisLite,
-    quickmapr,
     sf
 LinkingTo: Rcpp
 RoxygenNote: 5.0.1

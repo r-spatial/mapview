@@ -18,7 +18,6 @@
 #' @importFrom grDevices rgb dev.off png svg
 #' @importFrom utils find glob2rx
 #' @importFrom webshot webshot
-#' @importFrom quickmapr qmap
 #'
 #' @useDynLib mapview
 #' @keywords package

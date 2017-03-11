@@ -228,11 +228,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                           homebutton = homebutton,
                           ...)
             } else {
-              if (mapviewGetOption("platform") == "quickmapr") {
-                quickmapr::qmap(x, ...)
-              } else {
-                NULL
-              }
+              NULL
             }
 
           }
@@ -276,11 +272,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                          homebutton = homebutton,
                          ...)
             } else {
-              if (mapviewGetOption("platform") == "quickmapr") {
-                quickmapr::qmap(x, ...)
-              } else {
-                NULL
-              }
+              NULL
             }
 
           }
@@ -421,8 +413,6 @@ setMethod('mapView', signature(x = 'sf'),
 
               }
 
-            } else if (mapviewGetOption("platform") == "quickmapr") {
-              quickmapr::qmap(x, ...)
             } else {
               NULL
             }
@@ -482,8 +472,6 @@ setMethod('mapView', signature(x = 'sfc'),
                           maxpoints = maxpoints,
                           ...)
 
-            } else if (mapviewGetOption("platform") == "quickmapr") {
-              quickmapr::qmap(x, ...)
             } else {
               NULL
             }
@@ -539,8 +527,6 @@ setMethod('mapView', signature(x = 'XY'),
                           highlightOptions = highlightOptions,
                           ...)
 
-            } else if (mapviewGetOption("platform") == "quickmapr") {
-              quickmapr::qmap(x, ...)
             } else {
               NULL
             }
@@ -715,11 +701,7 @@ setMethod('mapView', signature(x = 'list'),
               out <- new("mapview", object = x, map = m)
               return(out)
             } else {
-              if (mapviewGetOption("platform") == "quickmapr") {
-                quickmapr::qmap(x, ...)
-              } else {
-                NULL
-              }
+              NULL
             }
           }
 )
@@ -759,11 +741,7 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                               legend = legend,
                               ...)
             } else {
-              if (mapviewGetOption("platform") == "quickmapr") {
-                quickmapr::qmap(x, ...)
-              } else {
-                NULL
-              }
+              NULL
             }
 
           }
@@ -783,11 +761,7 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                               zcol,
                               ...)
             } else {
-              if (mapviewGetOption("platform") == "quickmapr") {
-                quickmapr::qmap(x, ...)
-              } else {
-                NULL
-              }
+              NULL
             }
 
           }
