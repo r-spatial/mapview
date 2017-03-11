@@ -331,499 +331,6 @@ setMethod('mapView', signature(x = 'Satellite'),
 )
 
 
-######## SP ###############################################################
-
-## SpatialPixelsDataFrame =================================================
-#' @describeIn mapView \code{\link{SpatialPixelsDataFrame}}
-#'
-setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
-          function(x,
-                   zcol = NULL,
-                   na.color = mapviewGetOption("na.color"),
-                   legend = mapviewGetOption("legend"),
-                   ...) {
-
-            if (mapviewGetOption("platform") == "leaflet") {
-              leafletPixelsDF(x,
-                              zcol = zcol,
-                              na.color = na.color,
-                              legend = legend,
-                              ...)
-            } else {
-              if (mapviewGetOption("platform") == "quickmapr") {
-                quickmapr::qmap(x, ...)
-              } else {
-                NULL
-              }
-            }
-
-          }
-)
-## SpatialGridDataFrame =================================================
-#' @describeIn mapView \code{\link{SpatialGridDataFrame}}
-#'
-setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
-          function(x,
-                   zcol = NULL,
-                   ...) {
-
-            if (mapviewGetOption("platform") == "leaflet") {
-              leafletPixelsDF(as(x, "SpatialPixelsDataFrame"),
-                              zcol,
-                              ...)
-            } else {
-              if (mapviewGetOption("platform") == "quickmapr") {
-                quickmapr::qmap(x, ...)
-              } else {
-                NULL
-              }
-            }
-
-          }
-)
-
-
-## SpatialPointsDataFrame =================================================
-#' @describeIn mapView \code{\link{SpatialPointsDataFrame}}
-#' @param burst whether to show all (TRUE) or only one (FALSE) layer(s).
-#' See also Details.
-#' @param zcol attribute name(s) or column number(s) in attribute table
-#' of the column(s) to be rendered. See also Details.
-#' @param cex attribute name(s) or column number(s) in attribute table
-#' of the column(s) to be used for defining the size of circles
-#' @param lwd line width
-
-setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
-          function(x,
-                   map = NULL,
-                   map.types = mapviewGetOption("basemaps"),
-                   zcol = NULL,
-                   burst = FALSE,
-                   color = mapviewGetOption("vector.palette"),
-                   alpha = 0.8,
-                   col.regions = color,
-                   alpha.regions = 0.2,
-                   na.color = mapviewGetOption("na.color"),
-                   at = NULL,
-                   cex = 8,
-                   lwd = 4,
-                   popup = popupTable(x),
-                   label = NULL,
-                   legend = mapviewGetOption("legend"),
-                   legend.opacity = 1,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
-                   verbose = mapviewGetOption("verbose"),
-                   homebutton = TRUE,
-                   ...) {
-
-            mapView(sf::st_as_sf(x),
-                    map = map,
-                    map.types = map.types,
-                    zcol = zcol,
-                    burst = burst,
-                    color = color,
-                    alpha = alpha,
-                    col.regions = col.regions,
-                    alpha.regions = alpha.regions,
-                    na.color = na.color,
-                    at = at,
-                    cex = cex,
-                    lwd = lwd,
-                    popup = popup,
-                    label = label,
-                    legend = legend,
-                    legend.opacity = legend.opacity,
-                    layer.name = layer.name,
-                    verbose = verbose,
-                    homebutton = homebutton,
-                    ...)
-
-            # # if (nrow(x) < mapviewGetOption("maxpoints")) {
-            #   if (mapviewGetOption("platform") == "leaflet") {
-            #     leafletPointsDF(x,
-            #                     map = map,
-            #                     map.types = map.types,
-            #                     zcol = zcol,
-            #                     burst = burst,
-            #                     color = color,
-            #                     alpha = alpha,
-            #                     col.regions = col.regions,
-            #                     alpha.regions = alpha.regions,
-            #                     na.color = na.color,
-            #                     at = at,
-            #                     cex = cex,
-            #                     lwd = lwd,
-            #                     popup = popup,
-            #                     label = label,
-            #                     legend = legend,
-            #                     legend.opacity = legend.opacity,
-            #                     layer.name = layer.name,
-            #                     verbose = verbose,
-            #                     homebutton = homebutton,
-            #                     ...)
-            #   } else {
-            #     if (mapviewGetOption("platform") == "quickmapr") {
-            #       quickmapr::qmap(x, ...)
-            #     } else {
-            #       NULL
-            #     }
-            #   }
-            # # } else {
-            # #   fpView(x,
-            # #          zcol = zcol,
-            # #          color = color,
-            # #          na.color = na.color,
-            # #          values = values,
-            # #          map.types = map.types,
-            # #          alpha = alpha,
-            # #          weight = cex,
-            # #          verbose = verbose,
-            # #          layer.name = layer.name,
-            # #          popup = popup,
-            # #          )
-            # # }
-
-          }
-
-)
-
-
-
-## SpatialPoints ==========================================================
-#' @describeIn mapView \code{\link{SpatialPoints}}
-
-setMethod('mapView', signature(x = 'SpatialPoints'),
-          function(x,
-                   map = NULL,
-                   zcol = NULL,
-                   color = mapviewGetOption("vector.palette"),
-                   na.color = mapviewGetOption("na.color"),
-                   cex = 8,
-                   lwd = 4,
-                   alpha = 0.9,
-                   alpha.regions = 0.4,
-                   map.types = mapviewGetOption("basemaps"),
-                   verbose = mapviewGetOption("verbose"),
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
-                   label = NULL,
-                   homebutton = TRUE,
-                  ...) {
-
-            # if (nrow(coordinates(x)) < mapviewGetOption("maxpoints")) {
-              if (mapviewGetOption("platform") == "leaflet") {
-                leafletPoints(x,
-                              map = map,
-                              color = color,
-                              na.color = na.color,
-                              cex = cex,
-                              lwd = lwd,
-                              alpha = alpha,
-                              alpha.regions = alpha.regions,
-                              map.types = map.types,
-                              verbose = verbose,
-                              layer.name = layer.name,
-                              label = label,
-                              homebutton = homebutton,
-                             ...)
-              } else {
-                if (mapviewGetOption("platform") == "quickmapr") {
-                  quickmapr::qmap(x, ...)
-                } else {
-                  NULL
-                }
-              }
-            # } else {
-            #   fpView(x,
-            #          zcol = NULL,
-            #          color = color,
-            #          na.color = na.color,
-            #          values = values,
-            #          map.types = map.types,
-            #          alpha = alpha,
-            #          weight = cex,
-            #          verbose = verbose,
-            #          layer.name = layer.name
-            #         )
-            # }
-
-
-          }
-)
-
-
-
-
-## SpatialPolygonsDataFrame ===============================================
-#' @describeIn mapView \code{\link{SpatialPolygonsDataFrame}}
-
-setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
-          function(x,
-                   map = NULL,
-                   map.types = mapviewGetOption("basemaps"),
-                   zcol = NULL,
-                   burst = FALSE,
-                   color = mapviewGetOption("vector.palette"),
-                   alpha = 0.8,
-                   col.regions = color,
-                   alpha.regions = 0.2,
-                   na.color = mapviewGetOption("na.color"),
-                   at = NULL,
-                   cex = 8,
-                   lwd = 2,
-                   popup = popupTable(x),
-                   label = NULL,
-                   legend = mapviewGetOption("legend"),
-                   legend.opacity = 1,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
-                   verbose = mapviewGetOption("verbose"),
-                   homebutton = TRUE,
-                   ...) {
-
-            # if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
-              if (mapviewGetOption("platform") == "leaflet") {
-                leafletPolygonsDF(x,
-                                  map = map,
-                                  map.types = map.types,
-                                  zcol = zcol,
-                                  burst = burst,
-                                  color = color,
-                                  alpha = alpha,
-                                  col.regions = col.regions,
-                                  alpha.regions = alpha.regions,
-                                  na.color = na.color,
-                                  at = at,
-                                  cex = cex,
-                                  lwd = lwd,
-                                  popup = popup,
-                                  label = label,
-                                  legend = legend,
-                                  legend.opacity = legend.opacity,
-                                  layer.name = layer.name,
-                                  verbose = verbose,
-                                  homebutton = homebutton,
-                                  ...)
-              } else {
-                if (mapviewGetOption("platform") == "quickmapr") {
-                  quickmapr::qmap(x, ...)
-                } else {
-                  NULL
-                }
-              }
-            # } else {
-            #   bView(x,
-            #         zcol = NULL,
-            #         color = color,
-            #         na.color = na.color,
-            #         values = values,
-            #         map.types = map.types,
-            #         alpha.regions = alpha.regions,
-            #         lwd = lwd,
-            #         verbose = verbose,
-            #         layer.name = layer.name,
-            #         popup = NULL)
-            # }
-
-          }
-
-)
-
-
-
-## SpatialPolygons ========================================================
-#' @describeIn mapView \code{\link{SpatialPolygons}}
-
-setMethod('mapView', signature(x = 'SpatialPolygons'),
-          function(x,
-                   map = NULL,
-                   color = mapviewGetOption("vector.palette"),
-                   na.color = mapviewGetOption("na.color"),
-                   map.types = mapviewGetOption("basemaps"),
-                   lwd = 2,
-                   alpha = 0.8,
-                   alpha.regions = 0.2,
-                   verbose = mapviewGetOption("verbose"),
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
-                   label = NULL,
-                   homebutton = TRUE,
-                  ...) {
-
-            # if (length(x@polygons) < mapviewGetOption("maxpolygons")) {
-              if (mapviewGetOption("platform") == "leaflet") {
-                leafletPolygons(x,
-                                map = map,
-                                color = color,
-                                na.color = na.color,
-                                lwd = lwd,
-                                alpha = alpha,
-                                alpha.regions = alpha.regions,
-                                map.types = map.types,
-                                verbose = verbose,
-                                layer.name = layer.name,
-                                label = label,
-                                homebutton = homebutton,
-                               ...)
-              } else {
-                if (mapviewGetOption("platform") == "quickmapr") {
-                  quickmapr::qmap(x, ...)
-                } else {
-                  NULL
-                }
-              }
-            # } else {
-            #   bView(x,
-            #         zcol = NULL,
-            #         color = color,
-            #         na.color = na.color,
-            #         values = values,
-            #         map.types = map.types,
-            #         alpha.regions = alpha.regions,
-            #         lwd = lwd,
-            #         verbose = verbose,
-            #         layer.name = layer.name)
-            # }
-
-          }
-)
-
-
-## SpatialLinesDataFrame =================================================
-#' @describeIn mapView \code{\link{SpatialLinesDataFrame}}
-
-setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
-          function(x,
-                   map = NULL,
-                   map.types = mapviewGetOption("basemaps"),
-                   zcol = NULL,
-                   burst = FALSE,
-                   color = mapviewGetOption("vector.palette"),
-                   alpha = 0.8,
-                   col.regions = color,
-                   alpha.regions = 0.2,
-                   na.color = mapviewGetOption("na.color"),
-                   at = NULL,
-                   cex = 8,
-                   lwd = 2,
-                   popup = popupTable(x),
-                   label = NULL,
-                   legend = mapviewGetOption("legend"),
-                   legend.opacity = 1,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
-                   verbose = mapviewGetOption("verbose"),
-                   homebutton = TRUE,
-                   ...) {
-
-            # if (length(x@lines) < mapviewGetOption("maxlines")) {
-              if (mapviewGetOption("platform") == "leaflet") {
-                leafletLinesDF(x,
-                               map = map,
-                               map.types = map.types,
-                               zcol = zcol,
-                               burst = burst,
-                               color = color,
-                               alpha = alpha,
-                               col.regions = col.regions,
-                               alpha.regions = alpha.regions,
-                               na.color = na.color,
-                               at = at,
-                               cex = cex,
-                               lwd = lwd,
-                               popup = popup,
-                               label = label,
-                               legend = legend,
-                               legend.opacity = legend.opacity,
-                               layer.name = layer.name,
-                               verbose = verbose,
-                               homebutton = homebutton,
-                               ...)
-              } else {
-                if (mapviewGetOption("platform") == "quickmapr") {
-                  quickmapr::qmap(x, ...)
-                } else {
-                  NULL
-                }
-              }
-            # } else {
-            #   bView(x,
-            #         zcol = zcol,
-            #         color = color,
-            #         na.color = na.color,
-            #         values = values,
-            #         map.types = map.types,
-            #         alpha.regions = alpha,
-            #         lwd = lwd,
-            #         verbose = verbose,
-            #         layer.name = layer.name,
-            #         popup = NULL)
-            # }
-
-          }
-
-)
-
-
-
-
-## SpatialLines ===========================================================
-#' @describeIn mapView \code{\link{SpatialLines}}
-
-setMethod('mapView', signature(x = 'SpatialLines'),
-          function(x,
-                   map = NULL,
-                   zcol = NULL,
-                   color = mapviewGetOption("vector.palette"),
-                   na.color = mapviewGetOption("na.color"),
-                   lwd = 2,
-                   alpha = 0.8,
-                   map.types = mapviewGetOption("basemaps"),
-                   verbose = mapviewGetOption("verbose"),
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
-                   label = NULL,
-                   homebutton = TRUE,
-                  ...) {
-
-            # if (length(x@lines) < mapviewGetOption("maxlines")) {
-              if (mapviewGetOption("platform") == "leaflet") {
-                leafletLines(x,
-                             map = map,
-                             color = color,
-                             na.color = na.color,
-                             lwd = lwd,
-                             alpha = alpha,
-                             map.types = map.types,
-                             verbose = verbose,
-                             layer.name = layer.name,
-                             label = label,
-                             homebutton = homebutton,
-                            ...)
-              } else {
-                if (mapviewGetOption("platform") == "quickmapr") {
-                  quickmapr::qmap(x, ...)
-                } else {
-                  NULL
-                }
-              }
-            # } else {
-            #   bView(x,
-            #         zcol = zcol,
-            #         color = color,
-            #         na.color = na.color,
-            #         values = values,
-            #         map.types = map.types,
-            #         alpha.regions = alpha,
-            #         lwd = lwd,
-            #         verbose = verbose,
-            #         layer.name = layer.name)
-            # }
-
-          }
-
-)
 
 ######## SIMPLE FEATURES ##################################################
 
@@ -856,13 +363,15 @@ setMethod('mapView', signature(x = 'sf'),
                    highlightOptions = mapviewHighlightOptions(x, alpha.regions, lwd),
                    maxpoints = getMaxFeatures(x),
                    ...) {
-            #popup <- popup # without this popup is not passed to mapView further down!!!???
+
             if (mapviewGetOption("platform") == "leaflet") {
 
               tmp <- burst(x = x,
                            zcol = zcol,
                            burst = burst,
                            color = color,
+                           at = at,
+                           na.color = na.color,
                            popup = popup)
 
               if (is.function(tmp)) {
@@ -1157,7 +666,7 @@ setMethod('mapView', signature(x = 'list'),
 
             makeLayerNames <- function(v1) {
               #chr <- as.character(dargs(graphics::plot.default)eparse(substitute(v1)))
-              chr <- gsub(glob2rx("*list(*"), "", v1)
+              chr <- gsub(utils::glob2rx("*list(*"), "", v1)
               chr <- unlist(strsplit(x = gsub(")", "", chr), ","))
               as.list(gsub(" ", "", chr))
             }
@@ -1183,11 +692,6 @@ setMethod('mapView', signature(x = 'list'),
               highlightOptions <- rep(list(highlightOptions), length(x))
             if (!is.list(label))
               label <- rep(list(label), length(x))
-            if (!is.list(popup))
-              popup <- rep(list(popup), length(x))
-
-            # if (!is.list(maxpoints))
-            #   maxpoints <- rep(list(maxpoints), length(x))
 
             if (mapviewGetOption("platform") == "leaflet") {
               m <- Reduce("+", lapply(seq(x), function(i) {
@@ -1220,6 +724,7 @@ setMethod('mapView', signature(x = 'list'),
           }
 )
 
+
 ## mapview ================================================================
 if ( !isGeneric('mapview') ) {
   setGeneric('mapview', function(...)
@@ -1233,4 +738,159 @@ if ( !isGeneric('mapview') ) {
 #'
 setMethod('mapview', signature('ANY'),
           function(...) mapView(...))
+
+
+######## SP ###############################################################
+
+## SpatialPixelsDataFrame =================================================
+#' @describeIn mapView \code{\link{SpatialPixelsDataFrame}}
+#'
+setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
+          function(x,
+                   zcol = NULL,
+                   na.color = mapviewGetOption("na.color"),
+                   legend = mapviewGetOption("legend"),
+                   ...) {
+
+            if (mapviewGetOption("platform") == "leaflet") {
+              leafletPixelsDF(x,
+                              zcol = zcol,
+                              na.color = na.color,
+                              legend = legend,
+                              ...)
+            } else {
+              if (mapviewGetOption("platform") == "quickmapr") {
+                quickmapr::qmap(x, ...)
+              } else {
+                NULL
+              }
+            }
+
+          }
+)
+
+
+## SpatialGridDataFrame =================================================
+#' @describeIn mapView \code{\link{SpatialGridDataFrame}}
+#'
+setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
+          function(x,
+                   zcol = NULL,
+                   ...) {
+
+            if (mapviewGetOption("platform") == "leaflet") {
+              leafletPixelsDF(as(x, "SpatialPixelsDataFrame"),
+                              zcol,
+                              ...)
+            } else {
+              if (mapviewGetOption("platform") == "quickmapr") {
+                quickmapr::qmap(x, ...)
+              } else {
+                NULL
+              }
+            }
+
+          }
+)
+
+
+## SpatialPointsDataFrame =================================================
+#' @describeIn mapView \code{\link{SpatialPointsDataFrame}}
+#' @param burst whether to show all (TRUE) or only one (FALSE) layer(s).
+#' See also Details.
+#' @param zcol attribute name(s) or column number(s) in attribute table
+#' of the column(s) to be rendered. See also Details.
+#' @param cex attribute name(s) or column number(s) in attribute table
+#' of the column(s) to be used for defining the size of circles
+#' @param lwd line width
+
+setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
+          function(x,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
+                   ...) {
+
+            mapView(st_as_sf(x), layer.name = layer.name, ...)
+
+          }
+
+)
+
+
+## SpatialPoints ==========================================================
+#' @describeIn mapView \code{\link{SpatialPoints}}
+
+setMethod('mapView', signature(x = 'SpatialPoints'),
+          function(x,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
+                   ...) {
+
+            mapView(st_as_sfc(x), layer.name = layer.name, ...)
+
+          }
+)
+
+
+## SpatialPolygonsDataFrame ===============================================
+#' @describeIn mapView \code{\link{SpatialPolygonsDataFrame}}
+
+setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
+          function(x,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
+                   ...) {
+
+            mapView(st_as_sf(x), layer.name = layer.name, ...)
+
+          }
+
+)
+
+
+## SpatialPolygons ========================================================
+#' @describeIn mapView \code{\link{SpatialPolygons}}
+
+setMethod('mapView', signature(x = 'SpatialPolygons'),
+          function(x,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
+                   ...) {
+
+            mapView(st_as_sfc(x), layer.name = layer.name, ...)
+
+          }
+)
+
+
+## SpatialLinesDataFrame =================================================
+#' @describeIn mapView \code{\link{SpatialLinesDataFrame}}
+
+setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
+          function(x,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
+                   ...) {
+
+            mapView(st_as_sf(x), layer.name = layer.name, ...)
+
+          }
+
+)
+
+
+## SpatialLines ===========================================================
+#' @describeIn mapView \code{\link{SpatialLines}}
+
+setMethod('mapView', signature(x = 'SpatialLines'),
+          function(x,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
+                   ...) {
+
+            mapView(st_as_sfc(x), layer.name = layer.name, ...)
+
+          }
+
+)
 
