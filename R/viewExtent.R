@@ -4,12 +4,30 @@
 #' This function produces an interactive view of the extent/bbox
 #' of the supplied spatial object
 #'
-#' @param x either a Raster* object or a Spatial* object
+#' @param x either a Raster*, sf* or Spatial* object
+#' @param data either a Raster*, sf* or Spatial* object
 #' @param map a leaflet map the extent should be added to. If NULL
 #' standard background layers are cretaed
-#' @param map.types the map types to be used in case map is NULL
-#' @param popup a character vector of the HTML content for the popups. See
-#' \code{\link{addControl}} for details.
+#' #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
+#' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
+#' @param color color (palette) for points/polygons/lines
+#' @param map.types character spcifications for the base maps.
+#' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
+#' for available options.
+#' @param alpha opacity of the lines or points
+#' @param alpha.regions opacity of the fills or the raster layer(s)
+#' @param layer.name the name of the layer to be shown on the map
+#' @param homebutton logical, whether to add a zoom-to-layer button to the map.
+#' Defaults to TRUE
+#' @param popup a \code{list} of HTML strings with the popup contents, usually
+#' created from \code{\link{popupTable}}. See \code{\link{addControl}} for
+#' details.
+#' @param native.crs logical whether to reproject to web map coordinate
+#' reference system (web mercator - epsg:3857) or render using native CRS of
+#' the supplied data (can also be NA). Default is FALSE which will render in
+#' web mercator. If set to TRUE now background maps will be drawn (but rendering
+#' may be much quicker as no reprojecting is necessary). Currently only works
+#' for simple features.
 #' @param ... additional arguments passed on to \code{\link{addRectangles}}
 #'
 #' @author
@@ -39,28 +57,51 @@ NULL
 #' @rdname viewExtent
 viewExtent <- function(x,
                        map = NULL,
-                       map.types = mapviewGetOption("basemaps"),
+                       map.types = NULL,
                        popup = NULL,
+                       lwd = 1,
+                       alpha = 0.9,
+                       alpha.regions = 0.1,
+                       color = "#6666ff",
+                       homebutton = TRUE,
+                       layer.name = deparse(substitute(x)),
+                       native.crs = FALSE,
                        ...) {
 
-  m <- initMap(map, map.types, projection(x))
+  if (is.null(map.types)) map.types <- basemaps(color)
+  m <- initMap(map, map.types, getProjection(x), native.crs)
+  color <- col2Hex(color)
 
-  grp <- deparse(substitute(x))
-  grp <- paste(grp, "extent", sep = "_")
+  layer.name <- paste(layer.name, "extent", sep = "-")
 
-  addex <- addExtent(x, map = m, group = grp, popup = popup, ...)
-  m <- addex$map
-  out_obj <- list(addex$obj)
+  m <- addExtent(map = m,
+                 data = x,
+                 group = layer.name,
+                 popup = popup,
+                 weight = lwd,
+                 opacity = alpha,
+                 fillOpacity = alpha.regions,
+                 color = color,
+                 ...)
 
-  m <- mapViewLayersControl(map = m,
-                            map.types = map.types,
-                            names = grp)
+  m <- decorateMap(map = m,
+                   funs = list(if (!native.crs) leaflet::addScaleBar,
+                               if (homebutton) addHomeButton,
+                               mapViewLayersControl,
+                               addMouseCoordinates),
+                   args = list(if (!native.crs) list(position = "bottomleft"),
+                               if (homebutton) list(ext = createExtent(x),
+                                                    layer.name = layer.name),
+                               list(map.types = map.types,
+                                    names = layer.name,
+                                    native.crs = native.crs),
+                               list(style = "detailed",
+                                    epsg = NULL,
+                                    proj4string = getProjection(x))))
 
-  if (isAvailableInLeaflet()$scl)
-    m <- leaflet::addScaleBar(map = m, position = "bottomleft")
-  m <- addMouseCoordinates(m)
-
-  out <- methods::new('mapview', object = out_obj, map = m)
+  out <- methods::new('mapview',
+                      object = list(createExtent(x, offset = 0)),
+                      map = m)
 
   return(out)
 
@@ -68,52 +109,18 @@ viewExtent <- function(x,
 
 ## Add Extent =============================================================
 #' @describeIn viewExtent add extent/bbox of spatial objects interactively
+#' @export addExtent
 
-addExtent <- function(x, map, popup, ...) {
+addExtent <- function(map, data, popup = NULL, ...) {
 
-  llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
+  x <- checkAdjustProjection(data)
+  ext <- createExtent(x, offset = 0)
+  df <- data.frame(xmin = ext@xmin,
+                   xmax = ext@xmax,
+                   ymin = ext@ymin,
+                   ymax = ext@ymax)
 
-  spclss <- c("SpatialPointsDataFrame",
-              "SpatialPolygonsDataFrame",
-              "SpatialLinesDataFrame",
-              "SpatialPoints",
-              "SpatialPolygons",
-              "SpatialLines")
-  sptrue <- any(class(x)[1] %in% spclss)
-
-  rstclss <- c("SpatialPixelsDataFrame",
-               "RasterLayer",
-               "RasterStack",
-               "RasterBrick")
-  rsttrue <- any(class(x)[1] %in% rstclss)
-
-  pop.null <- is.null(popup)
-
-  if (sptrue) {
-    if (!identical(projection(x), llcrs)) {
-      x <- sp::spTransform(x, CRSobj = llcrs)
-    }
-  } else if (rsttrue) {
-    if (!identical(projection(x), llcrs)) {
-      x <- raster::projectExtent(x, crs = llcrs)
-    }
-  } else stop(paste("need one of", paste(spclss, collapse = " or "), "or",
-                    paste(rstclss, collapse = " or "), "to draw extent"))
-
-  ext <- raster::extent(x)
-
-  df <- data.frame(xmin = round(ext@xmin, 7),
-                   xmax = round(ext@xmax, 7),
-                   ymin = round(ext@ymin, 7),
-                   ymax = round(ext@ymax, 7))
-
-  mat <- df2String(df)
-  cols <- colnames(df)
-
-  ## create list with row-specific html code
-  if (pop.null) popup <- listPopupTemplates(mat, cols,
-                                            system.file("templates/popup.brew",
-                                                        package = "mapview"))
+  if (is.null(popup)) popup <- popupTable(df)
 
   m <- leaflet::addRectangles(map = map,
                               lng1 = ext@xmin,
@@ -122,8 +129,8 @@ addExtent <- function(x, map, popup, ...) {
                               lat2 = ext@ymax,
                               popup = popup,
                               ...)
+  return(m)
 
-  return(list(obj = ext, map = m))
 }
 
 

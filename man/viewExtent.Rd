@@ -6,23 +6,50 @@
 \alias{viewExtent,addExtent}
 \title{View extent/bbox of spatial objects interactively}
 \usage{
-viewExtent(x, map = NULL, map.types = mapviewGetOption("basemaps"),
-  popup = NULL, ...)
+viewExtent(x, map = NULL, map.types = NULL, popup = NULL, lwd = 1,
+  alpha = 0.9, alpha.regions = 0.1, color = "#6666ff",
+  homebutton = TRUE, layer.name = deparse(substitute(x)),
+  native.crs = FALSE, ...)
 
-addExtent(x, map, popup, ...)
+addExtent(map, data, popup = NULL, ...)
 }
 \arguments{
-\item{x}{either a Raster* object or a Spatial* object}
+\item{x}{either a Raster*, sf* or Spatial* object}
 
 \item{map}{a leaflet map the extent should be added to. If NULL
-standard background layers are cretaed}
+standard background layers are cretaed
+#' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
+If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
-\item{map.types}{the map types to be used in case map is NULL}
+\item{map.types}{character spcifications for the base maps.
+see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
+for available options.}
 
-\item{popup}{a character vector of the HTML content for the popups. See
-\code{\link{addControl}} for details.}
+\item{popup}{a \code{list} of HTML strings with the popup contents, usually
+created from \code{\link{popupTable}}. See \code{\link{addControl}} for
+details.}
+
+\item{alpha}{opacity of the lines or points}
+
+\item{alpha.regions}{opacity of the fills or the raster layer(s)}
+
+\item{color}{color (palette) for points/polygons/lines}
+
+\item{homebutton}{logical, whether to add a zoom-to-layer button to the map.
+Defaults to TRUE}
+
+\item{layer.name}{the name of the layer to be shown on the map}
+
+\item{native.crs}{logical whether to reproject to web map coordinate
+reference system (web mercator - epsg:3857) or render using native CRS of
+the supplied data (can also be NA). Default is FALSE which will render in
+web mercator. If set to TRUE now background maps will be drawn (but rendering
+may be much quicker as no reprojecting is necessary). Currently only works
+for simple features.}
 
 \item{...}{additional arguments passed on to \code{\link{addRectangles}}}
+
+\item{data}{either a Raster*, sf* or Spatial* object}
 }
 \description{
 This function produces an interactive view of the extent/bbox
