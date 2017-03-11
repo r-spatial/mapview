@@ -42,7 +42,7 @@ garnishMap <- function(map, ...) {
 
   funs <- sapply(ls, is.function)
 
-  fn_lst <- lapply(ls, function(i) {
+  fn_lst <- lapply(ls[funs], function(i) {
     tst <- try(match.fun(i), silent = TRUE)
     if (class(tst) == "try-error") tst <- NULL
     return(tst)
