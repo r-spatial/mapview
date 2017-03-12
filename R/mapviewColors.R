@@ -127,7 +127,7 @@ vectorColors <- function(x, # a sp or sf object
                          na.color = mapviewGetOption("na.color"),
                          ...) {
 
-  stnd_col <- "#333333"
+  stnd_col <- standardColor(x) #"#333333"
 
   if (getGeometryType(x) == "ln") {
     if (!is.null(zcol)) {
@@ -143,8 +143,8 @@ vectorColors <- function(x, # a sp or sf object
     } else if (is.null(zcol) & is.function(colors)) {
       col <- standardColor(x)
     } else col <- colors
-  } else if (is.null(zcol) & is.function(colors)) {
-    col <- standardColor(x)
+  } else if (is.function(colors)) {
+    col <- stnd_col
   } else col <- colors
 
   return(col2Hex(col))
@@ -159,7 +159,7 @@ vectorColRegions <- function(x, # a sp or sf object
                              na.color = mapviewGetOption("na.color"),
                              ...) {
 
-  stnd_col <- standardColor(x) #"#aaaaff" #"#CCCCCC"
+  stnd_col <- standardColRegions(x) #"#aaaaff" #"#CCCCCC"
 
   if (!is.null(zcol)) {
     if (!inherits(x[[zcol]], c("numeric", "integer")) & !is.null(at)) {
@@ -213,6 +213,14 @@ zcolColors <- function(x, # a vector, not a sp or sf object
 
 
 standardColor <- function(x) {
+  switch(getGeometryType(x),
+         "pt" = "#333333", #"#66b3ff",
+         "ln" = "#6666ff", #"#66b3ff",
+         "pl" = "#333333") #"#66b3ff")
+}
+
+
+standardColRegions <- function(x) {
   switch(getGeometryType(x),
          "pt" = "#6666ff", #"#66b3ff",
          "ln" = "#6666ff", #"#66b3ff",
