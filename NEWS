@@ -1,4 +1,4 @@
-mapview 1.2.39
+mapview 1.2.40
 --------------------------------------------------------------------------------
 
 new features:
@@ -20,6 +20,9 @@ new features:
 
 bugfixes:
   * sync, addMouseCoordinates and addLogo did not work anymore. Now fixed thanks to @timelyportfolio
+
+changes:
+  * polygons and points now have a sarkish gray line frame (unless add*LargeFeatures is used - where the overhead of passing two sets of colors would be too high).
 
 mapview 1.2.0
 --------------------------------------------------------------------------------
