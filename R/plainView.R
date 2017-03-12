@@ -331,7 +331,10 @@ setMethod('plainView', signature(x = 'RasterStackBrick'),
             layer.name <- paste0(layer.name, "_", r, ".", g, ".", b)
             plainViewInternal(filename = fl,
                               imgnm = layer.name,
-                              crs = raster::projection(x))
+                              crs = raster::projection(x),
+                              dims = c(raster::nrow(x),
+                                       raster::ncol(x),
+                                       raster::ncell(x)))
 
           }
 
