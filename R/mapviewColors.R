@@ -143,7 +143,9 @@ vectorColors <- function(x, # a sp or sf object
     } else if (is.null(zcol) & is.function(colors)) {
       col <- standardColor(x)
     } else col <- colors
-  } else col <- stnd_col
+  } else if (is.null(zcol) & is.function(colors)) {
+    col <- standardColor(x)
+  } else col <- colors
 
   return(col2Hex(col))
 
