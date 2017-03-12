@@ -2,6 +2,7 @@ burst <- function(x,
                   zcol,
                   burst,
                   color,
+                  col.regions,
                   at,
                   na.color,
                   popup,
@@ -17,6 +18,7 @@ burst <- function(x,
   } else if (is.null(zcol) & burst) {
     function() burstByColumn(x = x,
                              color = color,
+                             col.regions = col.regions,
                              at = at,
                              na.color = na.color,
                              popup = popup)
@@ -25,6 +27,7 @@ burst <- function(x,
                           zcol = zcol,
                           burst = burst,
                           color = color,
+                          col.regions = col.regions,
                           at = at,
                           na.color = na.color)
   }
@@ -34,6 +37,7 @@ burst <- function(x,
 
 burstByColumn <- function(x,
                           color,
+                          col.regions,
                           at,
                           na.color,
                           popup = popupTable(x),
@@ -51,12 +55,18 @@ burstByColumn <- function(x,
     vectorColors(x, zcol = i, colors = color, at = at, na.color = na.color)
   })
 
+  colregions_lst <- lapply(nms, function(i) {
+    vectorColRegions(x, zcol = i, col.regions = col.regions,
+                     at = at, na.color = na.color)
+  })
+
   labs <- lapply(nms, function(i) {
     makeLabels(x, zcol = i)
   })
 
   return(list(obj = x_lst,
               color = color_lst,
+              col.regions = colregions_lst,
               popup = popup,
               labs = labs))
 
@@ -69,6 +79,7 @@ burstByRow <- function(x,
                        zcol,
                        burst,
                        color,
+                       col.regions,
                        at,
                        na.color,
                        ...) {
@@ -81,11 +92,20 @@ burstByRow <- function(x,
   vec <- names(lst)
   vec[vec == "NA"] <- NA
 
-  color <- as.list(zcolColors(x = vec,
-                              colors = color,
-                              at = at,
-                              na.color = na.color))
-  names(color) <- names(lst)
+  if (getGeometryType(x) == "ln") {
+    color <- as.list(zcolColors(x = vec,
+                                colors = color,
+                                at = at,
+                                na.color = na.color))
+    names(color) <- names(lst)
+  } else {
+    color <- standardColor(x)
+  }
+
+  col.regions <- as.list(zcolColors(x = vec,
+                                    colors = col.regions,
+                                    at = at,
+                                    na.color = na.color))
 
   popup <- popupTable(x)
   names(popup) <- as.character(x[[zcol]])
@@ -101,6 +121,7 @@ burstByRow <- function(x,
 
   return(list(obj = lst,
               color = color,
+              col.regions = col.regions,
               popup = popup,
               labs = labs))
 }

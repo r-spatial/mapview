@@ -362,6 +362,7 @@ setMethod('mapView', signature(x = 'sf'),
                            zcol = zcol,
                            burst = burst,
                            color = color,
+                           col.regions = col.regions,
                            at = at,
                            na.color = na.color,
                            popup = popup)
@@ -369,6 +370,7 @@ setMethod('mapView', signature(x = 'sf'),
               if (is.function(tmp)) {
                 x <- tmp()$obj
                 color <- tmp()$color
+                col.regions <- tmp()$col.regions
                 popup <- tmp()$popup
                 label <- tmp()$labs
               }
@@ -405,6 +407,7 @@ setMethod('mapView', signature(x = 'sf'),
                         zcol = NULL,
                         burst = FALSE,
                         color = color,
+                        col.regions = col.regions,
                         popup = popup,
                         label = label,
                         homebutton = homebutton,
@@ -627,7 +630,7 @@ setMethod('mapView', signature(x = 'list'),
                    map = NULL,
                    zcol = NULL,
                    color = mapviewGetOption("vector.palette"),
-                   col.regions = color,
+                   col.regions = mapviewGetOption("vector.palette"),
                    at = NULL,
                    na.color = mapviewGetOption("na.color"),
                    cex = 8,
@@ -636,7 +639,9 @@ setMethod('mapView', signature(x = 'list'),
                    alpha.regions = 0.6,
                    map.types = NULL,
                    verbose = mapviewGetOption("verbose"),
-                   popup = NULL, #popupTable(x),
+                   popup = lapply(seq(x), function(i) {
+                     popupTable(x[[i]])
+                   }),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    label = NULL, #lapply(x, makeLabels),
@@ -668,6 +673,8 @@ setMethod('mapView', signature(x = 'list'),
 
             if (!is.list(color))
               color <- rep(list(color), length(x))
+            if (!is.list(col.regions))
+              col.regions <- rep(list(col.regions), length(x))
             if (!is.list(legend))
               legend <- rep(list(legend), length(x))
             if (!is.list(homebutton))
@@ -680,6 +687,8 @@ setMethod('mapView', signature(x = 'list'),
               highlightOptions <- rep(list(highlightOptions), length(x))
             if (!is.list(label))
               label <- rep(list(label), length(x))
+            if (length(popup) != length(x))
+              popup <- rep(list(popup), length(x))
 
             if (mapviewGetOption("platform") == "leaflet") {
               m <- Reduce("+", lapply(seq(x), function(i) {
@@ -688,6 +697,7 @@ setMethod('mapView', signature(x = 'list'),
                         layer.name = lyrnms[[i]],
                         zcol = zcol[[i]],
                         color = color[[i]],
+                        col.regions = col.regions[[i]],
                         legend = legend[[i]],
                         label = label[[i]],
                         popup = popup[[i]],
