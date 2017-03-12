@@ -112,11 +112,10 @@
   lineWidth), alpha = 1, alpha.regions = 0.6, map.types = NULL,
   verbose = mapviewGetOption("verbose"), popup = lapply(seq(x), function(i)
   {     popupTable(x[[i]]) }), layer.name = deparse(substitute(x, env =
-  parent.frame())), label = NULL, legend = mapviewGetOption("legend"),
-  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
-  highlightOptions = lapply(seq(x), function(i) {    
-  mapviewHighlightOptions(x[[i]], alpha.regions = alpha.regions, lwd = lwd[[i]])
-  }), maxpoints = NULL, ...)
+  parent.frame())), legend = mapviewGetOption("legend"), legend.opacity = 1,
+  homebutton = TRUE, native.crs = FALSE, highlightOptions = lapply(seq(x),
+  function(i) {     mapviewHighlightOptions(x[[i]], alpha.regions =
+  alpha.regions, lwd = lwd[[i]]) }), maxpoints = NULL, ...)
 
 \S4method{mapview}{ANY}(...)
 

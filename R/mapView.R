@@ -644,7 +644,7 @@ setMethod('mapView', signature(x = 'list'),
                    }),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   label = NULL, #lapply(x, makeLabels),
+                   #label = NULL, #lapply(x, makeLabels),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
                    homebutton = TRUE,
@@ -685,8 +685,8 @@ setMethod('mapView', signature(x = 'list'),
               lwd <- rep(list(lwd), length(x))
             if (!is.list(highlightOptions))
               highlightOptions <- rep(list(highlightOptions), length(x))
-            if (!is.list(label))
-              label <- rep(list(label), length(x))
+            # if (!is.list(label))
+            #   label <- rep(list(label), length(x))
             if (length(popup) != length(x))
               popup <- rep(list(popup), length(x))
 
@@ -699,7 +699,7 @@ setMethod('mapView', signature(x = 'list'),
                         color = color[[i]],
                         col.regions = col.regions[[i]],
                         legend = legend[[i]],
-                        label = label[[i]],
+                        #label = label[[i]],
                         popup = popup[[i]],
                         homebutton = homebutton[[i]],
                         native.crs = native.crs,
