@@ -56,21 +56,22 @@
   verbose = mapviewGetOption("verbose"), homebutton = TRUE, ...)
 
 \S4method{mapView}{sf}(x, map = NULL, zcol = NULL, burst = FALSE,
-  color = mapviewGetOption("vector.palette"), col.regions = color,
-  at = NULL, na.color = mapviewGetOption("na.color"), cex = 8,
-  lwd = lineWidth(x), alpha = 0.9, alpha.regions = 0.6,
-  map.types = NULL, verbose = mapviewGetOption("verbose"),
-  popup = popupTable(x), layer.name = deparse(substitute(x, env =
-  parent.frame())), label = makeLabels(x, zcol),
-  legend = mapviewGetOption("legend"), legend.opacity = 1,
-  homebutton = TRUE, native.crs = FALSE,
+  color = mapviewGetOption("vector.palette"),
+  col.regions = mapviewGetOption("vector.palette"), at = NULL,
+  na.color = mapviewGetOption("na.color"), cex = 8, lwd = lineWidth(x),
+  alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
+  verbose = mapviewGetOption("verbose"), popup = popupTable(x),
+  layer.name = deparse(substitute(x, env = parent.frame())),
+  label = makeLabels(x, zcol), legend = mapviewGetOption("legend"),
+  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
   highlightOptions = mapviewHighlightOptions(x, alpha.regions, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
 \S4method{mapView}{sfc}(x, map = NULL, color = "#6666ff",
   col.regions = color, at = NULL, na.color = mapviewGetOption("na.color"),
-  cex = 8, lwd = lineWidth(x), alpha = 0.9, alpha.regions = 0.6,
-  map.types = NULL, verbose = mapviewGetOption("verbose"), popup = NULL,
+  cex = 8, lwd = lineWidth(x), alpha = 0.9,
+  alpha.regions = regionOpacity(x), map.types = NULL,
+  verbose = mapviewGetOption("verbose"), popup = NULL,
   layer.name = deparse(substitute(x, env = parent.frame(2))),
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
@@ -79,7 +80,7 @@
 
 \S4method{mapView}{XY}(x, map = NULL, color = "#6666ff", at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 8, lwd = lineWidth(x),
-  alpha = 0.9, alpha.regions = 0.6, map.types = NULL,
+  alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
   verbose = mapviewGetOption("verbose"), popup = NULL,
   layer.name = deparse(substitute(x, env = parent.frame(1))),
   label = makeLabels(x), legend = mapviewGetOption("legend"),

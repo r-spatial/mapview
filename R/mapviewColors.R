@@ -127,7 +127,37 @@ vectorColors <- function(x, # a sp or sf object
                          na.color = mapviewGetOption("na.color"),
                          ...) {
 
-  stnd_col <- "#6666ff"
+  stnd_col <- "#333333"
+
+  if (getGeometryType(x) == "ln") {
+    if (!is.null(zcol)) {
+      if (!inherits(x[[zcol]], c("numeric", "integer")) & !is.null(at)) {
+        warning("ignoring 'at' which is only supported for numeric/integer values")
+        at <- NULL
+      }
+      col <- zcolColors(x[[zcol]],
+                        colors = colors,
+                        at = at,
+                        na.color = na.color,
+                        ...)
+    } else if (is.null(zcol) & is.function(colors)) {
+      col <- standardColor(x)
+    } else col <- colors
+  } else col <- stnd_col
+
+  return(col2Hex(col))
+
+}
+
+
+vectorColRegions <- function(x, # a sp or sf object
+                             zcol = NULL,
+                             col.regions = mapviewGetOption("vector.palette"),
+                             at = NULL,
+                             na.color = mapviewGetOption("na.color"),
+                             ...) {
+
+  stnd_col <- standardColor(x) #"#aaaaff" #"#CCCCCC"
 
   if (!is.null(zcol)) {
     if (!inherits(x[[zcol]], c("numeric", "integer")) & !is.null(at)) {
@@ -135,13 +165,13 @@ vectorColors <- function(x, # a sp or sf object
       at <- NULL
     }
     col <- zcolColors(x[[zcol]],
-                      colors = colors,
+                      colors = col.regions,
                       at = at,
                       na.color = na.color,
                       ...)
-  } else if (is.null(zcol) & is.function(colors)) {
+  } else if (is.null(zcol) & is.function(col.regions)) {
     col <- stnd_col
-  } else col <- colors
+  } else col <- col.regions
 
   return(col2Hex(col))
 
@@ -177,6 +207,14 @@ zcolColors <- function(x, # a vector, not a sp or sf object
   }
   return(col2Hex(cols))
 
+}
+
+
+standardColor <- function(x) {
+  switch(getGeometryType(x),
+         "pt" = "#6666ff", #"#66b3ff",
+         "ln" = "#6666ff", #"#66b3ff",
+         "pl" = "#6666ff") #"#66b3ff")
 }
 
 

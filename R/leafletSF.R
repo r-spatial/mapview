@@ -50,12 +50,17 @@ leaflet_sf <- function(x,
                        colors = color,
                        at = at,
                        na.color = na.color)
+  clrs.regions <- vectorColRegions(x = x,
+                                   zcol = zcol,
+                                   col.regions = col.regions,
+                                   at = at,
+                                   na.color = na.color)
 
   leaflet_sfc(sf::st_geometry(x),
               map = map,
               zcol = zcol,
               color = clrs,
-              col.regions = clrs,
+              col.regions = clrs.regions,
               at = at,
               na.color = na.color,
               cex = cex,
@@ -107,19 +112,23 @@ leaflet_sfc <- function(x,
 
   if (!native.crs) x <- checkAdjustProjection(x)
 
-  if (is.null(map.types)) map.types <- basemaps(color)
+  if (is.null(map.types)) {
+    if (getGeometryType(x) == "pl") {
+      map.types <- basemaps(col.regions)
+    } else map.types <- basemaps(color)
+  }
 
   m <- initMap(map, map.types, sf::st_crs(x), native.crs)
 
   if (npts(x) > maxpoints) {
+    if (getGeometryType(x) == "ln") clrs <- color else clrs <-  col.regions
     m <- addLargeFeatures(m,
                           data = x,
                           radius = cex,
                           weight = lwd,
                           opacity = alpha,
                           fillOpacity = alpha.regions,
-                          color = color,
-                          filColor = col.regions,
+                          color = clrs,
                           popup = popup,
                           label = label,
                           group = layer.name,
