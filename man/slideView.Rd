@@ -18,7 +18,7 @@
 
 \S4method{slideView}{RasterLayer,RasterLayer}(img1, img2,
   label1 = deparse(substitute(img1, env = parent.frame())),
-  label2 = deparse(substitute(img2, env = parent.frame())),
+  label2 = deparse(substitute(img2, env = parent.frame())), legend = TRUE,
   col.regions = mapviewGetOption("raster.palette")(256),
   na.color = mapviewGetOption("na.color"),
   maxpixels = mapviewGetOption("plainview.maxpixels"))

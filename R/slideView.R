@@ -145,6 +145,7 @@ setMethod("slideView", signature(img1 = "RasterLayer",
                    img2,
                    label1 = deparse(substitute(img1, env = parent.frame())),
                    label2 = deparse(substitute(img2, env = parent.frame())),
+                   legend = TRUE,
                    col.regions = mapviewGetOption("raster.palette")(256),
                    na.color = mapviewGetOption("na.color"),
                    maxpixels = mapviewGetOption("plainview.maxpixels")) {
@@ -169,7 +170,7 @@ setMethod("slideView", signature(img1 = "RasterLayer",
             leg_flr <- NULL
             leg_fll <- NULL
 
-            legend <- TRUE # !! testing !!
+            # legend <- TRUE # !! testing !!
             if (legend) {
               ## legend one (right)
               rngr <- range(img1[], na.rm = TRUE)
