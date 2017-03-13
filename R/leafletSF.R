@@ -38,8 +38,9 @@ leaflet_sf <- function(x,
 
   if (!native.crs) x <- checkAdjustProjection(x)
   if (legend & !is.null(zcol)) {
+    leg_clrs <- ifelse(getGeometryType(x) == "ln", color, col.regions)
     legend <- mapviewLegend(values = x[[zcol]],
-                            colors = color,
+                            colors = leg_clrs,
                             at = at,
                             na.color = col2Hex(na.color),
                             layer.name = layer.name)
