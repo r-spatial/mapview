@@ -115,8 +115,12 @@ leaflet_sfc <- function(x,
 
   if (is.null(map.types)) {
     if (getGeometryType(x) == "pl") {
+      if (is.function(col.regions)) col.regions <- standardColRegions(x)
       map.types <- basemaps(col.regions)
-    } else map.types <- basemaps(color)
+    } else {
+      if (is.function(color)) color <- standardColor(x)
+      map.types <- basemaps(color)
+    }
   }
 
   m <- initMap(map, map.types, sf::st_crs(x), native.crs)

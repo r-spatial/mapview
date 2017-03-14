@@ -67,9 +67,8 @@
   highlightOptions = mapviewHighlightOptions(x, alpha.regions, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
-\S4method{mapView}{sfc}(x, map = NULL,
-  color = mapviewGetOption("vector.palette"),
-  col.regions = mapviewGetOption("vector.palette"), at = NULL,
+\S4method{mapView}{sfc}(x, map = NULL, color = standardColor(x),
+  col.regions = standardColRegions(x), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 8, lwd = lineWidth(x),
   alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
   verbose = mapviewGetOption("verbose"), popup = NULL,
