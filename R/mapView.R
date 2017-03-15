@@ -412,6 +412,7 @@ setMethod('mapView', signature(x = 'sf'),
                         label = label,
                         homebutton = homebutton,
                         legend = legend,
+                        map.types = map.types,
                         ...)
 
               }
@@ -637,7 +638,7 @@ setMethod('mapView', signature(x = 'list'),
                    lwd = lapply(x, lineWidth),
                    alpha = 1,
                    alpha.regions = 0.6,
-                   map.types = NULL,
+                   map.types = mapviewGetOption("basemaps"),
                    verbose = mapviewGetOption("verbose"),
                    popup = lapply(seq(x), function(i) {
                      popupTable(x[[i]])
@@ -708,6 +709,7 @@ setMethod('mapView', signature(x = 'list'),
                         cex = cex[[i]],
                         lwd = lwd[[i]],
                         highlightOptions = highlightOptions[[i]],
+                        map.types = map.types,
                         ...)
               }))@map
               m <- leaflet::hideGroup(map = m,
