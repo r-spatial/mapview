@@ -5,8 +5,9 @@ if ( !isGeneric('+') ) {
 
 #' Add a layer to a mapview or leaflet map
 #'
-#' @param e1 the map to which the layer should be added
-#' @param e2 (spatial) object to be added
+#' @param e1 a leaflet or mapview map to which e2 should be added.
+#' @param e2 a (spatial) object to be added or a mapview object from which
+#' the objects should be added to e1.
 #'
 #' @examples
 #' \dontrun{
@@ -24,6 +25,7 @@ if ( !isGeneric('+') ) {
 #' '+'(m2, m1) # final zoom level based on m1
 #' }
 #'
+#' @export
 #' @name +
 #' @docType methods
 #' @rdname plus
@@ -76,22 +78,12 @@ setMethod("+",
             nm <- deparse(substitute(e2))
             m <- mapView(e2, map = e1@map, layer.name = nm)
             out_obj <- append(e1@object, m@object)
-
-            # xrng <- c(createExtent(out_obj[[length(out_obj)]])@xmin,
-            #           createExtent(out_obj[[length(out_obj)]])@xmax)
-            # yrng <- c(createExtent(out_obj[[length(out_obj)]])@ymin,
-            #           createExtent(out_obj[[length(out_obj)]])@ymax)
-            #
-            # if (diff(xrng) != 0 & diff(yrng) != 0) {
-
-              ext <- createExtent(out_obj[[length(out_obj)]])
-              m <- leaflet::fitBounds(map = m@map,
-                                      lng1 = ext@xmin,
-                                      lat1 = ext@ymin,
-                                      lng2 = ext@xmax,
-                                      lat2 = ext@ymax)
-            # }
-
+            ext <- createExtent(out_obj[[length(out_obj)]])
+            m <- leaflet::fitBounds(map = m@map,
+                                    lng1 = ext@xmin,
+                                    lat1 = ext@ymin,
+                                    lng2 = ext@xmax,
+                                    lat2 = ext@ymax)
             out <- methods::new('mapview', object = out_obj, map = m)
             return(out)
           }
@@ -107,21 +99,17 @@ setMethod("+",
                     e2 = "ANY"),
           function (e1, e2)
           {
+
             nm <- deparse(substitute(e2))
             m <- mapView(e2, map = e1, layer.name = nm,
                          map.types = getProviderTileNamesFromMap(e1))
             out_obj <- list(e2)
-            # if (length(e2) > 1) {
-            #   ext <- raster::extent(
-            #     raster::projectExtent(e2, crs = llcrs))
             ext <- createExtent(e2)
-              m <- leaflet::fitBounds(map = m@map,
-                                      lng1 = ext@xmin,
-                                      lat1 = ext@ymin,
-                                      lng2 = ext@xmax,
-                                      lat2 = ext@ymax)
-              #m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
-            # }
+            m <- leaflet::fitBounds(map = m@map,
+                                    lng1 = ext@xmin,
+                                    lat1 = ext@ymin,
+                                    lng2 = ext@xmax,
+                                    lat2 = ext@ymax)
             out <- methods::new('mapview', object = out_obj, map = m)
             return(out)
           }

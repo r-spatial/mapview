@@ -16,9 +16,10 @@
 \S4method{+}{mapview,character}(e1, e2)
 }
 \arguments{
-\item{e1}{the map to which the layer should be added}
+\item{e1}{a leaflet or mapview map to which e2 should be added.}
 
-\item{e2}{(spatial) object to be added}
+\item{e2}{a (spatial) object to be added or a mapview object from which
+the objects should be added to e1.}
 }
 \description{
 Add a layer to a mapview or leaflet map

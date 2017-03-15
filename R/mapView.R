@@ -167,7 +167,8 @@ if ( !isGeneric('mapView') ) {
 #'
 #' }
 #'
-#' @export mapView
+#' @export
+#' @docType methods
 #' @name mapView
 #' @rdname mapView
 #' @aliases mapView,RasterLayer-method
@@ -733,6 +734,7 @@ if ( !isGeneric('mapview') ) {
 #' @describeIn mapView alias for ease of typing
 #' @aliases mapview
 #' @export mapview
+#' @docType methods
 #'
 setMethod('mapview', signature('ANY'),
           function(...) mapView(...))
