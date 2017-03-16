@@ -210,6 +210,143 @@ setMethod("slideView", signature(img1 = "RasterLayer",
 
 )
 
+## RasterStackBrick, RasterLayer ===========================================================
+#' @describeIn slideView for RasterStackBrick, RasterLayer
+#'
+#' @param col.regions color (palette).See \code{\link{levelplot}} for details.
+#'
+setMethod("slideView", signature(img1 = "RasterStackBrick",
+                                 img2 = "RasterLayer"),
+          function(img1,
+                   img2,
+                   label1 = deparse(substitute(img1, env = parent.frame())),
+                   label2 = deparse(substitute(img2, env = parent.frame())),
+                   legend = TRUE,
+                   r = 3,
+                   g = 2,
+                   b = 1,
+                   col.regions = mapviewGetOption("raster.palette")(256),
+                   na.color = mapviewGetOption("na.color"),
+                   maxpixels = mapviewGetOption("plainview.maxpixels"),
+                   ...) {
+
+            png1 <- rgbStack2PNG(img1, r = r, g = g, b = b,
+                                 na.color = na.color,
+                                 maxpixels = maxpixels,
+                                 ...)
+            png2 <- raster2PNG(img2, col.regions = col.regions,
+                               na.color = na.color,
+                               maxpixels = maxpixels)
+
+            ## temp dir
+            dir <- tempfile()
+            dir.create(dir)
+            fl1 <- paste0(dir, "/img1", ".png")
+            fl2 <- paste0(dir, "/img2", ".png")
+
+            ## pngs
+            png::writePNG(png1, fl1)
+            png::writePNG(png2, fl2)
+
+            leg_flr <- NULL
+            leg_fll <- NULL
+
+            if (legend) {
+              ## legend two (left)
+              rngl <- range(img2[], na.rm = TRUE)
+              # if (missing(at)) at <- lattice::do.breaks(rng, 256)
+              atl <- lattice::do.breaks(rngl, 256)
+              leg_fll <- paste0(dir, "/legendl", ".png")
+              png(leg_fll, height = 200, width = 80, units = "px",
+                  bg = "transparent", pointsize = 14)
+              rasterLegend(col = col.regions,
+                           at = atl,
+                           height = 0.9,
+                           space = "left")
+              dev.off()
+            }
+
+            slideViewInternal(list(a="a", b="b"),
+                              img1nm = label1,
+                              img2nm = label2,
+                              filename1 = fl1,
+                              filename2 = fl2,
+                              leg_flr = leg_flr,
+                              leg_fll = leg_fll)
+          }
+
+)
+
+
+
+## RasterLayer, RasterStackBrick ===========================================================
+#' @describeIn slideView for RasterLayer, RasterStackBrick
+#'
+#' @param col.regions color (palette).See \code{\link{levelplot}} for details.
+#'
+setMethod("slideView", signature(img1 = "RasterLayer",
+                                 img2 = "RasterStackBrick"),
+          function(img1,
+                   img2,
+                   label1 = deparse(substitute(img1, env = parent.frame())),
+                   label2 = deparse(substitute(img2, env = parent.frame())),
+                   legend = TRUE,
+                   r = 3,
+                   g = 2,
+                   b = 1,
+                   col.regions = mapviewGetOption("raster.palette")(256),
+                   na.color = mapviewGetOption("na.color"),
+                   maxpixels = mapviewGetOption("plainview.maxpixels"),
+                   ...) {
+
+            png1 <- raster2PNG(img1, col.regions = col.regions,
+                               na.color = na.color,
+                               maxpixels = maxpixels)
+
+            png2 <- rgbStack2PNG(img2, r = r, g = g, b = b,
+                                 na.color = na.color,
+                                 maxpixels = maxpixels,
+                                 ...)
+
+            ## temp dir
+            dir <- tempfile()
+            dir.create(dir)
+            fl1 <- paste0(dir, "/img1", ".png")
+            fl2 <- paste0(dir, "/img2", ".png")
+
+            ## pngs
+            png::writePNG(png1, fl1)
+            png::writePNG(png2, fl2)
+
+            leg_flr <- NULL
+            leg_fll <- NULL
+
+            if (legend) {
+              ## legend one (right)
+              rngr <- range(img1[], na.rm = TRUE)
+              # if (missing(at)) at <- lattice::do.breaks(rng, 256)
+              atr <- lattice::do.breaks(rngr, 256)
+              leg_flr <- paste0(dir, "/legendr", ".png")
+              png(leg_flr, height = 200, width = 80, units = "px",
+                  bg = "transparent", pointsize = 14)
+              rasterLegend(col = col.regions,
+                           at = atr,
+                           height = 0.9,
+                           space = "right")
+              dev.off()
+            }
+
+            slideViewInternal(list(a="a", b="b"),
+                              img1nm = label1,
+                              img2nm = label2,
+                              filename1 = fl1,
+                              filename2 = fl2,
+                              leg_flr = leg_flr,
+                              leg_fll = leg_fll)
+          }
+
+)
+
 
 ## png files ==============================================================
 #' @describeIn slideView for png files
@@ -260,7 +397,7 @@ slideViewInternal <- function(message,
     message = message,
     img1 = img1nm,
     img2 = img2nm,
-    legend = (!is.null(leg_flr)) && (!is.null(leg_fll))
+    legend = (!is.null(leg_flr)) || (!is.null(leg_fll))
   )
 
   #filename1 and filename2 need to have same directory!
@@ -271,12 +408,16 @@ slideViewInternal <- function(message,
 
   attachments = list(imager = image_file1, imagel = image_file2)
 
-  if( (!is.null(leg_flr)) && (!is.null(leg_fll)) ) {
+  if( !is.null(leg_flr) ) {
     legendr_dir <- dirname(leg_flr)  #same as image_dir  not checked
-    legendl_dir <- dirname(leg_fll)  #same as image_dir  not checked
     legendr_file <- basename(leg_flr)
+    attachments <- c(attachments, legendr = legendr_file)
+  }
+
+  if( !is.null(leg_fll) ) {
+    legendl_dir <- dirname(leg_fll)  #same as image_dir  not checked
     legendl_file <- basename(leg_fll)
-    attachments <- c(attachments, legendr = legendr_file, legendl = legendl_file)
+    attachments <- c(attachments, legendl = legendl_file)
   }
 
   dep1 <- htmltools::htmlDependency(name = "image",
