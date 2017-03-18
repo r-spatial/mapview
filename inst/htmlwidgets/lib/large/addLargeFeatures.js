@@ -353,7 +353,7 @@ function countProperties(obj) {
                     /*ctx.globalAlpha=0.7 ;
                     ctx.lineWidth = 0.0;
                     ctx.strokeStyle = "black";
-                    ctx.fillStyle="brown";
+
                     */
 
                     for (var j = 0; j < feature.geometry.length; j++) {
@@ -364,6 +364,9 @@ function countProperties(obj) {
                                 0,
                                 2 * Math.PI);
                     }
+                    ctx.fillStyle = feature.tags.color;
+                    ctx.strokeStyle = feature.tags.color;
+                    ctx.fill();
                 }
                 //
                 // lines

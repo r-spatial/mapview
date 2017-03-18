@@ -8,6 +8,8 @@
 #' @param at the breakpoints used for the visualisation. See
 #' \code{\link{levelplot}} for details.
 #' @param col.regions color (palette).See \code{\link{levelplot}} for details.
+#' @param legend logical. Whether to plot a legend.
+#' @param ... currently not used.
 #'
 #' @details
 #' The visible layers are alterable by keys: \cr

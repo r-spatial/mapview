@@ -5,9 +5,9 @@
 \title{Add moderately large datasets with up to ~100k features to a map.}
 \usage{
 addLargeFeatures(map, data, color = "#03F", weight = 1, radius = 8,
-  opacity = 1, fillOpacity = 0.6, canvasOpacity = 0.7,
+  opacity = 1, fillOpacity = 0.6, canvasOpacity = 0.5,
   group = deparse(substitute(data)), maxpoints = getMaxFeatures(data),
-  attributes = NULL, counter = 1, ...)
+  attributes = NULL, ...)
 }
 \arguments{
 \item{map}{a mapview or leaflet object.}

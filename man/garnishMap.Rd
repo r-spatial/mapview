@@ -26,7 +26,7 @@ garnishMap(m, addMouseCoordinates)
 
 ## add more than one with named argument
 library(raster)
-m1 <- garnishMap(m, addMouseCoordinates, mapview:::addHomeButton,
+m1 <- garnishMap(m, addMouseCoordinates, addHomeButton,
                  ext = extent(breweries91))
 m1
 

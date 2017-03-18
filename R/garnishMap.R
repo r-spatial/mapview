@@ -18,7 +18,7 @@
 #'
 #' ## add more than one with named argument
 #' library(raster)
-#' m1 <- garnishMap(m, addMouseCoordinates, mapview:::addHomeButton,
+#' m1 <- garnishMap(m, addMouseCoordinates, addHomeButton,
 #'                  ext = extent(breweries91))
 #' m1
 #'
@@ -42,29 +42,33 @@ garnishMap <- function(map, ...) {
 
   funs <- sapply(ls, is.function)
 
-  fn_lst <- lapply(ls[funs], function(i) {
-    tst <- try(match.fun(i), silent = TRUE)
-    if (class(tst) == "try-error") tst <- NULL
-    return(tst)
-  })
-  fn_lst <- fn_lst[!sapply(fn_lst, is.null)]
+  if (all(sapply(ls, is.null)) && all(sapply(funs, is.null))) {
+    return(map)
+  } else {
+    fn_lst <- lapply(ls[funs], function(i) {
+      tst <- try(match.fun(i), silent = TRUE)
+      if (class(tst) == "try-error") tst <- NULL
+      return(tst)
+    })
+    fn_lst <- fn_lst[!sapply(fn_lst, is.null)]
 
-  args <- !funs
+    args <- !funs
 
-  arg_lst <- ls[args]
-  nms <- names(arg_lst)[names(arg_lst) != ""]
+    arg_lst <- ls[args]
+    nms <- names(arg_lst)[names(arg_lst) != ""]
 
-  arg_nms <- lapply(fn_lst, function(i) {
-    ma <- match.arg(c("map", nms), names(as.list(args(i))),
-                    several.ok = TRUE)
-    ma[!ma %in% "map"]
-  })
+    arg_nms <- lapply(fn_lst, function(i) {
+      ma <- match.arg(c("map", nms), names(as.list(args(i))),
+                      several.ok = TRUE)
+      ma[!ma %in% "map"]
+    })
 
-  for (i in seq(fn_lst)) {
-    vec <- arg_nms[[i]]
-    map <- do.call(fn_lst[[i]], append(list(map), arg_lst[vec]))
+    for (i in seq(fn_lst)) {
+      vec <- arg_nms[[i]]
+      map <- do.call(fn_lst[[i]], append(list(map), arg_lst[vec]))
+    }
+    return(map)
   }
-  return(map)
 }
 
 ### decorateMap lets you pass lists of functions with respective lists of

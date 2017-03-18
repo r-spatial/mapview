@@ -17,6 +17,10 @@ cubeview(...)
 \code{\link{levelplot}} for details.}
 
 \item{col.regions}{color (palette).See \code{\link{levelplot}} for details.}
+
+\item{legend}{logical. Whether to plot a legend.}
+
+\item{...}{currently not used.}
 }
 \description{
 Create a 3D data cube from a RasterStack or RasterBrick. The cube can be

@@ -51,6 +51,8 @@ If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
 \item{...}{additional arguments passed on to repective functions.}
 
+\item{legend}{logical. Whether to plot a legend.}
+
 \item{col.regions}{color (palette).See \code{\link{levelplot}} for details.}
 
 \item{color}{the color palette to be used for visualising RasterLayers}

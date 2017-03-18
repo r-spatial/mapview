@@ -20,6 +20,8 @@ string)}
 
 \item{position}{the position of the button (one of 'topleft', 'topright',
 'bottomleft', 'bottomright'). Defaults to 'bottomright'.}
+
+\item{add}{logical. Whether to add the button to the map (mainly for internal use).}
 }
 \description{
 This function adds a button to the map that enables zooming to a

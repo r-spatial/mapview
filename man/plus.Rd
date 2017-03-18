@@ -3,15 +3,12 @@
 \docType{methods}
 \name{+}
 \alias{+}
-\alias{+,leaflet,ANY-method}
 \alias{+,mapview,ANY-method}
 \alias{+,mapview,character-method}
 \alias{+,mapview,mapview-method}
 \title{Add a layer to a mapview or leaflet map}
 \usage{
 \S4method{+}{mapview,ANY}(e1, e2)
-
-\S4method{+}{leaflet,ANY}(e1, e2)
 
 \S4method{+}{mapview,character}(e1, e2)
 }
@@ -39,6 +36,7 @@ m2 <- mapView(breweries91)
 m1 + m2 # final zoom level based on m2
 '+'(m2, m1) # final zoom level based on m1
 }
+
 
 }
 

@@ -40,7 +40,8 @@ Imports:
     data.table,
     webshot,
     viridisLite,
-    sf
+    sf,
+    base64enc
 LinkingTo: Rcpp
 RoxygenNote: 5.0.1
 SystemRequirements: GNU make

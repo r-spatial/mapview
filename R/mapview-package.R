@@ -14,7 +14,7 @@
 #' \cr
 #' \emph{Maintainer:} Tim Appelhans \email{admin@@environmentalinformatics-marburg.de}
 #'
-#' @import leaflet sp sf raster satellite scales Rcpp methods png lattice gdalUtils viridisLite
+#' @import leaflet sp sf raster satellite scales Rcpp methods png lattice gdalUtils viridisLite base64enc
 #' @importFrom grDevices rgb dev.off png svg
 #' @importFrom utils find glob2rx
 #' @importFrom webshot webshot
@@ -25,21 +25,21 @@
 NULL
 #'
 #' @docType data
-#' @name atlStorms2005
+#' @name stormtracks
 #' @title Atlantic Ocean storms 2005
 #' @description Atlantic Ocean storms 2005
 #' @details This dataset contains storm tracks for selected storms
 #' in the Atlantic Ocean basin for the year 2005
-#' @format \code{sp::SpatialLinesDataFrame}
+#' @format \code{sf feature collection LINESTRING}
 NULL
 #'
 #' @docType data
-#' @name gadmCHE
+#' @name cantons
 #' @title Administrative borders of Switzerland (level 1)
 #' @description Administrative borders of Switzerland (level 1)
 #' @details This dataset comes from \url{http://gadm.org}.
 #' It was downloaded using \code{\link{getData}}.
-#' @format \code{sp::SpatialPolygonsDataFrame}
+#' @format \code{sf feature collection MULTIPOLYGON}
 #' @source
 #' \url{http://gadm.org}
 NULL
@@ -56,12 +56,12 @@ NULL
 NULL
 #'
 #' @docType data
-#' @name breweries91
+#' @name breweries
 #' @title Selected breweries in Franconia
 #' @description Selected breweries in Franconia (zip code starting with 91...)
 #' @details This dataset contains selected breweries in Franconia. It is a
 #' subset of a larger database that was compiled by students at the
 #' University of Marburg for a seminar called
 #' "The Geography of Beer, sustainability in the food industry"
-#' @format \code{sp::SpatialPointsDataFrame}
+#' @format \code{sf feature collection POINT}
 NULL

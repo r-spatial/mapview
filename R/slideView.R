@@ -27,6 +27,7 @@ if ( !isGeneric('slideView') ) {
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color the color palette to be used for visualising RasterLayers
 #' @param na.color the color to be used for NA pixels
+#' @param legend logical. Whether to plot a legend.
 #' @param ... additional arguments passed on to repective functions.
 #'
 #' @details

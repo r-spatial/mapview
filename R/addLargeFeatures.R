@@ -70,11 +70,10 @@ addLargeFeatures <- function(map,
                              radius = 8,
                              opacity = 1,
                              fillOpacity = 0.6,
-                             canvasOpacity = 0.7,
+                             canvasOpacity = 0.5,
                              group = deparse(substitute(data)),
                              maxpoints = getMaxFeatures(data),
                              attributes = NULL,
-                             counter = 1,
                              ...) {
 
   jsgroup <- gsub(".", "", make.names(group), fixed = TRUE)
@@ -84,7 +83,7 @@ addLargeFeatures <- function(map,
   sfpathJsonFn <- tmp[[3]][1]
   jsonFn <- tmp[[4]][1]
 
-  cntr <- counter
+  cntr <- 1
 
   if (inherits(data, "Spatial")) data <- sf::st_as_sf(data)
 

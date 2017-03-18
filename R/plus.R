@@ -25,7 +25,7 @@ if ( !isGeneric('+') ) {
 #' '+'(m2, m1) # final zoom level based on m1
 #' }
 #'
-#' @export
+#'
 #' @name +
 #' @docType methods
 #' @rdname plus
@@ -89,31 +89,31 @@ setMethod("+",
           }
 )
 
-#' @name +
-#' @docType methods
-#' @rdname plus
-#' @aliases +,leaflet,ANY-method
+# #' @name +
+# #' @docType methods
+# #' @rdname plus
+# #' @aliases +,leaflet,ANY-method
 #'
-setMethod("+",
-          signature(e1 = "leaflet",
-                    e2 = "ANY"),
-          function (e1, e2)
-          {
-
-            nm <- deparse(substitute(e2))
-            m <- mapView(e2, map = e1, layer.name = nm,
-                         map.types = getProviderTileNamesFromMap(e1))
-            out_obj <- list(e2)
-            ext <- createExtent(e2)
-            m <- leaflet::fitBounds(map = m@map,
-                                    lng1 = ext@xmin,
-                                    lat1 = ext@ymin,
-                                    lng2 = ext@xmax,
-                                    lat2 = ext@ymax)
-            out <- methods::new('mapview', object = out_obj, map = m)
-            return(out)
-          }
-)
+# setMethod("+",
+#           signature(e1 = "leaflet",
+#                     e2 = "ANY"),
+#           function (e1, e2)
+#           {
+#
+#             nm <- deparse(substitute(e2))
+#             m <- mapView(e2, map = e1, layer.name = nm,
+#                          map.types = getProviderTileNamesFromMap(e1))
+#             out_obj <- list(e2)
+#             ext <- createExtent(e2)
+#             m <- leaflet::fitBounds(map = m@map,
+#                                     lng1 = ext@xmin,
+#                                     lat1 = ext@ymin,
+#                                     lng2 = ext@xmax,
+#                                     lat2 = ext@ymax)
+#             out <- methods::new('mapview', object = out_obj, map = m)
+#             return(out)
+#           }
+# )
 
 
 #' @name +
@@ -141,3 +141,4 @@ setMethod("+",
 
           }
 )
+

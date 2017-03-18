@@ -11,6 +11,7 @@
 #' #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color color (palette) for points/polygons/lines
+#' @param lwd line width of the rectangle.
 #' @param map.types character spcifications for the base maps.
 #' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
 #' for available options.

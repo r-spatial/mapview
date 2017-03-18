@@ -10,6 +10,7 @@
 #' string)
 #' @param position the position of the button (one of 'topleft', 'topright',
 #' 'bottomleft', 'bottomright'). Defaults to 'bottomright'.
+#' @param add logical. Whether to add the button to the map (mainly for internal use).
 #'
 #' @examples
 #' \dontrun{
@@ -40,10 +41,10 @@ addHomeButton <- function(map, ext, layer.name = "layer",
   hb <- try(getCallEntryFromMap(map, "addHomeButton"), silent = TRUE)
   if (!inherits(hb, "try-error") & length(hb) == 1) {
     ext_coords <- unlist(map$x$calls[[hb]][["args"]][1:4])
-    ext_map <- raster::extent(ext_coords[1] + 0.005,
-                              ext_coords[3] - 0.005,
-                              ext_coords[2] + 0.005,
-                              ext_coords[4] - 0.005)
+    ext_map <- raster::extent(ext_coords[1],
+                              ext_coords[3],
+                              ext_coords[2],
+                              ext_coords[4])
     if (identical(ext, ext_map)) add = FALSE
   }
 
@@ -52,13 +53,6 @@ addHomeButton <- function(map, ext, layer.name = "layer",
     label <- paste("Zoom to", layer.name)
 
     txt <- paste('<strong>', layer.name, '</strong>')
-
-    # xmin = ext@xmin,
-    # ymin = ext@ymin,
-    # xmax = ext@xmax,
-    # ymax = ext@ymax,
-    # label = label,
-    # icon = txt
 
     map$dependencies <- c(map$dependencies, leafletHomeButtonDependencies())
     leaflet::invokeMethod(map, leaflet::getMapData(map), 'addHomeButton',

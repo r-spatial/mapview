@@ -1,8 +1,4 @@
-# #' @export
-# #'
-# print.mapview <- function(x, ...) {
-#   htmlwidgets:::print.htmlwidget(mapview2leaflet(x), ...)
-# }
+
 isAvailableInLeaflet <- function() {
   return(
     list(
@@ -67,26 +63,33 @@ getFeatureIds <- function(att_data) {
 
 
 ### createExtent
-createExtent <- function(x, offset = 0.005) {
+createExtent <- function(x, offset = NULL) {
 
   if (inherits(x, "Raster")) {
-    # ext <- raster::extent(raster::xmin(x) - offset,
-    #                       raster::xmax(x) + offset,
-    #                       raster::ymin(x) - offset,
-    #                       raster::ymax(x) + offset)
     ext <- raster::extent(
       raster::projectExtent(x, crs = llcrs))
   } else if (inherits(x, "Spatial")) {
-    ext <- raster::extent(raster::xmin(x) - offset,
-                          raster::xmax(x) + offset,
-                          raster::ymin(x) - offset,
-                          raster::ymax(x) + offset)
+    ext <- raster::extent(raster::xmin(x),
+                          raster::xmax(x),
+                          raster::ymin(x),
+                          raster::ymax(x))
   } else if (inherits(x, "sfc") | inherits(x, "sf") | inherits(x, "XY")) {
     bb <- sf::st_bbox(x)
-    ext <- raster::extent(bb[1] - offset,
-                          bb[3] + offset,
-                          bb[2] - offset,
-                          bb[4] + offset)
+    ext <- raster::extent(bb[1], bb[3], bb[2], bb[4])
+  }
+
+  if (is.null(offset)) {
+    xxtend <- extendLimits(c(ext[1], ext[2]))
+    yxtend <- extendLimits(c(ext[3], ext[4]))
+    ext@xmin <- xxtend[1]
+    ext@xmax <- xxtend[2]
+    ext@ymin <- yxtend[1]
+    ext@ymax <- yxtend[2]
+  } else {
+    ext@xmin <- ext@xmin - offset
+    ext@xmax <- ext@xmax + offset
+    ext@ymin <- ext@ymin - offset
+    ext@ymax <- ext@ymax + offset
   }
 
   return(ext)
@@ -168,4 +171,25 @@ getProjection <- function(x) {
 
   return(prj)
 
+}
+
+
+createFileId <- function(ndigits = 6) {
+  paste(sample(c(letters[1:6], 0:9), ndigits), collapse = "")
+}
+
+
+extendLimits <- function(lim, length = 1, prop = 0.07) {
+  if(length(lim) != 2) stop("lim should be of length 2")
+  if(lim[1] > lim[2]) lim <- rev(lim)
+  if (!missing(length)) {
+    prop <- (as.numeric(length) -
+               as.numeric(diff(lim))) / (2 * as.numeric(diff(lim)))
+  }
+  if (lim[1] == lim[2])
+    lim + 0.5 * c(-length, length)
+  else {
+    d <- diff(as.numeric(lim))
+    lim + prop * d * c(-1, 1)
+  }
 }

@@ -198,7 +198,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    ...) {
 
             if (is.null(at)) at <- lattice::do.breaks(
-              lattice:::extend.limits(range(x[], na.rm = TRUE)), 256)
+              extendLimits(range(x[], na.rm = TRUE)), 256)
 
             if (mapviewGetOption("platform") == "leaflet") {
               # if (maxpixels < raster::ncell(x)) {

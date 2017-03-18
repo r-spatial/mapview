@@ -29,6 +29,8 @@ for available options.}
 created from \code{\link{popupTable}}. See \code{\link{addControl}} for
 details.}
 
+\item{lwd}{line width of the rectangle.}
+
 \item{alpha}{opacity of the lines or points}
 
 \item{alpha.regions}{opacity of the fills or the raster layer(s)}

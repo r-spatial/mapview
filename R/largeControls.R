@@ -30,13 +30,13 @@ makepathLarge <- function(group) {
   # tmpPath <- grep(utils::glob2rx("*data_large*"), dirs, value = TRUE)
   # if (length(tmpPath) == 0) {
   tmpPath <- paste(tempfile(pattern = "data_large"),
-                   htmlwidgets:::createWidgetId(3),
+                   createFileId(),
                    sep = "_")
   dir.create(tmpPath)
   # }
   baseFn <- paste("data_large", group, sep = "_")
   extFn <- "geojson"
-  jsonFn <- paste0(baseFn, htmlwidgets:::createWidgetId(3), ".", extFn)
+  jsonFn <- paste0(baseFn, createFileId(), ".", extFn)
   pathJsonFn <- paste0(tmpPath, "/", jsonFn)
   sfpathJsonFn <- paste0(tmpPath, "/", "sf_", jsonFn)
   return(list(tmpPath, pathJsonFn, sfpathJsonFn, jsonFn))
