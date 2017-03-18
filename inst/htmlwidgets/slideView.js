@@ -42,8 +42,8 @@ HTMLWidgets.widget({
     var filename1 = document.getElementById("image-imager-attachment").href;
     var filename2 = document.getElementById("image-imagel-attachment").href;
 
-    var legendr_filename = x.legend ? document.getElementById("image-legendr-attachment").href : undefined;
-    var legendl_filename = x.legend ? document.getElementById("image-legendl-attachment").href : undefined;
+    var legendr_filename = x.legend && document.getElementById("image-legendr-attachment") !== null ? document.getElementById("image-legendr-attachment").href : undefined;
+    var legendl_filename = x.legend && document.getElementById("image-legendl-attachment") !== null ? document.getElementById("image-legendl-attachment").href : undefined;
 
     divInfoSlide = document.createElement("div");
     divInfoSlide.id ="divInfoSlide";
