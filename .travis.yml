@@ -21,3 +21,4 @@ r_packages:
   - rgdal
   - roxygen2
   - rmarkdown
+  - sf
