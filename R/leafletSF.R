@@ -36,6 +36,7 @@ leaflet_sf <- function(x,
     }
   }
 
+  cex <- circleRadius(x, cex)
   if (!native.crs) x <- checkAdjustProjection(x)
   if (legend & !is.null(zcol)) {
     leg_clrs <- ifelse(getGeometryType(x) == "ln", color, col.regions)
@@ -173,7 +174,8 @@ leaflet_sfc <- function(x,
                     native.crs = native.crs),
                list(style = "detailed",
                     epsg = sf::st_crs(x)$epsg,
-                    proj4string = sf::st_crs(x)$proj4string))
+                    proj4string = sf::st_crs(x)$proj4string,
+                    native.crs = native.crs))
   args <- args[!sapply(args, is.null)]
 
   m <- decorateMap(map = m,

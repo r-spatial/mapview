@@ -475,14 +475,14 @@ mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
 
 # Set or calculate circle radius ------------------------------------------
 
-circleRadius <- function(x, radius = 8, min.rad = 3, max.rad = 20) {
-
-  if (is.character(radius)) {
-    rad <- scales::rescale(as.numeric(x@data[, radius]),
-                           to = c(min.rad, max.rad))
-  } else rad <- radius
-  return(rad)
-}
+# circleRadius <- function(x, radius = 8, min.rad = 3, max.rad = 20) {
+#
+#   if (is.character(radius)) {
+#     rad <- scales::rescale(as.numeric(x@data[, radius]),
+#                            to = c(min.rad, max.rad))
+#   } else rad <- radius
+#   return(rad)
+# }
 
 
 

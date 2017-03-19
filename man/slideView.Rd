@@ -4,6 +4,8 @@
 \name{slideView}
 \alias{slideView}
 \alias{slideView,RasterLayer,RasterLayer-method}
+\alias{slideView,RasterLayer,RasterStackBrick-method}
+\alias{slideView,RasterStackBrick,RasterLayer-method}
 \alias{slideView,RasterStackBrick,RasterStackBrick-method}
 \alias{slideView,character,character-method}
 \alias{slideview}
@@ -22,6 +24,22 @@
   col.regions = mapviewGetOption("raster.palette")(256),
   na.color = mapviewGetOption("na.color"),
   maxpixels = mapviewGetOption("plainview.maxpixels"))
+
+\S4method{slideView}{RasterStackBrick,RasterLayer}(img1, img2,
+  label1 = deparse(substitute(img1, env = parent.frame())),
+  label2 = deparse(substitute(img2, env = parent.frame())), legend = TRUE,
+  r = 3, g = 2, b = 1,
+  col.regions = mapviewGetOption("raster.palette")(256),
+  na.color = mapviewGetOption("na.color"),
+  maxpixels = mapviewGetOption("plainview.maxpixels"), ...)
+
+\S4method{slideView}{RasterLayer,RasterStackBrick}(img1, img2,
+  label1 = deparse(substitute(img1, env = parent.frame())),
+  label2 = deparse(substitute(img2, env = parent.frame())), legend = TRUE,
+  r = 3, g = 2, b = 1,
+  col.regions = mapviewGetOption("raster.palette")(256),
+  na.color = mapviewGetOption("na.color"),
+  maxpixels = mapviewGetOption("plainview.maxpixels"), ...)
 
 \S4method{slideView}{character,character}(img1, img2,
   label1 = deparse(substitute(img1, env = parent.frame())),
@@ -81,6 +99,10 @@ For slideView there are a few keyboard shortcuts defined:
 \section{Methods (by class)}{
 \itemize{
 \item \code{img1 = RasterLayer,img2 = RasterLayer}: for RasterLayers
+
+\item \code{img1 = RasterStackBrick,img2 = RasterLayer}: for RasterStackBrick, RasterLayer
+
+\item \code{img1 = RasterLayer,img2 = RasterStackBrick}: for RasterLayer, RasterStackBrick
 
 \item \code{img1 = character,img2 = character}: for png files
 

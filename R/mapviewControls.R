@@ -187,9 +187,19 @@ extendLimits <- function(lim, length = 1, prop = 0.07) {
                as.numeric(diff(lim))) / (2 * as.numeric(diff(lim)))
   }
   if (lim[1] == lim[2])
-    lim + 0.5 * c(-length, length)
+    lim + 0.05 * c(-length, length)
   else {
     d <- diff(as.numeric(lim))
     lim + prop * d * c(-1, 1)
   }
+}
+
+
+circleRadius <- function(x, radius = 8, min.rad = 3, max.rad = 15) {
+
+  if (is.character(radius)) {
+    rad <- scales::rescale(as.numeric(x[[radius]]),
+                           to = c(min.rad, max.rad))
+  } else rad <- radius
+  return(rad)
 }

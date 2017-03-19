@@ -214,8 +214,6 @@ setMethod("slideView", signature(img1 = "RasterLayer",
 ## RasterStackBrick, RasterLayer ===========================================================
 #' @describeIn slideView for RasterStackBrick, RasterLayer
 #'
-#' @param col.regions color (palette).See \code{\link{levelplot}} for details.
-#'
 setMethod("slideView", signature(img1 = "RasterStackBrick",
                                  img2 = "RasterLayer"),
           function(img1,
@@ -282,8 +280,6 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
 
 ## RasterLayer, RasterStackBrick ===========================================================
 #' @describeIn slideView for RasterLayer, RasterStackBrick
-#'
-#' @param col.regions color (palette).See \code{\link{levelplot}} for details.
 #'
 setMethod("slideView", signature(img1 = "RasterLayer",
                                  img2 = "RasterStackBrick"),

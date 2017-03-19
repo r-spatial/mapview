@@ -5,7 +5,7 @@
 \title{Add mouse coordinate information at top of map.}
 \usage{
 addMouseCoordinates(map, style = c("detailed", "basic"), epsg = NULL,
-  proj4string = NULL)
+  proj4string = NULL, native.crs = FALSE)
 }
 \arguments{
 \item{map}{a mapview or leaflet object.}
@@ -16,6 +16,8 @@ See Details for an explanation.}
 \item{epsg}{the epsg string to be shown.}
 
 \item{proj4string}{the proj4string to be shown.}
+
+\item{native.crs}{logical. whether to use the native crs in the coordinates box.}
 }
 \description{
 This function adds a box displaying the current cursor location

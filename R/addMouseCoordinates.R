@@ -12,6 +12,7 @@
 #' See Details for an explanation.
 #' @param epsg the epsg string to be shown.
 #' @param proj4string the proj4string to be shown.
+#' @param native.crs logical. whether to use the native crs in the coordinates box.
 #'
 #' @details
 #' If style is set to "detailed", the following information will be displayed:
@@ -41,14 +42,15 @@
 #' @aliases addMouseCoordinates
 
 addMouseCoordinates <- function(map, style = c("detailed", "basic"),
-                                epsg = NULL, proj4string = NULL) {
+                                epsg = NULL, proj4string = NULL,
+                                native.crs = FALSE) {
 
   style <- style[1]
 
   if (inherits(map, "mapview")) map <- mapview2leaflet(map)
   stopifnot(inherits(map, "leaflet"))
 
-  if (style == "detailed" && is.null(epsg) && is.null(proj4string)) {
+  if (style == "detailed" && !native.crs) {
     txt_detailed <- paste0("
       ' x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +
       ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +
