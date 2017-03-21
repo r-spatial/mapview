@@ -1,3 +1,6 @@
+non_proj_waning <-
+  paste("supplied layer has no projection information and is without background map")
+
 # Check and potentially adjust projection of objects to be rendered =======
 checkAdjustProjection <- function(x) {
 
@@ -44,10 +47,6 @@ rasterCheckAdjustProjection <- function(x) {
 
   is.fact <- raster::is.factor(x)[1]
 
-  non_proj_waning <-
-    paste("supplied", class(x)[1], "has no projection information!", "\n",
-          "scaling coordinates and showing layer without background map")
-
   if (is.na(raster::projection(x))) {
     warning(non_proj_waning)
     raster::extent(x) <- scaleExtent(x)
@@ -70,10 +69,6 @@ rasterCheckAdjustProjection <- function(x) {
 
 # Check and potentially adjust projection of Spatial* objects =============
 spCheckAdjustProjection <- function(x) {
-
-  non_proj_waning <-
-    paste("supplied", class(x)[1], "has no projection information!", "\n",
-          "scaling coordinates and showing layer without background map")
 
   if (is.na(raster::projection(x))) {
     warning(non_proj_waning)
@@ -102,26 +97,9 @@ spCheckAdjustProjection <- function(x) {
 # Check and potentially adjust projection of sf objects ===================
 sfCheckAdjustProjection <- function(x) {
 
-  non_proj_waning <-
-    paste("supplied", class(x)[1], "has no projection information!", "\n",
-          "scaling coordinates and showing layer without background map")
-
-  if (is.na(sf::st_crs(x)$proj4string)) {
+  if (is.na(sf::st_is_longlat(x))) {
     warning(non_proj_waning)
-    # if (class(x)[1] %in% c("SpatialPointsDataFrame", "SpatialPoints")) {
-    #   methods::slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
-    #                                                  coordinates(x)[, 2])
-    # } else if (class(x)[1] %in% c("SpatialPolygonsDataFrame",
-    #                               "SpatialPolygons")) {
-    #   x <- scalePolygonsCoordinates(x)
-    # } else if (class(x)[1] %in% c("SpatialLinesDataFrame",
-    #                               "SpatialLines")) {
-    #   x <- scaleLinesCoordinates(x)
-    # }
-    #
-    # raster::projection(x) <- llcrs
-
-  } else if (!identical(sf::st_crs(x)$proj4string, llcrs)) {
+  } else if (!sf::st_is_longlat(x)) {
     x <- sf::st_transform(x, llcrs)
   }
 

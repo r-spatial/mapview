@@ -37,9 +37,9 @@ leaflet_sf <- function(x,
   }
 
   cex <- circleRadius(x, cex)
-  if (!native.crs) x <- checkAdjustProjection(x)
+  # if (!native.crs) x <- checkAdjustProjection(x)
   if (legend & !is.null(zcol)) {
-    leg_clrs <- ifelse(getGeometryType(x) == "ln", color, col.regions)
+    if (getGeometryType(x) == "ln") leg_clrs <- color else leg_clrs <- col.regions
     legend <- mapviewLegend(values = x[[zcol]],
                             colors = leg_clrs,
                             at = at,
@@ -113,6 +113,7 @@ leaflet_sfc <- function(x,
                         ...) {
 
   if (!native.crs) x <- checkAdjustProjection(x)
+  if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
 
   if (is.null(map.types)) {
     if (getGeometryType(x) == "pl") {

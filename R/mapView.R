@@ -455,28 +455,50 @@ setMethod('mapView', signature(x = 'sfc'),
 
             if (mapviewGetOption("platform") == "leaflet") {
 
-              leaflet_sfc(x,
-                          map = map,
-                          color = color,
-                          col.regions = col.regions,
-                          na.color = na.color,
-                          cex = cex,
-                          lwd = lwd,
-                          alpha = alpha,
-                          alpha.regions = alpha.regions,
-                          map.types = map.types,
-                          verbose = verbose,
-                          popup = popup,
-                          layer.name = layer.name,
-                          label = label,
-                          legend = legend,
-                          legend.opacity = legend.opacity,
-                          homebutton = homebutton,
-                          native.crs = native.crs,
-                          highlightOptions = highlightOptions,
-                          maxpoints = maxpoints,
-                          ...)
-
+              if (inherits(x, "sfc_GEOMETRY")) {
+                mapview(lapply(split(x, st_dimension(x)), st_cast),
+                        map = map,
+                        color = color,
+                        col.regions = col.regions,
+                        na.color = na.color,
+                        cex = cex,
+                        lwd = lwd,
+                        alpha = alpha,
+                        alpha.regions = alpha.regions,
+                        map.types = map.types,
+                        verbose = verbose,
+                        popup = popup,
+                        layer.name = layer.name,
+                        label = label,
+                        legend = legend,
+                        legend.opacity = legend.opacity,
+                        homebutton = homebutton,
+                        native.crs = native.crs,
+                        highlightOptions = highlightOptions,
+                        ...)
+              } else {
+                leaflet_sfc(x,
+                            map = map,
+                            color = color,
+                            col.regions = col.regions,
+                            na.color = na.color,
+                            cex = cex,
+                            lwd = lwd,
+                            alpha = alpha,
+                            alpha.regions = alpha.regions,
+                            map.types = map.types,
+                            verbose = verbose,
+                            popup = popup,
+                            layer.name = layer.name,
+                            label = label,
+                            legend = legend,
+                            legend.opacity = legend.opacity,
+                            homebutton = homebutton,
+                            native.crs = native.crs,
+                            highlightOptions = highlightOptions,
+                            maxpoints = maxpoints,
+                            ...)
+              }
             } else {
               NULL
             }
@@ -697,22 +719,34 @@ setMethod('mapView', signature(x = 'list'),
             if (mapviewGetOption("platform") == "leaflet") {
               m <- Reduce("+", lapply(seq(x), function(i) {
                 if (is.null(popup)) popup <- popupTable(x[[i]])
-                mapView(x = x[[i]],
-                        layer.name = lyrnms[[i]],
-                        zcol = zcol[[i]],
-                        color = color[[i]],
-                        col.regions = col.regions[[i]],
-                        legend = legend[[i]],
-                        label = label[[i]],
-                        popup = popup[[i]],
-                        homebutton = homebutton[[i]],
-                        native.crs = native.crs,
-                        cex = cex[[i]],
-                        lwd = lwd[[i]],
-                        highlightOptions = highlightOptions[[i]],
-                        map.types = map.types,
-                        ...)
-              }))@map
+                if (inherits(x[[i]], "sf")) {
+                  mapView(x = x[[i]],
+
+                          zcol = zcol[[i]],
+                          color = color[[i]],
+                          col.regions = col.regions[[i]],
+                          legend = legend[[i]],
+                          label = label[[i]],
+                          popup = popup[[i]],
+                          homebutton = homebutton[[i]],
+                          native.crs = native.crs,
+                          cex = cex[[i]],
+                          lwd = lwd[[i]],
+                          highlightOptions = highlightOptions[[i]],
+                          map.types = map.types,
+                          ...)
+                  } else {
+                    mapView(x = x[[i]],
+                            layer.name = lyrnms[[i]],
+                            homebutton = homebutton[[i]],
+                            native.crs = native.crs,
+                            cex = cex[[i]],
+                            lwd = lwd[[i]],
+                            highlightOptions = highlightOptions[[i]],
+                            map.types = map.types,
+                            ...)
+                  }
+                }))@map
               m <- leaflet::hideGroup(map = m,
                                       group = layers2bHidden(m, ...))
               out <- new("mapview", object = x, map = m)

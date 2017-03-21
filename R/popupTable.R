@@ -32,8 +32,11 @@
 #' @name popupTable
 popupTable <- function(x, zcol, use_cpp = TRUE) {
 
-  if (!missing(zcol))
-    x <- x[, zcol, drop = FALSE]
-
-  brewPopupTable(x, use_cpp = use_cpp)
+  if (inherits(x, "sfc")) {
+    return(NULL)
+  } else {
+    if (!missing(zcol))
+      x <- x[, zcol, drop = FALSE]
+    brewPopupTable(x, use_cpp = use_cpp)
+  }
 }

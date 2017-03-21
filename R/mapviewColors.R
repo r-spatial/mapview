@@ -188,6 +188,10 @@ zcolColors <- function(x, # a vector, not a sp or sf object
                        return.sorted = FALSE,
                        ...) {
 
+  if (!is.function(colors) & inherits(colors, "character")) {
+    colors <- colorRampPalette(colors)
+  }
+
   if (is.character(x)) x <- as.factor(x)
   x <- as.numeric(x)
 
@@ -216,7 +220,8 @@ standardColor <- function(x) {
   switch(getGeometryType(x),
          "pt" = "#333333", #"#66b3ff",
          "ln" = "#6666ff", #"#66b3ff",
-         "pl" = "#333333") #"#66b3ff")
+         "pl" = "#333333",
+         "gc" = "#333333") #"#66b3ff")
 }
 
 
@@ -224,7 +229,8 @@ standardColRegions <- function(x) {
   switch(getGeometryType(x),
          "pt" = "#6666ff", #"#66b3ff",
          "ln" = "#6666ff", #"#66b3ff",
-         "pl" = "#6666ff") #"#66b3ff")
+         "pl" = "#6666ff",
+         "gc" = "#6666ff") #"#66b3ff")
 }
 
 
