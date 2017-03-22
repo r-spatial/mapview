@@ -116,7 +116,7 @@ leaflet_sfc <- function(x,
   if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
 
   if (is.null(map.types)) {
-    if (getGeometryType(x) == "pl") {
+    if (getGeometryType(x) %in% c("pl", "pt")) {
       if (is.function(col.regions)) col.regions <- standardColRegions(x)
       map.types <- basemaps(col.regions)
     } else {

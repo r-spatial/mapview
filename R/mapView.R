@@ -628,15 +628,12 @@ setMethod('mapView', signature(x = 'sfc_MULTIPOLYGON'),
 
 ## Missing ================================================================
 #' @describeIn mapView initiate a map without an object
-#' @param easter.egg well, you might find out if you set this to TRUE
 #'
 setMethod('mapView', signature(x = 'missing'),
-          function(map.types = mapviewGetOption("basemaps"),
-                   easter.egg = FALSE) {
+          function(map.types = mapviewGetOption("basemaps"), ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
-              leafletMissing(map.types,
-                             easter.egg)
+              leafletMissing(map.types, ...)
             } else {
               NULL
             }

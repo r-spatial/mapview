@@ -101,8 +101,7 @@
 
 \S4method{mapView}{sfc_MULTIPOLYGON}(x, ...)
 
-\S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
-  easter.egg = FALSE)
+\S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"), ...)
 
 \S4method{mapView}{list}(x, map = NULL, zcol = NULL,
   color = mapviewGetOption("vector.palette"),
@@ -225,8 +224,6 @@ on mouse hover. See \code{\link{highlightOptions}} for details.}
 \item{maxpoints}{the maximum number of points making up the geometry.
 In case of lines and polygons this refers to the number of vertices. See
 Details for more information.}
-
-\item{easter.egg}{well, you might find out if you set this to TRUE}
 }
 \description{
 this function produces an interactive view of the specified

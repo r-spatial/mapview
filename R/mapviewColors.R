@@ -163,7 +163,7 @@ vectorColRegions <- function(x, # a sp or sf object
 
   if (!is.null(zcol)) {
     if (!inherits(x[[zcol]], c("numeric", "integer")) & !is.null(at)) {
-      warning("ignoring 'at' which is only supported for numeric/integer values")
+      warning("ignoring 'at' which is only supported for numeric values")
       at <- NULL
     }
     col <- zcolColors(x[[zcol]],
@@ -189,7 +189,7 @@ zcolColors <- function(x, # a vector, not a sp or sf object
                        ...) {
 
   if (!is.function(colors) & inherits(colors, "character")) {
-    colors <- colorRampPalette(colors)
+    colors <- grDevices::colorRampPalette(colors)
   }
 
   if (is.character(x)) x <- as.factor(x)

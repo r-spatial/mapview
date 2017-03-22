@@ -6,8 +6,10 @@
 \alias{+,mapview,ANY-method}
 \alias{+,mapview,character-method}
 \alias{+,mapview,mapview-method}
-\title{Add a layer to a mapview or leaflet map}
+\title{mapview + mapview adds data from the second map to the first}
 \usage{
+\S4method{+}{mapview,mapview}(e1, e2)
+
 \S4method{+}{mapview,ANY}(e1, e2)
 
 \S4method{+}{mapview,character}(e1, e2)
@@ -19,7 +21,11 @@
 the objects should be added to e1.}
 }
 \description{
-Add a layer to a mapview or leaflet map
+mapview + mapview adds data from the second map to the first
+
+mapview + data adds spatial data (raster*, sf*, sp*) to a mapview map
+
+[...]
 }
 \examples{
 \dontrun{
@@ -36,7 +42,6 @@ m2 <- mapView(breweries91)
 m1 + m2 # final zoom level based on m2
 '+'(m2, m1) # final zoom level based on m1
 }
-
 
 }
 

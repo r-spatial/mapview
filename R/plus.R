@@ -3,7 +3,7 @@ if ( !isGeneric('+') ) {
     standardGeneric('+'))
 }
 
-#' Add a layer to a mapview or leaflet map
+#' mapview + mapview adds data from the second map to the first
 #'
 #' @param e1 a leaflet or mapview map to which e2 should be added.
 #' @param e2 a (spatial) object to be added or a mapview object from which
@@ -25,12 +25,10 @@ if ( !isGeneric('+') ) {
 #' '+'(m2, m1) # final zoom level based on m1
 #' }
 #'
-#'
 #' @name +
 #' @docType methods
 #' @rdname plus
 #' @aliases +,mapview,mapview-method
-NULL
 
 setMethod("+",
           signature(e1 = "mapview",
@@ -64,6 +62,7 @@ setMethod("+",
           }
 )
 
+#' mapview + data adds spatial data (raster*, sf*, sp*) to a mapview map
 #' @name +
 #' @docType methods
 #' @rdname plus
@@ -115,7 +114,7 @@ setMethod("+",
 #           }
 # )
 
-
+#' [...]
 #' @name +
 #' @docType methods
 #' @rdname plus
@@ -132,8 +131,7 @@ setMethod("+",
                           "Terence Hill", "trinity", "Trinity",
                           "easter egg", "Easter Egg", "Easter egg")) {
               cat("\nBehold! Someone's drawing quicker than the rest...\n\n")
-              leafletMissing(map.types = "Thunderforest.Pioneer", #mapviewGetOption("basemaps"),
-                             easter.egg = TRUE)
+              mapView(easter.egg = TRUE)
             } else {
               stop("\n\nSorry, but there seems to be someone who draws quicker than you...\n\n
                    Try again!")

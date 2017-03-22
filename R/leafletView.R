@@ -1306,8 +1306,12 @@ leafletList <- function(x,
 
 ### leaflet w missing =====================================================
 
-leafletMissing <- function(map.types,
-                           easter.egg) {
+leafletMissing <- function(map.types, ...) {
+
+  lst <- list(...)
+  if (length(lst) == 0)
+    easter.egg = FALSE else
+      if (lst$easter.egg) easter.egg = TRUE
 
   if(easter.egg) {
 

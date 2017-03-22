@@ -127,7 +127,7 @@ mapviewLegend <- function(values,
                           position = mapviewGetOption("legend.pos")) {
 
   if (!is.function(colors) & inherits(colors, "character")) {
-    colors <- colorRampPalette(colors)
+    colors <- grDevices::colorRampPalette(colors)
   }
 
   function(map) {
