@@ -154,6 +154,22 @@ std::string createTemplate(std::string tmpPath) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Convert String to UTF-8 //////////////// ////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+String enc2utf8_string(const String & x) {
+  String str(x);
+  str.set_encoding(CE_UTF8);
+  return str;
+}
+
+CharacterVector enc2utf8_chrvec(const CharacterVector & x) {
+  CharacterVector str(x.size());
+  std::transform(x.begin(), x.end(), str.begin(), enc2utf8_string);
+  return str;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Create list with string patterns per row ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -174,15 +190,14 @@ List listPopupTemplates(CharacterMatrix x, CharacterVector names,
 
   // import template
   std::string chTemplate = createTemplate(tmpPath);
-  std::string chTmp = chTemplate;
+  String chTmp = chTemplate;
 
   // create strings for each single row
   for (int i = 0; i < nRows; i++) {
-    chVal = x(i, _);
+    chVal = enc2utf8_chrvec(x(i, _));
     chStr = mergePopupRows(names, chVal);
 
-    chTmp = gsubC("<%=pop%>", chStr, chTmp);
-    lsOut[i] = chTmp;
+    lsOut[i] = enc2utf8_string(gsubC("<%=pop%>", chStr, chTmp));;
 
     // reset intermediary string
     chTmp = chTemplate;
