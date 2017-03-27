@@ -196,7 +196,7 @@ extendLimits <- function(lim, length = 1, prop = 0.07) {
 }
 
 
-circleRadius <- function(x, radius = 8, min.rad = 3, max.rad = 15) {
+circleRadius <- function(x, radius = 6, min.rad = 3, max.rad = 15) {
 
   if (is.character(radius)) {
     rad <- scales::rescale(as.numeric(x[[radius]]),
