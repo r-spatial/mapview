@@ -10,8 +10,8 @@ highlightLineFeatures <- function(lwd = 2,
                                   fillColor = NULL,
                                   fillOpacity = 0,
                                   dashArray = NULL,
-                                  bringToFront = TRUE,
-                                  sendToBack = TRUE) {
+                                  bringToFront = FALSE,
+                                  sendToBack = FALSE) {
 
   if (length(fillColor) != 1) fillColor <- color
   weight <- lwd + 1
@@ -47,8 +47,8 @@ highlightPolygonFeatures <- function(alpha.regions = 0.6,
                                      fillColor = NULL,
                                      fillOpacity = 0.7,
                                      dashArray = NULL,
-                                     bringToFront = TRUE,
-                                     sendToBack = TRUE) {
+                                     bringToFront = FALSE,
+                                     sendToBack = FALSE) {
 
   if (length(fillColor) != 1) fillColor <- color
   if (alpha.regions >= 0.8) {

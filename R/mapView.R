@@ -62,8 +62,9 @@ if ( !isGeneric('mapView') ) {
 #' web mercator. If set to TRUE now background maps will be drawn (but rendering
 #' may be much quicker as no reprojecting is necessary). Currently only works
 #' for simple features.
-#' @param highlightOptions a list of styling options for feature highlighting
-#' on mouse hover. See \code{\link{highlightOptions}} for details.
+#' @param highlight either \code{FALSE}, \code{NULL} or a list of styling
+#' options for feature highlighting on mouse hover.
+#' See \code{\link{highlightOptions}} for details.
 #' @param maxpoints the maximum number of points making up the geometry.
 #' In case of lines and polygons this refers to the number of vertices. See
 #' Details for more information.
@@ -353,7 +354,7 @@ setMethod('mapView', signature(x = 'sf'),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlightOptions = mapviewHighlightOptions(x, alpha.regions, lwd),
+                   highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
                    maxpoints = getMaxFeatures(x),
                    ...) {
 
@@ -398,7 +399,7 @@ setMethod('mapView', signature(x = 'sf'),
                            legend.opacity = legend.opacity,
                            homebutton = homebutton,
                            native.crs = native.crs,
-                           highlightOptions = highlightOptions,
+                           highlight = highlight,
                            maxpoints = maxpoints,
                            ...)
 
@@ -449,7 +450,7 @@ setMethod('mapView', signature(x = 'sfc'),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlightOptions = mapviewHighlightOptions(x, alpha.regions, lwd),
+                   highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
                    maxpoints = getMaxFeatures(x),
                    ...) {
 
@@ -474,7 +475,7 @@ setMethod('mapView', signature(x = 'sfc'),
                         legend.opacity = legend.opacity,
                         homebutton = homebutton,
                         native.crs = native.crs,
-                        highlightOptions = highlightOptions,
+                        highlight = highlight,
                         ...)
               } else {
                 leaflet_sfc(x,
@@ -495,7 +496,7 @@ setMethod('mapView', signature(x = 'sfc'),
                             legend.opacity = legend.opacity,
                             homebutton = homebutton,
                             native.crs = native.crs,
-                            highlightOptions = highlightOptions,
+                            highlight = highlight,
                             maxpoints = maxpoints,
                             ...)
               }
@@ -530,7 +531,7 @@ setMethod('mapView', signature(x = 'XY'),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlightOptions = mapviewHighlightOptions(x, alpha.regions, lwd),
+                   highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -553,7 +554,7 @@ setMethod('mapView', signature(x = 'XY'),
                           legend.opacity = legend.opacity,
                           homebutton = homebutton,
                           native.crs = native.crs,
-                          highlightOptions = highlightOptions,
+                          highlight = highlight,
                           ...)
 
             } else {
@@ -672,7 +673,7 @@ setMethod('mapView', signature(x = 'list'),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlightOptions = lapply(seq(x), function(i) {
+                   highlight = lapply(seq(x), function(i) {
                      mapviewHighlightOptions(x[[i]],
                                              alpha.regions = alpha.regions,
                                              lwd = lwd[[i]])
@@ -706,8 +707,8 @@ setMethod('mapView', signature(x = 'list'),
               cex <- rep(list(cex), length(x))
             if (!is.list(lwd))
               lwd <- rep(list(lwd), length(x))
-            if (!is.list(highlightOptions))
-              highlightOptions <- rep(list(highlightOptions), length(x))
+            if (!is.list(highlight))
+              highlight <- rep(list(highlight), length(x))
             # if (!is.list(label))
             #   label <- rep(list(label), length(x))
             if (length(popup) != length(x))
@@ -729,7 +730,7 @@ setMethod('mapView', signature(x = 'list'),
                           native.crs = native.crs,
                           cex = cex[[i]],
                           lwd = lwd[[i]],
-                          highlightOptions = highlightOptions[[i]],
+                          highlight = highlight[[i]],
                           map.types = map.types,
                           ...)
                   } else {
@@ -739,7 +740,7 @@ setMethod('mapView', signature(x = 'list'),
                             native.crs = native.crs,
                             cex = cex[[i]],
                             lwd = lwd[[i]],
-                            highlightOptions = highlightOptions[[i]],
+                            highlight = highlight[[i]],
                             map.types = map.types,
                             ...)
                   }

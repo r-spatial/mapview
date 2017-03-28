@@ -19,7 +19,7 @@ leaflet_sf <- function(x,
                        legend.opacity,
                        homebutton,
                        native.crs,
-                       highlightOptions,
+                       highlight,
                        maxpoints,
                        ...) {
 
@@ -78,7 +78,7 @@ leaflet_sf <- function(x,
               legend.opacity = legend.opacity,
               homebutton = homebutton,
               native.crs = native.crs,
-              highlightOptions = highlightOptions,
+              highlight = highlight,
               maxpoints = maxpoints,
               attributes = sf2DataFrame(x, remove_sf_column = TRUE),
               ...)
@@ -107,7 +107,7 @@ leaflet_sfc <- function(x,
                         legend.opacity,
                         homebutton,
                         native.crs,
-                        highlightOptions,
+                        highlight,
                         maxpoints,
                         attributes = NULL,
                         ...) {
@@ -156,7 +156,7 @@ leaflet_sfc <- function(x,
                    popup = popup,
                    label = label,
                    group = layer.name,
-                   highlightOptions = highlightOptions,
+                   highlightOptions = highlight,
                    ...)
 
   }

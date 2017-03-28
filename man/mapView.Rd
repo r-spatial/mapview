@@ -64,7 +64,7 @@
   layer.name = deparse(substitute(x, env = parent.frame())),
   label = makeLabels(x, zcol), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
-  highlightOptions = mapviewHighlightOptions(x, alpha.regions, lwd),
+  highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
 \S4method{mapView}{sfc}(x, map = NULL, color = standardColor(x),
@@ -75,7 +75,7 @@
   layer.name = deparse(substitute(x, env = parent.frame(2))),
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
-  highlightOptions = mapviewHighlightOptions(x, alpha.regions, lwd),
+  highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
 \S4method{mapView}{XY}(x, map = NULL,
@@ -87,7 +87,7 @@
   layer.name = deparse(substitute(x, env = parent.frame(1))),
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
-  highlightOptions = mapviewHighlightOptions(x, alpha.regions, lwd), ...)
+  highlight = mapviewHighlightOptions(x, alpha.regions, lwd), ...)
 
 \S4method{mapView}{sfc_POINT}(x, ...)
 
@@ -114,7 +114,7 @@
   parent.frame())), label = lapply(seq(x), function(i) {    
   makeLabels(x[[i]], zcol = zcol[[i]]) }),
   legend = mapviewGetOption("legend"), legend.opacity = 1,
-  homebutton = TRUE, native.crs = FALSE, highlightOptions = lapply(seq(x),
+  homebutton = TRUE, native.crs = FALSE, highlight = lapply(seq(x),
   function(i) {     mapviewHighlightOptions(x[[i]], alpha.regions =
   alpha.regions, lwd = lwd[[i]]) }), maxpoints = NULL, ...)
 
@@ -218,8 +218,9 @@ web mercator. If set to TRUE now background maps will be drawn (but rendering
 may be much quicker as no reprojecting is necessary). Currently only works
 for simple features.}
 
-\item{highlightOptions}{a list of styling options for feature highlighting
-on mouse hover. See \code{\link{highlightOptions}} for details.}
+\item{highlight}{either \code{FALSE}, \code{NULL} or a list of styling
+options for feature highlighting on mouse hover.
+See \code{\link{highlightOptions}} for details.}
 
 \item{maxpoints}{the maximum number of points making up the geometry.
 In case of lines and polygons this refers to the number of vertices. See

@@ -204,3 +204,8 @@ circleRadius <- function(x, radius = 6, min.rad = 3, max.rad = 15) {
   } else rad <- radius
   return(rad)
 }
+
+
+extentOverlap <- function(x, y) {
+  if (!sum(lengths(sf::st_intersects(x, y))) == 0) TRUE else FALSE
+}
