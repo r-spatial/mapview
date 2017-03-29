@@ -1,4 +1,4 @@
-mapview 1.2.54
+mapview 1.2.55
 --------------------------------------------------------------------------------
 
 new features:
@@ -17,6 +17,7 @@ new features:
   * mapview will now decide which default base map to use based on average luminence of rendered colors. If lighter than 0.7 (with 1 being white an d 0 being black) a dark basemap - CartoDB.DarkMatter - will be used.
   * mapview now provides subtle highlighting of polygons (changing opacity slightly) and lines (changing thickness).
   * plainView, slideView and cubeView have gained argument legend. default is TRUE. Legends only available for non-RGB methods!
+  * new data set 'franconia' - administrative district boundaries of Franconia
 
 bugfixes:
   * sync, addMouseCoordinates and addLogo did not work anymore. Now fixed thanks to @timelyportfolio
