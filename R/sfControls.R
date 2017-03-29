@@ -22,7 +22,18 @@ nNodes = function(x) {
   }))
 }
 
-
+#' count the number of points/vertices/nodes of sf objects
+#' @param x an sf/sfc object
+#'
+#' @export
+#'
+#' @examples
+#' npts(franconia)
+#' npts(sf::st_geometry(franconia[1, ])) # first polygon
+#'
+#' npts(breweries) # is the same as
+#' nrow(breweries)
+#'
 npts = function(x) {
   if (getGeometryType(x) == "pt") {
     length(sf::st_geometry(x))
@@ -30,5 +41,3 @@ npts = function(x) {
     nNodes(sf::st_geometry(x))
   }
 }
-
-#100000 / (npts(st_geometry(st_as_sf(gadmCHE))) / length(st_geometry(st_as_sf(gadmCHE))))
