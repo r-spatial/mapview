@@ -39,7 +39,7 @@ makeLabels <- function(x, zcol = NULL) {
   } else if (inherits(x, "sfc")) {
     lab <- as.character(seq(length(x)))
   } else if (inherits(x, "sf") & is.null(zcol)) {
-    lab <- as.character(seq(nrow(x)))
+    lab <- rownames(x)
   } else lab <- as.character(as.data.frame(x)[, zcol])
   return(lab)
 }
