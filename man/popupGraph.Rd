@@ -4,12 +4,17 @@
 \alias{popupGraph}
 \title{Create HTML strings for popup graphs}
 \usage{
-popupGraph(graphs, type = c("png", "svg", "html"), ...)
+popupGraph(graphs, type = c("png", "svg", "html"), width = 300,
+  height = 300, ...)
 }
 \arguments{
 \item{graphs}{A \code{list} of figures associated with \code{x}.}
 
 \item{type}{Output filetype, one of "png" (default), "svg" or "html".}
+
+\item{width}{popup width in pixels.}
+
+\item{height}{popup height in pixels.}
 
 \item{...}{Further arguments passed on to \code{\link{png}} or
 \code{\link{svg}}.}

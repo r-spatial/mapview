@@ -55,6 +55,14 @@ mapshot <- function(x, url = NULL, file = NULL, remove_url = TRUE, ...) {
   if (!avl_url)
     url <- gsub("\\.png|\\.pdf|\\.jpeg|\\.jpg", ".html", file)
 
+  if (dir.exists(file.path(tempdir(), "popup_graphs"))) {
+    file.copy(from = file.path(tempdir(), "popup_graphs"),
+              to = paste0(dirname(url), "/"), recursive = TRUE)
+    file.copy(from = file.path(dirname(url),  "popup_graphs"),
+              to = paste0(dirname(dirname(url)), "/"), recursive = TRUE)
+    unlink(file.path(dirname(url),  "popup_graphs"), recursive = TRUE)
+  }
+
   args <- list(url = url, file = file, ...)
   sw_ls <- args
   sw_ls[names(sw_ls) == "file"] <- NULL

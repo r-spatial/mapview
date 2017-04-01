@@ -16,6 +16,8 @@
 #'
 #' @param graphs A \code{list} of figures associated with \code{x}.
 #' @param type Output filetype, one of "png" (default), "svg" or "html".
+#' @param width popup width in pixels.
+#' @param height popup height in pixels.
 #' @param ... Further arguments passed on to \code{\link{png}} or
 #' \code{\link{svg}}.
 #'
@@ -75,14 +77,15 @@
 #'
 #' @export popupGraph
 #' @name popupGraph
-popupGraph <- function(graphs, type = c("png", "svg", "html"), ...) {
+popupGraph <- function(graphs, type = c("png", "svg", "html"),
+                       width = 300, height = 300, ...) {
 
   ## if a single feature is provided, convert 'graphs' to list
   if (class(graphs)[1] != "list")
     graphs <- list(graphs)
 
   ## create target folder and filename
-  drs <- file.path(tempdir(), "graphs")
+  drs <- file.path(tempdir(), "popup_graphs")
   if (!dir.exists(drs)) dir.create(drs)
 
   # type <- type[1]
@@ -91,9 +94,12 @@ popupGraph <- function(graphs, type = c("png", "svg", "html"), ...) {
   } else type <- type[1]
 
   pop <- switch(type,
-                png = popupPNGraph(graphs = graphs, dsn = drs, ...),
-                svg = popupSVGraph(graphs = graphs, dsn = drs, ...),
-                html = popupHTMLGraph(graphs = graphs, dsn = drs, ...))
+                png = popupPNGraph(graphs = graphs, dsn = drs,
+                                   width = width, height = height, ...),
+                svg = popupSVGraph(graphs = graphs, dsn = drs,
+                                   width = width, height = height, ...),
+                html = popupHTMLGraph(graphs = graphs, dsn = drs,
+                                      width = width, height = height, ...))
 
   # pop <- if (type[1] == "svg") {
   #   popupSVGraph(graphs = graphs, dsn = drs, ...)
@@ -108,12 +114,16 @@ popupGraph <- function(graphs, type = c("png", "svg", "html"), ...) {
 
 
 ### svg -----
-popupSVGraph <- function(graphs, dsn = tempdir(), ...) {
+popupSVGraph <- function(graphs, dsn = tempdir(),
+                         width = 300, height = 300, ...) {
   lapply(1:length(graphs), function(i) {
     nm <- paste0("tmp_", i, ".svg")
     fls <- file.path(dsn, nm)
 
-    svg(filename = fls, ...)
+    inch_wdth = width / 72
+    inch_hght = height  / 72
+
+    svg(filename = fls, width = inch_wdth, height = inch_hght, ...)
     print(graphs[[i]])
     dev.off()
 
@@ -125,18 +135,29 @@ popupSVGraph <- function(graphs, dsn = tempdir(), ...) {
 
 
 ### png -----
-popupPNGraph <- function(graphs, dsn = tempdir(), ...) {
+popupPNGraph <- function(graphs, dsn = tempdir(),
+                         width = 300, height = 300, ...) {
   lapply(1:length(graphs), function(i) {
     nm <- paste0("tmp_", i, ".png")
     fls <- file.path(dsn, nm)
 
-    png(filename = fls, ...)
+    png(filename = fls, width = width - 5, height = height - 5, units = "px", ...)
     print(graphs[[i]])
     dev.off()
 
     rel_path <- file.path("..", basename(dsn))
 
-    paste0("<img src = ", file.path(rel_path, basename(fls)), ">")
+    pop = paste0("<img src = ", file.path(rel_path, basename(fls)), ">")
+    wdth = paste0(width, "px;")
+    hght = paste0(height, "px;")
+
+    popTemplate <- system.file("templates/popup.brew", package = "mapview")
+    myCon <- textConnection("outputObj", open = "w")
+    brew::brew(popTemplate, output = myCon)
+    outputObj <- outputObj
+    close(myCon)
+
+    return(paste(outputObj, collapse = ' '))
   })
 }
 
@@ -150,7 +171,7 @@ popupHTMLGraph <- function(graphs, dsn = tempdir(),
 
     rel_path <- file.path("..", basename(dsn))
 
-    popupIframe(file.path(rel_path, basename(fls)), width, height)
+    popupIframe(file.path(rel_path, basename(fls)), width + 5, height + 5)
 
     # paste0("<iframe src='",
     #        file.path(rel_path, basename(fls)),
@@ -164,13 +185,23 @@ popupHTMLGraph <- function(graphs, dsn = tempdir(),
 
 ### iframe -----
 popupIframe <- function(src, width = 300, height = 300) {
-  paste0("<iframe src='",
-         src,
-         "' frameborder=0 width=",
-         width,
-         " height=",
-         height,
-         #" align=middle",
-         "></iframe>")
+  pop = paste0("<iframe src='",
+               src,
+               "' frameborder=0 width=",
+               width - 5,
+               " height=",
+               height - 5,
+               #" align=middle",
+               "></iframe>")
+  wdth = paste0(width, "px;")
+  hght = paste0(height, "px;")
+
+  popTemplate <- system.file("templates/popup.brew", package = "mapview")
+  myCon <- textConnection("outputObj", open = "w")
+  brew::brew(popTemplate, output = myCon)
+  outputObj <- outputObj
+  close(myCon)
+
+  return(paste(outputObj, collapse = ' '))
 }
 
