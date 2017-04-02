@@ -1,6 +1,6 @@
 # create popup table of attributes
 
-brewPopupTable <- function(x, use_cpp = TRUE) {
+brewPopupTable <- function(x, width = 300, height = 300, use_cpp = TRUE) {
 
   if (inherits(x, "Spatial")) x <- x@data
   if (inherits(x, "sf")) x <- sf2DataFrame(x)

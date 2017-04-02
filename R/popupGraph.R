@@ -148,8 +148,9 @@ popupPNGraph <- function(graphs, dsn = tempdir(),
     rel_path <- file.path("..", basename(dsn))
 
     pop = paste0("<img src = ", file.path(rel_path, basename(fls)), ">")
-    wdth = paste0(width, "px;")
-    hght = paste0(height, "px;")
+    maxheight = 2000
+    # wdth = paste0(width, "px;")
+    # hght = paste0(height, "px;")
 
     popTemplate <- system.file("templates/popup.brew", package = "mapview")
     myCon <- textConnection("outputObj", open = "w")
@@ -193,8 +194,9 @@ popupIframe <- function(src, width = 300, height = 300) {
                height - 5,
                #" align=middle",
                "></iframe>")
-  wdth = paste0(width, "px;")
-  hght = paste0(height, "px;")
+  # wdth = paste0(width, "px;")
+  # hght = paste0(height, "px;")
+  maxheight = 2000
 
   popTemplate <- system.file("templates/popup.brew", package = "mapview")
   myCon <- textConnection("outputObj", open = "w")

@@ -52,8 +52,7 @@
 #' @name popupImage
 popupImage <- function(img, src = c("local", "remote"), ...) {
 
-  src <- src[1]
-
+  src = ifelse(file.exists(img), "local", "remote")
   pop <- switch(src,
                 local = popupLocalImage(img = img, ...),
                 remote = popupRemoteImage(img = img, ...))
@@ -73,9 +72,11 @@ popupLocalImage <- function(img, width, height) {
   rel_path <- file.path("..", basename(drs), basename(img))
 
   # info <- sapply(img, function(...) rgdal::GDALinfo(..., silent = TRUE))
-  info <- sapply(img, function(...) gdalUtils::gdalinfo(..., raw_output = FALSE))
-  yx_ratio <- as.numeric(info["rows", ]) / as.numeric(info["columns", ])
-  xy_ratio <- as.numeric(info["columns", ]) / as.numeric(info["rows", ])
+  info = unlist(lapply(info, function(i) grep(glob2rx("Size is*"), i, value = TRUE)))
+  cols = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[1]
+  rows = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[2]
+  yx_ratio <- rows / cols
+  xy_ratio <- cols / rows
 
   if (missing(height) && missing(width)) {
     width <- 300
@@ -83,24 +84,43 @@ popupLocalImage <- function(img, width, height) {
   } else if (missing(height)) height <- yx_ratio * width else
     if (missing(width)) width <- xy_ratio * height
 
-  paste0("<image src='../graphs/",
-         basename(img),
-         "' width=",
-         width,
-         " height=",
-         height,
-         ">")
+  maxheight = 2000
+  width = width + 5
+  height = height + 5
+  pop = paste0("<image src='../graphs/",
+               basename(img),
+               "' width=",
+               width - 5,
+               " height=",
+               height - 5,
+               ">")
+
+  popTemplate <- system.file("templates/popup.brew", package = "mapview")
+  myCon <- textConnection("outputObj", open = "w")
+  brew::brew(popTemplate, output = myCon)
+  outputObj <- outputObj
+  close(myCon)
+
+  return(paste(outputObj, collapse = ' '))
 
 }
 
 
 ### remote images -----
 popupRemoteImage <- function(img, width = 300, height = "100%") {
-  paste0("<image src='",
-         img,
-         "' width=",
-         width,
-         " height=",
-         height,
-         ">")
+  pop = paste0("<image src='",
+               img,
+               "' width=",
+               width,
+               " height=",
+               height,
+               ">")
+  maxheight = 2000
+  popTemplate <- system.file("templates/popup.brew", package = "mapview")
+  myCon <- textConnection("outputObj", open = "w")
+  brew::brew(popTemplate, output = myCon)
+  outputObj <- outputObj
+  close(myCon)
+
+  return(paste(outputObj, collapse = ' '))
 }

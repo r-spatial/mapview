@@ -182,6 +182,7 @@ List listPopupTemplates(CharacterMatrix x, CharacterVector names,
     chStr = mergePopupRows(names, chVal);
 
     chTmp = gsubC("<%=pop%>", chStr, chTmp);
+    chTmp = gsubC("<%=maxheight%>", "250", chTmp);
     lsOut[i] = chTmp;
 
     // reset intermediary string
