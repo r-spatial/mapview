@@ -51,8 +51,10 @@ proj4string(pt4) <- "+init=epsg:4326"
 mapview(pt4, popup = popupImage(images, src = "remote")) # NOTE the gif animation
 
 ## local images -----
+pnt <- st_as_sf(data.frame(x = 174.764474, y = -36.877245),
+                coords = c("x", "y"), crs = 4326)
 img <- system.file("img","Rlogo.png",package="png")
-mapview(pt, popup = popupImage(img))
+mapview(pnt, popup = popupImage(img))
 }
 
 }
