@@ -78,16 +78,16 @@
   highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
-\S4method{mapView}{XY}(x, map = NULL,
-  color = mapviewGetOption("vector.palette"),
-  col.regions = mapviewGetOption("vector.palette"), at = NULL,
+\S4method{mapView}{XY}(x, map = NULL, color = standardColor(x),
+  col.regions = standardColRegions(x), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
   alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
   verbose = mapviewGetOption("verbose"), popup = NULL,
   layer.name = deparse(substitute(x, env = parent.frame(1))),
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
-  highlight = mapviewHighlightOptions(x, alpha.regions, lwd), ...)
+  highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+  maxpoints = getMaxFeatures(x), ...)
 
 \S4method{mapView}{sfc_POINT}(x, ...)
 
@@ -311,76 +311,84 @@ and fully queriable.
 \dontrun{
 mapview()
 
-### raster data ###
-library(sp)
-library(raster)
+## simple features ====================================================
+# sf
+mapview(breweries)
+mapview(franconia)
 
-# SpatialPixelsDataFrame
-data(meuse.grid)
-coordinates(meuse.grid) <- ~x+y
-proj4string(meuse.grid) <- CRS("+init=epsg:28992")
-gridded(meuse.grid) <- TRUE
+# sfc
+mapview(st_geometry(breweries)) # no popup
 
-mapView(meuse.grid, zcol = "soil")
+# sfg / XY - taken from ?sf::st_point
+outer = matrix(c(0,0,10,0,10,10,0,10,0,0),ncol=2, byrow=TRUE)
+hole1 = matrix(c(1,1,1,2,2,2,2,1,1,1),ncol=2, byrow=TRUE)
+hole2 = matrix(c(5,5,5,6,6,6,6,5,5,5),ncol=2, byrow=TRUE)
+pts = list(outer, hole1, hole2)
+(pl1 = st_polygon(pts))
+mapview(pl1)
 
-# raster stack
-m1 <- mapview(poppendorf[[5]])
-m1
+## raster ==============================================================
+mapview(poppendorf[[5]])
 
-### point vector data ###
-## SpatialPointsDataFrame ##
-data(meuse)
-coordinates(meuse) <- ~x+y
-proj4string(meuse) <- CRS("+init=epsg:28992")
-
-# all layers of meuse
-mapview(meuse, burst = TRUE)
-
-# only one layer, all info in popups
-mapview(meuse)
-
-# one specific layer
-mapview(meuse, zcol = "soil") # one layer
-mapview(meuse, zcol = "soil", burst = TRUE) # three layers
-mapview(meuse, burst = "soil") # identical to above
-
-## SpatialPoints ##
-meuse_pts <- as(meuse, "SpatialPoints")
-mapview(meuse_pts)
-
-
-
-### overlay vector on top of raster ###
-mapview(meuse.grid, zcol = "ffreq") + meuse
-
-### polygon vector data ###
-data("gadmCHE")
-m <- mapview(gadmCHE)
-m
-
-## points on polygons ##
-centres <- data.frame(coordinates(gadmCHE))
-names(centres) <- c("x", "y")
-coordinates(centres) <- ~ x + y
-projection(centres) <- projection(gadmCHE)
-m + centres
-
-### lines vector data
-data("atlStorms2005")
+## spatial objects =====================================================
+mapview(leaflet::gadmCHE)
 mapview(atlStorms2005)
-mapview(atlStorms2005, burst = TRUE)
 
 
-### arbitrary CRS (only for simple features)
+## styling options & legends ===========================================
+mapview(cantons, color = "white", col.regions = "red")
+mapview(cantons, color = "magenta", col.regions = "white")
+
+mapview(breweries, zcol = "founded")
+mapview(breweries, zcol = "founded", at = seq(1400, 2200, 200), legend = TRUE)
+mapview(cantons, zcol = "NAME_1", legend = TRUE)
+
+library(RColorBrewer)
+clrs <- colorRampPalette(brewer.pal(9, "Blues"))
+mapview(breweries, zcol = "founded", col.regions = clrs, legend = TRUE)
+
+### multiple layers ====================================================
+mapview(franconia) + breweries
+mapview(list(breweries, franconia))
+mapview(breweries) + mapview(franconia) + stormtracks
+
+mapview(franconia, zcol = "district") + mapview(breweries, zcol = "village")
+mapview(list(franconia, breweries),
+        zcol = list("district", NULL),
+        legend = list(TRUE, FALSE))
+
+
+### burst ==============================================================
+mapview(franconia, burst = TRUE)
+mapview(franconia, burst = TRUE, hide = TRUE)
+mapview(franconia, zcol = "district", burst = TRUE)
+
+
+### in the pipe ========================================================
+library(dplyr)
 library(sf)
-library(sp)
 
-data(meuse)
-coordinates(meuse) <- ~x+y
-proj4string(meuse) <- CRS("+init=epsg:28992")
-meuse_sf <- st_as_sf(meuse)
+franconia \%>\%
+ sf::st_union() \%>\%
+ mapview()
 
-mapview(meuse_sf, native.crs = TRUE)
+franconia \%>\%
+ mutate(area = sf::st_area(.)) \%>\%
+ mapview(zcol = "area", legend = TRUE)
+
+breweries \%>\%
+ st_intersection(franconia) \%>\%
+ mapview(zcol = "district")
+
+franconia \%>\%
+ mutate(count = lengths(st_contains(., breweries))) \%>\%
+ mapview(zcol = "count")
+
+franconia \%>\%
+ mutate(count = lengths(st_contains(., breweries)),
+        density = count / st_area(.)) \%>\%
+ mapview(zcol = "density")
+
 
 }
 
