@@ -25,7 +25,7 @@ background-color: #A8E6A8;
 }
 
 div.scrollableContainer {
-max-height: 300px;
+max-height: 2000px;
 max-width: 2000px;
 overflow-y: auto;
 overflow-x: auto;
@@ -83,7 +83,7 @@ div::-webkit-scrollbar-corner {
 .leaflet-popup-content {
 	margin: 1px 1px 1px 1px;
 	line-height: 1.5;
-	overflow-y: auto;
+	overflow-y: visible;
 	overflow-x: visible;
 	width: <%=width%>px;
 	height: <%=height%>px;

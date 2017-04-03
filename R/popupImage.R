@@ -44,8 +44,10 @@
 #' mapview(pt4, popup = popupImage(images, src = "remote")) # NOTE the gif animation
 #'
 #' ## local images -----
+#' pnt <- st_as_sf(data.frame(x = 174.764474, y = -36.877245),
+#'                 coords = c("x", "y"), crs = 4326)
 #' img <- system.file("img","Rlogo.png",package="png")
-#' mapview(pt, popup = popupImage(img))
+#' mapview(pnt, popup = popupImage(img))
 #' }
 #'
 #' @export popupImage
@@ -72,6 +74,7 @@ popupLocalImage <- function(img, width, height) {
   rel_path <- file.path("..", basename(drs), basename(img))
 
   # info <- sapply(img, function(...) rgdal::GDALinfo(..., silent = TRUE))
+  info = sapply(img, function(...) gdalUtils::gdalinfo(...))
   info = unlist(lapply(info, function(i) grep(glob2rx("Size is*"), i, value = TRUE)))
   cols = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[1]
   rows = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[2]
@@ -84,18 +87,18 @@ popupLocalImage <- function(img, width, height) {
   } else if (missing(height)) height <- yx_ratio * width else
     if (missing(width)) width <- xy_ratio * height
 
-  maxheight = 2000
-  width = width + 5
-  height = height + 5
+  # maxheight = 2000
+  # width = width
+  # height = height + 5
   pop = paste0("<image src='../graphs/",
                basename(img),
                "' width=",
-               width - 5,
+               width,
                " height=",
-               height - 5,
+               height,
                ">")
 
-  popTemplate <- system.file("templates/popup.brew", package = "mapview")
+  popTemplate <- system.file("templates/popup-graph.brew", package = "mapview")
   myCon <- textConnection("outputObj", open = "w")
   brew::brew(popTemplate, output = myCon)
   outputObj <- outputObj
@@ -116,7 +119,7 @@ popupRemoteImage <- function(img, width = 300, height = "100%") {
                height,
                ">")
   maxheight = 2000
-  popTemplate <- system.file("templates/popup.brew", package = "mapview")
+  popTemplate <- system.file("templates/popup-graph.brew", package = "mapview")
   myCon <- textConnection("outputObj", open = "w")
   brew::brew(popTemplate, output = myCon)
   outputObj <- outputObj

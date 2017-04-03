@@ -141,18 +141,18 @@ popupPNGraph <- function(graphs, dsn = tempdir(),
     nm <- paste0("tmp_", i, ".png")
     fls <- file.path(dsn, nm)
 
-    png(filename = fls, width = width - 5, height = height - 5, units = "px", ...)
+    png(filename = fls, width = width, height = height, units = "px", ...)
     print(graphs[[i]])
     dev.off()
 
     rel_path <- file.path("..", basename(dsn))
 
     pop = paste0("<img src = ", file.path(rel_path, basename(fls)), ">")
-    maxheight = 2000
+    # maxheight = 2000
     # wdth = paste0(width, "px;")
     # hght = paste0(height, "px;")
 
-    popTemplate <- system.file("templates/popup.brew", package = "mapview")
+    popTemplate <- system.file("templates/popup-graph.brew", package = "mapview")
     myCon <- textConnection("outputObj", open = "w")
     brew::brew(popTemplate, output = myCon)
     outputObj <- outputObj
@@ -189,16 +189,16 @@ popupIframe <- function(src, width = 300, height = 300) {
   pop = paste0("<iframe src='",
                src,
                "' frameborder=0 width=",
-               width - 5,
+               width,
                " height=",
-               height - 5,
+               height,
                #" align=middle",
                "></iframe>")
   # wdth = paste0(width, "px;")
   # hght = paste0(height, "px;")
-  maxheight = 2000
+  # maxheight = 2000
 
-  popTemplate <- system.file("templates/popup.brew", package = "mapview")
+  popTemplate <- system.file("templates/popup-graph.brew", package = "mapview")
   myCon <- textConnection("outputObj", open = "w")
   brew::brew(popTemplate, output = myCon)
   outputObj <- outputObj
