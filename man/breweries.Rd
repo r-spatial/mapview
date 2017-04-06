@@ -9,9 +9,14 @@
 Selected breweries in Franconia (zip code starting with 91...)
 }
 \details{
-This dataset contains selected breweries in Franconia. It is a
+This dataset contains selected breweries in Franconia. It is partly a
 subset of a larger database that was compiled by students at the
 University of Marburg for a seminar called
-"The Geography of Beer, sustainability in the food industry"
+"The Geography of Beer: sustainability in the food industry"
+and partly consists of breweries downloaded from
+\url{http://www.bierwandern.de/inhalt/brauereiliste.html} with the kind permission
+of Rainer Kastl. Note that use of these data is restricted to  non-commercial use
+and that they are explixitly excluded from the GPL lincense that mapview is licensed under.
+See 'inst/extdata/create_breweries.R' for some details on data creation.
 }
 
