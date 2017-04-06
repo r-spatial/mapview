@@ -34,7 +34,7 @@
 #' @rdname addHomeButton
 #' @aliases addHomeButton
 addHomeButton <- function(map, ext, layer.name = "layer",
-                          position = 'bottomleft', add = TRUE) {
+                          position = 'bottomright', add = TRUE) {
   if (inherits(map, "mapview")) map <- mapview2leaflet(map)
   stopifnot(inherits(map, "leaflet"))
 
