@@ -57,7 +57,7 @@ p <- lapply(1:length(p), function(i) {
   update(p[[i]], col = clr)
 })
 
-mapview(meuse, popup = popupGraph(p, type = "svg", width = 3, height = 2.5))
+mapview(meuse, popup = popupGraph(p, type = "svg"))
 
 ### example: png -----
 pt <- data.frame(x = 174.764474, y = -36.877245)
@@ -82,7 +82,11 @@ p <- lapply(1:length(meuse), function(i) {
 
 mapview(meuse, popup = popupGraph(p, type = "html", width = 400, height = 300))
 
-mapview(pt, popup = popupGraph(mapview(pt)@map, type = "html"))
+mapview(breweries[1, ], map.types = "Esri.WorldImagery",
+        popup = popupGraph(mapview(breweries[1, ])@map,
+                           type = "html",
+                           width = 500,
+                           height = 400))
 }
 
 }

@@ -4,6 +4,22 @@
 #' Save a mapview or leaflet map as \code{.html} index file or \code{.png},
 #' \code{.pdf}, or \code{.jpeg} image.
 #'
+#' @details
+#' mapshot can be used to save both leaflet and mapview maps as html or png
+#' files or both.
+#' NOTE 1: In case you want to save larger maps produced with mapview
+#' (i.e. if you see the following warning:
+#' "the supplied feature layer is quite, so using special rendering function
+#' things may not behave as expected from a standard leaflet plot
+#' i.e. you will likely need to zoom in to popup-qurey features") mapshot is
+#' likely to fail. Try setting \code{selfcontained = FALSE} to avoid errors
+#' and create a valid local html file.
+#'
+#' NOTE 2: In case you want to save a map with popupGraphs or popupImages
+#' the respective graph/image files will be located one level above the
+#' specified target location. In case you want to move the html file, make
+#' sure to also move the respective *-graphs folder one level above.
+#'
 #' @param x \code{mapview} or \code{leaflet} object.
 #' @param url Output \code{.html} file. If not supplied and 'file' is specified,
 #' a temporary index file will be created.
@@ -18,7 +34,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' m <- mapview(breweries91)
+#' m <- mapview(breweries)
 #'
 #' ## create standalone .html
 #' mapshot(m, url = paste0(getwd(), "/map.html"))

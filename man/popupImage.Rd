@@ -48,7 +48,7 @@ pt4 <- data.frame(x = jitter(rep(174.764474, 4), factor = 0.01),
 coordinates(pt4) <- ~ x + y
 proj4string(pt4) <- "+init=epsg:4326"
 
-mapview(pt4, popup = popupImage(images, src = "remote")) # NOTE the gif animation
+mapview(pt4, popup = lapply(images, popupImage)) # NOTE the gif animation
 
 ## local images -----
 pnt <- st_as_sf(data.frame(x = 174.764474, y = -36.877245),

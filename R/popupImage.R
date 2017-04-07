@@ -41,7 +41,7 @@
 #' coordinates(pt4) <- ~ x + y
 #' proj4string(pt4) <- "+init=epsg:4326"
 #'
-#' mapview(pt4, popup = popupImage(images, src = "remote")) # NOTE the gif animation
+#' mapview(pt4, popup = lapply(images, popupImage)) # NOTE the gif animation
 #'
 #' ## local images -----
 #' pnt <- st_as_sf(data.frame(x = 174.764474, y = -36.877245),
@@ -54,7 +54,7 @@
 #' @name popupImage
 popupImage <- function(img, src = c("local", "remote"), ...) {
 
-  src = ifelse(file.exists(img), "local", "remote")
+  src = ifelse(file.exists(img), "local", "remote")[1]
   pop <- switch(src,
                 local = popupLocalImage(img = img, ...),
                 remote = popupRemoteImage(img = img, ...))

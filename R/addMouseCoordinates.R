@@ -32,7 +32,7 @@
 #' \dontrun{
 #' leaflet() %>% addTiles() # without mouse position info
 #' leaflet() %>% addTiles() %>% addMouseCoordinates(style = "basic") # with basic mouse position info
-#' mapview(easter.egg = TRUE) # detailed mouse position info by default
+#' mapview(easter.egg = TRUE) # detailed mouse position info by default ;-)
 #' }
 #'
 #'

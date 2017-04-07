@@ -38,7 +38,6 @@ sources are supported. Position on the map is completely controllable.
 \examples{
 \dontrun{
 ## default position is topleft next to zoom control
-library(mapview)
 
 img <- "https://www.r-project.org/logo/Rlogo.svg"
 leaflet() \%>\% addTiles() \%>\% addLogo(img, url = "https://www.r-project.org/logo/")
@@ -51,7 +50,6 @@ leaflet() \%>\% addTiles() \%>\% addLogo(img, src = "local", alpha = 0.3)
 
 ## dancing banana gif :-)
 library(magick)
-
 m <- mapview(breweries91)
 
 addLogo(m, "https://jeroenooms.github.io/images/banana.gif",

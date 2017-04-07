@@ -96,8 +96,6 @@ For plainView there are a few keyboard shortcuts defined:
 }}
 \examples{
 \dontrun{
-plainView()
-
 ### raster data ###
 library(sp)
 library(raster)
@@ -123,8 +121,8 @@ plainview(poppendorf, 4, 3, 2)
 
 }
 \author{
-Tim Appelhans
-
 Stephan Woellauer
+
+Tim Appelhans
 }
 

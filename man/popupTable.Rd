@@ -25,14 +25,14 @@ subset of feature attributes.
 }
 \examples{
 \dontrun{
-library(sp)
-
-data(meuse)
-coordinates(meuse) <- ~ x + y
-proj4string(meuse) <- CRS("+init=epsg:28992")
 
 ## include columns 1 and 2 only
-mapview(meuse, popup = popupTable(meuse, zcol = 1:2))
+mapview(franconia, popup = popupTable(franconia, zcol = 1:2))
+mapview(breweries, zcol = "founded", legend = TRUE,
+        popup = popupTable(breweries, zcol = c("founded", "village")))
+leaflet() \%>\% addCircleMarkers(data = breweries)
+leaflet() \%>\% addCircleMarkers(data = breweries,
+                               popup = popupTable(breweries))
 }
 
 }

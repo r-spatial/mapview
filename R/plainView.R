@@ -47,14 +47,12 @@ if ( !isGeneric('plainView') ) {
 #' }
 #'
 #' @author
-#' Tim Appelhans
-#' @author
 #' Stephan Woellauer
+#' @author
+#' Tim Appelhans
 #'
 #' @examples
 #' \dontrun{
-#' plainView()
-#'
 #' ### raster data ###
 #' library(sp)
 #' library(raster)

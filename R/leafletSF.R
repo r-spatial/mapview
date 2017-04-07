@@ -129,6 +129,9 @@ leaflet_sfc <- function(x,
 
   if (npts(x) > maxpoints) {
     if (getGeometryType(x) == "ln") clrs <- color else clrs <-  col.regions
+    warning("\nthe supplied feature layer is quite, so using special rendering function\n",
+            "things may not behave as expected from a standard leaflet plot\n",
+            "i.e. you will likely need to zoom in to popup-qurey features\n")
     m <- addLargeFeatures(m,
                           data = x,
                           radius = cex,

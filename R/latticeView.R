@@ -16,9 +16,9 @@
 #' @param no.initial.sync whether to sync the initial view (default TRUE).
 #'
 #' @examples
+#'
 #' \dontrun{
 #' library(sp)
-#' library(raster)
 #'
 #' data(meuse)
 #' coordinates(meuse) <- ~x+y
@@ -46,10 +46,10 @@
 #' latticeView(map_list, ncol = 5)
 #'
 #' ## view multiple data sets
-#' m1 <- mapview(meuse, zcol = "soil", burst = TRUE)
-#' m2 <- mapview(atlStorms2005, zcol = "Name")
+#' m1 <- mapview(breweries, zcol = "founded")
+#' m2 <- mapview(trails, zcol = "district", burst = TRUE)
 #' m3 <- mapview(poppendorf[[5]], use.layer.names = TRUE)
-#' m4 <- mapview(gadmCHE, color = "black")
+#' m4 <- mapview(franconia, col.regions = "black")
 #'
 #' latticeView(m1, m2, m3, m4) # not synced
 #' sync(m1, m2, m3, m4) # synced

@@ -1,4 +1,4 @@
-#' mapview version of leaflet::colorNumeric
+#' mapview version of leaflet::color* functions
 #'
 #' @param x Spatial* or Raster* object
 #' @param zcol the column to be colored

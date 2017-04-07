@@ -45,36 +45,14 @@ querying is supported but only at higher zoom levels to preserve performance.
 }
 \examples{
 \dontrun{
-library(mapview)
-library(sp)
 library(sf)
 library(ggmap)
 
 data(crime)
 crime <- crime[complete.cases(crime), ]
-
-## sp version
-coordinates(crime) <- ~ lon + lat
-proj4string(crime) <- "+init=epsg:4326"
-
-leaflet() \%>\%
-addProviderTiles("CartoDB.Positron") \%>\%
-  addLargeFeatures(crime, group = "crime") \%>\%
-  addMouseCoordinates() \%>\%
-  addLayersControl(overlayGroups = "crime", position = "topleft")
-
-## sf version
 crime_sf <- st_as_sf(crime, coords = c("lon", "lat"), crs = "+init=epsg:4326")
 
-leaflet() \%>\%
-addProviderTiles("CartoDB.Positron") \%>\%
-  addLargeFeatures(crime_sf, group = "crime", color = "black") \%>\%
-  addMouseCoordinates() \%>\%
-  addLayersControl(overlayGroups = c("crime", "crime2"), position = "topleft") \%>\%
-  addLargeFeatures(crime_sf, group = "crime2")
-
-### or use mapview which uses this by default for large features
-mapview(crime, zcol = "offense", cex = 3)
+mapview(crime_sf, zcol = "offense", cex = 3)
 
 }
 

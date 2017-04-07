@@ -2,7 +2,7 @@
 % Please edit documentation in R/mapviewColors.R
 \name{mapviewColors}
 \alias{mapviewColors}
-\title{mapview version of leaflet::colorNumeric}
+\title{mapview version of leaflet::color* functions}
 \usage{
 mapviewColors(x, zcol = NULL, colors = mapviewGetOption("vector.palette"),
   at = NULL, na.color = mapviewGetOption("na.color"), ...)
@@ -22,7 +22,7 @@ specified in at}
 \item{...}{additional arguments passed on to \code{\link{level.colors}}}
 }
 \description{
-mapview version of leaflet::colorNumeric
+mapview version of leaflet::color* functions
 }
 \author{
 Tim Appelhans

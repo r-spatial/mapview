@@ -36,16 +36,10 @@
 #'
 #' @examples
 #' \dontrun{
-#' ### raster data ###
-#' library(sp)
-#' library(raster)
-#'
-#' data(meuse.grid)
-#' coordinates(meuse.grid) = ~x+y
-#' proj4string(meuse.grid) <- CRS("+init=epsg:28992")
-#' gridded(meuse.grid) = TRUE
-#'
-#' viewExtent(meuse.grid)
+#' viewExtent(poppendorf)
+#' viewExtent(breweries)
+#' viewExtent(franconia) + breweries
+#' viewExtent(trails) + trails + breweries
 #' }
 #'
 #' @export viewExtent

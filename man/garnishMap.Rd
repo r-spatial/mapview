@@ -21,7 +21,6 @@ charatcer strings.
 \examples{
 \dontrun{
 m <- leaflet() \%>\% addTiles()
-garnishMap(m, "addMouseCoordinates") # same as
 garnishMap(m, addMouseCoordinates)
 
 ## add more than one with named argument
@@ -31,9 +30,9 @@ m1 <- garnishMap(m, addMouseCoordinates, addHomeButton,
 m1
 
 ## even more flexible
-m2 <- garnishMap(m1, addCircleMarkers, data = breweries91)
-garnishMap(m2, addPolygons, data = gadmCHE, popup = popupTable(gadmCHE),
+m2 <- garnishMap(m1, addPolygons, data = franconia, popup = popupTable(franconia),
            fillOpacity = 0.8, color = "black", fillColor = "#BEBEBE")
+garnishMap(m2, addCircleMarkers, data = breweries)
 
 }
 
