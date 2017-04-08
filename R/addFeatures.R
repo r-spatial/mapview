@@ -56,8 +56,3 @@ addFeatures <- function(map,
 
 }
 
-
-### getSFClass
-getSFClass <- function(x) {
-  if (class(x)[1] == "XY") class(x)[2] else class(x)[1]
-}

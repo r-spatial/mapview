@@ -14,7 +14,7 @@ highlightLineFeatures <- function(lwd = 2,
                                   sendToBack = FALSE) {
 
   if (length(fillColor) != 1) fillColor <- color
-  weight <- lwd + 1
+  weight <- lwd + 2
 
   return(
     dropNULL(
@@ -130,6 +130,7 @@ mapviewHighlightOptions <- function(x, alpha.regions, lwd) {
                  sfc_MULTILINESTRING = highlightLineFeatures(lwd),
                  sfc_POLYGON         = highlightPolygonFeatures(alpha.regions, lwd),
                  sfc_MULTIPOLYGON    = highlightPolygonFeatures(alpha.regions, lwd),
+                 sfc_GEOMETRY        = mapviewHighlightOptions(st_cast(x), alpha.regions, lwd),
                  POINT               = highlightPointFeatures(),
                  MULTIPOINT          = highlightPointFeatures(),
                  LINESTRING          = highlightLineFeatures(lwd),

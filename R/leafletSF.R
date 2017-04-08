@@ -80,7 +80,7 @@ leaflet_sf <- function(x,
               native.crs = native.crs,
               highlight = highlight,
               maxpoints = maxpoints,
-              attributes = sf2DataFrame(x, remove_sf_column = TRUE),
+              attributes = sf2DataFrame(x, drop_sf_column = TRUE),
               ...)
 
 }
@@ -111,6 +111,8 @@ leaflet_sfc <- function(x,
                         maxpoints,
                         attributes = NULL,
                         ...) {
+
+  x = sf::st_cast(x)
 
   if (!native.crs) x <- checkAdjustProjection(x)
   if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE

@@ -153,26 +153,36 @@ if ( !isGeneric('mapView') ) {
 #' library(sf)
 #'
 #' franconia %>%
-#'  sf::st_union() %>%
-#'  mapview()
+#'   sf::st_union() %>%
+#'   mapview()
 #'
 #' franconia %>%
-#'  mutate(area = sf::st_area(.)) %>%
-#'  mapview(zcol = "area", legend = TRUE)
+#'   group_by(district) %>%
+#'   summarize() %>%
+#'   mapview(zcol = "district")
+#'
+#' franconia %>%
+#'   mutate(area = sf::st_area(.)) %>%
+#'   mapview(zcol = "area", legend = TRUE)
+#'
+#' trails %>%
+#'   mutate(len = sf::st_length(.)) %>%
+#'   group_by(district) %>%
+#'   summarise(len = sum(len / 1000)) %>% # convert to km
+#'   mapview(zcol = "len")
 #'
 #' breweries %>%
-#'  st_intersection(franconia) %>%
-#'  mapview(zcol = "district")
+#'   st_intersection(franconia) %>%
+#'   mapview(zcol = "district")
 #'
 #' franconia %>%
-#'  mutate(count = lengths(st_contains(., breweries))) %>%
-#'  mapview(zcol = "count")
+#'   mutate(count = lengths(st_contains(., breweries))) %>%
+#'   mapview(zcol = "count")
 #'
 #' franconia %>%
-#'  mutate(count = lengths(st_contains(., breweries)),
-#'         density = count / st_area(.)) %>%
-#'  mapview(zcol = "density")
-#'
+#'   mutate(count = lengths(st_contains(., breweries)),
+#'          density = count / st_area(.)) %>%
+#'   mapview(zcol = "density")
 #'
 #' }
 #'
@@ -633,6 +643,15 @@ setMethod('mapView', signature(x = 'sfc_MULTIPOLYGON'),
           }
 )
 
+
+## sfc_GEOMETRY =======================================================
+#' @describeIn mapView \code{\link{st_sfc}}
+
+setMethod('mapView', signature(x = 'sfc_GEOMETRY'),
+          function(x, ...) {
+            callNextMethod()
+          }
+)
 
 
 ######## MISC #############################################################

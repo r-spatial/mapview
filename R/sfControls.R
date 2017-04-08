@@ -1,9 +1,9 @@
 
 ### MISC ==================================================================
-sf2DataFrame <- function(x, remove_sf_column = FALSE) {
+sf2DataFrame <- function(x, drop_sf_column = FALSE) {
   stopifnot(inherits(x, "sf") | inherits(x, "sfc"))
   if (inherits(x, "sf")) {
-    if (remove_sf_column) {
+    if (drop_sf_column) {
       return(as.data.frame(x)[setdiff(names(x), attr(x, "sf_column"))])
       # geompos <- which(names(x) == attr(x, "sf_column"))
       # return(data.frame(x)[, -geompos, drop = FALSE])

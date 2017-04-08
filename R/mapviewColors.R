@@ -199,7 +199,7 @@ zcolColors <- function(x, # a vector, not a sp or sf object
     cols <- "#6666ff"
   } else {
     if (is.null(at)) {
-      at <- lattice::do.breaks(range(x, na.rm = TRUE),
+      at <- lattice::do.breaks(extendLimits(range(x, na.rm = TRUE)),
                                length(unique(x)))
     }
 

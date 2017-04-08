@@ -43,7 +43,7 @@ burstByColumn <- function(x,
                           popup = popupTable(x),
                           ...) {
 
-  nms <- colnames(sf2DataFrame(x, remove_sf_column = TRUE))
+  nms <- colnames(sf2DataFrame(x, drop_sf_column = TRUE))
   x_lst <- lapply(nms, function(i) {
     x[, i, drop = FALSE]
   })

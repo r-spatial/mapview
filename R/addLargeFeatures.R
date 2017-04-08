@@ -82,9 +82,9 @@ addLargeFeatures <- function(map,
   #geompos <- which(names(data) == "geometry")
   if (inherits(data, "sfc")) {
     if (!is.null(attributes)) {
-      d <- cbind(sf2DataFrame(data, remove_sf_column = TRUE), attributes)
+      d <- cbind(sf2DataFrame(data, drop_sf_column = TRUE), attributes)
     } else {
-      d <- sf2DataFrame(data, remove_sf_column = TRUE)
+      d <- sf2DataFrame(data, drop_sf_column = TRUE)
     }
     d$geom <- data
     data <- sf::st_as_sf(d)

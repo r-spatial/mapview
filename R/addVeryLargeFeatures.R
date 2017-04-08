@@ -28,7 +28,7 @@ addVeryLargeFeatures <- function(map,
   ind1 <- seq(1, nrow(data), 2)
   ind2 <- seq(2, nrow(data), 2)
   # create dataframe
-  cnames <- colnames(sf2DataFrame(data, remove_sf_column = TRUE))
+  cnames <- colnames(sf2DataFrame(data, drop_sf_column = TRUE))
   data$r <- grDevices::col2rgb(color)[1, ]
   data$g <- grDevices::col2rgb(color)[2, ]
   data$b <- grDevices::col2rgb(color)[3, ]
@@ -42,7 +42,7 @@ addVeryLargeFeatures <- function(map,
   # gj <- paste('var data = ', geojsonio::geojson_json(x), ';', sep = "\n")
   # writeLines(gj, con = pathJsonFn)
   #data.json <- paste('var data = {[', coords2JSON(as.matrix(x@data)), ']};', sep = "\n")
-  data.json <- coords2JSON(as.matrix(sf2DataFrame(data, remove_sf_column = TRUE)))
+  data.json <- coords2JSON(as.matrix(sf2DataFrame(data, drop_sf_column = TRUE)))
   # write geojson file to temp dir
   file.create(pathJsonFn)
   fileConn <- file(pathJsonFn)

@@ -111,6 +111,12 @@ isMultiFeature <- function(x) {
 }
 
 
+### getSFClass
+getSFClass <- function(x) {
+  if (class(x)[1] == "XY") class(x)[2] else class(x)[1]
+}
+
+
 getGeometryType <- function(x) {
   # sf
   g <- sf::st_geometry(x)
@@ -126,7 +132,7 @@ getGeometryType <- function(x) {
       inherits(g, "MULTIPOLYGON") |
       inherits(g, "sfc_POLYGON") |
       inherits(g, "sfc_MULTIPOLYGON")) type <- "pl"
-  if (inherits(g, "sfc_GEOMETRY")) type <- "gc"
+  if (inherits(g, "sfc_GEOMETRY")) type <- getGeometryType(sf::st_cast(g))
   return(type)
 }
 

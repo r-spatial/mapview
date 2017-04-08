@@ -74,5 +74,6 @@ NULL
 #' \url{https://creativecommons.org/licenses/by/3.0/de/} for details.
 #' @format \code{sf feature collection MULTILINESTRING}
 #' @source
-#' "Datenquelle: Bayerische Vermessungsverwaltung – www.geodaten.bayern.de"
+#' Datenquelle: Bayerische Vermessungsverwaltung - www.geodaten.bayern.de
 #' \url{http://www.ldbv.bayern.de/produkte/weitere/opendata.html}
+NULL

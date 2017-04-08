@@ -19,6 +19,7 @@
 \alias{mapView,missing-method}
 \alias{mapView,sf-method}
 \alias{mapView,sfc-method}
+\alias{mapView,sfc_GEOMETRY-method}
 \alias{mapView,sfc_LINESTRING-method}
 \alias{mapView,sfc_MULTILINESTRING-method}
 \alias{mapView,sfc_MULTIPOINT-method}
@@ -100,6 +101,8 @@
 \S4method{mapView}{sfc_POLYGON}(x, ...)
 
 \S4method{mapView}{sfc_MULTIPOLYGON}(x, ...)
+
+\S4method{mapView}{sfc_GEOMETRY}(x, ...)
 
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"), ...)
 
@@ -285,6 +288,8 @@ and fully queriable.
 
 \item \code{sfc_MULTIPOLYGON}: \code{\link{st_sfc}}
 
+\item \code{sfc_GEOMETRY}: \code{\link{st_sfc}}
+
 \item \code{missing}: initiate a map without an object
 
 \item \code{list}: \code{\link{list}}
@@ -369,26 +374,36 @@ library(dplyr)
 library(sf)
 
 franconia \%>\%
- sf::st_union() \%>\%
- mapview()
+  sf::st_union() \%>\%
+  mapview()
 
 franconia \%>\%
- mutate(area = sf::st_area(.)) \%>\%
- mapview(zcol = "area", legend = TRUE)
+  group_by(district) \%>\%
+  summarize() \%>\%
+  mapview(zcol = "district")
+
+franconia \%>\%
+  mutate(area = sf::st_area(.)) \%>\%
+  mapview(zcol = "area", legend = TRUE)
+
+trails \%>\%
+  mutate(len = sf::st_length(.)) \%>\%
+  group_by(district) \%>\%
+  summarise(len = sum(len / 1000)) \%>\% # convert to km
+  mapview(zcol = "len")
 
 breweries \%>\%
- st_intersection(franconia) \%>\%
- mapview(zcol = "district")
+  st_intersection(franconia) \%>\%
+  mapview(zcol = "district")
 
 franconia \%>\%
- mutate(count = lengths(st_contains(., breweries))) \%>\%
- mapview(zcol = "count")
+  mutate(count = lengths(st_contains(., breweries))) \%>\%
+  mapview(zcol = "count")
 
 franconia \%>\%
- mutate(count = lengths(st_contains(., breweries)),
-        density = count / st_area(.)) \%>\%
- mapview(zcol = "density")
-
+  mutate(count = lengths(st_contains(., breweries)),
+         density = count / st_area(.)) \%>\%
+  mapview(zcol = "density")
 
 }
 
