@@ -79,7 +79,7 @@ brewPopupTable <- function(x, width = 300, height = 300, use_cpp = TRUE) {
         if (any(ids)) {
           nms <- attr(ids, "names")[ids]
           for (i in nms) {
-            x[, i] <- paste("object of class", class(x[[i]])[1])
+            x[, i] <- format(x[[i]]) #paste("object of class", class(x[[i]])[1])
           }
         }
 
