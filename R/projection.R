@@ -107,7 +107,7 @@ sfCheckAdjustProjection <- function(x) {
 
   if (is.na(sf::st_crs(x))) {
     warning(non_proj_warning)
-  } else if (!validLongLat(sf::st_crs(x)$proj4string)) {
+  } else { #if (!validLongLat(sf::st_crs(x)$proj4string)) {
     x <- sf::st_transform(x, llcrs)
   }
 
@@ -117,33 +117,33 @@ sfCheckAdjustProjection <- function(x) {
 
 
 # Check projection of objects according to their keywords =================
-validLongLat <- function (p4s) {
-  proj <- datum <- nodefs <- FALSE
-  allWGS84 <- c("+init=epsg:4326", "+proj=longlat", "+datum=WGS84",
-                "+no_defs", "+ellps=WGS84", "+towgs84=0,0,0")
-
-  p4s_splt = strsplit(p4s, " ")[[1]]
-
-  for (comp in allWGS84) {
-    if (comp %in% p4s_splt) {
-      if (comp == "+init=epsg:4326") {
-        proj <- datum <- nodefs <- TRUE
-      }
-      if (comp == "+proj=longlat") {
-        proj <- TRUE
-      }
-      if (comp == "+no_defs") {
-        nodefs <- TRUE
-      }
-      if (comp == "+datum=WGS84") {
-        datum <- TRUE
-      }
-    }
-  }
-  if (proj & datum & nodefs) {
-    return(TRUE)
-  } else {
-    warning(wrong_proj_warning)
-    return(FALSE)
-  }
-}
+# validLongLat <- function (p4s) {
+#   proj <- datum <- nodefs <- FALSE
+#   allWGS84 <- c("+init=epsg:4326", "+proj=longlat", "+datum=WGS84",
+#                 "+no_defs", "+ellps=WGS84", "+towgs84=0,0,0")
+#
+#   p4s_splt = strsplit(p4s, " ")[[1]]
+#
+#   for (comp in allWGS84) {
+#     if (comp %in% p4s_splt) {
+#       if (comp == "+init=epsg:4326") {
+#         proj <- datum <- nodefs <- TRUE
+#       }
+#       if (comp == "+proj=longlat") {
+#         proj <- TRUE
+#       }
+#       if (comp == "+no_defs") {
+#         nodefs <- TRUE
+#       }
+#       if (comp == "+datum=WGS84") {
+#         datum <- TRUE
+#       }
+#     }
+#   }
+#   if (proj & datum & nodefs) {
+#     return(TRUE)
+#   } else {
+#     warning(wrong_proj_warning)
+#     return(FALSE)
+#   }
+# }
