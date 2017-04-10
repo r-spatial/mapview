@@ -1,5 +1,13 @@
-non_proj_waning <-
-  paste("supplied layer has no projection information and is without background map")
+## the two crs we use
+wmcrs <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs"
+llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
+
+non_proj_warning <-
+  "supplied layer has no projection information and is shown without background map"
+
+wrong_proj_warning <-
+  paste0("projection of supplied layer is not leaflet conform.", "\n",
+         "  projecting to '", llcrs, "'")
 
 # Check and potentially adjust projection of objects to be rendered =======
 checkAdjustProjection <- function(x) {
@@ -48,7 +56,7 @@ rasterCheckAdjustProjection <- function(x) {
   is.fact <- raster::is.factor(x)[1]
 
   if (is.na(raster::projection(x))) {
-    warning(non_proj_waning)
+    warning(non_proj_warning)
     raster::extent(x) <- scaleExtent(x)
     raster::projection(x) <- llcrs
   } else if (is.fact) {
@@ -71,7 +79,7 @@ rasterCheckAdjustProjection <- function(x) {
 spCheckAdjustProjection <- function(x) {
 
   if (is.na(raster::projection(x))) {
-    warning(non_proj_waning)
+    warning(non_proj_warning)
     if (class(x)[1] %in% c("SpatialPointsDataFrame", "SpatialPoints")) {
       methods::slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
                                                      coordinates(x)[, 2])
@@ -97,12 +105,45 @@ spCheckAdjustProjection <- function(x) {
 # Check and potentially adjust projection of sf objects ===================
 sfCheckAdjustProjection <- function(x) {
 
-  if (is.na(sf::st_is_longlat(x))) {
-    warning(non_proj_waning)
-  } else if (!sf::st_is_longlat(x)) {
+  if (is.na(sf::st_crs(x))) {
+    warning(non_proj_warning)
+  } else if (!validLongLat(sf::st_crs(x)$proj4string)) {
     x <- sf::st_transform(x, llcrs)
   }
 
   return(x)
 
+}
+
+
+# Check projection of objects according to their keywords =================
+validLongLat <- function (p4s) {
+  proj <- datum <- nodefs <- FALSE
+  allWGS84 <- c("+init=epsg:4326", "+proj=longlat", "+datum=WGS84",
+                "+no_defs", "+ellps=WGS84", "+towgs84=0,0,0")
+
+  p4s_splt = strsplit(p4s, " ")[[1]]
+
+  for (comp in allWGS84) {
+    if (comp %in% p4s_splt) {
+      if (comp == "+init=epsg:4326") {
+        proj <- datum <- nodefs <- TRUE
+      }
+      if (comp == "+proj=longlat") {
+        proj <- TRUE
+      }
+      if (comp == "+no_defs") {
+        nodefs <- TRUE
+      }
+      if (comp == "+datum=WGS84") {
+        datum <- TRUE
+      }
+    }
+  }
+  if (proj & datum & nodefs) {
+    return(TRUE)
+  } else {
+    warning(wrong_proj_warning)
+    return(FALSE)
+  }
 }
