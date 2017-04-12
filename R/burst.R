@@ -22,7 +22,7 @@ burst <- function(x,
                              at = at,
                              na.color = na.color,
                              popup = popup)
-  } else if (!is.null(zcol) & burst) {
+  } else if (!is.null(zcol) & burst & length(zcol) == 1) {
     function() burstByRow(x = x,
                           zcol = zcol,
                           burst = burst,
@@ -30,6 +30,15 @@ burst <- function(x,
                           col.regions = col.regions,
                           at = at,
                           na.color = na.color)
+  } else if (length(zcol) > 1) {
+    nms = colnames(sf2DataFrame(x[, zcol], drop_sf_column = TRUE))
+    function() burstByColumn(x = x,
+                             color = color,
+                             col.regions = col.regions,
+                             at = at,
+                             na.color = na.color,
+                             popup = popup,
+                             nms = nms)
   }
 
 }
@@ -41,9 +50,11 @@ burstByColumn <- function(x,
                           at,
                           na.color,
                           popup = popupTable(x),
+                          nms = NULL,
                           ...) {
 
-  nms <- colnames(sf2DataFrame(x, drop_sf_column = TRUE))
+  if (is.null(nms)) nms <- colnames(sf2DataFrame(x, drop_sf_column = TRUE))
+
   x_lst <- lapply(nms, function(i) {
     x[, i, drop = FALSE]
   })
