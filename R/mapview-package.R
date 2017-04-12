@@ -19,7 +19,7 @@
 #' @importFrom utils find glob2rx
 #' @importFrom webshot webshot
 #'
-#' @useDynLib mapview
+#' @rawNamespace useDynLib(mapview, .registration = TRUE)
 #' @keywords package
 #'
 NULL
