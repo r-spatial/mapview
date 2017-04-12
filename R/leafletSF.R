@@ -112,7 +112,7 @@ leaflet_sfc <- function(x,
                         attributes = NULL,
                         ...) {
 
-  x = sf::st_cast(x)
+  if (inherits(x, "XY")) x = sf::st_cast(st_sfc(x)) else x = sf::st_cast(x)
 
   if (!native.crs) x <- checkAdjustProjection(x)
   if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
