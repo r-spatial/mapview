@@ -162,14 +162,14 @@ if ( !isGeneric('mapView') ) {
 #'   mapview(zcol = "district")
 #'
 #' franconia %>%
+#'   group_by(district) %>%
+#'   summarize() %>%
+#'   mutate(area = st_area(.) / 1e6) %>%
+#'   mapview(zcol = "area")
+#'
+#' franconia %>%
 #'   mutate(area = sf::st_area(.)) %>%
 #'   mapview(zcol = "area", legend = TRUE)
-#'
-#' trails %>%
-#'   mutate(len = sf::st_length(.)) %>%
-#'   group_by(district) %>%
-#'   summarise(len = sum(len / 1000)) %>% # convert to km
-#'   mapview(zcol = "len")
 #'
 #' breweries %>%
 #'   st_intersection(franconia) %>%
