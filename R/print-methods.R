@@ -19,7 +19,7 @@ knit_print.mapview <- function(x, ...) {
 #'
 #' @export
 #'
-renderMapview <- function (expr, env = parent.frame(), quoted = FALSE) {
+renderMapview <- function(expr, env = parent.frame(), quoted = FALSE) {
   expr <- mapview2leaflet(expr)
   if (!quoted)
     expr = substitute(expr)
