@@ -1,3 +1,11 @@
+large_warn = paste("the supplied feature layer has more points/vertices than the set threshold.",
+                   "using special rendering function, hence things may not behave as expected from a standard leaflet map,",
+                   "e.g. you will likely need to zoom in to popup-query features\n",
+                   "to see the number of points/vertices of the layer use 'npts(x)'",
+                   "to see the threshold for the feature type use 'mapview:::getMaxFeatures(x)'",
+                   "to adjust the threshold use argument 'maxpoints'",
+                   sep = "\n  ")
+
 ### sf ####################################################################
 leaflet_sf <- function(x,
                        map,
@@ -131,9 +139,7 @@ leaflet_sfc <- function(x,
 
   if (npts(x) > maxpoints) {
     if (getGeometryType(x) == "ln") clrs <- color else clrs <-  col.regions
-    warning("\nthe supplied feature layer is quite, so using special rendering function\n",
-            "things may not behave as expected from a standard leaflet plot\n",
-            "i.e. you will likely need to zoom in to popup-qurey features\n")
+    warning(large_warn)
     m <- addLargeFeatures(m,
                           data = x,
                           radius = cex,
