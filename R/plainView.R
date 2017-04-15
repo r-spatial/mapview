@@ -124,7 +124,7 @@ setMethod('plainView', signature(x = 'RasterLayer'),
               if (missing(at)) at <- lattice::do.breaks(rng, 256)
               leg_fl <- paste0(dir, "/legend", ".png")
               png(leg_fl, height = 200, width = 80, units = "px",
-                  bg = "transparent", pointsize = 14)
+                  bg = "transparent", pointsize = 14, antialias = "none")
               rasterLegend(col = col.regions,
                            at = at,
                            height = 0.9,
