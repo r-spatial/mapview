@@ -369,7 +369,7 @@ mapview(franconia, burst = TRUE, hide = TRUE)
 mapview(franconia, zcol = "district", burst = TRUE)
 
 
-### in the pipe ========================================================
+### ceci constitue la fin du pipe ======================================
 library(dplyr)
 library(sf)
 
