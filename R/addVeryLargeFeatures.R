@@ -106,14 +106,14 @@ veryLargePointsDependencies <- function() {
     htmltools::htmlDependency(
       "VeryLargePoints",
       '0.0.1',
-      system.file("htmlwidgets/lib/veryLarge", package = "mapview"),
+      system.file("htmlwidgets/lib/large", package = "mapview"),
       script = c("addVeryLargePoints.js",
                  "gl.js",
                  "jquery.min.js",
                  "leaflet.label.js",
-                 "leaflet.ajax.js",
+                 "leaflet.ajax.min.js",
                  "leaflet.canvasoverlay.js",
-                 "leaflet.glify.js")
+                 "leaflet.glify.min.js")
     ))
 }
 
@@ -149,7 +149,7 @@ vertexShaderDependency <- function() {
     htmltools::htmlDependency(
       name = "vertex-shader",
       version = "1",
-      system.file("htmlwidgets/lib/veryLarge", package = "mapview"),
+      system.file("htmlwidgets/lib/large", package = "mapview"),
       attachment = "vertex-shader.glsl"))
 }
 
@@ -158,6 +158,6 @@ fragmentShaderDependency <- function() {
     htmltools::htmlDependency(
       name = "fragment-shader",
       version = "1",
-      system.file("htmlwidgets/lib/veryLarge", package = "mapview"),
+      system.file("htmlwidgets/lib/large", package = "mapview"),
       attachment = "fragment-shader.glsl"))
 }
