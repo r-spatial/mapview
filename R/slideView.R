@@ -176,7 +176,7 @@ setMethod("slideView", signature(img1 = "RasterLayer",
               atr <- lattice::do.breaks(rngr, 256)
               leg_flr <- paste0(dir, "/legendr", ".png")
               png(leg_flr, height = 200, width = 80, units = "px",
-                  bg = "transparent", pointsize = 14)
+                  bg = "transparent", pointsize = 14, antialias = "none")
               rasterLegend(col = col.regions,
                            at = atr,
                            height = 0.9,
@@ -254,7 +254,7 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
               atl <- lattice::do.breaks(rngl, 256)
               leg_fll <- paste0(dir, "/legendl", ".png")
               png(leg_fll, height = 200, width = 80, units = "px",
-                  bg = "transparent", pointsize = 14)
+                  bg = "transparent", pointsize = 14, antialias = "none")
               rasterLegend(col = col.regions,
                            at = atl,
                            height = 0.9,
@@ -322,7 +322,7 @@ setMethod("slideView", signature(img1 = "RasterLayer",
               atr <- lattice::do.breaks(rngr, 256)
               leg_flr <- paste0(dir, "/legendr", ".png")
               png(leg_flr, height = 200, width = 80, units = "px",
-                  bg = "transparent", pointsize = 14)
+                  bg = "transparent", pointsize = 14, antialias = "none")
               rasterLegend(col = col.regions,
                            at = atr,
                            height = 0.9,
