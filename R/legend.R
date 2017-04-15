@@ -295,3 +295,11 @@ addRasterLegend <- function(x,
   return(m)
 
 }
+
+
+## legend for plainview, slideview, cubeview ==============================
+rasterLegend <- function(col, at, ...) {
+  draw.colorkey(key = list(col = col,
+                           at = at,
+                           ...), draw = TRUE)
+}
