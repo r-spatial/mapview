@@ -58,4 +58,3 @@ mapview(crime_sf, zcol = "offense", cex = 3)
 
 
 }
-

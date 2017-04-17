@@ -48,6 +48,7 @@ move mouse down/up to zoom the cube.
 \itemize{
 \item \code{cubeview}: alias for ease of typing
 }}
+
 \examples{
 \dontrun{
 library(raster)
@@ -66,4 +67,3 @@ cubeView(kiliNDVI, at = seq(-0.15, 0.95, 0.1), col.regions = clr)
 \author{
 Stephan Woellauer and Tim Appelhans
 }
-

@@ -3,9 +3,9 @@
 \docType{methods}
 \name{coords2JSON}
 \alias{coords2JSON}
+\alias{coords2JSON,numeric-method}
 \alias{coords2JSON,character-method}
 \alias{coords2JSON,matrix-method}
-\alias{coords2JSON,numeric-method}
 \title{Convert a vector/matrix of coordinates to JSON format}
 \usage{
 \S4method{coords2JSON}{numeric}(x)
@@ -54,4 +54,3 @@ coords2JSON(crd)
 \author{
 Florian Detsch
 }
-

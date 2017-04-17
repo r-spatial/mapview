@@ -3,13 +3,13 @@
 \docType{methods}
 \name{slideView}
 \alias{slideView}
-\alias{slideView,RasterLayer,RasterLayer-method}
-\alias{slideView,RasterLayer,RasterStackBrick-method}
-\alias{slideView,RasterStackBrick,RasterLayer-method}
 \alias{slideView,RasterStackBrick,RasterStackBrick-method}
+\alias{slideView,RasterLayer,RasterLayer-method}
+\alias{slideView,RasterStackBrick,RasterLayer-method}
+\alias{slideView,RasterLayer,RasterStackBrick-method}
 \alias{slideView,character,character-method}
-\alias{slideview}
 \alias{slideview,ANY-method}
+\alias{slideview}
 \title{slideView}
 \usage{
 \S4method{slideView}{RasterStackBrick,RasterStackBrick}(img1, img2,
@@ -108,6 +108,7 @@ For slideView there are a few keyboard shortcuts defined:
 
 \item \code{ANY}: alias for ease of typing
 }}
+
 \examples{
 ### raster data ###
 library(raster)
@@ -155,4 +156,3 @@ Tim Appelhans
 
 Stephan Woellauer
 }
-

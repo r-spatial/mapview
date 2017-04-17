@@ -40,6 +40,7 @@ is best to use the provided convenience function \code{sync}.
 
 \item \code{sync}: convenience function for syncing maps
 }}
+
 \examples{
 
 \dontrun{
@@ -83,4 +84,3 @@ sync(m1, m2, m3, m4, no.initial.sync = FALSE) # all maps zoomed to m4 extent
 }
 
 }
-

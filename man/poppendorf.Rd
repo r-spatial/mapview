@@ -15,4 +15,3 @@ Landsat 8 detail of Franconian Switzerland centered on Poppendorf
 Use of this data requires your agreement to the USGS regulations on
 using Landsat data.
 }
-

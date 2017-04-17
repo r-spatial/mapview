@@ -49,4 +49,3 @@ mapview(easter.egg = TRUE) # detailed mouse position info by default ;-)
 
 
 }
-

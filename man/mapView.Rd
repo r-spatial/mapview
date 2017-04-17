@@ -6,28 +6,28 @@
 \alias{mapView,RasterLayer-method}
 \alias{mapView,RasterStackBrick-method}
 \alias{mapView,Satellite-method}
-\alias{mapView,SpatialGridDataFrame-method}
-\alias{mapView,SpatialLines-method}
-\alias{mapView,SpatialLinesDataFrame-method}
-\alias{mapView,SpatialPixelsDataFrame-method}
-\alias{mapView,SpatialPoints-method}
-\alias{mapView,SpatialPointsDataFrame-method}
-\alias{mapView,SpatialPolygons-method}
-\alias{mapView,SpatialPolygonsDataFrame-method}
-\alias{mapView,XY-method}
-\alias{mapView,list-method}
-\alias{mapView,missing-method}
 \alias{mapView,sf-method}
 \alias{mapView,sfc-method}
-\alias{mapView,sfc_GEOMETRY-method}
+\alias{mapView,XY-method}
+\alias{mapView,sfc_POINT-method}
+\alias{mapView,sfc_MULTIPOINT-method}
 \alias{mapView,sfc_LINESTRING-method}
 \alias{mapView,sfc_MULTILINESTRING-method}
-\alias{mapView,sfc_MULTIPOINT-method}
-\alias{mapView,sfc_MULTIPOLYGON-method}
-\alias{mapView,sfc_POINT-method}
 \alias{mapView,sfc_POLYGON-method}
-\alias{mapview}
+\alias{mapView,sfc_MULTIPOLYGON-method}
+\alias{mapView,sfc_GEOMETRY-method}
+\alias{mapView,missing-method}
+\alias{mapView,list-method}
 \alias{mapview,ANY-method}
+\alias{mapview}
+\alias{mapView,SpatialPixelsDataFrame-method}
+\alias{mapView,SpatialGridDataFrame-method}
+\alias{mapView,SpatialPointsDataFrame-method}
+\alias{mapView,SpatialPoints-method}
+\alias{mapView,SpatialPolygonsDataFrame-method}
+\alias{mapView,SpatialPolygons-method}
+\alias{mapView,SpatialLinesDataFrame-method}
+\alias{mapView,SpatialLines-method}
 \title{View spatial objects interactively}
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL,
@@ -312,6 +312,7 @@ and fully queriable.
 
 \item \code{SpatialLines}: \code{\link{SpatialLines}}
 }}
+
 \examples{
 \dontrun{
 mapview()
@@ -411,4 +412,3 @@ franconia \%>\%
 \author{
 Tim Appelhans
 }
-

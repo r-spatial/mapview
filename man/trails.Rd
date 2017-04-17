@@ -18,4 +18,3 @@ These hiking trails were downloaded on 06/04/2017 from
 These data are published by the owner under Creative Commons Namensnennung 3.0 Deutschland, see
 \url{https://creativecommons.org/licenses/by/3.0/de/} for details.
 }
-

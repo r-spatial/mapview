@@ -37,4 +37,3 @@ garnishMap(m2, addCircleMarkers, data = breweries)
 }
 
 }
-

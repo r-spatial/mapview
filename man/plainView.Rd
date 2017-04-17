@@ -6,8 +6,8 @@
 \alias{plainView,RasterLayer-method}
 \alias{plainView,RasterStackBrick-method}
 \alias{plainView,SpatialPixelsDataFrame-method}
-\alias{plainview}
 \alias{plainview,ANY-method}
+\alias{plainview}
 \title{View raster objects interactively without background map but in any CRS}
 \usage{
 \S4method{plainView}{RasterLayer}(x,
@@ -94,6 +94,7 @@ For plainView there are a few keyboard shortcuts defined:
 
 \item \code{ANY}: alias for ease of typing
 }}
+
 \examples{
 \dontrun{
 ### raster data ###
@@ -125,4 +126,3 @@ Stephan Woellauer
 
 Tim Appelhans
 }
-

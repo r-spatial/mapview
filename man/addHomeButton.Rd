@@ -33,6 +33,7 @@ Use removeHomeButton to remove home button
 \itemize{
 \item \code{removeHomeButton}: remove a homeButton from a map
 }}
+
 \examples{
 \dontrun{
 library(raster)
@@ -47,4 +48,3 @@ removeHomeButton(m)
 
 
 }
-

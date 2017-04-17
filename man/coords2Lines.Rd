@@ -3,8 +3,8 @@
 \docType{methods}
 \name{coords2Lines}
 \alias{coords2Lines}
-\alias{coords2Lines,Line-method}
 \alias{coords2Lines,matrix-method}
+\alias{coords2Lines,Line-method}
 \title{Convert points to SpatialLines*}
 \usage{
 \S4method{coords2Lines}{matrix}(coords, ID, data, match.ID = TRUE, ...)
@@ -54,4 +54,3 @@ plot(sln2, col = "grey25", add = TRUE)
 \seealso{
 \code{\link{SpatialLines-class}}, \code{\link{SpatialLinesDataFrame}}.
 }
-

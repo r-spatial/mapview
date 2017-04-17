@@ -17,4 +17,3 @@ This is useful if you want to save an expression in a variable}
 \description{
 Render a mapview widget in shiny
 }
-

@@ -3,9 +3,11 @@
 \docType{methods}
 \name{+}
 \alias{+}
-\alias{+,mapview,ANY-method}
-\alias{+,mapview,character-method}
 \alias{+,mapview,mapview-method}
+\alias{+}
+\alias{+,mapview,ANY-method}
+\alias{+}
+\alias{+,mapview,character-method}
 \title{mapview + mapview adds data from the second map to the first}
 \usage{
 \S4method{+}{mapview,mapview}(e1, e2)
@@ -44,4 +46,3 @@ m1 + m2 # final zoom level based on m2
 }
 
 }
-

@@ -19,4 +19,3 @@ of Rainer Kastl. Note that use of these data is restricted to  non-commercial us
 and that they are explixitly excluded from the GPL lincense that mapview is licensed under.
 See 'inst/extdata/create_breweries.R' for some details on data creation.
 }
-

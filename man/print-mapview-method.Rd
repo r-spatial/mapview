@@ -13,4 +13,3 @@
 \description{
 Method for printing mapview objects
 }
-

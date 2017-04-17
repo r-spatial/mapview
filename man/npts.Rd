@@ -20,4 +20,3 @@ npts(breweries) # is the same as
 nrow(breweries)
 
 }
-

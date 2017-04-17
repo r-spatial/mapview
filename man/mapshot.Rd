@@ -60,4 +60,3 @@ mapshot(m, url = paste0(getwd(), "/map.html"),
 \seealso{
 \code{\link{webshot}}, \code{\link{saveWidget}}.
 }
-

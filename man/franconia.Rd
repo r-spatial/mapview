@@ -17,4 +17,3 @@ The NUTS_2013_01M_SH.zip archive was downloaded on 23/03/2017 from
 It was then processed using 'inst/extdata/create_franconia.R'
 \url{https://gist.github.com/tim-salabim/2845fa90813fa25c18cf83f9b88cbde0}
 }
-

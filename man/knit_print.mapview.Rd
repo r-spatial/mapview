@@ -14,4 +14,3 @@ knit_print.mapview(x, ...)
 \description{
 Print functions for mapview objects used in knitr
 }
-

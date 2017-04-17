@@ -15,4 +15,3 @@ mapviewOutput(outputId, width = "100\%", height = 400)
 \description{
 Create a mapview UI element for use with shiny
 }
-

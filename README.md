@@ -1,13 +1,12 @@
 # mapview #
 
-### Interactive viewing of spatial objects in R ###
-
 [![Travis-CI Build Status](https://travis-ci.org/environmentalinformatics-marburg/mapview.svg?branch=develop)](https://travis-ci.org/environmentalinformatics-marburg/mapview)
-![monthly](http://cranlogs.r-pkg.org/badges/mapview) ![total](http://cranlogs.r-pkg.org/badges/grand-total/mapview)
+[![monthly](http://cranlogs.r-pkg.org/badges/mapview)](https://www.rpackages.io/package/mapview) 
+[![total](http://cranlogs.r-pkg.org/badges/grand-total/mapview)](https://www.rpackages.io/package/mapview)
 [![CRAN](http://www.r-pkg.org/badges/version/mapview?color=009999)](https://cran.r-project.org/package=mapview)
 [![License](https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat)](http://www.gnu.org/licenses/gpl-3.0.html)
 
-------------
+### Interactive viewing of spatial objects in R ###
 
 **mapview** is an R package created to help researchers during their spatial data analysis workflow. It provides functions to very quickly and conveniently create interactive visualisations of spatial data. It was created to fill the gap of quick (not presentation grade) interactive plotting to examine and visually investigate both aspects of spatial data, the gometries and their attributes.
 
@@ -64,9 +63,9 @@ The most basic call
 mapview(breweries)
 ```
 
-will produce a web map visualisation of the breweries data that looks like this:
+will produce a web map visualisation of the breweries data with the following components:
 
-![](basic.png)
+![](basic_small.png)
 
 
 ## Contact ##

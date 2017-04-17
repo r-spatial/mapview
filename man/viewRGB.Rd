@@ -60,4 +60,3 @@ viewRGB(poppendorf, 5, 4, 3) # false-color
 \author{
 Tim Appelhans
 }
-
