@@ -6,7 +6,7 @@
 \title{Selected breweries in Franconia}
 \format{\code{sf feature collection POINT}}
 \description{
-Selected breweries in Franconia (zip code starting with 91...)
+Selected breweries in Franconia
 }
 \details{
 This dataset contains selected breweries in Franconia. It is partly a
@@ -17,5 +17,4 @@ and partly consists of breweries downloaded from
 \url{http://www.bierwandern.de/inhalt/brauereiliste.html} with the kind permission
 of Rainer Kastl. Note that use of these data is restricted to  non-commercial use
 and that they are explixitly excluded from the GPL lincense that mapview is licensed under.
-See 'inst/extdata/create_breweries.R' for some details on data creation.
 }

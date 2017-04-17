@@ -14,7 +14,7 @@ Selected hiking trails in Franconia
 }
 \details{
 These hiking trails were downloaded on 06/04/2017 from
-\url{https://geoportal.bayern.de/bayernatlas} and processed using 'inst/extdata/create_trails.R'
-These data are published by the owner under Creative Commons Namensnennung 3.0 Deutschland, see
-\url{https://creativecommons.org/licenses/by/3.0/de/} for details.
+\url{https://geoportal.bayern.de/bayernatlas}
+These data are published by the owner under Creative Commons Namensnennung 3.0 Deutschland,
+see \url{https://creativecommons.org/licenses/by/3.0/de/} for details.
 }

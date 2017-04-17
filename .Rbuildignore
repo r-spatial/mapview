@@ -2,6 +2,6 @@
 ^\.Rproj\.user$
 ^inst/htmlwidgets/lib/leaflet/.bower.json
 ^.travis.yml
-^basic.png
+^basic_small.png
 
 ^docs$

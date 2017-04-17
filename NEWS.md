@@ -1,5 +1,4 @@
-mapview 1.2.69
---------------------------------------------------------------------------------
+## mapview 1.2.68
 
 new features:
   * addMouseCoordinates has gained argument 'style' to specify whether to show 'basic' (lat, lon, zoom) or 'detailed' (x, y, epsg, proj4, lat, lon, zoom) information. Factory-fresh default is 'detailed'.
@@ -25,11 +24,11 @@ bugfixes:
   * sync, addMouseCoordinates and addLogo did not work anymore. Now fixed thanks to @timelyportfolio
 
 changes:
+  * MAJOR internal change: All vector data are now processed as sf objects internally. This also means that objects returned in slot `@object` will be of class sf (regardless of input class).
   * polygons and points now have a darkish gray line frame (unless add*LargeFeatures is used - where the overhead of passing two sets of colors would be too high).
   * updated examples (in line with new data).
 
-mapview 1.2.0
---------------------------------------------------------------------------------
+## mapview 1.2.0
 
 new features:
   * garnishMap: function to add multiple decoration elements, such as leaflet::addLayersControl or addHomeButton to a map (mainly for internal use).
@@ -44,8 +43,7 @@ bugfixes:
   * mapview working again for objects with no projection (NA).
   * mapview for SPoints* with only one point did through an error #36.
 
-mapview 1.1.0
---------------------------------------------------------------------------------
+## mapview 1.1.0
 
 new features:
   * addMouseCoordinates: add cursor position information to mapview or leaflet map. (thanks to Kent Russell).
@@ -72,7 +70,6 @@ bugfixes:
   * user provided layer names were not respected when zcol was set. See also note on changes in default layer names.
 
 
-mapview 1.0.0
---------------------------------------------------------------------------------
+## mapview 1.0.0
 
 * Initial release
