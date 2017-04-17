@@ -1,4 +1,4 @@
-## mapview 1.2.68
+## mapview 1.2.70
 
 new features:
   * addMouseCoordinates has gained argument 'style' to specify whether to show 'basic' (lat, lon, zoom) or 'detailed' (x, y, epsg, proj4, lat, lon, zoom) information. Factory-fresh default is 'detailed'.
