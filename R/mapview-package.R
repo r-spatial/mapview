@@ -80,9 +80,10 @@ NULL
 #' @name elevation
 #' @title Digital elevation model of Franconia
 #' @description Digital elevation model of Franconia
-#' @details These hiking trails were downloaded on 06/04/2017 from
+#' @details Elevation data was downloaded on 17/04/2017 from
 #' \url{http://biogeo.ucdavis.edu/data/diva/msk_alt/DEU_msk_alt.zip}
-#' using raster::getData('alt', country = "DEU")
+#' using raster::getData('alt', country = "DEU") and cropped to the extent
+#' of franconia.
 #' @format \code{RasterLayer}
 #' @source
 #' \url{http://biogeo.ucdavis.edu/data/diva/msk_alt/DEU_msk_alt.zip}
