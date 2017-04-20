@@ -1,15 +1,18 @@
 ---
 title: "1. mapview basics"
 output:
-  html_document:
+  rmarkdown::html_document:
     toc: true
-    fig_width: 8.43
     theme: united
 vignette: >
   %\VignetteIndexEntry{1. mapview basics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(fig.width = 8.83)
+```
 
 **mapview** is intended to provide a quick and easy way to visualize/plot spatial data in an interactive manner. As such, a one-liner is enough to produce an interactive map view of the data. Methods are defined for all objects from packages **sf**, **sp**, **raster** and **satellite**.
 
@@ -39,7 +42,6 @@ Here's an example for each vector type:
 
 ```{r points, message = FALSE}
 library(mapview)
-
 mapview(breweries)
 ```
 
