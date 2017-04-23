@@ -13,6 +13,7 @@ vignette: >
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set(fig.width = 8.83)
 ```
+------
 
 **mapview** is intended to provide a quick and easy way to visualize/plot spatial data in an interactive manner. As such, a one-liner is enough to produce an interactive map view of the data. Methods are defined for all objects from packages **sf**, **sp**, **raster** and **satellite**.
 

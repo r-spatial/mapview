@@ -208,6 +208,7 @@ circleRadius <- function(x, radius = 6, min.rad = 3, max.rad = 15) {
   if (is.character(radius)) {
     rad <- scales::rescale(as.numeric(x[[radius]]),
                            to = c(min.rad, max.rad))
+    rad[is.na(rad)] = 1
   } else rad <- radius
   return(rad)
 }
@@ -215,4 +216,18 @@ circleRadius <- function(x, radius = 6, min.rad = 3, max.rad = 15) {
 
 extentOverlap <- function(x, y) {
   if (!sum(lengths(sf::st_intersects(x, y))) == 0) TRUE else FALSE
+}
+
+
+makeListLayerNames = function(x, layer.name) {
+  if (length(layer.name) == length(x)) {
+    lnms = layer.name
+  } else if (!is.null(names(x))) {
+    lnms = names(x)
+  } else {
+    chr = gsub(utils::glob2rx("*list(*"), "", layer.name)
+    chr = unlist(strsplit(x = gsub(")", "", chr), ","))
+    lnms = gsub(" ", "", chr)
+  }
+  return(as.list(lnms))
 }

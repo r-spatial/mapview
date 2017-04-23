@@ -433,6 +433,7 @@ setMethod('mapView', signature(x = 'sf'),
                         homebutton = homebutton,
                         legend = legend,
                         map.types = map.types,
+                        layer.name = layer.name,
                         ...)
 
               }
@@ -709,20 +710,22 @@ setMethod('mapView', signature(x = 'list'),
                    }),
                    maxpoints = NULL, #lapply(x, getMaxFeatures),
                    ...) {
+#
+#             makeLayerNames <- function(v1) {
+#               #chr <- as.character(dargs(graphics::plot.default)eparse(substitute(v1)))
+#               chr <- gsub(utils::glob2rx("*list(*"), "", v1)
+#               chr <- unlist(strsplit(x = gsub(")", "", chr), ","))
+#               as.list(gsub(" ", "", chr))
+#             }
+#
+#             nms <- names(x)
+#             if (is.null(nms)) {
+#               lyrnms <- makeLayerNames(layer.name) #paste0("layer_", sprintf("%02.0f", seq(x)))
+#             } else {
+#               lyrnms <- nms
+#             }
 
-            makeLayerNames <- function(v1) {
-              #chr <- as.character(dargs(graphics::plot.default)eparse(substitute(v1)))
-              chr <- gsub(utils::glob2rx("*list(*"), "", v1)
-              chr <- unlist(strsplit(x = gsub(")", "", chr), ","))
-              as.list(gsub(" ", "", chr))
-            }
-
-            nms <- names(x)
-            if (is.null(nms)) {
-              lyrnms <- makeLayerNames(layer.name) #paste0("layer_", sprintf("%02.0f", seq(x)))
-            } else {
-              lyrnms <- nms
-            }
+            lyrnms = makeListLayerNames(x, layer.name)
 
             if (!is.list(color))
               color <- rep(list(color), length(x))
