@@ -43,6 +43,7 @@ Imports:
     sf,
     base64enc
 LinkingTo: Rcpp
+VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 SystemRequirements: GNU make
 Suggests:
