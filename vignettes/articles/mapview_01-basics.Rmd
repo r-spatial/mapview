@@ -1,0 +1,109 @@
+---
+title: "1. mapview basics"
+output:
+  rmarkdown::html_document:
+    toc: yes
+    toc_float: yes
+    theme: united
+---
+
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(fig.width = 8.83, message = FALSE)
+```
+
+**mapview** is intended to provide a quick and easy way to visualize/plot spatial data in an interactive manner. As such, a one-liner is enough to produce an interactive map view of the data. Methods are defined for all objects from packages **sf**, **sp**, **raster** and **satellite**.
+
+# Vector data
+
+**mapview** includes 3 vector type data sets: 
+
+* `breweries` - a selection of (micro-) breweries in Franconia, Bavaria.
+* `trails` - slected hiking trails in Franconia (not used in this vignette).
+* `franconia` - administrative regions of Franconia at the district level.
+
+
+For vector data a call to `mapview` without any further arguments will produce a default map view including:
+
+* a layer control to switch between 5 different background maps
+* a scale bar
+* information on mouse cursor position and zoom level of the current view
+* a zoom-to-layer button to easily navigate to the displayed layer
+* popups listing all attribute entries of the respective features (when clicked)
+* labels of the feature IDs (when hovered over)
+* zoom control buttons provided by the underlying **leaflet** map
+* attribution information of the active map layer in the bottom right corener of the map
+
+Here's an example for each vector type:
+
+```{r points}
+library(mapview)
+mapview(breweries)
+```
+
+------
+
+```{r polygons}
+mapview(franconia)
+```
+
+------
+
+## Controlling attribute columns
+
+If we only want to plot certain columns of the attribute table we can use argument `zcol`. Each column will be rendered as a separate layer. These layers will be colored according to the selected attributes.
+
+```{r points zcol}
+mapview(breweries, zcol = c("brewery", "village", "founded"))
+```
+
+------
+
+## Including legends
+
+We can also include legends for the layers. Be careful, though, as it is currently not possible to link legends to layers so we end up with too many legends to fit the viewer window if we want to visualize many layers. This is also the reason why legends are not shown by default.
+
+```{r points legend}
+mapview(breweries, zcol = "founded", legend = TRUE)
+```
+
+------
+
+## Automatic background map detection
+
+Based on the mean luminence of the layer(s) to be rendered, **mapview** will automatically decide which default map to use. For layers with very light colors of `CartoDB.Darkmatter` is used. 
+
+```{r luminence low}
+mapview(breweries)
+```
+
+<br>
+
+Here we also adjust line color and width (using `lwd`)
+
+```{r luminence high}
+mapview(franconia, color = "cyan", col.regions = "white", lwd = 3)
+```
+
+------
+
+# Raster data
+
+**mapview** includes 3 raster type data sets: 
+
+* `elevation` - a digital elevation model of Franconia
+* `poppendorf` - a `RasterBrick` including 5 bands of a landsat scene located in Franconia
+* `kiliNDVI` - a raw multiband raster data set of 23 16-day Aqua-MODIS [NDVI](https://en.wikipedia.org/wiki/Normalized_Difference_Vegetation_Index) layers of Mt. Kilimanajro in Tanzania for the year 2013. See [Detsch et al. 2016](http://www.sciencedirect.com/science/article/pii/S0034425716301006) for details on how this data set was created
+
+Here's an example for raster data:
+
+## Raster Layer
+
+```{r layer, message = FALSE, warning=FALSE}
+mapview(elevation, legend = TRUE)
+```
+
+------
+
+## RasterStack/Brick
+
+`mapview(<RasterStack/Brick>)` will produce one map view layer for each layer in the stack/brick. Use the layers control to switch between the layers. By default all layers are shown (see chapter advanced for an example on how to hide all but one layer).

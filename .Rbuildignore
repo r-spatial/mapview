@@ -3,5 +3,4 @@
 ^inst/htmlwidgets/lib/leaflet/.bower.json
 ^.travis.yml
 ^basic_small.png
-
 ^docs$
