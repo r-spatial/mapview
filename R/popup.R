@@ -8,8 +8,6 @@
 #' @param x A \code{Spatial*} object.
 #' @param zcol \code{numeric} or \code{character} vector indicating the columns
 #' included in the output popup table. If missing, all columns are displayed.
-#' @param use_cpp \code{logical} determining whether or not to enable
-#' \strong{Rcpp} functionality.
 #'
 #' @return
 #' A \code{list} of HTML strings required to create feature popup tables.
@@ -29,14 +27,14 @@
 #' @export popupTable
 #' @name popupTable
 #' @rdname popup
-popupTable <- function(x, zcol, use_cpp = TRUE) {
+popupTable <- function(x, zcol) {
 
   if (inherits(x, "sfc")) {
     return(NULL)
   } else {
     if (!missing(zcol))
       x <- x[, zcol, drop = FALSE]
-    brewPopupTable(x, use_cpp = use_cpp)
+    brewPopupTable(x)
   }
 }
 
@@ -387,118 +385,67 @@ popupIframe <- function(src, width = 300, height = 300) {
 
 ### controls ==============================================================
 # create popup table of attributes
-brewPopupTable <- function(x, width = 300, height = 300, use_cpp = TRUE) {
+brewPopupTable <- function(x, width = 300, height = 300) {
 
   if (inherits(x, "Spatial")) x <- x@data
   if (inherits(x, "sf")) x <- sf2DataFrame(x)
 
-  if (!use_cpp) {
+  cls <- class(x)[1]
+  if (cls == "SpatialPoints") {
+    mat <- NULL
+  } else {
+
+    #     if (cls == "SpatialLines") {
+    #       x_pts <- sp::getSpatialLinesMidPoints(x)
+    #       x <- SpatialLinesDataFrame(x, data = data.frame(x = coordinates(x_pts)[, 1],
+    #                                                       y = coordinates(x_pts)[, 2]))
+    #     }
 
     # data.frame with 1 column
     if (ncol(x) == 1) {
-      df <- data.frame(as.character(x[, 1]))
-      # data.frame with multiple columns
-    } else {
-      df <- data.frame(df2String(x), stringsAsFactors = FALSE)
-    }
+      mat <- matrix(as.character(x[, 1]))
 
-    names(df) <- names(x)
-
-    if (nrow(x) == 1) df <- t(df)
-
-    # df$x <- as.character(round(sp::coordinates(x)[, 1], 2))
-    # df$y <- as.character(round(sp::coordinates(x)[, 2], 2))
-
-    cols <- colnames(df)
-
-    vals <- sapply(seq(nrow(x)), function(i) {
-      df[i, ]
-    })
-
-    indodd <- seq(1, ncol(df), by = 2)
-    indeven <- seq(2, ncol(df), by = 2)
-
-    lst_html <- lapply(seq(nrow(df)), function(j) {
-      odd <- sapply(indodd, function(i) {
-        brewPopupRow(cols[i], df[j, i])
-      })
-
-      even <- sapply(indeven, function(i) {
-        brewPopupRowAlt(cols[i], df[j, i])
-      })
-
-      pop <- vector("character", length(cols))
-
-      pop[indodd] <- odd
-      pop[indeven] <- even
-
-      popTemplate <- system.file("templates/popup.brew", package = "mapview")
-      myCon <- textConnection("outputObj", open = "w")
-      brew::brew(popTemplate, output = myCon)
-      outputObj <- outputObj
-      close(myCon)
-
-      return(paste(outputObj, collapse = ' '))
-    })
-
-  } else {
-
-    cls <- class(x)[1]
-    if (cls == "SpatialPoints") {
-      mat <- NULL
+    # data.frame with multiple columns
     } else {
 
-      #     if (cls == "SpatialLines") {
-      #       x_pts <- sp::getSpatialLinesMidPoints(x)
-      #       x <- SpatialLinesDataFrame(x, data = data.frame(x = coordinates(x_pts)[, 1],
-      #                                                       y = coordinates(x_pts)[, 2]))
-      #     }
+      # check for list columns, if found supply suitable class info for printing
+      ids <- sapply(x, function(i) is.list(i))
 
-      # data.frame with 1 column
-      if (ncol(x) == 1) {
-        mat <- matrix(as.character(x[, 1]))
-        # data.frame with multiple columns
-      } else {
-
-        # check for list columns, if found supply suitable class info for printing
-        ids <- sapply(x, function(i) is.list(i))
-
-        if (any(ids)) {
-          nms <- attr(ids, "names")[ids]
-          for (i in nms) {
-            x[, i] <- format(x[[i]]) #paste("object of class", class(x[[i]])[1])
-          }
+      if (any(ids)) {
+        nms <- attr(ids, "names")[ids]
+        for (i in nms) {
+          x[, i] <- format(x[[i]]) #paste("object of class", class(x[[i]])[1])
         }
-
-        mat <- df2String(x)
       }
 
-      colnames(mat) <- names(x)
-      # if (nrow(x) == 1) mat <- t(mat)
+      mat <- df2String(x)
     }
 
-    # if (!class(x)[1] %in% c("SpatialLines",
-    #                         "SpatialLinesDataFrame",
-    #                         "SpatialPolygons",
-    #                         "SpatialPolygonsDataFrame")) {
-    #   mat <- cbind(Longitude = as.character(round(sp::coordinates(x)[, 1], 2)),
-    #                Latitude = as.character(round(sp::coordinates(x)[, 2], 2)),
-    #                mat)
-    # }
-
-    ## add 'feature id' in case of spydf, slndf
-    #if (length(grep("DataFrame", class(x))) > 0) {
-    fid <- rownames(x)
-    mat <- cbind("Feature ID" = fid, mat)
-    #}
-
-    ## create list with row-specific html code
-    cols <- colnames(mat)
-
-    lst_html <- listPopupTemplates(mat, cols,
-                                   system.file("templates/popup.brew",
-                                               package = "mapview"))
+    colnames(mat) <- names(x)
+    # if (nrow(x) == 1) mat <- t(mat)
   }
+
+  # if (!class(x)[1] %in% c("SpatialLines",
+  #                         "SpatialLinesDataFrame",
+  #                         "SpatialPolygons",
+  #                         "SpatialPolygonsDataFrame")) {
+  #   mat <- cbind(Longitude = as.character(round(sp::coordinates(x)[, 1], 2)),
+  #                Latitude = as.character(round(sp::coordinates(x)[, 2], 2)),
+  #                mat)
+  # }
+
+  ## add 'feature id' in case of spydf, slndf
+  #if (length(grep("DataFrame", class(x))) > 0) {
+  fid <- rownames(x)
+  mat <- cbind("Feature ID" = fid, mat)
+  #}
+
+  ## create list with row-specific html code
+  cols <- colnames(mat)
+
+  lst_html <- listPopupTemplates(mat, cols,
+                                 system.file("templates/popup.brew",
+                                             package = "mapview"))
 
   return(lst_html)
 }
