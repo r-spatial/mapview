@@ -10,7 +10,7 @@ Check these declarations against the C/Fortran source code.
 /* .Call calls */
 extern SEXP mapview_all2JSONlist(SEXP);
 extern SEXP mapview_anyNA(SEXP);
-extern SEXP mapview_brewPopupCoords(SEXP, SEXP, SEXP);
+extern SEXP mapview_brewPopupCoords(SEXP, SEXP);
 extern SEXP mapview_brewPopupRowAltC(SEXP, SEXP, SEXP);
 extern SEXP mapview_brewPopupRowC(SEXP, SEXP, SEXP);
 extern SEXP mapview_createTemplate(SEXP);
@@ -24,7 +24,7 @@ extern SEXP mapview_rowNA(SEXP);
 static const R_CallMethodDef CallEntries[] = {
   {"mapview_all2JSONlist",       (DL_FUNC) &mapview_all2JSONlist,       1},
   {"mapview_anyNA",              (DL_FUNC) &mapview_anyNA,              1},
-  {"mapview_brewPopupCoords",    (DL_FUNC) &mapview_brewPopupCoords,    3},
+  {"mapview_brewPopupCoords",    (DL_FUNC) &mapview_brewPopupCoords,    2},
   {"mapview_brewPopupRowAltC",   (DL_FUNC) &mapview_brewPopupRowAltC,   3},
   {"mapview_brewPopupRowC",      (DL_FUNC) &mapview_brewPopupRowC,      3},
   {"mapview_createTemplate",     (DL_FUNC) &mapview_createTemplate,     1},

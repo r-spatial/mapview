@@ -13,8 +13,8 @@ brewPopupRowAltC <- function(index, colname, value) {
     .Call('mapview_brewPopupRowAltC', PACKAGE = 'mapview', index, colname, value)
 }
 
-brewPopupCoords <- function(index, colname, value) {
-    .Call('mapview_brewPopupCoords', PACKAGE = 'mapview', index, colname, value)
+brewPopupCoords <- function(colname, value) {
+    .Call('mapview_brewPopupCoords', PACKAGE = 'mapview', colname, value)
 }
 
 mergePopupRows <- function(names, values) {

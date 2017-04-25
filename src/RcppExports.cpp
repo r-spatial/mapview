@@ -45,15 +45,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // brewPopupCoords
-std::string brewPopupCoords(std::string index, std::string colname, std::string value);
-RcppExport SEXP mapview_brewPopupCoords(SEXP indexSEXP, SEXP colnameSEXP, SEXP valueSEXP) {
+std::string brewPopupCoords(std::string colname, std::string value);
+RcppExport SEXP mapview_brewPopupCoords(SEXP colnameSEXP, SEXP valueSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type index(indexSEXP);
     Rcpp::traits::input_parameter< std::string >::type colname(colnameSEXP);
     Rcpp::traits::input_parameter< std::string >::type value(valueSEXP);
-    rcpp_result_gen = Rcpp::wrap(brewPopupCoords(index, colname, value));
+    rcpp_result_gen = Rcpp::wrap(brewPopupCoords(colname, value));
     return rcpp_result_gen;
 END_RCPP
 }

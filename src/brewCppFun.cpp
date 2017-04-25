@@ -97,11 +97,10 @@ std::string brewPopupRowAltC(std::string index, std::string colname,
 ////////////////////////////////////////////////////////////////////////////////
 
 // [[Rcpp::export]]
-std::string brewPopupCoords(std::string index, std::string colname,
-                            std::string value) {
+std::string brewPopupCoords(std::string colname, std::string value) {
 
   std::string chIndString;
-  chIndString = std::string("<td>") + index + "</td>";
+  chIndString = std::string("<td></td>");
 
   std::string chColString;
   chColString = std::string("<td>") + "<b>" + colname + "</b>" + "</td>";
@@ -139,16 +138,16 @@ std::string mergePopupRows(CharacterVector names, CharacterVector values) {
     // feature id or coords
     if ((names[i] == "Feature ID") |
           (names[i] == "Longitude") | (names[i] == "Latitude")) {
-      chOut = chOut + brewPopupCoords(to_string(i+1), ssName.str(), ssValue.str());
+      chOut = chOut + brewPopupCoords(ssName.str(), ssValue.str());
     } else {
 
       // even variable columns
       if (i%2 == 0) {
-        chOut = chOut + brewPopupRowC(to_string(i+1), ssName.str(), ssValue.str());
+        chOut = chOut + brewPopupRowC(to_string(i), ssName.str(), ssValue.str());
 
       // odd variable columns
       } else {
-        chOut = chOut + brewPopupRowAltC(to_string(i+1), ssName.str(), ssValue.str());
+        chOut = chOut + brewPopupRowAltC(to_string(i), ssName.str(), ssValue.str());
       }
 
     }
