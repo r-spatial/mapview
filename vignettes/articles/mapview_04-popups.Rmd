@@ -18,10 +18,11 @@ library(mapview)
 
 **mapview** provides a few special popup rendering functions. These can be used to generate:
 
-1. attribute table popups
-2a. graph popups (i.e. plots in popups)
-2b. interactive popups
-3. image popups
+* attribute table popups
+* graph popups (i.e. plots in popups)
+    * static (ggplot2, lattice, base)
+    * interactive (htmlwidgets)
+* image popups
 
 ## Attribute table popups
 
