@@ -6,7 +6,7 @@
 \alias{popupGraph}
 \title{Create HTML strings for popups}
 \usage{
-popupTable(x, zcol, use_cpp = TRUE)
+popupTable(x, zcol)
 
 popupImage(img, src = c("local", "remote"), ...)
 
@@ -18,9 +18,6 @@ popupGraph(graphs, type = c("png", "svg", "html"), width = 300,
 
 \item{zcol}{\code{numeric} or \code{character} vector indicating the columns
 included in the output popup table. If missing, all columns are displayed.}
-
-\item{use_cpp}{\code{logical} determining whether or not to enable
-\strong{Rcpp} functionality.}
 
 \item{img}{A character \code{vector} of file path(s) or
 web-URL(s) to any sort of image file(s).}
