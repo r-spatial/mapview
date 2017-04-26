@@ -16,12 +16,12 @@ checkAdjustProjection <- function(x) {
               "RasterLayer" = rasterCheckAdjustProjection(x),
               "RasterStack" = rasterCheckAdjustProjection(x),
               "RasterBrick" = rasterCheckAdjustProjection(x),
-              # "SpatialPointsDataFrame" = spCheckAdjustProjection(x),
-              # "SpatialPolygonsDataFrame" = spCheckAdjustProjection(x),
-              # "SpatialLinesDataFrame" = spCheckAdjustProjection(x),
-              # "SpatialPoints" = spCheckAdjustProjection(x),
-              # "SpatialPolygons" = spCheckAdjustProjection(x),
-              # "SpatialLines" = spCheckAdjustProjection(x),
+              "SpatialPointsDataFrame" = spCheckAdjustProjection(x),
+              "SpatialPolygonsDataFrame" = spCheckAdjustProjection(x),
+              "SpatialLinesDataFrame" = spCheckAdjustProjection(x),
+              "SpatialPoints" = spCheckAdjustProjection(x),
+              "SpatialPolygons" = spCheckAdjustProjection(x),
+              "SpatialLines" = spCheckAdjustProjection(x),
               "sf" = sfCheckAdjustProjection(x),
               "XY" = sfCheckAdjustProjection(x),
               "sfc_POINT" = sfCheckAdjustProjection(x),
@@ -89,31 +89,31 @@ sfCheckAdjustProjection <- function(x) {
 }
 
 
-# # Check and potentially adjust projection of Spatial* objects =============
-# spCheckAdjustProjection <- function(x) {
-#
-#   if (is.na(raster::projection(x))) {
-#     warning(non_proj_warning)
-#     if (class(x)[1] %in% c("SpatialPointsDataFrame", "SpatialPoints")) {
-#       methods::slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
-#                                                      coordinates(x)[, 2])
-#     } else if (class(x)[1] %in% c("SpatialPolygonsDataFrame",
-#                                   "SpatialPolygons")) {
-#       x <- scalePolygonsCoordinates(x)
-#     } else if (class(x)[1] %in% c("SpatialLinesDataFrame",
-#                                   "SpatialLines")) {
-#       x <- scaleLinesCoordinates(x)
-#     }
-#
-#     raster::projection(x) <- llcrs
-#
-#   } else if (!identical(raster::projection(x), llcrs)) {
-#     x <- sp::spTransform(x, CRSobj = llcrs)
-#   }
-#
-#   return(x)
-#
-# }
+# Check and potentially adjust projection of Spatial* objects =============
+spCheckAdjustProjection <- function(x) {
+
+  if (is.na(raster::projection(x))) {
+    warning(non_proj_warning)
+    if (class(x)[1] %in% c("SpatialPointsDataFrame", "SpatialPoints")) {
+      methods::slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
+                                                     coordinates(x)[, 2])
+    } else if (class(x)[1] %in% c("SpatialPolygonsDataFrame",
+                                  "SpatialPolygons")) {
+      x <- scalePolygonsCoordinates(x)
+    } else if (class(x)[1] %in% c("SpatialLinesDataFrame",
+                                  "SpatialLines")) {
+      x <- scaleLinesCoordinates(x)
+    }
+
+    raster::projection(x) <- llcrs
+
+  } else if (!identical(raster::projection(x), llcrs)) {
+    x <- sp::spTransform(x, CRSobj = llcrs)
+  }
+
+  return(x)
+
+}
 
 # Check projection of objects according to their keywords =================
 # validLongLat <- function (p4s) {
