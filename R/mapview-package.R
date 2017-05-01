@@ -75,16 +75,4 @@ NULL
 #' Datenquelle: Bayerische Vermessungsverwaltung - www.geodaten.bayern.de
 #' \url{http://www.ldbv.bayern.de/produkte/weitere/opendata.html}
 NULL
-#'
-#' @docType data
-#' @name elevation
-#' @title Digital elevation model of Franconia
-#' @description Digital elevation model of Franconia
-#' @details Elevation data was downloaded on 17/04/2017 from
-#' \url{http://biogeo.ucdavis.edu/data/diva/msk_alt/DEU_msk_alt.zip}
-#' using raster::getData('alt', country = "DEU") and cropped to the extent
-#' of franconia.
-#' @format \code{RasterLayer}
-#' @source
-#' \url{http://biogeo.ucdavis.edu/data/diva/msk_alt/DEU_msk_alt.zip}
-NULL
+
