@@ -88,9 +88,8 @@ mapview(franconia, color = "cyan", col.regions = "white", lwd = 3)
 
 # Raster data
 
-**mapview** includes 3 raster type data sets: 
+**mapview** includes 2 raster type data sets: 
 
-* `elevation` - a digital elevation model of Franconia
 * `poppendorf` - a `RasterBrick` including 5 bands of a landsat scene located in Franconia
 * `kiliNDVI` - a raw multiband raster data set of 23 16-day Aqua-MODIS [NDVI](https://en.wikipedia.org/wiki/Normalized_Difference_Vegetation_Index) layers of Mt. Kilimanajro in Tanzania for the year 2013. See [Detsch et al. 2016](http://www.sciencedirect.com/science/article/pii/S0034425716301006) for details on how this data set was created
 
@@ -99,7 +98,7 @@ Here's an example for raster data:
 ## Raster Layer
 
 ```{r layer, message = FALSE, warning=FALSE}
-mapview(elevation, legend = TRUE)
+mapview(poppendorf[[5]], legend = TRUE)
 ```
 
 ------

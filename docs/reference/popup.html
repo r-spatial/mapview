@@ -92,7 +92,7 @@ This optionally allows the user to include only a subset of feature attributes.<
 <code><a href='mapView.html'>mapview</a></code> or <code>leaflet</code>.</p>
     
 
-    <pre class="usage"><span class='fu'>popupTable</span>(<span class='no'>x</span>, <span class='no'>zcol</span>, <span class='kw'>use_cpp</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="usage"><span class='fu'>popupTable</span>(<span class='no'>x</span>, <span class='no'>zcol</span>)
 
 <span class='fu'>popupImage</span>(<span class='no'>img</span>, <span class='kw'>src</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"local"</span>, <span class='st'>"remote"</span>), <span class='no'>...</span>)
 
@@ -110,11 +110,6 @@ This optionally allows the user to include only a subset of feature attributes.<
       <th>zcol</th>
       <td><p><code>numeric</code> or <code>character</code> vector indicating the columns
 included in the output popup table. If missing, all columns are displayed.</p></td>
-    </tr>
-    <tr>
-      <th>use_cpp</th>
-      <td><p><code>logical</code> determining whether or not to enable
-<strong>Rcpp</strong> functionality.</p></td>
     </tr>
     <tr>
       <th>img</th>

@@ -192,4 +192,6 @@ m1 = mapview(franconia, zcol = "district", col.regions = c("snow", "grey", "red"
 m1 + breweries
 ```
 
+------
+
 See chapter `3. mapview options` for instructions on how to set some of these styling parameters permanently.

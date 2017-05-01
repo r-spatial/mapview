@@ -63,9 +63,17 @@ mapviewOptions(basemaps = c("Esri.WorldShadedRelief", "OpenStreetMap.DE"),
                vector.palette = colorRampPalette(c("snow", "cornflowerblue", "grey10")),
                na.color = "magenta",
                layers.control.pos = "topright")
+```
 
+------
+
+```{r options query}
 mapviewOptions()
+```
 
+------
+
+```{r brew back to normal}
 mapview(breweries, zcol = "founded", legend = TRUE)
 ```
 
@@ -75,18 +83,6 @@ These options will now be available until the current session is closed. i.e. yo
 
 ```{r options rgb, message = FALSE}
 mapview(poppendorf[[5]])
-```
-
-------
-
-```{r options rst, message = FALSE}
-library(raster)
-library(dplyr)
-
-slp = terrain(elevation, opt = "slope")
-asp = terrain(elevation, opt = "aspect")
-
-hillShade(slp, asp, direction = 180) %>% mapview(maxpixels = ncell(slp))
 ```
 
 ------
