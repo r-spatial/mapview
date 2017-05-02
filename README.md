@@ -65,8 +65,7 @@ mapview(breweries)
 
 will produce a web map visualisation of the breweries data with the following components:
 
-![](basic_small.png)
-
+![](https://raw.githubusercontent.com/environmentalinformatics-marburg/mapview/develop/docs/basic_small.png)
 
 ## Contact ##
 
