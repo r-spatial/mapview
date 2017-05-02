@@ -21,111 +21,125 @@ leafletRL <- function(x,
                       verbose,
                       layer.name,
                       homebutton,
+                      native.crs,
                       ...) {
 
   pkgs <- c("leaflet", "raster", "magrittr")
   tst <- sapply(pkgs, "requireNamespace",
                 quietly = TRUE, USE.NAMES = FALSE)
 
-  is.fact <- raster::is.factor(x)
-  # ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
+  if (native.crs) {
+    plainView(x,
+              col.regions = col.regions,
+              at = at,
+              na.color = na.color,
+              legend = legend,
+              verbose = verbose,
+              layer.name = layer.name,
+              ...)
+  } else {
 
-  m <- initMap(map, map.types, sp::proj4string(x))
-  x <- rasterCheckSize(x, maxpixels = maxpixels)
-  x <- rasterCheckAdjustProjection(x)
-  ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
+    is.fact <- raster::is.factor(x)
+    # ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
 
-  if (!is.na(raster::projection(x)) & trim) x <- trim(x)
+    m <- initMap(map, map.types, sp::proj4string(x))
+    x <- rasterCheckSize(x, maxpixels = maxpixels)
+    x <- rasterCheckAdjustProjection(x)
+    ext <- raster::extent(raster::projectExtent(x, crs = llcrs))
 
-  if (is.fact) x <- raster::as.factor(x)
+    if (!is.na(raster::projection(x)) & trim) x <- trim(x)
 
-  if (is.null(values)) {
-    if (is.fact) {
-      at <- x@data@attributes[[1]]$ID
+    if (is.fact) x <- raster::as.factor(x)
+
+    if (is.null(values)) {
+      if (is.fact) {
+        at <- x@data@attributes[[1]]$ID
+      } else {
+        offset <- diff(range(x[], na.rm = TRUE)) * 0.05
+        top <- max(x[], na.rm = TRUE) + offset
+        bot <- min(x[], na.rm = TRUE) - offset
+        values <- seq(bot, top, length.out = 10)
+        values <- round(values, 5)
+      }
     } else {
-      offset <- diff(range(x[], na.rm = TRUE)) * 0.05
-      top <- max(x[], na.rm = TRUE) + offset
-      bot <- min(x[], na.rm = TRUE) - offset
-      values <- seq(bot, top, length.out = 10)
       values <- round(values, 5)
     }
-  } else {
-    values <- round(values, 5)
+
+    if (is.fact) {
+      pal <- leaflet::colorFactor(palette = col.regions,
+                                  domain = values,
+                                  na.color = na.color)
+      # pal2 <- pal
+    } else {
+      pal <- rasterColors(col.regions,
+                          at = at,
+                          na.color = na.color)
+
+      # if (length(at) > 11) {
+      #   pal2 <- leaflet::colorNumeric(palette = col.regions,
+      #                                 domain = at,
+      #                                 na.color = na.color)
+      # } else {
+      #   pal2 <- leaflet::colorBin(palette = col.regions,
+      #                             bins = length(at),
+      #                             domain = at,
+      #                             na.color = na.color)
+      # }
+
+    }
+
+    if (use.layer.names) {
+      grp <- names(x)
+      layer.name <- names(x)
+    } else {
+      grp <- layer.name
+    }
+
+    ## add layers to base map
+    m <- leaflet::addRasterImage(map = m,
+                                 x = x,
+                                 colors = pal,
+                                 project = FALSE,
+                                 opacity = alpha.regions,
+                                 group = grp,
+                                 ...)
+
+    if (legend) {
+      ## add legend
+      # m <- leaflet::addLegend(map = m,
+      #                         pal = pal2,
+      #                         opacity = legend.opacity,
+      #                         values = at,
+      #                         title = grp)
+
+      m <- addRasterLegend(x = x,
+                           map = m,
+                           title = grp,
+                           at = at,
+                           col.regions = col.regions,
+                           na.color = na.color)
+    }
+
+    m <- mapViewLayersControl(map = m,
+                              map.types = map.types,
+                              names = grp)
+
+    if (isAvailableInLeaflet()$scl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+    m <- addMouseCoordinates(m)
+
+    if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
+
+    out <- new('mapview', object = list(x), map = m)
+
+    return(out)
+
   }
-
-  if (is.fact) {
-    pal <- leaflet::colorFactor(palette = col.regions,
-                                domain = values,
-                                na.color = na.color)
-    # pal2 <- pal
-  } else {
-    pal <- rasterColors(col.regions,
-                        at = at,
-                        na.color = na.color)
-
-    # if (length(at) > 11) {
-    #   pal2 <- leaflet::colorNumeric(palette = col.regions,
-    #                                 domain = at,
-    #                                 na.color = na.color)
-    # } else {
-    #   pal2 <- leaflet::colorBin(palette = col.regions,
-    #                             bins = length(at),
-    #                             domain = at,
-    #                             na.color = na.color)
-    # }
-
-  }
-
-  if (use.layer.names) {
-    grp <- names(x)
-    layer.name <- names(x)
-  } else {
-    grp <- layer.name
-  }
-
-  ## add layers to base map
-  m <- leaflet::addRasterImage(map = m,
-                               x = x,
-                               colors = pal,
-                               project = FALSE,
-                               opacity = alpha.regions,
-                               group = grp,
-                               ...)
-
-  if (legend) {
-    ## add legend
-    # m <- leaflet::addLegend(map = m,
-    #                         pal = pal2,
-    #                         opacity = legend.opacity,
-    #                         values = at,
-    #                         title = grp)
-
-    m <- addRasterLegend(x = x,
-                         map = m,
-                         title = grp,
-                         at = at,
-                         col.regions = col.regions,
-                         na.color = na.color)
-  }
-
-  m <- mapViewLayersControl(map = m,
-                            map.types = map.types,
-                            names = grp)
-
-  if (isAvailableInLeaflet()$scl) m <- leaflet::addScaleBar(map = m, position = "bottomleft")
-  m <- addMouseCoordinates(m)
-
-  if (homebutton) m <- addHomeButton(m, ext, layer.name = layer.name)
-
-  out <- new('mapview', object = list(x), map = m)
-
-  return(out)
 
 }
 
 
 
-### leaflet w RasterStackBrick ============================================
+  ### leaflet w RasterStackBrick ============================================
 
 leafletRSB <- function(x,
                        map,

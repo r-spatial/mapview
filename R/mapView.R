@@ -214,6 +214,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    homebutton = TRUE,
+                   native.crs = FALSE,
                    ...) {
 
             if (is.null(at)) at <- lattice::do.breaks(
@@ -246,6 +247,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                           verbose = verbose,
                           layer.name = layer.name,
                           homebutton = homebutton,
+                          native.crs = native.crs,
                           ...)
             } else {
               NULL

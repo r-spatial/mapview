@@ -38,7 +38,7 @@
   alpha.regions = 0.8, legend = mapviewGetOption("legend"),
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
   layer.name = deparse(substitute(x, env = parent.frame())),
-  homebutton = TRUE, ...)
+  homebutton = TRUE, native.crs = FALSE, ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -188,6 +188,13 @@ for available options.}
 \item{homebutton}{logical, whether to add a zoom-to-layer button to the map.
 Defaults to TRUE}
 
+\item{native.crs}{logical whether to reproject to web map coordinate
+reference system (web mercator - epsg:3857) or render using native CRS of
+the supplied data (can also be NA). Default is FALSE which will render in
+web mercator. If set to TRUE now background maps will be drawn (but rendering
+may be much quicker as no reprojecting is necessary). Currently only works
+for simple features.}
+
 \item{...}{additional arguments passed on to repective functions.
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
@@ -213,13 +220,6 @@ details.}
 
 \item{label}{a character vector of labels to be shown on mouseover. See
 \code{\link{addControl}} for details.}
-
-\item{native.crs}{logical whether to reproject to web map coordinate
-reference system (web mercator - epsg:3857) or render using native CRS of
-the supplied data (can also be NA). Default is FALSE which will render in
-web mercator. If set to TRUE now background maps will be drawn (but rendering
-may be much quicker as no reprojecting is necessary). Currently only works
-for simple features.}
 
 \item{highlight}{either \code{FALSE}, \code{NULL} or a list of styling
 options for feature highlighting on mouse hover.
