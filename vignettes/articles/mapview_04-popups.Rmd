@@ -14,7 +14,6 @@ vignette: >
 knitr::opts_chunk$set(fig.width = 8.83, mesage = FALSE)
 library(mapview)
 ```
-------
 
 **mapview** provides a few special popup rendering functions. These can be used to generate:
 
@@ -112,3 +111,16 @@ mapview(pnt, map.types = "Esri.WorldImagery",
 <br>
 
 **IMPORTANT NOTICE** for those who want to save maps locally (see chapter `mapview save maps` for details): With the current implementation of `popupImage` (local only) and `popupGraph` we need to save the popup files (graphs, images) in a folder called `popup_graphs` which needs to be located one level above the map widget. Hence, when saving a map locally (with `mapshot` or `saveWisget`) we need to manually copy that folder to on elevel above the destination folder where the map is saved. This should soon be solved but for the time being, in case you don't see any popup images or graphs in your locally saved map, make sure to copy the appropriate folder (which is usually generated in your computers `temp` directory). 
+
+
+------
+
+There's also a hidden function that enables us to include all sorts of things via Iframe (which is used internally when rendering **htmlwidgets** graphs).
+
+But let the Dude show us how this can be used...
+
+```{r mapview popupIrame, echo=TRUE, message=FALSE}
+mapview(pnt, popup = mapview:::popupIframe("https://www.youtube.com/embed/iApz08Bh53w?autoplay=1", width = 300, height = 225))
+```
+
+As with **htmlwidgets** in popups, this may quickly produce html files and hence become rather unresponsive.

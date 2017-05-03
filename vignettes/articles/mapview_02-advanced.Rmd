@@ -14,7 +14,6 @@ vignette: >
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set(fig.width = 8.83, message = FALSE)
 ```
-------
 
 Despite the possibility to quickly plot spatial data, `mapview` has a set of arguments for finer control of the visualization. Depending on the object class, these are:
 

@@ -13,7 +13,6 @@ vignette: >
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set(fig.width = 8.83)
 ```
-------
 
 
 `mapviewOptions` can be used to set several plotting parameters (arguments) globally, meaning that they will be valid for as long as the session is active.

@@ -96,7 +96,7 @@ spatial object(s) on top of the specified base maps.</p>
   <span class='kw'>alpha.regions</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>),
   <span class='kw'>legend.opacity</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>),
   <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='fu'>deparse</span>(<span class='fu'>substitute</span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>parent.frame</span>())),
-  <span class='kw'>homebutton</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+  <span class='kw'>homebutton</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>native.crs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for RasterStackBrick</span>
 <span class='fu'>mapView</span>(<span class='no'>x</span>, <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -304,6 +304,15 @@ for available options.</p></td>
 Defaults to TRUE</p></td>
     </tr>
     <tr>
+      <th>native.crs</th>
+      <td><p>logical whether to reproject to web map coordinate
+reference system (web mercator - epsg:3857) or render using native CRS of
+the supplied data (can also be NA). Default is FALSE which will render in
+web mercator. If set to TRUE now background maps will be drawn (but rendering
+may be much quicker as no reprojecting is necessary). Currently only works
+for simple features.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>additional arguments passed on to repective functions.
 See <code>addRasterImage</code>, <code>addCircles</code>,
@@ -346,15 +355,6 @@ details.</p></td>
       <th>label</th>
       <td><p>a character vector of labels to be shown on mouseover. See
 <code>addControl</code> for details.</p></td>
-    </tr>
-    <tr>
-      <th>native.crs</th>
-      <td><p>logical whether to reproject to web map coordinate
-reference system (web mercator - epsg:3857) or render using native CRS of
-the supplied data (can also be NA). Default is FALSE which will render in
-web mercator. If set to TRUE now background maps will be drawn (but rendering
-may be much quicker as no reprojecting is necessary). Currently only works
-for simple features.</p></td>
     </tr>
     <tr>
       <th>highlight</th>

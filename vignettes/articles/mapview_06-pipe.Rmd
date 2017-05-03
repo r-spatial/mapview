@@ -1,0 +1,125 @@
+---
+title: "6. ceci constitue la fin du pipe"
+output:
+  rmarkdown::html_document:
+    toc: true
+    toc_float: yes
+    theme: united
+vignette: >
+  %\VignetteIndexEntry{6. ceci constitue la fin du pipe}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, echo=FALSE, message=FALSE}
+knitr::opts_chunk$set(fig.width = 8.83, message = FALSE, warning = FALSE)
+library(mapview)
+```
+
+**mapview** can be used in piped expressions using `%>%`, most likely at the very end of it...
+
+Here are just a few examples of piped workflows:
+
+## `plot`ting feature unions
+
+```{r pipe1a}
+library(dplyr)
+library(sf)
+
+franconia %>%
+  st_union %>%
+  plot
+```
+
+<br>
+
+## `mapview`ing feature unions
+
+```{r pipe1b}
+franconia %>%
+  st_union %>%
+  mapview
+```
+
+<br>
+
+## union by district
+
+```{r pipe2}
+franconia %>%
+  group_by(district) %>%
+  summarize %>%
+  mapview(zcol = "district")
+```
+
+<br>
+
+## districts by area
+
+```{r pipe3}
+franconia %>%
+  group_by(district) %>%
+  summarize %>%
+  mutate(area = st_area(.) / 1e6) %>%
+  mapview(zcol = "area")
+```
+
+<br>
+
+## counties by area
+
+```{r pipe4}
+franconia %>%
+  mutate(area = sf::st_area(.)) %>%
+  mapview(zcol = "area", legend = TRUE)
+```
+
+<br>
+
+## breweries colored by district
+
+```{r pipe5}
+breweries %>%
+  st_intersection(franconia) %>%
+  mapview(zcol = "district")
+```
+
+<br>
+
+## number of breweries by county
+
+```{r pipe6}
+franconia %>%
+  mutate(count = lengths(st_contains(., breweries))) %>%
+  mapview(zcol = "count")
+```
+
+<br>
+
+## brewery density by county
+
+```{r pipe7}
+franconia %>%
+  mutate(count = lengths(st_contains(., breweries)),
+         density = count / st_area(.)) %>%
+  mapview(zcol = "density")
+```
+
+<br>
+
+## using `native.crs` for a USA composite map
+
+```{r pipe8a}
+albersusa::usa_composite("laea") %>%
+  mapview(native.crs = TRUE, zcol = "pop_2014", legend = TRUE)
+```
+
+<br>
+
+## without `native.crs`
+
+```{r pipe8b}
+albersusa::usa_composite("laea") %>%
+  mapview(zcol = "pop_2014", legend = TRUE)
+```
+
