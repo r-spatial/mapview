@@ -380,6 +380,10 @@ setMethod('mapView', signature(x = 'sf'),
 
             if (mapviewGetOption("platform") == "leaflet") {
 
+              if (inherits(sf::st_geometry(x), "sfc_GEOMETRY")) {
+                x = split(x, f = sf::st_dimension(sf::st_geometry(x)))
+              }
+
               tmp <- burst(x = x,
                            zcol = zcol,
                            burst = burst,
@@ -752,7 +756,7 @@ setMethod('mapView', signature(x = 'list'),
               m <- Reduce("+", lapply(seq(x), function(i) {
                 if (is.null(popup)) popup <- popupTable(x[[i]])
                 if (inherits(x[[i]], "sf")) {
-                  mapView(x = x[[i]],
+                  mapView(x = sf::st_cast(x[[i]]),
                           layer.name = lyrnms[[i]],
                           zcol = zcol[[i]],
                           color = color[[i]],

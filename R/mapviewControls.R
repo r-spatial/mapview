@@ -137,7 +137,7 @@ getGeometryType <- function(x) {
       inherits(g, "MULTIPOLYGON") |
       inherits(g, "sfc_POLYGON") |
       inherits(g, "sfc_MULTIPOLYGON")) type <- "pl"
-  if (inherits(g, "sfc_GEOMETRY")) type <- getGeometryType(sf::st_cast(g))
+  if (inherits(g, "sfc_GEOMETRY")) type <- "gc"
   return(type)
 }
 

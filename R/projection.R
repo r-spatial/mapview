@@ -29,7 +29,8 @@ checkAdjustProjection <- function(x) {
               "sfc_LINESTRING" = sfCheckAdjustProjection(x),
               "sfc_MULTILINESTRING" = sfCheckAdjustProjection(x),
               "sfc_POLYGON" = sfCheckAdjustProjection(x),
-              "sfc_MULTIPOLYGON" = sfCheckAdjustProjection(x))
+              "sfc_MULTIPOLYGON" = sfCheckAdjustProjection(x),
+              "sfc_GEOMETRY" = sfCheckAdjustProjection(x))
 
   return(x)
 
