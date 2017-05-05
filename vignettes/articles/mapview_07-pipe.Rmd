@@ -1,12 +1,12 @@
 ---
-title: "6. ceci constitue la fin du pipe"
+title: "7. ceci constitue la fin du pipe"
 output:
   rmarkdown::html_document:
     toc: true
     toc_float: yes
     theme: united
 vignette: >
-  %\VignetteIndexEntry{6. ceci constitue la fin du pipe}
+  %\VignetteIndexEntry{7. ceci constitue la fin du pipe}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -33,7 +33,7 @@ addPolygonFeatures <- function(map,
 
 ### addFeatures ===========================================================
 ### this is then the function to be called which internally decides which
-### subfunction to use (to be expanded to basic classes - POINT etc)
+### subfunction to use
 addFeatures <- function(map,
                         data,
                         ...) {

@@ -380,9 +380,9 @@ setMethod('mapView', signature(x = 'sf'),
 
             if (mapviewGetOption("platform") == "leaflet") {
 
-              if (inherits(sf::st_geometry(x), "sfc_GEOMETRY")) {
-                x = split(x, f = sf::st_dimension(sf::st_geometry(x)))
-              }
+              # if (inherits(sf::st_geometry(x), "sfc_GEOMETRY")) {
+              #   x = split(x, f = sf::st_dimension(sf::st_geometry(x)))
+              # }
 
               tmp <- burst(x = x,
                            zcol = zcol,
