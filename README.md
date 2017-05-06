@@ -51,7 +51,7 @@ install.packages("mapview")
 To install the development version install the [devtools](https://cran.r-project.org/package=devtools) package.
 
 ```S
-devtools::install_github("environmentalinformatics-marburg/mapview@develop")
+devtools::install_github("r-spatial/mapview@develop")
 ```
 
 
@@ -65,8 +65,8 @@ mapview(breweries)
 
 will produce a web map visualisation of the breweries data with the following components:
 
-![](https://raw.githubusercontent.com/environmentalinformatics-marburg/mapview/develop/docs/basic_small.png)
+![](https://raw.githubusercontent.com/r-spatial/mapview/develop/docs/basic_small.png)
 
 ## Contact ##
 
-Please file bug reports and feature requests at https://github.com/environmentalinformatics-marburg/mapview/issues
+Please file bug reports and feature requests at https://github.com/r-spatial/mapview/issues
