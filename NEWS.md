@@ -27,6 +27,7 @@ changes:
   * MAJOR internal change: All vector data are now processed as sf objects internally. This also means that objects returned in slot `@object` will be of class sf (regardless of input class).
   * polygons and points now have a darkish gray line frame (unless add*LargeFeatures is used - where the overhead of passing two sets of colors would be too high).
   * updated examples (in line with new data).
+  * github repository moved from https://github.com/environmentalinformatics-marburg/mapview to https://github.com/r-spatial/mapview
 
 ## mapview 1.2.0
 
