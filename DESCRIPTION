@@ -18,8 +18,8 @@ Authors@R: c(
 Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
 Description: Methods to view spatial objects interactively.
 License: GPL (>= 3) | file LICENSE
-URL: https://github.com/environmentalinformatics-marburg/mapview
-BugReports: https://github.com/environmentalinformatics-marburg/mapview/issues
+URL: https://github.com/r-spatial/mapview
+BugReports: https://github.com/r-spatial/mapview/issues
 LazyData: TRUE
 Depends:
     R (>= 2.10),

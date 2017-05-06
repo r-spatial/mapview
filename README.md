@@ -1,6 +1,6 @@
 # mapview #
 
-[![Travis-CI Build Status](https://travis-ci.org/environmentalinformatics-marburg/mapview.svg?branch=develop)](https://travis-ci.org/environmentalinformatics-marburg/mapview)
+[![Travis-CI Build Status](https://travis-ci.org/r-spatial/mapview.svg?branch=develop)](https://travis-ci.org/r-spatial/mapview)
 [![monthly](http://cranlogs.r-pkg.org/badges/mapview)](https://www.rpackages.io/package/mapview) 
 [![total](http://cranlogs.r-pkg.org/badges/grand-total/mapview)](https://www.rpackages.io/package/mapview)
 [![CRAN](http://www.r-pkg.org/badges/version/mapview?color=009999)](https://cran.r-project.org/package=mapview)
