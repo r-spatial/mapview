@@ -103,16 +103,16 @@ setMethod("coords2JSON",
           function(x, xy = c(1, 2)) {
 
             ## convert to 'character'
-            if (class(x[1, ]) != "character") {
-               #x <- sprintf("%s",x)
-               class(x) <- "character" #apply(x, 2, "as.character")
-
-            }
+            # if (class(x[1, ]) != "character") {
+            #    #x <- sprintf("%s",x)
+            #    class(x) <- "character" #apply(x, 2, "as.character")
+            #
+            # }
 
             ## round to 7 decimal places
             rndFn <- function(v) round(as.numeric(v), 7)
             x[, xy] <- apply(x[, xy], 2, FUN = "rndFn")
-            class(x[, xy]) <- "character" #function(i) {
+            #class(x[, xy]) <- "character" #function(i) {
               #as.character(round(as.numeric(i), 7))
             #})
 

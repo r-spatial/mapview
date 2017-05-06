@@ -3,8 +3,8 @@
 \docType{methods}
 \name{coords2Polygons}
 \alias{coords2Polygons}
-\alias{coords2Polygons,Polygon-method}
 \alias{coords2Polygons,matrix-method}
+\alias{coords2Polygons,Polygon-method}
 \title{Convert points to SpatialPolygons*}
 \usage{
 \S4method{coords2Polygons}{matrix}(coords, hole = NA, ID, data,
@@ -55,4 +55,3 @@ plot(spy2, col = "grey25", add = TRUE)
 \seealso{
 \code{\link{SpatialPolygons-class}}, \code{\link{SpatialPolygonsDataFrame}}.
 }
-

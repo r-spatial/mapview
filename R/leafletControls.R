@@ -71,10 +71,11 @@ updateLayerControlNames <- function(map1, map2) {
 
 # Identify layers to be hidden from initial map rendering -----------------
 
-layers2bHidden <- function(map) {
+layers2bHidden <- function(map, hide = FALSE, ...) {
 
   nms <- getLayerNamesFromMap(map)
-  nms[-c(1)]
+
+  if (hide) nms[-c(1)] else NULL
 
 }
 
@@ -142,11 +143,7 @@ removeDuplicatedMapCalls <- function(map) {
 
 
 
-wmcrs <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs"
-llcrs <- "+proj=longlat +datum=WGS84 +no_defs"
 
-
-# Check size of out <- methods::new('mapview', object = out_obj, map = m)out <- methods::new('mapview', object = out_obj, map = m)out <- methods::new('mapview', object = out_obj, map = m)* objects for mapView -------------------------------
 
 rasterCheckSize <- function(x, maxpixels) {
   if (maxpixels < raster::ncell(x)) {
@@ -161,34 +158,6 @@ rasterCheckSize <- function(x, maxpixels) {
 
 
 
-# Project Raster* objects for mapView -------------------------------------
-
-rasterCheckAdjustProjection <- function(x) {
-
-  is.fact <- raster::is.factor(x)[1]
-
-  non_proj_waning <-
-    paste("supplied", class(x)[1], "has no projection information!", "\n",
-          "scaling coordinates and showing layer without background map")
-
-  if (is.na(raster::projection(x))) {
-    warning(non_proj_waning)
-    raster::extent(x) <- scaleExtent(x)
-    raster::projection(x) <- llcrs
-  } else if (is.fact) {
-    x <- raster::projectRaster(
-      x, raster::projectExtent(x, crs = sp::CRS(wmcrs)),
-      method = "ngb")
-    x <- raster::as.factor(x)
-  } else {
-    x <- raster::projectRaster(
-      x, raster::projectExtent(x, crs = sp::CRS(wmcrs)),
-      method = "bilinear")
-  }
-
-  return(x)
-
-}
 
 
 # Initialise mapView base maps --------------------------------------------
@@ -199,7 +168,13 @@ initBaseMaps <- function(map.types) {
   leafletHeight <- mapviewGetOption("leafletHeight")
   leafletWidth <- mapviewGetOption("leafletWidth")
   lid <- 1:length(map.types)
-  m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth)
+  m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth,
+                        options = leaflet::leafletOptions(
+                          minZoom = 1,
+                          maxZoom = 100,
+                          bounceAtZoomLimits = FALSE,
+                          maxBounds = list(list(c(-90, -370)),
+                                           list(c(90, 370)))))
   m <- leaflet::addProviderTiles(m, provider = map.types[1],
                                  layerId = lid[1], group = map.types[1])
   if (length(map.types) > 1) {
@@ -214,7 +189,7 @@ initBaseMaps <- function(map.types) {
 
 # Initialise mapView map --------------------------------------------------
 
-initMap <- function(map, map.types, proj4str) {
+initMap <- function(map, map.types, proj4str, native.crs = FALSE) {
 
   if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
 
@@ -229,8 +204,11 @@ initMap <- function(map, map.types, proj4str) {
   if (missing(proj4str)) proj4str <- NA
   ## create base map using specified map types
   if (is.null(map)) {
-    if (is.na(proj4str)) {
-      m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth)
+    if (is.na(proj4str) | native.crs) {
+      m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth,
+                            options = leaflet::leafletOptions(
+                              minZoom = -1000,
+                              crs = leafletCRS(crsClass = "L.CRS.Simple")))
     } else {
       m <- initBaseMaps(map.types)
     }
@@ -401,94 +379,10 @@ scaleLinesCoordinates <- function(x) {
 }
 
 
-# Check and potentially adjust projection of Spatial* objects -------------
-
-spCheckAdjustProjection <- function(x) {
-
-  non_proj_waning <-
-    paste("supplied", class(x)[1], "has no projection information!", "\n",
-          "scaling coordinates and showing layer without background map")
-
-  if (is.na(raster::projection(x))) {
-    warning(non_proj_waning)
-    if (class(x)[1] %in% c("SpatialPointsDataFrame", "SpatialPoints")) {
-      methods::slot(x, "coords") <- scaleCoordinates(coordinates(x)[, 1],
-                                                     coordinates(x)[, 2])
-    } else if (class(x)[1] %in% c("SpatialPolygonsDataFrame",
-                                  "SpatialPolygons")) {
-      x <- scalePolygonsCoordinates(x)
-    } else if (class(x)[1] %in% c("SpatialLinesDataFrame",
-                                  "SpatialLines")) {
-      x <- scaleLinesCoordinates(x)
-    }
-
-    raster::projection(x) <- llcrs
-
-  } else if (!identical(raster::projection(x), llcrs)) {
-    x <- sp::spTransform(x, CRSobj = llcrs)
-  }
-
-  return(x)
-
-}
-
-# Check projection of objects according to their keywords -------
-
-compareProjCode <- function (x){
-  proj <- datum <- nodefs <- "FALSE"
-  allWGS84<- as.vector(c("+init=epsg:4326", "+proj=longlat", "+datum=WGS84", "+no_defs", "+ellps=WGS84", "+towgs84=0,0,0"))
-
-  for (comp in allWGS84) {
-
-    if (comp %in% x[[1]]) {
-        if (comp == "+init=epsg:4326") {
-          proj <- datum <- nodefs <- "TRUE"
-        }
-        if (comp == "+proj=longlat") {
-         proj<- "TRUE"
-        }
-        if (comp == "+no_defs") {
-        nodefs<-"TRUE"
-        }
-        if (comp == "+datum=WGS84") {
-        datum<-"TRUE"
-        }
-    }
-  }
-  if (proj == "TRUE" & nodefs == "TRUE" &  datum == "TRUE") {
-    x<-llcrs
-  } else {
-    x<- paste(x[[1]], collapse = ' ')
-  }
-  return(x)
-  }
-
-
-# Check and potentially adjust projection of objects to be rendered -------
-
-checkAdjustProjection <- function(x) {
-
-  if (class(x)[1] %in% c("RasterLayer", "RasterStack", "RasterBrick")) {
-    x <- rasterCheckAdjustProjection(x)
-  } else if (class(x)[1] %in% c("SpatialPointsDataFrame",
-                                "SpatialPolygonsDataFrame",
-                                "SpatialLinesDataFrame",
-                                "SpatialPoints",
-                                "SpatialPolygons",
-                                "SpatialLines")) {
-    x <- spCheckAdjustProjection(x)
-  }
-
-  return(x)
-}
-
-
-
-
 
 # Add leaflet control button to map ---------------------------------------
 
-mapViewLayersControl <- function(map, map.types, names) {
+mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
 
   if (!length(getLayerControlEntriesFromMap(map))) {
     bgm <- map.types
@@ -496,13 +390,22 @@ mapViewLayersControl <- function(map, map.types, names) {
     bgm <- map$x$calls[[getLayerControlEntriesFromMap(map)[1]]]$args[[1]]
   }
 
-  m <- leaflet::addLayersControl(map = map,
-                                 position = mapviewGetOption(
-                                   "layers.control.pos"),
-                                 baseGroups = bgm,
-                                 overlayGroups = c(
-                                   getLayerNamesFromMap(map),
-                                   names))
+  if (!native.crs) {
+    m <- leaflet::addLayersControl(map = map,
+                                   position = mapviewGetOption(
+                                     "layers.control.pos"),
+                                   baseGroups = bgm,
+                                   overlayGroups = c(
+                                     getLayerNamesFromMap(map),
+                                     names))
+  } else {
+    m <- leaflet::addLayersControl(map = map,
+                                   position = mapviewGetOption(
+                                     "layers.control.pos"),
+                                   overlayGroups = c(
+                                     getLayerNamesFromMap(map),
+                                     names))
+  }
   return(m)
 
 }
@@ -536,14 +439,14 @@ mapViewLayersControl <- function(map, map.types, names) {
 
 # Set or calculate circle radius ------------------------------------------
 
-circleRadius <- function(x, radius = 8, min.rad = 3, max.rad = 20) {
-
-  if (is.character(radius)) {
-    rad <- scales::rescale(as.numeric(x@data[, radius]),
-                           to = c(min.rad, max.rad))
-  } else rad <- radius
-  return(rad)
-}
+# circleRadius <- function(x, radius = 8, min.rad = 3, max.rad = 20) {
+#
+#   if (is.character(radius)) {
+#     rad <- scales::rescale(as.numeric(x@data[, radius]),
+#                            to = c(min.rad, max.rad))
+#   } else rad <- radius
+#   return(rad)
+# }
 
 
 

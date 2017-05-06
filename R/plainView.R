@@ -15,7 +15,8 @@ if ( !isGeneric('plainView') ) {
 #' @param col.regions color (palette).See \code{\link{levelplot}} for details.
 #' @param at the breakpoints used for the visualisation. See
 #' \code{\link{levelplot}} for details.
-#' @param na.color color for missing values
+#' @param na.color color for missing values.
+#' @param legend logical, whether to draw a legend for the raster layer.
 #' @param verbose should some details be printed during the process
 #' @param layer.name the name of the layer to be shown on the map
 #' @param gdal logical. If TRUE (default) gdalUtils::gdal_translate is used
@@ -46,14 +47,12 @@ if ( !isGeneric('plainView') ) {
 #' }
 #'
 #' @author
-#' Tim Appelhans
-#' @author
 #' Stephan Woellauer
+#' @author
+#' Tim Appelhans
 #'
 #' @examples
 #' \dontrun{
-#' plainView()
-#'
 #' ### raster data ###
 #' library(sp)
 #' library(raster)
@@ -90,6 +89,7 @@ setMethod('plainView', signature(x = 'RasterLayer'),
                    col.regions = mapviewGetOption("raster.palette")(256),
                    at,
                    na.color = mapviewGetOption("na.color"),
+                   legend = TRUE,
                    verbose = mapviewGetOption("verbose"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
@@ -117,8 +117,24 @@ setMethod('plainView', signature(x = 'RasterLayer'),
               png::writePNG(png, fl)
             }
 
+            leg_fl <- NULL
+
+            if (legend) {
+              rng <- range(x[], na.rm = TRUE)
+              if (missing(at)) at <- lattice::do.breaks(rng, 256)
+              leg_fl <- paste0(dir, "/legend", ".png")
+              png(leg_fl, height = 200, width = 80, units = "px",
+                  bg = "transparent", pointsize = 14, antialias = "none")
+              rasterLegend(col = col.regions,
+                           at = at,
+                           height = 0.9,
+                           space = "right")
+              dev.off()
+            }
+
             plainViewInternal(filename = fl,
                               imgnm = layer.name,
+                              leg_fl = leg_fl,
                               crs = raster::projection(x),
                               dims = c(raster::nrow(x),
                                        raster::ncol(x),
@@ -227,19 +243,29 @@ setMethod('plainView', signature(x = 'RasterLayer'),
 # #'
 # #' @export
 
-plainViewInternal <- function(filename, imgnm, crs, dims) {
+plainViewInternal <- function(filename, imgnm, crs, dims, leg_fl = NULL) {
 
   x <- list(imgnm = imgnm,
             crs = crs,
-            dims = dims)
+            dims = dims,
+            legend = !is.null(leg_fl))
 
   image_dir <- dirname(filename)
   image_file <- basename(filename)
 
+  attachments <- list(image_file)
+
+  if(!is.null(leg_fl)) {
+    legend_dir <- dirname(leg_fl)  #same as image_dir  not checked
+    legend_file <- basename(leg_fl)
+    attachments <- c(attachments, legend_file)
+  }
+
   dep1 <- htmltools::htmlDependency(name = "image",
                                     version = "1",
                                     src = c(file = image_dir),
-                                    attachment = list(image_file))
+                                    attachment = attachments)
+
   deps <- list(dep1)
 
   sizing <- htmlwidgets::sizingPolicy(padding = 0, browser.fill = TRUE)
@@ -303,7 +329,10 @@ setMethod('plainView', signature(x = 'RasterStackBrick'),
             layer.name <- paste0(layer.name, "_", r, ".", g, ".", b)
             plainViewInternal(filename = fl,
                               imgnm = layer.name,
-                              crs = raster::projection(x))
+                              crs = raster::projection(x),
+                              dims = c(raster::nrow(x),
+                                       raster::ncol(x),
+                                       raster::ncell(x)))
 
           }
 

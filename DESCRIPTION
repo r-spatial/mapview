@@ -1,10 +1,10 @@
 Package: mapview
 Type: Package
 Title: Interactive Viewing of Spatial Objects in R
-Version: 1.2.0
-Date: 2016-09-18
+Version: 2.0.0
+Date: 2017-05-06
 Authors@R: c(
-      person("Tim", "Appelhans", email = "admin@environmentalinformatics-marburg.de", role = c("cre", "aut")),
+      person("Tim", "Appelhans", email = "tim.appelhans@gmail.com", role = c("cre", "aut")),
       person("Florian", "Detsch", email = "florian.detsch@staff.uni-marburg.de", role = c("aut")),
       person("Christoph", "Reudenbach", email = "reudenbach@geo.uni-marburg.de", role = c("aut")),
       person("Stefan", "Woellauer", email = "stephan.woellauer@geo.uni-marburg.de", role = c("aut")),
@@ -12,16 +12,17 @@ Authors@R: c(
       person("Thomas", "Nauss", email = "nauss@staff.uni-marburg.de", role = c("ctb")),
       person("Edzer", "Pebesma", role = c("ctb")),
       person("Kenton", "Russell", role = c("ctb")),
+      person("Michael", "Sumner", role = c("ctb")),
       person("Environmental Informatics Marburg", role = c("ctb"))
     )
-Maintainer: Tim Appelhans <admin@environmentalinformatics-marburg.de>
+Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
 Description: Methods to view spatial objects interactively.
 License: GPL (>= 3) | file LICENSE
-URL: https://github.com/environmentalinformatics-marburg/mapview
-    http://environmentalinformatics-marburg.github.io/mapview/introduction.html
-BugReports: https://github.com/environmentalinformatics-marburg/mapview/issues
+URL: https://github.com/r-spatial/mapview
+BugReports: https://github.com/r-spatial/mapview/issues
 LazyData: TRUE
 Depends:
+    R (>= 2.10),
     leaflet,
     methods
 Imports:
@@ -35,14 +36,17 @@ Imports:
     png,
     Rcpp (>= 0.11.3),
     lattice,
-    latticeExtra,
-    rgdal,
     gdalUtils,
     data.table,
     webshot,
-    viridisLite
+    viridisLite,
+    sf,
+    base64enc
 LinkingTo: Rcpp
-RoxygenNote: 5.0.1
+VignetteBuilder: knitr
+RoxygenNote: 6.0.1
 SystemRequirements: GNU make
-Suggests: knitr,
-    rmarkdown
+Suggests:
+    knitr,
+    rmarkdown,
+    dplyr

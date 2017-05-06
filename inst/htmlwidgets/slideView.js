@@ -39,6 +39,12 @@ HTMLWidgets.widget({
   renderValue: function(el, x, instance) {
     rootNode = el;
 
+    var filename1 = document.getElementById("image-imager-attachment").href;
+    var filename2 = document.getElementById("image-imagel-attachment").href;
+
+    var legendr_filename = x.legend && document.getElementById("image-legendr-attachment") !== null ? document.getElementById("image-legendr-attachment").href : undefined;
+    var legendl_filename = x.legend && document.getElementById("image-legendl-attachment") !== null ? document.getElementById("image-legendl-attachment").href : undefined;
+
     divInfoSlide = document.createElement("div");
     divInfoSlide.id ="divInfoSlide";
     el.appendChild(divInfoSlide);
@@ -62,6 +68,24 @@ HTMLWidgets.widget({
 
     spanMid.innerHTML = "?";
 
+    if(legendr_filename !== undefined) {
+      var divLegendr = document.createElement("div");
+      divLegendr.id ="divLegendr";
+      el.appendChild(divLegendr);
+    	var legendr_image = new Image();
+    	legendr_image.src = legendr_filename;
+    	divLegendr.appendChild(legendr_image);
+	  }
+
+	  if(legendl_filename !== undefined) {
+      var divLegendl = document.createElement("div");
+      divLegendl.id ="divLegendl";
+      el.appendChild(divLegendl);
+    	var legendl_image = new Image();
+    	legendl_image.src = legendl_filename;
+    	divLegendl.appendChild(legendl_image);
+	  }
+
     divDraw = document.createElement("div");
     divDraw.id ="divDraw";
     divDraw.style.cursor = "col-resize";
@@ -78,10 +102,6 @@ HTMLWidgets.widget({
     canvasBefore = document.createElement("canvas");
     canvasBefore.id = "canvasBefore";
     divBefore.appendChild(canvasBefore);
-
-
-    var filename1 = document.getElementById("image-1-attachment").href;
-    var filename2 = document.getElementById("image-2-attachment").href;
 
     init(filename1, filename2);
   },
@@ -177,17 +197,32 @@ function keydown(e) {
 	  draw();
   }
 
+  if(e.which==13) { // enter key
+    var iw = imageBefore.width;
+    var ih = imageBefore.height;
+    var cw = rootNode.clientWidth;
+    var ch = rootNode.clientHeight;
+    var fw = cw/iw;
+    var fh = ch/ih;
+    scale = 1;
+    var sw = iw*scale;
+    var sh = ih*scale;
+    offsetX = sw<cw?(cw-sw)/scale/2:0;
+    offsetY = sh<ch?(ch-sh)/scale/2:0;
+    draw();
+  }
+
   if(e.which==27) { // escape
     init_image();
   }
 
-  if(e.which==13) { // enter key
+/*  if(e.which==13) { // enter key
     offsetX = 0;
     offsetY = 0;
     scale = 1;
     draw();
   }
-
+*/
   if(e.which==17) { // control key
     speed=speed==1?10:1;
   }

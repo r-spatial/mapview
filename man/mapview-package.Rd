@@ -21,4 +21,3 @@ Environmental Informatics Marburg \cr
 \emph{Maintainer:} Tim Appelhans \email{admin@environmentalinformatics-marburg.de}
 }
 \keyword{package}
-

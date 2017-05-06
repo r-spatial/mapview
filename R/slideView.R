@@ -18,6 +18,8 @@ if ( !isGeneric('slideView') ) {
 #'
 #' @param img1 a RasterStack/Brick, RasterLayer or path to a .png file
 #' @param img2 a RasterStack/Brick, RasterLayer or path to a .png file
+#' @param label1 slider label for img1 (defaults to object name)
+#' @param label2 slider label for img2 (defaults to object name)
 #' @param r integer. Index of the Red channel, between 1 and nlayers(x)
 #' @param g integer. Index of the Green channel, between 1 and nlayers(x)
 #' @param b integer. Index of the Blue channel, between 1 and nlayers(x)
@@ -25,7 +27,17 @@ if ( !isGeneric('slideView') ) {
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color the color palette to be used for visualising RasterLayers
 #' @param na.color the color to be used for NA pixels
+#' @param legend logical. Whether to plot a legend.
 #' @param ... additional arguments passed on to repective functions.
+#'
+#' @details
+#' For slideView there are a few keyboard shortcuts defined:
+#' \itemize{
+#'   \item space - toggle antialiasing
+#'   \item esc - zoom to layer extent
+#'   \item enter - set zoom to 1
+#'   \item ctrl - increase panning speed by 10
+#' }
 #'
 #' @author
 #' Tim Appelhans
@@ -34,10 +46,7 @@ if ( !isGeneric('slideView') ) {
 #'
 #' @examples
 #' ### raster data ###
-#' library(sp)
 #' library(raster)
-#'
-#' data(poppendorf)
 #'
 #' stck1 <- subset(poppendorf, c(3, 4, 5))
 #' stck2 <- subset(poppendorf, c(2, 3, 4))
@@ -73,7 +82,7 @@ if ( !isGeneric('slideView') ) {
 #'
 #' img2013 <- brick(rst_red2013, rst_green2013, rst_blue2013)
 #'
-#' slideView(img2000, img2013)
+#' slideView(img2000, img2013, label1 = "before", label2 = "after")
 #' }
 #'
 #' @export
@@ -84,7 +93,13 @@ if ( !isGeneric('slideView') ) {
 
 setMethod("slideView", signature(img1 = "RasterStackBrick",
                                  img2 = "RasterStackBrick"),
-          function(img1, img2, r = 3, g = 2, b = 1,
+          function(img1,
+                   img2,
+                   label1 = deparse(substitute(img1, env = parent.frame())),
+                   label2 = deparse(substitute(img2, env = parent.frame())),
+                   r = 3,
+                   g = 2,
+                   b = 1,
                    na.color = mapviewGetOption("na.color"),
                    maxpixels = mapviewGetOption("plainview.maxpixels"),
                    ...) {
@@ -108,12 +123,9 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
-            img1nm <- deparse(substitute(img1, env = parent.frame()))
-            img2nm <- deparse(substitute(img2, env = parent.frame()))
-
             slideViewInternal(list(a="a", b="b"),
-                              img1nm = img1nm,
-                              img2nm = img2nm,
+                              img1nm = label1,
+                              img2nm = label2,
                               filename1 = fl1,
                               filename2 = fl2)
           }
@@ -129,6 +141,9 @@ setMethod("slideView", signature(img1 = "RasterLayer",
                                  img2 = "RasterLayer"),
           function(img1,
                    img2,
+                   label1 = deparse(substitute(img1, env = parent.frame())),
+                   label2 = deparse(substitute(img2, env = parent.frame())),
+                   legend = TRUE,
                    col.regions = mapviewGetOption("raster.palette")(256),
                    na.color = mapviewGetOption("na.color"),
                    maxpixels = mapviewGetOption("plainview.maxpixels")) {
@@ -150,14 +165,178 @@ setMethod("slideView", signature(img1 = "RasterLayer",
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
-            img1nm <- deparse(substitute(img1, env = parent.frame()))
-            img2nm <- deparse(substitute(img2, env = parent.frame()))
+            leg_flr <- NULL
+            leg_fll <- NULL
+
+            # legend <- TRUE # !! testing !!
+            if (legend) {
+              ## legend one (right)
+              rngr <- range(img1[], na.rm = TRUE)
+              # if (missing(at)) at <- lattice::do.breaks(rng, 256)
+              atr <- lattice::do.breaks(rngr, 256)
+              leg_flr <- paste0(dir, "/legendr", ".png")
+              png(leg_flr, height = 200, width = 80, units = "px",
+                  bg = "transparent", pointsize = 14, antialias = "none")
+              rasterLegend(col = col.regions,
+                           at = atr,
+                           height = 0.9,
+                           space = "right")
+              dev.off()
+
+              ## legend two (left)
+              rngl <- range(img2[], na.rm = TRUE)
+              # if (missing(at)) at <- lattice::do.breaks(rng, 256)
+              atl <- lattice::do.breaks(rngl, 256)
+              leg_fll <- paste0(dir, "/legendl", ".png")
+              png(leg_fll, height = 200, width = 80, units = "px",
+                  bg = "transparent", pointsize = 14)
+              rasterLegend(col = col.regions,
+                           at = atl,
+                           height = 0.9,
+                           space = "left")
+              dev.off()
+            }
 
             slideViewInternal(list(a="a", b="b"),
-                              img1nm = img1nm,
-                              img2nm = img2nm,
+                              img1nm = label1,
+                              img2nm = label2,
                               filename1 = fl1,
-                              filename2 = fl2)
+                              filename2 = fl2,
+                              leg_flr = leg_flr,
+                              leg_fll = leg_fll)
+          }
+
+)
+
+## RasterStackBrick, RasterLayer ===========================================================
+#' @describeIn slideView for RasterStackBrick, RasterLayer
+#'
+setMethod("slideView", signature(img1 = "RasterStackBrick",
+                                 img2 = "RasterLayer"),
+          function(img1,
+                   img2,
+                   label1 = deparse(substitute(img1, env = parent.frame())),
+                   label2 = deparse(substitute(img2, env = parent.frame())),
+                   legend = TRUE,
+                   r = 3,
+                   g = 2,
+                   b = 1,
+                   col.regions = mapviewGetOption("raster.palette")(256),
+                   na.color = mapviewGetOption("na.color"),
+                   maxpixels = mapviewGetOption("plainview.maxpixels"),
+                   ...) {
+
+            png1 <- rgbStack2PNG(img1, r = r, g = g, b = b,
+                                 na.color = na.color,
+                                 maxpixels = maxpixels,
+                                 ...)
+            png2 <- raster2PNG(img2, col.regions = col.regions,
+                               na.color = na.color,
+                               maxpixels = maxpixels)
+
+            ## temp dir
+            dir <- tempfile()
+            dir.create(dir)
+            fl1 <- paste0(dir, "/img1", ".png")
+            fl2 <- paste0(dir, "/img2", ".png")
+
+            ## pngs
+            png::writePNG(png1, fl1)
+            png::writePNG(png2, fl2)
+
+            leg_flr <- NULL
+            leg_fll <- NULL
+
+            if (legend) {
+              ## legend two (left)
+              rngl <- range(img2[], na.rm = TRUE)
+              # if (missing(at)) at <- lattice::do.breaks(rng, 256)
+              atl <- lattice::do.breaks(rngl, 256)
+              leg_fll <- paste0(dir, "/legendl", ".png")
+              png(leg_fll, height = 200, width = 80, units = "px",
+                  bg = "transparent", pointsize = 14, antialias = "none")
+              rasterLegend(col = col.regions,
+                           at = atl,
+                           height = 0.9,
+                           space = "left")
+              dev.off()
+            }
+
+            slideViewInternal(list(a="a", b="b"),
+                              img1nm = label1,
+                              img2nm = label2,
+                              filename1 = fl1,
+                              filename2 = fl2,
+                              leg_flr = leg_flr,
+                              leg_fll = leg_fll)
+          }
+
+)
+
+
+
+## RasterLayer, RasterStackBrick ===========================================================
+#' @describeIn slideView for RasterLayer, RasterStackBrick
+#'
+setMethod("slideView", signature(img1 = "RasterLayer",
+                                 img2 = "RasterStackBrick"),
+          function(img1,
+                   img2,
+                   label1 = deparse(substitute(img1, env = parent.frame())),
+                   label2 = deparse(substitute(img2, env = parent.frame())),
+                   legend = TRUE,
+                   r = 3,
+                   g = 2,
+                   b = 1,
+                   col.regions = mapviewGetOption("raster.palette")(256),
+                   na.color = mapviewGetOption("na.color"),
+                   maxpixels = mapviewGetOption("plainview.maxpixels"),
+                   ...) {
+
+            png1 <- raster2PNG(img1, col.regions = col.regions,
+                               na.color = na.color,
+                               maxpixels = maxpixels)
+
+            png2 <- rgbStack2PNG(img2, r = r, g = g, b = b,
+                                 na.color = na.color,
+                                 maxpixels = maxpixels,
+                                 ...)
+
+            ## temp dir
+            dir <- tempfile()
+            dir.create(dir)
+            fl1 <- paste0(dir, "/img1", ".png")
+            fl2 <- paste0(dir, "/img2", ".png")
+
+            ## pngs
+            png::writePNG(png1, fl1)
+            png::writePNG(png2, fl2)
+
+            leg_flr <- NULL
+            leg_fll <- NULL
+
+            if (legend) {
+              ## legend one (right)
+              rngr <- range(img1[], na.rm = TRUE)
+              # if (missing(at)) at <- lattice::do.breaks(rng, 256)
+              atr <- lattice::do.breaks(rngr, 256)
+              leg_flr <- paste0(dir, "/legendr", ".png")
+              png(leg_flr, height = 200, width = 80, units = "px",
+                  bg = "transparent", pointsize = 14, antialias = "none")
+              rasterLegend(col = col.regions,
+                           at = atr,
+                           height = 0.9,
+                           space = "right")
+              dev.off()
+            }
+
+            slideViewInternal(list(a="a", b="b"),
+                              img1nm = label1,
+                              img2nm = label2,
+                              filename1 = fl1,
+                              filename2 = fl2,
+                              leg_flr = leg_flr,
+                              leg_fll = leg_fll)
           }
 
 )
@@ -168,7 +347,9 @@ setMethod("slideView", signature(img1 = "RasterLayer",
 
 setMethod("slideView", signature(img1 = "character",
                                  img2 = "character"),
-          function(img1, img2) {
+          function(img1, img2,
+                   label1 = deparse(substitute(img1, env = parent.frame())),
+                   label2 = deparse(substitute(img2, env = parent.frame()))) {
 
             png1 <- png::readPNG(img1)
             png2 <- png::readPNG(img2)
@@ -183,12 +364,9 @@ setMethod("slideView", signature(img1 = "character",
             png::writePNG(png1, fl1)
             png::writePNG(png2, fl2)
 
-            img1nm <- deparse(substitute(img1, env = parent.frame()))
-            img2nm <- deparse(substitute(img2, env = parent.frame()))
-
             slideViewInternal(list(a="a", b="b"),
-                              img1nm = img1nm,
-                              img2nm = img2nm,
+                              img1nm = label1,
+                              img2nm = label2,
                               filename1 = fl1,
                               filename2 = fl2)
           }
@@ -204,13 +382,16 @@ slideViewInternal <- function(message,
                               width = NULL,
                               height = NULL,
                               filename1 = NULL,
-                              filename2 = NULL) {
+                              filename2 = NULL,
+                              leg_flr = NULL,
+                              leg_fll = NULL) {
 
   # forward options using x
   x <- list(
     message = message,
     img1 = img1nm,
-    img2 = img2nm
+    img2 = img2nm,
+    legend = (!is.null(leg_flr)) || (!is.null(leg_fll))
   )
 
   #filename1 and filename2 need to have same directory!
@@ -219,11 +400,24 @@ slideViewInternal <- function(message,
   image_file1 <- basename(filename1)
   image_file2 <- basename(filename2)
 
+  attachments = list(imager = image_file1, imagel = image_file2)
+
+  if( !is.null(leg_flr) ) {
+    legendr_dir <- dirname(leg_flr)  #same as image_dir  not checked
+    legendr_file <- basename(leg_flr)
+    attachments <- c(attachments, legendr = legendr_file)
+  }
+
+  if( !is.null(leg_fll) ) {
+    legendl_dir <- dirname(leg_fll)  #same as image_dir  not checked
+    legendl_file <- basename(leg_fll)
+    attachments <- c(attachments, legendl = legendl_file)
+  }
+
   dep1 <- htmltools::htmlDependency(name = "image",
                                     version = "1",
                                     src = c(file = image_dir),
-                                    attachment = list(image_file1,
-                                                      image_file2))
+                                    attachment = attachments)
   deps <- list(dep1)
 
   sizing <- htmlwidgets::sizingPolicy(padding = 0, browser.fill = TRUE)

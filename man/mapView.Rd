@@ -6,17 +6,28 @@
 \alias{mapView,RasterLayer-method}
 \alias{mapView,RasterStackBrick-method}
 \alias{mapView,Satellite-method}
-\alias{mapView,SpatialGridDataFrame-method}
-\alias{mapView,SpatialLines-method}
-\alias{mapView,SpatialLinesDataFrame-method}
-\alias{mapView,SpatialPixelsDataFrame-method}
-\alias{mapView,SpatialPoints-method}
-\alias{mapView,SpatialPointsDataFrame-method}
-\alias{mapView,SpatialPolygons-method}
-\alias{mapView,SpatialPolygonsDataFrame-method}
+\alias{mapView,sf-method}
+\alias{mapView,sfc-method}
+\alias{mapView,XY-method}
+\alias{mapView,sfc_POINT-method}
+\alias{mapView,sfc_MULTIPOINT-method}
+\alias{mapView,sfc_LINESTRING-method}
+\alias{mapView,sfc_MULTILINESTRING-method}
+\alias{mapView,sfc_POLYGON-method}
+\alias{mapView,sfc_MULTIPOLYGON-method}
+\alias{mapView,sfc_GEOMETRY-method}
 \alias{mapView,missing-method}
-\alias{mapview}
+\alias{mapView,list-method}
 \alias{mapview,ANY-method}
+\alias{mapview}
+\alias{mapView,SpatialPixelsDataFrame-method}
+\alias{mapView,SpatialGridDataFrame-method}
+\alias{mapView,SpatialPointsDataFrame-method}
+\alias{mapView,SpatialPoints-method}
+\alias{mapView,SpatialPolygonsDataFrame-method}
+\alias{mapView,SpatialPolygons-method}
+\alias{mapView,SpatialLinesDataFrame-method}
+\alias{mapView,SpatialLines-method}
 \title{View spatial objects interactively}
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL,
@@ -27,7 +38,7 @@
   alpha.regions = 0.8, legend = mapviewGetOption("legend"),
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
   layer.name = deparse(substitute(x, env = parent.frame())),
-  homebutton = TRUE, ...)
+  homebutton = TRUE, native.crs = FALSE, ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -45,72 +56,100 @@
   legend = mapviewGetOption("legend"), legend.opacity = 1, trim = TRUE,
   verbose = mapviewGetOption("verbose"), homebutton = TRUE, ...)
 
+\S4method{mapView}{sf}(x, map = NULL, zcol = NULL, burst = FALSE,
+  color = mapviewGetOption("vector.palette"),
+  col.regions = mapviewGetOption("vector.palette"), at = NULL,
+  na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
+  alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
+  verbose = mapviewGetOption("verbose"), popup = popupTable(x),
+  layer.name = deparse(substitute(x, env = parent.frame())),
+  label = makeLabels(x, zcol), legend = mapviewGetOption("legend"),
+  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
+  highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+  maxpoints = getMaxFeatures(x), ...)
+
+\S4method{mapView}{sfc}(x, map = NULL, color = standardColor(x),
+  col.regions = standardColRegions(x), at = NULL,
+  na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
+  alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
+  verbose = mapviewGetOption("verbose"), popup = NULL,
+  layer.name = deparse(substitute(x, env = parent.frame(2))),
+  label = makeLabels(x), legend = mapviewGetOption("legend"),
+  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
+  highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+  maxpoints = getMaxFeatures(x), ...)
+
+\S4method{mapView}{XY}(x, map = NULL, color = standardColor(x),
+  col.regions = standardColRegions(x), at = NULL,
+  na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
+  alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
+  verbose = mapviewGetOption("verbose"), popup = NULL,
+  layer.name = deparse(substitute(x, env = parent.frame(1))),
+  label = makeLabels(x), legend = mapviewGetOption("legend"),
+  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
+  highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+  maxpoints = getMaxFeatures(x), ...)
+
+\S4method{mapView}{sfc_POINT}(x, ...)
+
+\S4method{mapView}{sfc_MULTIPOINT}(x, ...)
+
+\S4method{mapView}{sfc_LINESTRING}(x, ...)
+
+\S4method{mapView}{sfc_MULTILINESTRING}(x, ...)
+
+\S4method{mapView}{sfc_POLYGON}(x, ...)
+
+\S4method{mapView}{sfc_MULTIPOLYGON}(x, ...)
+
+\S4method{mapView}{sfc_GEOMETRY}(x, ...)
+
+\S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"), ...)
+
+\S4method{mapView}{list}(x, map = NULL, zcol = NULL,
+  color = mapviewGetOption("vector.palette"),
+  col.regions = mapviewGetOption("vector.palette"), at = NULL,
+  na.color = mapviewGetOption("na.color"), cex = 6, lwd = lapply(x,
+  lineWidth), alpha = 1, alpha.regions = 0.6,
+  map.types = mapviewGetOption("basemaps"),
+  verbose = mapviewGetOption("verbose"), popup = lapply(seq(x), function(i)
+  {     popupTable(x[[i]]) }), layer.name = deparse(substitute(x, env =
+  parent.frame())), label = lapply(seq(x), function(i) {    
+  makeLabels(x[[i]], zcol = zcol[[i]]) }),
+  legend = mapviewGetOption("legend"), legend.opacity = 1,
+  homebutton = TRUE, native.crs = FALSE, highlight = lapply(seq(x),
+  function(i) {     mapviewHighlightOptions(x[[i]], alpha.regions =
+  alpha.regions, lwd = lwd[[i]]) }), maxpoints = NULL, ...)
+
+\S4method{mapview}{ANY}(...)
+
 \S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL,
   na.color = mapviewGetOption("na.color"),
   legend = mapviewGetOption("legend"), ...)
 
 \S4method{mapView}{SpatialGridDataFrame}(x, zcol = NULL, ...)
 
-\S4method{mapView}{SpatialPointsDataFrame}(x, map = NULL,
-  map.types = mapviewGetOption("basemaps"), zcol = NULL, burst = FALSE,
-  color = mapviewGetOption("vector.palette"), alpha = 0.8,
-  col.regions = color, alpha.regions = 0.2,
-  na.color = mapviewGetOption("na.color"), at = NULL, cex = 8, lwd = 4,
-  popup = popupTable(x), label, legend = mapviewGetOption("legend"),
-  legend.opacity = 1, layer.name = deparse(substitute(x, env =
-  parent.frame())), verbose = mapviewGetOption("verbose"),
-  homebutton = TRUE, ...)
+\S4method{mapView}{SpatialPointsDataFrame}(x,
+  layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
-\S4method{mapView}{SpatialPoints}(x, map = NULL, zcol = NULL,
-  color = mapviewGetOption("vector.palette")(1),
-  na.color = mapviewGetOption("na.color"), cex = 8, lwd = 4,
-  alpha = 0.9, alpha.regions = 0.4,
-  map.types = mapviewGetOption("basemaps"),
-  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), label, homebutton = TRUE, ...)
+\S4method{mapView}{SpatialPoints}(x, layer.name = deparse(substitute(x, env =
+  parent.frame())), ...)
 
-\S4method{mapView}{SpatialPolygonsDataFrame}(x, map = NULL,
-  map.types = mapviewGetOption("basemaps"), zcol = NULL, burst = FALSE,
-  color = mapviewGetOption("vector.palette"), alpha = 0.8,
-  col.regions = color, alpha.regions = 0.2,
-  na.color = mapviewGetOption("na.color"), at = NULL, cex = 8, lwd = 2,
-  popup = popupTable(x), label, legend = mapviewGetOption("legend"),
-  legend.opacity = 1, layer.name = deparse(substitute(x, env =
-  parent.frame())), verbose = mapviewGetOption("verbose"),
-  homebutton = TRUE, ...)
+\S4method{mapView}{SpatialPolygonsDataFrame}(x,
+  layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
-\S4method{mapView}{SpatialPolygons}(x, map = NULL,
-  color = mapviewGetOption("vector.palette")(1),
-  na.color = mapviewGetOption("na.color"),
-  map.types = mapviewGetOption("basemaps"), lwd = 2, alpha = 0.8,
-  alpha.regions = 0.2, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())), label,
-  homebutton = TRUE, ...)
+\S4method{mapView}{SpatialPolygons}(x, layer.name = deparse(substitute(x, env
+  = parent.frame())), ...)
 
-\S4method{mapView}{SpatialLinesDataFrame}(x, map = NULL,
-  map.types = mapviewGetOption("basemaps"), zcol = NULL, burst = FALSE,
-  color = mapviewGetOption("vector.palette"), alpha = 0.8,
-  col.regions = color, alpha.regions = 0.2,
-  na.color = mapviewGetOption("na.color"), at = NULL, cex = 8, lwd = 2,
-  popup = popupTable(x), label, legend = mapviewGetOption("legend"),
-  legend.opacity = 1, layer.name = deparse(substitute(x, env =
-  parent.frame())), verbose = mapviewGetOption("verbose"),
-  homebutton = TRUE, ...)
+\S4method{mapView}{SpatialLinesDataFrame}(x,
+  layer.name = deparse(substitute(x, env = parent.frame())), ...)
 
-\S4method{mapView}{SpatialLines}(x, map = NULL, zcol = NULL,
-  color = mapviewGetOption("vector.palette")(1),
-  na.color = mapviewGetOption("na.color"), lwd = 2, alpha = 0.8,
-  map.types = mapviewGetOption("basemaps"),
-  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), label, homebutton = TRUE, ...)
-
-\S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
-  easter.egg = FALSE)
-
-\S4method{mapview}{ANY}(...)
+\S4method{mapView}{SpatialLines}(x, layer.name = deparse(substitute(x, env =
+  parent.frame())), ...)
 }
 \arguments{
-\item{x}{a \code{Raster*} or \code{Spatial*} object.}
+\item{x}{a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
+\code{sf} object or a list of any combination of those.}
 
 \item{map}{an optional existing map to be updated/added to}
 
@@ -149,6 +188,13 @@ for available options.}
 \item{homebutton}{logical, whether to add a zoom-to-layer button to the map.
 Defaults to TRUE}
 
+\item{native.crs}{logical whether to reproject to web map coordinate
+reference system (web mercator - epsg:3857) or render using native CRS of
+the supplied data (can also be NA). Default is FALSE which will render in
+web mercator. If set to TRUE now background maps will be drawn (but rendering
+may be much quicker as no reprojecting is necessary). Currently only works
+for simple features.}
+
 \item{...}{additional arguments passed on to repective functions.
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
@@ -161,12 +207,12 @@ See also Details.}
 
 \item{color}{color (palette) for points/polygons/lines}
 
-\item{alpha}{opacity of the lines or points}
-
 \item{cex}{attribute name(s) or column number(s) in attribute table
 of the column(s) to be used for defining the size of circles}
 
 \item{lwd}{line width}
+
+\item{alpha}{opacity of the lines or points}
 
 \item{popup}{a \code{list} of HTML strings with the popup contents, usually
 created from \code{\link{popupTable}}. See \code{\link{addControl}} for
@@ -175,7 +221,13 @@ details.}
 \item{label}{a character vector of labels to be shown on mouseover. See
 \code{\link{addControl}} for details.}
 
-\item{easter.egg}{well, you might find out if you set this to TRUE}
+\item{highlight}{either \code{FALSE}, \code{NULL} or a list of styling
+options for feature highlighting on mouse hover.
+See \code{\link{highlightOptions}} for details.}
+
+\item{maxpoints}{the maximum number of points making up the geometry.
+In case of lines and polygons this refers to the number of vertices. See
+Details for more information.}
 }
 \description{
 this function produces an interactive view of the specified
@@ -196,12 +248,53 @@ start the browser with the flag \code{-allow-file-access-from-files} (i.e
 for windows: "path_to_your_chrome_installation\\chrome.exe --allow-file-access-from-files",
 for linux: "/usr/bin/google-chrome --allow-access-from-files").
 See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
+
+\code{maxpoints} is taken to determine when to switch rendering from svg
+to canvas overlay for perfomance. The threshold calculation is done as follows: \cr
+if the number of points (in case of point data) or vertices (in case of
+polygon or line data) > \code{maxpoints} then render using special render
+function. Within this render function we approximate the complexity of
+fetures by \cr
+\cr
+\code{maxFeatures <- maxfeatures / (npts(data) / length(data))} \cr
+\cr
+where \code{npts} determines the umber of points/vertices and \code{length}
+the number of features (points, lines or polygons). When the number of
+fetures in the current view window is larger than \code{maxFeatures} then
+features are rendered on the canvas, otherwise they are rendered as svg objects
+and fully queriable.
 }
 \section{Methods (by class)}{
 \itemize{
 \item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{brick}}
 
 \item \code{Satellite}: \code{\link{satellite}}
+
+\item \code{sf}: \code{\link{st_sf}}
+
+\item \code{sfc}: \code{\link{st_sfc}}
+
+\item \code{XY}: \code{\link{st_sfc}}
+
+\item \code{sfc_POINT}: \code{\link{st_sfc}}
+
+\item \code{sfc_MULTIPOINT}: \code{\link{st_sfc}}
+
+\item \code{sfc_LINESTRING}: \code{\link{st_sfc}}
+
+\item \code{sfc_MULTILINESTRING}: \code{\link{st_sfc}}
+
+\item \code{sfc_POLYGON}: \code{\link{st_sfc}}
+
+\item \code{sfc_MULTIPOLYGON}: \code{\link{st_sfc}}
+
+\item \code{sfc_GEOMETRY}: \code{\link{st_sfc}}
+
+\item \code{missing}: initiate a map without an object
+
+\item \code{list}: \code{\link{list}}
+
+\item \code{ANY}: alias for ease of typing
 
 \item \code{SpatialPixelsDataFrame}: \code{\link{SpatialPixelsDataFrame}}
 
@@ -218,77 +311,104 @@ See \url{http://www.chrome-allow-file-access-from-file.com/} for further details
 \item \code{SpatialLinesDataFrame}: \code{\link{SpatialLinesDataFrame}}
 
 \item \code{SpatialLines}: \code{\link{SpatialLines}}
-
-\item \code{missing}: initiate a map without an object
-
-\item \code{ANY}: alias for ease of typing
 }}
+
 \examples{
 \dontrun{
 mapview()
 
-### raster data ###
-library(sp)
-library(raster)
+## simple features ====================================================
+# sf
+mapview(breweries)
+mapview(franconia)
 
-# SpatialPixelsDataFrame
-data(meuse.grid)
-coordinates(meuse.grid) <- ~x+y
-proj4string(meuse.grid) <- CRS("+init=epsg:28992")
-gridded(meuse.grid) <- TRUE
+# sfc
+mapview(st_geometry(breweries)) # no popup
 
-mapView(meuse.grid, zcol = "soil")
+# sfg / XY - taken from ?sf::st_point
+outer = matrix(c(0,0,10,0,10,10,0,10,0,0),ncol=2, byrow=TRUE)
+hole1 = matrix(c(1,1,1,2,2,2,2,1,1,1),ncol=2, byrow=TRUE)
+hole2 = matrix(c(5,5,5,6,6,6,6,5,5,5),ncol=2, byrow=TRUE)
+pts = list(outer, hole1, hole2)
+(pl1 = st_polygon(pts))
+mapview(pl1)
 
-# raster stack
-m1 <- mapview(poppendorf[[5]])
-m1
+## raster ==============================================================
+mapview(poppendorf[[5]])
 
-### point vector data ###
-## SpatialPointsDataFrame ##
-data(meuse)
-coordinates(meuse) <- ~x+y
-proj4string(meuse) <- CRS("+init=epsg:28992")
-
-# all layers of meuse
-mapview(meuse, burst = TRUE)
-
-# only one layer, all info in popups
-mapview(meuse)
-
-# one specific layer
-mapview(meuse, zcol = "soil") # one layer
-mapview(meuse, zcol = "soil", burst = TRUE) # three layers
-mapview(meuse, burst = "soil") # identical to above
-
-## SpatialPoints ##
-meuse_pts <- as(meuse, "SpatialPoints")
-mapview(meuse_pts)
-
-
-
-### overlay vector on top of raster ###
-mapview(meuse.grid, zcol = "ffreq") + meuse
-
-### polygon vector data ###
-data("gadmCHE")
-m <- mapview(gadmCHE)
-m
-
-## points on polygons ##
-centres <- data.frame(coordinates(gadmCHE))
-names(centres) <- c("x", "y")
-coordinates(centres) <- ~ x + y
-projection(centres) <- projection(gadmCHE)
-m + centres
-
-### lines vector data
-data("atlStorms2005")
+## spatial objects =====================================================
+mapview(leaflet::gadmCHE)
 mapview(atlStorms2005)
-mapview(atlStorms2005, burst = TRUE)
+
+
+## styling options & legends ===========================================
+mapview(cantons, color = "white", col.regions = "red")
+mapview(cantons, color = "magenta", col.regions = "white")
+
+mapview(breweries, zcol = "founded")
+mapview(breweries, zcol = "founded", at = seq(1400, 2200, 200), legend = TRUE)
+mapview(cantons, zcol = "NAME_1", legend = TRUE)
+
+library(RColorBrewer)
+clrs <- colorRampPalette(brewer.pal(9, "Blues"))
+mapview(breweries, zcol = "founded", col.regions = clrs, legend = TRUE)
+
+### multiple layers ====================================================
+mapview(franconia) + breweries
+mapview(list(breweries, franconia))
+mapview(breweries) + mapview(franconia) + stormtracks
+
+mapview(franconia, zcol = "district") + mapview(breweries, zcol = "village")
+mapview(list(franconia, breweries),
+        zcol = list("district", NULL),
+        legend = list(TRUE, FALSE))
+
+
+### burst ==============================================================
+mapview(franconia, burst = TRUE)
+mapview(franconia, burst = TRUE, hide = TRUE)
+mapview(franconia, zcol = "district", burst = TRUE)
+
+
+### ceci constitue la fin du pipe ======================================
+library(dplyr)
+library(sf)
+
+franconia \%>\%
+  sf::st_union() \%>\%
+  mapview()
+
+franconia \%>\%
+  group_by(district) \%>\%
+  summarize() \%>\%
+  mapview(zcol = "district")
+
+franconia \%>\%
+  group_by(district) \%>\%
+  summarize() \%>\%
+  mutate(area = st_area(.) / 1e6) \%>\%
+  mapview(zcol = "area")
+
+franconia \%>\%
+  mutate(area = sf::st_area(.)) \%>\%
+  mapview(zcol = "area", legend = TRUE)
+
+breweries \%>\%
+  st_intersection(franconia) \%>\%
+  mapview(zcol = "district")
+
+franconia \%>\%
+  mutate(count = lengths(st_contains(., breweries))) \%>\%
+  mapview(zcol = "count")
+
+franconia \%>\%
+  mutate(count = lengths(st_contains(., breweries)),
+         density = count / st_area(.)) \%>\%
+  mapview(zcol = "density")
+
 }
 
 }
 \author{
 Tim Appelhans
 }
-

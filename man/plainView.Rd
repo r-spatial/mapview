@@ -6,14 +6,14 @@
 \alias{plainView,RasterLayer-method}
 \alias{plainView,RasterStackBrick-method}
 \alias{plainView,SpatialPixelsDataFrame-method}
-\alias{plainview}
 \alias{plainview,ANY-method}
+\alias{plainview}
 \title{View raster objects interactively without background map but in any CRS}
 \usage{
 \S4method{plainView}{RasterLayer}(x,
   maxpixels = mapviewGetOption("plainview.maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at,
-  na.color = mapviewGetOption("na.color"),
+  na.color = mapviewGetOption("na.color"), legend = TRUE,
   verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
   env = parent.frame())), gdal = TRUE, ...)
 
@@ -37,7 +37,9 @@ If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 \item{at}{the breakpoints used for the visualisation. See
 \code{\link{levelplot}} for details.}
 
-\item{na.color}{color for missing values}
+\item{na.color}{color for missing values.}
+
+\item{legend}{logical, whether to draw a legend for the raster layer.}
 
 \item{verbose}{should some details be printed during the process}
 
@@ -92,10 +94,9 @@ For plainView there are a few keyboard shortcuts defined:
 
 \item \code{ANY}: alias for ease of typing
 }}
+
 \examples{
 \dontrun{
-plainView()
-
 ### raster data ###
 library(sp)
 library(raster)
@@ -121,8 +122,7 @@ plainview(poppendorf, 4, 3, 2)
 
 }
 \author{
-Tim Appelhans
-
 Stephan Woellauer
-}
 
+Tim Appelhans
+}

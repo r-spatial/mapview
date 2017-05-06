@@ -6,6 +6,7 @@
 #'
 #' @param map a mapview or leaflet object.
 #' @param img the image to be added to the map.
+#' @param alpha opacity of the added image.
 #' @param src character specifying the source location ("local" for images from
 #' the disk, "remote" for web image sources).
 #' @param url an optional URL to be opened when clicking on the image
@@ -19,7 +20,6 @@
 #' @examples
 #' \dontrun{
 #' ## default position is topleft next to zoom control
-#' library(mapview)
 #'
 #' img <- "https://www.r-project.org/logo/Rlogo.svg"
 #' leaflet() %>% addTiles() %>% addLogo(img, url = "https://www.r-project.org/logo/")
@@ -28,19 +28,18 @@
 #' library(png)
 #'
 #' img <- system.file("img", "Rlogo.png", package="png")
-#' leaflet() %>% addTiles() %>% addLogo(img, src = "local")
+#' leaflet() %>% addTiles() %>% addLogo(img, src = "local", alpha = 0.3)
 #'
 #' ## dancing banana gif :-)
 #' library(magick)
-#'
 #' m <- mapview(breweries91)
 #'
-#' mapview:::addLogo(m, "https://jeroenooms.github.io/images/banana.gif",
-#'                   position = "bottomleft",
-#'                   offset.x = 5,
-#'                   offset.y = 40,
-#'                   width = 100,
-#'                   height = 100)
+#' addLogo(m, "https://jeroenooms.github.io/images/banana.gif",
+#'         position = "bottomleft",
+#'         offset.x = 5,
+#'         offset.y = 40,
+#'         width = 100,
+#'         height = 100)
 #'
 #' }
 #'
@@ -56,6 +55,7 @@
 
 addLogo <- function(map,
                     img,
+                    alpha = 1,
                     src = c("remote", "local"),
                     url,
                     position = c("topleft", "topright",
@@ -124,7 +124,7 @@ addLogo <- function(map,
   div_funk <- paste0("function(el, x, data) {
                  // we need a new div element because we have to handle
                  // the mouseover output seperately
-                 debugger;
+                 // debugger;
                  function addElement () {
                  // generate new div Element
                  var newDiv = $(document.createElement('div'));
@@ -144,20 +144,20 @@ addLogo <- function(map,
   # if (missing(url)) {
   #   div_html <- paste0("logo.html('<img src=", img,
   #                      ", width=", width, "height=", height, "></a>');
-  #                      var map = HTMLWidgets.find('#' + el.id);
+  #                      var map = HTMLWidgets.find('#' + el.id).getMap();
   #                      };
   #                      }")
   # } else {
   #   div_html <- paste0("logo.html('<a href=", url, "><img src=", img,
   #                      ", width=", width, "height=", height, "></a>');
-  #                      var map = HTMLWidgets.find('#' + el.id);
+  #                      var map = HTMLWidgets.find('#' + el.id).getMap();
   #                      };
   #                      }")
   # }
 
   div_html <- switch(src,
-                     remote = remoteImage(img, url, width, height),
-                     local = localImage(img, url, width, height))
+                     remote = remoteImage(img, alpha, url, width, height),
+                     local = localImage(img, alpha, url, width, height))
 
   render_stuff <- paste0(div_funk, div_add, div_html)
 
@@ -168,7 +168,7 @@ addLogo <- function(map,
 
 
 ### local image
-localImage <- function(img, url, width, height) {
+localImage <- function(img, alpha, url, width, height) {
   nm <- basename(img)
   drs <- file.path(tempdir(), "graphs")
   if (!dir.exists(drs)) dir.create(drs)
@@ -176,16 +176,23 @@ localImage <- function(img, url, width, height) {
   invisible(file.copy(img, file.path(drs, nm)))
   rel_path <- paste0('"', file.path("..", basename(drs), basename(img)), '"')
 
+  style <- paste0(', style="opacity:',
+                  alpha,
+                  ';filter:alpha(opacity=',
+                  alpha * 100, ');"')
+
   if (missing(url)) {
     div_html <- paste0("logo.html('<img src=", rel_path,
-                       ", width=", width, ", height=", height, "></a>');
-                       var map = HTMLWidgets.find('#' + el.id);
+                       ", width=", width, ", height=", height, style,
+                       ", ></a>');
+                       var map = HTMLWidgets.find('#' + el.id).getMap();
                        };
                        }")
   } else {
     div_html <- paste0("logo.html('<a href=", url, "><img src=", rel_path,
-                       ", width=", width, ", height=", height, "></a>');
-                       var map = HTMLWidgets.find('#' + el.id);
+                       ", width=", width, ", height=", height, style,
+                       "></a>');
+                       var map = HTMLWidgets.find('#' + el.id).getMap();
                        };
                        }")
   }
@@ -194,20 +201,27 @@ localImage <- function(img, url, width, height) {
 }
 
 ### remote image
-remoteImage <- function(img, url, width, height) {
+remoteImage <- function(img, alpha, url, width, height) {
 
   img <- paste0('"', img, '"')
 
+  style <- paste0(', style="opacity:',
+                  alpha,
+                  ';filter:alpha(opacity=',
+                  alpha * 100, ');"')
+
   if (missing(url)) {
     div_html <- paste0("logo.html('<img src=", img,
-                       ", width=", width, ", height=", height, "></a>');
-                       var map = HTMLWidgets.find('#' + el.id);
+                       ", width=", width, ", height=", height, style,
+                       "></a>');
+                       var map = HTMLWidgets.find('#' + el.id).getMap();
                        };
                        }")
   } else {
     div_html <- paste0("logo.html('<a href=", url, "><img src=", img,
-                       ", width=", width, ", height=", height, "></a>');
-                       var map = HTMLWidgets.find('#' + el.id);
+                       ", width=", width, ", height=", height, style,
+                       "></a>');
+                       var map = HTMLWidgets.find('#' + el.id).getMap();
                        };
                        }")
   }

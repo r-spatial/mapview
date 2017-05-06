@@ -5,12 +5,12 @@ gsubC <- function(pattern, replacement, x) {
     .Call('mapview_gsubC', PACKAGE = 'mapview', pattern, replacement, x)
 }
 
-brewPopupRowC <- function(colname, value) {
-    .Call('mapview_brewPopupRowC', PACKAGE = 'mapview', colname, value)
+brewPopupRowC <- function(index, colname, value) {
+    .Call('mapview_brewPopupRowC', PACKAGE = 'mapview', index, colname, value)
 }
 
-brewPopupRowAltC <- function(colname, value) {
-    .Call('mapview_brewPopupRowAltC', PACKAGE = 'mapview', colname, value)
+brewPopupRowAltC <- function(index, colname, value) {
+    .Call('mapview_brewPopupRowAltC', PACKAGE = 'mapview', index, colname, value)
 }
 
 brewPopupCoords <- function(colname, value) {

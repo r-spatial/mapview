@@ -5,7 +5,8 @@
 \alias{removeHomeButton}
 \title{Add a home button / zoom-to-layer button to a map.}
 \usage{
-addHomeButton(map, ext, layer.name = "layer", position = "bottomright")
+addHomeButton(map, ext, layer.name = "layer", position = "bottomright",
+  add = TRUE)
 
 removeHomeButton(map)
 }
@@ -19,6 +20,8 @@ string)}
 
 \item{position}{the position of the button (one of 'topleft', 'topright',
 'bottomleft', 'bottomright'). Defaults to 'bottomright'.}
+
+\item{add}{logical. Whether to add the button to the map (mainly for internal use).}
 }
 \description{
 This function adds a button to the map that enables zooming to a
@@ -30,9 +33,9 @@ Use removeHomeButton to remove home button
 \itemize{
 \item \code{removeHomeButton}: remove a homeButton from a map
 }}
+
 \examples{
 \dontrun{
-library(mapview)
 library(raster)
 
 m <- leaflet() \%>\% addTiles() \%>\% addCircleMarkers(data = breweries91) \%>\%
@@ -40,12 +43,8 @@ m <- leaflet() \%>\% addTiles() \%>\% addCircleMarkers(data = breweries91) \%>\%
 m
 
 ## remove the button
-m1 <- removeHomeButton(m)
-m1
-
-addHomeButton(m1, extent(breweries91), "anynamewilldoactually", 'topleft')
+removeHomeButton(m)
 }
 
 
 }
-

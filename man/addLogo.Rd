@@ -4,14 +4,16 @@
 \alias{addLogo}
 \title{add a local or remote image (png, jpg, gif, bmp, ...) to a leaflet map}
 \usage{
-addLogo(map, img, src = c("remote", "local"), url, position = c("topleft",
-  "topright", "bottomleft", "bottomright"), offset.x = 50, offset.y = 13,
-  width = 60, height = 60)
+addLogo(map, img, alpha = 1, src = c("remote", "local"), url,
+  position = c("topleft", "topright", "bottomleft", "bottomright"),
+  offset.x = 50, offset.y = 13, width = 60, height = 60)
 }
 \arguments{
 \item{map}{a mapview or leaflet object.}
 
 \item{img}{the image to be added to the map.}
+
+\item{alpha}{opacity of the added image.}
 
 \item{src}{character specifying the source location ("local" for images from
 the disk, "remote" for web image sources).}
@@ -36,7 +38,6 @@ sources are supported. Position on the map is completely controllable.
 \examples{
 \dontrun{
 ## default position is topleft next to zoom control
-library(mapview)
 
 img <- "https://www.r-project.org/logo/Rlogo.svg"
 leaflet() \%>\% addTiles() \%>\% addLogo(img, url = "https://www.r-project.org/logo/")
@@ -45,22 +46,20 @@ leaflet() \%>\% addTiles() \%>\% addLogo(img, url = "https://www.r-project.org/l
 library(png)
 
 img <- system.file("img", "Rlogo.png", package="png")
-leaflet() \%>\% addTiles() \%>\% addLogo(img, src = "local")
+leaflet() \%>\% addTiles() \%>\% addLogo(img, src = "local", alpha = 0.3)
 
 ## dancing banana gif :-)
 library(magick)
-
 m <- mapview(breweries91)
 
-mapview:::addLogo(m, "https://jeroenooms.github.io/images/banana.gif",
-                  position = "bottomleft",
-                  offset.x = 5,
-                  offset.y = 40,
-                  width = 100,
-                  height = 100)
+addLogo(m, "https://jeroenooms.github.io/images/banana.gif",
+        position = "bottomleft",
+        offset.x = 5,
+        offset.y = 40,
+        width = 100,
+        height = 100)
 
 }
 
 
 }
-

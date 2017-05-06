@@ -6,7 +6,8 @@ HTMLWidgets.widget({
   },
 
   renderValue: function(root, json, instance) {
-    init(root, json);
+    var legend_filename = json.legend ? document.getElementById("images-legend-attachment").href : undefined;
+    init(root, json, legend_filename);
   },
 
   resize: function(el, width, height, instance) {
@@ -31,8 +32,10 @@ var x_pos = 0;
 var y_pos = 0;
 var z_pos = 0;
 
-function init(root, json) {
-	hovmoeller = new Hovmoeller(root, json);
+var show_cross_section_lines = true;
+
+function init(root, json, legend_filename) {
+	hovmoeller = new Hovmoeller(root, json, legend_filename);
 }
 
 function iDiv(a,b) {
@@ -65,7 +68,7 @@ function flipY(data) {
   return buffer;
 }
 
-function Hovmoeller(root, json) {
+function Hovmoeller(root, json, legend_filename) {
 	X_SIZE = json.x_size;
   Y_SIZE = json.y_size;
   Z_SIZE = json.z_size;
@@ -111,6 +114,14 @@ function Hovmoeller(root, json) {
 	this.controls.addEventListener('change', function mov() {self.render();});
 
 	root.innerHTML = "";
+	if(legend_filename !== undefined) {
+	  var divLegend = document.createElement("div");
+	  divLegend.id = "divLegend";
+  	var legend_image = new Image();
+  	legend_image.src = legend_filename;
+  	divLegend.appendChild(legend_image);
+  	root.appendChild(divLegend);
+	}
 	root.appendChild(this.renderer.domElement);
 
 	var MAX_SIZE = Math.max(X_SIZE, Y_SIZE, Z_SIZE);
@@ -240,7 +251,7 @@ updateMaterialXY: function () {
 			data[tex_b+1] = dG[b];
 			data[tex_b+2] = dB[b];
 			data[tex_b+3] = 255;
-			if(y==y_pos || x==x_pos) {
+			if(show_cross_section_lines && (y==y_pos || x==x_pos)) {
 				data[tex_b] = ~data[tex_b];
 				data[tex_b+1] = ~data[tex_b+1];
 				data[tex_b+2] = ~data[tex_b+2];
@@ -263,7 +274,7 @@ updateMaterialXZ: function () {
 			data[tex_b+1] = dG[b];
 			data[tex_b+2] = dB[b];
 			data[tex_b+3] = 255;
-			if(z==z_pos || x==x_pos) {
+			if(show_cross_section_lines && (z==z_pos || x==x_pos)) {
 				data[tex_b] = ~data[tex_b];
 				data[tex_b+1] = ~data[tex_b+1];
 				data[tex_b+2] = ~data[tex_b+2];
@@ -286,7 +297,7 @@ updateMaterialZY: function () {
 			data[tex_b+1] = dG[b];
 			data[tex_b+2] = dB[b];
 			data[tex_b+3] = 255;
-			if(z==z_pos || y==y_pos) {
+			if(show_cross_section_lines && (z==z_pos || y==y_pos)) {
 				data[tex_b] = ~data[tex_b];
 				data[tex_b+1] = ~data[tex_b+1];
 				data[tex_b+2] = ~data[tex_b+2];
@@ -328,6 +339,9 @@ onKeyDown: function(e) {
 			y_pos = y_pos===0?0:y_pos-1;
 			e.preventDefault();
 			e.stopPropagation();
+			break;
+		case 32: //SPACE
+		  show_cross_section_lines = !show_cross_section_lines;
 			break;
 		default:
 			//console.log(e.keyCode);

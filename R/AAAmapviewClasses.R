@@ -11,3 +11,12 @@ setClass('mapview',
 NULL
 
 setOldClass("leaflet")
+
+setOldClass(c("POINT", "MULTIPOINT",
+              "POLYGON", "MULTIPOLYGON",
+              "LINESTRING", "MULTILINESTRING"))
+
+setOldClass("XY")
+setOldClass("sf")
+setOldClass("sfc")
+setOldClass("sfg")

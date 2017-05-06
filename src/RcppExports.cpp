@@ -19,26 +19,28 @@ BEGIN_RCPP
 END_RCPP
 }
 // brewPopupRowC
-std::string brewPopupRowC(std::string colname, std::string value);
-RcppExport SEXP mapview_brewPopupRowC(SEXP colnameSEXP, SEXP valueSEXP) {
+std::string brewPopupRowC(std::string index, std::string colname, std::string value);
+RcppExport SEXP mapview_brewPopupRowC(SEXP indexSEXP, SEXP colnameSEXP, SEXP valueSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type index(indexSEXP);
     Rcpp::traits::input_parameter< std::string >::type colname(colnameSEXP);
     Rcpp::traits::input_parameter< std::string >::type value(valueSEXP);
-    rcpp_result_gen = Rcpp::wrap(brewPopupRowC(colname, value));
+    rcpp_result_gen = Rcpp::wrap(brewPopupRowC(index, colname, value));
     return rcpp_result_gen;
 END_RCPP
 }
 // brewPopupRowAltC
-std::string brewPopupRowAltC(std::string colname, std::string value);
-RcppExport SEXP mapview_brewPopupRowAltC(SEXP colnameSEXP, SEXP valueSEXP) {
+std::string brewPopupRowAltC(std::string index, std::string colname, std::string value);
+RcppExport SEXP mapview_brewPopupRowAltC(SEXP indexSEXP, SEXP colnameSEXP, SEXP valueSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type index(indexSEXP);
     Rcpp::traits::input_parameter< std::string >::type colname(colnameSEXP);
     Rcpp::traits::input_parameter< std::string >::type value(valueSEXP);
-    rcpp_result_gen = Rcpp::wrap(brewPopupRowAltC(colname, value));
+    rcpp_result_gen = Rcpp::wrap(brewPopupRowAltC(index, colname, value));
     return rcpp_result_gen;
 END_RCPP
 }

@@ -9,8 +9,8 @@
 #' to change the default number of pixels to be visualised for Raster* objects,
 #' add a line like this: options(mapviewMaxPixels = 700000) to that file.
 #'
-#' @param platform character. The platform to be used (currently only "leaflet"
-#' is allowed)
+#' @param platform character. The platform to be used.
+#' Current options are "leaflet" and "quickmapr".
 #' @param basemaps character. The basemaps to be used for rendering data. See
 #' \url{http://leaflet-extras.github.io/leaflet-providers/preview/} for possible
 #' values
@@ -107,7 +107,7 @@ mapviewOptions <- function(platform,
 
   ## platform
   setPlatform <- function(platform) {
-    if (!platform %in% c("leaflet")) {
+    if (!platform %in% c("leaflet", "quickmapr")) {
       warning("currently only platform leaflet is allowed")
       options(mapviewPlatform = "leaflet")
     } else {
@@ -201,9 +201,9 @@ mapviewOptions <- function(platform,
     cnt <- 1
     options(mapviewPlatform = "leaflet")
     options(mapviewBasemaps = c("CartoDB.Positron",
+                                "CartoDB.DarkMatter",
                                 "OpenStreetMap",
                                 "Esri.WorldImagery",
-                                "Thunderforest.Landscape",
                                 "OpenTopoMap"))
     options(mapviewraster.size = 8 * 1024 * 1024)
     options(mapviewMaxPixels = 500000)
@@ -276,12 +276,8 @@ mapviewOptions <- function(platform,
       cat('maxpolygons         :', lst$maxpolygons, '\n')
       cat('maxpoints           :', lst$maxpoints, '\n')
       cat('maxlines            :', lst$maxlines, '\n')
-      cat('raster.palette      : \n')
-      print(.rasterPalette())
-      cat("\n")
-      cat('vector.palette      : \n')
-      print(.vectorPalette())
-      cat("\n")
+      cat('raster.palette      :', format(.rasterPalette())[1], '\n')
+      cat('vector.palette      :', format(.vectorPalette())[1], '\n')
       cat('verbose             :', lst$verbose, '\n')
       cat('na.color            :', lst$na.color, '\n')
       cat('legend              :', lst$legend, '\n')
@@ -310,9 +306,9 @@ mapviewOptions <- function(platform,
 
 .basemaps <- function() {
   default <- c("CartoDB.Positron",
+               "CartoDB.DarkMatter",
                "OpenStreetMap",
                "Esri.WorldImagery",
-               "Thunderforest.Landscape",
                "OpenTopoMap")
 
   bm <- getOption('mapviewBasemaps')

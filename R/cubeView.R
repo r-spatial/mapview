@@ -8,6 +8,8 @@
 #' @param at the breakpoints used for the visualisation. See
 #' \code{\link{levelplot}} for details.
 #' @param col.regions color (palette).See \code{\link{levelplot}} for details.
+#' @param legend logical. Whether to plot a legend.
+#' @param ... currently not used.
 #'
 #' @details
 #' The visible layers are alterable by keys: \cr
@@ -15,9 +17,12 @@
 #' y-axis: DOWN / UP arrow key \cr
 #' z-axis: PAGE_DOWN / PAGE_UP key \cr
 #'
+#' Note: In RStudio cubeView may show a blank viewer window. In this case open the view in
+#' a web-browser (RStudio button at viewer: "show in new window").#'
+#'
 #' Note: Because of key focus issues key-press-events are not always
 #' recognised within RStudio at Windows. In this case open the view in
-#' a web-browser (RStudio button: "show in new window").
+#' a web-browser (RStudio button at viewer: "show in new window").
 #'
 #' Press and hold left mouse-button to rotate the cube.
 #' Press and hold right mouse-button to move the cube.
@@ -46,7 +51,8 @@
 
 cubeView <- function(x,
                      at,
-                     col.regions = mapviewGetOption("raster.palette")) {
+                     col.regions = mapviewGetOption("raster.palette"),
+                     legend = TRUE) {
 
   stopifnot(inherits(x, "RasterStack") | inherits(x, "RasterBrick"))
 
@@ -62,12 +68,32 @@ cubeView <- function(x,
   y_size <- raster::nrow(x)
   z_size <- raster::nlayers(x)
 
+  leg_fl <- NULL
+
+  if (legend) {
+    ## unique temp dir
+    dir <- tempfile()
+    dir.create(dir)
+    rng <- range(x[], na.rm = TRUE)
+    if (missing(at)) at <- lattice::do.breaks(rng, 256)
+    leg_fl <- paste0(dir, "/legend", ".png")
+    png(leg_fl, height = 200, width = 80, units = "px",
+        bg = "transparent", pointsize = 14, antialias = "none")
+    rasterLegend(col = col.regions,
+                 at = at,
+                 height = 0.9,
+                 space = "right")
+    dev.off()
+  }
+
+
   cubeViewRaw(red = tst[1, ],
               green = tst[2, ],
               blue = tst[3, ],
               x_size = x_size,
               y_size = y_size,
-              z_size = z_size)
+              z_size = z_size,
+              leg_fl = leg_fl)
 
 }
 
@@ -101,7 +127,8 @@ cubeView <- function(x,
 # '
 # ' z-axis: PAGE_DOWN / PAGE_UP key
 # '
-# ' Note: Because of key focus issues key-press-events are not always recognised within RStudio at Windows.
+# ' Note: Because of key focus issues key-press-events are not always
+# ' recognised within RStudio at Windows.
 # ' In this case open the view in a web-browser (RStudio button: "show in new window").
 # '
 # '
@@ -109,9 +136,13 @@ cubeView <- function(x,
 # '
 # ' Press and hold right mouse-button to move the cube.
 # '
-# ' Spin mouse-wheel or press and hold middle mouse-button and move mouse down/up to zoom the cube.
+# ' Spin mouse-wheel or press and hold middle mouse-button and move mouse
+# ' down/up to zoom the cube.
 # '
-# ' The color resp. grey vectors contain sequentially values of each voxel. So each vector is length == x_size * y_size * z_size.
+# ' Press SPACE to toggle showing cross section lines on the cube.
+# '
+# ' The color resp. grey vectors contain sequentially values of each voxel.
+# ' So each vector is length == x_size * y_size * z_size.
 # ' Color component values overwrite grey values.
 # '
 # ' Sequence of coordinates (x,y,z) for values in vectors:
@@ -125,38 +156,60 @@ cubeView <- function(x,
 # ' @import htmlwidgets
 # '
 # ' @export
-cubeViewRaw <- function(grey=NULL, red=NULL, green=NULL, blue=NULL, x_size, y_size, z_size, width = NULL, height = NULL) {
+cubeViewRaw <- function(grey = NULL,
+                        red = NULL,
+                        green = NULL,
+                        blue = NULL,
+                        x_size,
+                        y_size,
+                        z_size,
+                        width = NULL,
+                        height = NULL,
+                        leg_fl = NULL) {
 
   total_size <- x_size*y_size*z_size
 
-  object_list <- list(x_size=x_size, y_size=y_size, z_size=z_size)
+  object_list <- list(x_size = x_size,
+                      y_size = y_size,
+                      z_size = z_size,
+                      legend = !is.null(leg_fl))
 
   if(!is.null(grey)) {
     if(length(grey)!=total_size) {
       stop("length of grey vector not correct: ", length(grey), " should be ", total_size)
     }
-    object_list <- c(object_list, list(grey=as.raw(as.integer(grey))))
+    object_list <- c(object_list, list(grey=base64enc::base64encode(as.raw(as.integer(grey)))))
   }
 
   if(!is.null(red)) {
     if(length(red)!=total_size) {
       stop("length of red vector not correct: ", length(red), " should be ", total_size)
     }
-    object_list <- c(object_list, list(red=as.raw(as.integer(red))))
+    object_list <- c(object_list, list(red=base64enc::base64encode(as.raw(as.integer(red)))))
   }
 
   if(!is.null(green)) {
     if(length(green)!=total_size) {
       stop("length of green vector not correct: ", length(green), " should be ", total_size)
     }
-    object_list <- c(object_list, list(green=as.raw(as.integer(green))))
+    object_list <- c(object_list, list(green=base64enc::base64encode(as.raw(as.integer(green)))))
   }
 
   if(!is.null(blue)) {
     if(length(blue)!=total_size) {
       stop("length of blue vector not correct: ", length(blue), " should be ", total_size)
     }
-    object_list <- c(object_list, list(blue=as.raw(as.integer(blue))))
+    object_list <- c(object_list, list(blue=base64enc::base64encode(as.raw(as.integer(blue)))))
+  }
+
+  deps <- list()
+
+  if(!is.null(leg_fl)) {
+    images_dir <- dirname(leg_fl)
+    legend_file <- basename(leg_fl)
+    attachments <- list(legend=legend_file)
+    dep1 <- htmltools::htmlDependency(name = "images", version = "1", src = c(file = images_dir), attachment = attachments, all_files = FALSE)
+    deps <- list(dep1)
   }
 
   # create widget
@@ -166,7 +219,8 @@ cubeViewRaw <- function(grey=NULL, red=NULL, green=NULL, blue=NULL, x_size, y_si
     width = width,
     height = height,
     package = 'mapview',
-    sizingPolicy = htmlwidgets::sizingPolicy(padding = 0, browser.fill = TRUE)
+    sizingPolicy = htmlwidgets::sizingPolicy(padding = 0, browser.fill = TRUE),
+    dependencies = deps
   )
 }
 
@@ -194,3 +248,12 @@ renderCubeView <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
   htmlwidgets::shinyRenderWidget(expr, cubeViewOutput, env, quoted = TRUE)
 }
+
+
+## cubeview ===============================================================
+#' @describeIn cubeView alias for ease of typing
+#' @aliases cubeview
+#' @export cubeview
+
+cubeview <-  function(...) cubeView(...)
+

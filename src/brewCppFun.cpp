@@ -7,6 +7,24 @@ using namespace Rcpp;
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Avoid known MinGW std::to_string() bug (code taken from /////////////////////
+// https://stackoverflow.com/questions/12975341/to-string-is-not-a-member-of-std-says-g-mingw)
+////////////////////////////////////////////////////////////////////////////////
+
+#include<sstream>
+template <typename T>
+std::string to_string(T value) {
+  //create an output string stream
+  std::ostringstream os;
+
+  //throw the value into the string stream
+  os << value;
+
+  //convert the string stream into a string and return
+  return os.str() ;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Replace string with another string (function taken from /////////////////////
 // https://stackoverflow.com/questions/2896600/how-to-replace-all-occurrences-of-a-character-in-string) ////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -27,10 +45,14 @@ std::string gsubC(const std::string& pattern, const std::string& replacement,
 ////////////////////////////////////////////////////////////////////////////////
 
 // [[Rcpp::export]]
-std::string brewPopupRowC(std::string colname, std::string value) {
+std::string brewPopupRowC(std::string index, std::string colname,
+                          std::string value) {
+
+  std::string chIndString;
+  chIndString = std::string("<td>") + index + "</td>";
 
   std::string chColString;
-  chColString = std::string("<td>") + colname + "</td>";
+  chColString = std::string("<td>") + "<b>" + colname + "</b>" + "</td>";
 
   std::ostringstream ssVal;
   ssVal << value;
@@ -39,7 +61,7 @@ std::string brewPopupRowC(std::string colname, std::string value) {
   chValString = std::string("<td>") + ssVal.str() + "</td>";
 
   std::string chOutString;
-  chOutString = std::string("<tr>" + chColString + chValString + "</tr>");
+  chOutString = std::string("<tr>" + chIndString + chColString + chValString + "</tr>");
 
   return chOutString;
 }
@@ -49,10 +71,14 @@ std::string brewPopupRowC(std::string colname, std::string value) {
 ////////////////////////////////////////////////////////////////////////////////
 
 // [[Rcpp::export]]
-std::string brewPopupRowAltC(std::string colname, std::string value) {
+std::string brewPopupRowAltC(std::string index, std::string colname,
+                             std::string value) {
+
+  std::string chIndString;
+  chIndString = std::string("<td>") + index + "</td>";
 
   std::string chColString;
-  chColString = std::string("<td>") + colname + "</td>";
+  chColString = std::string("<td>") + "<b>" + colname + "</b>" + "</td>";
 
   std::ostringstream ssVal;
   ssVal << value;
@@ -61,7 +87,7 @@ std::string brewPopupRowAltC(std::string colname, std::string value) {
   chValString = std::string("<td>") + ssVal.str() + "</td>";
 
   std::string chOutString;
-  chOutString = std::string("<tr class=\'alt\'>" + chColString + chValString + "</tr>");
+  chOutString = std::string("<tr class=\'alt\'>" + chIndString + chColString + chValString + "</tr>");
 
   return chOutString;
 }
@@ -73,8 +99,11 @@ std::string brewPopupRowAltC(std::string colname, std::string value) {
 // [[Rcpp::export]]
 std::string brewPopupCoords(std::string colname, std::string value) {
 
+  std::string chIndString;
+  chIndString = std::string("<td></td>");
+
   std::string chColString;
-  chColString = std::string("<td>") + colname + "</td>";
+  chColString = std::string("<td>") + "<b>" + colname + "</b>" + "</td>";
 
   std::ostringstream ssVal;
   ssVal << value;
@@ -83,7 +112,7 @@ std::string brewPopupCoords(std::string colname, std::string value) {
   chValString = std::string("<td>") + ssVal.str() + "</td>";
 
   std::string chOutString;
-  chOutString = std::string("<tr class=\'coord\'>" + chColString + chValString + "</tr>");
+  chOutString = std::string("<tr class=\'coord\'>" + chIndString + chColString + chValString + "</tr>");
 
   return chOutString;
 }
@@ -107,18 +136,18 @@ std::string mergePopupRows(CharacterVector names, CharacterVector values) {
     ssValue << values[i];
 
     // feature id or coords
-    if (names[i] == "Feature ID" |
-          names[i] == "Longitude" | names[i] == "Latitude") {
+    if ((names[i] == "Feature ID") |
+          (names[i] == "Longitude") | (names[i] == "Latitude")) {
       chOut = chOut + brewPopupCoords(ssName.str(), ssValue.str());
     } else {
 
       // even variable columns
       if (i%2 == 0) {
-        chOut = chOut + brewPopupRowC(ssName.str(), ssValue.str());
+        chOut = chOut + brewPopupRowC(to_string(i), ssName.str(), ssValue.str());
 
       // odd variable columns
       } else {
-        chOut = chOut + brewPopupRowAltC(ssName.str(), ssValue.str());
+        chOut = chOut + brewPopupRowAltC(to_string(i), ssName.str(), ssValue.str());
       }
 
     }
@@ -154,6 +183,22 @@ std::string createTemplate(std::string tmpPath) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Convert String to UTF-8 //////////////// ////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+String enc2utf8_string(const String & x) {
+  String str(x);
+  str.set_encoding(CE_UTF8);
+  return str;
+}
+
+CharacterVector enc2utf8_chrvec(const CharacterVector & x) {
+  CharacterVector str(x.size());
+  std::transform(x.begin(), x.end(), str.begin(), enc2utf8_string);
+  return str;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Create list with string patterns per row ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -174,15 +219,15 @@ List listPopupTemplates(CharacterMatrix x, CharacterVector names,
 
   // import template
   std::string chTemplate = createTemplate(tmpPath);
-  std::string chTmp = chTemplate;
+  String chTmp = chTemplate;
 
   // create strings for each single row
   for (int i = 0; i < nRows; i++) {
-    chVal = x(i, _);
+    chVal = enc2utf8_chrvec(x(i, _));
     chStr = mergePopupRows(names, chVal);
 
     chTmp = gsubC("<%=pop%>", chStr, chTmp);
-    lsOut[i] = chTmp;
+    lsOut[i] = enc2utf8_string(chTmp);
 
     // reset intermediary string
     chTmp = chTemplate;

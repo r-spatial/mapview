@@ -19,4 +19,4 @@ dependencies:
   - name: TrackballControls
     version: 74
     src: htmlwidgets/lib/TrackballControls-r74
-    script: TrackballControls.js
+    script: TrackballControls.min.js

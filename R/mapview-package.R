@@ -14,34 +14,14 @@
 #' \cr
 #' \emph{Maintainer:} Tim Appelhans \email{admin@@environmentalinformatics-marburg.de}
 #'
-#' @import leaflet sp raster satellite scales Rcpp methods png lattice rgdal gdalUtils latticeExtra viridisLite
-#' @importFrom grDevices rgb dev.off png svg
-#' @importFrom utils write.table find
+#' @import leaflet sp sf raster satellite scales Rcpp methods png lattice gdalUtils viridisLite base64enc
+#' @importFrom grDevices rgb dev.off png svg colorRampPalette
+#' @importFrom utils find glob2rx
 #' @importFrom webshot webshot
 #'
-#' @useDynLib mapview
+#' @rawNamespace useDynLib(mapview, .registration = TRUE)
 #' @keywords package
 #'
-NULL
-#'
-#' @docType data
-#' @name atlStorms2005
-#' @title Atlantic Ocean storms 2005
-#' @description Atlantic Ocean storms 2005
-#' @details This dataset contains storm tracks for selected storms
-#' in the Atlantic Ocean basin for the year 2005
-#' @format \code{sp::SpatialLinesDataFrame}
-NULL
-#'
-#' @docType data
-#' @name gadmCHE
-#' @title Administrative borders of Switzerland (level 1)
-#' @description Administrative borders of Switzerland (level 1)
-#' @details This dataset comes from \url{http://gadm.org}.
-#' It was downloaded using \code{\link{getData}}.
-#' @format \code{sp::SpatialPolygonsDataFrame}
-#' @source
-#' \url{http://gadm.org}
 NULL
 #'
 #' @docType data
@@ -56,12 +36,43 @@ NULL
 NULL
 #'
 #' @docType data
-#' @name breweries91
+#' @name breweries
 #' @title Selected breweries in Franconia
-#' @description Selected breweries in Franconia (zip code starting with 91...)
-#' @details This dataset contains selected breweries in Franconia. It is a
+#' @description Selected breweries in Franconia
+#' @details This dataset contains selected breweries in Franconia. It is partly a
 #' subset of a larger database that was compiled by students at the
 #' University of Marburg for a seminar called
-#' "The Geography of Beer, sustainability in the food industry"
-#' @format \code{sp::SpatialPointsDataFrame}
+#' "The Geography of Beer: sustainability in the food industry"
+#' and partly consists of breweries downloaded from
+#' \url{http://www.bierwandern.de/inhalt/brauereiliste.html} with the kind permission
+#' of Rainer Kastl. Note that use of these data is restricted to  non-commercial use
+#' and that they are explixitly excluded from the GPL lincense that mapview is licensed under.
+#' @format \code{sf feature collection POINT}
 NULL
+#'
+#' @docType data
+#' @name franconia
+#' @title Administrative district borders of Franconia
+#' @description Administrative district borders of Franconia
+#' @details The NUTS_2013_01M_SH.zip archive was downloaded on 23/03/2017 from
+#' \url{http://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts}.
+#' \url{https://gist.github.com/tim-salabim/2845fa90813fa25c18cf83f9b88cbde0}
+#' @format \code{sf feature collection MULTIPOLYGON}
+#' @source
+#' \url{http://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts}
+NULL
+#'
+#' @docType data
+#' @name trails
+#' @title Selected hiking trails in Franconia
+#' @description Selected hiking trails in Franconia
+#' @details These hiking trails were downloaded on 06/04/2017 from
+#' \url{https://geoportal.bayern.de/bayernatlas}
+#' These data are published by the owner under Creative Commons Namensnennung 3.0 Deutschland,
+#' see \url{https://creativecommons.org/licenses/by/3.0/de/} for details.
+#' @format \code{sf feature collection MULTILINESTRING}
+#' @source
+#' Datenquelle: Bayerische Vermessungsverwaltung - www.geodaten.bayern.de
+#' \url{http://www.ldbv.bayern.de/produkte/weitere/opendata.html}
+NULL
+
