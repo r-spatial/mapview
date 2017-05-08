@@ -1,8 +1,8 @@
 Package: mapview
 Type: Package
 Title: Interactive Viewing of Spatial Objects in R
-Version: 2.0.1
-Date: 2017-05-07
+Version: 2.0.2
+Date: 2017-05-08
 Authors@R: c(
       person("Tim", "Appelhans", email = "tim.appelhans@gmail.com", role = c("cre", "aut")),
       person("Florian", "Detsch", email = "florian.detsch@staff.uni-marburg.de", role = c("aut")),
@@ -37,7 +37,6 @@ Imports:
     Rcpp (>= 0.11.3),
     lattice,
     gdalUtils,
-    data.table,
     webshot,
     viridisLite,
     sf,
