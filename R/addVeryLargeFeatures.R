@@ -25,8 +25,8 @@ addVeryLargeFeatures <- function(map,
   # check projection
   data <- checkAdjustProjection(data)
 
-  ind1 <- seq(1, nrow(data), 2)
-  ind2 <- seq(2, nrow(data), 2)
+  ind1 <- seq(1, 2*nrow(data), 2)
+  ind2 <- seq(2, 2*nrow(data), 2)
   # create dataframe
   cnames <- colnames(sf2DataFrame(data, drop_sf_column = TRUE))
   data$r <- grDevices::col2rgb(color)[1, ]
