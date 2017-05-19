@@ -32,11 +32,11 @@ leaflet_sf <- function(x,
                        ...) {
 
   if (!is.null(zcol)) {
-    layer.name <- paste(layer.name, zcol)
+    # layer.name <- paste(layer.name, zcol)
     if (length(unique(x[[zcol]])) <= 1) {
       warning(
         sprintf(
-          "column %s has only one unique value/level, ignoring coloring and legend",
+          "column %s has only one unique value/level, ignoring color and legend",
           zcol
         )
       )
