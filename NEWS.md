@@ -1,8 +1,11 @@
-## mapview 2.0.2
+## mapview 2.0.3
 
 bugfixes:
 
-  * deleted obsolete data.table import
+  * deleted obsolete data.table import.
+  * fixed #79: colnames of popupTables are now converted to utf-8.
+  * fixed #78: respect explicit setting of 'layer.name' argument.
+  * included NEWS file as R-help doesn't render NEWS.md
 
 ## mapview 2.0.1
 
