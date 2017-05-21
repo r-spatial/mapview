@@ -211,8 +211,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    legend.opacity = 1,
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   layer.name = NULL,
                    homebutton = TRUE,
                    native.crs = FALSE,
                    ...) {
@@ -367,8 +366,7 @@ setMethod('mapView', signature(x = 'sf'),
                    map.types = NULL,
                    verbose = mapviewGetOption("verbose"),
                    popup = popupTable(x),
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   layer.name = NULL,
                    label = makeLabels(x, zcol),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
@@ -549,8 +547,7 @@ setMethod('mapView', signature(x = 'XY'),
                    map.types = NULL,
                    verbose = mapviewGetOption("verbose"),
                    popup = NULL,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame(1))),
+                   layer.name = NULL,
                    label = makeLabels(x),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
@@ -868,14 +865,13 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
 
 setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
           function(x,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   zcol = NULL,
+                   layer.name = NULL,
                    ...) {
-
-            mapView(st_as_sf(x), layer.name = layer.name, ...)
-
+            if (is.null(layer.name))
+              layer.name = makeLayerName(x, zcol, up = 2)
+            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
           }
-
 )
 
 
@@ -884,12 +880,12 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
 setMethod('mapView', signature(x = 'SpatialPoints'),
           function(x,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   zcol = NULL,
+                   layer.name = NULL,
                    ...) {
-
-            mapView(st_as_sfc(x), layer.name = layer.name, ...)
-
+            if (is.null(layer.name))
+              layer.name = makeLayerName(x, zcol, up = 2)
+            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
           }
 )
 
@@ -899,14 +895,13 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
 
 setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
           function(x,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   zcol = NULL,
+                   layer.name = NULL,
                    ...) {
-
-            mapView(st_as_sf(x), layer.name = layer.name, ...)
-
+            if (is.null(layer.name))
+              layer.name = makeLayerName(x, zcol, up = 2)
+            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
           }
-
 )
 
 
@@ -915,12 +910,12 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
 setMethod('mapView', signature(x = 'SpatialPolygons'),
           function(x,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   zcol = NULL,
+                   layer.name = NULL,
                    ...) {
-
-            mapView(st_as_sfc(x), layer.name = layer.name, ...)
-
+            if (is.null(layer.name))
+              layer.name = makeLayerName(x, zcol, up = 2)
+            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
           }
 )
 
@@ -930,14 +925,13 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
 
 setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
           function(x,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   zcol = NULL,
+                   layer.name = NULL,
                    ...) {
-
-            mapView(st_as_sf(x), layer.name = layer.name, ...)
-
+            if (is.null(layer.name))
+              layer.name = makeLayerName(x, zcol, up = 2)
+            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
           }
-
 )
 
 
@@ -946,13 +940,12 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
 setMethod('mapView', signature(x = 'SpatialLines'),
           function(x,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   zcol = NULL,
+                   layer.name = NULL,
                    ...) {
-
-            mapView(st_as_sfc(x), layer.name = layer.name, ...)
-
+            if (is.null(layer.name))
+              layer.name = makeLayerName(x, zcol, up = 2)
+            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
           }
-
 )
 

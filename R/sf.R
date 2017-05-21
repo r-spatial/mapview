@@ -31,6 +31,8 @@ leaflet_sf <- function(x,
                        maxpoints,
                        ...) {
 
+  if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
+
   if (!is.null(zcol)) {
     # layer.name <- paste(layer.name, zcol)
     if (length(unique(x[[zcol]])) <= 1) {

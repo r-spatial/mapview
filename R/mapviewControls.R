@@ -223,6 +223,13 @@ extentOverlap <- function(x, y) {
 }
 
 
+makeLayerName = function(x, zcol, up = 3) {
+  lnm = deparse(substitute(x, env = parent.frame(up)))
+  if (is.null(zcol)) lnm else paste(lnm, zcol, sep = " - ")
+}
+
+
+
 makeListLayerNames = function(x, layer.name) {
   if (length(layer.name) == length(x)) {
     lnms = layer.name

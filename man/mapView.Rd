@@ -37,8 +37,7 @@
   values = NULL, map.types = mapviewGetOption("basemaps"),
   alpha.regions = 0.8, legend = mapviewGetOption("legend"),
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())),
-  homebutton = TRUE, native.crs = FALSE, ...)
+  layer.name = NULL, homebutton = TRUE, native.crs = FALSE, ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -62,9 +61,9 @@
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
   alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
   verbose = mapviewGetOption("verbose"), popup = popupTable(x),
-  layer.name = deparse(substitute(x, env = parent.frame())),
-  label = makeLabels(x, zcol), legend = mapviewGetOption("legend"),
-  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
+  layer.name = NULL, label = makeLabels(x, zcol),
+  legend = mapviewGetOption("legend"), legend.opacity = 1,
+  homebutton = TRUE, native.crs = FALSE,
   highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
@@ -83,8 +82,7 @@
   col.regions = standardColRegions(x), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
   alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
-  verbose = mapviewGetOption("verbose"), popup = NULL,
-  layer.name = deparse(substitute(x, env = parent.frame(1))),
+  verbose = mapviewGetOption("verbose"), popup = NULL, layer.name = NULL,
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
   highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
@@ -129,23 +127,20 @@
 
 \S4method{mapView}{SpatialGridDataFrame}(x, zcol = NULL, ...)
 
-\S4method{mapView}{SpatialPointsDataFrame}(x,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+\S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL,
+  layer.name = NULL, ...)
 
-\S4method{mapView}{SpatialPoints}(x, layer.name = deparse(substitute(x, env =
-  parent.frame())), ...)
+\S4method{mapView}{SpatialPoints}(x, zcol = NULL, layer.name = NULL, ...)
 
-\S4method{mapView}{SpatialPolygonsDataFrame}(x,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+\S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL,
+  layer.name = NULL, ...)
 
-\S4method{mapView}{SpatialPolygons}(x, layer.name = deparse(substitute(x, env
-  = parent.frame())), ...)
+\S4method{mapView}{SpatialPolygons}(x, zcol = NULL, layer.name = NULL, ...)
 
-\S4method{mapView}{SpatialLinesDataFrame}(x,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+\S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, layer.name = NULL,
+  ...)
 
-\S4method{mapView}{SpatialLines}(x, layer.name = deparse(substitute(x, env =
-  parent.frame())), ...)
+\S4method{mapView}{SpatialLines}(x, zcol = NULL, layer.name = NULL, ...)
 }
 \arguments{
 \item{x}{a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
