@@ -1,4 +1,8 @@
-## mapview 2.0.3
+## mapview 2.0.4
+
+new features: 
+
+  * plainview/cubeview now respects/has gained argument na.color. 
 
 bugfixes:
 
