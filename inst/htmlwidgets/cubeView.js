@@ -258,9 +258,9 @@ updateMaterial: function () {
 	this.updateMaterialXY();
 	this.updateMaterialXZ();
 	this.updateMaterialZY();
-	statusX.innerHTML = x_pos;
-  statusY.innerHTML = y_pos;
-  statusZ.innerHTML = z_pos;
+	statusX.innerHTML = x_pos+1;
+  statusY.innerHTML = y_pos+1;
+  statusZ.innerHTML = z_pos+1;
 },
 
 updateMaterialXY: function () {

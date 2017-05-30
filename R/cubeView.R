@@ -8,6 +8,7 @@
 #' @param at the breakpoints used for the visualisation. See
 #' \code{\link{levelplot}} for details.
 #' @param col.regions color (palette).See \code{\link{levelplot}} for details.
+#' @param na.color color for missing values.
 #' @param legend logical. Whether to plot a legend.
 #' @param ... currently not used.
 #'
@@ -18,7 +19,7 @@
 #' z-axis: PAGE_DOWN / PAGE_UP key \cr
 #'
 #' Note: In RStudio cubeView may show a blank viewer window. In this case open the view in
-#' a web-browser (RStudio button at viewer: "show in new window").#'
+#' a web-browser (RStudio button at viewer: "show in new window").
 #'
 #' Note: Because of key focus issues key-press-events are not always
 #' recognised within RStudio at Windows. In this case open the view in
@@ -52,6 +53,7 @@
 cubeView <- function(x,
                      at,
                      col.regions = mapviewGetOption("raster.palette"),
+                     na.color = mapviewGetOption("na.color"),
                      legend = TRUE) {
 
   stopifnot(inherits(x, "RasterStack") | inherits(x, "RasterBrick"))
@@ -62,6 +64,8 @@ cubeView <- function(x,
   cols <- lattice::level.colors(v,
                                 at = at,
                                 col.regions)
+  cols[is.na(cols)] = na.color
+  cols = col2Hex(cols, alpha = TRUE)
   tst <- grDevices::col2rgb(cols, alpha = TRUE)
 
   x_size <- raster::ncol(x)
