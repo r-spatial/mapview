@@ -479,28 +479,28 @@ setMethod('mapView', signature(x = 'sfc'),
 
             if (mapviewGetOption("platform") == "leaflet") {
 
-              if (inherits(x, "sfc_GEOMETRY")) {
-                mapview(lapply(split(x, st_dimension(x)), st_cast),
-                        map = map,
-                        color = color,
-                        col.regions = col.regions,
-                        na.color = na.color,
-                        cex = cex,
-                        lwd = lwd,
-                        alpha = alpha,
-                        alpha.regions = alpha.regions,
-                        map.types = map.types,
-                        verbose = verbose,
-                        popup = popup,
-                        layer.name = layer.name,
-                        label = label,
-                        legend = legend,
-                        legend.opacity = legend.opacity,
-                        homebutton = homebutton,
-                        native.crs = native.crs,
-                        highlight = highlight,
-                        ...)
-              } else {
+              # if (inherits(x, "sfc_GEOMETRY")) {
+              #   mapview(lapply(split(x, st_dimension(x)), st_cast),
+              #           map = map,
+              #           color = color,
+              #           col.regions = col.regions,
+              #           na.color = na.color,
+              #           cex = cex,
+              #           lwd = lwd,
+              #           alpha = alpha,
+              #           alpha.regions = alpha.regions,
+              #           map.types = map.types,
+              #           verbose = verbose,
+              #           popup = popup,
+              #           layer.name = layer.name,
+              #           label = label,
+              #           legend = legend,
+              #           legend.opacity = legend.opacity,
+              #           homebutton = homebutton,
+              #           native.crs = native.crs,
+              #           highlight = highlight,
+              #           ...)
+              # } else {
                 leaflet_sfc(x,
                             map = map,
                             color = color,
@@ -522,7 +522,7 @@ setMethod('mapView', signature(x = 'sfc'),
                             highlight = highlight,
                             maxpoints = maxpoints,
                             ...)
-              }
+              # }
             } else {
               NULL
             }

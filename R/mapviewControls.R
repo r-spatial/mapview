@@ -137,7 +137,7 @@ getGeometryType <- function(x) {
       inherits(g, "MULTIPOLYGON") |
       inherits(g, "sfc_POLYGON") |
       inherits(g, "sfc_MULTIPOLYGON")) type <- "pl"
-  if (inherits(g, "sfc_GEOMETRY")) type <- getGeometryType(sf::st_cast(g))
+  if (inherits(g, "sfc_GEOMETRY")) type <- "gc" #getGeometryType(sf::st_cast(g))
   return(type)
 }
 
@@ -146,7 +146,8 @@ getMaxFeatures <- function(x) {
   switch(getGeometryType(x),
          "pt" = 40000,
          "ln" = 100000,
-         "pl" = 100000)
+         "pl" = 100000,
+         "gc" = 100000)
 }
 
 
@@ -154,7 +155,8 @@ lineWidth <- function(x) {
   switch(getGeometryType(x),
          "pt" = 2,
          "ln" = 2,
-         "pl" = 1)
+         "pl" = 1,
+         "gc" = 2)
 }
 
 
@@ -162,7 +164,8 @@ regionOpacity <- function(x) {
   switch(getGeometryType(x),
          "pt" = 0.9,
          "ln" = 1,
-         "pl" = 0.6)
+         "pl" = 0.6,
+         "gc" = 0.6)
 }
 
 
