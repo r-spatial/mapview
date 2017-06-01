@@ -100,7 +100,7 @@
 
 \S4method{mapView}{sfc_MULTIPOLYGON}(x, ...)
 
-\S4method{mapView}{sfc_GEOMETRY}(x, ...)
+\S4method{mapView}{sfc_GEOMETRY}(x, layer.name = NULL, ...)
 
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"), ...)
 

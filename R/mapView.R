@@ -652,8 +652,12 @@ setMethod('mapView', signature(x = 'sfc_MULTIPOLYGON'),
 #' @describeIn mapView \code{\link{st_sfc}}
 
 setMethod('mapView', signature(x = 'sfc_GEOMETRY'),
-          function(x, ...) {
-            callNextMethod()
+          function(x, layer.name = NULL, ...) {
+            x = split(x, f = as.character(sf::st_dimension(x)))
+            if (!is.null(layer.name) & length(layer.name == 1)) {
+              names(x) = rep(layer.name, length(x))
+            }
+            mapView(x, homebutton = FALSE, ...)
           }
 )
 
@@ -713,20 +717,6 @@ setMethod('mapView', signature(x = 'list'),
                    }),
                    maxpoints = NULL, #lapply(x, getMaxFeatures),
                    ...) {
-#
-#             makeLayerNames <- function(v1) {
-#               #chr <- as.character(dargs(graphics::plot.default)eparse(substitute(v1)))
-#               chr <- gsub(utils::glob2rx("*list(*"), "", v1)
-#               chr <- unlist(strsplit(x = gsub(")", "", chr), ","))
-#               as.list(gsub(" ", "", chr))
-#             }
-#
-#             nms <- names(x)
-#             if (is.null(nms)) {
-#               lyrnms <- makeLayerNames(layer.name) #paste0("layer_", sprintf("%02.0f", seq(x)))
-#             } else {
-#               lyrnms <- nms
-#             }
 
             lyrnms = makeListLayerNames(x, layer.name)
 
@@ -769,7 +759,7 @@ setMethod('mapView', signature(x = 'list'),
                           map.types = map.types,
                           ...)
                   } else {
-                    mapView(x = x[[i]],
+                    mapView(x = sf::st_cast(x[[i]]),
                             layer.name = lyrnms[[i]],
                             homebutton = homebutton[[i]],
                             native.crs = native.crs,
