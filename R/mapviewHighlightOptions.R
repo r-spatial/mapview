@@ -123,14 +123,14 @@ mapviewHighlightOptions <- function(x, alpha.regions, lwd) {
                  SpatialPolygonsDataFrame = highlightPolygonFeatures(),
                  SpatialPolygons = highlightPolygonFeatures())
   } else {
-    ls <- switch(getSFClass(sf::st_geometry(x)),
+    ls <- switch(getSFClass(sf::st_geometry(sf::st_cast(x))),
                  sfc_POINT           = highlightPointFeatures(),
                  sfc_MULTIPOINT      = highlightPointFeatures(),
                  sfc_LINESTRING      = highlightLineFeatures(lwd),
                  sfc_MULTILINESTRING = highlightLineFeatures(lwd),
                  sfc_POLYGON         = highlightPolygonFeatures(alpha.regions, lwd),
                  sfc_MULTIPOLYGON    = highlightPolygonFeatures(alpha.regions, lwd),
-                 sfc_GEOMETRY        = mapviewHighlightOptions(st_cast(x), alpha.regions, lwd),
+                 sfc_GEOMETRY        = NULL, #mapviewHighlightOptions(st_cast(x), alpha.regions, lwd),
                  POINT               = highlightPointFeatures(),
                  MULTIPOINT          = highlightPointFeatures(),
                  LINESTRING          = highlightLineFeatures(lwd),

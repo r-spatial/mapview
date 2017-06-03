@@ -479,50 +479,28 @@ setMethod('mapView', signature(x = 'sfc'),
 
             if (mapviewGetOption("platform") == "leaflet") {
 
-              # if (inherits(x, "sfc_GEOMETRY")) {
-              #   mapview(lapply(split(x, st_dimension(x)), st_cast),
-              #           map = map,
-              #           color = color,
-              #           col.regions = col.regions,
-              #           na.color = na.color,
-              #           cex = cex,
-              #           lwd = lwd,
-              #           alpha = alpha,
-              #           alpha.regions = alpha.regions,
-              #           map.types = map.types,
-              #           verbose = verbose,
-              #           popup = popup,
-              #           layer.name = layer.name,
-              #           label = label,
-              #           legend = legend,
-              #           legend.opacity = legend.opacity,
-              #           homebutton = homebutton,
-              #           native.crs = native.crs,
-              #           highlight = highlight,
-              #           ...)
-              # } else {
-                leaflet_sfc(x,
-                            map = map,
-                            color = color,
-                            col.regions = col.regions,
-                            na.color = na.color,
-                            cex = cex,
-                            lwd = lwd,
-                            alpha = alpha,
-                            alpha.regions = alpha.regions,
-                            map.types = map.types,
-                            verbose = verbose,
-                            popup = popup,
-                            layer.name = layer.name,
-                            label = label,
-                            legend = legend,
-                            legend.opacity = legend.opacity,
-                            homebutton = homebutton,
-                            native.crs = native.crs,
-                            highlight = highlight,
-                            maxpoints = maxpoints,
-                            ...)
-              # }
+              leaflet_sfc(x,
+                          map = map,
+                          color = color,
+                          col.regions = col.regions,
+                          na.color = na.color,
+                          cex = cex,
+                          lwd = lwd,
+                          alpha = alpha,
+                          alpha.regions = alpha.regions,
+                          map.types = map.types,
+                          verbose = verbose,
+                          popup = popup,
+                          layer.name = layer.name,
+                          label = label,
+                          legend = legend,
+                          legend.opacity = legend.opacity,
+                          homebutton = homebutton,
+                          native.crs = native.crs,
+                          highlight = highlight,
+                          maxpoints = maxpoints,
+                          ...)
+
             } else {
               NULL
             }
@@ -652,12 +630,8 @@ setMethod('mapView', signature(x = 'sfc_MULTIPOLYGON'),
 #' @describeIn mapView \code{\link{st_sfc}}
 
 setMethod('mapView', signature(x = 'sfc_GEOMETRY'),
-          function(x, layer.name = NULL, ...) {
-            x = split(x, f = as.character(sf::st_dimension(x)))
-            if (!is.null(layer.name) & length(layer.name == 1)) {
-              names(x) = rep(layer.name, length(x))
-            }
-            mapView(x, homebutton = FALSE, ...)
+          function(x, ...) {
+            callNextMethod()
           }
 )
 
