@@ -1,8 +1,9 @@
-## mapview 2.0.5
+## mapview 2.0.6
 
 new features: 
 
-  * plainview/cubeview now respects/has gained argument na.color. 
+  * plainview/cubeview now respects/has gained argument na.color.
+  * mapview now supports st_GEOMETRY with truely mixed feature types (e.g. LINESTRING and POLYGON) - fixes #85
 
 bugfixes:
 
