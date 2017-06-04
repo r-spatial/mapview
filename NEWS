@@ -1,8 +1,10 @@
-mapview 2.0.6
+mapview 2.0.7
 
 new features: 
 
-  * plainview/cubeview now respects/has gained argument na.color. 
+  * plainview/cubeview now respects/has gained argument na.color.
+  * mapview now supports st_GEOMETRY with truely mixed feature types (e.g. LINESTRING and POLYGON) - fixes #85
+  * addFeatures: one function to add them all. Type agnostic version of leaflet::add* functions for simple features objects.
 
 bugfixes:
 
