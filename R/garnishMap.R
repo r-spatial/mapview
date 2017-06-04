@@ -23,7 +23,7 @@
 #'
 #' ## even more flexible
 #' m2 <- garnishMap(m1, addPolygons, data = franconia, popup = popupTable(franconia),
-#'            fillOpacity = 0.8, color = "black", fillColor = "#BEBEBE")
+#'                  fillOpacity = 0.8, color = "black", fillColor = "#BEBEBE")
 #' garnishMap(m2, addCircleMarkers, data = breweries)
 #'
 #' }

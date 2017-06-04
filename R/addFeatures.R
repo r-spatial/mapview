@@ -1,3 +1,59 @@
+#' Type agnositc version of \code{leaflet::add*} functions.
+#'
+#' @description
+#' Add simple features geomertries from \code{\link[sf]{sf}}
+#'
+#' @param map A \code{leaflet} or \code{mapview} map.
+#' @param data A \code{sf} object to be added to the \code{map}.
+#' @param ... Further arguments passed to the respective \code{leaflet::add*}
+#' functions. See \code{\link{addCircleMarkers}}, \code{\link{addPolylines}}
+#' and \code{\link{addPolygons}}.
+#'
+#' @return
+#' A leaflet \code{map} object.
+#'
+#' @examples
+#' \dontrun{
+#' leaflet() %>% addTiles() %>% addCircleMarkers(data = breweries)
+#' leaflet() %>% addTiles() %>% addFeatures(data = breweries)
+#'
+#' leaflet() %>% addTiles() %>% addPolylines(data = atlStorms2005)
+#' leaflet() %>% addTiles() %>% addFeatures(atlStorms2005)
+#'
+#' leaflet() %>% addTiles() %>% addPolygons(data = franconia)
+#' leaflet() %>% addTiles() %>% addFeatures(franconia)
+#' }
+#'
+#' @export addFeatures
+#' @name addFeatures
+#' @rdname addFeatures
+addFeatures <- function(map,
+                        data,
+                        ...) {
+
+  if (inherits(data, "Spatial")) data = sf::st_as_sf(data)
+
+  switch(getSFClass(sf::st_geometry(sf::st_cast(data))),
+         sfc_POINT           = addPointFeatures(map, data, ...),
+         sfc_MULTIPOINT      = addPointFeatures(map, data, ...),
+         sfc_LINESTRING      = addLineFeatures(map, data, ...),
+         sfc_MULTILINESTRING = addLineFeatures(map, data, ...),
+         sfc_POLYGON         = addPolygonFeatures(map, data, ...),
+         sfc_MULTIPOLYGON    = addPolygonFeatures(map, data, ...),
+         sfc_GEOMETRY        = addGeometry(map, data, ...),
+         POINT               = addPointFeatures(map, data, ...),
+         MULTIPOINT          = addPointFeatures(map, data, ...),
+         LINESTRING          = addLineFeatures(map, data, ...),
+         MULTILINESTRING     = addLineFeatures(map, data, ...),
+         POLYGON             = addPolygonFeatures(map, data, ...),
+         MULTIPOLYGON        = addPolygonFeatures(map, data, ...),
+         GEOMETRY            = addGeometry(map, data, ...))
+
+}
+
+
+
+
 ### these functions call the appropriate leaflet::add* functions
 ### depending on geometry type. Additional parameters can be passed via ...
 
@@ -55,30 +111,5 @@ addGeometry = function(map,
                       label = ls$label[[i]])
   }
   return(map)
-}
-
-### addFeatures ===========================================================
-### this is then the function to be called which internally decides which
-### subfunction to use
-addFeatures <- function(map,
-                        data,
-                        ...) {
-
-  switch(getSFClass(sf::st_geometry(sf::st_cast(data))),
-         sfc_POINT           = addPointFeatures(map, data, ...),
-         sfc_MULTIPOINT      = addPointFeatures(map, data, ...),
-         sfc_LINESTRING      = addLineFeatures(map, data, ...),
-         sfc_MULTILINESTRING = addLineFeatures(map, data, ...),
-         sfc_POLYGON         = addPolygonFeatures(map, data, ...),
-         sfc_MULTIPOLYGON    = addPolygonFeatures(map, data, ...),
-         sfc_GEOMETRY        = addGeometry(map, data, ...),
-         POINT               = addPointFeatures(map, data, ...),
-         MULTIPOINT          = addPointFeatures(map, data, ...),
-         LINESTRING          = addLineFeatures(map, data, ...),
-         MULTILINESTRING     = addLineFeatures(map, data, ...),
-         POLYGON             = addPolygonFeatures(map, data, ...),
-         MULTIPOLYGON        = addPolygonFeatures(map, data, ...),
-         GEOMETRY            = addGeometry(map, data, ...))
-
 }
 
