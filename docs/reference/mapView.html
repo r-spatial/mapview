@@ -95,8 +95,7 @@ spatial object(s) on top of the specified base maps.</p>
   <span class='kw'>values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>map.types</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>),
   <span class='kw'>alpha.regions</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>),
   <span class='kw'>legend.opacity</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>),
-  <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='fu'>deparse</span>(<span class='fu'>substitute</span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>parent.frame</span>())),
-  <span class='kw'>homebutton</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>native.crs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+  <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>homebutton</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>native.crs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for RasterStackBrick</span>
 <span class='fu'>mapView</span>(<span class='no'>x</span>, <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -123,9 +122,9 @@ spatial object(s) on top of the specified base maps.</p>
   <span class='kw'>na.color</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>), <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fu'>lineWidth</span>(<span class='no'>x</span>),
   <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>alpha.regions</span> <span class='kw'>=</span> <span class='fu'>regionOpacity</span>(<span class='no'>x</span>), <span class='kw'>map.types</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>), <span class='kw'>popup</span> <span class='kw'>=</span> <span class='fu'><a href='popup.html'>popupTable</a></span>(<span class='no'>x</span>),
-  <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='fu'>deparse</span>(<span class='fu'>substitute</span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>parent.frame</span>())),
-  <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'>makeLabels</span>(<span class='no'>x</span>, <span class='no'>zcol</span>), <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>),
-  <span class='kw'>legend.opacity</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>homebutton</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>native.crs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'>makeLabels</span>(<span class='no'>x</span>, <span class='no'>zcol</span>),
+  <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>), <span class='kw'>legend.opacity</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>homebutton</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>native.crs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='fu'>mapviewHighlightOptions</span>(<span class='no'>x</span>, <span class='no'>alpha.regions</span>, <span class='no'>lwd</span>),
   <span class='kw'>maxpoints</span> <span class='kw'>=</span> <span class='fu'>getMaxFeatures</span>(<span class='no'>x</span>), <span class='no'>...</span>)
 
@@ -146,8 +145,7 @@ spatial object(s) on top of the specified base maps.</p>
   <span class='kw'>col.regions</span> <span class='kw'>=</span> <span class='fu'>standardColRegions</span>(<span class='no'>x</span>), <span class='kw'>at</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>na.color</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>), <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fu'>lineWidth</span>(<span class='no'>x</span>),
   <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>alpha.regions</span> <span class='kw'>=</span> <span class='fu'>regionOpacity</span>(<span class='no'>x</span>), <span class='kw'>map.types</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>), <span class='kw'>popup</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='fu'>deparse</span>(<span class='fu'>substitute</span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>parent.frame</span>(<span class='fl'>1</span>))),
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>), <span class='kw'>popup</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'>makeLabels</span>(<span class='no'>x</span>), <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>),
   <span class='kw'>legend.opacity</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>homebutton</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>native.crs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='fu'>mapviewHighlightOptions</span>(<span class='no'>x</span>, <span class='no'>alpha.regions</span>, <span class='no'>lwd</span>),
@@ -205,28 +203,25 @@ spatial object(s) on top of the specified base maps.</p>
 <span class='fu'>mapView</span>(<span class='no'>x</span>, <span class='kw'>zcol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for SpatialPointsDataFrame</span>
-<span class='fu'>mapView</span>(<span class='no'>x</span>,
-  <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='fu'>deparse</span>(<span class='fu'>substitute</span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>parent.frame</span>())), <span class='no'>...</span>)
+<span class='fu'>mapView</span>(<span class='no'>x</span>, <span class='kw'>zcol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for SpatialPoints</span>
-<span class='fu'>mapView</span>(<span class='no'>x</span>, <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='fu'>deparse</span>(<span class='fu'>substitute</span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span>
-  <span class='fu'>parent.frame</span>())), <span class='no'>...</span>)
+<span class='fu'>mapView</span>(<span class='no'>x</span>, <span class='kw'>zcol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for SpatialPolygonsDataFrame</span>
-<span class='fu'>mapView</span>(<span class='no'>x</span>,
-  <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='fu'>deparse</span>(<span class='fu'>substitute</span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>parent.frame</span>())), <span class='no'>...</span>)
+<span class='fu'>mapView</span>(<span class='no'>x</span>, <span class='kw'>zcol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for SpatialPolygons</span>
-<span class='fu'>mapView</span>(<span class='no'>x</span>, <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='fu'>deparse</span>(<span class='fu'>substitute</span>(<span class='no'>x</span>, <span class='kw'>env</span>
-  <span class='kw'>=</span> <span class='fu'>parent.frame</span>())), <span class='no'>...</span>)
+<span class='fu'>mapView</span>(<span class='no'>x</span>, <span class='kw'>zcol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for SpatialLinesDataFrame</span>
-<span class='fu'>mapView</span>(<span class='no'>x</span>,
-  <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='fu'>deparse</span>(<span class='fu'>substitute</span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>parent.frame</span>())), <span class='no'>...</span>)
+<span class='fu'>mapView</span>(<span class='no'>x</span>, <span class='kw'>zcol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>)
 
 <span class='co'># S4 method for SpatialLines</span>
-<span class='fu'>mapView</span>(<span class='no'>x</span>, <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='fu'>deparse</span>(<span class='fu'>substitute</span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span>
-  <span class='fu'>parent.frame</span>())), <span class='no'>...</span>)</pre>
+<span class='fu'>mapView</span>(<span class='no'>x</span>, <span class='kw'>zcol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">

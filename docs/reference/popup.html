@@ -179,32 +179,32 @@ Type <code>html</code> embeds via <code>"&lt;iframe src = ..."</code>.
   <span class='co'>### one image</span>
   <span class='fu'>library</span>(<span class='no'>sf</span>)
 
-  <span class='no'>pnt</span> <span class='kw'>&lt;-</span> <span class='fu'>st_as_sf</span>(<span class='fu'>data.frame</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>174.764474</span>, <span class='kw'>y</span> <span class='kw'>=</span> -<span class='fl'>36.877245</span>),
+  <span class='no'>pnt</span> <span class='kw'>=</span> <span class='fu'>st_as_sf</span>(<span class='fu'>data.frame</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>174.764474</span>, <span class='kw'>y</span> <span class='kw'>=</span> -<span class='fl'>36.877245</span>),
                   <span class='kw'>coords</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"x"</span>, <span class='st'>"y"</span>),
                   <span class='kw'>crs</span> <span class='kw'>=</span> <span class='fl'>4326</span>)
 
-  <span class='no'>img</span> <span class='kw'>&lt;-</span> <span class='st'>"http://bit.ly/1TVwRiR"</span>
+  <span class='no'>img</span> <span class='kw'>=</span> <span class='st'>"http://bit.ly/1TVwRiR"</span>
 
   <span class='fu'><a href='mapView.html'>mapview</a></span>(<span class='no'>pnt</span>, <span class='kw'>popup</span> <span class='kw'>=</span> <span class='fu'>popupImage</span>(<span class='no'>img</span>, <span class='kw'>src</span> <span class='kw'>=</span> <span class='st'>"remote"</span>))
 
   <span class='co'>### multiple file (types)</span>
   <span class='fu'>library</span>(<span class='no'>sp</span>)
-  <span class='no'>images</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='no'>img</span>,
+  <span class='no'>images</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='no'>img</span>,
               <span class='st'>"https://upload.wikimedia.org/wikipedia/commons/1/1b/R_logo.svg"</span>,
               <span class='st'>"https://www.r-project.org/logo/Rlogo.png"</span>,
               <span class='st'>"https://upload.wikimedia.org/wikipedia/commons/d/d6/MeanMonthlyP.gif"</span>)
 
-  <span class='no'>pt4</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>jitter</span>(<span class='fu'>rep</span>(<span class='fl'>174.764474</span>, <span class='fl'>4</span>), <span class='kw'>factor</span> <span class='kw'>=</span> <span class='fl'>0.01</span>),
+  <span class='no'>pt4</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>jitter</span>(<span class='fu'>rep</span>(<span class='fl'>174.764474</span>, <span class='fl'>4</span>), <span class='kw'>factor</span> <span class='kw'>=</span> <span class='fl'>0.01</span>),
                     <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>jitter</span>(<span class='fu'>rep</span>(-<span class='fl'>36.877245</span>, <span class='fl'>4</span>), <span class='kw'>factor</span> <span class='kw'>=</span> <span class='fl'>0.01</span>))
-  <span class='fu'>coordinates</span>(<span class='no'>pt4</span>) <span class='kw'>&lt;-</span> ~ <span class='no'>x</span> + <span class='no'>y</span>
-  <span class='fu'>proj4string</span>(<span class='no'>pt4</span>) <span class='kw'>&lt;-</span> <span class='st'>"+init=epsg:4326"</span>
+  <span class='fu'>coordinates</span>(<span class='no'>pt4</span>) <span class='kw'>=</span> ~ <span class='no'>x</span> + <span class='no'>y</span>
+  <span class='fu'>proj4string</span>(<span class='no'>pt4</span>) <span class='kw'>=</span> <span class='st'>"+init=epsg:4326"</span>
 
   <span class='fu'><a href='mapView.html'>mapview</a></span>(<span class='no'>pt4</span>, <span class='kw'>popup</span> <span class='kw'>=</span> <span class='fu'>lapply</span>(<span class='no'>images</span>, <span class='no'>popupImage</span>)) <span class='co'># NOTE the gif animation</span>
 
   <span class='co'>## local images -----</span>
-  <span class='no'>pnt</span> <span class='kw'>&lt;-</span> <span class='fu'>st_as_sf</span>(<span class='fu'>data.frame</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>174.764474</span>, <span class='kw'>y</span> <span class='kw'>=</span> -<span class='fl'>36.877245</span>),
+  <span class='no'>pnt</span> <span class='kw'>=</span> <span class='fu'>st_as_sf</span>(<span class='fu'>data.frame</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>174.764474</span>, <span class='kw'>y</span> <span class='kw'>=</span> -<span class='fl'>36.877245</span>),
                   <span class='kw'>coords</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"x"</span>, <span class='st'>"y"</span>), <span class='kw'>crs</span> <span class='kw'>=</span> <span class='fl'>4326</span>)
-  <span class='no'>img</span> <span class='kw'>&lt;-</span> <span class='fu'>system.file</span>(<span class='st'>"img"</span>,<span class='st'>"Rlogo.png"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"png"</span>)
+  <span class='no'>img</span> <span class='kw'>=</span> <span class='fu'>system.file</span>(<span class='st'>"img"</span>,<span class='st'>"Rlogo.png"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"png"</span>)
   <span class='fu'><a href='mapView.html'>mapview</a></span>(<span class='no'>pnt</span>, <span class='kw'>popup</span> <span class='kw'>=</span> <span class='fu'>popupImage</span>(<span class='no'>img</span>))
 })
 
@@ -214,37 +214,37 @@ Type <code>html</code> embeds via <code>"&lt;iframe src = ..."</code>.
   <span class='fu'>library</span>(<span class='no'>sp</span>)
 
   <span class='fu'>data</span>(<span class='no'>meuse</span>)
-  <span class='fu'>coordinates</span>(<span class='no'>meuse</span>) <span class='kw'>&lt;-</span> ~ <span class='no'>x</span> + <span class='no'>y</span>
-  <span class='fu'>proj4string</span>(<span class='no'>meuse</span>) <span class='kw'>&lt;-</span> <span class='fu'>CRS</span>(<span class='st'>"+init=epsg:28992"</span>)
+  <span class='fu'>coordinates</span>(<span class='no'>meuse</span>) <span class='kw'>=</span> ~ <span class='no'>x</span> + <span class='no'>y</span>
+  <span class='fu'>proj4string</span>(<span class='no'>meuse</span>) <span class='kw'>=</span> <span class='fu'>CRS</span>(<span class='st'>"+init=epsg:28992"</span>)
 
   <span class='co'>## create plots with points colored according to feature id</span>
   <span class='fu'>library</span>(<span class='no'>lattice</span>)
-  <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>xyplot</span>(<span class='no'>copper</span> ~ <span class='no'>cadmium</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>meuse</span>@<span class='kw'>data</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey"</span>)
-  <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>mget</span>(<span class='fu'>rep</span>(<span class='st'>"p"</span>, <span class='fu'>length</span>(<span class='no'>meuse</span>)))
+  <span class='no'>p</span> <span class='kw'>=</span> <span class='fu'>xyplot</span>(<span class='no'>copper</span> ~ <span class='no'>cadmium</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>meuse</span>@<span class='kw'>data</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey"</span>)
+  <span class='no'>p</span> <span class='kw'>=</span> <span class='fu'>mget</span>(<span class='fu'>rep</span>(<span class='st'>"p"</span>, <span class='fu'>length</span>(<span class='no'>meuse</span>)))
 
-  <span class='no'>clr</span> <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='st'>"grey"</span>, <span class='fu'>length</span>(<span class='no'>meuse</span>))
-  <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>lapply</span>(<span class='fl'>1</span>:<span class='fu'>length</span>(<span class='no'>p</span>), <span class='kw'>function</span>(<span class='no'>i</span>) {
-    <span class='no'>clr</span>[<span class='no'>i</span>] <span class='kw'>&lt;-</span> <span class='st'>"red"</span>
+  <span class='no'>clr</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='st'>"grey"</span>, <span class='fu'>length</span>(<span class='no'>meuse</span>))
+  <span class='no'>p</span> <span class='kw'>=</span> <span class='fu'>lapply</span>(<span class='fl'>1</span>:<span class='fu'>length</span>(<span class='no'>p</span>), <span class='kw'>function</span>(<span class='no'>i</span>) {
+    <span class='no'>clr</span>[<span class='no'>i</span>] <span class='kw'>=</span> <span class='st'>"red"</span>
     <span class='fu'>update</span>(<span class='no'>p</span><span class='kw'>[[</span><span class='no'>i</span>]], <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>clr</span>)
   })
 
   <span class='fu'><a href='mapView.html'>mapview</a></span>(<span class='no'>meuse</span>, <span class='kw'>popup</span> <span class='kw'>=</span> <span class='fu'>popupGraph</span>(<span class='no'>p</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"svg"</span>))
 
   <span class='co'>### example: png -----</span>
-  <span class='no'>pt</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>174.764474</span>, <span class='kw'>y</span> <span class='kw'>=</span> -<span class='fl'>36.877245</span>)
+  <span class='no'>pt</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>174.764474</span>, <span class='kw'>y</span> <span class='kw'>=</span> -<span class='fl'>36.877245</span>)
 
-  <span class='fu'>coordinates</span>(<span class='no'>pt</span>) <span class='kw'>&lt;-</span> ~ <span class='no'>x</span> + <span class='no'>y</span>
-  <span class='fu'>proj4string</span>(<span class='no'>pt</span>) <span class='kw'>&lt;-</span> <span class='st'>"+init=epsg:4326"</span>
+  <span class='fu'>coordinates</span>(<span class='no'>pt</span>) <span class='kw'>=</span> ~ <span class='no'>x</span> + <span class='no'>y</span>
+  <span class='fu'>proj4string</span>(<span class='no'>pt</span>) <span class='kw'>=</span> <span class='st'>"+init=epsg:4326"</span>
 
-  <span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>levelplot</span>(<span class='fu'>t</span>(<span class='no'>volcano</span>), <span class='kw'>col.regions</span> <span class='kw'>=</span> <span class='fu'>terrain.colors</span>(<span class='fl'>100</span>))
+  <span class='no'>p2</span> <span class='kw'>=</span> <span class='fu'>levelplot</span>(<span class='fu'>t</span>(<span class='no'>volcano</span>), <span class='kw'>col.regions</span> <span class='kw'>=</span> <span class='fu'>terrain.colors</span>(<span class='fl'>100</span>))
 
   <span class='fu'><a href='mapView.html'>mapview</a></span>(<span class='no'>pt</span>, <span class='kw'>popup</span> <span class='kw'>=</span> <span class='fu'>popupGraph</span>(<span class='no'>p2</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>300</span>, <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>400</span>))
 
   <span class='co'>### example: html -----</span>
   <span class='fu'>library</span>(<span class='no'>scatterD3</span>)
-  <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>lapply</span>(<span class='fl'>1</span>:<span class='fu'>length</span>(<span class='no'>meuse</span>), <span class='kw'>function</span>(<span class='no'>i</span>) {
-    <span class='no'>clr</span> <span class='kw'>&lt;-</span><span class='fu'>rep</span>(<span class='fl'>0</span>, <span class='fu'>length</span>(<span class='no'>meuse</span>))
-    <span class='no'>clr</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>&lt;-</span> <span class='fl'>1</span>
+  <span class='no'>p</span> <span class='kw'>=</span> <span class='fu'>lapply</span>(<span class='fl'>1</span>:<span class='fu'>length</span>(<span class='no'>meuse</span>), <span class='kw'>function</span>(<span class='no'>i</span>) {
+    <span class='no'>clr</span> <span class='kw'>=</span><span class='fu'>rep</span>(<span class='fl'>0</span>, <span class='fu'>length</span>(<span class='no'>meuse</span>))
+    <span class='no'>clr</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='fl'>1</span>
     <span class='fu'>scatterD3</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>meuse</span>$<span class='no'>cadmium</span>,
               <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>meuse</span>$<span class='no'>copper</span>,
               <span class='kw'>col_var</span> <span class='kw'>=</span> <span class='no'>clr</span>,

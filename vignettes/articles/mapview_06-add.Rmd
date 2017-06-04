@@ -21,6 +21,7 @@ library(mapview)
 - `addMouseCoordinates` - add a box with mouse position, projection information and zoom level information
 - `addLogo` - add images to maps
 - `addHomeButton` - add zoom-to button to a map
+- `addFeatures` - add features to a map, regardless of features type
 - `addLargeFeatures` - add largish data to a map that would usually make the map rather unresposnive
 
 Here are some examples:
@@ -85,6 +86,27 @@ leaflet() %>%
 
 ------
 
+## addFeatures
+
+is a type agnostic `add*` function which will call the approprate `leaflet::add*` function based on the provided feature type (points, lines, polygons). It is currently defined for handling objects from packages `sf` and `sp`. For `sf` objects, in addition to the standard feature types `POINT`, `MULTIPOINT`, `LINESTRING`, `MULTILINESTRING`, `POLYGON` and `MULTIPOLYGON` it can also handle features of type `sfc_GEOMETRY` which are a collection of mixed types.
+
+```{r addpols}
+leaflet() %>% addTiles() %>% addFeatures(breweries)
+```
+
+<br>
+
+The standard styling arguments for `leaflet::add*` functions can be used just like in the original `add*` function
+
+```{r addpols style}
+leaflet() %>% 
+  addTiles() %>% 
+  addFeatures(franconia, weight = 1, fillColor = "grey", color = "black",
+              opacity = 1, fillOpacity = 0.6)
+```
+
+------
+
 ## addLargeFeatures
 
 can be used to add largish data to a leaflet map. It is useful for data that is likely to be beyond the capabilities of the native leaflet `add*` functions. A rough estimate of size for which this is useful is somewhere beyond 50k features but not more than 300k features, depending on the feature complexity. Complexity can be seen (and in mapview internals isdefined) as the ratio of the number of points/vertices/nodes of features and the number of features. Therefore, defining a threshold based on the number of features is only valid for point features where the number of features equals the number of points. For lines and polygons these numbers can differ drastically. As a minimum, lines are made up of 2 points and polygons consist of at least 4 points in their simplest form. Thus, it is a matter of 'trial and error' whether `addLargeFeatures` will be able to handle the data you want to visualise. Rest assured though that it is in any case not performing worse than the standard leaflet functions.
@@ -101,7 +123,11 @@ data(crime)
 crime <- crime[complete.cases(crime), ]
 crime_sf <- st_as_sf(crime, coords = c("lon", "lat"), crs = "+init=epsg:4326")
 
-mapview(crime_sf, zcol = "offense", cex = 3)
+leaflet() %>%
+  addTiles() %>%
+  addLargeFeatures(crime_sf, readius = 3)
+
+# mapview(crime_sf, zcol = "offense", cex = 3)
 ```
 
 <br>

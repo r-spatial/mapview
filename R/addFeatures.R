@@ -99,7 +99,7 @@ addGeometry = function(map,
   lst = split(data, f = as.character(sf::st_dimension(data)))
   for (i in 1:length(lst)) {
     map = addFeatures(map,
-                      data = lst[[i]],
+                      data = sf::st_cast(lst[[i]]),
                       group = ls$group,
                       radius = ls$radius,
                       weight = ls$weight,

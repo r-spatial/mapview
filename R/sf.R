@@ -229,6 +229,14 @@ nNodes = function(x) {
   }))
 }
 
+nPoints = function(x) {
+  if (getGeometryType(x) == "pt") {
+    length(sf::st_geometry(x))
+  } else {
+    nNodes(sf::st_geometry(x))
+  }
+}
+
 #' count the number of points/vertices/nodes of sf objects
 #' @param x an sf/sfc object
 #'
@@ -242,9 +250,5 @@ nNodes = function(x) {
 #' nrow(breweries)
 #'
 npts = function(x) {
-  if (getGeometryType(x) == "pt") {
-    length(sf::st_geometry(x))
-  } else {
-    nNodes(sf::st_geometry(x))
-  }
+  do.call(sum, lapply(split(x, as.character(sf::st_dimension(x))), nPoints))
 }
