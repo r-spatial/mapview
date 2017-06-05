@@ -3,9 +3,9 @@
 #' @description
 #' This function provides a versatile interface to add components to a
 #' leaflet or mapview map. It takes functions such as "addMouseCoordinates"
-#' or \code{\link{addLayersControl}} and their repsective arguments and adds
+#' or \code{\link{addLayersControl}} and their respective arguments and adds
 #' them to the map. Arguments must be named. Functions can be plain or
-#' charatcer strings.
+#' character strings.
 #'
 #' @param map a mapview or leaflet object.
 #' @param ... functions and their arguments to add things to a map.
