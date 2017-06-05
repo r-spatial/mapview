@@ -61,7 +61,7 @@ addFeatures <- function(map,
 addPointFeatures <- function(map,
                              data,
                              ...) {
-  garnishMap(map, leaflet::addCircleMarkers, data = data,
+  garnishMap(map, leaflet::addCircleMarkers, data = sf::st_cast(data),
              popupOptions = popupOptions(maxWidth = 2000,
                                          closeOnClick = TRUE),
              ...)
@@ -71,7 +71,7 @@ addPointFeatures <- function(map,
 addLineFeatures <- function(map,
                             data,
                             ...) {
-  garnishMap(map, leaflet::addPolylines, data = data,
+  garnishMap(map, leaflet::addPolylines, data = sf::st_cast(data),
              popupOptions = popupOptions(maxWidth = 2000,
                                          closeOnClick = TRUE),
              ...)
@@ -81,7 +81,7 @@ addLineFeatures <- function(map,
 addPolygonFeatures <- function(map,
                                data,
                                ...) {
-  garnishMap(map, leaflet::addPolygons, data = data,
+  garnishMap(map, leaflet::addPolygons, data = sf::st_cast(data),
              popupOptions = popupOptions(maxWidth = 2000,
                                          closeOnClick = TRUE),
              ...)
@@ -93,22 +93,27 @@ addGeometry = function(map,
                        ...) {
   ls = list(...)
   if (!is.null(ls$label))
-    ls$label = split(ls$label, f = as.character(sf::st_dimension(data)))
+    label = split(ls$label, f = as.character(sf::st_dimension(data)))
   if (!is.null(ls$popup))
-    ls$popup = split(ls$popup, f = as.character(sf::st_dimension(data)))
+    popup = split(ls$popup, f = as.character(sf::st_dimension(data)))
   lst = split(data, f = as.character(sf::st_dimension(data)))
   for (i in 1:length(lst)) {
-    map = addFeatures(map,
-                      data = sf::st_cast(lst[[i]]),
-                      group = ls$group,
-                      radius = ls$radius,
-                      weight = ls$weight,
-                      opacity = ls$opacity,
-                      fillOpacity = ls$fillOpacity,
-                      color = ls$color,
-                      fillColor = ls$fillColor,
-                      popup = ls$popup[[i]],
-                      label = ls$label[[i]])
+    ls$map = map
+    ls$data = sf::st_cast(lst[[i]])
+    if (!is.null(ls$label)) ls$label = label[[i]]
+    if (!is.null(ls$popup)) ls$popup = popup[[i]]
+    map = do.call(addFeatures, ls)
+      # addFeatures(map,
+      #                 data = sf::st_cast(lst[[i]]),
+      #                 group = ls$group,
+      #                 radius = ls$radius,
+      #                 weight = ls$weight,
+      #                 opacity = ls$opacity,
+      #                 fillOpacity = ls$fillOpacity,
+      #                 color = ls$color,
+      #                 fillColor = ls$fillColor,
+      #                 popup = ls$popup[[i]],
+      #                 label = ls$label[[i]])
   }
   return(map)
 }
