@@ -1,4 +1,4 @@
-mapview 2.0.9
+mapview 2.0.10
 
 new features: 
 
@@ -12,6 +12,7 @@ bugfixes:
   * fixed #79: colnames of popupTables are now converted to utf-8.
   * fixed #78: respect explicit setting of 'layer.name' argument.
   * included NEWS file as R-help doesn't render NEWS.md
+  * highlight now respects alpha/alpha.regions = 0
 
 mapview 2.0.1
 
