@@ -372,7 +372,7 @@ setMethod('mapView', signature(x = 'sf'),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+                   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
                    ...) {
 
@@ -473,7 +473,7 @@ setMethod('mapView', signature(x = 'sfc'),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+                   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
                    ...) {
 
@@ -531,7 +531,7 @@ setMethod('mapView', signature(x = 'XY'),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+                   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
                    ...) {
 
@@ -687,6 +687,7 @@ setMethod('mapView', signature(x = 'list'),
                    highlight = lapply(seq(x), function(i) {
                      mapviewHighlightOptions(x[[i]],
                                              alpha.regions = alpha.regions,
+                                             alpha = alpha,
                                              lwd = lwd[[i]])
                    }),
                    maxpoints = NULL, #lapply(x, getMaxFeatures),

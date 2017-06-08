@@ -14,7 +14,7 @@ highlightLineFeatures <- function(lwd = 2,
                                   sendToBack = FALSE) {
 
   if (length(fillColor) != 1) fillColor <- color
-  weight <- lwd + 2
+  weight <- ceiling(lwd * 1.5)
 
   return(
     dropNULL(
@@ -38,11 +38,12 @@ highlightLineFeatures <- function(lwd = 2,
 
 ### polygon features ======================================================
 highlightPolygonFeatures <- function(alpha.regions = 0.6,
+                                     alpha = 0.9,
                                      lwd = 2,
                                      stroke = TRUE,
                                      color = NULL,
                                      weight = 2,
-                                     opacity = 1,
+                                     opacity = alpha,
                                      fill = NULL,
                                      fillColor = NULL,
                                      fillOpacity = 0.7,
@@ -52,12 +53,12 @@ highlightPolygonFeatures <- function(alpha.regions = 0.6,
 
   if (length(fillColor) != 1) fillColor <- color
   if (alpha.regions >= 0.8) {
-    fillOpacity <- alpha.regions - 0.2
+    fillOpacity <- alpha.regions * 0.8
   } else {
-    fillOpacity <- alpha.regions + 0.2
+    fillOpacity <- alpha.regions * 1.4
   }
 
-  weight <- lwd + 1
+  weight <- ifelse(alpha == 0, 0, ceiling(lwd * 1.5))
 
   return(
     dropNULL(
@@ -112,7 +113,7 @@ highlightPointFeatures <- function(stroke = NULL,
 
 
 ### higlight options
-mapviewHighlightOptions <- function(x, alpha.regions, lwd) {
+mapviewHighlightOptions <- function(x, alpha.regions, alpha, lwd) {
 
   if (inherits(x, "Spatial")) {
     ls <- switch(class(x),
@@ -128,15 +129,15 @@ mapviewHighlightOptions <- function(x, alpha.regions, lwd) {
                  sfc_MULTIPOINT      = highlightPointFeatures(),
                  sfc_LINESTRING      = highlightLineFeatures(lwd),
                  sfc_MULTILINESTRING = highlightLineFeatures(lwd),
-                 sfc_POLYGON         = highlightPolygonFeatures(alpha.regions, lwd),
-                 sfc_MULTIPOLYGON    = highlightPolygonFeatures(alpha.regions, lwd),
+                 sfc_POLYGON         = highlightPolygonFeatures(alpha.regions, alpha, lwd),
+                 sfc_MULTIPOLYGON    = highlightPolygonFeatures(alpha.regions, alpha, lwd),
                  sfc_GEOMETRY        = NULL, #mapviewHighlightOptions(st_cast(x), alpha.regions, lwd),
                  POINT               = highlightPointFeatures(),
                  MULTIPOINT          = highlightPointFeatures(),
                  LINESTRING          = highlightLineFeatures(lwd),
                  MULTILINESTRING     = highlightLineFeatures(lwd),
-                 POLYGON             = highlightPolygonFeatures(alpha.regions, lwd),
-                 MULTIPOLYGON        = highlightPolygonFeatures(alpha.regions, lwd))
+                 POLYGON             = highlightPolygonFeatures(alpha.regions, alpha, lwd),
+                 MULTIPOLYGON        = highlightPolygonFeatures(alpha.regions, alpha, lwd))
   }
 
   return(ls)

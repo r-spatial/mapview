@@ -64,7 +64,7 @@
   layer.name = NULL, label = makeLabels(x, zcol),
   legend = mapviewGetOption("legend"), legend.opacity = 1,
   homebutton = TRUE, native.crs = FALSE,
-  highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+  highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
 \S4method{mapView}{sfc}(x, map = NULL, color = standardColor(x),
@@ -75,7 +75,7 @@
   layer.name = deparse(substitute(x, env = parent.frame(2))),
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
-  highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+  highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
 \S4method{mapView}{XY}(x, map = NULL, color = standardColor(x),
@@ -85,7 +85,7 @@
   verbose = mapviewGetOption("verbose"), popup = NULL, layer.name = NULL,
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
-  highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+  highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
 \S4method{mapView}{sfc_POINT}(x, ...)
@@ -117,7 +117,7 @@
   legend = mapviewGetOption("legend"), legend.opacity = 1,
   homebutton = TRUE, native.crs = FALSE, highlight = lapply(seq(x),
   function(i) {     mapviewHighlightOptions(x[[i]], alpha.regions =
-  alpha.regions, lwd = lwd[[i]]) }), maxpoints = NULL, ...)
+  alpha.regions, alpha = alpha, lwd = lwd[[i]]) }), maxpoints = NULL, ...)
 
 \S4method{mapview}{ANY}(...)
 
