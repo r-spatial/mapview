@@ -122,9 +122,6 @@ leaflet_sfc <- function(x,
                         attributes = NULL,
                         ...) {
   if (!is.null(names(x))) {
-    warning(sprintf('attr(%s, "names") is not NULL', layer.name),
-            "\n  these names will cause problems with leaflet rendering,",
-            " thus setting names to NULL")
     names(x) = NULL
   }
   if (inherits(x, "XY")) x = sf::st_cast(st_sfc(x)) else x = sf::st_cast(x)
