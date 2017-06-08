@@ -57,12 +57,14 @@ addFeatures <- function(map,
 ### these functions call the appropriate leaflet::add* functions
 ### depending on geometry type. Additional parameters can be passed via ...
 
+mw = 800
+
 ### Point Features ========================================================
 addPointFeatures <- function(map,
                              data,
                              ...) {
   garnishMap(map, leaflet::addCircleMarkers, data = sf::st_cast(data),
-             popupOptions = popupOptions(maxWidth = 2000,
+             popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
              ...)
 }
@@ -72,7 +74,7 @@ addLineFeatures <- function(map,
                             data,
                             ...) {
   garnishMap(map, leaflet::addPolylines, data = sf::st_cast(data),
-             popupOptions = popupOptions(maxWidth = 2000,
+             popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
              ...)
 }
@@ -82,7 +84,7 @@ addPolygonFeatures <- function(map,
                                data,
                                ...) {
   garnishMap(map, leaflet::addPolygons, data = sf::st_cast(data),
-             popupOptions = popupOptions(maxWidth = 2000,
+             popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
              ...)
 }
