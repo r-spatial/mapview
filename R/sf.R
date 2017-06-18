@@ -18,6 +18,7 @@ leaflet_sf <- function(x,
                        col.regions,
                        at,
                        na.color,
+                       na.alpha,
                        map.types,
                        verbose,
                        popup,
@@ -67,6 +68,13 @@ leaflet_sf <- function(x,
                                    col.regions = col.regions,
                                    at = at,
                                    na.color = na.color)
+  if (!is.null(zcol) & !is.null(na.alpha)) {
+    na.alpha = ifelse(na.alpha == 0, 0.01, na.alpha)
+    alpha = rep(alpha, nrow(x))
+    alpha[is.na(x[[zcol]])] = na.alpha
+    alpha.regions = rep(alpha.regions, nrow(x))
+    alpha.regions[is.na(x[[zcol]])] = na.alpha
+  }
 
   leaflet_sfc(sf::st_geometry(x),
               map = map,

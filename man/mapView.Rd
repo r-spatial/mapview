@@ -59,9 +59,9 @@
   color = mapviewGetOption("vector.palette"),
   col.regions = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
-  alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
-  verbose = mapviewGetOption("verbose"), popup = popupTable(x),
-  layer.name = NULL, label = makeLabels(x, zcol),
+  alpha = 0.9, alpha.regions = regionOpacity(x), na.alpha = NULL,
+  map.types = NULL, verbose = mapviewGetOption("verbose"),
+  popup = popupTable(x), layer.name = NULL, label = makeLabels(x, zcol),
   legend = mapviewGetOption("legend"), legend.opacity = 1,
   homebutton = TRUE, native.crs = FALSE,
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
@@ -168,7 +168,7 @@ Per default these are calculated based on the supplied raster* object.}
 see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
 for available options.}
 
-\item{alpha.regions}{opacity of the fills or the raster layer(s)}
+\item{alpha.regions}{opacity of the fills of points, polygons or raster layer(s)}
 
 \item{legend}{should a legend be plotted}
 
@@ -207,7 +207,9 @@ of the column(s) to be used for defining the size of circles}
 
 \item{lwd}{line width}
 
-\item{alpha}{opacity of the lines or points}
+\item{alpha}{opacity of lines}
+
+\item{na.alpha}{opacity of missing values}
 
 \item{popup}{a \code{list} of HTML strings with the popup contents, usually
 created from \code{\link{popupTable}}. See \code{\link{addControl}} for

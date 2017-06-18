@@ -42,8 +42,9 @@ if ( !isGeneric('mapView') ) {
 #' @param map.types character spcifications for the base maps.
 #' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
 #' for available options.
-#' @param alpha opacity of the lines or points
-#' @param alpha.regions opacity of the fills or the raster layer(s)
+#' @param alpha opacity of lines
+#' @param alpha.regions opacity of the fills of points, polygons or raster layer(s)
+#' @param na.alpha opacity of missing values
 #' @param legend should a legend be plotted
 #' @param legend.opacity opacity of the legend
 #' @param trim should the raster be trimmed in case there are NAs on the egdes
@@ -363,6 +364,7 @@ setMethod('mapView', signature(x = 'sf'),
                    lwd = lineWidth(x),
                    alpha = 0.9,
                    alpha.regions = regionOpacity(x),
+                   na.alpha = NULL,
                    map.types = NULL,
                    verbose = mapviewGetOption("verbose"),
                    popup = popupTable(x),
@@ -412,6 +414,7 @@ setMethod('mapView', signature(x = 'sf'),
                            lwd = lwd,
                            alpha = alpha,
                            alpha.regions = alpha.regions,
+                           na.alpha = na.alpha,
                            map.types = map.types,
                            verbose = verbose,
                            popup = popup,
