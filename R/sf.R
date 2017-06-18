@@ -69,7 +69,7 @@ leaflet_sf <- function(x,
                                    at = at,
                                    na.color = na.color)
   if (!is.null(zcol) & !is.null(na.alpha)) {
-    na.alpha = ifelse(na.alpha == 0, 0.01, na.alpha)
+    na.alpha = ifelse(na.alpha == 0, 0.001, na.alpha)
     alpha = rep(alpha, nrow(x))
     alpha[is.na(x[[zcol]])] = na.alpha
     alpha.regions = rep(alpha.regions, nrow(x))
