@@ -391,7 +391,10 @@ setMethod('mapView', signature(x = 'sf'),
                            col.regions = col.regions,
                            at = at,
                            na.color = na.color,
-                           popup = popup)
+                           popup = popup,
+                           alpha = alpha,
+                           alpha.regions = alpha.regions,
+                           na.alpha = na.alpha)
 
               if (is.function(tmp)) {
                 x <- tmp()$obj
@@ -399,6 +402,8 @@ setMethod('mapView', signature(x = 'sf'),
                 col.regions <- tmp()$col.regions
                 popup <- tmp()$popup
                 label <- tmp()$labs
+                alpha = tmp()$alpha
+                alpha.regions = tmp()$alpha.regions
               }
 
               if (!inherits(x, "list")) {
@@ -441,6 +446,8 @@ setMethod('mapView', signature(x = 'sf'),
                         legend = legend,
                         map.types = map.types,
                         layer.name = layer.name,
+                        alpha = alpha,
+                        alpha.regions = alpha.regions,
                         ...)
 
               }
@@ -671,7 +678,7 @@ setMethod('mapView', signature(x = 'list'),
                    na.color = mapviewGetOption("na.color"),
                    cex = 6,
                    lwd = lapply(x, lineWidth),
-                   alpha = 1,
+                   alpha = 0.9,
                    alpha.regions = 0.6,
                    map.types = mapviewGetOption("basemaps"),
                    verbose = mapviewGetOption("verbose"),
@@ -716,6 +723,12 @@ setMethod('mapView', signature(x = 'list'),
             #   label <- rep(list(label), length(x))
             if (length(popup) != length(x))
               popup <- rep(list(popup), length(x))
+            if (length(alpha) != length(x))
+              alpha <- rep(list(alpha), length(x))
+            if (length(alpha.regions) != length(x))
+              alpha.regions <- rep(list(alpha.regions), length(x))
+
+
 
             if (mapviewGetOption("platform") == "leaflet") {
               m <- Reduce("+", lapply(seq(x), function(i) {
@@ -735,6 +748,8 @@ setMethod('mapView', signature(x = 'list'),
                           lwd = lwd[[i]],
                           highlight = highlight[[i]],
                           map.types = map.types,
+                          alpha = alpha[[i]],
+                          alpha.regions = alpha.regions[[i]],
                           ...)
                   } else {
                     mapView(x = sf::st_cast(x[[i]]),

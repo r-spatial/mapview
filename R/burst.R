@@ -6,6 +6,9 @@ burst <- function(x,
                   at,
                   na.color,
                   popup,
+                  alpha,
+                  alpha.regions,
+                  na.alpha,
                   ...) {
 
   if (is.character(burst)) {
@@ -21,7 +24,10 @@ burst <- function(x,
                              col.regions = col.regions,
                              at = at,
                              na.color = na.color,
-                             popup = popup)
+                             popup = popup,
+                             alpha = alpha,
+                             alpha.regions = alpha.regions,
+                             na.alpha = na.alpha)
   } else if (!is.null(zcol) & burst & length(zcol) == 1) {
     function() burstByRow(x = x,
                           zcol = zcol,
@@ -38,7 +44,10 @@ burst <- function(x,
                              at = at,
                              na.color = na.color,
                              popup = popup,
-                             nms = nms)
+                             nms = nms,
+                             alpha = alpha,
+                             alpha.regions = alpha.regions,
+                             na.alpha = na.alpha)
   }
 
 }
@@ -51,6 +60,9 @@ burstByColumn <- function(x,
                           na.color,
                           popup = popupTable(x),
                           nms = NULL,
+                          alpha,
+                          alpha.regions,
+                          na.alpha,
                           ...) {
 
   if (is.null(nms)) nms <- colnames(sf2DataFrame(x, drop_sf_column = TRUE))
@@ -75,16 +87,30 @@ burstByColumn <- function(x,
     makeLabels(x, zcol = i)
   })
 
+  alpha_lst = lapply(nms, function(i) {
+    na.alpha = ifelse(na.alpha == 0, 0.001, na.alpha)
+    alpha = rep(alpha, length(x[[i]]))
+    alpha[is.na(x[[i]])] = na.alpha
+    return(alpha)
+  })
+
+  alpharegions_lst = lapply(nms, function(i) {
+    na.alpha = ifelse(na.alpha == 0, 0.001, na.alpha)
+    alpha.regions = rep(alpha.regions, length(x[[i]]))
+    alpha.regions[is.na(x[[i]])] = na.alpha
+    return(alpha.regions)
+  })
+
   return(list(obj = x_lst,
               color = color_lst,
               col.regions = colregions_lst,
               popup = popup,
-              labs = labs))
+              labs = labs,
+              alpha = alpha_lst,
+              alpha.regions = alpharegions_lst))
 
 }
 
-# implement as.factor!!!
-# implement legend
 
 burstByRow <- function(x,
                        zcol,
