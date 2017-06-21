@@ -202,7 +202,7 @@ extendLimits <- function(lim, length = 1, prop = 0.07) {
                as.numeric(diff(lim))) / (2 * as.numeric(diff(lim)))
   }
   if (lim[1] == lim[2])
-    lim + 0.05 * c(-length, length)
+    lim + 0.005 * c(-length, length)
   else {
     d <- diff(as.numeric(lim))
     lim + prop * d * c(-1, 1)
