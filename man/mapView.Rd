@@ -108,7 +108,7 @@
   color = mapviewGetOption("vector.palette"),
   col.regions = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lapply(x,
-  lineWidth), alpha = 1, alpha.regions = 0.6,
+  lineWidth), alpha = 0.9, alpha.regions = 0.6,
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), popup = lapply(seq(x), function(i)
   {     popupTable(x[[i]]) }), layer.name = deparse(substitute(x, env =
