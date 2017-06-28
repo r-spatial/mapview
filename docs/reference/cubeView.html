@@ -88,7 +88,7 @@ freely rotated so that Hovmoller views of x - z and y - z are possible.</p>
     
 
     <pre class="usage"><span class='fu'>cubeView</span>(<span class='no'>x</span>, <span class='no'>at</span>, <span class='kw'>col.regions</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"raster.palette"</span>),
-  <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>na.color</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>), <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>cubeview</span>(<span class='no'>...</span>)</pre>
     
@@ -109,6 +109,10 @@ freely rotated so that Hovmoller views of x - z and y - z are possible.</p>
       <td><p>color (palette).See <code>levelplot</code> for details.</p></td>
     </tr>
     <tr>
+      <th>na.color</th>
+      <td><p>color for missing values.</p></td>
+    </tr>
+    <tr>
       <th>legend</th>
       <td><p>logical. Whether to plot a legend.</p></td>
     </tr>
@@ -125,7 +129,7 @@ x-axis: LEFT / RIGHT arrow key
 y-axis: DOWN / UP arrow key 
 z-axis: PAGE_DOWN / PAGE_UP key</p>
 <p>Note: In RStudio cubeView may show a blank viewer window. In this case open the view in
-a web-browser (RStudio button at viewer: "show in new window").#'</p>
+a web-browser (RStudio button at viewer: "show in new window").</p>
 <p>Note: Because of key focus issues key-press-events are not always
 recognised within RStudio at Windows. In this case open the view in
 a web-browser (RStudio button at viewer: "show in new window").</p>

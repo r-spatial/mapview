@@ -81,32 +81,32 @@ leaflet() \%>\% addCircleMarkers(data = breweries,
 ### one image
 library(sf)
 
-pnt <- st_as_sf(data.frame(x = 174.764474, y = -36.877245),
+pnt = st_as_sf(data.frame(x = 174.764474, y = -36.877245),
                 coords = c("x", "y"),
                 crs = 4326)
 
-img <- "http://bit.ly/1TVwRiR"
+img = "http://bit.ly/1TVwRiR"
 
 mapview(pnt, popup = popupImage(img, src = "remote"))
 
 ### multiple file (types)
 library(sp)
-images <- c(img,
+images = c(img,
             "https://upload.wikimedia.org/wikipedia/commons/1/1b/R_logo.svg",
             "https://www.r-project.org/logo/Rlogo.png",
             "https://upload.wikimedia.org/wikipedia/commons/d/d6/MeanMonthlyP.gif")
 
-pt4 <- data.frame(x = jitter(rep(174.764474, 4), factor = 0.01),
+pt4 = data.frame(x = jitter(rep(174.764474, 4), factor = 0.01),
                   y = jitter(rep(-36.877245, 4), factor = 0.01))
-coordinates(pt4) <- ~ x + y
-proj4string(pt4) <- "+init=epsg:4326"
+coordinates(pt4) = ~ x + y
+proj4string(pt4) = "+init=epsg:4326"
 
 mapview(pt4, popup = lapply(images, popupImage)) # NOTE the gif animation
 
 ## local images -----
-pnt <- st_as_sf(data.frame(x = 174.764474, y = -36.877245),
+pnt = st_as_sf(data.frame(x = 174.764474, y = -36.877245),
                 coords = c("x", "y"), crs = 4326)
-img <- system.file("img","Rlogo.png",package="png")
+img = system.file("img","Rlogo.png",package="png")
 mapview(pnt, popup = popupImage(img))
 }
 
@@ -116,37 +116,37 @@ mapview(pnt, popup = popupImage(img))
 library(sp)
 
 data(meuse)
-coordinates(meuse) <- ~ x + y
-proj4string(meuse) <- CRS("+init=epsg:28992")
+coordinates(meuse) = ~ x + y
+proj4string(meuse) = CRS("+init=epsg:28992")
 
 ## create plots with points colored according to feature id
 library(lattice)
-p <- xyplot(copper ~ cadmium, data = meuse@data, col = "grey")
-p <- mget(rep("p", length(meuse)))
+p = xyplot(copper ~ cadmium, data = meuse@data, col = "grey")
+p = mget(rep("p", length(meuse)))
 
-clr <- rep("grey", length(meuse))
-p <- lapply(1:length(p), function(i) {
-  clr[i] <- "red"
+clr = rep("grey", length(meuse))
+p = lapply(1:length(p), function(i) {
+  clr[i] = "red"
   update(p[[i]], col = clr)
 })
 
 mapview(meuse, popup = popupGraph(p, type = "svg"))
 
 ### example: png -----
-pt <- data.frame(x = 174.764474, y = -36.877245)
+pt = data.frame(x = 174.764474, y = -36.877245)
 
-coordinates(pt) <- ~ x + y
-proj4string(pt) <- "+init=epsg:4326"
+coordinates(pt) = ~ x + y
+proj4string(pt) = "+init=epsg:4326"
 
-p2 <- levelplot(t(volcano), col.regions = terrain.colors(100))
+p2 = levelplot(t(volcano), col.regions = terrain.colors(100))
 
 mapview(pt, popup = popupGraph(p2, width = 300, height = 400))
 
 ### example: html -----
 library(scatterD3)
-p <- lapply(1:length(meuse), function(i) {
-  clr <-rep(0, length(meuse))
-  clr[[i]] <- 1
+p = lapply(1:length(meuse), function(i) {
+  clr =rep(0, length(meuse))
+  clr[[i]] = 1
   scatterD3(x = meuse$cadmium,
             y = meuse$copper,
             col_var = clr,

@@ -84,9 +84,26 @@
     </div>
 
     <div class="contents">
-    <div id="mapview-1-2-79" class="section level2">
+    <div id="mapview-2-0-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#mapview-1-2-79" class="anchor"></a>mapview 1.2.79</h2>
+<a href="#mapview-2-0-7" class="anchor"></a>mapview 2.0.7</h2>
+<p>new features:</p>
+<ul>
+<li>plainview/cubeview now respects/has gained argument na.color.</li>
+<li>mapview now supports st_GEOMETRY with truely mixed feature types (e.g. LINESTRING and POLYGON) - fixes #85</li>
+<li>addFeatures: one function to add them all. Type agnostic version of leaflet::add* functions for simple features objects.</li>
+</ul>
+<p>bugfixes:</p>
+<ul>
+<li>deleted obsolete data.table import.</li>
+<li>fixed #79: colnames of popupTables are now converted to utf-8.</li>
+<li>fixed #78: respect explicit setting of ‘layer.name’ argument.</li>
+<li>included NEWS file as R-help doesn’t render NEWS.md</li>
+</ul>
+</div>
+    <div id="mapview-2-0-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#mapview-2-0-1" class="anchor"></a>mapview 2.0.1</h2>
 <p>new features:</p>
 <ul>
 <li>addMouseCoordinates has gained argument ‘style’ to specify whether to show ‘basic’ (lat, lon, zoom) or ‘detailed’ (x, y, epsg, proj4, lat, lon, zoom) information. Factory-fresh default is ‘detailed’.</li>
@@ -102,14 +119,15 @@
 <li>mapview will now decide which default base map to use based on average luminence of rendered colors.</li>
 <li>mapview now provides subtle highlighting of polygons (changing opacity slightly) and lines (changing thickness).</li>
 <li>plainView, slideView and cubeView have gained argument legend. default is TRUE. Legends only available for non-RGB methods!</li>
-<li>new data sets:
+<li>
+<p>new data sets:</p>
 <ul>
 <li>‘franconia’ (administrative district boundaries of Franconia)</li>
 <li>‘breweries’ (extended version of the ‘breweries91’ data)</li>
 <li>‘trails’ (selected hiking trails in franconia to connect the breweries)</li>
 </ul>
 </li>
-<li>data sets ‘breweries91’, ‘gadmCHE’ and ‘atlStorms2005’ have been deleted and moved to leaflet.</li>
+<li><p>data sets ‘breweries91’, ‘gadmCHE’ and ‘atlStorms2005’ have been deleted and moved to leaflet.</p></li>
 </ul>
 <p>bugfixes:</p>
 <ul>
@@ -188,7 +206,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#mapview-1-2-79">1.2.79</a></li>
+        <li><a href="#mapview-2-0-7">2.0.7</a></li>
+        <li><a href="#mapview-2-0-1">2.0.1</a></li>
         <li><a href="#mapview-1-2-0">1.2.0</a></li>
         <li><a href="#mapview-1-1-0">1.1.0</a></li>
         <li><a href="#mapview-1-0-0">1.0.0</a></li>

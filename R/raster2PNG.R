@@ -16,6 +16,8 @@ raster2PNG <- function(x,
   cols <- lattice::level.colors(mat,
                                 at = at,
                                 col.regions = col.regions)
+  cols[is.na(cols)] = na.color
+  cols = col2Hex(cols, alpha = TRUE)
   #cols <- clrs(t(mat))
   png_dat <- as.raw(grDevices::col2rgb(cols, alpha = TRUE))
   dim(png_dat) <- c(4, ncol(x), nrow(x))

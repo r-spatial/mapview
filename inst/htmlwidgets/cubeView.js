@@ -32,6 +32,10 @@ var x_pos = 0;
 var y_pos = 0;
 var z_pos = 0;
 
+var statusX;
+var statusY;
+var statusZ;
+
 var show_cross_section_lines = true;
 
 function init(root, json, legend_filename) {
@@ -120,6 +124,26 @@ function Hovmoeller(root, json, legend_filename) {
   	var legend_image = new Image();
   	legend_image.src = legend_filename;
   	divLegend.appendChild(legend_image);
+  	var divStatus = document.createElement("div");
+  	var labelX = document.createElement("span");
+  	var labelY = document.createElement("span");
+  	var labelZ = document.createElement("span");
+  	labelX.innerHTML = "X&nbsp;";
+  	labelY.innerHTML = "&nbsp;Y&nbsp;";
+  	labelZ.innerHTML = "&nbsp;Z&nbsp;";
+  	statusX = document.createElement("span");
+  	statusY = document.createElement("span");
+  	statusZ = document.createElement("span");
+  	statusX.innerHTML = "x";
+  	statusY.innerHTML = "y";
+  	statusZ.innerHTML = "z";
+  	divStatus.appendChild(labelX);
+  	divStatus.appendChild(statusX);
+  	divStatus.appendChild(labelY);
+  	divStatus.appendChild(statusY);
+  	divStatus.appendChild(labelZ);
+  	divStatus.appendChild(statusZ);
+  	divLegend.appendChild(divStatus);
   	root.appendChild(divLegend);
 	}
 	root.appendChild(this.renderer.domElement);
@@ -234,6 +258,9 @@ updateMaterial: function () {
 	this.updateMaterialXY();
 	this.updateMaterialXZ();
 	this.updateMaterialZY();
+	statusX.innerHTML = x_pos+1;
+  statusY.innerHTML = y_pos+1;
+  statusZ.innerHTML = z_pos+1;
 },
 
 updateMaterialXY: function () {

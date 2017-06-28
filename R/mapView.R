@@ -42,8 +42,9 @@ if ( !isGeneric('mapView') ) {
 #' @param map.types character spcifications for the base maps.
 #' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
 #' for available options.
-#' @param alpha opacity of the lines or points
-#' @param alpha.regions opacity of the fills or the raster layer(s)
+#' @param alpha opacity of lines
+#' @param alpha.regions opacity of the fills of points, polygons or raster layer(s)
+#' @param na.alpha opacity of missing values
 #' @param legend should a legend be plotted
 #' @param legend.opacity opacity of the legend
 #' @param trim should the raster be trimmed in case there are NAs on the egdes
@@ -211,8 +212,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    legend.opacity = 1,
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   layer.name = NULL,
                    homebutton = TRUE,
                    native.crs = FALSE,
                    ...) {
@@ -364,17 +364,17 @@ setMethod('mapView', signature(x = 'sf'),
                    lwd = lineWidth(x),
                    alpha = 0.9,
                    alpha.regions = regionOpacity(x),
+                   na.alpha = NULL,
                    map.types = NULL,
                    verbose = mapviewGetOption("verbose"),
                    popup = popupTable(x),
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   layer.name = NULL,
                    label = makeLabels(x, zcol),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+                   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
                    ...) {
 
@@ -391,7 +391,10 @@ setMethod('mapView', signature(x = 'sf'),
                            col.regions = col.regions,
                            at = at,
                            na.color = na.color,
-                           popup = popup)
+                           popup = popup,
+                           alpha = alpha,
+                           alpha.regions = alpha.regions,
+                           na.alpha = na.alpha)
 
               if (is.function(tmp)) {
                 x <- tmp()$obj
@@ -399,6 +402,8 @@ setMethod('mapView', signature(x = 'sf'),
                 col.regions <- tmp()$col.regions
                 popup <- tmp()$popup
                 label <- tmp()$labs
+                alpha = tmp()$alpha
+                alpha.regions = tmp()$alpha.regions
               }
 
               if (!inherits(x, "list")) {
@@ -414,6 +419,7 @@ setMethod('mapView', signature(x = 'sf'),
                            lwd = lwd,
                            alpha = alpha,
                            alpha.regions = alpha.regions,
+                           na.alpha = na.alpha,
                            map.types = map.types,
                            verbose = verbose,
                            popup = popup,
@@ -440,6 +446,8 @@ setMethod('mapView', signature(x = 'sf'),
                         legend = legend,
                         map.types = map.types,
                         layer.name = layer.name,
+                        alpha = alpha,
+                        alpha.regions = alpha.regions,
                         ...)
 
               }
@@ -475,56 +483,34 @@ setMethod('mapView', signature(x = 'sfc'),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+                   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
 
-              if (inherits(x, "sfc_GEOMETRY")) {
-                mapview(lapply(split(x, st_dimension(x)), st_cast),
-                        map = map,
-                        color = color,
-                        col.regions = col.regions,
-                        na.color = na.color,
-                        cex = cex,
-                        lwd = lwd,
-                        alpha = alpha,
-                        alpha.regions = alpha.regions,
-                        map.types = map.types,
-                        verbose = verbose,
-                        popup = popup,
-                        layer.name = layer.name,
-                        label = label,
-                        legend = legend,
-                        legend.opacity = legend.opacity,
-                        homebutton = homebutton,
-                        native.crs = native.crs,
-                        highlight = highlight,
-                        ...)
-              } else {
-                leaflet_sfc(x,
-                            map = map,
-                            color = color,
-                            col.regions = col.regions,
-                            na.color = na.color,
-                            cex = cex,
-                            lwd = lwd,
-                            alpha = alpha,
-                            alpha.regions = alpha.regions,
-                            map.types = map.types,
-                            verbose = verbose,
-                            popup = popup,
-                            layer.name = layer.name,
-                            label = label,
-                            legend = legend,
-                            legend.opacity = legend.opacity,
-                            homebutton = homebutton,
-                            native.crs = native.crs,
-                            highlight = highlight,
-                            maxpoints = maxpoints,
-                            ...)
-              }
+              leaflet_sfc(x,
+                          map = map,
+                          color = color,
+                          col.regions = col.regions,
+                          na.color = na.color,
+                          cex = cex,
+                          lwd = lwd,
+                          alpha = alpha,
+                          alpha.regions = alpha.regions,
+                          map.types = map.types,
+                          verbose = verbose,
+                          popup = popup,
+                          layer.name = layer.name,
+                          label = label,
+                          legend = legend,
+                          legend.opacity = legend.opacity,
+                          homebutton = homebutton,
+                          native.crs = native.crs,
+                          highlight = highlight,
+                          maxpoints = maxpoints,
+                          ...)
+
             } else {
               NULL
             }
@@ -549,14 +535,13 @@ setMethod('mapView', signature(x = 'XY'),
                    map.types = NULL,
                    verbose = mapviewGetOption("verbose"),
                    popup = NULL,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame(1))),
+                   layer.name = NULL,
                    label = makeLabels(x),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+                   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
                    ...) {
 
@@ -693,7 +678,7 @@ setMethod('mapView', signature(x = 'list'),
                    na.color = mapviewGetOption("na.color"),
                    cex = 6,
                    lwd = lapply(x, lineWidth),
-                   alpha = 1,
+                   alpha = 0.9,
                    alpha.regions = 0.6,
                    map.types = mapviewGetOption("basemaps"),
                    verbose = mapviewGetOption("verbose"),
@@ -712,24 +697,11 @@ setMethod('mapView', signature(x = 'list'),
                    highlight = lapply(seq(x), function(i) {
                      mapviewHighlightOptions(x[[i]],
                                              alpha.regions = alpha.regions,
+                                             alpha = alpha,
                                              lwd = lwd[[i]])
                    }),
                    maxpoints = NULL, #lapply(x, getMaxFeatures),
                    ...) {
-#
-#             makeLayerNames <- function(v1) {
-#               #chr <- as.character(dargs(graphics::plot.default)eparse(substitute(v1)))
-#               chr <- gsub(utils::glob2rx("*list(*"), "", v1)
-#               chr <- unlist(strsplit(x = gsub(")", "", chr), ","))
-#               as.list(gsub(" ", "", chr))
-#             }
-#
-#             nms <- names(x)
-#             if (is.null(nms)) {
-#               lyrnms <- makeLayerNames(layer.name) #paste0("layer_", sprintf("%02.0f", seq(x)))
-#             } else {
-#               lyrnms <- nms
-#             }
 
             lyrnms = makeListLayerNames(x, layer.name)
 
@@ -751,6 +723,12 @@ setMethod('mapView', signature(x = 'list'),
             #   label <- rep(list(label), length(x))
             if (length(popup) != length(x))
               popup <- rep(list(popup), length(x))
+            if (length(alpha) != length(x))
+              alpha <- rep(list(alpha), length(x))
+            if (length(alpha.regions) != length(x))
+              alpha.regions <- rep(list(alpha.regions), length(x))
+
+
 
             if (mapviewGetOption("platform") == "leaflet") {
               m <- Reduce("+", lapply(seq(x), function(i) {
@@ -770,9 +748,11 @@ setMethod('mapView', signature(x = 'list'),
                           lwd = lwd[[i]],
                           highlight = highlight[[i]],
                           map.types = map.types,
+                          alpha = alpha[[i]],
+                          alpha.regions = alpha.regions[[i]],
                           ...)
                   } else {
-                    mapView(x = x[[i]],
+                    mapView(x = sf::st_cast(x[[i]]),
                             layer.name = lyrnms[[i]],
                             homebutton = homebutton[[i]],
                             native.crs = native.crs,
@@ -868,14 +848,13 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
 
 setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
           function(x,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   zcol = NULL,
+                   layer.name = NULL,
                    ...) {
-
-            mapView(st_as_sf(x), layer.name = layer.name, ...)
-
+            if (is.null(layer.name))
+              layer.name = makeLayerName(x, zcol, up = 2)
+            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
           }
-
 )
 
 
@@ -884,12 +863,12 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
 setMethod('mapView', signature(x = 'SpatialPoints'),
           function(x,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   zcol = NULL,
+                   layer.name = NULL,
                    ...) {
-
-            mapView(st_as_sfc(x), layer.name = layer.name, ...)
-
+            if (is.null(layer.name))
+              layer.name = makeLayerName(x, zcol, up = 2)
+            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
           }
 )
 
@@ -899,14 +878,13 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
 
 setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
           function(x,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   zcol = NULL,
+                   layer.name = NULL,
                    ...) {
-
-            mapView(st_as_sf(x), layer.name = layer.name, ...)
-
+            if (is.null(layer.name))
+              layer.name = makeLayerName(x, zcol, up = 2)
+            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
           }
-
 )
 
 
@@ -915,12 +893,12 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
 setMethod('mapView', signature(x = 'SpatialPolygons'),
           function(x,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   zcol = NULL,
+                   layer.name = NULL,
                    ...) {
-
-            mapView(st_as_sfc(x), layer.name = layer.name, ...)
-
+            if (is.null(layer.name))
+              layer.name = makeLayerName(x, zcol, up = 2)
+            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
           }
 )
 
@@ -930,14 +908,13 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
 
 setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
           function(x,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   zcol = NULL,
+                   layer.name = NULL,
                    ...) {
-
-            mapView(st_as_sf(x), layer.name = layer.name, ...)
-
+            if (is.null(layer.name))
+              layer.name = makeLayerName(x, zcol, up = 2)
+            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
           }
-
 )
 
 
@@ -946,13 +923,12 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
 setMethod('mapView', signature(x = 'SpatialLines'),
           function(x,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   zcol = NULL,
+                   layer.name = NULL,
                    ...) {
-
-            mapView(st_as_sfc(x), layer.name = layer.name, ...)
-
+            if (is.null(layer.name))
+              layer.name = makeLayerName(x, zcol, up = 2)
+            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
           }
-
 )
 

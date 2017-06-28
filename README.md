@@ -33,6 +33,7 @@ In addition, **mapview** provides some extra leaflet compatible functionality:
 
 * `addHomeButton` - add zoom-to-layer buttons 
 * `addLogo` - add a logo (or any image really) to a map
+* `addFeatures` - add features to a map (sf or sp). This is features type agnostic, meaning the same function can be used for points, lines and polygons
 * `addMouseCoordinates` - add mouse cursor postion information when moving over the map
 * `addLargeFeatures` - add large data to a map that would otherwise make the leaflet map irresponsive
 * `popupTable`, `popupGraph` & `popupImage` - popups of tables, grpahs and images for use with the leaflet `add*` functions

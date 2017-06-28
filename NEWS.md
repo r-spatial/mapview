@@ -1,6 +1,24 @@
+## mapview 2.1.0
+
+new features: 
+
+  * plainview/cubeview now respects/has gained argument na.color.
+  * mapview now supports st_GEOMETRY with truely mixed feature types (e.g. LINESTRING and POLYGON) - fixes #85
+  * addFeatures: one function to add them all. Type agnostic version of leaflet::add* functions for simple features objects.
+  * mapview (for vector data only) has gained argument na.alpha to control opacity of missing values.
+
+bugfixes:
+
+  * deleted obsolete data.table import.
+  * fixed #79: colnames of popupTables are now converted to utf-8.
+  * fixed #78: respect explicit setting of 'layer.name' argument.
+  * included NEWS file as R-help doesn't render NEWS.md
+  * highlight now respects alpha/alpha.regions = 0
+
 ## mapview 2.0.1
 
 new features:
+
   * addMouseCoordinates has gained argument 'style' to specify whether to show 'basic' (lat, lon, zoom) or 'detailed' (x, y, epsg, proj4, lat, lon, zoom) information. Factory-fresh default is 'detailed'.
   * addLogo has gained argument 'alpha' to set the opacity of the image.
   * Someone draws quickest...
@@ -15,15 +33,19 @@ new features:
   * mapview now provides subtle highlighting of polygons (changing opacity slightly) and lines (changing thickness).
   * plainView, slideView and cubeView have gained argument legend. default is TRUE. Legends only available for non-RGB methods!
   * new data sets:
+  
       - 'franconia' (administrative district boundaries of Franconia)
       - 'breweries' (extended version of the 'breweries91' data)
       - 'trails' (selected hiking trails in franconia to connect the breweries)
+      
   * data sets 'breweries91', 'gadmCHE' and 'atlStorms2005' have been deleted and moved to leaflet.
 
 bugfixes:
+
   * sync, addMouseCoordinates and addLogo did not work anymore. Now fixed thanks to @timelyportfolio
 
 changes:
+
   * MAJOR internal change: All vector data are now processed as sf objects internally. This also means that objects returned in slot `@object` will be of class sf (regardless of input class).
   * polygons and points now have a darkish gray line frame (unless add*LargeFeatures is used - where the overhead of passing two sets of colors would be too high).
   * updated examples (in line with new data).
@@ -32,12 +54,14 @@ changes:
 ## mapview 1.2.0
 
 new features:
+
   * garnishMap: function to add multiple decoration elements, such as leaflet::addLayersControl or addHomeButton to a map (mainly for internal use).
   * addHomeButton: add a zoom-to-layer button to a map.
   * addLogo: add an image to a map.
   * plainview now shows CRS and dimension info.
 
 bugfixes:
+
   * na.color was not respected for Raster* and SpatialPiXelsDF.
   * removed lat and lon entries in popupTable for polygons as we now have mousecoordinates.
   * for raster objects the legend did not respect the intervals specified by 'at'.
@@ -47,6 +71,7 @@ bugfixes:
 ## mapview 1.1.0
 
 new features:
+
   * addMouseCoordinates: add cursor position information to mapview or leaflet map. (thanks to Kent Russell).
   * if available from leaflet version, a scalebar is added to the map.
   * latticeView: view mapview or leaflet maps as small multiples and sync some, all or none (thanks to Kent Russell).
@@ -61,12 +86,14 @@ new features:
   * "zcol = Var" in combination with burst = TRUE now plots one layer for each unique value of the variable supplied to zcol.
 
 changes:
+
   * spplot method has been removed.
   * colors: viridis based colors now default if viridisLite package is available.
   * basemaps: new default basemap is "CartoDB.Positron" as colors of features are better visible on the grey background.
   * layer names now include the name of the object they originate from (e.g. "meuse lead" instead of "lead").
 
 bugfixes:
+
   * if attribute was of class "character" mapview did through an error if passed to zcol.
   * user provided layer names were not respected when zcol was set. See also note on changes in default layer names.
 

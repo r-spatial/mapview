@@ -6,7 +6,7 @@
 \title{View a RasterStack or RasterBrick as 3-dimensional data cube.}
 \usage{
 cubeView(x, at, col.regions = mapviewGetOption("raster.palette"),
-  legend = TRUE)
+  na.color = mapviewGetOption("na.color"), legend = TRUE)
 
 cubeview(...)
 }
@@ -17,6 +17,8 @@ cubeview(...)
 \code{\link{levelplot}} for details.}
 
 \item{col.regions}{color (palette).See \code{\link{levelplot}} for details.}
+
+\item{na.color}{color for missing values.}
 
 \item{legend}{logical. Whether to plot a legend.}
 
@@ -33,7 +35,7 @@ y-axis: DOWN / UP arrow key \cr
 z-axis: PAGE_DOWN / PAGE_UP key \cr
 
 Note: In RStudio cubeView may show a blank viewer window. In this case open the view in
-a web-browser (RStudio button at viewer: "show in new window").#'
+a web-browser (RStudio button at viewer: "show in new window").
 
 Note: Because of key focus issues key-press-events are not always
 recognised within RStudio at Windows. In this case open the view in

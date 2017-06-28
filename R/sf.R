@@ -18,6 +18,7 @@ leaflet_sf <- function(x,
                        col.regions,
                        at,
                        na.color,
+                       na.alpha,
                        map.types,
                        verbose,
                        popup,
@@ -31,12 +32,14 @@ leaflet_sf <- function(x,
                        maxpoints,
                        ...) {
 
+  if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
+
   if (!is.null(zcol)) {
-    layer.name <- paste(layer.name, zcol)
+    # layer.name <- paste(layer.name, zcol)
     if (length(unique(x[[zcol]])) <= 1) {
       warning(
         sprintf(
-          "column %s has only one unique value/level, ignoring coloring and legend",
+          "column %s has only one unique value/level, ignoring color and legend",
           zcol
         )
       )
@@ -65,6 +68,13 @@ leaflet_sf <- function(x,
                                    col.regions = col.regions,
                                    at = at,
                                    na.color = na.color)
+  if (!is.null(zcol) & !is.null(na.alpha)) {
+    na.alpha = ifelse(na.alpha == 0, 0.001, na.alpha)
+    alpha = rep(alpha, nrow(x))
+    alpha[is.na(x[[zcol]])] = na.alpha
+    alpha.regions = rep(alpha.regions, nrow(x))
+    alpha.regions[is.na(x[[zcol]])] = na.alpha
+  }
 
   leaflet_sfc(sf::st_geometry(x),
               map = map,
@@ -119,7 +129,9 @@ leaflet_sfc <- function(x,
                         maxpoints,
                         attributes = NULL,
                         ...) {
-
+  if (!is.null(names(x))) {
+    names(x) = NULL
+  }
   if (inherits(x, "XY")) x = sf::st_cast(st_sfc(x)) else x = sf::st_cast(x)
 
   if (!native.crs) x <- checkAdjustProjection(x)
@@ -227,6 +239,14 @@ nNodes = function(x) {
   }))
 }
 
+nPoints = function(x) {
+  if (getGeometryType(x) == "pt") {
+    length(sf::st_geometry(x))
+  } else {
+    nNodes(sf::st_geometry(x))
+  }
+}
+
 #' count the number of points/vertices/nodes of sf objects
 #' @param x an sf/sfc object
 #'
@@ -240,9 +260,5 @@ nNodes = function(x) {
 #' nrow(breweries)
 #'
 npts = function(x) {
-  if (getGeometryType(x) == "pt") {
-    length(sf::st_geometry(x))
-  } else {
-    nNodes(sf::st_geometry(x))
-  }
+  do.call(sum, lapply(split(x, as.character(sf::st_dimension(x))), nPoints))
 }

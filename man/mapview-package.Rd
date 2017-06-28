@@ -18,6 +18,6 @@ Tim Appelhans, Florian Detsch, Chris Reudenbach,
 Stephan Woellauer, Spaska Forteva, Thomas Nauss,
 Environmental Informatics Marburg \cr
 \cr
-\emph{Maintainer:} Tim Appelhans \email{admin@environmentalinformatics-marburg.de}
+\emph{Maintainer:} Tim Appelhans \email{tim.appelhans@gmail.com}
 }
 \keyword{package}

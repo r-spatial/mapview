@@ -14,9 +14,9 @@ garnishMap(map, ...)
 \description{
 This function provides a versatile interface to add components to a
 leaflet or mapview map. It takes functions such as "addMouseCoordinates"
-or \code{\link{addLayersControl}} and their repsective arguments and adds
+or \code{\link{addLayersControl}} and their respective arguments and adds
 them to the map. Arguments must be named. Functions can be plain or
-charatcer strings.
+character strings.
 }
 \examples{
 \dontrun{
@@ -31,7 +31,7 @@ m1
 
 ## even more flexible
 m2 <- garnishMap(m1, addPolygons, data = franconia, popup = popupTable(franconia),
-           fillOpacity = 0.8, color = "black", fillColor = "#BEBEBE")
+                 fillOpacity = 0.8, color = "black", fillColor = "#BEBEBE")
 garnishMap(m2, addCircleMarkers, data = breweries)
 
 }

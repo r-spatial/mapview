@@ -37,8 +37,7 @@
   values = NULL, map.types = mapviewGetOption("basemaps"),
   alpha.regions = 0.8, legend = mapviewGetOption("legend"),
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
-  layer.name = deparse(substitute(x, env = parent.frame())),
-  homebutton = TRUE, native.crs = FALSE, ...)
+  layer.name = NULL, homebutton = TRUE, native.crs = FALSE, ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -60,12 +59,12 @@
   color = mapviewGetOption("vector.palette"),
   col.regions = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
-  alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
-  verbose = mapviewGetOption("verbose"), popup = popupTable(x),
-  layer.name = deparse(substitute(x, env = parent.frame())),
-  label = makeLabels(x, zcol), legend = mapviewGetOption("legend"),
-  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
-  highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+  alpha = 0.9, alpha.regions = regionOpacity(x), na.alpha = NULL,
+  map.types = NULL, verbose = mapviewGetOption("verbose"),
+  popup = popupTable(x), layer.name = NULL, label = makeLabels(x, zcol),
+  legend = mapviewGetOption("legend"), legend.opacity = 1,
+  homebutton = TRUE, native.crs = FALSE,
+  highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
 \S4method{mapView}{sfc}(x, map = NULL, color = standardColor(x),
@@ -76,18 +75,17 @@
   layer.name = deparse(substitute(x, env = parent.frame(2))),
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
-  highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+  highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
 \S4method{mapView}{XY}(x, map = NULL, color = standardColor(x),
   col.regions = standardColRegions(x), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
   alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
-  verbose = mapviewGetOption("verbose"), popup = NULL,
-  layer.name = deparse(substitute(x, env = parent.frame(1))),
+  verbose = mapviewGetOption("verbose"), popup = NULL, layer.name = NULL,
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
-  highlight = mapviewHighlightOptions(x, alpha.regions, lwd),
+  highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
 \S4method{mapView}{sfc_POINT}(x, ...)
@@ -110,7 +108,7 @@
   color = mapviewGetOption("vector.palette"),
   col.regions = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lapply(x,
-  lineWidth), alpha = 1, alpha.regions = 0.6,
+  lineWidth), alpha = 0.9, alpha.regions = 0.6,
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), popup = lapply(seq(x), function(i)
   {     popupTable(x[[i]]) }), layer.name = deparse(substitute(x, env =
@@ -119,7 +117,7 @@
   legend = mapviewGetOption("legend"), legend.opacity = 1,
   homebutton = TRUE, native.crs = FALSE, highlight = lapply(seq(x),
   function(i) {     mapviewHighlightOptions(x[[i]], alpha.regions =
-  alpha.regions, lwd = lwd[[i]]) }), maxpoints = NULL, ...)
+  alpha.regions, alpha = alpha, lwd = lwd[[i]]) }), maxpoints = NULL, ...)
 
 \S4method{mapview}{ANY}(...)
 
@@ -129,23 +127,20 @@
 
 \S4method{mapView}{SpatialGridDataFrame}(x, zcol = NULL, ...)
 
-\S4method{mapView}{SpatialPointsDataFrame}(x,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+\S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL,
+  layer.name = NULL, ...)
 
-\S4method{mapView}{SpatialPoints}(x, layer.name = deparse(substitute(x, env =
-  parent.frame())), ...)
+\S4method{mapView}{SpatialPoints}(x, zcol = NULL, layer.name = NULL, ...)
 
-\S4method{mapView}{SpatialPolygonsDataFrame}(x,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+\S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL,
+  layer.name = NULL, ...)
 
-\S4method{mapView}{SpatialPolygons}(x, layer.name = deparse(substitute(x, env
-  = parent.frame())), ...)
+\S4method{mapView}{SpatialPolygons}(x, zcol = NULL, layer.name = NULL, ...)
 
-\S4method{mapView}{SpatialLinesDataFrame}(x,
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+\S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, layer.name = NULL,
+  ...)
 
-\S4method{mapView}{SpatialLines}(x, layer.name = deparse(substitute(x, env =
-  parent.frame())), ...)
+\S4method{mapView}{SpatialLines}(x, zcol = NULL, layer.name = NULL, ...)
 }
 \arguments{
 \item{x}{a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
@@ -173,7 +168,7 @@ Per default these are calculated based on the supplied raster* object.}
 see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
 for available options.}
 
-\item{alpha.regions}{opacity of the fills or the raster layer(s)}
+\item{alpha.regions}{opacity of the fills of points, polygons or raster layer(s)}
 
 \item{legend}{should a legend be plotted}
 
@@ -212,7 +207,9 @@ of the column(s) to be used for defining the size of circles}
 
 \item{lwd}{line width}
 
-\item{alpha}{opacity of the lines or points}
+\item{alpha}{opacity of lines}
+
+\item{na.alpha}{opacity of missing values}
 
 \item{popup}{a \code{list} of HTML strings with the popup contents, usually
 created from \code{\link{popupTable}}. See \code{\link{addControl}} for

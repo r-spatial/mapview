@@ -124,7 +124,7 @@ getSFClass <- function(x) {
 getGeometryType <- function(x) {
   # sf
   if (inherits(x, "Spatial")) x = sf::st_as_sfc(x)
-  g <- sf::st_geometry(x)
+  g <- sf::st_geometry(sf::st_cast(x))
   if (inherits(g, "POINT") |
       inherits(g, "MULTIPOINT") |
       inherits(g, "sfc_POINT") |
@@ -137,7 +137,7 @@ getGeometryType <- function(x) {
       inherits(g, "MULTIPOLYGON") |
       inherits(g, "sfc_POLYGON") |
       inherits(g, "sfc_MULTIPOLYGON")) type <- "pl"
-  if (inherits(g, "sfc_GEOMETRY")) type <- getGeometryType(sf::st_cast(g))
+  if (inherits(g, "sfc_GEOMETRY")) type <- "gc" #getGeometryType(sf::st_cast(g))
   return(type)
 }
 
@@ -146,7 +146,8 @@ getMaxFeatures <- function(x) {
   switch(getGeometryType(x),
          "pt" = 40000,
          "ln" = 100000,
-         "pl" = 100000)
+         "pl" = 100000,
+         "gc" = 100000)
 }
 
 
@@ -154,7 +155,8 @@ lineWidth <- function(x) {
   switch(getGeometryType(x),
          "pt" = 2,
          "ln" = 2,
-         "pl" = 1)
+         "pl" = 1,
+         "gc" = 2)
 }
 
 
@@ -162,7 +164,8 @@ regionOpacity <- function(x) {
   switch(getGeometryType(x),
          "pt" = 0.9,
          "ln" = 1,
-         "pl" = 0.6)
+         "pl" = 0.6,
+         "gc" = 0.6)
 }
 
 
@@ -199,7 +202,7 @@ extendLimits <- function(lim, length = 1, prop = 0.07) {
                as.numeric(diff(lim))) / (2 * as.numeric(diff(lim)))
   }
   if (lim[1] == lim[2])
-    lim + 0.05 * c(-length, length)
+    lim + 0.005 * c(-length, length)
   else {
     d <- diff(as.numeric(lim))
     lim + prop * d * c(-1, 1)
@@ -221,6 +224,13 @@ circleRadius <- function(x, radius = 6, min.rad = 3, max.rad = 15) {
 extentOverlap <- function(x, y) {
   if (!sum(lengths(sf::st_intersects(x, y))) == 0) TRUE else FALSE
 }
+
+
+makeLayerName = function(x, zcol, up = 3) {
+  lnm = deparse(substitute(x, env = parent.frame(up)))
+  if (is.null(zcol)) lnm else paste(lnm, zcol, sep = " - ")
+}
+
 
 
 makeListLayerNames = function(x, layer.name) {

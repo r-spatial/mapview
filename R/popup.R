@@ -27,13 +27,13 @@
 #' @export popupTable
 #' @name popupTable
 #' @rdname popup
-popupTable <- function(x, zcol) {
+popupTable = function(x, zcol) {
 
   if (inherits(x, "sfc")) {
     return(NULL)
   } else {
     if (!missing(zcol))
-      x <- x[, zcol, drop = FALSE]
+      x = x[, zcol, drop = FALSE]
     brewPopupTable(x)
   }
 }
@@ -61,42 +61,42 @@ popupTable <- function(x, zcol) {
 #' ### one image
 #' library(sf)
 #'
-#' pnt <- st_as_sf(data.frame(x = 174.764474, y = -36.877245),
+#' pnt = st_as_sf(data.frame(x = 174.764474, y = -36.877245),
 #'                 coords = c("x", "y"),
 #'                 crs = 4326)
 #'
-#' img <- "http://bit.ly/1TVwRiR"
+#' img = "http://bit.ly/1TVwRiR"
 #'
 #' mapview(pnt, popup = popupImage(img, src = "remote"))
 #'
 #' ### multiple file (types)
 #' library(sp)
-#' images <- c(img,
+#' images = c(img,
 #'             "https://upload.wikimedia.org/wikipedia/commons/1/1b/R_logo.svg",
 #'             "https://www.r-project.org/logo/Rlogo.png",
 #'             "https://upload.wikimedia.org/wikipedia/commons/d/d6/MeanMonthlyP.gif")
 #'
-#' pt4 <- data.frame(x = jitter(rep(174.764474, 4), factor = 0.01),
+#' pt4 = data.frame(x = jitter(rep(174.764474, 4), factor = 0.01),
 #'                   y = jitter(rep(-36.877245, 4), factor = 0.01))
-#' coordinates(pt4) <- ~ x + y
-#' proj4string(pt4) <- "+init=epsg:4326"
+#' coordinates(pt4) = ~ x + y
+#' proj4string(pt4) = "+init=epsg:4326"
 #'
 #' mapview(pt4, popup = lapply(images, popupImage)) # NOTE the gif animation
 #'
 #' ## local images -----
-#' pnt <- st_as_sf(data.frame(x = 174.764474, y = -36.877245),
+#' pnt = st_as_sf(data.frame(x = 174.764474, y = -36.877245),
 #'                 coords = c("x", "y"), crs = 4326)
-#' img <- system.file("img","Rlogo.png",package="png")
+#' img = system.file("img","Rlogo.png",package="png")
 #' mapview(pnt, popup = popupImage(img))
 #' }
 #'
 #' @export popupImage
 #' @name popupImage
 #' @rdname popup
-popupImage <- function(img, src = c("local", "remote"), ...) {
+popupImage = function(img, src = c("local", "remote"), ...) {
 
   src = ifelse(file.exists(img), "local", "remote")[1]
-  pop <- switch(src,
+  pop = switch(src,
                 local = popupLocalImage(img = img, ...),
                 remote = popupRemoteImage(img = img, ...))
 
@@ -106,27 +106,27 @@ popupImage <- function(img, src = c("local", "remote"), ...) {
 
 
 ### local images -----
-popupLocalImage <- function(img, width, height) {
-  nm <- basename(img)
-  drs <- file.path(tempdir(), "graphs")
+popupLocalImage = function(img, width, height) {
+  nm = basename(img)
+  drs = file.path(tempdir(), "graphs")
   if (!dir.exists(drs)) dir.create(drs)
-  fls <- file.path(drs, nm)
+  fls = file.path(drs, nm)
   invisible(file.copy(img, file.path(drs, nm)))
-  rel_path <- file.path("..", basename(drs), basename(img))
+  rel_path = file.path("..", basename(drs), basename(img))
 
-  # info <- sapply(img, function(...) rgdal::GDALinfo(..., silent = TRUE))
+  # info = sapply(img, function(...) rgdal::GDALinfo(..., silent = TRUE))
   info = sapply(img, function(...) gdalUtils::gdalinfo(...))
   info = unlist(lapply(info, function(i) grep(glob2rx("Size is*"), i, value = TRUE)))
   cols = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[1]
   rows = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[2]
-  yx_ratio <- rows / cols
-  xy_ratio <- cols / rows
+  yx_ratio = rows / cols
+  xy_ratio = cols / rows
 
   if (missing(height) && missing(width)) {
-    width <- 300
-    height <- yx_ratio * width
-  } else if (missing(height)) height <- yx_ratio * width else
-    if (missing(width)) width <- xy_ratio * height
+    width = 300
+    height = yx_ratio * width
+  } else if (missing(height)) height = yx_ratio * width else
+    if (missing(width)) width = xy_ratio * height
 
   # maxheight = 2000
   # width = width
@@ -139,10 +139,10 @@ popupLocalImage <- function(img, width, height) {
                height,
                ">")
 
-  popTemplate <- system.file("templates/popup-graph.brew", package = "mapview")
-  myCon <- textConnection("outputObj", open = "w")
+  popTemplate = system.file("templates/popup-graph.brew", package = "mapview")
+  myCon = textConnection("outputObj", open = "w")
   brew::brew(popTemplate, output = myCon)
-  outputObj <- outputObj
+  outputObj = outputObj
   close(myCon)
 
   return(paste(outputObj, collapse = ' '))
@@ -151,7 +151,7 @@ popupLocalImage <- function(img, width, height) {
 
 
 ### remote images -----
-popupRemoteImage <- function(img, width = 300, height = "100%") {
+popupRemoteImage = function(img, width = 300, height = "100%") {
   pop = paste0("<image src='",
                img,
                "' width=",
@@ -160,10 +160,10 @@ popupRemoteImage <- function(img, width = 300, height = "100%") {
                height,
                ">")
   maxheight = 2000
-  popTemplate <- system.file("templates/popup-graph.brew", package = "mapview")
-  myCon <- textConnection("outputObj", open = "w")
+  popTemplate = system.file("templates/popup-graph.brew", package = "mapview")
+  myCon = textConnection("outputObj", open = "w")
   brew::brew(popTemplate, output = myCon)
-  outputObj <- outputObj
+  outputObj = outputObj
   close(myCon)
 
   return(paste(outputObj, collapse = ' '))
@@ -202,37 +202,37 @@ popupRemoteImage <- function(img, width = 300, height = "100%") {
 #' library(sp)
 #'
 #' data(meuse)
-#' coordinates(meuse) <- ~ x + y
-#' proj4string(meuse) <- CRS("+init=epsg:28992")
+#' coordinates(meuse) = ~ x + y
+#' proj4string(meuse) = CRS("+init=epsg:28992")
 #'
 #' ## create plots with points colored according to feature id
 #' library(lattice)
-#' p <- xyplot(copper ~ cadmium, data = meuse@data, col = "grey")
-#' p <- mget(rep("p", length(meuse)))
+#' p = xyplot(copper ~ cadmium, data = meuse@data, col = "grey")
+#' p = mget(rep("p", length(meuse)))
 #'
-#' clr <- rep("grey", length(meuse))
-#' p <- lapply(1:length(p), function(i) {
-#'   clr[i] <- "red"
+#' clr = rep("grey", length(meuse))
+#' p = lapply(1:length(p), function(i) {
+#'   clr[i] = "red"
 #'   update(p[[i]], col = clr)
 #' })
 #'
 #' mapview(meuse, popup = popupGraph(p, type = "svg"))
 #'
 #' ### example: png -----
-#' pt <- data.frame(x = 174.764474, y = -36.877245)
+#' pt = data.frame(x = 174.764474, y = -36.877245)
 #'
-#' coordinates(pt) <- ~ x + y
-#' proj4string(pt) <- "+init=epsg:4326"
+#' coordinates(pt) = ~ x + y
+#' proj4string(pt) = "+init=epsg:4326"
 #'
-#' p2 <- levelplot(t(volcano), col.regions = terrain.colors(100))
+#' p2 = levelplot(t(volcano), col.regions = terrain.colors(100))
 #'
 #' mapview(pt, popup = popupGraph(p2, width = 300, height = 400))
 #'
 #' ### example: html -----
 #' library(scatterD3)
-#' p <- lapply(1:length(meuse), function(i) {
-#'   clr <-rep(0, length(meuse))
-#'   clr[[i]] <- 1
+#' p = lapply(1:length(meuse), function(i) {
+#'   clr =rep(0, length(meuse))
+#'   clr[[i]] = 1
 #'   scatterD3(x = meuse$cadmium,
 #'             y = meuse$copper,
 #'             col_var = clr,
@@ -251,23 +251,23 @@ popupRemoteImage <- function(img, width = 300, height = "100%") {
 #' @export popupGraph
 #' @name popupGraph
 #' @rdname popup
-popupGraph <- function(graphs, type = c("png", "svg", "html"),
+popupGraph = function(graphs, type = c("png", "svg", "html"),
                        width = 300, height = 300, ...) {
 
   ## if a single feature is provided, convert 'graphs' to list
   if (class(graphs)[1] != "list")
-    graphs <- list(graphs)
+    graphs = list(graphs)
 
   ## create target folder and filename
-  drs <- file.path(tempdir(), "popup_graphs")
+  drs = file.path(tempdir(), "popup_graphs")
   if (!dir.exists(drs)) dir.create(drs)
 
-  # type <- type[1]
+  # type = type[1]
   if (inherits(graphs[[1]], c("htmlwidget"))) {
-    type <- "html"
-  } else type <- type[1]
+    type = "html"
+  } else type = type[1]
 
-  pop <- switch(type,
+  pop = switch(type,
                 png = popupPNGraph(graphs = graphs, dsn = drs,
                                    width = width, height = height, ...),
                 svg = popupSVGraph(graphs = graphs, dsn = drs,
@@ -275,7 +275,7 @@ popupGraph <- function(graphs, type = c("png", "svg", "html"),
                 html = popupHTMLGraph(graphs = graphs, dsn = drs,
                                       width = width, height = height, ...))
 
-  # pop <- if (type[1] == "svg") {
+  # pop = if (type[1] == "svg") {
   #   popupSVGraph(graphs = graphs, dsn = drs, ...)
   # } else {
   #   popupPNGraph(graphs = graphs, dsn = drs, ...)
@@ -288,11 +288,11 @@ popupGraph <- function(graphs, type = c("png", "svg", "html"),
 
 
 ### svg -----
-popupSVGraph <- function(graphs, dsn = tempdir(),
+popupSVGraph = function(graphs, dsn = tempdir(),
                          width = 300, height = 300, ...) {
   lapply(1:length(graphs), function(i) {
-    nm <- paste0("tmp_", i, ".svg")
-    fls <- file.path(dsn, nm)
+    nm = paste0("tmp_", i, ".svg")
+    fls = file.path(dsn, nm)
 
     inch_wdth = width / 72
     inch_hght = height  / 72
@@ -301,7 +301,7 @@ popupSVGraph <- function(graphs, dsn = tempdir(),
     print(graphs[[i]])
     dev.off()
 
-    lns <- paste(readLines(fls), collapse = "")
+    lns = paste(readLines(fls), collapse = "")
     # file.remove(fls)
     return(lns)
   })
@@ -309,27 +309,27 @@ popupSVGraph <- function(graphs, dsn = tempdir(),
 
 
 ### png -----
-popupPNGraph <- function(graphs, dsn = tempdir(),
+popupPNGraph = function(graphs, dsn = tempdir(),
                          width = 300, height = 300, ...) {
   lapply(1:length(graphs), function(i) {
-    nm <- paste0("tmp_", i, ".png")
-    fls <- file.path(dsn, nm)
+    nm = paste0("tmp_", i, ".png")
+    fls = file.path(dsn, nm)
 
     png(filename = fls, width = width, height = height, units = "px", ...)
     print(graphs[[i]])
     dev.off()
 
-    rel_path <- file.path("..", basename(dsn))
+    rel_path = file.path("..", basename(dsn))
 
     pop = paste0("<img src = ", file.path(rel_path, basename(fls)), ">")
     # maxheight = 2000
     # wdth = paste0(width, "px;")
     # hght = paste0(height, "px;")
 
-    popTemplate <- system.file("templates/popup-graph.brew", package = "mapview")
-    myCon <- textConnection("outputObj", open = "w")
+    popTemplate = system.file("templates/popup-graph.brew", package = "mapview")
+    myCon = textConnection("outputObj", open = "w")
     brew::brew(popTemplate, output = myCon)
-    outputObj <- outputObj
+    outputObj = outputObj
     close(myCon)
 
     return(paste(outputObj, collapse = ' '))
@@ -337,29 +337,23 @@ popupPNGraph <- function(graphs, dsn = tempdir(),
 }
 
 ### html -----
-popupHTMLGraph <- function(graphs, dsn = tempdir(),
+popupHTMLGraph = function(graphs, dsn = tempdir(),
                            width = 300, height = 300, ...) {
   lapply(1:length(graphs), function(i) {
-    nm <- paste0("tmp_", i, ".html")
-    fls <- file.path(dsn, nm)
+    nm = paste0("tmp_", i, ".html")
+    fls = file.path(dsn, nm)
     htmlwidgets::saveWidget(graphs[[i]], fls, ...)
 
-    rel_path <- file.path("..", basename(dsn))
+    rel_path = file.path("..", basename(dsn))
 
     popupIframe(file.path(rel_path, basename(fls)), width + 5, height + 5)
 
-    # paste0("<iframe src='",
-    #        file.path(rel_path, basename(fls)),
-    #        "' frameborder='0' width=",
-    #        width,
-    #        " height=",
-    #        height, "></iframe>")
   })
 }
 
 
 ### iframe -----
-popupIframe <- function(src, width = 300, height = 300) {
+popupIframe = function(src, width = 300, height = 300) {
   pop = paste0("<iframe src='",
                src,
                "' frameborder=0 width=",
@@ -368,14 +362,11 @@ popupIframe <- function(src, width = 300, height = 300) {
                height,
                #" align=middle",
                "></iframe>")
-  # wdth = paste0(width, "px;")
-  # hght = paste0(height, "px;")
-  # maxheight = 2000
 
-  popTemplate <- system.file("templates/popup-graph.brew", package = "mapview")
-  myCon <- textConnection("outputObj", open = "w")
+  popTemplate = system.file("templates/popup-graph.brew", package = "mapview")
+  myCon = textConnection("outputObj", open = "w")
   brew::brew(popTemplate, output = myCon)
-  outputObj <- outputObj
+  outputObj = outputObj
   close(myCon)
 
   return(paste(outputObj, collapse = ' '))
@@ -385,65 +376,49 @@ popupIframe <- function(src, width = 300, height = 300) {
 
 ### controls ==============================================================
 # create popup table of attributes
-brewPopupTable <- function(x, width = 300, height = 300) {
+brewPopupTable = function(x, width = 300, height = 300) {
 
-  if (inherits(x, "Spatial")) x <- x@data
-  if (inherits(x, "sf")) x <- sf2DataFrame(x)
+  if (inherits(x, "Spatial")) x = x@data
+  if (inherits(x, "sf")) x = sf2DataFrame(x)
 
-  cls <- class(x)[1]
-  if (cls == "SpatialPoints") {
-    mat <- NULL
+  # ensure utf-8 for column names (column content is handled on C++ side)
+  colnames(x) = enc2utf8(colnames(x))
+
+  if (inherits(x, "SpatialPoints")) {
+    mat = NULL
   } else {
-
-    #     if (cls == "SpatialLines") {
-    #       x_pts <- sp::getSpatialLinesMidPoints(x)
-    #       x <- SpatialLinesDataFrame(x, data = data.frame(x = coordinates(x_pts)[, 1],
-    #                                                       y = coordinates(x_pts)[, 2]))
-    #     }
 
     # data.frame with 1 column
     if (ncol(x) == 1) {
-      mat <- matrix(as.character(x[, 1]))
+      mat = matrix(as.character(x[, 1]))
 
     # data.frame with multiple columns
     } else {
 
-      # check for list columns, if found supply suitable class info for printing
-      ids <- sapply(x, function(i) is.list(i))
+      # check for list columns, if found format it
+      ids = sapply(x, is.list)
 
       if (any(ids)) {
-        nms <- attr(ids, "names")[ids]
+        nms = attr(ids, "names")[ids]
         for (i in nms) {
-          x[, i] <- format(x[[i]]) #paste("object of class", class(x[[i]])[1])
+          x[, i] = format(x[[i]])
         }
       }
 
-      mat <- df2String(x)
+      mat = df2String(x)
     }
 
-    colnames(mat) <- names(x)
-    # if (nrow(x) == 1) mat <- t(mat)
+    colnames(mat) = names(x)
+    # if (nrow(x) == 1) mat = t(mat)
   }
 
-  # if (!class(x)[1] %in% c("SpatialLines",
-  #                         "SpatialLinesDataFrame",
-  #                         "SpatialPolygons",
-  #                         "SpatialPolygonsDataFrame")) {
-  #   mat <- cbind(Longitude = as.character(round(sp::coordinates(x)[, 1], 2)),
-  #                Latitude = as.character(round(sp::coordinates(x)[, 2], 2)),
-  #                mat)
-  # }
-
-  ## add 'feature id' in case of spydf, slndf
-  #if (length(grep("DataFrame", class(x))) > 0) {
-  fid <- rownames(x)
-  mat <- cbind("Feature ID" = fid, mat)
-  #}
+  fid = rownames(x)
+  mat = cbind("Feature ID" = fid, mat)
 
   ## create list with row-specific html code
-  cols <- colnames(mat)
+  cols = colnames(mat)
 
-  lst_html <- listPopupTemplates(mat, cols,
+  lst_html = listPopupTemplates(mat, cols,
                                  system.file("templates/popup.brew",
                                              package = "mapview"))
 
@@ -451,9 +426,9 @@ brewPopupTable <- function(x, width = 300, height = 300) {
 }
 
 
-# create popup table odd row for sp objects ---------------------------------------
+# create popup table odd row for sp objects -------------------------------
 
-brewPopupRow <- function(col.name, value) {
+brewPopupRow = function(col.name, value) {
 
   paste0("<tr>",
          paste0("<td>",
@@ -467,9 +442,9 @@ brewPopupRow <- function(col.name, value) {
 }
 
 
-# create popup table even row for sp objects ---------------------------------------
+# create popup table even row for sp objects ------------------------------
 
-brewPopupRowAlt <- function(col.name, value) {
+brewPopupRowAlt = function(col.name, value) {
 
   paste0("<tr class='alt'>",
          paste0("<td>",
