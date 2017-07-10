@@ -136,7 +136,9 @@ latticeView <- function(...,
                 Array.prototype.map.call(
                  document.querySelectorAll(".leaflet"),
                    function(ldiv){
-                     leaf_widgets[ldiv.id] = HTMLWidgets.find("#" + ldiv.id).getMap();
+                     if (ldiv.id.indexOf("htmlwidget-") !== -1) {
+                        leaf_widgets[ldiv.id] = HTMLWidgets.find("#" + ldiv.id).getMap();
+                     }
                    }
                 );
                ',
