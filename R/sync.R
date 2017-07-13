@@ -136,7 +136,7 @@ latticeView <- function(...,
                 Array.prototype.map.call(
                  document.querySelectorAll(".leaflet"),
                    function(ldiv){
-                     if (ldiv.id.indexOf("htmlwidget-") !== -1) {
+                     if (HTMLWidgets.find("#" + ldiv.id) && HTMLWidgets.find("#" + ldiv.id).getMap()) {
                         leaf_widgets[ldiv.id] = HTMLWidgets.find("#" + ldiv.id).getMap();
                      }
                    }
