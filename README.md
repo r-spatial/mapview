@@ -71,3 +71,5 @@ will produce a web map visualisation of the breweries data with the following co
 ## Contact ##
 
 Please file bug reports and feature requests at https://github.com/r-spatial/mapview/issues
+
+In case of Pull Requests, please make sure to submit them to the `develop` branch of this repository.
