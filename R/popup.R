@@ -95,10 +95,16 @@ popupTable = function(x, zcol) {
 #' @rdname popup
 popupImage = function(img, src = c("local", "remote"), ...) {
 
-  src = ifelse(file.exists(img), "local", "remote")[1]
-  pop = switch(src,
-                local = popupLocalImage(img = img, ...),
-                remote = popupRemoteImage(img = img, ...))
+  if (!is.list(img)) img = as.list(img)
+  fex = sapply(img, file.exists)
+  srcs = sapply(fex, function(i) ifelse(i, "local", "remote"))
+
+  pop = lapply(seq(img), function(i) {
+    src = srcs[i]
+    pop = switch(src,
+                 local = popupLocalImage(img = img[[i]], ...),
+                 remote = popupRemoteImage(img = img[[i]], ...))
+  })
 
   return(pop)
 
