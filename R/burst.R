@@ -35,7 +35,10 @@ burst <- function(x,
                           color = color,
                           col.regions = col.regions,
                           at = at,
-                          na.color = na.color)
+                          na.color = na.color,
+                          alpha = alpha,
+                          alpha.regions = alpha.regions,
+                          na.alpha = na.alpha)
   } else if (length(zcol) > 1) {
     nms = colnames(sf2DataFrame(x[, zcol], drop_sf_column = TRUE))
     function() burstByColumn(x = x,
@@ -119,6 +122,9 @@ burstByRow <- function(x,
                        col.regions,
                        at,
                        na.color,
+                       alpha,
+                       alpha.regions,
+                       na.alpha,
                        ...) {
 
   x[[zcol]] <- as.character(x[[zcol]])
@@ -154,12 +160,26 @@ burstByRow <- function(x,
 
   labs <- lapply(lst, makeLabels, zcol = zcol)
 
-  # x <- x[, zcol, drop = FALSE]
+  alpha_lst = lapply(seq(lst), function(i) {
+    na.alpha = ifelse(na.alpha == 0, 0.001, na.alpha)
+    alpha = rep(alpha, length(lst))
+    # alpha[is.na(x[[i]])] = na.alpha
+    return(alpha)
+  })
+
+  alpharegions_lst = lapply(seq(lst), function(i) {
+    na.alpha = ifelse(na.alpha == 0, 0.001, na.alpha)
+    alpha.regions = rep(alpha.regions, length(lst))
+    # alpha.regions[is.na(x[[i]])] = na.alpha
+    return(alpha.regions)
+  })
 
   return(list(obj = lst,
               color = color,
               col.regions = col.regions,
               popup = popup,
-              labs = labs))
+              labs = labs,
+              alpha = alpha_lst,
+              alpha.regions = alpharegions_lst))
 }
 
