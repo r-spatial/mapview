@@ -171,8 +171,11 @@ regionOpacity <- function(x) {
 
 basemaps <- function(colors) {
   ml <- mean(as.numeric(sapply(colors, luminence)))
-  if (ml > 0.8) mapviewGetOption("basemaps")[c(2, 1, 3:5)] else
+  if (ml > 0.8 | unique(colors) %in% c("cyan", "#00ffff", "#00FFFF")) {
+    mapviewGetOption("basemaps")[c(2, 1, 3:5)]
+  } else {
     mapviewGetOption("basemaps")
+  }
 }
 
 
