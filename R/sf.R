@@ -33,30 +33,35 @@ leaflet_sf <- function(x,
                        ...) {
 
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
+  cex <- circleRadius(x, cex)
 
   if (!is.null(zcol)) {
-    # layer.name <- paste(layer.name, zcol)
-    if (length(unique(x[[zcol]])) <= 1) {
-      warning(
-        sprintf(
-          "column %s has only one unique value/level, ignoring color and legend",
-          zcol
-        )
-      )
-      zcol <- NULL
+    if (length(unique(zcol)) == 1) {
+      color = ifelse(is.function(color), standardColor(x), color)
+      col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
+    }
+    if (legend) {
+      if (getGeometryType(x) == "ln") leg_clrs <- color else leg_clrs <- col.regions
+      legend <- mapviewLegend(values = x[[zcol]],
+                              colors = leg_clrs,
+                              at = at,
+                              na.color = col2Hex(na.color),
+                              layer.name = layer.name)
     }
   }
+  #   # layer.name <- paste(layer.name, zcol)
+  #   if (length(unique(x[[zcol]])) <= 1) {
+  #     warning(
+  #       sprintf(
+  #         "column %s has only one unique value/level, ignoring color and legend",
+  #         zcol
+  #       )
+  #     )
+  #     # zcol <- NULL
+  #   }
+  # }
 
-  cex <- circleRadius(x, cex)
   # if (!native.crs) x <- checkAdjustProjection(x)
-  if (legend & !is.null(zcol)) {
-    if (getGeometryType(x) == "ln") leg_clrs <- color else leg_clrs <- col.regions
-    legend <- mapviewLegend(values = x[[zcol]],
-                            colors = leg_clrs,
-                            at = at,
-                            na.color = col2Hex(na.color),
-                            layer.name = layer.name)
-  }
 
   clrs <- vectorColors(x = x,
                        zcol = zcol,

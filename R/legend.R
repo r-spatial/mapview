@@ -91,6 +91,8 @@ numericLegend <- function(map,
     factorLegend(map = map,
                  values = as.factor(unique(values)),
                  colors = colors,
+                 position = position,
+                 layer.name = layer.name,
                  na.color = na.color)
   } else if (n_unique <= 11) {
     if (anyNA(values)) leg_vals <- c(atc, NA) else leg_vals <- atc
