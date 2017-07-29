@@ -1,8 +1,12 @@
-mapview 2.1.2
+mapview 2.1.3
 
 new features: 
 
   * popupImage now accepts more than one file name (list or vector) in argument img.
+  
+bugfixes:
+
+  * na.alpha caused list/burst methods to fail.
 
 mapview 2.1.0
 
