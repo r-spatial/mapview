@@ -1,4 +1,4 @@
-mapview 2.1.3
+mapview 2.1.4
 
 new features: 
 
@@ -7,6 +7,7 @@ new features:
 bugfixes:
 
   * na.alpha caused list/burst methods to fail.
+  * legend did not work when zcol only had one unique value. This was actually a delibarate choice as for a single map it doesn't really make sense to have a legend for only one color. However, for latticeView/sync this does actually make sense, hence re-enabled.
 
 mapview 2.1.0
 
