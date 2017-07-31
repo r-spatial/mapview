@@ -1,3 +1,9 @@
+## mapview 2.1.5
+
+new features:
+
+  * added testthat suite of functions.
+
 ## mapview 2.1.4
 
 new features: 
