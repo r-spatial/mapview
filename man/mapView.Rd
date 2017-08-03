@@ -59,7 +59,7 @@
   color = mapviewGetOption("vector.palette"),
   col.regions = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
-  alpha = 0.9, alpha.regions = regionOpacity(x), na.alpha = NULL,
+  alpha = 0.9, alpha.regions = regionOpacity(x), na.alpha = alpha,
   map.types = NULL, verbose = mapviewGetOption("verbose"),
   popup = popupTable(x), layer.name = NULL, label = makeLabels(x, zcol),
   legend = mapviewGetOption("legend"), legend.opacity = 1,
@@ -108,7 +108,8 @@
   color = mapviewGetOption("vector.palette"),
   col.regions = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lapply(x,
-  lineWidth), alpha = 0.9, alpha.regions = 0.6,
+  lineWidth), alpha = lapply(seq(x), function(i) 0.9),
+  alpha.regions = lapply(seq(x), function(i) 0.6),
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), popup = lapply(seq(x), function(i)
   {     popupTable(x[[i]]) }), layer.name = deparse(substitute(x, env =
@@ -117,7 +118,8 @@
   legend = mapviewGetOption("legend"), legend.opacity = 1,
   homebutton = TRUE, native.crs = FALSE, highlight = lapply(seq(x),
   function(i) {     mapviewHighlightOptions(x[[i]], alpha.regions =
-  alpha.regions, alpha = alpha, lwd = lwd[[i]]) }), maxpoints = NULL, ...)
+  alpha.regions[[i]], alpha = alpha[[i]], lwd = lwd[[i]]) }),
+  maxpoints = NULL, ...)
 
 \S4method{mapview}{ANY}(...)
 

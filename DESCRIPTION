@@ -47,4 +47,5 @@ SystemRequirements: GNU make
 Suggests:
     knitr,
     rmarkdown,
-    dplyr
+    dplyr,
+    testthat
