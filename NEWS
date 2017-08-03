@@ -1,5 +1,9 @@
 mapview 2.1.5
 
+
+
+mapview 2.1.4
+
 new features: 
 
   * popupImage now accepts more than one file name (list or vector) in argument img.
