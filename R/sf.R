@@ -36,7 +36,7 @@ leaflet_sf <- function(x,
   cex <- circleRadius(x, cex)
 
   if (!is.null(zcol)) {
-    if (length(unique(zcol)) == 1) {
+    if (length(unique(x[[zcol]])) == 1) {
       color = ifelse(is.function(color), standardColor(x), color)
       col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
     }
