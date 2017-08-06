@@ -1,8 +1,9 @@
-## mapview 2.1.5
+## mapview 2.1.6
 
 new features:
 
   * added testthat suite of functions.
+  * if supported by the installed leaflet version, legends are now automatically linked to layers.
 
 ## mapview 2.1.4
 
