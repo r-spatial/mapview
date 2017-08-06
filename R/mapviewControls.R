@@ -3,7 +3,8 @@ isAvailableInLeaflet <- function() {
   return(
     list(
       lab = "label" %in% names(as.list(args(leaflet::addCircleMarkers))),
-      scl = "addScaleBar" %in% ls(getNamespace("leaflet"))
+      scl = "addScaleBar" %in% ls(getNamespace("leaflet")),
+      leggrp = "group" %in% names(as.list(args(leaflet::addLegend)))
     )
   )
 }
