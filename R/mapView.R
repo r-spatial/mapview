@@ -383,27 +383,30 @@ setMethod('mapView', signature(x = 'sf'),
               # if (inherits(sf::st_geometry(x), "sfc_GEOMETRY")) {
               #   x = split(x, f = sf::st_dimension(sf::st_geometry(x)))
               # }
+              if (burst) {
+                tmp <- burst(x = x,
+                             zcol = zcol,
+                             burst = burst,
+                             color = color,
+                             col.regions = col.regions,
+                             at = at,
+                             na.color = na.color,
+                             popup = popup,
+                             alpha = alpha,
+                             alpha.regions = alpha.regions,
+                             na.alpha = na.alpha,
+                             legend = legend)
 
-              tmp <- burst(x = x,
-                           zcol = zcol,
-                           burst = burst,
-                           color = color,
-                           col.regions = col.regions,
-                           at = at,
-                           na.color = na.color,
-                           popup = popup,
-                           alpha = alpha,
-                           alpha.regions = alpha.regions,
-                           na.alpha = na.alpha)
-
-              if (is.function(tmp)) {
-                x <- tmp()$obj
-                color <- tmp()$color
-                col.regions <- tmp()$col.regions
-                popup <- tmp()$popup
-                label <- tmp()$labs
-                alpha = tmp()$alpha
-                alpha.regions = tmp()$alpha.regions
+                if (is.function(tmp)) {
+                  x <- tmp()$obj
+                  color <- tmp()$color
+                  col.regions <- tmp()$col.regions
+                  popup <- tmp()$popup
+                  label <- tmp()$labs
+                  alpha = tmp()$alpha
+                  alpha.regions = tmp()$alpha.regions
+                  zcol = as.list(names(x))
+                }
               }
 
               if (!inherits(x, "list")) {
@@ -436,7 +439,7 @@ setMethod('mapView', signature(x = 'sf'),
               } else {
 
                 mapView(x,
-                        zcol = NULL,
+                        zcol = zcol,
                         burst = FALSE,
                         color = color,
                         col.regions = col.regions,
@@ -672,6 +675,7 @@ setMethod('mapView', signature(x = 'list'),
           function(x,
                    map = NULL,
                    zcol = NULL,
+                   burst = FALSE,
                    color = mapviewGetOption("vector.palette"),
                    col.regions = mapviewGetOption("vector.palette"),
                    at = NULL,
@@ -729,7 +733,6 @@ setMethod('mapView', signature(x = 'list'),
               alpha.regions <- rep(list(alpha.regions), length(x))
 
 
-
             if (mapviewGetOption("platform") == "leaflet") {
               m <- Reduce("+", lapply(seq(x), function(i) {
                 if (is.null(popup)) popup <- popupTable(x[[i]])
@@ -750,6 +753,7 @@ setMethod('mapView', signature(x = 'list'),
                           map.types = map.types,
                           alpha = alpha[[i]],
                           alpha.regions = alpha.regions[[i]],
+                          burst = FALSE,
                           ...)
                   } else {
                     mapView(x = sf::st_cast(x[[i]]),
@@ -760,12 +764,15 @@ setMethod('mapView', signature(x = 'list'),
                             lwd = lwd[[i]],
                             highlight = highlight[[i]],
                             map.types = map.types,
+                            burst = FALSE,
                             ...)
                   }
                 }))@map
               m <- leaflet::hideGroup(map = m,
                                       group = layers2bHidden(m, ...))
               out <- new("mapview", object = x, map = m)
+              # print(str(out@map), 4)
+              # stop("hallo")
               return(out)
             } else {
               NULL

@@ -40,15 +40,17 @@ leaflet_sf <- function(x,
       color = ifelse(is.function(color), standardColor(x), color)
       col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
     }
-    if (legend) {
-      if (getGeometryType(x) == "ln") leg_clrs <- color else leg_clrs <- col.regions
-      legend <- mapviewLegend(values = x[[zcol]],
-                              colors = leg_clrs,
-                              at = at,
-                              na.color = col2Hex(na.color),
-                              layer.name = layer.name)
-    }
   }
+  if (legend) {
+    if (is.null(zcol)) zcol = 1
+    if (getGeometryType(x) == "ln") leg_clrs <- color else leg_clrs <- col.regions
+    legend <- mapviewLegend(values = x[[zcol]],
+                            colors = leg_clrs,
+                            at = at,
+                            na.color = col2Hex(na.color),
+                            layer.name = layer.name)
+  }
+
   #   # layer.name <- paste(layer.name, zcol)
   #   if (length(unique(x[[zcol]])) <= 1) {
   #     warning(
@@ -75,10 +77,10 @@ leaflet_sf <- function(x,
                                    na.color = na.color)
   if (!is.null(zcol) & !is.null(na.alpha)) {
     na.alpha = ifelse(na.alpha == 0, 0.001, na.alpha)
-    alpha = rep(alpha, nrow(x))
-    alpha[is.na(x[[zcol]])] = na.alpha
-    alpha.regions = rep(alpha.regions, nrow(x))
-    alpha.regions[is.na(x[[zcol]])] = na.alpha
+    if (length(alpha) != nrow(x)) alpha = rep(alpha, nrow(x))
+    alpha[is.na(x[[zcol]])] = na.alpha[is.na(x[[zcol]])]
+    if (length(alpha.regions) != nrow(x)) alpha.regions = rep(alpha.regions, nrow(x))
+    alpha.regions[is.na(x[[zcol]])] = na.alpha[is.na(x[[zcol]])]
   }
 
   leaflet_sfc(sf::st_geometry(x),

@@ -20,6 +20,7 @@ burst <- function(x,
     x
   } else if (is.null(zcol) & burst) {
     function() burstByColumn(x = x,
+                             zcol = zcol,
                              color = color,
                              col.regions = col.regions,
                              at = at,
@@ -57,6 +58,7 @@ burst <- function(x,
 
 
 burstByColumn <- function(x,
+                          zcol,
                           color,
                           col.regions,
                           at,
@@ -69,6 +71,7 @@ burstByColumn <- function(x,
                           ...) {
 
   if (is.null(nms)) nms <- colnames(sf2DataFrame(x, drop_sf_column = TRUE))
+  # zcol = nms
 
   x_lst <- lapply(nms, function(i) {
     x[, i, drop = FALSE]
@@ -76,6 +79,7 @@ burstByColumn <- function(x,
   names(x_lst) <- nms
 
   popup <- rep(list(popup), length(x_lst))
+  # legend = rep(list(legend), length(x_lst))
 
   color_lst <- lapply(nms, function(i) {
     vectorColors(x, zcol = i, colors = color, at = at, na.color = na.color)
@@ -110,7 +114,8 @@ burstByColumn <- function(x,
               popup = popup,
               labs = labs,
               alpha = alpha_lst,
-              alpha.regions = alpharegions_lst))
+              alpha.regions = alpharegions_lst,
+              zcol = zcol))
 
 }
 
