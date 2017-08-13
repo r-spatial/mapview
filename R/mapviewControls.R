@@ -250,7 +250,12 @@ makeListLayerNames = function(x, layer.name) {
   } else {
     chr = gsub(utils::glob2rx("*list(*"), "", layer.name)
     chr = unlist(strsplit(x = gsub(")", "", chr), ","))
-    lnms = gsub(" ", "", chr)
+    if (length(chr) / length(x) == 2) {
+      idx = seq(1, length(chr), 2)
+      lnms = paste(chr[idx], chr[idx + 1], sep = ",")
+    } else {
+      lnms = gsub(" ", "", chr)
+    }
   }
   return(as.list(lnms))
 }
