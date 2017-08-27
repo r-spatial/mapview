@@ -39,7 +39,8 @@ characterLegend <- function(map,
                             colors,
                             na.color,
                             layer.name) {
-  pal <- factorPalette(palette = zcolColors(x = unique(values),
+  vals = unique(values[!is.na(values)])
+  pal <- factorPalette(palette = zcolColors(x = vals,
                                             colors = colors,
                                             na.color = na.color,
                                             return.sorted = TRUE),

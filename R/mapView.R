@@ -379,6 +379,10 @@ setMethod('mapView', signature(x = 'sf'),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
+              if (is.character(burst)) {
+                zcol = burst
+                burst = TRUE
+              }
 
               # if (inherits(sf::st_geometry(x), "sfc_GEOMETRY")) {
               #   x = split(x, f = sf::st_dimension(sf::st_geometry(x)))
@@ -398,14 +402,15 @@ setMethod('mapView', signature(x = 'sf'),
                              legend = legend)
 
                 if (is.function(tmp)) {
-                  x <- tmp()$obj
-                  color <- tmp()$color
-                  col.regions <- tmp()$col.regions
-                  popup <- tmp()$popup
-                  label <- tmp()$labs
-                  alpha = tmp()$alpha
-                  alpha.regions = tmp()$alpha.regions
-                  zcol = as.list(names(x))
+                  tmp = tmp()
+                  x <- tmp$obj
+                  color <- tmp$color
+                  col.regions <- tmp$col.regions
+                  popup <- tmp$popup
+                  label <- tmp$labs
+                  alpha = tmp$alpha
+                  alpha.regions = tmp$alpha.regions
+                  zcol = tmp$zcol #as.list(names(x))
                 }
               }
 

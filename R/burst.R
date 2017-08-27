@@ -11,11 +11,6 @@ burst <- function(x,
                   na.alpha,
                   ...) {
 
-  if (is.character(burst)) {
-    zcol <- burst
-    burst <- TRUE
-  }
-
   if (is.null(zcol) & !burst) {
     x
   } else if (is.null(zcol) & burst) {
@@ -82,12 +77,14 @@ burstByColumn <- function(x,
   # legend = rep(list(legend), length(x_lst))
 
   color_lst <- lapply(nms, function(i) {
-    vectorColors(x, zcol = i, colors = color, at = at, na.color = na.color)
+    # vectorColors(x, zcol = i, colors = color, at = at, na.color = na.color)
+    color
   })
 
   colregions_lst <- lapply(nms, function(i) {
-    vectorColRegions(x, zcol = i, col.regions = col.regions,
-                     at = at, na.color = na.color)
+    # vectorColRegions(x, zcol = i, col.regions = col.regions,
+    #                  at = at, na.color = na.color)
+    col.regions
   })
 
   labs <- lapply(nms, function(i) {
@@ -131,7 +128,6 @@ burstByRow <- function(x,
                        alpha.regions,
                        na.alpha,
                        ...) {
-
   x[[zcol]] <- as.character(x[[zcol]])
   x[[zcol]][is.na(x[[zcol]])] <- "NA"
 
@@ -167,17 +163,19 @@ burstByRow <- function(x,
 
   alpha_lst = lapply(seq(lst), function(i) {
     na.alpha = ifelse(na.alpha == 0, 0.001, na.alpha)
-    alpha = rep(alpha, length(lst))
-    # alpha[is.na(x[[i]])] = na.alpha
+    alpha = rep(alpha, nrow(lst[[i]]))
+    alpha[lst[[i]][[zcol]] == "NA"] = na.alpha
     return(alpha)
   })
 
   alpharegions_lst = lapply(seq(lst), function(i) {
     na.alpha = ifelse(na.alpha == 0, 0.001, na.alpha)
-    alpha.regions = rep(alpha.regions, length(lst))
-    # alpha.regions[is.na(x[[i]])] = na.alpha
+    alpha.regions = rep(alpha.regions, nrow(lst[[i]]))
+    alpha.regions[lst[[i]][[zcol]] == "NA"] = na.alpha
     return(alpha.regions)
   })
+
+  zcol = as.list(rep(zcol, length(lst)))
 
   return(list(obj = lst,
               color = color,
@@ -185,6 +183,7 @@ burstByRow <- function(x,
               popup = popup,
               labs = labs,
               alpha = alpha_lst,
-              alpha.regions = alpharegions_lst))
+              alpha.regions = alpharegions_lst,
+              zcol = zcol))
 }
 
