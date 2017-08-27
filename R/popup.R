@@ -427,7 +427,7 @@ brewPopupTable = function(x, width = 300, height = 300) {
   lst_html = listPopupTemplates(mat, cols,
                                  system.file("templates/popup.brew",
                                              package = "mapview"))
-
+  attr(lst_html, "popup") = "mapview"
   return(lst_html)
 }
 
@@ -463,3 +463,13 @@ brewPopupRowAlt = function(col.name, value) {
 
 }
 
+
+mapviewPopupDependencies <- function() {
+  list(
+    htmltools::htmlDependency(
+      "PopupTable",
+      '0.0.1',
+      system.file("htmlwidgets/lib/popup", package = "mapview"),
+      stylesheet = 'popup.css'
+    ))
+}

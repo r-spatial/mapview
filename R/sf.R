@@ -213,6 +213,13 @@ leaflet_sfc <- function(x,
                    funs = funs,
                    args = args)
 
+  try(
+    if (attributes(popup)$popup == "mapview") {
+      m$dependencies <- c(m$dependencies, mapviewPopupDependencies())
+    }
+    , silent = TRUE
+  )
+
   if (is.function(legend)) m <- legend(m)
   out <- new("mapview", object = list(x), map = m)
 
