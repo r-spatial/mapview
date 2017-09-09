@@ -1,16 +1,17 @@
-mapview 2.1.6
+mapview 2.1.7
 
 new features:
 
   * added testthat suite of functions.
   * if supported by the installed leaflet version, legends are now automatically linked to layers.
+  * simple features with XYZ, XYM or XYZM geometries are now supported.
 
 mapview 2.1.4
 
-new features:
+new features: 
 
   * popupImage now accepts more than one file name (list or vector) in argument img.
-
+  
 bugfixes:
 
   * na.alpha caused list/burst methods to fail.
@@ -18,7 +19,7 @@ bugfixes:
 
 mapview 2.1.0
 
-new features:
+new features: 
 
   * plainview/cubeview now respects/has gained argument na.color.
   * mapview now supports st_GEOMETRY with truely mixed feature types (e.g. LINESTRING and POLYGON) - fixes #85
@@ -51,11 +52,11 @@ new features:
   * mapview now provides subtle highlighting of polygons (changing opacity slightly) and lines (changing thickness).
   * plainView, slideView and cubeView have gained argument legend. default is TRUE. Legends only available for non-RGB methods!
   * new data sets:
-
+  
       - 'franconia' (administrative district boundaries of Franconia)
       - 'breweries' (extended version of the 'breweries91' data)
       - 'trails' (selected hiking trails in franconia to connect the breweries)
-
+      
   * data sets 'breweries91', 'gadmCHE' and 'atlStorms2005' have been deleted and moved to leaflet.
 
 bugfixes:

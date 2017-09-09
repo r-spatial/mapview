@@ -1,9 +1,10 @@
-## mapview 2.1.6
+## mapview 2.1.7
 
 new features:
 
   * added testthat suite of functions.
   * if supported by the installed leaflet version, legends are now automatically linked to layers.
+  * simple features with XYZ, XYM or XYZM geometries are now supported.
 
 ## mapview 2.1.4
 
