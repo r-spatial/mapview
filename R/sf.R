@@ -165,7 +165,7 @@ leaflet_sfc <- function(x,
     if (getGeometryType(x) == "ln") clrs <- color else clrs <-  col.regions
     warning(large_warn)
     m <- addLargeFeatures(m,
-                          data = x,
+                          data = sf::st_zm(x),
                           radius = cex,
                           weight = lwd,
                           opacity = alpha,
@@ -181,7 +181,7 @@ leaflet_sfc <- function(x,
   } else {
 
   m <- addFeatures(m,
-                   data = x,
+                   data = sf::st_zm(x),
                    radius = cex,
                    weight = lwd,
                    opacity = alpha,
