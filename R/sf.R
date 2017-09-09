@@ -42,9 +42,14 @@ leaflet_sf <- function(x,
     }
   }
   if (legend) {
-    if (is.null(zcol)) zcol = 1
+    # if (is.null(zcol)) zcol = 1
+    if (is.null(zcol)) vals = layer.name else vals = x[[zcol]]
+    if (length(unique(vals)) == 1) {
+      color = ifelse(is.function(color), standardColor(x), color)
+      col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
+    }
     if (getGeometryType(x) == "ln") leg_clrs <- color else leg_clrs <- col.regions
-    legend <- mapviewLegend(values = x[[zcol]],
+    legend <- mapviewLegend(values = vals,
                             colors = leg_clrs,
                             at = at,
                             na.color = col2Hex(na.color),
@@ -83,7 +88,7 @@ leaflet_sf <- function(x,
     alpha.regions[is.na(x[[zcol]])] = na.alpha[is.na(x[[zcol]])]
   }
 
-  leaflet_sfc(sf::st_geometry(x),
+  leaflet_sfc(sf::st_geometry(sf::st_zm(x)),
               map = map,
               zcol = zcol,
               color = clrs,

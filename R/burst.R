@@ -105,6 +105,8 @@ burstByColumn <- function(x,
     return(alpha.regions)
   })
 
+  zcol_lst = as.list(nms)
+
   return(list(obj = x_lst,
               color = color_lst,
               col.regions = colregions_lst,
@@ -112,7 +114,7 @@ burstByColumn <- function(x,
               labs = labs,
               alpha = alpha_lst,
               alpha.regions = alpharegions_lst,
-              zcol = zcol))
+              zcol = zcol_lst))
 
 }
 

@@ -24,6 +24,10 @@ if ( !isGeneric('mapView') ) {
 #' for windows: "path_to_your_chrome_installation\\chrome.exe --allow-file-access-from-files",
 #' for linux: "/usr/bin/google-chrome --allow-access-from-files").
 #' See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
+#' \cr
+#' NOTE: if XYZ or XYM or XYZM data from package sf is passed to mapview,
+#' domensions Z and M will be stripped to ensure smooth rendering even though
+#' the popup will potentially still say something like "POLYGON Z".
 #'
 #' @param x a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
 #' \code{sf} object or a list of any combination of those.
