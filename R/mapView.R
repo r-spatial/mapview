@@ -412,8 +412,8 @@ setMethod('mapView', signature(x = 'sf'),
                   col.regions <- tmp$col.regions
                   popup <- tmp$popup
                   label <- tmp$labs
-                  alpha = tmp$alpha
-                  alpha.regions = tmp$alpha.regions
+                  # alpha = tmp$alpha
+                  # alpha.regions = tmp$alpha.regions
                   zcol = tmp$zcol #as.list(names(x))
                 }
               }
@@ -460,6 +460,7 @@ setMethod('mapView', signature(x = 'sf'),
                         layer.name = layer.name,
                         alpha = alpha,
                         alpha.regions = alpha.regions,
+                        na.alpha = na.alpha,
                         ...)
 
               }

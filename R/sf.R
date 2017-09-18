@@ -83,9 +83,9 @@ leaflet_sf <- function(x,
   if (!is.null(zcol) & !is.null(na.alpha)) {
     na.alpha = ifelse(na.alpha == 0, 0.001, na.alpha)
     if (length(alpha) != nrow(x)) alpha = rep(alpha, nrow(x))
-    alpha[is.na(x[[zcol]])] = na.alpha[is.na(x[[zcol]])]
+    alpha[is.na(x[[zcol]])] = na.alpha #[is.na(x[[zcol]])]
     if (length(alpha.regions) != nrow(x)) alpha.regions = rep(alpha.regions, nrow(x))
-    alpha.regions[is.na(x[[zcol]])] = na.alpha[is.na(x[[zcol]])]
+    alpha.regions[is.na(x[[zcol]])] = na.alpha #[is.na(x[[zcol]])]
   }
 
   leaflet_sfc(sf::st_geometry(sf::st_zm(x)),
@@ -198,14 +198,14 @@ leaflet_sfc <- function(x,
 
   funs <- list(if (!native.crs) leaflet::addScaleBar,
                if (homebutton) addHomeButton,
-               mapViewLayersControl,
+               if (is.null(map)) mapViewLayersControl,
                addMouseCoordinates)
   funs <- funs[!sapply(funs, is.null)]
 
   args <- list(if (!native.crs) list(position = "bottomleft"),
                if (homebutton) list(ext = createExtent(x),
                                     layer.name = layer.name),
-               list(map.types = map.types,
+               if (is.null(map)) list(map.types = map.types,
                     names = layer.name,
                     native.crs = native.crs),
                list(style = "detailed",
