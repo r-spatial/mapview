@@ -7,28 +7,10 @@ width: 100%;
 border-collapse: collapse;
 }
 
-#popup td {
-font-size: 1em;
-border: 0px solid #85ADFF;
-background-color: 	#ebf1ff; /*#F0F5FF;
-/*padding: 3px 3px 3px 3px;*/
-}
-
-#popup tr.alt td {
-color: #000000;
-background-color: #D1E0FF; /*#D1E0FF;*/
-}
-
-#popup tr.coord td {
-color: #000000;
-background-color: #A8E6A8;
-}
 
 div.scrollableContainer {
 max-height: 2000px;
 max-width: 2000px;
-overflow-y: auto;
-overflow-x: auto;
 margin: 0px;
 background: transparent;
 }
@@ -115,9 +97,17 @@ div::-webkit-scrollbar-corner {
 	        transform: rotate(45deg);
 }
 
-.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+.leaflet-popup-content-wrapper{
 	background: #4c4c4c;
 	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+	width: <%=width%>px;
+	height: <%=height%>px;
+}
+
+.leaflet-popup-tip {
+	background: #4c4c4c;
+	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+
 }
 
 .leaflet-container a.leaflet-popup-close-button {

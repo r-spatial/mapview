@@ -274,21 +274,13 @@ popupGraph = function(graphs, type = c("png", "svg", "html"),
   } else type = type[1]
 
   pop = switch(type,
-                png = popupPNGraph(graphs = graphs, dsn = drs,
-                                   width = width, height = height, ...),
-                svg = popupSVGraph(graphs = graphs, dsn = drs,
-                                   width = width, height = height, ...),
-                html = popupHTMLGraph(graphs = graphs, dsn = drs,
-                                      width = width, height = height, ...))
+               png = popupPNGraph(graphs = graphs, dsn = drs,
+                                  width = width, height = height, ...),
+               svg = popupSVGraph(graphs = graphs, dsn = drs,
+                                  width = width, height = height, ...),
+               html = popupHTMLGraph(graphs = graphs, dsn = drs,
+                                     width = width, height = height, ...))
 
-  # pop = if (type[1] == "svg") {
-  #   popupSVGraph(graphs = graphs, dsn = drs, ...)
-  # } else {
-  #   popupPNGraph(graphs = graphs, dsn = drs, ...)
-  # }
-
-  ## remove target folder and return html strings
-  # file.remove(drs)
   return(pop)
 }
 
@@ -317,7 +309,7 @@ popupSVGraph = function(graphs, dsn = tempdir(),
 ### png -----
 popupPNGraph = function(graphs, dsn = tempdir(),
                          width = 300, height = 300, ...) {
-  lapply(1:length(graphs), function(i) {
+  pngs = lapply(1:length(graphs), function(i) {
     nm = paste0("tmp_", i, ".png")
     fls = file.path(dsn, nm)
 
@@ -325,21 +317,12 @@ popupPNGraph = function(graphs, dsn = tempdir(),
     print(graphs[[i]])
     dev.off()
 
-    rel_path = file.path("..", basename(dsn))
-
-    pop = paste0("<img src = ", file.path(rel_path, basename(fls)), ">")
-    # maxheight = 2000
-    # wdth = paste0(width, "px;")
-    # hght = paste0(height, "px;")
-
-    popTemplate = system.file("templates/popup-graph.brew", package = "mapview")
-    myCon = textConnection("outputObj", open = "w")
-    brew::brew(popTemplate, output = myCon)
-    outputObj = outputObj
-    close(myCon)
-
-    return(paste(outputObj, collapse = ' '))
+    rel_path = file.path("..", basename(dsn), nm)
+    return(rel_path)
   })
+
+  popupImage(pngs, width = width, height = height, src = "local")
+
 }
 
 ### html -----
