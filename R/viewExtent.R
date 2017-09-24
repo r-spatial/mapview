@@ -51,81 +51,41 @@ NULL
 ## View Extent ============================================================
 #' @rdname viewExtent
 viewExtent <- function(x,
-                       map = NULL,
-                       map.types = NULL,
                        popup = NULL,
-                       lwd = 1,
-                       alpha = 0.9,
-                       alpha.regions = 0.1,
-                       color = "#6666ff",
-                       homebutton = TRUE,
-                       layer.name = deparse(substitute(x)),
-                       native.crs = FALSE,
+                       layer.name = NULL,
                        ...) {
 
-  if (is.null(map.types)) map.types <- basemaps(color)
-  m <- initMap(map, map.types, getProjection(x), native.crs)
-  color <- col2Hex(color)
+  if (is.null(layer.name)) {
+    layer.name = paste(deparse(substitute(x)), "extent", sep = "-")
+  }
 
-  layer.name <- paste(layer.name, "extent", sep = "-")
+  x <- sf::st_as_sfc(
+    sf::st_bbox(
+      checkAdjustProjection(x)
+    )
+  )
 
-  m <- addExtent(map = m,
-                 data = x,
-                 group = layer.name,
-                 popup = popup,
-                 weight = lwd,
-                 opacity = alpha,
-                 fillOpacity = alpha.regions,
-                 color = color,
-                 ...)
+  if (is.null(popup)) {
+    pop = popupTable(as.data.frame(t(attributes(x)$bbox[1:4])))
+  }
 
-  m <- decorateMap(map = m,
-                   funs = list(if (!native.crs) leaflet::addScaleBar,
-                               if (homebutton) addHomeButton,
-                               mapViewLayersControl,
-                               addMouseCoordinates),
-                   args = list(if (!native.crs) list(position = "bottomleft"),
-                               if (homebutton) list(ext = createExtent(x),
-                                                    layer.name = layer.name),
-                               list(map.types = map.types,
-                                    names = layer.name,
-                                    native.crs = native.crs),
-                               list(style = "detailed",
-                                    epsg = NULL,
-                                    proj4string = getProjection(x))))
-
-  out <- methods::new('mapview',
-                      object = list(createExtent(x, offset = 0)),
-                      map = m)
-
-  return(out)
+  mapView(x, popup = pop, layer.name = layer.name, ...)
 
 }
 
 ## Add Extent =============================================================
-#' @describeIn viewExtent add extent/bbox of spatial objects interactively
+#' @describeIn viewExtent add extent/bbox of spatial/sf objects to a leaflet map
 #' @export addExtent
 
-addExtent <- function(map, data, popup = NULL, ...) {
-
-  x <- checkAdjustProjection(data)
-  ext <- createExtent(x, offset = 0)
-  df <- data.frame(xmin = ext@xmin,
-                   xmax = ext@xmax,
-                   ymin = ext@ymin,
-                   ymax = ext@ymax)
-
-  if (is.null(popup)) popup <- popupTable(df)
-
-  m <- leaflet::addRectangles(map = map,
-                              lng1 = ext@xmin,
-                              lat1 = ext@ymin,
-                              lng2 = ext@xmax,
-                              lat2 = ext@ymax,
-                              popup = popup,
-                              ...)
+addExtent <- function(map, data, ...) {
+  if (inherits(data, "Spatial")) data = sf::st_as_sfc(data)
+  x <- sf::st_as_sfc(
+    sf::st_bbox(
+      checkAdjustProjection(data)
+    )
+  )
+  m = addFeatures(x, map = map, ...)
   return(m)
-
 }
 
 

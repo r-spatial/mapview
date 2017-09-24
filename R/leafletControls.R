@@ -136,8 +136,8 @@ appendMapCallEntries <- function(map1, map2) {
 # Remove duuplicated map calls --------------------------------------------
 
 removeDuplicatedMapCalls <- function(map) {
-  ind <- anyDuplicated(map$x$calls)
-  for (i in ind) map$x$calls[[ind]] <- NULL
+  ind <- duplicated(map$x$calls)
+  if (any(ind)) map$x$calls[ind] <- NULL
   return(map)
 }
 
@@ -189,12 +189,14 @@ initBaseMaps <- function(map.types) {
 
 # Initialise mapView map --------------------------------------------------
 
-initMap <- function(map, map.types, proj4str, native.crs = FALSE) {
+initMap <- function(map = NULL,
+                    map.types = NULL,
+                    proj4str,
+                    native.crs = FALSE) {
 
-  if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
+  # if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
 
-  if (missing(map) & missing(map.types)) {
-    map <- NULL
+  if (is.null(map) & is.null(map.types)) {
     map.types <- mapviewGetOption("basemaps")
   }
 

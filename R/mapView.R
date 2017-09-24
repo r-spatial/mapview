@@ -710,8 +710,8 @@ setMethod('mapView', signature(x = 'list'),
                    native.crs = FALSE,
                    highlight = lapply(seq(x), function(i) {
                      mapviewHighlightOptions(x[[i]],
-                                             alpha.regions = alpha.regions[[i]],
-                                             alpha = alpha[[i]],
+                                             alpha.regions = alpha.regions,
+                                             alpha = alpha,
                                              lwd = lwd[[i]])
                    }),
                    maxpoints = NULL, #lapply(x, getMaxFeatures),
