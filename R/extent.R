@@ -51,8 +51,11 @@ NULL
 ## View Extent ============================================================
 #' @rdname viewExtent
 viewExtent <- function(x,
+                       map = NULL,
                        popup = NULL,
                        layer.name = NULL,
+                       alpha.regions = 0.2,
+                       label = NULL,
                        ...) {
 
   if (is.null(layer.name)) {
@@ -69,7 +72,13 @@ viewExtent <- function(x,
     pop = popupTable(as.data.frame(t(attributes(x)$bbox[1:4])))
   }
 
-  mapView(x, popup = pop, layer.name = layer.name, ...)
+  mapView(x,
+          map = map,
+          popup = pop,
+          layer.name = layer.name,
+          alpha.regions = alpha.regions,
+          label = label,
+          ...)
 
 }
 
@@ -90,26 +99,17 @@ addExtent <- function(map, data, ...) {
 
 
 
-# ### extent without crs ====================================================
-#
-# viewExtentNoRef <- function(x,
-#                             popup = NULL,
-#                             ...) {
-#
-#   ext <- raster::extent(x)
-#
-#   m <- leaflet::leaflet()
-#   m <- leaflet::addRectangles(map = m,
-#                               lng1 = ext@xmin,
-#                               lat1 = ext@ymin,
-#                               lng2 = ext@xmax,
-#                               lat2 = ext@ymax,
-#                               popup = popup,
-#                               ...)
-#
-#   out <- methods::new('mapview', object = list(ext), map = m)
-#
-#   return(out)
-# }
-#
-
+## combined extent ===========================================================
+combineExtent = function(lst, sf = TRUE) {
+  # lst = list(breweries, st_as_sf(atlStorms2005), st_as_sf(gadmCHE))
+  # bb = do.call(rbind, lapply(lst, sf::st_bbox))
+  bb = do.call(rbind, lapply(seq(lst), function(i) {
+    sf::st_bbox(sf::st_transform(sf::st_as_sfc(sf::st_bbox(lst[[i]])),
+                                 crs = 4326))
+  }))
+  bbmin = apply(bb, 2, min)
+  bbmax = apply(bb, 2, max)
+  bb = c(bbmin[1], bbmin[2], bbmax[3], bbmax[4])
+  if (sf) return(sf::st_as_sfc(bb))
+  return(bb)
+}

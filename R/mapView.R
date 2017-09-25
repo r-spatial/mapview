@@ -368,7 +368,7 @@ setMethod('mapView', signature(x = 'sf'),
                    lwd = lineWidth(x),
                    alpha = 0.9,
                    alpha.regions = regionOpacity(x),
-                   na.alpha = alpha,
+                   na.alpha = regionOpacity(x),
                    map.types = NULL,
                    verbose = mapviewGetOption("verbose"),
                    popup = popupTable(x),
@@ -708,12 +708,6 @@ setMethod('mapView', signature(x = 'list'),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlight = lapply(seq(x), function(i) {
-                     mapviewHighlightOptions(x[[i]],
-                                             alpha.regions = alpha.regions,
-                                             alpha = alpha,
-                                             lwd = lwd[[i]])
-                   }),
                    maxpoints = NULL, #lapply(x, getMaxFeatures),
                    ...) {
 
@@ -731,8 +725,8 @@ setMethod('mapView', signature(x = 'list'),
               cex <- rep(list(cex), length(x))
             if (!is.list(lwd))
               lwd <- rep(list(lwd), length(x))
-            if (!is.list(highlight))
-              highlight <- rep(list(highlight), length(x))
+            # if (!is.list(highlight))
+            #   highlight <- rep(list(highlight), length(x))
             # if (!is.list(label))
             #   label <- rep(list(label), length(x))
             if (length(popup) != length(x))
@@ -759,7 +753,6 @@ setMethod('mapView', signature(x = 'list'),
                           native.crs = native.crs,
                           cex = cex[[i]],
                           lwd = lwd[[i]],
-                          highlight = highlight[[i]],
                           map.types = map.types,
                           alpha = alpha[[i]],
                           alpha.regions = alpha.regions[[i]],
@@ -772,7 +765,6 @@ setMethod('mapView', signature(x = 'list'),
                             native.crs = native.crs,
                             cex = cex[[i]],
                             lwd = lwd[[i]],
-                            highlight = highlight[[i]],
                             map.types = map.types,
                             burst = FALSE,
                             ...)

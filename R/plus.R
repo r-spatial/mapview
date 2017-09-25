@@ -33,30 +33,19 @@ if ( !isGeneric('+') ) {
 setMethod("+",
           signature(e1 = "mapview",
                     e2 = "mapview"),
-          function (e1, e2)
-          {
-            # is.ext <- class(e2@object[[length(e2@object)]]) == "Extent"
-            # if (is.ext) {
-            #   rst <- raster::raster(e2@object[[length(e2@object)]])
-            #   raster::projection(rst) <- llcrs
-            # }
+          function (e1, e2) {
+
             m <- e1@map
             m <- appendMapCallEntries(m, e2@map)
             # m = removeDuplicatedMapCalls(m)
             out_obj <- append(e1@object, e2@object)
-            ext <- createExtent(out_obj[[length(out_obj)]])
-            # if (length(e2@object[[length(e2@object)]]) > 1) {
-            #   if (is.ext) ext <- raster::extent(rst) else
-            #     ext <- raster::extent(
-            #       raster::projectExtent(out_obj[[length(out_obj)]],
-            #                             crs = llcrs))
-              m <- leaflet::fitBounds(map = m,
-                                      lng1 = ext@xmin,
-                                      lat1 = ext@ymin,
-                                      lng2 = ext@xmax,
-                                      lat2 = ext@ymax)
-              #m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
-            # }
+            bb = combineExtent(append(e1@object, e2@object), sf = FALSE)
+            names(bb) = NULL
+            m <- leaflet::fitBounds(map = m,
+                                    lng1 = bb[1],
+                                    lat1 = bb[2],
+                                    lng2 = bb[3],
+                                    lat2 = bb[4])
 
             out <- methods::new('mapview', object = out_obj, map = m)
             return(out)

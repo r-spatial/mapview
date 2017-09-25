@@ -163,7 +163,7 @@ lineWidth <- function(x) {
 
 regionOpacity <- function(x) {
   switch(getGeometryType(x),
-         "pt" = 0.9,
+         "pt" = 0.6,
          "ln" = 1,
          "pl" = 0.6,
          "gc" = 0.6)
@@ -257,5 +257,12 @@ makeListLayerNames = function(x, layer.name) {
       lnms = gsub(" ", "", chr)
     }
   }
+
+  if (length(lnms) == 1 & length(x) > 1) {
+    lnms = lapply(seq(x), function(i) {
+      paste0(lnms, "[[", i , "]]")
+    })
+  }
+
   return(as.list(lnms))
 }
