@@ -1,10 +1,19 @@
-mapview 2.1.9
+mapview 2.1.10
 
 new features:
 
-  * added testthat suite of functions.
   * if supported by the installed leaflet version, legends are now automatically linked to layers.
   * simple features with XYZ, XYM or XYZM geometries are now supported.
+  * added function addExtent to add rectangles showing bbox/extent/outline of sf/sp/raster objects.
+  * more concise internal recursive method dispatch.
+
+internal:
+
+  * added testthat suite of functions.
+
+bugfixes:
+
+  * manifold bug fixes - addressing issues with list layers, alpha channel and many more.
 
 mapview 2.1.4
 
