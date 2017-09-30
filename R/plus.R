@@ -37,15 +37,18 @@ setMethod("+",
 
             m <- e1@map
             m <- appendMapCallEntries(m, e2@map)
-            # m = removeDuplicatedMapCalls(m)
             out_obj <- append(e1@object, e2@object)
-            bb = combineExtent(append(e1@object, e2@object), sf = FALSE)
+            bb = combineExtent(out_obj, sf = FALSE)
             names(bb) = NULL
             m <- leaflet::fitBounds(map = m,
                                     lng1 = bb[1],
                                     lat1 = bb[2],
                                     lng2 = bb[3],
                                     lat2 = bb[4])
+
+            zf = grep("Zoom full", m$x$calls)
+            if (length(zf) > 0) m$x$calls[zf] = NULL
+            m = addZoomFullButton(m, out_obj)
 
             out <- methods::new('mapview', object = out_obj, map = m)
             return(out)

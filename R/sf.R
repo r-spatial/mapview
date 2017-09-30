@@ -226,6 +226,7 @@ leaflet_sfc <- function(x,
   )
 
   if (is.function(legend)) m <- legend(m)
+  m = removeDuplicatedMapDependencies(m)
   out <- new("mapview", object = list(x), map = m)
 
   return(out)

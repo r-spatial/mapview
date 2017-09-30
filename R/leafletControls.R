@@ -1,26 +1,12 @@
 # Convenience functions for working with spatial objects and leaflet maps
 
 getLayerControlEntriesFromMap <- function(map) {
-
-#   seq_along(map$x$calls)[sapply(map$x$calls,
-#                                 FUN = function(X) "addLayersControl" %in% X)]
-  tst <- which(sapply(map$x$calls, function(i) {
-    i$method == "addLayersControl"
-  }))
-  return(tst)
-
+  grep("addLayersControl", map$x$calls, fixed = TRUE, useBytes = TRUE)
 }
 
 
 getCallEntryFromMap <- function(map, call) {
-
-  #   seq_along(map$x$calls)[sapply(map$x$calls,
-  #                                 FUN = function(X) "addLayersControl" %in% X)]
-  tst <- which(sapply(map$x$calls, function(i) {
-    i$method == call
-  }))
-  return(tst)
-
+  grep(call, map$x$calls, fixed = TRUE, useBytes = TRUE)
 }
 
 
@@ -41,10 +27,11 @@ getProviderTileEntriesFromMap <- function(map) {
 
 #   seq_along(map$x$calls)[sapply(map$x$calls,
 #                                 FUN = function(X) "addProviderTiles" %in% X)]
-  tst <- which(sapply(map$x$calls, function(i) {
-    i$method == "addProviderTiles"
-  }))
-  return(tst)
+  # tst <- which(sapply(map$x$calls, function(i) {
+  #   i$method == "addProviderTiles"
+  # }))
+  grep("addProviderTiles", map$x$calls, fixed = TRUE, useBytes = TRUE)
+  # return(tst)
 
 }
 
@@ -112,9 +99,11 @@ appendMapCallEntries <- function(map1, map2) {
   mpcalls[[ctrls1[1]]]$args[[1]] <- bmaps
   mpcalls[[ctrls1[1]]]$args[[2]] <- lyrs
 
-  ind <- which(sapply(mpcalls, function(i) {
-    i$method == "addLayersControl"
-  }))
+  # ind <- which(sapply(mpcalls, function(i) {
+  #   i$method == "addLayersControl"
+  # }))
+
+  ind =  grep("addLayersControl", mpcalls, fixed = TRUE, useBytes = TRUE)
 
 #   ind <- seq_along(mpcalls)[sapply(mpcalls,
 #                                    FUN = function(X) {
@@ -141,7 +130,13 @@ removeDuplicatedMapCalls <- function(map) {
   return(map)
 }
 
+# Remove duuplicated map dependencies -------------------------------------
 
+removeDuplicatedMapDependencies <- function(map) {
+  ind <- duplicated(map$dependencies)
+  if (any(ind)) map$dependencies[ind] <- NULL
+  return(map)
+}
 
 
 
