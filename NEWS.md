@@ -1,4 +1,4 @@
-## mapview 2.1.10
+## mapview 2.1.11
 
 new features:
 
@@ -6,6 +6,7 @@ new features:
   * simple features with XYZ, XYM or XYZM geometries are now supported.
   * added function addExtent to add rectangles showing bbox/extent/outline of sf/sp/raster objects.
   * more concise internal recursive method dispatch.
+  * if multiple layers are plotted (via "+") initial zoom is now on global extent and a "Zoom full" button is added to the map to re-zoom to this global extent.
 
 internal:
 
