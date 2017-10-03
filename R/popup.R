@@ -390,7 +390,7 @@ brewPopupTable = function(x, width = 300, height = 300) {
       if (any(ids)) {
         nms = attr(ids, "names")[ids]
         for (i in nms) {
-          x[, i] = format(x[[i]])
+          x[[i]] = format(x[[i]])
         }
       }
 

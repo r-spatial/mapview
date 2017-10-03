@@ -21,8 +21,8 @@ if ( !isGeneric('+') ) {
 #' m2 <- mapView(breweries91)
 #'
 #' ### add two mapview objects
-#' m1 + m2 # final zoom level based on m2
-#' '+'(m2, m1) # final zoom level based on m1
+#' m1 + m2
+#' '+'(m2, m1)
 #' }
 #'
 #' @name +
@@ -35,8 +35,7 @@ setMethod("+",
                     e2 = "mapview"),
           function (e1, e2) {
 
-            m <- e1@map
-            m <- appendMapCallEntries(m, e2@map)
+            m <- appendMapCallEntries(e1@map, e2@map)
             out_obj <- append(e1@object, e2@object)
             bb = combineExtent(out_obj, sf = FALSE)
             names(bb) = NULL

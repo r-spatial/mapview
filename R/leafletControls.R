@@ -10,16 +10,6 @@ getCallEntryFromMap <- function(map, call) {
 }
 
 
-# Get layer names of leaflet map ------------------------------------------
-
-getLayerNamesFromMap <- function(map) {
-
-  len <- getLayerControlEntriesFromMap(map)
-  len <- len[length(len)]
-  if (length(len) != 0) map$x$calls[[len]]$args[[2]] else NULL
-
-}
-
 
 # Query leaflet map for position of 'addProviderTiles' entry --------------
 
@@ -48,13 +38,13 @@ getProviderTileNamesFromMap <- function(map) {
 
 # Update layer names of leaflet map ---------------------------------------
 
-updateLayerControlNames <- function(map1, map2) {
-  len <- getLayerControlEntriesFromMap(map1)
-  len <- len[length(len)]
-  map1$x$calls[[len]]$args[[2]] <- c(getLayerNamesFromMap(map1),
-                                     getLayerNamesFromMap(map2))
-  return(map1)
-}
+# updateLayerControlNames <- function(map1, map2) {
+#   len <- getLayerControlEntriesFromMap(map1)
+#   len <- len[length(len)]
+#   map1$x$calls[[len]]$args[[2]] <- c(getLayerNamesFromMap(map1),
+#                                      getLayerNamesFromMap(map2))
+#   return(map1)
+# }
 
 # Identify layers to be hidden from initial map rendering -----------------
 
@@ -76,25 +66,45 @@ getMapCalls <- function(map) {
 
 
 
+# Get layer names of leaflet map ------------------------------------------
+
+getLayerNamesFromMap <- function(map) {
+
+  len <- getLayerControlEntriesFromMap(map)
+  len <- len[length(len)]
+  if (length(len) != 0) map$x$calls[[len]]$args[[2]] else NULL
+
+}
+
+
+
 # Append calls to a map ---------------------------------------------------
 
 appendMapCallEntries <- function(map1, map2) {
+  ## calls
+  m1_calls = map1$x$calls
+  m2_calls = map2$x$calls
+
   ## base map controls
   ctrls1 <- getLayerControlEntriesFromMap(map1)
   ctrls2 <- getLayerControlEntriesFromMap(map2)
-  bmaps1 <- map1$x$calls[[ctrls1[1]]]$args[[1]]
-  bmaps2 <- map2$x$calls[[ctrls2[1]]]$args[[1]]
+  bmaps1 <- m1_calls[[ctrls1[1]]]$args[[1]]
+  bmaps2 <- m2_calls[[ctrls2[1]]]$args[[1]]
   bmaps <- c(bmaps1, bmaps2)[!duplicated(c(bmaps1, bmaps2))]
 
   ## layer controls
-  lyrs1 <- getLayerNamesFromMap(map1)
-  lyrs2 <- getLayerNamesFromMap(map2)
+  len1 <- ctrls1[length(ctrls1)]
+  lyrs1 = if (length(len1) != 0) m1_calls[[len1]]$args[[2]] else NULL
+  len2 <- ctrls2[length(ctrls2)]
+  lyrs2 = if (length(len2) != 0) m2_calls[[len2]]$args[[2]] else NULL
+  # lyrs1 <- getLayerNamesFromMap(map1)
+  # lyrs2 <- getLayerNamesFromMap(map2)
   lyrs <- c(lyrs1, lyrs2)
-  dup <- duplicated(lyrs)
-  lyrs[dup] <- paste0(lyrs[dup], ".2")
+  # dup <- duplicated(lyrs)
+  # lyrs[dup] <- sapply(seq(lyrs[dup]), function(i) paste0(lyrs[dup][[i]], ".", as.character(i + 1)))
 
   ## merge
-  mpcalls <- append(map1$x$calls, map2$x$calls)
+  mpcalls <- append(m1_calls, m2_calls)
   mpcalls <- mpcalls[!duplicated(mpcalls)]
   mpcalls[[ctrls1[1]]]$args[[1]] <- bmaps
   mpcalls[[ctrls1[1]]]$args[[2]] <- lyrs
@@ -405,6 +415,18 @@ mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
   }
   return(m)
 
+}
+
+
+# Update leaflet layers control button ------------------------------------
+updateOverlayGroups = function(map, group) {
+  if (inherits(map, "mapview")) map = mapview2leaflet(map)
+  ind = getLayerControlEntriesFromMap(map)
+  if (length(ind > 0)) {
+    map$x$calls[ind][[1]]$args[[2]] =
+      c(map$x$calls[ind][[1]]$args[[2]], group)
+  }
+  return(map)
 }
 
 

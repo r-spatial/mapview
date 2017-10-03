@@ -100,19 +100,24 @@ addExtent <- function(map, data, ...) {
 
 
 ## combined extent ===========================================================
-combineExtent = function(lst, sf = FALSE) {
+combineExtent = function(lst, sf = FALSE, crs = 4326) {
   # lst = list(breweries, st_as_sf(atlStorms2005), st_as_sf(gadmCHE))
   # bb = do.call(rbind, lapply(lst, sf::st_bbox))
   bb = do.call(rbind, lapply(seq(lst), function(i) {
-    sf::st_bbox(sf::st_transform(sf::st_as_sfc(sf::st_bbox(lst[[i]])),
-                                 crs = 4326))
+    if (!is.na(st_crs(lst[[i]]))) {
+      sf::st_bbox(sf::st_transform(sf::st_as_sfc(sf::st_bbox(lst[[i]])),
+                                   crs = crs))
+    } else {
+      sf::st_bbox(sf::st_as_sfc(sf::st_bbox(lst[[i]])))
+    }
   }))
+
   bbmin = apply(bb, 2, min)
   bbmax = apply(bb, 2, max)
   bb = c(bbmin[1], bbmin[2], bbmax[3], bbmax[4])
   if (sf) {
     attr(bb, which = "class") = "bbox"
-    attr(bb, "crs") = sf::st_crs(4326)
+    attr(bb, "crs") = sf::st_crs(crs)
     return(sf::st_as_sfc(bb))
   }
   return(bb)

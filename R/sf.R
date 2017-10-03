@@ -196,6 +196,8 @@ leaflet_sfc <- function(x,
 
   }
 
+  if (!is.null(map)) m = updateOverlayGroups(m, layer.name)
+
   funs <- list(if (!native.crs) leaflet::addScaleBar,
                if (homebutton) addHomeButton,
                if (is.null(map)) mapViewLayersControl,
