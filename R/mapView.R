@@ -30,7 +30,8 @@ if ( !isGeneric('mapView') ) {
 #' the popup will potentially still say something like "POLYGON Z".
 #'
 #' @param x a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
-#' \code{sf} object or a list of any combination of those.
+#' \code{sf} object or a list of any combination of those. Furthermore,
+#' this can also be a \code{data.frame} or a \code{numeric vector}.
 #' @param map an optional existing map to be updated/added to
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
@@ -529,6 +530,50 @@ setMethod('mapView', signature(x = 'sfc'),
             }
           }
 )
+
+
+## numeric ================================================================
+#' @describeIn mapView \code{\link{numeric}}
+#' @param y numeric vector.
+setMethod('mapView', signature(x = 'numeric'),
+          function(x, y, type = "p", grid = TRUE, ...) {
+            xyView(x = x,
+                   y = y,
+                   type = type,
+                   grid = grid,
+                   ...)
+          }
+)
+
+
+## data.frame =============================================================
+#' @describeIn mapView \code{\link{data.frame}}
+#' @param xcol the column to be mapped to the x-axis. Only relevant for the
+#' data.frame method.
+#' @param ycol the column to be mapped to the y-axis. Only relevant for the
+#' data.frame method.
+#' @param grid whether to plot a (scatter plot) xy-grid to aid interpretation
+#' of the visualisation. Only relevant for the data.frame method.
+#' @param aspect the ratio of x/y axis corrdinates to adjust the plotting
+#' space to fit the screen. Only relevant for the data.frame method.
+setMethod('mapView', signature(x = 'data.frame'),
+          function(x,
+                   xcol,
+                   ycol,
+                   grid = TRUE,
+                   aspect = 1,
+                   popup = popupTable(x),
+                   ...) {
+            xyView(x = xcol,
+                   y = ycol,
+                   data = x,
+                   grid = grid,
+                   aspect = aspect,
+                   popup = popup,
+                   ...)
+          }
+)
+
 
 
 ## XY =====================================================================

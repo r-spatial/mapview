@@ -8,6 +8,8 @@
 \alias{mapView,Satellite-method}
 \alias{mapView,sf-method}
 \alias{mapView,sfc-method}
+\alias{mapView,numeric-method}
+\alias{mapView,data.frame-method}
 \alias{mapView,XY-method}
 \alias{mapView,sfc_POINT-method}
 \alias{mapView,sfc_MULTIPOINT-method}
@@ -59,9 +61,10 @@
   color = mapviewGetOption("vector.palette"),
   col.regions = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
-  alpha = 0.9, alpha.regions = regionOpacity(x), na.alpha = alpha,
-  map.types = NULL, verbose = mapviewGetOption("verbose"),
-  popup = popupTable(x), layer.name = NULL, label = makeLabels(x, zcol),
+  alpha = 0.9, alpha.regions = regionOpacity(x),
+  na.alpha = regionOpacity(x), map.types = NULL,
+  verbose = mapviewGetOption("verbose"), popup = popupTable(x),
+  layer.name = NULL, label = makeLabels(x, zcol),
   legend = mapviewGetOption("legend"), legend.opacity = 1,
   homebutton = TRUE, native.crs = FALSE,
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
@@ -77,6 +80,11 @@
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
+
+\S4method{mapView}{numeric}(x, y, type = "p", grid = TRUE, ...)
+
+\S4method{mapView}{data.frame}(x, xcol, ycol, grid = TRUE, aspect = 1,
+  popup = popupTable(x), ...)
 
 \S4method{mapView}{XY}(x, map = NULL, color = standardColor(x),
   col.regions = standardColRegions(x), at = NULL,
@@ -116,10 +124,7 @@
   parent.frame())), label = lapply(seq(x), function(i) {    
   makeLabels(x[[i]], zcol = zcol[[i]]) }),
   legend = mapviewGetOption("legend"), legend.opacity = 1,
-  homebutton = TRUE, native.crs = FALSE, highlight = lapply(seq(x),
-  function(i) {     mapviewHighlightOptions(x[[i]], alpha.regions =
-  alpha.regions[[i]], alpha = alpha[[i]], lwd = lwd[[i]]) }),
-  maxpoints = NULL, ...)
+  homebutton = TRUE, native.crs = FALSE, maxpoints = NULL, ...)
 
 \S4method{mapview}{ANY}(...)
 
@@ -146,7 +151,8 @@
 }
 \arguments{
 \item{x}{a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
-\code{sf} object or a list of any combination of those.}
+\code{sf} object or a list of any combination of those. Furthermore,
+this can also be a \code{data.frame} or a \code{numeric vector}.}
 
 \item{map}{an optional existing map to be updated/added to}
 
@@ -227,6 +233,20 @@ See \code{\link{highlightOptions}} for details.}
 \item{maxpoints}{the maximum number of points making up the geometry.
 In case of lines and polygons this refers to the number of vertices. See
 Details for more information.}
+
+\item{y}{numeric vector.}
+
+\item{grid}{whether to plot a (scatter plot) xy-grid to aid interpretation
+of the visualisation. Only relevant for the data.frame method.}
+
+\item{xcol}{the column to be mapped to the x-axis. Only relevant for the
+data.frame method.}
+
+\item{ycol}{the column to be mapped to the y-axis. Only relevant for the
+data.frame method.}
+
+\item{aspect}{the ratio of x/y axis corrdinates to adjust the plotting
+space to fit the screen. Only relevant for the data.frame method.}
 }
 \description{
 this function produces an interactive view of the specified
@@ -276,6 +296,10 @@ and fully queriable.
 \item \code{sf}: \code{\link{st_sf}}
 
 \item \code{sfc}: \code{\link{st_sfc}}
+
+\item \code{numeric}: \code{\link{numeric}}
+
+\item \code{data.frame}: \code{\link{data.frame}}
 
 \item \code{XY}: \code{\link{st_sfc}}
 
