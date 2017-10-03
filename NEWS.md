@@ -1,4 +1,4 @@
-## mapview 2.1.12
+## mapview 2.1.13
 
 new features:
 
@@ -7,6 +7,8 @@ new features:
   * added function addExtent to add rectangles showing bbox/extent/outline of sf/sp/raster objects.
   * more concise internal recursive method dispatch.
   * if multiple layers are plotted (via "+") initial zoom is now on global extent and a "Zoom full" button is added to the map at the bottom left of the map to re-zoom to this global extent.
+  * we now have mapview method for class 'data.frame' which enables interactive scatter plots.
+  * we now have mapview method for class 'data.frame' which enables interactive plots of a numeric variable.
 
 internal:
 
