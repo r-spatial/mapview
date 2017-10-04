@@ -1,7 +1,7 @@
 #' make interactive scatter plots
 
 
-xyView = function(x, y, data, type = "p", grid = TRUE, aspect = 1, ...) {
+xyView = function(x, y, data, type = "p", grid = TRUE, aspect = 1, label, ...) {
 
   if (!missing(data)) {
     # nm = "data" #deparse(substitute(data))
@@ -39,14 +39,14 @@ xyView = function(x, y, data, type = "p", grid = TRUE, aspect = 1, ...) {
 
   xlab = sf::st_coordinates(data)[, "X"]
   ylab = sf::st_coordinates(data)[, "Y"] / aspect
-  labs = lapply(seq(xlab), function(i) paste(xlab[i], ylab[i], sep = ", "))
+  # labs = lapply(seq(xlab), function(i) paste(xlab[i], ylab[i], sep = ", "))
 
   if (grid) out = xyGrid(data, aspect) else out = NULL
   out = mapView(
     data,
     map = out,
-    label =  labs,
     highlight = NULL,
+    label = label,
     ...
   )
   return(out)

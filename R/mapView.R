@@ -536,11 +536,28 @@ setMethod('mapView', signature(x = 'sfc'),
 #' @describeIn mapView \code{\link{numeric}}
 #' @param y numeric vector.
 setMethod('mapView', signature(x = 'numeric'),
-          function(x, y, type = "p", grid = TRUE, ...) {
+          function(x, y, type = "p", grid = TRUE, label, ...) {
+            if (missing(label)) {
+              if (!missing(y)) {
+                labs = lapply(seq(length(x)), function(i) {
+                  paste0("x : ", x[i], '<br>',
+                         "y : ", y[i])
+                })
+                label = lapply(labs, htmltools::HTML)
+              } else {
+                labs = lapply(seq(length(x)), function(i) {
+                  paste0("x : ", seq_along(x)[i], '<br>',
+                         "y : ", x[i])
+                })
+                label = lapply(labs, htmltools::HTML)
+              }
+            }
+            if (type == "l") label = NULL
             xyView(x = x,
                    y = y,
                    type = type,
                    grid = grid,
+                   label = label,
                    ...)
           }
 )
@@ -563,13 +580,22 @@ setMethod('mapView', signature(x = 'data.frame'),
                    grid = TRUE,
                    aspect = 1,
                    popup = popupTable(x),
+                   label,
                    ...) {
+            if (missing(label)) {
+              labs = lapply(seq(nrow(x)), function(i) {
+                paste0(xcol, " (x) : ", x[[xcol]][i], '<br>',
+                       ycol, " (y) : ", x[[ycol]][i])
+              })
+              label = lapply(labs, htmltools::HTML)
+            }
             xyView(x = xcol,
                    y = ycol,
                    data = x,
                    grid = grid,
                    aspect = aspect,
                    popup = popup,
+                   label = label,
                    ...)
           }
 )
