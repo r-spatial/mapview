@@ -146,9 +146,9 @@ getGeometryType <- function(x) {
 getMaxFeatures <- function(x) {
   switch(getGeometryType(x),
          "pt" = 40000,
-         "ln" = 100000,
-         "pl" = 100000,
-         "gc" = 100000)
+         "ln" = 300000,
+         "pl" = 300000,
+         "gc" = 300000)
 }
 
 

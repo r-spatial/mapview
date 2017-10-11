@@ -161,7 +161,7 @@ leaflet_sfc <- function(x,
 
   m <- initMap(map, map.types, sf::st_crs(x), native.crs)
 
-  if (npts(x) > maxpoints) {
+  if (featureComplexity(x) > maxpoints) {
     if (getGeometryType(x) == "ln") clrs <- color else clrs <-  col.regions
     warning(large_warn)
     m <- addLargeFeatures(m,
@@ -283,4 +283,28 @@ nPoints = function(x) {
 #'
 npts = function(x) {
   do.call(sum, lapply(split(x, as.character(sf::st_dimension(x))), nPoints))
+}
+
+nfeats = function(x) {
+  if (inherits(x, "sf")) nrow(x) else length(x)
+}
+
+nrings = function(pol) {
+  do.call(sum, lapply(sf::st_geometry(pol), lengths))
+}
+
+polygonComplexity = function(pol) {
+  nrings(pol) + npts(pol) + nfeats(pol)
+}
+
+lineComplexity = function(ln) {
+  npts(ln) + nfeats(ln)
+}
+
+featureComplexity = function(x) {
+  switch(getGeometryType(x),
+         "pt" = nPoints(x),
+         "ln" = lineComplexity(x),
+         "pl" = polygonComplexity(x),
+         "gc" = polygonComplexity(x))
 }
