@@ -391,10 +391,12 @@ scaleLinesCoordinates <- function(x) {
 
 mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
 
-  if (!length(getLayerControlEntriesFromMap(map))) {
+  ind = getCallEntryFromMap(map, call = "addLayersControl")
+
+  if (!length(ind)) {
     bgm <- map.types
   } else {
-    bgm <- map$x$calls[[getLayerControlEntriesFromMap(map)[1]]]$args[[1]]
+    bgm <- map$x$calls[[ind[1]]]$args[[1]]
   }
 
   if (!native.crs) {

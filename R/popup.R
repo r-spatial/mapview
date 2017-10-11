@@ -385,13 +385,15 @@ brewPopupTable = function(x, width = 300, height = 300) {
     } else {
 
       # check for list columns, if found format it
-      ids = sapply(x, is.list)
+      ids = which(sapply(x, is.list))
 
       if (any(ids)) {
-        nms = attr(ids, "names")[ids]
-        for (i in nms) {
-          x[[i]] = format(x[[i]])
-        }
+        # nms = attr(ids, "names")[ids]
+        x[, ids] = format(x[, ids])
+        # #
+        # # for (i in nms) {
+        # #   x[[i]] = format(x[[i]])
+        # }
       }
 
       mat = df2String(x)
