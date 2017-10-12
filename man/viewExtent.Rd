@@ -16,41 +16,22 @@ addExtent(map, data, ...)
 \item{x}{either a Raster*, sf* or Spatial* object}
 
 \item{map}{a leaflet map the extent should be added to. If NULL
-standard background layers are cretaed
-#' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
-If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
+standard background layers are created.}
 
 \item{popup}{a \code{list} of HTML strings with the popup contents, usually
 created from \code{\link{popupTable}}. See \code{\link{addControl}} for
 details.}
 
-\item{layer.name}{the name of the layer to be shown on the map}
+\item{layer.name}{the name of the layer to be shown on the map.}
 
-\item{alpha.regions}{opacity of the fills or the raster layer(s)}
+\item{alpha.regions}{opacity of the fills or the raster layer(s).}
+
+\item{label}{a character vector of labels to be shown on mouseover. See
+\code{\link{addControl}} for details.}
 
 \item{...}{additional arguments passed on to \code{\link{addRectangles}}}
 
 \item{data}{either a Raster*, sf* or Spatial* object}
-
-\item{color}{color (palette) for points/polygons/lines}
-
-\item{lwd}{line width of the rectangle.}
-
-\item{map.types}{character spcifications for the base maps.
-see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
-for available options.}
-
-\item{alpha}{opacity of the lines or points}
-
-\item{homebutton}{logical, whether to add a zoom-to-layer button to the map.
-Defaults to TRUE}
-
-\item{native.crs}{logical whether to reproject to web map coordinate
-reference system (web mercator - epsg:3857) or render using native CRS of
-the supplied data (can also be NA). Default is FALSE which will render in
-web mercator. If set to TRUE now background maps will be drawn (but rendering
-may be much quicker as no reprojecting is necessary). Currently only works
-for simple features.}
 }
 \description{
 This function produces an interactive view of the extent/bbox

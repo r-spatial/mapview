@@ -81,10 +81,10 @@
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
-\S4method{mapView}{numeric}(x, y, type = "p", grid = TRUE, ...)
+\S4method{mapView}{numeric}(x, y, type = "p", grid = TRUE, label, ...)
 
 \S4method{mapView}{data.frame}(x, xcol, ycol, grid = TRUE, aspect = 1,
-  popup = popupTable(x), ...)
+  popup = popupTable(x), label, ...)
 
 \S4method{mapView}{XY}(x, map = NULL, color = standardColor(x),
   col.regions = standardColRegions(x), at = NULL,
@@ -235,6 +235,9 @@ In case of lines and polygons this refers to the number of vertices. See
 Details for more information.}
 
 \item{y}{numeric vector.}
+
+\item{type}{whether to render the numeric vector \code{x} as a
+point \code{"p"} or line \code{"l"} plot.}
 
 \item{grid}{whether to plot a (scatter plot) xy-grid to aid interpretation
 of the visualisation. Only relevant for the data.frame method.}

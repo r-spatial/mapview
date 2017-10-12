@@ -26,10 +26,10 @@ mapview2leaflet <- function(x) {
 
 ### mapview simple class
 getSimpleClass <- function(obj) {
-  if (class(obj) %in% c("RasterLayer", "RasterStack",
+  if (inherits(obj, c("RasterLayer", "RasterStack",
                       "RasterBrick", "Satellite",
                       "SpatialGridDataFrame",
-                      "SpatialPixelsDataFrame")) "rst" else "vec"
+                      "SpatialPixelsDataFrame"))) "rst" else "vec"
 }
 
 

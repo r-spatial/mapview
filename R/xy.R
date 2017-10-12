@@ -1,5 +1,4 @@
-#' make interactive scatter plots
-
+# make interactive scatter plots
 
 xyView = function(x, y, data, type = "p", grid = TRUE, aspect = 1, label, ...) {
 
@@ -56,11 +55,11 @@ xyView = function(x, y, data, type = "p", grid = TRUE, aspect = 1, label, ...) {
 xyGrid = function(x, aspect = 1) {
   # x = iris_sf
 
-  xrange = mapview:::extendLimits(
+  xrange = extendLimits(
     c(sf::st_bbox(x)[["xmin"]],
       sf::st_bbox(x)[["xmax"]])
   )
-  yrange = mapview:::extendLimits(
+  yrange = extendLimits(
     c(sf::st_bbox(x)[["ymin"]],
       sf::st_bbox(x)[["ymax"]])
   )

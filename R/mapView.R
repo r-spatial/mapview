@@ -535,6 +535,8 @@ setMethod('mapView', signature(x = 'sfc'),
 ## numeric ================================================================
 #' @describeIn mapView \code{\link{numeric}}
 #' @param y numeric vector.
+#' @param type whether to render the numeric vector \code{x} as a
+#' point \code{"p"} or line \code{"l"} plot.
 setMethod('mapView', signature(x = 'numeric'),
           function(x, y, type = "p", grid = TRUE, label, ...) {
             if (missing(label)) {
