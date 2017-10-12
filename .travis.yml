@@ -1,4 +1,5 @@
 language: r
+
 r:
   - release
   - devel
@@ -21,3 +22,6 @@ r_packages:
   - roxygen2
   - rmarkdown
   - sf
+
+after_success:
+  - Rscript -e 'covr::codecov()'

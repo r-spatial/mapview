@@ -2,7 +2,6 @@ context("mapviewControls")
 
 
 ### isAvailableInLeaflet() -----
-
 test_that("isAvailableInLeaflet() runs without any issues", {
   avl <- isAvailableInLeaflet()
 
@@ -12,7 +11,6 @@ test_that("isAvailableInLeaflet() runs without any issues", {
 
 
 ### mapview2leaflet -----
-
 test_that("mapview2leaflet() runs without any issues", {
   m <- mapview(breweries)
   expect_true(inherits(m, "mapview"))
@@ -23,10 +21,19 @@ test_that("mapview2leaflet() runs without any issues", {
 
 
 ### getSimpleClass -----
-
 test_that("getSimpleClass() runs without any issues", {
-  expect_equal(getSimpleClass(breweries91), "vec")
-  expect_warning(getSimpleClass(breweries)) # dual-class 'sf' object
-
-  expect_equal(getSimpleClass(poppendorf), "rst")
+  expect_equal(getSimpleClass(breweries91), "vec") # sf
+  expect_equal(getSimpleClass(poppendorf), "rst") # raster
+  expect_equal(getSimpleClass(gadmCHE), "vec") # sp
 })
+
+### makeLabels -----
+test_that("makeLabels() runs without any issues", {
+  expect_equal(makeLabels(sf::st_geometry(breweries)[[1]]), "1")
+  expect_equal(makeLabels(head(sf::st_geometry(breweries))),
+               as.character(1:6))
+  expect_equal(makeLabels(franconia), rownames(franconia))
+  expect_equal(makeLabels(franconia, zcol = "district"),
+               franconia[["district"]])
+})
+
