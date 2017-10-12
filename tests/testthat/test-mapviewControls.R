@@ -43,16 +43,16 @@ test_that("getFeatureIds() runs without issues", {
   expect_equal(getFeatureIds(gadmCHE), row.names(gadmCHE))
   expect_equal(getFeatureIds(sf::st_geometry(breweries)),
                1:length(sf::st_geometry(breweries)))
-}
+})
 
 ### createExtent -----
 test_that("createExtent() runs without issues", {
   expect_equal(createExtent(poppendorf[[4]]),
                raster::extent(poppendorf[[4]]))
-}
+})
 
 ### isMultiFeature -----
 test_that("isMultiFeature() runs without issues", {
   expect_equal(isMultiFeature(franconia[1, ]), TRUE)
   expect_equal(isMultiFeature(breweries[1, ]), FALSE)
-}
+})
