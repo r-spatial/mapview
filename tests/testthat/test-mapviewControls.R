@@ -45,11 +45,11 @@ test_that("getFeatureIds() runs without issues", {
                1:length(sf::st_geometry(breweries)))
 })
 
-### createExtent -----
-test_that("createExtent() runs without issues", {
-  expect_equal(createExtent(poppendorf[[4]]),
-               raster::extent(poppendorf[[4]]))
-})
+# ### createExtent -----
+# test_that("createExtent() runs without issues", {
+#   expect_equal(createExtent(projectExtent(poppendorf[[4]]), ,
+#                raster::extent(poppendorf[[4]]))
+# })
 
 ### isMultiFeature -----
 test_that("isMultiFeature() runs without issues", {
