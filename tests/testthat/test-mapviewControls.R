@@ -53,6 +53,6 @@ test_that("getFeatureIds() runs without issues", {
 
 ### isMultiFeature -----
 test_that("isMultiFeature() runs without issues", {
-  expect_equal(isMultiFeature(franconia[1, ]), TRUE)
-  expect_equal(isMultiFeature(breweries[1, ]), FALSE)
+  expect_equal(isMultiFeature(sf::st_geometry(franconia)[[1]]), TRUE)
+  expect_equal(isMultiFeature(sf::st_geometry(breweries)[[1]]), FALSE)
 })
