@@ -1,4 +1,4 @@
-context("colors")
+context("color")
 
 ### col2Hex -----
 test_that("col2Hex() runs without any issues", {
