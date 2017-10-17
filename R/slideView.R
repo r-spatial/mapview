@@ -27,7 +27,6 @@ if ( !isGeneric('slideView') ) {
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color the color palette to be used for visualising RasterLayers
 #' @param na.color the color to be used for NA pixels
-#' @param legend logical. Whether to plot a legend.
 #' @param ... additional arguments passed on to repective functions.
 #'
 #' @details
@@ -46,7 +45,10 @@ if ( !isGeneric('slideView') ) {
 #'
 #' @examples
 #' ### raster data ###
+#' library(sp)
 #' library(raster)
+#'
+#' data(poppendorf)
 #'
 #' stck1 <- subset(poppendorf, c(3, 4, 5))
 #' stck2 <- subset(poppendorf, c(2, 3, 4))
@@ -108,7 +110,7 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
                                  na.color = na.color,
                                  maxpixels = maxpixels,
                                  ...)
-            png2 <- rgbStack2PNG(img2, , r = r, g = g, b = b,
+            png2 <- rgbStack2PNG(img2, r = r, g = g, b = b,
                                  na.color = na.color,
                                  maxpixels = maxpixels,
                                  ...)
@@ -116,8 +118,10 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
-            fl1 <- paste0(dir, "/img1", ".png")
-            fl2 <- paste0(dir, "/img2", ".png")
+            r1 <- trunc(runif(1, 1000000000, 9999999999))
+            r2 <- trunc(runif(1, 1000000000, 9999999999))
+            fl1 <- paste0(dir, "/img1_", r1, ".png")
+            fl2 <- paste0(dir, "/img2_", r2, ".png")
 
             ## pngs
             png::writePNG(png1, fl1)
@@ -158,8 +162,10 @@ setMethod("slideView", signature(img1 = "RasterLayer",
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
-            fl1 <- paste0(dir, "/img1", ".png")
-            fl2 <- paste0(dir, "/img2", ".png")
+            r1 <- trunc(runif(1, 1000000000, 9999999999))
+            r2 <- trunc(runif(1, 1000000000, 9999999999))
+            fl1 <- paste0(dir, "/img1_", r1, ".png")
+            fl2 <- paste0(dir, "/img2_", r2, ".png")
 
             ## pngs
             png::writePNG(png1, fl1)
@@ -176,7 +182,7 @@ setMethod("slideView", signature(img1 = "RasterLayer",
               atr <- lattice::do.breaks(rngr, 256)
               leg_flr <- paste0(dir, "/legendr", ".png")
               png(leg_flr, height = 200, width = 80, units = "px",
-                  bg = "transparent", pointsize = 14, antialias = "none")
+                  bg = "transparent", pointsize = 14)
               rasterLegend(col = col.regions,
                            at = atr,
                            height = 0.9,
@@ -211,6 +217,8 @@ setMethod("slideView", signature(img1 = "RasterLayer",
 ## RasterStackBrick, RasterLayer ===========================================================
 #' @describeIn slideView for RasterStackBrick, RasterLayer
 #'
+#' @param col.regions color (palette).See \code{\link{levelplot}} for details.
+#'
 setMethod("slideView", signature(img1 = "RasterStackBrick",
                                  img2 = "RasterLayer"),
           function(img1,
@@ -237,8 +245,10 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
-            fl1 <- paste0(dir, "/img1", ".png")
-            fl2 <- paste0(dir, "/img2", ".png")
+            r1 <- trunc(runif(1, 1000000000, 9999999999))
+            r2 <- trunc(runif(1, 1000000000, 9999999999))
+            fl1 <- paste0(dir, "/img1_", r1, ".png")
+            fl2 <- paste0(dir, "/img2_", r2, ".png")
 
             ## pngs
             png::writePNG(png1, fl1)
@@ -254,7 +264,7 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
               atl <- lattice::do.breaks(rngl, 256)
               leg_fll <- paste0(dir, "/legendl", ".png")
               png(leg_fll, height = 200, width = 80, units = "px",
-                  bg = "transparent", pointsize = 14, antialias = "none")
+                  bg = "transparent", pointsize = 14)
               rasterLegend(col = col.regions,
                            at = atl,
                            height = 0.9,
@@ -277,6 +287,8 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
 
 ## RasterLayer, RasterStackBrick ===========================================================
 #' @describeIn slideView for RasterLayer, RasterStackBrick
+#'
+#' @param col.regions color (palette).See \code{\link{levelplot}} for details.
 #'
 setMethod("slideView", signature(img1 = "RasterLayer",
                                  img2 = "RasterStackBrick"),
@@ -305,8 +317,10 @@ setMethod("slideView", signature(img1 = "RasterLayer",
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
-            fl1 <- paste0(dir, "/img1", ".png")
-            fl2 <- paste0(dir, "/img2", ".png")
+            r1 <- trunc(runif(1, 1000000000, 9999999999))
+            r2 <- trunc(runif(1, 1000000000, 9999999999))
+            fl1 <- paste0(dir, "/img1_", r1, ".png")
+            fl2 <- paste0(dir, "/img2_", r2, ".png")
 
             ## pngs
             png::writePNG(png1, fl1)
@@ -322,7 +336,7 @@ setMethod("slideView", signature(img1 = "RasterLayer",
               atr <- lattice::do.breaks(rngr, 256)
               leg_flr <- paste0(dir, "/legendr", ".png")
               png(leg_flr, height = 200, width = 80, units = "px",
-                  bg = "transparent", pointsize = 14, antialias = "none")
+                  bg = "transparent", pointsize = 14)
               rasterLegend(col = col.regions,
                            at = atr,
                            height = 0.9,
@@ -357,8 +371,10 @@ setMethod("slideView", signature(img1 = "character",
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
-            fl1 <- paste0(dir, "/img1", ".png")
-            fl2 <- paste0(dir, "/img2", ".png")
+            r1 <- trunc(runif(1, 1000000000, 9999999999))
+            r2 <- trunc(runif(1, 1000000000, 9999999999))
+            fl1 <- paste0(dir, "/img1_", r1, ".png")
+            fl2 <- paste0(dir, "/img2_", r2, ".png")
 
             ## pngs
             png::writePNG(png1, fl1)
