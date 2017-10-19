@@ -1,4 +1,4 @@
-## mapview 2.1.16
+## mapview 2.1.17
 
 new features:
 
@@ -9,6 +9,7 @@ new features:
   * if multiple layers are plotted (via "+") initial zoom is now on global extent and a "Zoom full" button is added to the map at the bottom left of the map to re-zoom to this global extent.
   * we now have mapview method for class 'data.frame' which enables interactive scatter plots.
   * we now have mapview method for class 'data.frame' which enables interactive plots of a numeric variable.
+  * updated slideView to accommodate more than one incident in a flexdashboard #95
 
 internal:
 
