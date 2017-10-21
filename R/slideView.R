@@ -33,6 +33,9 @@ if ( !isGeneric('slideView') ) {
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color the color palette to be used for visualising RasterLayers
 #' @param na.color the color to be used for NA pixels
+#' @param col.regions color (palette).See \code{\link{levelplot}} for details.
+#' @param legend whether to plot legends for the two images (ignored for
+#' RatserStacks/*Bricks).
 #' @param ... additional arguments passed on to repective functions.
 #'
 #' @details
@@ -124,8 +127,8 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
-            r1 <- trunc(runif(1, 1000000000, 9999999999))
-            r2 <- trunc(runif(1, 1000000000, 9999999999))
+            # r1 <- trunc(runif(1, 1000000000, 9999999999))
+            # r2 <- trunc(runif(1, 1000000000, 9999999999))
             fl1 <- paste0(dir, "/", label1, ".png")
             fl2 <- paste0(dir, "/", label2, ".png")
 
@@ -144,8 +147,6 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
 
 ## RasterLayers ===========================================================
 #' @describeIn slideView for RasterLayers
-#'
-#' @param col.regions color (palette).See \code{\link{levelplot}} for details.
 #'
 setMethod("slideView", signature(img1 = "RasterLayer",
                                  img2 = "RasterLayer"),
@@ -168,8 +169,8 @@ setMethod("slideView", signature(img1 = "RasterLayer",
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
-            r1 <- trunc(runif(1, 1000000000, 9999999999))
-            r2 <- trunc(runif(1, 1000000000, 9999999999))
+            # r1 <- trunc(runif(1, 1000000000, 9999999999))
+            # r2 <- trunc(runif(1, 1000000000, 9999999999))
             fl1 <- paste0(dir, "/", label1, ".png")
             fl2 <- paste0(dir, "/", label2, ".png")
 
@@ -223,8 +224,6 @@ setMethod("slideView", signature(img1 = "RasterLayer",
 ## RasterStackBrick, RasterLayer ===========================================================
 #' @describeIn slideView for RasterStackBrick, RasterLayer
 #'
-#' @param col.regions color (palette).See \code{\link{levelplot}} for details.
-#'
 setMethod("slideView", signature(img1 = "RasterStackBrick",
                                  img2 = "RasterLayer"),
           function(img1,
@@ -251,8 +250,8 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
-            r1 <- trunc(runif(1, 1000000000, 9999999999))
-            r2 <- trunc(runif(1, 1000000000, 9999999999))
+            # r1 <- trunc(runif(1, 1000000000, 9999999999))
+            # r2 <- trunc(runif(1, 1000000000, 9999999999))
             fl1 <- paste0(dir, "/", label1, ".png")
             fl2 <- paste0(dir, "/", label2, ".png")
 
@@ -294,8 +293,6 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
 ## RasterLayer, RasterStackBrick ===========================================================
 #' @describeIn slideView for RasterLayer, RasterStackBrick
 #'
-#' @param col.regions color (palette).See \code{\link{levelplot}} for details.
-#'
 setMethod("slideView", signature(img1 = "RasterLayer",
                                  img2 = "RasterStackBrick"),
           function(img1,
@@ -323,8 +320,8 @@ setMethod("slideView", signature(img1 = "RasterLayer",
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
-            r1 <- trunc(runif(1, 1000000000, 9999999999))
-            r2 <- trunc(runif(1, 1000000000, 9999999999))
+            # r1 <- trunc(runif(1, 1000000000, 9999999999))
+            # r2 <- trunc(runif(1, 1000000000, 9999999999))
             fl1 <- paste0(dir, "/", label1, ".png")
             fl2 <- paste0(dir, "/", label2, ".png")
 
@@ -377,8 +374,8 @@ setMethod("slideView", signature(img1 = "character",
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
-            r1 <- trunc(runif(1, 1000000000, 9999999999))
-            r2 <- trunc(runif(1, 1000000000, 9999999999))
+            # r1 <- trunc(runif(1, 1000000000, 9999999999))
+            # r2 <- trunc(runif(1, 1000000000, 9999999999))
             fl1 <- paste0(dir, "/", label1, ".png")
             fl2 <- paste0(dir, "/", label2, ".png")
 
@@ -444,7 +441,7 @@ slideViewInternal <- function(message,
   #            recursive = TRUE, force = TRUE),
   #     silent = TRUE)
 
-  ver = as.character(trunc(runif(1, 1000, 9999)))
+  # ver = as.character(trunc(runif(1, 1000, 9999)))
   dep1 <- htmltools::htmlDependency(name = nm,
                                     version = "01",
                                     src = c(file = image_dir),
