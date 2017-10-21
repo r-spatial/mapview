@@ -45,8 +45,10 @@ setMethod("+",
                                     lng2 = bb[3],
                                     lat2 = bb[4])
 
-            zf = grep("Zoom full", m$x$calls)
-            if (length(zf) > 0) m$x$calls[zf] = NULL
+            hbcalls = getCallEntryFromMap(m, "addHomeButton")
+            zf = grep("Zoom full", m$x$calls[hbcalls])
+            ind = hbcalls[zf]
+            if (length(zf) > 0) m$x$calls[ind] = NULL
             m = addZoomFullButton(m, out_obj)
 
             out <- methods::new('mapview', object = out_obj, map = m)

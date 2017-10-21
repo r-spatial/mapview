@@ -246,7 +246,7 @@ sf2DataFrame <- function(x, drop_sf_column = FALSE) {
       return(as.data.frame(x)[setdiff(names(x), attr(x, "sf_column"))])
       # geompos <- which(names(x) == attr(x, "sf_column"))
       # return(data.frame(x)[, -geompos, drop = FALSE])
-    } else return(x)
+    } else return(as.data.frame(x))
   } else {
     d <- data.frame("a" = seq(length(x)))
     names(d) <- "Feature ID"

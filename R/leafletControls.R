@@ -1,12 +1,16 @@
 # Convenience functions for working with spatial objects and leaflet maps
+getCallMethods = function(map) {
+  sapply(map$x$calls, "[[", "method")
+}
+
 
 getLayerControlEntriesFromMap <- function(map) {
-  grep("addLayersControl", map$x$calls, fixed = TRUE, useBytes = TRUE)
+  grep("addLayersControl", getCallMethods(map), fixed = TRUE, useBytes = TRUE)
 }
 
 
 getCallEntryFromMap <- function(map, call) {
-  grep(call, map$x$calls, fixed = TRUE, useBytes = TRUE)
+  grep(call, getCallMethods(map), fixed = TRUE, useBytes = TRUE)
 }
 
 
@@ -20,7 +24,7 @@ getProviderTileEntriesFromMap <- function(map) {
   # tst <- which(sapply(map$x$calls, function(i) {
   #   i$method == "addProviderTiles"
   # }))
-  grep("addProviderTiles", map$x$calls, fixed = TRUE, useBytes = TRUE)
+  grep("addProviderTiles", getCallMethods(map), fixed = TRUE, useBytes = TRUE)
   # return(tst)
 
 }
@@ -113,7 +117,7 @@ appendMapCallEntries <- function(map1, map2) {
   #   i$method == "addLayersControl"
   # }))
 
-  ind =  grep("addLayersControl", mpcalls, fixed = TRUE, useBytes = TRUE)
+  ind =  grep("addLayersControl", sapply(mpcalls, "[[", "method"), fixed = TRUE, useBytes = TRUE)
 
 #   ind <- seq_along(mpcalls)[sapply(mpcalls,
 #                                    FUN = function(X) {
@@ -135,7 +139,7 @@ appendMapCallEntries <- function(map1, map2) {
 # Remove duuplicated map calls --------------------------------------------
 
 removeDuplicatedMapCalls <- function(map) {
-  ind <- duplicated(map$x$calls)
+  ind <- duplicated(getCallMethods(map))
   if (any(ind)) map$x$calls[ind] <- NULL
   return(map)
 }
