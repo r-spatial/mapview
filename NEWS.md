@@ -1,4 +1,4 @@
-## mapview 2.1.17
+## mapview 2.1.18
 
 new features:
 
@@ -11,9 +11,10 @@ new features:
   * we now have mapview method for class 'data.frame' which enables interactive plots of a numeric variable.
   * updated slideView to accommodate more than one incident in a flexdashboard #95
 
-internal:
+enhancements:
 
   * added testthat suite of functions.
+  * increased performance when using "+"-method (about 10x faster now).
 
 bugfixes:
 
