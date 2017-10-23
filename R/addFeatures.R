@@ -33,7 +33,7 @@ addFeatures <- function(map,
 
   if (inherits(data, "Spatial")) data = sf::st_as_sf(data)
 
-  switch(getSFClass(sf::st_geometry(sf::st_cast(data))),
+  switch(getSFClass(sf::st_geometry(data)),
          sfc_POINT           = addPointFeatures(map, data, ...),
          sfc_MULTIPOINT      = addPointFeatures(map, data, ...),
          sfc_LINESTRING      = addLineFeatures(map, data, ...),
@@ -63,7 +63,7 @@ mw = 800
 addPointFeatures <- function(map,
                              data,
                              ...) {
-  garnishMap(map, leaflet::addCircleMarkers, data = sf::st_cast(data),
+  garnishMap(map, leaflet::addCircleMarkers, data = data,
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
              ...)
@@ -73,7 +73,7 @@ addPointFeatures <- function(map,
 addLineFeatures <- function(map,
                             data,
                             ...) {
-  garnishMap(map, leaflet::addPolylines, data = sf::st_cast(data),
+  garnishMap(map, leaflet::addPolylines, data = data,
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
              ...)
@@ -83,7 +83,7 @@ addLineFeatures <- function(map,
 addPolygonFeatures <- function(map,
                                data,
                                ...) {
-  garnishMap(map, leaflet::addPolygons, data = sf::st_cast(data),
+  garnishMap(map, leaflet::addPolygons, data = data,
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
              ...)
@@ -101,7 +101,7 @@ addGeometry = function(map,
   lst = split(data, f = as.character(sf::st_dimension(data)))
   for (i in 1:length(lst)) {
     ls$map = map
-    ls$data = sf::st_cast(lst[[i]])
+    ls$data = lst[[i]]
     if (!is.null(ls$label)) ls$label = label[[i]]
     if (!is.null(ls$popup)) ls$popup = popup[[i]]
     map = do.call(addFeatures, ls)

@@ -125,7 +125,7 @@ getSFClass <- function(x) {
 getGeometryType <- function(x) {
   # sf
   if (inherits(x, "Spatial")) x = sf::st_as_sfc(x)
-  g <- sf::st_geometry(sf::st_cast(x))
+  g <- sf::st_geometry(x)
   if (inherits(g, "POINT") |
       inherits(g, "MULTIPOINT") |
       inherits(g, "sfc_POINT") |

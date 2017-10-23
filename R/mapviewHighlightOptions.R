@@ -124,7 +124,7 @@ mapviewHighlightOptions <- function(x, alpha.regions, alpha, lwd) {
                  SpatialPolygonsDataFrame = highlightPolygonFeatures(),
                  SpatialPolygons = highlightPolygonFeatures())
   } else {
-    ls <- switch(getSFClass(sf::st_geometry(sf::st_cast(x))),
+    ls <- switch(getSFClass(sf::st_geometry(x)),
                  sfc_POINT           = highlightPointFeatures(),
                  sfc_MULTIPOINT      = highlightPointFeatures(),
                  sfc_LINESTRING      = highlightLineFeatures(lwd),
