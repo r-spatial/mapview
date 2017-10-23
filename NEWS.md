@@ -1,4 +1,4 @@
-## mapview 2.1.18
+## mapview 2.1.19
 
 new features:
 
