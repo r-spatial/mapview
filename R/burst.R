@@ -158,6 +158,7 @@ burstByRow <- function(x,
   popup <- lapply(names(lst), function(i) {
     tst <- popup[names(popup) %in% i]
     names(tst) <- NULL
+    attr(tst, "popup") = "mapview"
     return(tst)
   })
 
