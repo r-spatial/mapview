@@ -1,4 +1,4 @@
-mapview 2.1.19
+mapview 2.1.20
 
 new features:
 
@@ -10,6 +10,7 @@ new features:
   * we now have mapview method for class 'data.frame' which enables interactive scatter plots.
   * we now have mapview method for class 'data.frame' which enables interactive plots of a numeric variable.
   * updated slideView to accommodate more than one incident in a flexdashboard #95
+  * added methods for "XYZ", "XYM", "XYZM"
 
 enhancements:
 
