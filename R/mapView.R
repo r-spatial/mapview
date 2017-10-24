@@ -663,6 +663,48 @@ setMethod('mapView', signature(x = 'XY'),
 )
 
 
+## XYZ ====================================================================
+#' @describeIn mapView \code{\link{st_sfc}}
+
+setMethod('mapView', signature(x = 'XYZ'),
+          function(x,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame(1))),
+                   ...) {
+            mapview(sf::st_zm(x), layer.name = layer.name, ...)
+          }
+)
+
+
+
+## XYM ====================================================================
+#' @describeIn mapView \code{\link{st_sfc}}
+
+setMethod('mapView', signature(x = 'XYM'),
+          function(x,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame(1))),
+                   ...) {
+            mapview(sf::st_zm(x), layer.name = layer.name, ...)
+          }
+)
+
+
+
+## XYZM ===================================================================
+#' @describeIn mapView \code{\link{st_sfc}}
+
+setMethod('mapView', signature(x = 'XYZM'),
+          function(x,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame(1))),
+                   ...) {
+            mapview(sf::st_zm(x), layer.name = layer.name, ...)
+          }
+)
+
+
+
 ## sfc_POINT ==============================================================
 #' @describeIn mapView \code{\link{st_sfc}}
 
