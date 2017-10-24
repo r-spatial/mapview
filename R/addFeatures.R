@@ -63,7 +63,8 @@ mw = 800
 addPointFeatures <- function(map,
                              data,
                              ...) {
-  garnishMap(map, leaflet::addCircleMarkers, data = data,
+  garnishMap(map, leaflet::addCircleMarkers,
+             data = sf::st_zm(sf::st_cast(data, "POINT")),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
              ...)
@@ -73,7 +74,8 @@ addPointFeatures <- function(map,
 addLineFeatures <- function(map,
                             data,
                             ...) {
-  garnishMap(map, leaflet::addPolylines, data = data,
+  garnishMap(map, leaflet::addPolylines,
+             data = sf::st_zm(data),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
              ...)
@@ -83,7 +85,8 @@ addLineFeatures <- function(map,
 addPolygonFeatures <- function(map,
                                data,
                                ...) {
-  garnishMap(map, leaflet::addPolygons, data = data,
+  garnishMap(map, leaflet::addPolygons,
+             data = sf::st_zm(data),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
              ...)

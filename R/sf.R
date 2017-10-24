@@ -88,7 +88,7 @@ leaflet_sf <- function(x,
     alpha.regions[is.na(x[[zcol]])] = na.alpha #[is.na(x[[zcol]])]
   }
 
-  leaflet_sfc(sf::st_geometry(sf::st_zm(x)),
+  leaflet_sfc(sf::st_geometry(x),
               map = map,
               zcol = zcol,
               color = clrs,
@@ -166,7 +166,7 @@ leaflet_sfc <- function(x,
     if (getGeometryType(x) == "ln") clrs <- color else clrs <-  col.regions
     warning(large_warn)
     m <- addLargeFeatures(m,
-                          data = sf::st_zm(x),
+                          data = x,
                           radius = cex,
                           weight = lwd,
                           opacity = alpha,
@@ -182,7 +182,7 @@ leaflet_sfc <- function(x,
   } else {
 
   m <- addFeatures(m,
-                   data = sf::st_zm(x),
+                   data = x,
                    radius = cex,
                    weight = lwd,
                    opacity = alpha,
