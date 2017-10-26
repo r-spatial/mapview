@@ -67,7 +67,18 @@ setMethod("+",
                     e2 = "ANY"),
           function (e1, e2) {
             nm <- deparse(substitute(e2))
-            e1 + mapview(e2, layer.name = nm)
+            # e1 + mapview(e2, layer.name = nm)
+            m = mapview(e2, map = e1, layer.name = nm)
+            out_obj = append(e1@object, m@object)
+
+            hbcalls = getCallEntryFromMap(m@map, "addHomeButton")
+            zf = grep("Zoom full", m@map$x$calls[hbcalls])
+            ind = hbcalls[zf]
+            if (length(zf) > 0) m@map$x$calls[ind] = NULL
+
+            m = addZoomFullButton(m@map, out_obj)
+            out = methods::new('mapview', object = out_obj, map = m)
+            return(out)
           }
 )
 
