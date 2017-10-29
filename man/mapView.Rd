@@ -11,6 +11,9 @@
 \alias{mapView,numeric-method}
 \alias{mapView,data.frame-method}
 \alias{mapView,XY-method}
+\alias{mapView,XYZ-method}
+\alias{mapView,XYM-method}
+\alias{mapView,XYZM-method}
 \alias{mapView,sfc_POINT-method}
 \alias{mapView,sfc_MULTIPOINT-method}
 \alias{mapView,sfc_LINESTRING-method}
@@ -90,11 +93,21 @@
   col.regions = standardColRegions(x), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
   alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
-  verbose = mapviewGetOption("verbose"), popup = NULL, layer.name = NULL,
+  verbose = mapviewGetOption("verbose"), popup = NULL,
+  layer.name = deparse(substitute(x, env = parent.frame(1))),
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
+
+\S4method{mapView}{XYZ}(x, layer.name = deparse(substitute(x, env =
+  parent.frame(1))), ...)
+
+\S4method{mapView}{XYM}(x, layer.name = deparse(substitute(x, env =
+  parent.frame(1))), ...)
+
+\S4method{mapView}{XYZM}(x, layer.name = deparse(substitute(x, env =
+  parent.frame(1))), ...)
 
 \S4method{mapView}{sfc_POINT}(x, ...)
 
@@ -305,6 +318,12 @@ and fully queriable.
 \item \code{data.frame}: \code{\link{data.frame}}
 
 \item \code{XY}: \code{\link{st_sfc}}
+
+\item \code{XYZ}: \code{\link{st_sfc}}
+
+\item \code{XYM}: \code{\link{st_sfc}}
+
+\item \code{XYZM}: \code{\link{st_sfc}}
 
 \item \code{sfc_POINT}: \code{\link{st_sfc}}
 
