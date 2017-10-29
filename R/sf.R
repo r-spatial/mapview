@@ -34,7 +34,10 @@ leaflet_sf <- function(x,
 
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
   cex <- circleRadius(x, cex)
-
+  if (is.null(zcol) & ncol(sf2DataFrame(x, drop_sf_column = TRUE)) == 1) {
+    zcol = colnames(sf2DataFrame(x, drop_sf_column = TRUE))[1]
+    label = makeLabels(x, zcol)
+  }
   if (!is.null(zcol)) {
     if (length(unique(x[[zcol]])) == 1) {
       color = ifelse(is.function(color), standardColor(x), color)
