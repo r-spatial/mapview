@@ -1,4 +1,4 @@
-mapview 2.1.21
+mapview 2.1.22
 
 new features:
 
@@ -11,6 +11,7 @@ new features:
   * we now have mapview method for class 'data.frame' which enables interactive plots of a numeric variable.
   * updated slideView to accommodate more than one incident in a flexdashboard #95
   * added methods for "XYZ", "XYM", "XYZM"
+  * if supplied data has only one attribute/field column mapview will now colour the plot automatically according to that attribute/field.
 
 enhancements:
 
