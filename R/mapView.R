@@ -421,7 +421,7 @@ setMethod('mapView', signature(x = 'sf'),
 
               if (!inherits(x, "list")) {
 
-                leaflet_sf(x,
+                leaflet_sf(sf::st_cast(x),
                            map = map,
                            zcol = zcol,
                            color = color,
@@ -503,7 +503,7 @@ setMethod('mapView', signature(x = 'sfc'),
 
             if (mapviewGetOption("platform") == "leaflet") {
 
-              leaflet_sfc(x,
+              leaflet_sfc(sf::st_cast(x),
                           map = map,
                           color = color,
                           col.regions = col.regions,
@@ -634,6 +634,7 @@ setMethod('mapView', signature(x = 'XY'),
 
             if (mapviewGetOption("platform") == "leaflet") {
 
+              x = sf::st_cast(sf::st_sfc(x))
               leaflet_sfc(x,
                           map = map,
                           color = color,
@@ -773,6 +774,24 @@ setMethod('mapView', signature(x = 'sfc_GEOMETRY'),
             callNextMethod()
           }
 )
+
+
+## bbox =======================================================
+#' @describeIn mapView \code{\link{st_bbox}}
+
+setMethod('mapView', signature(x = 'bbox'),
+          function(x,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame(1))),
+                   alpha.regions = 0.2,
+                   ...) {
+            mapview(sf::st_as_sfc(x),
+                    layer.name = layer.name,
+                    alpha.regions = alpha.regions,
+                    ...)
+          }
+)
+
 
 
 ######## MISC #############################################################

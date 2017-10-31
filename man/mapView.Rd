@@ -21,6 +21,7 @@
 \alias{mapView,sfc_POLYGON-method}
 \alias{mapView,sfc_MULTIPOLYGON-method}
 \alias{mapView,sfc_GEOMETRY-method}
+\alias{mapView,bbox-method}
 \alias{mapView,missing-method}
 \alias{mapView,list-method}
 \alias{mapview,ANY-method}
@@ -122,6 +123,9 @@
 \S4method{mapView}{sfc_MULTIPOLYGON}(x, ...)
 
 \S4method{mapView}{sfc_GEOMETRY}(x, ...)
+
+\S4method{mapView}{bbox}(x, layer.name = deparse(substitute(x, env =
+  parent.frame(1))), alpha.regions = 0.2, ...)
 
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"), ...)
 
@@ -338,6 +342,8 @@ and fully queriable.
 \item \code{sfc_MULTIPOLYGON}: \code{\link{st_sfc}}
 
 \item \code{sfc_GEOMETRY}: \code{\link{st_sfc}}
+
+\item \code{bbox}: \code{\link{st_bbox}}
 
 \item \code{missing}: initiate a map without an object
 
