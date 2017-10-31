@@ -83,8 +83,8 @@ createExtent <- function(x, offset = NULL) {
     }
 
     if (is.null(offset)) {
-      xxtend <- extendLimits(c(ext[1], ext[2]))
-      yxtend <- extendLimits(c(ext[3], ext[4]))
+      xxtend <- c(ext[1], ext[2])
+      yxtend <- c(ext[3], ext[4])
       ext@xmin <- xxtend[1]
       ext@xmax <- xxtend[2]
       ext@ymin <- yxtend[1]
@@ -138,7 +138,8 @@ getGeometryType <- function(x) {
       inherits(g, "MULTIPOLYGON") |
       inherits(g, "sfc_POLYGON") |
       inherits(g, "sfc_MULTIPOLYGON")) type <- "pl"
-  if (inherits(g, "sfc_GEOMETRY")) type <- "gc" #getGeometryType(sf::st_cast(g))
+  if (inherits(g, "sfc_GEOMETRY") |
+      inherits(g, "sfc_GEOMETRYCOLLECTION")) type <- "gc" #getGeometryType(sf::st_cast(g))
   return(type)
 }
 

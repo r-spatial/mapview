@@ -104,7 +104,7 @@ addGeometry = function(map,
   lst = split(data, f = as.character(sf::st_dimension(data)))
   for (i in 1:length(lst)) {
     ls$map = map
-    ls$data = lst[[i]]
+    ls$data = sf::st_cast(lst[[i]])
     if (!is.null(ls$label)) ls$label = label[[i]]
     if (!is.null(ls$popup)) ls$popup = popup[[i]]
     map = do.call(addFeatures, ls)

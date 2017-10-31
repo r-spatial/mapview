@@ -24,6 +24,7 @@ leafletRL = function(x,
                       native.crs,
                       ...) {
 
+  if (inherits(map, "mapview")) map = mapview2leaflet(map)
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol = NULL)
 
   pkgs = c("leaflet", "raster", "magrittr")
@@ -164,6 +165,7 @@ leafletRSB = function(x,
   tst = sapply(pkgs, "requireNamespace",
                 quietly = TRUE, USE.NAMES = FALSE)
 
+  if (inherits(map, "mapview")) map = mapview2leaflet(map)
   m = initMap(map, map.types, sp::proj4string(x))
 
   if (nlayers(x) == 1) {
@@ -231,6 +233,7 @@ leafletPixelsDF = function(x,
   tst = sapply(pkgs, "requireNamespace",
                 quietly = TRUE, USE.NAMES = FALSE)
 
+  if (inherits(map, "mapview")) map = mapview2leaflet(map)
   if(!is.null(zcol)) x = x[, zcol]
 
   stck = do.call("stack", lapply(seq(ncol(x)), function(i) {

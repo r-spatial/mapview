@@ -48,7 +48,7 @@ viewExtent <- function(x,
     layer.name = paste(deparse(substitute(x)), "extent", sep = "-")
   }
 
-  x <- sf::st_as_sfc(
+  x = sf::st_as_sfc(
     sf::st_bbox(
       checkAdjustProjection(x)
     )
