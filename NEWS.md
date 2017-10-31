@@ -1,4 +1,4 @@
-## mapview 2.1.22
+## mapview 2.1.23
 
 new features:
 
@@ -12,6 +12,7 @@ new features:
   * updated slideView to accommodate more than one incident in a flexdashboard #95
   * added methods for "XYZ", "XYM", "XYZM"
   * if supplied data has only one attribute/field column mapview will now colour the plot automatically according to that attribute/field.
+  * New mapview method for class 'bbox' -> mapview(st_bbox(x)) is equivalent to viewExtent(x)
 
 enhancements:
 
