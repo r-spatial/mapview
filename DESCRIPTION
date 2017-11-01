@@ -1,6 +1,6 @@
 Package: mapview
 Type: Package
-Title: Interactive Viewing of Spatial data in R
+Title: Interactive Viewing of Spatial Data in R
 Version: 2.2.0
 Date: 2017-11-01
 Authors@R: c(
