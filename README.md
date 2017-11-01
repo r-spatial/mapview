@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat)](http://www.gnu.org/licenses/gpl-3.0.html)
 [![Coverage Status](https://img.shields.io/codecov/c/github/r-spatial/mapview/develop.svg)](https://codecov.io/github/r-spatial/mapview?branch=develop)
 
-### Interactive viewing of spatial objects in R ###
+### Interactive viewing of spatial data in R ###
 
 **mapview** is an R package created to help researchers during their spatial data analysis workflow. It provides functions to very quickly and conveniently create interactive visualisations of spatial data. It was created to fill the gap of quick (not presentation grade) interactive plotting to examine and visually investigate both aspects of spatial data, the geometries and their attributes.
 
@@ -24,7 +24,7 @@ The main user relevant functions are:
 
 Objects of the following spatial classes are supported:
 
-* [sf](https://cran.r-project.org/package=sf) (XY dimesnion only)
+* [sf](https://cran.r-project.org/package=sf)
 * [raster](https://cran.r-project.org/package=raster) (Layer, Stack, Brick and SpatialPixels* / SpatialGridDataFrame)
 * [sp](https://cran.r-project.org/package=sp) (Points, Polygons, Lines and their DataFrame version)
 * [satellite](https://cran.r-project.org/package=satellite)
@@ -37,6 +37,7 @@ In addition, **mapview** provides some extra leaflet compatible functionality:
 * `addFeatures` - add features to a map (sf or sp). This is features type agnostic, meaning the same function can be used for points, lines and polygons
 * `addMouseCoordinates` - add mouse cursor postion information when moving over the map
 * `addLargeFeatures` - add large data to a map that would otherwise make the leaflet map irresponsive
+* `addExtent` - add a polygon denoting the extent/bbox of a spatial object to a map
 * `popupTable`, `popupGraph` & `popupImage` - popups of tables, grpahs and images for use with the leaflet `add*` functions
 
 

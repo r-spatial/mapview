@@ -1,8 +1,8 @@
 Package: mapview
 Type: Package
-Title: Interactive Viewing of Spatial Objects in R
-Version: 2.1.23
-Date: 2017-10-31
+Title: Interactive Viewing of Spatial data in R
+Version: 2.2.0
+Date: 2017-11-01
 Authors@R: c(
       person("Tim", "Appelhans", email = "tim.appelhans@gmail.com", role = c("cre", "aut")),
       person("Florian", "Detsch", email = "florian.detsch@staff.uni-marburg.de", role = c("aut")),
@@ -44,7 +44,7 @@ Imports:
 LinkingTo: Rcpp
 RoxygenNote: 6.0.1
 SystemRequirements: GNU make
-Byte-Compile: yes
+ByteCompile: yes
 Suggests:
     knitr,
     rmarkdown,

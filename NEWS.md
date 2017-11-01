@@ -1,4 +1,4 @@
-## mapview 2.1.23
+## mapview 2.2.0
 
 new features:
 
@@ -10,9 +10,9 @@ new features:
   * we now have mapview method for class 'data.frame' which enables interactive scatter plots.
   * we now have mapview method for class 'data.frame' which enables interactive plots of a numeric variable.
   * updated slideView to accommodate more than one incident in a flexdashboard #95
-  * added methods for "XYZ", "XYM", "XYZM"
   * if supplied data has only one attribute/field column mapview will now colour the plot automatically according to that attribute/field.
-  * New mapview method for class 'bbox' -> mapview(st_bbox(x)) is equivalent to viewExtent(x)
+  * new mapview method for class 'bbox' -> mapview(st_bbox(x)) is equivalent to viewExtent(x)
+  * plainview now provides mouse coordinates
 
 enhancements:
 
