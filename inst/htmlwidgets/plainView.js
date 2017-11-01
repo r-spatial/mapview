@@ -42,12 +42,25 @@ function init(root, filename, name, crs, dims, legend_filename) {
   rootNode = root;
   var divInfo = ca(root, "div");
   divInfo.id = "divInfo";
+
   var divInfoCRS = ca(root, "div");
   divInfoCRS.id = "divInfoCRS";
-  var divInfoZoom = ca(root, "div");
+
+  var divInfoRight = ca(root, "div");
+  divInfoRight.id = "divInfoRight";
+
+  var divInfoPos = ca(divInfoRight, "span");
+  divInfoPos.id = "divInfoPos";
+  var divInfoZoom = ca(divInfoRight, "span");
   divInfoZoom.id = "divInfoZoom";
   var divLegend = ca(root, "div");
   divLegend.id = "divLegend";
+
+  ca(divInfoPos, "span", "Pos: ").className = "position";
+  spanPos = ca(divInfoPos, "span", "?");
+  spanPos.className = "position";
+  spanPos.innerHTML = "???";
+  ca(divInfoPos, "span", "&nbsp;&nbsp;");
 
   ca(divInfoZoom, "span", "Zoom: ").className = "zoom_factor";
   spanFactor = ca(divInfoZoom, "span", "?");
@@ -129,15 +142,19 @@ function onmouseup(e) {
 }
 
 function onmousemove(e) {
-  if(e.which==0) {
+  var rect = canvas.getBoundingClientRect();
+  var x = e.clientX - rect.left;
+  var y = e.clientY - rect.top;
+  var px = x / scale - offsetX;
+  var py = y / scale - offsetY;
+  spanPos.innerHTML = px.toFixed(2) + ", " + py.toFixed(2);
+
+  if(e.which === 0) {
     dragging = false;
     canvas.style.cursor = "default";
     return;
   }
   if(dragging) {
-    var rect = canvas.getBoundingClientRect();
-    var x = e.clientX - rect.left;
-    var y = e.clientY - rect.top;
 		offsetX += (x - dragX)*speed / scale;
 		offsetY += (y - dragY)*speed / scale;
 		dragX = x;
