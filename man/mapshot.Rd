@@ -27,12 +27,12 @@ Save a mapview or leaflet map as \code{.html} index file or \code{.png},
 \details{
 mapshot can be used to save both leaflet and mapview maps as html or png
 files or both.
+
 NOTE 1: In case you want to save larger maps produced with mapview
-(i.e. if you see the following warning:
-"the supplied feature layer is quite, so using special rendering function
-things may not behave as expected from a standard leaflet plot
-i.e. you will likely need to zoom in to popup-qurey features") mapshot is
-likely to fail. Try setting \code{selfcontained = FALSE} to avoid errors
+(i.e. if you see the following warning: "the supplied feature layer has more
+points/vertices than the set threshold. using special rendering function,
+hence things may not behave as expected from a standard leaflet map") mapshot
+is likely to fail. Try setting \code{selfcontained = FALSE} to avoid errors
 and create a valid local html file.
 
 NOTE 2: In case you want to save a map with popupGraphs or popupImages

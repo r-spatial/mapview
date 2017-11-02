@@ -52,10 +52,10 @@ highlightPolygonFeatures <- function(alpha.regions = 0.6,
                                      sendToBack = FALSE) {
 
   if (length(fillColor) != 1) fillColor <- color
-  if (alpha.regions >= 0.8) {
-    fillOpacity <- alpha.regions * 0.8
+  if (alpha.regions[1] >= 0.8) {
+    fillOpacity <- alpha.regions[1] * 0.8
   } else {
-    fillOpacity <- alpha.regions * 1.4
+    fillOpacity <- alpha.regions[1] * 1.4
   }
 
   weight <- ifelse(alpha == 0, 0, ceiling(lwd * 1.5))
@@ -124,7 +124,7 @@ mapviewHighlightOptions <- function(x, alpha.regions, alpha, lwd) {
                  SpatialPolygonsDataFrame = highlightPolygonFeatures(),
                  SpatialPolygons = highlightPolygonFeatures())
   } else {
-    ls <- switch(getSFClass(sf::st_geometry(sf::st_cast(x))),
+    ls <- switch(getSFClass(sf::st_geometry(x)),
                  sfc_POINT           = highlightPointFeatures(),
                  sfc_MULTIPOINT      = highlightPointFeatures(),
                  sfc_LINESTRING      = highlightLineFeatures(lwd),

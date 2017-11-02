@@ -3,7 +3,8 @@ isAvailableInLeaflet <- function() {
   return(
     list(
       lab = "label" %in% names(as.list(args(leaflet::addCircleMarkers))),
-      scl = "addScaleBar" %in% ls(getNamespace("leaflet"))
+      scl = "addScaleBar" %in% ls(getNamespace("leaflet")),
+      leggrp = "group" %in% names(as.list(args(leaflet::addLegend)))
     )
   )
 }
@@ -25,10 +26,10 @@ mapview2leaflet <- function(x) {
 
 ### mapview simple class
 getSimpleClass <- function(obj) {
-  if (class(obj) %in% c("RasterLayer", "RasterStack",
+  if (inherits(obj, c("RasterLayer", "RasterStack",
                       "RasterBrick", "Satellite",
                       "SpatialGridDataFrame",
-                      "SpatialPixelsDataFrame")) "rst" else "vec"
+                      "SpatialPixelsDataFrame"))) "rst" else "vec"
 }
 
 
@@ -82,8 +83,8 @@ createExtent <- function(x, offset = NULL) {
     }
 
     if (is.null(offset)) {
-      xxtend <- extendLimits(c(ext[1], ext[2]))
-      yxtend <- extendLimits(c(ext[3], ext[4]))
+      xxtend <- c(ext[1], ext[2])
+      yxtend <- c(ext[3], ext[4])
       ext@xmin <- xxtend[1]
       ext@xmax <- xxtend[2]
       ext@ymin <- yxtend[1]
@@ -124,7 +125,7 @@ getSFClass <- function(x) {
 getGeometryType <- function(x) {
   # sf
   if (inherits(x, "Spatial")) x = sf::st_as_sfc(x)
-  g <- sf::st_geometry(sf::st_cast(x))
+  g <- sf::st_geometry(x)
   if (inherits(g, "POINT") |
       inherits(g, "MULTIPOINT") |
       inherits(g, "sfc_POINT") |
@@ -137,7 +138,8 @@ getGeometryType <- function(x) {
       inherits(g, "MULTIPOLYGON") |
       inherits(g, "sfc_POLYGON") |
       inherits(g, "sfc_MULTIPOLYGON")) type <- "pl"
-  if (inherits(g, "sfc_GEOMETRY")) type <- "gc" #getGeometryType(sf::st_cast(g))
+  if (inherits(g, "sfc_GEOMETRY") |
+      inherits(g, "sfc_GEOMETRYCOLLECTION")) type <- "gc" #getGeometryType(sf::st_cast(g))
   return(type)
 }
 
@@ -145,9 +147,9 @@ getGeometryType <- function(x) {
 getMaxFeatures <- function(x) {
   switch(getGeometryType(x),
          "pt" = 40000,
-         "ln" = 100000,
-         "pl" = 100000,
-         "gc" = 100000)
+         "ln" = 300000,
+         "pl" = 300000,
+         "gc" = 300000)
 }
 
 
@@ -162,7 +164,7 @@ lineWidth <- function(x) {
 
 regionOpacity <- function(x) {
   switch(getGeometryType(x),
-         "pt" = 0.9,
+         "pt" = 0.6,
          "ln" = 1,
          "pl" = 0.6,
          "gc" = 0.6)
@@ -171,8 +173,16 @@ regionOpacity <- function(x) {
 
 basemaps <- function(colors) {
   ml <- mean(as.numeric(sapply(colors, luminence)))
-  if (ml > 0.8) mapviewGetOption("basemaps")[c(2, 1, 3:5)] else
+  if (length(unique(colors)) == 1) {
+    unique_cyan = ifelse(unique(colors) %in% c("cyan", "#00ffff", "#00FFFF"), TRUE, FALSE)
+  } else {
+    unique_cyan = FALSE
+  }
+  if (ml > 0.8 | unique_cyan) {
+    mapviewGetOption("basemaps")[c(2, 1, 3:5)]
+  } else {
     mapviewGetOption("basemaps")
+  }
 }
 
 
@@ -241,7 +251,19 @@ makeListLayerNames = function(x, layer.name) {
   } else {
     chr = gsub(utils::glob2rx("*list(*"), "", layer.name)
     chr = unlist(strsplit(x = gsub(")", "", chr), ","))
-    lnms = gsub(" ", "", chr)
+    if (length(chr) / length(x) == 2) {
+      idx = seq(1, length(chr), 2)
+      lnms = paste(chr[idx], chr[idx + 1], sep = ",")
+    } else {
+      lnms = gsub(" ", "", chr)
+    }
   }
+
+  if (length(lnms) == 1 & length(x) > 1) {
+    lnms = lapply(seq(x), function(i) {
+      paste0(lnms, "[[", i , "]]")
+    })
+  }
+
   return(as.list(lnms))
 }

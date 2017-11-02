@@ -41,8 +41,8 @@ m1 <- mapView(poppendorf[[5]])
 m2 <- mapView(breweries91)
 
 ### add two mapview objects
-m1 + m2 # final zoom level based on m2
-'+'(m2, m1) # final zoom level based on m1
+m1 + m2
+'+'(m2, m1)
 }
 
 }

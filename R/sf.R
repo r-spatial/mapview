@@ -33,30 +33,45 @@ leaflet_sf <- function(x,
                        ...) {
 
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
-
+  cex <- circleRadius(x, cex)
+  if (is.null(zcol) & ncol(sf2DataFrame(x, drop_sf_column = TRUE)) == 1) {
+    zcol = colnames(sf2DataFrame(x, drop_sf_column = TRUE))[1]
+    label = makeLabels(x, zcol)
+  }
   if (!is.null(zcol)) {
-    # layer.name <- paste(layer.name, zcol)
-    if (length(unique(x[[zcol]])) <= 1) {
-      warning(
-        sprintf(
-          "column %s has only one unique value/level, ignoring color and legend",
-          zcol
-        )
-      )
-      zcol <- NULL
+    if (length(unique(x[[zcol]])) == 1) {
+      color = ifelse(is.function(color), standardColor(x), color)
+      col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
     }
   }
-
-  cex <- circleRadius(x, cex)
-  # if (!native.crs) x <- checkAdjustProjection(x)
-  if (legend & !is.null(zcol)) {
+  if (legend) {
+    # if (is.null(zcol)) zcol = 1
+    if (is.null(zcol)) vals = layer.name else vals = x[[zcol]]
+    if (length(unique(vals)) == 1) {
+      color = ifelse(is.function(color), standardColor(x), color)
+      col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
+    }
     if (getGeometryType(x) == "ln") leg_clrs <- color else leg_clrs <- col.regions
-    legend <- mapviewLegend(values = x[[zcol]],
+    legend <- mapviewLegend(values = vals,
                             colors = leg_clrs,
                             at = at,
                             na.color = col2Hex(na.color),
                             layer.name = layer.name)
   }
+
+  #   # layer.name <- paste(layer.name, zcol)
+  #   if (length(unique(x[[zcol]])) <= 1) {
+  #     warning(
+  #       sprintf(
+  #         "column %s has only one unique value/level, ignoring color and legend",
+  #         zcol
+  #       )
+  #     )
+  #     # zcol <- NULL
+  #   }
+  # }
+
+  # if (!native.crs) x <- checkAdjustProjection(x)
 
   clrs <- vectorColors(x = x,
                        zcol = zcol,
@@ -70,10 +85,10 @@ leaflet_sf <- function(x,
                                    na.color = na.color)
   if (!is.null(zcol) & !is.null(na.alpha)) {
     na.alpha = ifelse(na.alpha == 0, 0.001, na.alpha)
-    alpha = rep(alpha, nrow(x))
-    alpha[is.na(x[[zcol]])] = na.alpha
-    alpha.regions = rep(alpha.regions, nrow(x))
-    alpha.regions[is.na(x[[zcol]])] = na.alpha
+    if (length(alpha) != nrow(x)) alpha = rep(alpha, nrow(x))
+    alpha[is.na(x[[zcol]])] = na.alpha #[is.na(x[[zcol]])]
+    if (length(alpha.regions) != nrow(x)) alpha.regions = rep(alpha.regions, nrow(x))
+    alpha.regions[is.na(x[[zcol]])] = na.alpha #[is.na(x[[zcol]])]
   }
 
   leaflet_sfc(sf::st_geometry(x),
@@ -132,7 +147,8 @@ leaflet_sfc <- function(x,
   if (!is.null(names(x))) {
     names(x) = NULL
   }
-  if (inherits(x, "XY")) x = sf::st_cast(st_sfc(x)) else x = sf::st_cast(x)
+  # x = x[!is.na(sf::st_dimension(x))]
+  if (inherits(x, "XY")) x = sf::st_sfc(x)
 
   if (!native.crs) x <- checkAdjustProjection(x)
   if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
@@ -149,7 +165,7 @@ leaflet_sfc <- function(x,
 
   m <- initMap(map, map.types, sf::st_crs(x), native.crs)
 
-  if (npts(x) > maxpoints) {
+  if (featureComplexity(x) > maxpoints) {
     if (getGeometryType(x) == "ln") clrs <- color else clrs <-  col.regions
     warning(large_warn)
     m <- addLargeFeatures(m,
@@ -184,18 +200,20 @@ leaflet_sfc <- function(x,
 
   }
 
+  if (!is.null(map)) m = updateOverlayGroups(m, layer.name)
+
   funs <- list(if (!native.crs) leaflet::addScaleBar,
                if (homebutton) addHomeButton,
-               mapViewLayersControl,
+               if (is.null(map)) mapViewLayersControl,
                addMouseCoordinates)
   funs <- funs[!sapply(funs, is.null)]
 
   args <- list(if (!native.crs) list(position = "bottomleft"),
                if (homebutton) list(ext = createExtent(x),
                                     layer.name = layer.name),
-               list(map.types = map.types,
-                    names = layer.name,
-                    native.crs = native.crs),
+               if (is.null(map)) list(map.types = map.types,
+                                      names = layer.name,
+                                      native.crs = native.crs),
                list(style = "detailed",
                     epsg = sf::st_crs(x)$epsg,
                     proj4string = sf::st_crs(x)$proj4string,
@@ -206,7 +224,15 @@ leaflet_sfc <- function(x,
                    funs = funs,
                    args = args)
 
+  try(
+    if (attributes(popup)$popup == "mapview") {
+      m$dependencies <- c(m$dependencies, mapviewPopupDependencies())
+    }
+    , silent = TRUE
+  )
+
   if (is.function(legend)) m <- legend(m)
+  m = removeDuplicatedMapDependencies(m)
   out <- new("mapview", object = list(x), map = m)
 
   return(out)
@@ -224,7 +250,7 @@ sf2DataFrame <- function(x, drop_sf_column = FALSE) {
       return(as.data.frame(x)[setdiff(names(x), attr(x, "sf_column"))])
       # geompos <- which(names(x) == attr(x, "sf_column"))
       # return(data.frame(x)[, -geompos, drop = FALSE])
-    } else return(x)
+    } else return(as.data.frame(x))
   } else {
     d <- data.frame("a" = seq(length(x)))
     names(d) <- "Feature ID"
@@ -261,4 +287,28 @@ nPoints = function(x) {
 #'
 npts = function(x) {
   do.call(sum, lapply(split(x, as.character(sf::st_dimension(x))), nPoints))
+}
+
+nfeats = function(x) {
+  if (inherits(x, "sf")) nrow(x) else length(x)
+}
+
+nrings = function(pol) {
+  do.call(sum, lapply(sf::st_geometry(pol), lengths))
+}
+
+polygonComplexity = function(pol) {
+  nrings(pol) + npts(pol) + nfeats(pol)
+}
+
+lineComplexity = function(ln) {
+  npts(ln) + nfeats(ln)
+}
+
+featureComplexity = function(x) {
+  switch(getGeometryType(x),
+         "pt" = nPoints(x),
+         "ln" = lineComplexity(x),
+         "pl" = polygonComplexity(x),
+         "gc" = polygonComplexity(x))
 }

@@ -20,3 +20,7 @@ setOldClass("XY")
 setOldClass("sf")
 setOldClass("sfc")
 setOldClass("sfg")
+setOldClass("XYM")
+setOldClass("XYZM")
+setOldClass("bbox")
+

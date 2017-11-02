@@ -188,25 +188,33 @@ zcolColors <- function(x, # a vector, not a sp or sf object
                        return.sorted = FALSE,
                        ...) {
 
-  if (!is.function(colors) & inherits(colors, "character")) {
-    colors <- grDevices::colorRampPalette(colors)
-  }
+  if (!is.function(colors) & length(colors) == length(x)) return(col2Hex(colors))
+  if (is.character(colors) & length(colors) == 1) return(col2Hex(colors))
+
+  # if (!is.function(colors) &
+  #     inherits(colors, "character")) {
+  #   colors <- grDevices::colorRampPalette(colors)
+  # }
 
   if (is.character(x)) x <- as.factor(x)
   x <- as.numeric(x)
 
   if (length(unique(x)) == 1) {
-    cols <- "#6666ff"
+    cols <- colors(1) #"#ffffff" #"#6666ff"
   } else {
     if (is.null(at)) {
       at <- lattice::do.breaks(extendLimits(range(x, na.rm = TRUE)),
                                length(unique(x)))
     }
 
-    cols <- lattice::level.colors(x,
-                                  at = at,
-                                  col.regions = colors,
-                                  ...)
+    if (length(colors) != length(x) | is.function(colors)) {
+      cols <- lattice::level.colors(x,
+                                    at = at,
+                                    col.regions = colors,
+                                    ...)
+    } else {
+      cols = colors
+    }
     if (return.sorted) cols <- cols[order(x)]
 
     cols[is.na(cols)] <- na.color

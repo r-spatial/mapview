@@ -14,6 +14,12 @@ if ( !isGeneric('slideView') ) {
 #' two character strings. In the latter case it is assumed that these
 #' point to .png images on the disk.
 #'
+#' NOTE: In case you want to include multiple slideviews in one page in a
+#' Rmd or flexdashboard we highly recommend using package widgetframe.
+#' Also, make sure to use different image names and/or labels
+#' for each of the RasterLayers/Bricks/Stacks.
+#' Otherwise things will likely not work properly.
+#'
 #' This is a modified implementation of http://bl.ocks.org/rfriberg/8327361
 #'
 #' @param img1 a RasterStack/Brick, RasterLayer or path to a .png file
@@ -27,7 +33,9 @@ if ( !isGeneric('slideView') ) {
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color the color palette to be used for visualising RasterLayers
 #' @param na.color the color to be used for NA pixels
-#' @param legend logical. Whether to plot a legend.
+#' @param col.regions color (palette).See \code{\link{levelplot}} for details.
+#' @param legend whether to plot legends for the two images (ignored for
+#' RatserStacks/*Bricks).
 #' @param ... additional arguments passed on to repective functions.
 #'
 #' @details
@@ -46,7 +54,10 @@ if ( !isGeneric('slideView') ) {
 #'
 #' @examples
 #' ### raster data ###
+#' library(sp)
 #' library(raster)
+#'
+#' data(poppendorf)
 #'
 #' stck1 <- subset(poppendorf, c(3, 4, 5))
 #' stck2 <- subset(poppendorf, c(2, 3, 4))
@@ -108,7 +119,7 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
                                  na.color = na.color,
                                  maxpixels = maxpixels,
                                  ...)
-            png2 <- rgbStack2PNG(img2, , r = r, g = g, b = b,
+            png2 <- rgbStack2PNG(img2, r = r, g = g, b = b,
                                  na.color = na.color,
                                  maxpixels = maxpixels,
                                  ...)
@@ -116,8 +127,10 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
-            fl1 <- paste0(dir, "/img1", ".png")
-            fl2 <- paste0(dir, "/img2", ".png")
+            # r1 <- trunc(runif(1, 1000000000, 9999999999))
+            # r2 <- trunc(runif(1, 1000000000, 9999999999))
+            fl1 <- paste0(dir, "/", label1, ".png")
+            fl2 <- paste0(dir, "/", label2, ".png")
 
             ## pngs
             png::writePNG(png1, fl1)
@@ -134,8 +147,6 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
 
 ## RasterLayers ===========================================================
 #' @describeIn slideView for RasterLayers
-#'
-#' @param col.regions color (palette).See \code{\link{levelplot}} for details.
 #'
 setMethod("slideView", signature(img1 = "RasterLayer",
                                  img2 = "RasterLayer"),
@@ -158,8 +169,10 @@ setMethod("slideView", signature(img1 = "RasterLayer",
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
-            fl1 <- paste0(dir, "/img1", ".png")
-            fl2 <- paste0(dir, "/img2", ".png")
+            # r1 <- trunc(runif(1, 1000000000, 9999999999))
+            # r2 <- trunc(runif(1, 1000000000, 9999999999))
+            fl1 <- paste0(dir, "/", label1, ".png")
+            fl2 <- paste0(dir, "/", label2, ".png")
 
             ## pngs
             png::writePNG(png1, fl1)
@@ -174,9 +187,9 @@ setMethod("slideView", signature(img1 = "RasterLayer",
               rngr <- range(img1[], na.rm = TRUE)
               # if (missing(at)) at <- lattice::do.breaks(rng, 256)
               atr <- lattice::do.breaks(rngr, 256)
-              leg_flr <- paste0(dir, "/legendr", ".png")
+              leg_flr <- paste0(dir, "/legendr", label1, ".png")
               png(leg_flr, height = 200, width = 80, units = "px",
-                  bg = "transparent", pointsize = 14, antialias = "none")
+                  bg = "transparent", pointsize = 14)
               rasterLegend(col = col.regions,
                            at = atr,
                            height = 0.9,
@@ -187,7 +200,7 @@ setMethod("slideView", signature(img1 = "RasterLayer",
               rngl <- range(img2[], na.rm = TRUE)
               # if (missing(at)) at <- lattice::do.breaks(rng, 256)
               atl <- lattice::do.breaks(rngl, 256)
-              leg_fll <- paste0(dir, "/legendl", ".png")
+              leg_fll <- paste0(dir, "/legendl", label2, ".png")
               png(leg_fll, height = 200, width = 80, units = "px",
                   bg = "transparent", pointsize = 14)
               rasterLegend(col = col.regions,
@@ -237,8 +250,10 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
-            fl1 <- paste0(dir, "/img1", ".png")
-            fl2 <- paste0(dir, "/img2", ".png")
+            # r1 <- trunc(runif(1, 1000000000, 9999999999))
+            # r2 <- trunc(runif(1, 1000000000, 9999999999))
+            fl1 <- paste0(dir, "/", label1, ".png")
+            fl2 <- paste0(dir, "/", label2, ".png")
 
             ## pngs
             png::writePNG(png1, fl1)
@@ -252,9 +267,9 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
               rngl <- range(img2[], na.rm = TRUE)
               # if (missing(at)) at <- lattice::do.breaks(rng, 256)
               atl <- lattice::do.breaks(rngl, 256)
-              leg_fll <- paste0(dir, "/legendl", ".png")
+              leg_fll <- paste0(dir, "/legendl", label2, ".png")
               png(leg_fll, height = 200, width = 80, units = "px",
-                  bg = "transparent", pointsize = 14, antialias = "none")
+                  bg = "transparent", pointsize = 14)
               rasterLegend(col = col.regions,
                            at = atl,
                            height = 0.9,
@@ -305,8 +320,10 @@ setMethod("slideView", signature(img1 = "RasterLayer",
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
-            fl1 <- paste0(dir, "/img1", ".png")
-            fl2 <- paste0(dir, "/img2", ".png")
+            # r1 <- trunc(runif(1, 1000000000, 9999999999))
+            # r2 <- trunc(runif(1, 1000000000, 9999999999))
+            fl1 <- paste0(dir, "/", label1, ".png")
+            fl2 <- paste0(dir, "/", label2, ".png")
 
             ## pngs
             png::writePNG(png1, fl1)
@@ -320,9 +337,9 @@ setMethod("slideView", signature(img1 = "RasterLayer",
               rngr <- range(img1[], na.rm = TRUE)
               # if (missing(at)) at <- lattice::do.breaks(rng, 256)
               atr <- lattice::do.breaks(rngr, 256)
-              leg_flr <- paste0(dir, "/legendr", ".png")
+              leg_flr <- paste0(dir, "/legendr", label1, ".png")
               png(leg_flr, height = 200, width = 80, units = "px",
-                  bg = "transparent", pointsize = 14, antialias = "none")
+                  bg = "transparent", pointsize = 14)
               rasterLegend(col = col.regions,
                            at = atr,
                            height = 0.9,
@@ -357,8 +374,10 @@ setMethod("slideView", signature(img1 = "character",
             ## temp dir
             dir <- tempfile()
             dir.create(dir)
-            fl1 <- paste0(dir, "/img1", ".png")
-            fl2 <- paste0(dir, "/img2", ".png")
+            # r1 <- trunc(runif(1, 1000000000, 9999999999))
+            # r2 <- trunc(runif(1, 1000000000, 9999999999))
+            fl1 <- paste0(dir, "/", label1, ".png")
+            fl2 <- paste0(dir, "/", label2, ".png")
 
             ## pngs
             png::writePNG(png1, fl1)
@@ -386,12 +405,15 @@ slideViewInternal <- function(message,
                               leg_flr = NULL,
                               leg_fll = NULL) {
 
+
+  nm = paste0(img1nm, "-", img2nm)
   # forward options using x
   x <- list(
     message = message,
     img1 = img1nm,
     img2 = img2nm,
-    legend = (!is.null(leg_flr)) || (!is.null(leg_fll))
+    legend = (!is.null(leg_flr)) || (!is.null(leg_fll)),
+    fldrnm = nm
   )
 
   #filename1 and filename2 need to have same directory!
@@ -414,8 +436,14 @@ slideViewInternal <- function(message,
     attachments <- c(attachments, legendl = legendl_file)
   }
 
-  dep1 <- htmltools::htmlDependency(name = "image",
-                                    version = "1",
+  # img_fldrs = list.dirs(path = ".", full.names = TRUE, recursive = TRUE)
+  # try(unlink(img_fldrs[grepl("image-", img_fldrs)],
+  #            recursive = TRUE, force = TRUE),
+  #     silent = TRUE)
+
+  # ver = as.character(trunc(runif(1, 1000, 9999)))
+  dep1 <- htmltools::htmlDependency(name = nm,
+                                    version = "01",
                                     src = c(file = image_dir),
                                     attachment = attachments)
   deps <- list(dep1)

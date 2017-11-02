@@ -1,3 +1,43 @@
+## mapview 2.2.1
+
+  * added more details in description field as per request of Uwe Ligges.
+
+## mapview 2.2.0
+
+new features:
+
+  * if supported by the installed leaflet version, legends are now automatically linked to layers.
+  * simple features with XYZ, XYM or XYZM geometries are now supported.
+  * added function addExtent to add rectangles showing bbox/extent/outline of sf/sp/raster objects.
+  * more concise internal recursive method dispatch.
+  * if multiple layers are plotted (via "+") initial zoom is now on global extent and a "Zoom full" button is added to the map at the bottom left of the map to re-zoom to this global extent.
+  * we now have mapview method for class 'data.frame' which enables interactive scatter plots.
+  * we now have mapview method for class 'numeric' which enables interactive plots of a numeric variable.
+  * updated slideView to accommodate more than one incident in a flexdashboard #95
+  * if supplied data has only one attribute/field column mapview will now colour the plot automatically according to that attribute/field.
+  * new mapview method for class 'bbox' -> mapview(st_bbox(x)) is equivalent to viewExtent(x)
+  * plainview now provides mouse coordinates
+
+enhancements:
+
+  * added testthat suite of functions.
+  * increased performance when using "+"-method (about 10x faster now).
+
+bugfixes:
+
+  * manifold bug fixes - addressing issues with list layers, alpha channel and many more.
+
+## mapview 2.1.4
+
+new features: 
+
+  * popupImage now accepts more than one file name (list or vector) in argument img.
+  
+bugfixes:
+
+  * na.alpha caused list/burst methods to fail.
+  * legend did not work when zcol only had one unique value. This was actually a delibarate choice as for a single map it doesn't really make sense to have a legend for only one color. However, for latticeView/sync this does actually make sense, hence re-enabled.
+
 ## mapview 2.1.0
 
 new features: 

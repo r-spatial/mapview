@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // gsubC
 std::string gsubC(const std::string& pattern, const std::string& replacement, std::string x);
-RcppExport SEXP mapview_gsubC(SEXP patternSEXP, SEXP replacementSEXP, SEXP xSEXP) {
+RcppExport SEXP _mapview_gsubC(SEXP patternSEXP, SEXP replacementSEXP, SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -20,7 +20,7 @@ END_RCPP
 }
 // brewPopupRowC
 std::string brewPopupRowC(std::string index, std::string colname, std::string value);
-RcppExport SEXP mapview_brewPopupRowC(SEXP indexSEXP, SEXP colnameSEXP, SEXP valueSEXP) {
+RcppExport SEXP _mapview_brewPopupRowC(SEXP indexSEXP, SEXP colnameSEXP, SEXP valueSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -33,7 +33,7 @@ END_RCPP
 }
 // brewPopupRowAltC
 std::string brewPopupRowAltC(std::string index, std::string colname, std::string value);
-RcppExport SEXP mapview_brewPopupRowAltC(SEXP indexSEXP, SEXP colnameSEXP, SEXP valueSEXP) {
+RcppExport SEXP _mapview_brewPopupRowAltC(SEXP indexSEXP, SEXP colnameSEXP, SEXP valueSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -46,7 +46,7 @@ END_RCPP
 }
 // brewPopupCoords
 std::string brewPopupCoords(std::string colname, std::string value);
-RcppExport SEXP mapview_brewPopupCoords(SEXP colnameSEXP, SEXP valueSEXP) {
+RcppExport SEXP _mapview_brewPopupCoords(SEXP colnameSEXP, SEXP valueSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -58,7 +58,7 @@ END_RCPP
 }
 // mergePopupRows
 std::string mergePopupRows(CharacterVector names, CharacterVector values);
-RcppExport SEXP mapview_mergePopupRows(SEXP namesSEXP, SEXP valuesSEXP) {
+RcppExport SEXP _mapview_mergePopupRows(SEXP namesSEXP, SEXP valuesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -70,7 +70,7 @@ END_RCPP
 }
 // createTemplate
 std::string createTemplate(std::string tmpPath);
-RcppExport SEXP mapview_createTemplate(SEXP tmpPathSEXP) {
+RcppExport SEXP _mapview_createTemplate(SEXP tmpPathSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -81,7 +81,7 @@ END_RCPP
 }
 // listPopupTemplates
 List listPopupTemplates(CharacterMatrix x, CharacterVector names, std::string tmpPath);
-RcppExport SEXP mapview_listPopupTemplates(SEXP xSEXP, SEXP namesSEXP, SEXP tmpPathSEXP) {
+RcppExport SEXP _mapview_listPopupTemplates(SEXP xSEXP, SEXP namesSEXP, SEXP tmpPathSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -94,7 +94,7 @@ END_RCPP
 }
 // df2String
 CharacterMatrix df2String(DataFrame x);
-RcppExport SEXP mapview_df2String(SEXP xSEXP) {
+RcppExport SEXP _mapview_df2String(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -105,7 +105,7 @@ END_RCPP
 }
 // one2JSON
 std::string one2JSON(CharacterVector x);
-RcppExport SEXP mapview_one2JSON(SEXP xSEXP) {
+RcppExport SEXP _mapview_one2JSON(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -116,7 +116,7 @@ END_RCPP
 }
 // all2JSONlist
 List all2JSONlist(CharacterMatrix x);
-RcppExport SEXP mapview_all2JSONlist(SEXP xSEXP) {
+RcppExport SEXP _mapview_all2JSONlist(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -127,7 +127,7 @@ END_RCPP
 }
 // anyNA
 bool anyNA(NumericVector x);
-RcppExport SEXP mapview_anyNA(SEXP xSEXP) {
+RcppExport SEXP _mapview_anyNA(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -138,7 +138,7 @@ END_RCPP
 }
 // rowNA
 LogicalVector rowNA(NumericMatrix x);
-RcppExport SEXP mapview_rowNA(SEXP xSEXP) {
+RcppExport SEXP _mapview_rowNA(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -146,4 +146,25 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(rowNA(x));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_mapview_gsubC", (DL_FUNC) &_mapview_gsubC, 3},
+    {"_mapview_brewPopupRowC", (DL_FUNC) &_mapview_brewPopupRowC, 3},
+    {"_mapview_brewPopupRowAltC", (DL_FUNC) &_mapview_brewPopupRowAltC, 3},
+    {"_mapview_brewPopupCoords", (DL_FUNC) &_mapview_brewPopupCoords, 2},
+    {"_mapview_mergePopupRows", (DL_FUNC) &_mapview_mergePopupRows, 2},
+    {"_mapview_createTemplate", (DL_FUNC) &_mapview_createTemplate, 1},
+    {"_mapview_listPopupTemplates", (DL_FUNC) &_mapview_listPopupTemplates, 3},
+    {"_mapview_df2String", (DL_FUNC) &_mapview_df2String, 1},
+    {"_mapview_one2JSON", (DL_FUNC) &_mapview_one2JSON, 1},
+    {"_mapview_all2JSONlist", (DL_FUNC) &_mapview_all2JSONlist, 1},
+    {"_mapview_anyNA", (DL_FUNC) &_mapview_anyNA, 1},
+    {"_mapview_rowNA", (DL_FUNC) &_mapview_rowNA, 1},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_mapview(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }

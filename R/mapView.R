@@ -24,9 +24,14 @@ if ( !isGeneric('mapView') ) {
 #' for windows: "path_to_your_chrome_installation\\chrome.exe --allow-file-access-from-files",
 #' for linux: "/usr/bin/google-chrome --allow-access-from-files").
 #' See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
+#' \cr
+#' NOTE: if XYZ or XYM or XYZM data from package sf is passed to mapview,
+#' domensions Z and M will be stripped to ensure smooth rendering even though
+#' the popup will potentially still say something like "POLYGON Z".
 #'
 #' @param x a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
-#' \code{sf} object or a list of any combination of those.
+#' \code{sf} object or a list of any combination of those. Furthermore,
+#' this can also be a \code{data.frame} or a \code{numeric vector}.
 #' @param map an optional existing map to be updated/added to
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
@@ -364,7 +369,7 @@ setMethod('mapView', signature(x = 'sf'),
                    lwd = lineWidth(x),
                    alpha = 0.9,
                    alpha.regions = regionOpacity(x),
-                   na.alpha = NULL,
+                   na.alpha = regionOpacity(x),
                    map.types = NULL,
                    verbose = mapviewGetOption("verbose"),
                    popup = popupTable(x),
@@ -379,36 +384,44 @@ setMethod('mapView', signature(x = 'sf'),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
+              if (is.character(burst)) {
+                zcol = burst
+                burst = TRUE
+              }
 
               # if (inherits(sf::st_geometry(x), "sfc_GEOMETRY")) {
               #   x = split(x, f = sf::st_dimension(sf::st_geometry(x)))
               # }
+              if (burst) {
+                tmp <- burst(x = x,
+                             zcol = zcol,
+                             burst = burst,
+                             color = color,
+                             col.regions = col.regions,
+                             at = at,
+                             na.color = na.color,
+                             popup = popup,
+                             alpha = alpha,
+                             alpha.regions = alpha.regions,
+                             na.alpha = na.alpha,
+                             legend = legend)
 
-              tmp <- burst(x = x,
-                           zcol = zcol,
-                           burst = burst,
-                           color = color,
-                           col.regions = col.regions,
-                           at = at,
-                           na.color = na.color,
-                           popup = popup,
-                           alpha = alpha,
-                           alpha.regions = alpha.regions,
-                           na.alpha = na.alpha)
-
-              if (is.function(tmp)) {
-                x <- tmp()$obj
-                color <- tmp()$color
-                col.regions <- tmp()$col.regions
-                popup <- tmp()$popup
-                label <- tmp()$labs
-                alpha = tmp()$alpha
-                alpha.regions = tmp()$alpha.regions
+                if (is.function(tmp)) {
+                  tmp = tmp()
+                  x <- tmp$obj
+                  color <- tmp$color
+                  col.regions <- tmp$col.regions
+                  popup <- tmp$popup
+                  label <- tmp$labs
+                  # alpha = tmp$alpha
+                  # alpha.regions = tmp$alpha.regions
+                  zcol = tmp$zcol #as.list(names(x))
+                }
               }
 
               if (!inherits(x, "list")) {
 
-                leaflet_sf(x,
+                leaflet_sf(sf::st_cast(x),
                            map = map,
                            zcol = zcol,
                            color = color,
@@ -436,7 +449,7 @@ setMethod('mapView', signature(x = 'sf'),
               } else {
 
                 mapView(x,
-                        zcol = NULL,
+                        zcol = zcol,
                         burst = FALSE,
                         color = color,
                         col.regions = col.regions,
@@ -448,6 +461,7 @@ setMethod('mapView', signature(x = 'sf'),
                         layer.name = layer.name,
                         alpha = alpha,
                         alpha.regions = alpha.regions,
+                        na.alpha = na.alpha,
                         ...)
 
               }
@@ -489,7 +503,7 @@ setMethod('mapView', signature(x = 'sfc'),
 
             if (mapviewGetOption("platform") == "leaflet") {
 
-              leaflet_sfc(x,
+              leaflet_sfc(sf::st_cast(x),
                           map = map,
                           color = color,
                           col.regions = col.regions,
@@ -516,6 +530,78 @@ setMethod('mapView', signature(x = 'sfc'),
             }
           }
 )
+
+
+## numeric ================================================================
+#' @describeIn mapView \code{\link{numeric}}
+#' @param y numeric vector.
+#' @param type whether to render the numeric vector \code{x} as a
+#' point \code{"p"} or line \code{"l"} plot.
+setMethod('mapView', signature(x = 'numeric'),
+          function(x, y, type = "p", grid = TRUE, label, ...) {
+            if (missing(label)) {
+              if (!missing(y)) {
+                labs = lapply(seq(length(x)), function(i) {
+                  paste0("x : ", x[i], '<br>',
+                         "y : ", y[i])
+                })
+                label = lapply(labs, htmltools::HTML)
+              } else {
+                labs = lapply(seq(length(x)), function(i) {
+                  paste0("x : ", seq_along(x)[i], '<br>',
+                         "y : ", x[i])
+                })
+                label = lapply(labs, htmltools::HTML)
+              }
+            }
+            if (type == "l") label = NULL
+            xyView(x = x,
+                   y = y,
+                   type = type,
+                   grid = grid,
+                   label = label,
+                   ...)
+          }
+)
+
+
+## data.frame =============================================================
+#' @describeIn mapView \code{\link{data.frame}}
+#' @param xcol the column to be mapped to the x-axis. Only relevant for the
+#' data.frame method.
+#' @param ycol the column to be mapped to the y-axis. Only relevant for the
+#' data.frame method.
+#' @param grid whether to plot a (scatter plot) xy-grid to aid interpretation
+#' of the visualisation. Only relevant for the data.frame method.
+#' @param aspect the ratio of x/y axis corrdinates to adjust the plotting
+#' space to fit the screen. Only relevant for the data.frame method.
+setMethod('mapView', signature(x = 'data.frame'),
+          function(x,
+                   xcol,
+                   ycol,
+                   grid = TRUE,
+                   aspect = 1,
+                   popup = popupTable(x),
+                   label,
+                   ...) {
+            if (missing(label)) {
+              labs = lapply(seq(nrow(x)), function(i) {
+                paste0(xcol, " (x) : ", x[[xcol]][i], '<br>',
+                       ycol, " (y) : ", x[[ycol]][i])
+              })
+              label = lapply(labs, htmltools::HTML)
+            }
+            xyView(x = xcol,
+                   y = ycol,
+                   data = x,
+                   grid = grid,
+                   aspect = aspect,
+                   popup = popup,
+                   label = label,
+                   ...)
+          }
+)
+
 
 
 ## XY =====================================================================
@@ -535,7 +621,8 @@ setMethod('mapView', signature(x = 'XY'),
                    map.types = NULL,
                    verbose = mapviewGetOption("verbose"),
                    popup = NULL,
-                   layer.name = NULL,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame(1))),
                    label = makeLabels(x),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
@@ -547,6 +634,7 @@ setMethod('mapView', signature(x = 'XY'),
 
             if (mapviewGetOption("platform") == "leaflet") {
 
+              x = sf::st_cast(sf::st_sfc(x))
               leaflet_sfc(x,
                           map = map,
                           color = color,
@@ -574,6 +662,48 @@ setMethod('mapView', signature(x = 'XY'),
             }
           }
 )
+
+
+## XYZ ====================================================================
+#' @describeIn mapView \code{\link{st_sfc}}
+
+setMethod('mapView', signature(x = 'XYZ'),
+          function(x,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame(1))),
+                   ...) {
+            mapview(sf::st_zm(x), layer.name = layer.name, ...)
+          }
+)
+
+
+
+## XYM ====================================================================
+#' @describeIn mapView \code{\link{st_sfc}}
+
+setMethod('mapView', signature(x = 'XYM'),
+          function(x,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame(1))),
+                   ...) {
+            mapview(sf::st_zm(x), layer.name = layer.name, ...)
+          }
+)
+
+
+
+## XYZM ===================================================================
+#' @describeIn mapView \code{\link{st_sfc}}
+
+setMethod('mapView', signature(x = 'XYZM'),
+          function(x,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame(1))),
+                   ...) {
+            mapview(sf::st_zm(x), layer.name = layer.name, ...)
+          }
+)
+
 
 
 ## sfc_POINT ==============================================================
@@ -646,6 +776,24 @@ setMethod('mapView', signature(x = 'sfc_GEOMETRY'),
 )
 
 
+## bbox =======================================================
+#' @describeIn mapView \code{\link{st_bbox}}
+
+setMethod('mapView', signature(x = 'bbox'),
+          function(x,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame(1))),
+                   alpha.regions = 0.2,
+                   ...) {
+            mapview(sf::st_as_sfc(x),
+                    layer.name = layer.name,
+                    alpha.regions = alpha.regions,
+                    ...)
+          }
+)
+
+
+
 ######## MISC #############################################################
 
 ## Missing ================================================================
@@ -672,14 +820,15 @@ setMethod('mapView', signature(x = 'list'),
           function(x,
                    map = NULL,
                    zcol = NULL,
+                   burst = FALSE,
                    color = mapviewGetOption("vector.palette"),
                    col.regions = mapviewGetOption("vector.palette"),
                    at = NULL,
                    na.color = mapviewGetOption("na.color"),
                    cex = 6,
                    lwd = lapply(x, lineWidth),
-                   alpha = 0.9,
-                   alpha.regions = 0.6,
+                   alpha = lapply(seq(x), function(i) 0.9),
+                   alpha.regions = lapply(seq(x), function(i) 0.6),
                    map.types = mapviewGetOption("basemaps"),
                    verbose = mapviewGetOption("verbose"),
                    popup = lapply(seq(x), function(i) {
@@ -694,12 +843,6 @@ setMethod('mapView', signature(x = 'list'),
                    legend.opacity = 1,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   highlight = lapply(seq(x), function(i) {
-                     mapviewHighlightOptions(x[[i]],
-                                             alpha.regions = alpha.regions,
-                                             alpha = alpha,
-                                             lwd = lwd[[i]])
-                   }),
                    maxpoints = NULL, #lapply(x, getMaxFeatures),
                    ...) {
 
@@ -717,8 +860,8 @@ setMethod('mapView', signature(x = 'list'),
               cex <- rep(list(cex), length(x))
             if (!is.list(lwd))
               lwd <- rep(list(lwd), length(x))
-            if (!is.list(highlight))
-              highlight <- rep(list(highlight), length(x))
+            # if (!is.list(highlight))
+            #   highlight <- rep(list(highlight), length(x))
             # if (!is.list(label))
             #   label <- rep(list(label), length(x))
             if (length(popup) != length(x))
@@ -727,7 +870,6 @@ setMethod('mapView', signature(x = 'list'),
               alpha <- rep(list(alpha), length(x))
             if (length(alpha.regions) != length(x))
               alpha.regions <- rep(list(alpha.regions), length(x))
-
 
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -746,10 +888,10 @@ setMethod('mapView', signature(x = 'list'),
                           native.crs = native.crs,
                           cex = cex[[i]],
                           lwd = lwd[[i]],
-                          highlight = highlight[[i]],
                           map.types = map.types,
                           alpha = alpha[[i]],
                           alpha.regions = alpha.regions[[i]],
+                          burst = FALSE,
                           ...)
                   } else {
                     mapView(x = sf::st_cast(x[[i]]),
@@ -758,14 +900,16 @@ setMethod('mapView', signature(x = 'list'),
                             native.crs = native.crs,
                             cex = cex[[i]],
                             lwd = lwd[[i]],
-                            highlight = highlight[[i]],
                             map.types = map.types,
+                            burst = FALSE,
                             ...)
                   }
                 }))@map
               m <- leaflet::hideGroup(map = m,
                                       group = layers2bHidden(m, ...))
               out <- new("mapview", object = x, map = m)
+              # print(str(out@map), 4)
+              # stop("hallo")
               return(out)
             } else {
               NULL

@@ -30,7 +30,8 @@ checkAdjustProjection <- function(x) {
               "sfc_MULTILINESTRING" = sfCheckAdjustProjection(x),
               "sfc_POLYGON" = sfCheckAdjustProjection(x),
               "sfc_MULTIPOLYGON" = sfCheckAdjustProjection(x),
-              "sfc_GEOMETRY" = sfCheckAdjustProjection(x))
+              "sfc_GEOMETRY" = sfCheckAdjustProjection(x),
+              "sfc_GEOMETRYCOLLECTION" = sfCheckAdjustProjection(x))
 
   return(x)
 
@@ -80,7 +81,7 @@ rasterCheckAdjustProjection <- function(x) {
 sfCheckAdjustProjection <- function(x) {
 
   if (is.na(sf::st_crs(x))) {
-    warning(non_proj_warning)
+    return(x) # warning(non_proj_warning)
   } else { #if (!validLongLat(sf::st_crs(x)$proj4string)) {
     x <- sf::st_transform(x, llcrs)
   }

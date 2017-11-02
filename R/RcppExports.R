@@ -2,50 +2,50 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 gsubC <- function(pattern, replacement, x) {
-    .Call(mapview_gsubC, pattern, replacement, x)
+    .Call(`_mapview_gsubC`, pattern, replacement, x)
 }
 
 brewPopupRowC <- function(index, colname, value) {
-    .Call(mapview_brewPopupRowC, index, colname, value)
+    .Call(`_mapview_brewPopupRowC`, index, colname, value)
 }
 
 brewPopupRowAltC <- function(index, colname, value) {
-    .Call(mapview_brewPopupRowAltC, index, colname, value)
+    .Call(`_mapview_brewPopupRowAltC`, index, colname, value)
 }
 
 brewPopupCoords <- function(colname, value) {
-    .Call(mapview_brewPopupCoords, colname, value)
+    .Call(`_mapview_brewPopupCoords`, colname, value)
 }
 
 mergePopupRows <- function(names, values) {
-    .Call(mapview_mergePopupRows, names, values)
+    .Call(`_mapview_mergePopupRows`, names, values)
 }
 
 createTemplate <- function(tmpPath) {
-    .Call(mapview_createTemplate, tmpPath)
+    .Call(`_mapview_createTemplate`, tmpPath)
 }
 
 listPopupTemplates <- function(x, names, tmpPath) {
-    .Call(mapview_listPopupTemplates, x, names, tmpPath)
+    .Call(`_mapview_listPopupTemplates`, x, names, tmpPath)
 }
 
 df2String <- function(x) {
-    .Call(mapview_df2String, x)
+    .Call(`_mapview_df2String`, x)
 }
 
 one2JSON <- function(x) {
-    .Call(mapview_one2JSON, x)
+    .Call(`_mapview_one2JSON`, x)
 }
 
 all2JSONlist <- function(x) {
-    .Call(mapview_all2JSONlist, x)
+    .Call(`_mapview_all2JSONlist`, x)
 }
 
 anyNA <- function(x) {
-    .Call(mapview_anyNA, x)
+    .Call(`_mapview_anyNA`, x)
 }
 
 rowNA <- function(x) {
-    .Call(mapview_rowNA, x)
+    .Call(`_mapview_rowNA`, x)
 }
 

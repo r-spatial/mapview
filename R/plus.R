@@ -21,8 +21,8 @@ if ( !isGeneric('+') ) {
 #' m2 <- mapView(breweries91)
 #'
 #' ### add two mapview objects
-#' m1 + m2 # final zoom level based on m2
-#' '+'(m2, m1) # final zoom level based on m1
+#' m1 + m2
+#' '+'(m2, m1)
 #' }
 #'
 #' @name +
@@ -33,29 +33,23 @@ if ( !isGeneric('+') ) {
 setMethod("+",
           signature(e1 = "mapview",
                     e2 = "mapview"),
-          function (e1, e2)
-          {
-            # is.ext <- class(e2@object[[length(e2@object)]]) == "Extent"
-            # if (is.ext) {
-            #   rst <- raster::raster(e2@object[[length(e2@object)]])
-            #   raster::projection(rst) <- llcrs
-            # }
-            m <- e1@map
-            m <- appendMapCallEntries(m, e2@map)
+          function (e1, e2) {
+
+            m <- appendMapCallEntries(e1@map, e2@map)
             out_obj <- append(e1@object, e2@object)
-            ext <- createExtent(out_obj[[length(out_obj)]])
-            # if (length(e2@object[[length(e2@object)]]) > 1) {
-            #   if (is.ext) ext <- raster::extent(rst) else
-            #     ext <- raster::extent(
-            #       raster::projectExtent(out_obj[[length(out_obj)]],
-            #                             crs = llcrs))
-              m <- leaflet::fitBounds(map = m,
-                                      lng1 = ext@xmin,
-                                      lat1 = ext@ymin,
-                                      lng2 = ext@xmax,
-                                      lat2 = ext@ymax)
-              #m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
-            # }
+            bb = combineExtent(out_obj, sf = FALSE)
+            names(bb) = NULL
+            m <- leaflet::fitBounds(map = m,
+                                    lng1 = bb[1],
+                                    lat1 = bb[2],
+                                    lng2 = bb[3],
+                                    lat2 = bb[4])
+
+            hbcalls = getCallEntryFromMap(m, "addHomeButton")
+            zf = grep("Zoom full", m$x$calls[hbcalls])
+            ind = hbcalls[zf]
+            if (length(zf) > 0) m$x$calls[ind] = NULL
+            m = addZoomFullButton(m, out_obj)
 
             out <- methods::new('mapview', object = out_obj, map = m)
             return(out)
@@ -71,19 +65,19 @@ setMethod("+",
 setMethod("+",
           signature(e1 = "mapview",
                     e2 = "ANY"),
-          function (e1, e2)
-          {
-
+          function (e1, e2) {
             nm <- deparse(substitute(e2))
-            m <- mapView(e2, map = e1@map, layer.name = nm)
-            out_obj <- append(e1@object, m@object)
-            ext <- createExtent(out_obj[[length(out_obj)]])
-            m <- leaflet::fitBounds(map = m@map,
-                                    lng1 = ext@xmin,
-                                    lat1 = ext@ymin,
-                                    lng2 = ext@xmax,
-                                    lat2 = ext@ymax)
-            out <- methods::new('mapview', object = out_obj, map = m)
+            # e1 + mapview(e2, layer.name = nm)
+            m = mapview(e2, map = e1, layer.name = nm)
+            out_obj = append(e1@object, m@object)
+
+            hbcalls = getCallEntryFromMap(m@map, "addHomeButton")
+            zf = grep("Zoom full", m@map$x$calls[hbcalls])
+            ind = hbcalls[zf]
+            if (length(zf) > 0) m@map$x$calls[ind] = NULL
+
+            m = addZoomFullButton(m@map, out_obj)
+            out = methods::new('mapview', object = out_obj, map = m)
             return(out)
           }
 )

@@ -73,6 +73,17 @@ removeHomeButton <- function(map) {
 }
 
 
+addZoomFullButton = function(map, lst, position = "bottomleft") {
+  bb = combineExtent(lst, sf = FALSE)
+  names(bb) = NULL
+  label = "Zoom to full extent"
+  txt = "<strong>Zoom full</strong>"
+
+  leaflet::invokeMethod(map, leaflet::getMapData(map), 'addHomeButton',
+                        bb[1], bb[2], bb[3], bb[4], label, txt,
+                        position)
+
+}
 
 
 leafletHomeButtonDependencies <- function() {

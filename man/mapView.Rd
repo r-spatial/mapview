@@ -8,7 +8,12 @@
 \alias{mapView,Satellite-method}
 \alias{mapView,sf-method}
 \alias{mapView,sfc-method}
+\alias{mapView,numeric-method}
+\alias{mapView,data.frame-method}
 \alias{mapView,XY-method}
+\alias{mapView,XYZ-method}
+\alias{mapView,XYM-method}
+\alias{mapView,XYZM-method}
 \alias{mapView,sfc_POINT-method}
 \alias{mapView,sfc_MULTIPOINT-method}
 \alias{mapView,sfc_LINESTRING-method}
@@ -16,6 +21,7 @@
 \alias{mapView,sfc_POLYGON-method}
 \alias{mapView,sfc_MULTIPOLYGON-method}
 \alias{mapView,sfc_GEOMETRY-method}
+\alias{mapView,bbox-method}
 \alias{mapView,missing-method}
 \alias{mapView,list-method}
 \alias{mapview,ANY-method}
@@ -59,9 +65,10 @@
   color = mapviewGetOption("vector.palette"),
   col.regions = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
-  alpha = 0.9, alpha.regions = regionOpacity(x), na.alpha = NULL,
-  map.types = NULL, verbose = mapviewGetOption("verbose"),
-  popup = popupTable(x), layer.name = NULL, label = makeLabels(x, zcol),
+  alpha = 0.9, alpha.regions = regionOpacity(x),
+  na.alpha = regionOpacity(x), map.types = NULL,
+  verbose = mapviewGetOption("verbose"), popup = popupTable(x),
+  layer.name = NULL, label = makeLabels(x, zcol),
   legend = mapviewGetOption("legend"), legend.opacity = 1,
   homebutton = TRUE, native.crs = FALSE,
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
@@ -78,15 +85,30 @@
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
+\S4method{mapView}{numeric}(x, y, type = "p", grid = TRUE, label, ...)
+
+\S4method{mapView}{data.frame}(x, xcol, ycol, grid = TRUE, aspect = 1,
+  popup = popupTable(x), label, ...)
+
 \S4method{mapView}{XY}(x, map = NULL, color = standardColor(x),
   col.regions = standardColRegions(x), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
   alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
-  verbose = mapviewGetOption("verbose"), popup = NULL, layer.name = NULL,
+  verbose = mapviewGetOption("verbose"), popup = NULL,
+  layer.name = deparse(substitute(x, env = parent.frame(1))),
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
+
+\S4method{mapView}{XYZ}(x, layer.name = deparse(substitute(x, env =
+  parent.frame(1))), ...)
+
+\S4method{mapView}{XYM}(x, layer.name = deparse(substitute(x, env =
+  parent.frame(1))), ...)
+
+\S4method{mapView}{XYZM}(x, layer.name = deparse(substitute(x, env =
+  parent.frame(1))), ...)
 
 \S4method{mapView}{sfc_POINT}(x, ...)
 
@@ -102,22 +124,24 @@
 
 \S4method{mapView}{sfc_GEOMETRY}(x, ...)
 
+\S4method{mapView}{bbox}(x, layer.name = deparse(substitute(x, env =
+  parent.frame(1))), alpha.regions = 0.2, ...)
+
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"), ...)
 
-\S4method{mapView}{list}(x, map = NULL, zcol = NULL,
+\S4method{mapView}{list}(x, map = NULL, zcol = NULL, burst = FALSE,
   color = mapviewGetOption("vector.palette"),
   col.regions = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lapply(x,
-  lineWidth), alpha = 0.9, alpha.regions = 0.6,
+  lineWidth), alpha = lapply(seq(x), function(i) 0.9),
+  alpha.regions = lapply(seq(x), function(i) 0.6),
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), popup = lapply(seq(x), function(i)
   {     popupTable(x[[i]]) }), layer.name = deparse(substitute(x, env =
   parent.frame())), label = lapply(seq(x), function(i) {    
   makeLabels(x[[i]], zcol = zcol[[i]]) }),
   legend = mapviewGetOption("legend"), legend.opacity = 1,
-  homebutton = TRUE, native.crs = FALSE, highlight = lapply(seq(x),
-  function(i) {     mapviewHighlightOptions(x[[i]], alpha.regions =
-  alpha.regions, alpha = alpha, lwd = lwd[[i]]) }), maxpoints = NULL, ...)
+  homebutton = TRUE, native.crs = FALSE, maxpoints = NULL, ...)
 
 \S4method{mapview}{ANY}(...)
 
@@ -144,7 +168,8 @@
 }
 \arguments{
 \item{x}{a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
-\code{sf} object or a list of any combination of those.}
+\code{sf} object or a list of any combination of those. Furthermore,
+this can also be a \code{data.frame} or a \code{numeric vector}.}
 
 \item{map}{an optional existing map to be updated/added to}
 
@@ -225,6 +250,23 @@ See \code{\link{highlightOptions}} for details.}
 \item{maxpoints}{the maximum number of points making up the geometry.
 In case of lines and polygons this refers to the number of vertices. See
 Details for more information.}
+
+\item{y}{numeric vector.}
+
+\item{type}{whether to render the numeric vector \code{x} as a
+point \code{"p"} or line \code{"l"} plot.}
+
+\item{grid}{whether to plot a (scatter plot) xy-grid to aid interpretation
+of the visualisation. Only relevant for the data.frame method.}
+
+\item{xcol}{the column to be mapped to the x-axis. Only relevant for the
+data.frame method.}
+
+\item{ycol}{the column to be mapped to the y-axis. Only relevant for the
+data.frame method.}
+
+\item{aspect}{the ratio of x/y axis corrdinates to adjust the plotting
+space to fit the screen. Only relevant for the data.frame method.}
 }
 \description{
 this function produces an interactive view of the specified
@@ -245,6 +287,10 @@ start the browser with the flag \code{-allow-file-access-from-files} (i.e
 for windows: "path_to_your_chrome_installation\\chrome.exe --allow-file-access-from-files",
 for linux: "/usr/bin/google-chrome --allow-access-from-files").
 See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
+\cr
+NOTE: if XYZ or XYM or XYZM data from package sf is passed to mapview,
+domensions Z and M will be stripped to ensure smooth rendering even though
+the popup will potentially still say something like "POLYGON Z".
 
 \code{maxpoints} is taken to determine when to switch rendering from svg
 to canvas overlay for perfomance. The threshold calculation is done as follows: \cr
@@ -271,7 +317,17 @@ and fully queriable.
 
 \item \code{sfc}: \code{\link{st_sfc}}
 
+\item \code{numeric}: \code{\link{numeric}}
+
+\item \code{data.frame}: \code{\link{data.frame}}
+
 \item \code{XY}: \code{\link{st_sfc}}
+
+\item \code{XYZ}: \code{\link{st_sfc}}
+
+\item \code{XYM}: \code{\link{st_sfc}}
+
+\item \code{XYZM}: \code{\link{st_sfc}}
 
 \item \code{sfc_POINT}: \code{\link{st_sfc}}
 
@@ -286,6 +342,8 @@ and fully queriable.
 \item \code{sfc_MULTIPOLYGON}: \code{\link{st_sfc}}
 
 \item \code{sfc_GEOMETRY}: \code{\link{st_sfc}}
+
+\item \code{bbox}: \code{\link{st_bbox}}
 
 \item \code{missing}: initiate a map without an object
 

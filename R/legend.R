@@ -21,12 +21,15 @@ factorLegend <- function(map,
                                             return.sorted = TRUE),
                        domain = values,
                        na.color = na.color)
-  leaflet::addLegend(map = map,
-                     position = position,
-                     pal = pal,
-                     values = values,
-                     opacity = 1,
-                     title = layer.name)
+  mvAddLegend(isAvailableInLeaflet()$leggrp,
+              layer.name,
+              map = map,
+              position = position,
+              pal = pal,
+              values = values,
+              opacity = 1,
+              title = layer.name)
+
 }
 
 ### character =============================================================
@@ -36,18 +39,21 @@ characterLegend <- function(map,
                             colors,
                             na.color,
                             layer.name) {
-  pal <- factorPalette(palette = zcolColors(x = unique(values),
+  vals = unique(values[!is.na(values)])
+  pal <- factorPalette(palette = zcolColors(x = vals,
                                             colors = colors,
                                             na.color = na.color,
                                             return.sorted = TRUE),
                        domain = values,
                        na.color = na.color)
-  leaflet::addLegend(map = map,
-                     position = position,
-                     pal = pal,
-                     values = values,
-                     opacity = 1,
-                     title = layer.name)
+  mvAddLegend(isAvailableInLeaflet()$leggrp,
+              layer.name,
+              map = map,
+              position = position,
+              pal = pal,
+              values = values,
+              opacity = 1,
+              title = layer.name)
 }
 
 
@@ -91,30 +97,45 @@ numericLegend <- function(map,
     factorLegend(map = map,
                  values = as.factor(unique(values)),
                  colors = colors,
+                 position = position,
+                 layer.name = layer.name,
                  na.color = na.color)
   } else if (n_unique <= 11) {
-    if (anyNA(values)) leg_vals <- c(atc, NA) else leg_vals <- atc
+    if (anyNA(values)) values <- c(atc, NA) else values <- atc
     pal <- binPalette(palette = colors(n_unique),
                       domain = atc,
                       bins = atc,
                       na.color = na.color)
-    leaflet::addLegend(map = map,
-                       position = position,
-                       pal = pal,
-                       values = leg_vals,
-                       opacity = 1,
-                       title = layer.name)
+    mvAddLegend(isAvailableInLeaflet()$leggrp,
+                layer.name,
+                map = map,
+                position = position,
+                pal = pal,
+                values = values,
+                opacity = 1,
+                title = layer.name)
+
   } else {
     pal <- numericPalette(palette = colors(n_unique),
                           domain = values,
                           na.color = na.color)
-    leaflet::addLegend(map = map,
-                       position = position,
-                       pal = pal,
-                       values = values,
-                       opacity = 1,
-                       title = layer.name)
+    mvAddLegend(isAvailableInLeaflet()$leggrp,
+                layer.name,
+                map = map,
+                position = position,
+                pal = pal,
+                values = values,
+                opacity = 1,
+                title = layer.name)
+
   }
+}
+
+
+mvAddLegend = function(grp_avail = isAvailableInLeaflet()$leggrp,
+                       layer.name, ...) {
+  if (grp_avail) leaflet::addLegend(..., group = layer.name) else
+    leaflet::addLegend(...)
 }
 
 

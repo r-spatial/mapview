@@ -69,7 +69,8 @@ If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
 \item{...}{additional arguments passed on to repective functions.}
 
-\item{legend}{logical. Whether to plot a legend.}
+\item{legend}{whether to plot legends for the two images (ignored for
+RatserStacks/*Bricks).}
 
 \item{col.regions}{color (palette).See \code{\link{levelplot}} for details.}
 
@@ -81,6 +82,12 @@ compare the two images in a before-after like fashion. \code{img1} and
 \code{img2} can either be two RasterLayers, two RasterBricks/Stacks or
 two character strings. In the latter case it is assumed that these
 point to .png images on the disk.
+
+NOTE: In case you want to include multiple slideviews in one page in a
+Rmd or flexdashboard we highly recommend using package widgetframe.
+Also, make sure to use different image names and/or labels
+for each of the RasterLayers/Bricks/Stacks.
+Otherwise things will likely not work properly.
 
 This is a modified implementation of http://bl.ocks.org/rfriberg/8327361
 }
@@ -111,7 +118,10 @@ For slideView there are a few keyboard shortcuts defined:
 
 \examples{
 ### raster data ###
+library(sp)
 library(raster)
+
+data(poppendorf)
 
 stck1 <- subset(poppendorf, c(3, 4, 5))
 stck2 <- subset(poppendorf, c(2, 3, 4))
