@@ -1,3 +1,7 @@
+## mapview 2.2.1
+
+  * added more details in description field as per request of Uwe Ligges.
+
 ## mapview 2.2.0
 
 new features:
@@ -8,7 +12,7 @@ new features:
   * more concise internal recursive method dispatch.
   * if multiple layers are plotted (via "+") initial zoom is now on global extent and a "Zoom full" button is added to the map at the bottom left of the map to re-zoom to this global extent.
   * we now have mapview method for class 'data.frame' which enables interactive scatter plots.
-  * we now have mapview method for class 'data.frame' which enables interactive plots of a numeric variable.
+  * we now have mapview method for class 'numeric' which enables interactive plots of a numeric variable.
   * updated slideView to accommodate more than one incident in a flexdashboard #95
   * if supplied data has only one attribute/field column mapview will now colour the plot automatically according to that attribute/field.
   * new mapview method for class 'bbox' -> mapview(st_bbox(x)) is equivalent to viewExtent(x)
