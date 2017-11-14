@@ -33,12 +33,14 @@ leafletRL = function(x,
 
   if (native.crs) {
     plainView(x,
+              maxpixels = mapviewGetOption("plainview.maxpixels"),
               col.regions = col.regions,
               at = at,
               na.color = na.color,
               legend = legend,
               verbose = verbose,
               layer.name = layer.name,
+              gdal = TRUE,
               ...)
   } else {
 
