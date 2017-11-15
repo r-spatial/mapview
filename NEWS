@@ -1,6 +1,17 @@
-mapview 2.2.1
+mapview 2.2.2
+
+new features:
+
+  * popupTable has gained argument row.numbers to disable row numbers. #109
+  
+bugfixes:
+
+  * raster method with native.crs = TRUE did throw an error on windows. #111
+  
+misc:
 
   * added more details in description field as per request of Uwe Ligges.
+  
 
 mapview 2.2.0
 
