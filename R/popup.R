@@ -27,15 +27,15 @@
 #' @export popupTable
 #' @name popupTable
 #' @rdname popup
-popupTable = function(x, zcol) {
+popupTable = function(x, zcol, row.numbers = TRUE) {
 
   if (inherits(x, "sfc")) {
     return(NULL)
   } else {
     if (!missing(zcol))
       x = x[, zcol, drop = FALSE]
-    brewPopupTable(x)
   }
+  brewPopupTable(x, row.numbers = row.numbers)
 }
 
 
@@ -365,7 +365,7 @@ popupIframe = function(src, width = 300, height = 300) {
 
 ### controls ==============================================================
 # create popup table of attributes
-brewPopupTable = function(x, width = 300, height = 300) {
+brewPopupTable = function(x, width = 300, height = 300, row.numbers = TRUE) {
 
   if (inherits(x, "Spatial")) x = x@data
   if (inherits(x, "sf")) x = sf2DataFrame(x)
@@ -410,8 +410,9 @@ brewPopupTable = function(x, width = 300, height = 300) {
   cols = colnames(mat)
 
   lst_html = listPopupTemplates(mat, cols,
-                                 system.file("templates/popup.brew",
-                                             package = "mapview"))
+                                system.file("templates/popup.brew",
+                                            package = "mapview"),
+                                rowIndex = row.numbers)
   attr(lst_html, "popup") = "mapview"
   return(lst_html)
 }

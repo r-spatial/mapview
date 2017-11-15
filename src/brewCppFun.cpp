@@ -46,10 +46,14 @@ std::string gsubC(const std::string& pattern, const std::string& replacement,
 
 // [[Rcpp::export]]
 std::string brewPopupRowC(std::string index, std::string colname,
-                          std::string value) {
+                          std::string value, bool rowIndex) {
 
   std::string chIndString;
-  chIndString = std::string("<td>") + index + "</td>";
+  if (rowIndex) {
+    chIndString = std::string("<td>") + index + "</td>";
+  } else {
+    chIndString = std::string("<td></td>");
+  }
 
   std::string chColString;
   chColString = std::string("<td>") + "<b>" + colname + "</b>" + "</td>";
@@ -72,10 +76,14 @@ std::string brewPopupRowC(std::string index, std::string colname,
 
 // [[Rcpp::export]]
 std::string brewPopupRowAltC(std::string index, std::string colname,
-                             std::string value) {
+                             std::string value, bool rowIndex) {
 
   std::string chIndString;
-  chIndString = std::string("<td>") + index + "</td>";
+  if (rowIndex) {
+    chIndString = std::string("<td>") + index + "</td>";
+  } else {
+    chIndString = std::string("<td></td>");
+  }
 
   std::string chColString;
   chColString = std::string("<td>") + "<b>" + colname + "</b>" + "</td>";
@@ -122,7 +130,8 @@ std::string brewPopupCoords(std::string colname, std::string value) {
 ////////////////////////////////////////////////////////////////////////////////
 
 // [[Rcpp::export]]
-std::string mergePopupRows(CharacterVector names, CharacterVector values) {
+std::string mergePopupRows(CharacterVector names, CharacterVector values,
+                           bool rowIndex) {
 
   int nSize = values.size();
   std::string chOut = std::string("");
@@ -140,16 +149,14 @@ std::string mergePopupRows(CharacterVector names, CharacterVector values) {
           (names[i] == "Longitude") | (names[i] == "Latitude")) {
       chOut = chOut + brewPopupCoords(ssName.str(), ssValue.str());
     } else {
-
       // even variable columns
       if (i%2 == 0) {
-        chOut = chOut + brewPopupRowC(to_string(i), ssName.str(), ssValue.str());
+        chOut = chOut + brewPopupRowC(to_string(i), ssName.str(), ssValue.str(), rowIndex);
 
-      // odd variable columns
+        // odd variable columns
       } else {
-        chOut = chOut + brewPopupRowAltC(to_string(i), ssName.str(), ssValue.str());
+        chOut = chOut + brewPopupRowAltC(to_string(i), ssName.str(), ssValue.str(), rowIndex);
       }
-
     }
 
     ssName.str(std::string());
@@ -204,7 +211,7 @@ CharacterVector enc2utf8_chrvec(const CharacterVector & x) {
 
 // [[Rcpp::export]]
 List listPopupTemplates(CharacterMatrix x, CharacterVector names,
-                        std::string tmpPath) {
+                        std::string tmpPath, bool rowIndex) {
 
   // number of rows and columns
   int nRows = x.nrow();
@@ -224,7 +231,7 @@ List listPopupTemplates(CharacterMatrix x, CharacterVector names,
   // create strings for each single row
   for (int i = 0; i < nRows; i++) {
     chVal = enc2utf8_chrvec(x(i, _));
-    chStr = mergePopupRows(names, chVal);
+    chStr = mergePopupRows(names, chVal, rowIndex);
 
     chTmp = gsubC("<%=pop%>", chStr, chTmp);
     lsOut[i] = enc2utf8_string(chTmp);
