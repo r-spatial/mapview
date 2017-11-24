@@ -112,14 +112,19 @@ function(el, x, data) {
 
   // check for already existing lnlt class to not duplicate
   var lnlt = $(el).find('.lnlt');
+
   if(!lnlt.length) {
     lnlt = addElement();
-
+    //$(el).keypress(function (e) {
+    //  if (e.which == 32 || event.keyCode == 32) {
+    //    alert('space key is pressed');
+    //  }
+    //});
     // grab the special div we generated in the beginning
     // and put the mousmove output there
     map.on('mousemove', function (e) {
       lnlt.text(", txt, ");
-    })
+    });
   };
 }
 "
