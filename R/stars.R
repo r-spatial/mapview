@@ -27,9 +27,8 @@ addStarsImage <- function(map,
 
   pre <- paste0('var ', jsgroup, ' = ')
   writeLines(pre, pathDatFn)
-  # gj <- paste(pre, geojsonio::geojson_json(data), ';', sep = "\n")
-  txt = as.character(gsub("NA", "NaN", format(projected[[1]])))
-  cat(txt, file = pathDatFn, append = TRUE)
+  cat('[', stars2Array(projected), ']',
+      file = pathDatFn, sep = "", append = TRUE)
   # file.append(pathDatFn, starspathDatFn)
   # file.remove(starspathDatFn)
 
@@ -69,6 +68,21 @@ addStarsImage <- function(map,
 }
 
 
+stars2Array = function(x) {
+  a = paste(
+    sapply(seq(nrow(x[[1]])), function(i) {
+      paste0(
+        '[', gsub("NA", "null", paste(as.numeric(x[[1]][i, ]), collapse = ",")), ']'
+      )
+    }),
+    collapse = ","
+  )
+}
+
+
+
+
+
 
 makepathStars <- function(group) {
   dirs <- list.dirs(tempdir())
@@ -98,3 +112,5 @@ starsDataDependency <- function(jFn, counter = 1, group) {
       src = c(file = data_dir),
       script = list(data_file)))
 }
+
+
