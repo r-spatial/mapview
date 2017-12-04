@@ -229,7 +229,7 @@ leaflet_sfc <- function(x,
 
   try(
     if (attributes(popup)$popup == "mapview") {
-      m$dependencies <- c(m$dependencies, mapviewPopupDependencies())
+      m$dependencies <- c(m$dependencies, popupLayoutDependencies())
     }
     , silent = TRUE
   )

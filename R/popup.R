@@ -450,7 +450,7 @@ brewPopupRowAlt = function(col.name, value) {
 }
 
 
-mapviewPopupDependencies <- function() {
+popupLayoutDependencies <- function() {
   list(
     htmltools::htmlDependency(
       "PopupTable",
