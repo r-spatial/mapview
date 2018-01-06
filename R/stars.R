@@ -1,6 +1,5 @@
 addStarsImage <- function(map,
                           x,
-                          bounds,
                           colors = "Spectral",
                           opacity = 1,
                           attribution = NULL,
@@ -11,35 +10,22 @@ addStarsImage <- function(map,
   stopifnot(inherits(x, "stars"))
 
   if (is.null(group)) group = "stars"
-  # if (project) {
-  #   projected <- projectRasterForLeaflet(x)
-  # } else {
+  if (project) {
+    projected <- st_transform(x, crs = 4326)
+  } else {
   projected <- x
-  # }
+  }
   # bounds <- raster::extent(raster::projectExtent(raster::projectExtent(x, crs = sp::CRS(epsg3857)), crs = sp::CRS(epsg4326)))
-
-  jsgroup <- gsub(".", "", make.names(group), fixed = TRUE)
-
-  tmp <- makepathStars(as.character(jsgroup))
-  pathDatFn <- tmp[[2]][1]
-  starspathDatFn <- tmp[[3]][1]
-  datFn <- tmp[[4]][1]
-
-  pre <- paste0('var ', jsgroup, ' = ')
-  writeLines(pre, pathDatFn)
-  cat('[', stars2Array(projected), ']',
-      file = pathDatFn, sep = "", append = TRUE)
-  # file.append(pathDatFn, starspathDatFn)
-  # file.remove(starspathDatFn)
+  bounds = as.numeric(st_bbox(st_transform(st_as_sfc(st_bbox(st_transform(projected, 3857))), 4326)))
 
   if (!is.function(colors)) {
     colors <- colorNumeric(colors, domain = NULL,
                            na.color = "#00000000", alpha = TRUE)
   }
 
-  tileData <- as.numeric(projected[[1]]) %>%
+  tileData <- as.numeric(projected[[1]][, , 1]) %>%
     colors() %>% col2rgb(alpha = TRUE) %>% as.raw()
-  dim(tileData) <- c(4, nrow(projected), ncol(projected))
+  dim(tileData) <- c(4, as.numeric(nrow(projected)), as.numeric(ncol(projected)))
   pngData <- png::writePNG(tileData)
   if (length(pngData) > maxBytes) {
     stop("Raster image too large; ",
@@ -52,19 +38,19 @@ addStarsImage <- function(map,
   uri <- paste0("data:image/png;base64,", encoded)
 
   latlng <- list(
-    list(raster::ymax(bounds), raster::xmin(bounds)),
-    list(raster::ymin(bounds), raster::xmax(bounds))
+    list(bounds[4], bounds[1]),
+    list(bounds[2], bounds[3])
   )
 
-  map$dependencies <- c(map$dependencies,
-                        starsDataDependency(jFn = pathDatFn,
-                                            counter = 1,
-                                            group = jsgroup))
+  # map$dependencies <- c(map$dependencies,
+  #                       starsDataDependency(jFn = pathDatFn,
+  #                                           counter = 1,
+  #                                           group = jsgroup))
 
   invokeMethod(map, getMapData(map), "addRasterImage", uri, latlng, opacity,
                attribution, layerId, group) %>%
-    expandLimits(c(raster::ymin(bounds), raster::ymax(bounds)),
-                 c(raster::xmin(bounds), raster::xmax(bounds)))
+    expandLimits(c(bounds[2], bounds[4]),
+                 c(bounds[1], bounds[3]))
 }
 
 
@@ -72,7 +58,8 @@ stars2Array = function(x) {
   a = paste(
     sapply(seq(nrow(x[[1]])), function(i) {
       paste0(
-        '[', gsub("NA", "null", paste(as.numeric(x[[1]][i, ]), collapse = ",")), ']'
+        '[', gsub("NA", "null",
+                  paste(as.numeric(x[[1]][, , 1][i, ]), collapse = ",")), ']'
       )
     }),
     collapse = ","
@@ -114,3 +101,76 @@ starsDataDependency <- function(jFn, counter = 1, group) {
 }
 
 
+
+addImageQuery = function(map,
+                         x,
+                         group = NULL,
+                         layerId = NULL,
+                         project = FALSE,
+                         type = c("mousemove", "click"),
+                         digits,
+                         position = 'bottomleft',
+                         ...) {
+
+  type = match.arg(type)
+  if (missing(digits)) digits = "null"
+
+  jsgroup <- gsub(".", "", make.names(group), fixed = TRUE)
+  if (is.null(layerId)) layerId = group
+
+  tmp <- makepathStars(as.character(jsgroup))
+  pathDatFn <- tmp[[2]][1]
+  starspathDatFn <- tmp[[3]][1]
+  datFn <- tmp[[4]][1]
+
+  if (project) {
+    projected <- st_transform(x, crs = 4326)
+  } else {
+    projected <- x
+  }
+
+  pre <- paste0('var data = data || {}; data["', layerId, '"] = ')
+  writeLines(pre, pathDatFn)
+  cat('[', stars2Array(projected), '];',
+      file = pathDatFn, sep = "", append = TRUE)
+
+  ## check for existing layerpicker control
+  ctrlid = getCallEntryFromMap(map, "addControl")
+  imctrl = unlist(sapply(ctrlid, function(i) {
+    "imageValues" %in% map$x$calls[[i]]$args
+  }))
+  ctrlid = ctrlid[imctrl]
+
+  if (length(ctrlid) == 0) {
+    map = addControl(map, NULL, layerId = 'imageValues', position = position)
+  }
+
+  map$dependencies <- c(map$dependencies,
+                        starsDataDependency(jFn = pathDatFn,
+                                            counter = 1,
+                                            group = jsgroup))
+  map$dependencies = c(map$dependencies,
+                       list(htmltools::htmlDependency(
+                         version = "0.0.1",
+                         name = "joda",
+                         src = system.file("htmlwidgets/lib/joda",
+                                           package = "mapview"),
+                         script = "joda.js")
+                       ))
+
+  map = htmlwidgets::onRender(
+    map,
+    htmlwidgets::JS(
+      paste0(
+        'function(el, x, data) {
+        var map = this;
+        map.on("', type, '", function (e) {
+          rasterPicker.pick(e, x, ', digits, ');
+        });
+      }'
+      )
+    )
+  )
+
+  return(map)
+}
