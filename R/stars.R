@@ -10,10 +10,11 @@ addStarsImage <- function(map,
   stopifnot(inherits(x, "stars"))
 
   if (is.null(group)) group = "stars"
+  if (is.null(layerId)) layerId = group
   if (project) {
     projected <- st_transform(x, crs = 4326)
   } else {
-  projected <- x
+    projected <- x
   }
   # bounds <- raster::extent(raster::projectExtent(raster::projectExtent(x, crs = sp::CRS(epsg3857)), crs = sp::CRS(epsg4326)))
   bounds = as.numeric(st_bbox(st_transform(st_as_sfc(st_bbox(st_transform(projected, 3857))), 4326)))
@@ -114,9 +115,10 @@ addImageQuery = function(map,
 
   type = match.arg(type)
   if (missing(digits)) digits = "null"
+  if (is.null(group)) group = "stars"
+  if (is.null(layerId)) layerId = group
 
   jsgroup <- gsub(".", "", make.names(group), fixed = TRUE)
-  if (is.null(layerId)) layerId = group
 
   tmp <- makepathStars(as.character(jsgroup))
   pathDatFn <- tmp[[2]][1]
