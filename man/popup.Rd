@@ -6,7 +6,7 @@
 \alias{popupGraph}
 \title{Create HTML strings for popups}
 \usage{
-popupTable(x, zcol)
+popupTable(x, zcol, row.numbers = TRUE)
 
 popupImage(img, src = c("local", "remote"), ...)
 
