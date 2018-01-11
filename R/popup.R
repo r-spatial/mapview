@@ -286,22 +286,40 @@ popupGraph = function(graphs, type = c("png", "svg", "html"),
 
 
 ### svg -----
-popupSVGraph = function(graphs, dsn = tempdir(),
+popupSVGraph = function(graphs, #dsn = tempdir(),
                          width = 300, height = 300, ...) {
   lapply(1:length(graphs), function(i) {
-    nm = paste0("tmp_", i, ".svg")
-    fls = file.path(dsn, nm)
+    #nm = paste0("tmp_", i, ".svg")
+    #fls = file.path(dsn, nm)
 
     inch_wdth = width / 72
     inch_hght = height  / 72
 
-    svg(filename = fls, width = inch_wdth, height = inch_hght, ...)
+    #svg(filename = fls, width = inch_wdth, height = inch_hght, ...)
+    #print(graphs[[i]])
+    #dev.off()
+    lns <- svglite::svgstring(
+      width = inch_wdth,
+      height = inch_hght,
+      standalone = FALSE
+    )
     print(graphs[[i]])
     dev.off()
 
-    lns = paste(readLines(fls), collapse = "")
+    #lns = paste(readLines(fls), collapse = "")
     # file.remove(fls)
-    return(lns)
+    return(
+sprintf(
+"
+<div style='width: %dpx; height: %dpx;'>
+%s
+</div>
+" ,
+  width,
+  height,
+  lns()
+)
+    )
   })
 }
 

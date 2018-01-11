@@ -40,7 +40,8 @@ Imports:
     webshot,
     viridisLite,
     sf,
-    base64enc
+    base64enc,
+    svglite
 LinkingTo: Rcpp
 RoxygenNote: 6.0.1
 SystemRequirements: GNU make
