@@ -56,7 +56,7 @@ addStarsImage <- function(map,
 
 
 stars2Array = function(x) {
-  a = paste(
+  paste(
     sapply(seq(nrow(x[[1]])), function(i) {
       paste0(
         '[', gsub("NA", "null",
@@ -68,6 +68,26 @@ stars2Array = function(x) {
 }
 
 
+rasterLayer2Array = function(x) {
+  x = as.matrix(x)
+  paste(
+    sapply(seq(ncol(x)), function(i) {
+      paste0(
+        '[', gsub("NA", "null",
+                  paste(as.matrix(x)[, i], collapse = ",")), ']'
+      )
+    }),
+    collapse = ","
+  )
+}
+
+
+image2Array = function(x) {
+  switch(class(x)[1],
+         "stars" = stars2Array(x),
+         "RasterLayer" = rasterLayer2Array(x),
+         stop("can only query single raster or stars layers so far"))
+}
 
 
 
@@ -133,7 +153,7 @@ addImageQuery = function(map,
 
   pre <- paste0('var data = data || {}; data["', layerId, '"] = ')
   writeLines(pre, pathDatFn)
-  cat('[', stars2Array(projected), '];',
+  cat('[', image2Array(projected), '];',
       file = pathDatFn, sep = "", append = TRUE)
 
   ## check for existing layerpicker control

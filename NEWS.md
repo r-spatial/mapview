@@ -3,6 +3,8 @@
 new features:
 
   * popupTable has gained argument row.numbers to disable row numbers. #109
+  * new function addStarsImage to visualise stars images.
+  * new function addImageQuery to provide raster/stars value query on mouseover/click.
   
 bugfixes:
 
