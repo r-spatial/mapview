@@ -281,6 +281,7 @@ popupGraph = function(graphs, type = c("png", "svg", "html"),
                html = popupHTMLGraph(graphs = graphs, dsn = drs,
                                      width = width, height = height, ...))
 
+  # attr(pop, "popup") = "mapview"
   return(pop)
 }
 
