@@ -306,6 +306,30 @@ popupSVGraph = function(graphs, #dsn = tempdir(),
     print(graphs[[i]])
     dev.off()
 
+    svg_str <- lns()
+
+    # this is a temporary solution to work around svglite
+    #   non-specific CSS styles
+    #   perhaps we should separate out into its own function/utility
+    #   also adds uuid dependency
+    svg_id <- paste0("x",uuid::UUIDgenerate())
+    svg_str <- gsub(
+      x = svg_str,
+      pattern = "<svg ",
+      replacement = sprintf("<svg id='%s'", svg_id)
+    )
+    # this style gets appended as defaults in all svglite
+    #    but might change if svglite changes
+    svg_css_rule <- sprintf(
+      "#%1$s line, #%1$s polyline, #%1$s polygon, #%1$s path, #%1$s rect, #%1$s circle {",
+      svg_id
+    )
+    svg_str <- gsub(
+      x = svg_str,
+      pattern = "line, polyline, polygon, path, rect, circle \\{",
+      replacement = svg_css_rule
+    )
+
     #lns = paste(readLines(fls), collapse = "")
     # file.remove(fls)
     return(
@@ -317,7 +341,7 @@ sprintf(
 " ,
   width,
   height,
-  lns()
+  svg_str
 )
     )
   })
