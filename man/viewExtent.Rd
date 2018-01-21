@@ -48,6 +48,7 @@ viewExtent(poppendorf)
 viewExtent(breweries)
 viewExtent(franconia) + breweries
 viewExtent(trails) + trails + breweries
+leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addExtent(breweries)
 }
 
 }
