@@ -259,6 +259,7 @@ addVectorLegend <- function(x,
 addRasterLegend <- function(x,
                             map,
                             title,
+                            group,
                             at,
                             col.regions,
                             na.color) {
@@ -305,13 +306,24 @@ addRasterLegend <- function(x,
 
   }
 
-  m <- leaflet::addLegend(map = map,
-                          position = mapviewGetOption("legend.pos"),
-                          values = leg_vals,
-                          pal = pal2,
-                          opacity = 1,
-                          labFormat = labelFormat(big.mark = ""),
-                          title = title)
+  if (isAvailableInLeaflet()$leggrp) {
+    m <- leaflet::addLegend(map = map,
+                            position = mapviewGetOption("legend.pos"),
+                            values = leg_vals,
+                            group = group,
+                            pal = pal2,
+                            opacity = 1,
+                            labFormat = labelFormat(big.mark = ""),
+                            title = title)
+  } else {
+    m <- leaflet::addLegend(map = map,
+                            position = mapviewGetOption("legend.pos"),
+                            values = leg_vals,
+                            pal = pal2,
+                            opacity = 1,
+                            labFormat = labelFormat(big.mark = ""),
+                            title = title)
+  }
 
   return(m)
 

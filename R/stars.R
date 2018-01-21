@@ -17,7 +17,8 @@ addStarsImage <- function(map,
     projected <- x
   }
   # bounds <- raster::extent(raster::projectExtent(raster::projectExtent(x, crs = sp::CRS(epsg3857)), crs = sp::CRS(epsg4326)))
-  bounds = as.numeric(st_bbox(st_transform(st_as_sfc(st_bbox(st_transform(projected, 3857))), 4326)))
+  bb = st_as_sfc(st_bbox(projected))
+  bounds = as.numeric(st_bbox(st_transform(bb, 4326)))
 
   if (!is.function(colors)) {
     colors <- colorNumeric(colors, domain = NULL,
@@ -123,76 +124,76 @@ starsDataDependency <- function(jFn, counter = 1, group) {
 
 
 
-addImageQuery = function(map,
-                         x,
-                         group = NULL,
-                         layerId = NULL,
-                         project = FALSE,
-                         type = c("mousemove", "click"),
-                         digits,
-                         position = 'bottomleft',
-                         ...) {
-
-  type = match.arg(type)
-  if (missing(digits)) digits = "null"
-  if (is.null(group)) group = "stars"
-  if (is.null(layerId)) layerId = group
-
-  jsgroup <- gsub(".", "", make.names(group), fixed = TRUE)
-
-  tmp <- makepathStars(as.character(jsgroup))
-  pathDatFn <- tmp[[2]][1]
-  starspathDatFn <- tmp[[3]][1]
-  datFn <- tmp[[4]][1]
-
-  if (project) {
-    projected <- st_transform(x, crs = 4326)
-  } else {
-    projected <- x
-  }
-
-  pre <- paste0('var data = data || {}; data["', layerId, '"] = ')
-  writeLines(pre, pathDatFn)
-  cat('[', image2Array(projected), '];',
-      file = pathDatFn, sep = "", append = TRUE)
-
-  ## check for existing layerpicker control
-  ctrlid = getCallEntryFromMap(map, "addControl")
-  imctrl = unlist(sapply(ctrlid, function(i) {
-    "imageValues" %in% map$x$calls[[i]]$args
-  }))
-  ctrlid = ctrlid[imctrl]
-
-  if (length(ctrlid) == 0) {
-    map = addControl(map, NULL, layerId = 'imageValues', position = position)
-  }
-
-  map$dependencies <- c(map$dependencies,
-                        starsDataDependency(jFn = pathDatFn,
-                                            counter = 1,
-                                            group = jsgroup))
-  map$dependencies = c(map$dependencies,
-                       list(htmltools::htmlDependency(
-                         version = "0.0.1",
-                         name = "joda",
-                         src = system.file("htmlwidgets/lib/joda",
-                                           package = "mapview"),
-                         script = "joda.js")
-                       ))
-
-  map = htmlwidgets::onRender(
-    map,
-    htmlwidgets::JS(
-      paste0(
-        'function(el, x, data) {
-        var map = this;
-        map.on("', type, '", function (e) {
-          rasterPicker.pick(e, x, ', digits, ');
-        });
-      }'
-      )
-    )
-  )
-
-  return(map)
-}
+# addImageQuery = function(map,
+#                          x,
+#                          group = NULL,
+#                          layerId = NULL,
+#                          project = FALSE,
+#                          type = c("mousemove", "click"),
+#                          digits,
+#                          position = 'bottomleft',
+#                          ...) {
+#
+#   type = match.arg(type)
+#   if (missing(digits)) digits = "null"
+#   if (is.null(group)) group = "stars"
+#   if (is.null(layerId)) layerId = group
+#
+#   jsgroup <- gsub(".", "", make.names(group), fixed = TRUE)
+#
+#   tmp <- makepathStars(as.character(jsgroup))
+#   pathDatFn <- tmp[[2]][1]
+#   starspathDatFn <- tmp[[3]][1]
+#   datFn <- tmp[[4]][1]
+#
+#   if (project) {
+#     projected <- st_transform(x, crs = 4326)
+#   } else {
+#     projected <- x
+#   }
+#
+#   pre <- paste0('var data = data || {}; data["', layerId, '"] = ')
+#   writeLines(pre, pathDatFn)
+#   cat('[', image2Array(projected), '];',
+#       file = pathDatFn, sep = "", append = TRUE)
+#
+#   ## check for existing layerpicker control
+#   ctrlid = getCallEntryFromMap(map, "addControl")
+#   imctrl = unlist(sapply(ctrlid, function(i) {
+#     "imageValues" %in% map$x$calls[[i]]$args
+#   }))
+#   ctrlid = ctrlid[imctrl]
+#
+#   if (length(ctrlid) == 0) {
+#     map = addControl(map, NULL, layerId = 'imageValues', position = position)
+#   }
+#
+#   map$dependencies <- c(map$dependencies,
+#                         starsDataDependency(jFn = pathDatFn,
+#                                             counter = 1,
+#                                             group = jsgroup))
+#   map$dependencies = c(map$dependencies,
+#                        list(htmltools::htmlDependency(
+#                          version = "0.0.1",
+#                          name = "joda",
+#                          src = system.file("htmlwidgets/lib/joda",
+#                                            package = "mapview"),
+#                          script = "joda.js")
+#                        ))
+#
+#   map = htmlwidgets::onRender(
+#     map,
+#     htmlwidgets::JS(
+#       paste0(
+#         'function(el, x, data) {
+#         var map = this;
+#         map.on("', type, '", function (e) {
+#           rasterPicker.pick(e, x, ', digits, ');
+#         });
+#       }'
+#       )
+#     )
+#   )
+#
+#   return(map)
+# }
