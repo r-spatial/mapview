@@ -6,30 +6,31 @@
 ### leaflet w RasterLayer =================================================
 
 leafletRL = function(x,
-                      map,
-                      maxpixels,
-                      col.regions,
-                      at,
-                      na.color,
-                      use.layer.names,
-                      values,
-                      map.types,
-                      alpha.regions,
-                      legend,
-                      legend.opacity,
-                      trim,
-                      verbose,
-                      layer.name,
-                      homebutton,
-                      native.crs,
-                      ...) {
+                     map,
+                     maxpixels,
+                     col.regions,
+                     at,
+                     na.color,
+                     use.layer.names,
+                     values,
+                     map.types,
+                     alpha.regions,
+                     legend,
+                     legend.opacity,
+                     trim,
+                     verbose,
+                     layer.name,
+                     homebutton,
+                     native.crs,
+                     method,
+                     ...) {
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol = NULL)
 
   pkgs = c("leaflet", "raster", "magrittr")
   tst = sapply(pkgs, "requireNamespace",
-                quietly = TRUE, USE.NAMES = FALSE)
+               quietly = TRUE, USE.NAMES = FALSE)
 
   if (native.crs) {
     plainView(x,
@@ -49,7 +50,7 @@ leafletRL = function(x,
 
     m = initMap(map, map.types, sp::proj4string(x))
     x = rasterCheckSize(x, maxpixels = maxpixels)
-    x = rasterCheckAdjustProjection(x)
+    x = rasterCheckAdjustProjection(x, method)
     ext = raster::extent(raster::projectExtent(x, crs = llcrs))
 
     if (!is.na(raster::projection(x)) & trim) x = trim(x)
@@ -72,13 +73,13 @@ leafletRL = function(x,
 
     if (is.fact) {
       pal = leaflet::colorFactor(palette = col.regions,
-                                  domain = values,
-                                  na.color = na.color)
+                                 domain = values,
+                                 na.color = na.color)
       # pal2 = pal
     } else {
       pal = rasterColors(col.regions,
-                          at = at,
-                          na.color = na.color)
+                         at = at,
+                         na.color = na.color)
 
       # if (length(at) > 11) {
       #   pal2 = leaflet::colorNumeric(palette = col.regions,
@@ -128,8 +129,8 @@ leafletRL = function(x,
     }
 
     m = mapViewLayersControl(map = m,
-                              map.types = map.types,
-                              names = grp)
+                             map.types = map.types,
+                             names = grp)
 
     if (isAvailableInLeaflet()$scl) m = leaflet::addScaleBar(map = m, position = "bottomleft")
     m = addMouseCoordinates(m)
@@ -148,28 +149,29 @@ leafletRL = function(x,
 
 
 
-  ### leaflet w RasterStackBrick ============================================
+### leaflet w RasterStackBrick ============================================
 
 leafletRSB = function(x,
-                       map,
-                       maxpixels,
-                       col.regions,
-                       at,
-                       na.color,
-                       use.layer.names,
-                       values,
-                       map.types,
-                       legend,
-                       legend.opacity,
-                       trim,
-                       verbose,
-                       layer.name,
-                       homebutton,
-                       ...) {
+                      map,
+                      maxpixels,
+                      col.regions,
+                      at,
+                      na.color,
+                      use.layer.names,
+                      values,
+                      map.types,
+                      legend,
+                      legend.opacity,
+                      trim,
+                      verbose,
+                      layer.name,
+                      homebutton,
+                      method,
+                      ...) {
 
   pkgs = c("leaflet", "raster", "magrittr")
   tst = sapply(pkgs, "requireNamespace",
-                quietly = TRUE, USE.NAMES = FALSE)
+               quietly = TRUE, USE.NAMES = FALSE)
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
   m = initMap(map, map.types, sp::proj4string(x))
@@ -177,47 +179,50 @@ leafletRSB = function(x,
   if (nlayers(x) == 1) {
     x = raster(x, layer = 1)
     m = mapView(x,
-                 map = m,
-                 maxpixels = maxpixels,
-                 map.types = map.types,
-                 use.layer.names = use.layer.names,
-                 at = at,
-                 col.regions = col.regions,
-                 na.color = na.color,
-                 legend = legend,
-                 layer.name = layer.name,
-                 homebutton = homebutton,
-                 ...)
+                map = m,
+                maxpixels = maxpixels,
+                map.types = map.types,
+                use.layer.names = use.layer.names,
+                at = at,
+                col.regions = col.regions,
+                na.color = na.color,
+                legend = legend,
+                layer.name = layer.name,
+                homebutton = homebutton,
+                method = method,
+                ...)
     out = new('mapview', object = list(x), map = m@map)
   } else {
     m = mapView(x[[1]],
-                 map = m,
-                 maxpixels = maxpixels,
-                 map.types = map.types,
-                 use.layer.names = use.layer.names,
-                 at = at,
-                 col.regions = col.regions,
-                 na.color = na.color,
-                 legend = legend,
-                 homebutton = homebutton,
-                 ...)
+                map = m,
+                maxpixels = maxpixels,
+                map.types = map.types,
+                use.layer.names = use.layer.names,
+                at = at,
+                col.regions = col.regions,
+                na.color = na.color,
+                legend = legend,
+                homebutton = homebutton,
+                method = method,
+                ...)
     for (i in 2:nlayers(x)) {
       m = mapView(x[[i]],
-                   map = m@map,
-                   maxpixels = maxpixels,
-                   map.types = map.types,
-                   use.layer.names = use.layer.names,
-                   at = at,
-                   col.regions = col.regions,
-                   na.color = na.color,
-                   legend = legend,
-                   homebutton = FALSE,
-                   ...)
+                  map = m@map,
+                  maxpixels = maxpixels,
+                  map.types = map.types,
+                  use.layer.names = use.layer.names,
+                  at = at,
+                  col.regions = col.regions,
+                  na.color = na.color,
+                  legend = legend,
+                  homebutton = FALSE,
+                  method = method,
+                  ...)
     }
 
     if (length(getLayerNamesFromMap(m@map)) > 1) {
       m = leaflet::hideGroup(map = m@map,
-                              group = layers2bHidden(m@map))
+                             group = layers2bHidden(m@map))
     }
     out = new('mapview', object = list(x), map = m)
   }
@@ -231,13 +236,14 @@ leafletRSB = function(x,
 ### leaflet w SpatialPixelsDataFrame ======================================
 
 leafletPixelsDF = function(x,
-                            zcol,
-                            na.color,
-                            ...) {
+                           map,
+                           zcol,
+                           na.color,
+                           ...) {
 
   pkgs = c("leaflet", "sp", "magrittr")
   tst = sapply(pkgs, "requireNamespace",
-                quietly = TRUE, USE.NAMES = FALSE)
+               quietly = TRUE, USE.NAMES = FALSE)
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
   if(!is.null(zcol)) x = x[, zcol]
@@ -249,9 +255,9 @@ leafletPixelsDF = function(x,
   }))
 
   m = mapView(stck,
-               na.color = na.color,
-               use.layer.names = TRUE,
-               ...)
+              na.color = na.color,
+              use.layer.names = TRUE,
+              ...)
 
   out = new('mapview', object = list(x), map = m@map)
 
@@ -269,7 +275,7 @@ leafletSatellite = function(x, ...) {
 
   pkgs = c("leaflet", "satellite", "magrittr")
   tst = sapply(pkgs, "requireNamespace",
-                quietly = TRUE, USE.NAMES = FALSE)
+               quietly = TRUE, USE.NAMES = FALSE)
 
   m = mapView(stack(x), ...)
 

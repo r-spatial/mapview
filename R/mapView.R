@@ -68,6 +68,13 @@ if ( !isGeneric('mapView') ) {
 #' web mercator. If set to TRUE now background maps will be drawn (but rendering
 #' may be much quicker as no reprojecting is necessary). Currently only works
 #' for simple features.
+#' @param method for raster data only (raster/stars). Method used to compute
+#' values for the resampled layer that is passed on to leaflet. mapview does
+#' projection on-the-fly to ensure correct display and therefore needs to know
+#' how to do this projection. The default is 'bilinear' (bilinear interpolation),
+#' which is appropriate for continuous variables. The other option, 'ngb'
+#' (nearest neighbor), is useful for categorical variables. Ignored if the raster
+#' layer is of class \code{factor} in which case "ngb" is used.
 #' @param highlight either \code{FALSE}, \code{NULL} or a list of styling
 #' options for feature highlighting on mouse hover.
 #' See \code{\link{highlightOptions}} for details.
@@ -220,7 +227,10 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    layer.name = NULL,
                    homebutton = TRUE,
                    native.crs = FALSE,
+                   method = c("bilinear", "ngb"),
                    ...) {
+
+            method = match.arg(method)
 
             if (is.null(at)) at <- lattice::do.breaks(
               extendLimits(range(x[], na.rm = TRUE)), 256)
@@ -253,6 +263,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                           layer.name = layer.name,
                           homebutton = homebutton,
                           native.crs = native.crs,
+                          method = method,
                           ...)
             } else {
               NULL
@@ -261,6 +272,67 @@ setMethod('mapView', signature(x = 'RasterLayer'),
           }
 
 )
+
+
+## Stars layer ==================================================================
+#' @describeIn mapview \code{stars}
+
+setMethod('mapView', signature(x = 'stars'),
+          function(x,
+                   map = NULL,
+                   maxpixels = mapviewGetOption("mapview.maxpixels"),
+                   col.regions = mapviewGetOption("raster.palette")(256),
+                   at = NULL,
+                   na.color = mapviewGetOption("na.color"),
+                   use.layer.names = FALSE,
+                   values = NULL,
+                   map.types = mapviewGetOption("basemaps"),
+                   alpha.regions = 0.8,
+                   legend = mapviewGetOption("legend"),
+                   legend.opacity = 1,
+                   trim = TRUE,
+                   verbose = mapviewGetOption("verbose"),
+                   layer.name = NULL,
+                   homebutton = TRUE,
+                   native.crs = FALSE,
+                   method = c("bilinear", "ngb"),
+                   ...) {
+
+            method = match.arg(method)
+
+            if (is.null(at)) at <- lattice::do.breaks(
+              extendLimits(range(as.numeric(x[[1]][, , 1]),
+                                 na.rm = TRUE)), 256
+            )
+
+            if (mapviewGetOption("platform") == "leaflet") {
+              leaflet_stars(x,
+                            map = map,
+                            maxpixels = maxpixels,
+                            col.regions = col.regions,
+                            at = at,
+                            na.color, na.color,
+                            use.layer.names = use.layer.names,
+                            values = values,
+                            map.types = map.types,
+                            alpha.regions = alpha.regions,
+                            legend = legend,
+                            legend.opacity = legend.opacity,
+                            trim = trim,
+                            verbose = verbose,
+                            layer.name = layer.name,
+                            homebutton = homebutton,
+                            native.crs = native.crs,
+                            method = method,
+                            ...)
+            } else {
+              NULL
+            }
+
+          }
+)
+
+
 
 ## Raster Stack/Brick ===========================================================
 #' @describeIn mapView \code{\link{stack}} / \code{\link{brick}}
@@ -280,6 +352,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
                    homebutton = TRUE,
+                   method = c("bilinear", "ngb"),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -297,6 +370,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                          trim = trim,
                          verbose = verbose,
                          homebutton = homebutton,
+                         method = method,
                          ...)
             } else {
               NULL
@@ -324,6 +398,7 @@ setMethod('mapView', signature(x = 'Satellite'),
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
                    homebutton = TRUE,
+                   method = c("bilinear", "ngb"),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -340,6 +415,7 @@ setMethod('mapView', signature(x = 'Satellite'),
                                trim = trim,
                                verbose = verbose,
                                homebutton = homebutton,
+                               method = method,
                                ...)
             } else {
               NULL
@@ -941,13 +1017,15 @@ setMethod('mapview', signature('ANY'),
 #'
 setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
           function(x,
+                   map = NULL,
                    zcol = NULL,
                    na.color = mapviewGetOption("na.color"),
                    legend = mapviewGetOption("legend"),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
-              leafletPixelsDF(x,
+              leafletPixelsDF(x = x,
+                              map = map,
                               zcol = zcol,
                               na.color = na.color,
                               legend = legend,
@@ -965,12 +1043,14 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
 #'
 setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
           function(x,
+                   map = NULL,
                    zcol = NULL,
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
               leafletPixelsDF(as(x, "SpatialPixelsDataFrame"),
-                              zcol,
+                              map = map,
+                              zcol = zcol,
                               ...)
             } else {
               NULL
