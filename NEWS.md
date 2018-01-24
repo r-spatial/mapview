@@ -1,4 +1,4 @@
-## mapview 2.2.3
+## mapview 2.2.4
 
 new features:
 
@@ -12,6 +12,8 @@ bugfixes:
 
   * raster method with native.crs = TRUE did throw an error on windows. #111
   * SpatialPixelsDataFrame and SpatialGridDataFrame failed because of missing map argument.
+  * example for multiple popupImages was broken. #118
+  * SpatialPixelsDataFrame failed when `zcol` was supplied. #124
   
 misc:
 
