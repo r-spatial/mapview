@@ -73,7 +73,7 @@ popupTable = function(x, zcol, row.numbers = TRUE) {
 #' ### multiple file (types)
 #' library(sp)
 #' images = c(img,
-#'             "https://upload.wikimedia.org/wikipedia/commons/1/1b/R_logo.svg",
+#'             "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg",
 #'             "https://www.r-project.org/logo/Rlogo.png",
 #'             "https://upload.wikimedia.org/wikipedia/commons/d/d6/MeanMonthlyP.gif")
 #'
@@ -82,7 +82,7 @@ popupTable = function(x, zcol, row.numbers = TRUE) {
 #' coordinates(pt4) = ~ x + y
 #' proj4string(pt4) = "+init=epsg:4326"
 #'
-#' mapview(pt4, popup = lapply(images, popupImage)) # NOTE the gif animation
+#' mapview(pt4, popup = popupImage(images)) # NOTE the gif animation
 #'
 #' ## local images -----
 #' pnt = st_as_sf(data.frame(x = 174.764474, y = -36.877245),
