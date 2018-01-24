@@ -22,10 +22,10 @@ URL: https://github.com/r-spatial/mapview
 BugReports: https://github.com/r-spatial/mapview/issues
 LazyData: TRUE
 Depends:
-    R (>= 2.10),
-    leaflet,
+    R (>= 2.10),  
     methods
 Imports:
+    leaflet,
     sp,
     raster,
     satellite,
