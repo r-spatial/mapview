@@ -67,7 +67,7 @@ addStarsImage <- function(map,
   }
 
   tileData <- as.numeric(projected[[1]][, , 1]) %>%
-    colors() %>% col2rgb(alpha = TRUE) %>% as.raw()
+    colors() %>% grDevices::col2rgb(alpha = TRUE) %>% as.raw()
   dim(tileData) <- c(4, as.numeric(nrow(projected)), as.numeric(ncol(projected)))
   pngData <- png::writePNG(tileData)
   if (length(pngData) > maxBytes) {
