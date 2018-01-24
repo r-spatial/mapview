@@ -238,7 +238,22 @@ leafletRSB = function(x,
 leafletPixelsDF = function(x,
                            map,
                            zcol,
+                           maxpixels,
+                           col.regions,
+                           at,
                            na.color,
+                           use.layer.names,
+                           values,
+                           map.types,
+                           alpha.regions,
+                           legend,
+                           legend.opacity,
+                           trim,
+                           verbose,
+                           layer.name,
+                           homebutton,
+                           native.crs,
+                           method,
                            ...) {
 
   pkgs = c("leaflet", "sp", "magrittr")
@@ -253,10 +268,26 @@ leafletPixelsDF = function(x,
     if (is.factor(x[, i])) r = raster::as.factor(r)
     return(r)
   }))
+  if(is.null(layer.name)) names(stck) = zcol else names(stck) = layer.name
 
   m = mapView(stck,
+              map = map,
+              maxpixels = maxpixels,
+              col.regions = col.regions,
+              at = at,
               na.color = na.color,
               use.layer.names = TRUE,
+              values = values,
+              map.types = map.types,
+              alpha.regions = alpha.regions,
+              legend = legend,
+              legend.opacity = legend.opacity,
+              trim = trim,
+              verbose = verbose,
+              layer.name = layer.name,
+              homebutton = homebutton,
+              native.crs = native.crs,
+              method = method,
               ...)
 
   out = new('mapview', object = list(x), map = m@map)
