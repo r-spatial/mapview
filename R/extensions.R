@@ -614,7 +614,7 @@ addImageQuery = function(map,
                          x,
                          group = NULL,
                          layerId = NULL,
-                         project = FALSE,
+                         project = TRUE,
                          type = c("mousemove", "click"),
                          digits,
                          position = 'bottomleft',
@@ -633,7 +633,12 @@ addImageQuery = function(map,
   datFn <- tmp[[4]][1]
 
   if (project) {
-    projected <- st_transform(x, crs = 4326)
+    if (inherits(x, "stars")) projected <- st_transform(x, crs = 4326)
+    if (inherits(x, "Raster")) projected <- raster::projectRaster(
+      x,
+      raster::projectExtent(x, crs = sp::CRS(llcrs)),
+      method = "ngb"
+    )
   } else {
     projected <- x
   }
