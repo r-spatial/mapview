@@ -5,28 +5,28 @@ gsubC <- function(pattern, replacement, x) {
     .Call(`_mapview_gsubC`, pattern, replacement, x)
 }
 
-brewPopupRowC <- function(index, colname, value) {
-    .Call(`_mapview_brewPopupRowC`, index, colname, value)
+brewPopupRowC <- function(index, colname, value, rowIndex) {
+    .Call(`_mapview_brewPopupRowC`, index, colname, value, rowIndex)
 }
 
-brewPopupRowAltC <- function(index, colname, value) {
-    .Call(`_mapview_brewPopupRowAltC`, index, colname, value)
+brewPopupRowAltC <- function(index, colname, value, rowIndex) {
+    .Call(`_mapview_brewPopupRowAltC`, index, colname, value, rowIndex)
 }
 
 brewPopupCoords <- function(colname, value) {
     .Call(`_mapview_brewPopupCoords`, colname, value)
 }
 
-mergePopupRows <- function(names, values) {
-    .Call(`_mapview_mergePopupRows`, names, values)
+mergePopupRows <- function(names, values, rowIndex) {
+    .Call(`_mapview_mergePopupRows`, names, values, rowIndex)
 }
 
 createTemplate <- function(tmpPath) {
     .Call(`_mapview_createTemplate`, tmpPath)
 }
 
-listPopupTemplates <- function(x, names, tmpPath) {
-    .Call(`_mapview_listPopupTemplates`, x, names, tmpPath)
+listPopupTemplates <- function(x, names, tmpPath, rowIndex) {
+    .Call(`_mapview_listPopupTemplates`, x, names, tmpPath, rowIndex)
 }
 
 df2String <- function(x) {

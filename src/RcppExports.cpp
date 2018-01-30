@@ -19,28 +19,30 @@ BEGIN_RCPP
 END_RCPP
 }
 // brewPopupRowC
-std::string brewPopupRowC(std::string index, std::string colname, std::string value);
-RcppExport SEXP _mapview_brewPopupRowC(SEXP indexSEXP, SEXP colnameSEXP, SEXP valueSEXP) {
+std::string brewPopupRowC(std::string index, std::string colname, std::string value, bool rowIndex);
+RcppExport SEXP _mapview_brewPopupRowC(SEXP indexSEXP, SEXP colnameSEXP, SEXP valueSEXP, SEXP rowIndexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type index(indexSEXP);
     Rcpp::traits::input_parameter< std::string >::type colname(colnameSEXP);
     Rcpp::traits::input_parameter< std::string >::type value(valueSEXP);
-    rcpp_result_gen = Rcpp::wrap(brewPopupRowC(index, colname, value));
+    Rcpp::traits::input_parameter< bool >::type rowIndex(rowIndexSEXP);
+    rcpp_result_gen = Rcpp::wrap(brewPopupRowC(index, colname, value, rowIndex));
     return rcpp_result_gen;
 END_RCPP
 }
 // brewPopupRowAltC
-std::string brewPopupRowAltC(std::string index, std::string colname, std::string value);
-RcppExport SEXP _mapview_brewPopupRowAltC(SEXP indexSEXP, SEXP colnameSEXP, SEXP valueSEXP) {
+std::string brewPopupRowAltC(std::string index, std::string colname, std::string value, bool rowIndex);
+RcppExport SEXP _mapview_brewPopupRowAltC(SEXP indexSEXP, SEXP colnameSEXP, SEXP valueSEXP, SEXP rowIndexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type index(indexSEXP);
     Rcpp::traits::input_parameter< std::string >::type colname(colnameSEXP);
     Rcpp::traits::input_parameter< std::string >::type value(valueSEXP);
-    rcpp_result_gen = Rcpp::wrap(brewPopupRowAltC(index, colname, value));
+    Rcpp::traits::input_parameter< bool >::type rowIndex(rowIndexSEXP);
+    rcpp_result_gen = Rcpp::wrap(brewPopupRowAltC(index, colname, value, rowIndex));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -57,14 +59,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // mergePopupRows
-std::string mergePopupRows(CharacterVector names, CharacterVector values);
-RcppExport SEXP _mapview_mergePopupRows(SEXP namesSEXP, SEXP valuesSEXP) {
+std::string mergePopupRows(CharacterVector names, CharacterVector values, bool rowIndex);
+RcppExport SEXP _mapview_mergePopupRows(SEXP namesSEXP, SEXP valuesSEXP, SEXP rowIndexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< CharacterVector >::type names(namesSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type values(valuesSEXP);
-    rcpp_result_gen = Rcpp::wrap(mergePopupRows(names, values));
+    Rcpp::traits::input_parameter< bool >::type rowIndex(rowIndexSEXP);
+    rcpp_result_gen = Rcpp::wrap(mergePopupRows(names, values, rowIndex));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -80,15 +83,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // listPopupTemplates
-List listPopupTemplates(CharacterMatrix x, CharacterVector names, std::string tmpPath);
-RcppExport SEXP _mapview_listPopupTemplates(SEXP xSEXP, SEXP namesSEXP, SEXP tmpPathSEXP) {
+List listPopupTemplates(CharacterMatrix x, CharacterVector names, std::string tmpPath, bool rowIndex);
+RcppExport SEXP _mapview_listPopupTemplates(SEXP xSEXP, SEXP namesSEXP, SEXP tmpPathSEXP, SEXP rowIndexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< CharacterMatrix >::type x(xSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type names(namesSEXP);
     Rcpp::traits::input_parameter< std::string >::type tmpPath(tmpPathSEXP);
-    rcpp_result_gen = Rcpp::wrap(listPopupTemplates(x, names, tmpPath));
+    Rcpp::traits::input_parameter< bool >::type rowIndex(rowIndexSEXP);
+    rcpp_result_gen = Rcpp::wrap(listPopupTemplates(x, names, tmpPath, rowIndex));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -150,12 +154,12 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_mapview_gsubC", (DL_FUNC) &_mapview_gsubC, 3},
-    {"_mapview_brewPopupRowC", (DL_FUNC) &_mapview_brewPopupRowC, 3},
-    {"_mapview_brewPopupRowAltC", (DL_FUNC) &_mapview_brewPopupRowAltC, 3},
+    {"_mapview_brewPopupRowC", (DL_FUNC) &_mapview_brewPopupRowC, 4},
+    {"_mapview_brewPopupRowAltC", (DL_FUNC) &_mapview_brewPopupRowAltC, 4},
     {"_mapview_brewPopupCoords", (DL_FUNC) &_mapview_brewPopupCoords, 2},
-    {"_mapview_mergePopupRows", (DL_FUNC) &_mapview_mergePopupRows, 2},
+    {"_mapview_mergePopupRows", (DL_FUNC) &_mapview_mergePopupRows, 3},
     {"_mapview_createTemplate", (DL_FUNC) &_mapview_createTemplate, 1},
-    {"_mapview_listPopupTemplates", (DL_FUNC) &_mapview_listPopupTemplates, 3},
+    {"_mapview_listPopupTemplates", (DL_FUNC) &_mapview_listPopupTemplates, 4},
     {"_mapview_df2String", (DL_FUNC) &_mapview_df2String, 1},
     {"_mapview_one2JSON", (DL_FUNC) &_mapview_one2JSON, 1},
     {"_mapview_all2JSONlist", (DL_FUNC) &_mapview_all2JSONlist, 1},

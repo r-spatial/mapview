@@ -69,7 +69,8 @@ mapshot <- function(x, url = NULL, file = NULL, remove_url = TRUE, ...) {
 
   ## if url is missing, create temporary .html file
   if (!avl_url)
-    url <- gsub("\\.png|\\.pdf|\\.jpeg|\\.jpg", ".html", file)
+    url <- gsub(tools::file_ext(file), "html", file)
+    # url <- gsub("\\.png|\\.pdf|\\.jpeg|\\.jpg", ".html", file)
 
   if (dir.exists(file.path(tempdir(), "popup_graphs"))) {
     file.copy(from = file.path(tempdir(), "popup_graphs"),
@@ -98,8 +99,10 @@ mapshot <- function(x, url = NULL, file = NULL, remove_url = TRUE, ...) {
   }
 
   ## if url was missing, remove temporary .html file
-  if (!avl_url & remove_url)
-    file.remove(url)
+  if (!avl_url & remove_url) {
+    url_files = paste0(tools::file_path_sans_ext(url), "_files")
+    unlink(c(url, url_files), recursive = TRUE)
+  }
 
   return(invisible())
 }

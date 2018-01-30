@@ -6,7 +6,7 @@
 \alias{popupGraph}
 \title{Create HTML strings for popups}
 \usage{
-popupTable(x, zcol)
+popupTable(x, zcol, row.numbers = TRUE)
 
 popupImage(img, src = c("local", "remote"), ...)
 
@@ -18,6 +18,8 @@ popupGraph(graphs, type = c("png", "svg", "html"), width = 300,
 
 \item{zcol}{\code{numeric} or \code{character} vector indicating the columns
 included in the output popup table. If missing, all columns are displayed.}
+
+\item{row.numbers}{\code{logical} whether to include row numbers in the popup table.}
 
 \item{img}{A character \code{vector} of file path(s) or
 web-URL(s) to any sort of image file(s).}
@@ -92,7 +94,7 @@ mapview(pnt, popup = popupImage(img, src = "remote"))
 ### multiple file (types)
 library(sp)
 images = c(img,
-            "https://upload.wikimedia.org/wikipedia/commons/1/1b/R_logo.svg",
+            "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg",
             "https://www.r-project.org/logo/Rlogo.png",
             "https://upload.wikimedia.org/wikipedia/commons/d/d6/MeanMonthlyP.gif")
 
@@ -101,7 +103,7 @@ pt4 = data.frame(x = jitter(rep(174.764474, 4), factor = 0.01),
 coordinates(pt4) = ~ x + y
 proj4string(pt4) = "+init=epsg:4326"
 
-mapview(pt4, popup = lapply(images, popupImage)) # NOTE the gif animation
+mapview(pt4, popup = popupImage(images)) # NOTE the gif animation
 
 ## local images -----
 pnt = st_as_sf(data.frame(x = 174.764474, y = -36.877245),

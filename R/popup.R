@@ -8,6 +8,7 @@
 #' @param x A \code{Spatial*} object.
 #' @param zcol \code{numeric} or \code{character} vector indicating the columns
 #' included in the output popup table. If missing, all columns are displayed.
+#' @param row.numbers \code{logical} whether to include row numbers in the popup table.
 #'
 #' @return
 #' A \code{list} of HTML strings required to create feature popup tables.
@@ -27,15 +28,15 @@
 #' @export popupTable
 #' @name popupTable
 #' @rdname popup
-popupTable = function(x, zcol) {
+popupTable = function(x, zcol, row.numbers = TRUE) {
 
   if (inherits(x, "sfc")) {
     return(NULL)
   } else {
     if (!missing(zcol))
       x = x[, zcol, drop = FALSE]
-    brewPopupTable(x)
   }
+  brewPopupTable(x, row.numbers = row.numbers)
 }
 
 
@@ -72,7 +73,7 @@ popupTable = function(x, zcol) {
 #' ### multiple file (types)
 #' library(sp)
 #' images = c(img,
-#'             "https://upload.wikimedia.org/wikipedia/commons/1/1b/R_logo.svg",
+#'             "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg",
 #'             "https://www.r-project.org/logo/Rlogo.png",
 #'             "https://upload.wikimedia.org/wikipedia/commons/d/d6/MeanMonthlyP.gif")
 #'
@@ -81,7 +82,7 @@ popupTable = function(x, zcol) {
 #' coordinates(pt4) = ~ x + y
 #' proj4string(pt4) = "+init=epsg:4326"
 #'
-#' mapview(pt4, popup = lapply(images, popupImage)) # NOTE the gif animation
+#' mapview(pt4, popup = popupImage(images)) # NOTE the gif animation
 #'
 #' ## local images -----
 #' pnt = st_as_sf(data.frame(x = 174.764474, y = -36.877245),
@@ -281,27 +282,70 @@ popupGraph = function(graphs, type = c("png", "svg", "html"),
                html = popupHTMLGraph(graphs = graphs, dsn = drs,
                                      width = width, height = height, ...))
 
+  # attr(pop, "popup") = "mapview"
   return(pop)
 }
 
 
 ### svg -----
-popupSVGraph = function(graphs, dsn = tempdir(),
+popupSVGraph = function(graphs, #dsn = tempdir(),
                          width = 300, height = 300, ...) {
   lapply(1:length(graphs), function(i) {
-    nm = paste0("tmp_", i, ".svg")
-    fls = file.path(dsn, nm)
+    #nm = paste0("tmp_", i, ".svg")
+    #fls = file.path(dsn, nm)
 
     inch_wdth = width / 72
     inch_hght = height  / 72
 
-    svg(filename = fls, width = inch_wdth, height = inch_hght, ...)
+    #svg(filename = fls, width = inch_wdth, height = inch_hght, ...)
+    #print(graphs[[i]])
+    #dev.off()
+    lns <- svglite::svgstring(
+      width = inch_wdth,
+      height = inch_hght,
+      standalone = FALSE
+    )
     print(graphs[[i]])
     dev.off()
 
-    lns = paste(readLines(fls), collapse = "")
+    svg_str <- lns()
+
+    # this is a temporary solution to work around svglite
+    #   non-specific CSS styles
+    #   perhaps we should separate out into its own function/utility
+    #   also adds uuid dependency
+    svg_id <- paste0("x",uuid::UUIDgenerate())
+    svg_str <- gsub(
+      x = svg_str,
+      pattern = "<svg ",
+      replacement = sprintf("<svg id='%s'", svg_id)
+    )
+    # this style gets appended as defaults in all svglite
+    #    but might change if svglite changes
+    svg_css_rule <- sprintf(
+      "#%1$s line, #%1$s polyline, #%1$s polygon, #%1$s path, #%1$s rect, #%1$s circle {",
+      svg_id
+    )
+    svg_str <- gsub(
+      x = svg_str,
+      pattern = "line, polyline, polygon, path, rect, circle \\{",
+      replacement = svg_css_rule
+    )
+
+    #lns = paste(readLines(fls), collapse = "")
     # file.remove(fls)
-    return(lns)
+    return(
+sprintf(
+"
+<div style='width: %dpx; height: %dpx;'>
+%s
+</div>
+" ,
+  width,
+  height,
+  svg_str
+)
+    )
   })
 }
 
@@ -365,7 +409,7 @@ popupIframe = function(src, width = 300, height = 300) {
 
 ### controls ==============================================================
 # create popup table of attributes
-brewPopupTable = function(x, width = 300, height = 300) {
+brewPopupTable = function(x, width = 300, height = 300, row.numbers = TRUE) {
 
   if (inherits(x, "Spatial")) x = x@data
   if (inherits(x, "sf")) x = sf2DataFrame(x)
@@ -410,8 +454,9 @@ brewPopupTable = function(x, width = 300, height = 300) {
   cols = colnames(mat)
 
   lst_html = listPopupTemplates(mat, cols,
-                                 system.file("templates/popup.brew",
-                                             package = "mapview"))
+                                system.file("templates/popup.brew",
+                                            package = "mapview"),
+                                rowIndex = row.numbers)
   attr(lst_html, "popup") = "mapview"
   return(lst_html)
 }
@@ -449,7 +494,7 @@ brewPopupRowAlt = function(col.name, value) {
 }
 
 
-mapviewPopupDependencies <- function() {
+popupLayoutDependencies <- function() {
   list(
     htmltools::htmlDependency(
       "PopupTable",

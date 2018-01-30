@@ -1,6 +1,24 @@
-## mapview 2.2.1
+## mapview 2.3.0
+
+new features:
+
+  * popupTable has gained argument row.numbers to disable row numbers. #109
+  * new function addStarsImage to visualise stars images.
+  * new function addImageQuery to provide raster/stars value query on mouseover/click.
+  * mapview has gained new argument `method` to specify the method used for resampling of raster data. #123
+  
+bugfixes:
+
+  * raster method with native.crs = TRUE did throw an error on windows. #111
+  * SpatialPixelsDataFrame and SpatialGridDataFrame failed because of missing map argument.
+  * example for multiple popupImages was broken. #118
+  * SpatialPixelsDataFrame failed when `zcol` was supplied. #124
+  
+misc:
 
   * added more details in description field as per request of Uwe Ligges.
+  * moved leaflet from Depends to Imports.
+  
 
 ## mapview 2.2.0
 

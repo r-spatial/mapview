@@ -53,7 +53,7 @@ checkAdjustProjection <- function(x) {
 
 
 # Project Raster* objects for mapView =====================================
-rasterCheckAdjustProjection <- function(x) {
+rasterCheckAdjustProjection <- function(x, method) {
 
   is.fact <- raster::is.factor(x)[1]
 
@@ -69,8 +69,34 @@ rasterCheckAdjustProjection <- function(x) {
   } else {
     x <- raster::projectRaster(
       x, raster::projectExtent(x, crs = sp::CRS(wmcrs)),
-      method = "bilinear")
+      method = method)
   }
+
+  return(x)
+
+}
+
+
+# Project stars* objects for mapView =====================================
+starsCheckAdjustProjection <- function(x, method) {
+
+  # is.fact <- raster::is.factor(x)[1]
+
+  # if (is.na(raster::projection(x))) {
+  #   warning(non_proj_warning)
+  #   raster::extent(x) <- scaleExtent(x)
+  #   raster::projection(x) <- llcrs
+  # } else if (is.fact) {
+  #   x <- raster::projectRaster(
+  #     x, raster::projectExtent(x, crs = sp::CRS(wmcrs)),
+  #     method = "ngb")
+  #   x <- raster::as.factor(x)
+  # } else {
+  x <- sf::st_transform(
+    x,
+    crs = llcrs
+  )
+  # }
 
   return(x)
 

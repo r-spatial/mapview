@@ -43,7 +43,8 @@
   values = NULL, map.types = mapviewGetOption("basemaps"),
   alpha.regions = 0.8, legend = mapviewGetOption("legend"),
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
-  layer.name = NULL, homebutton = TRUE, native.crs = FALSE, ...)
+  layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
+  method = c("bilinear", "ngb"), ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -51,7 +52,8 @@
   na.color = mapviewGetOption("na.color"), use.layer.names = TRUE,
   values = NULL, map.types = mapviewGetOption("basemaps"),
   legend = mapviewGetOption("legend"), legend.opacity = 1, trim = TRUE,
-  verbose = mapviewGetOption("verbose"), homebutton = TRUE, ...)
+  verbose = mapviewGetOption("verbose"), homebutton = TRUE,
+  method = c("bilinear", "ngb"), ...)
 
 \S4method{mapView}{Satellite}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -59,7 +61,8 @@
   na.color = mapviewGetOption("na.color"), values = NULL,
   map.types = mapviewGetOption("basemaps"),
   legend = mapviewGetOption("legend"), legend.opacity = 1, trim = TRUE,
-  verbose = mapviewGetOption("verbose"), homebutton = TRUE, ...)
+  verbose = mapviewGetOption("verbose"), homebutton = TRUE,
+  method = c("bilinear", "ngb"), ...)
 
 \S4method{mapView}{sf}(x, map = NULL, zcol = NULL, burst = FALSE,
   color = mapviewGetOption("vector.palette"),
@@ -145,11 +148,25 @@
 
 \S4method{mapview}{ANY}(...)
 
-\S4method{mapView}{SpatialPixelsDataFrame}(x, zcol = NULL,
-  na.color = mapviewGetOption("na.color"),
-  legend = mapviewGetOption("legend"), ...)
+\S4method{mapView}{SpatialPixelsDataFrame}(x, map = NULL, zcol = NULL,
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
+  col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
+  na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
+  values = NULL, map.types = mapviewGetOption("basemaps"),
+  alpha.regions = 0.8, legend = mapviewGetOption("legend"),
+  legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
+  layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
+  method = c("bilinear", "ngb"), ...)
 
-\S4method{mapView}{SpatialGridDataFrame}(x, zcol = NULL, ...)
+\S4method{mapView}{SpatialGridDataFrame}(x, map = NULL, zcol = NULL,
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
+  col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
+  na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
+  values = NULL, map.types = mapviewGetOption("basemaps"),
+  alpha.regions = 0.8, legend = mapviewGetOption("legend"),
+  legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
+  layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
+  method = c("bilinear", "ngb"), ...)
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL,
   layer.name = NULL, ...)
@@ -214,6 +231,14 @@ the supplied data (can also be NA). Default is FALSE which will render in
 web mercator. If set to TRUE now background maps will be drawn (but rendering
 may be much quicker as no reprojecting is necessary). Currently only works
 for simple features.}
+
+\item{method}{for raster data only (raster/stars). Method used to compute
+values for the resampled layer that is passed on to leaflet. mapview does
+projection on-the-fly to ensure correct display and therefore needs to know
+how to do this projection. The default is 'bilinear' (bilinear interpolation),
+which is appropriate for continuous variables. The other option, 'ngb'
+(nearest neighbor), is useful for categorical variables. Ignored if the raster
+layer is of class \code{factor} in which case "ngb" is used.}
 
 \item{...}{additional arguments passed on to repective functions.
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},
