@@ -1,10 +1,9 @@
-## mapview 2.2.5
+## mapview 2.3.0
 
 new features:
 
   * popupTable has gained argument row.numbers to disable row numbers. #109
   * new function addStarsImage to visualise stars images.
-  * new mapview method for stars layers (single only at this point).
   * new function addImageQuery to provide raster/stars value query on mouseover/click.
   * mapview has gained new argument `method` to specify the method used for resampling of raster data. #123
   
@@ -18,6 +17,7 @@ bugfixes:
 misc:
 
   * added more details in description field as per request of Uwe Ligges.
+  * moved leaflet from Depends to Imports.
   
 
 ## mapview 2.2.0
