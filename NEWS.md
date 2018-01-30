@@ -1,5 +1,8 @@
 ## mapview 2.3.0
 
+
+## mapview 2.3.0
+
 new features:
 
   * popupTable has gained argument row.numbers to disable row numbers. #109
