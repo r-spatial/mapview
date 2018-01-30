@@ -3,6 +3,7 @@
 export(addExtent)
 export(addFeatures)
 export(addHomeButton)
+export(addImageQuery)
 export(addLargeFeatures)
 export(addLogo)
 export(addMouseCoordinates)

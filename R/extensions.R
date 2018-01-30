@@ -610,6 +610,48 @@ addGeometry = function(map,
 
 ### addImageQuery ############################################################
 ##############################################################################
+#' Add image query functionality to leaflet/mapview map.
+#'
+#' @details
+#' This function enables Raster* objects added to leaflet/mapview maps to be
+#' queried. Standard query is on 'mousmove', but can be changed to 'click'.
+#' Note that for this to work, the \code{layerId} needs to be the same as the
+#' one that was set in \code{\link[leaflet]{addRasterImage}}. Currently only works for
+#' numeric values (i.e. numeric/integer and factor values are supported).
+#'
+#' @param map the map with the RasterLayer to be queried.
+#' @param x the RasterLayer that is to be queried.
+#' @param group the group of the RasterLayer to be queried.
+#' @param layerId the layerId of the RasterLayer to be queried. Needs to be the
+#'   same a supplied in \code{\link[leaflet]{addRasterImage}}.
+#' @param project whether to project the RasterLayer to conform with leaflets
+#'   expected crs. Defaults to \code{TRUE} and things are likely to go haywire
+#'   if set to \code{FALSE}.
+#' @param type whether query should occur on 'mousemove' or 'click'. Defaults
+#'   to 'mousemove'.
+#' @param digits the number of digits to be shown in the display field.
+#' @param position where to place the display field. Default is 'topright'.
+#' @param ... currently not used.
+#'
+#' @return
+#' A leaflet map object.
+#'
+#' @examples
+#' library(leaflet)
+#' library(mapview)
+#'
+#' leaflet() %>%
+#'   addProviderTiles("OpenStreetMap") %>%
+#'   addRasterImage(poppendorf[[1]], project = TRUE, group = "poppendorf",
+#'                  layerId = "poppendorf") %>%
+#'   addImageQuery(poppendorf[[1]], project = TRUE,
+#'                 layerId = "poppendorf") %>%
+#'   addLayersControl(overlayGroups = "poppendorf")
+#'
+#'
+#' @export addImageQuery
+#' @name addImageQuery
+#' @rdname addImageQuery
 addImageQuery = function(map,
                          x,
                          group = NULL,
@@ -617,8 +659,10 @@ addImageQuery = function(map,
                          project = TRUE,
                          type = c("mousemove", "click"),
                          digits,
-                         position = 'bottomleft',
+                         position = 'topright',
                          ...) {
+
+  if (inherits(map, "mapview")) map = mapview2leaflet(map)
 
   type = match.arg(type)
   if (missing(digits)) digits = "null"
