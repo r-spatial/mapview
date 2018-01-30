@@ -274,63 +274,63 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 )
 
 
-## Stars layer ==================================================================
-#' @describeIn mapview \code{stars}
-
-setMethod('mapView', signature(x = 'stars'),
-          function(x,
-                   map = NULL,
-                   maxpixels = mapviewGetOption("mapview.maxpixels"),
-                   col.regions = mapviewGetOption("raster.palette")(256),
-                   at = NULL,
-                   na.color = mapviewGetOption("na.color"),
-                   use.layer.names = FALSE,
-                   values = NULL,
-                   map.types = mapviewGetOption("basemaps"),
-                   alpha.regions = 0.8,
-                   legend = mapviewGetOption("legend"),
-                   legend.opacity = 1,
-                   trim = TRUE,
-                   verbose = mapviewGetOption("verbose"),
-                   layer.name = NULL,
-                   homebutton = TRUE,
-                   native.crs = FALSE,
-                   method = c("bilinear", "ngb"),
-                   ...) {
-
-            method = match.arg(method)
-
-            if (is.null(at)) at <- lattice::do.breaks(
-              extendLimits(range(as.numeric(x[[1]][, , 1]),
-                                 na.rm = TRUE)), 256
-            )
-
-            if (mapviewGetOption("platform") == "leaflet") {
-              leaflet_stars(x,
-                            map = map,
-                            maxpixels = maxpixels,
-                            col.regions = col.regions,
-                            at = at,
-                            na.color, na.color,
-                            use.layer.names = use.layer.names,
-                            values = values,
-                            map.types = map.types,
-                            alpha.regions = alpha.regions,
-                            legend = legend,
-                            legend.opacity = legend.opacity,
-                            trim = trim,
-                            verbose = verbose,
-                            layer.name = layer.name,
-                            homebutton = homebutton,
-                            native.crs = native.crs,
-                            method = method,
-                            ...)
-            } else {
-              NULL
-            }
-
-          }
-)
+# ## Stars layer ==================================================================
+# #' @describeIn mapview \code{stars}
+#
+# setMethod('mapView', signature(x = 'stars'),
+#           function(x,
+#                    map = NULL,
+#                    maxpixels = mapviewGetOption("mapview.maxpixels"),
+#                    col.regions = mapviewGetOption("raster.palette")(256),
+#                    at = NULL,
+#                    na.color = mapviewGetOption("na.color"),
+#                    use.layer.names = FALSE,
+#                    values = NULL,
+#                    map.types = mapviewGetOption("basemaps"),
+#                    alpha.regions = 0.8,
+#                    legend = mapviewGetOption("legend"),
+#                    legend.opacity = 1,
+#                    trim = TRUE,
+#                    verbose = mapviewGetOption("verbose"),
+#                    layer.name = NULL,
+#                    homebutton = TRUE,
+#                    native.crs = FALSE,
+#                    method = c("bilinear", "ngb"),
+#                    ...) {
+#
+#             method = match.arg(method)
+#
+#             if (is.null(at)) at <- lattice::do.breaks(
+#               extendLimits(range(as.numeric(x[[1]][, , 1]),
+#                                  na.rm = TRUE)), 256
+#             )
+#
+#             if (mapviewGetOption("platform") == "leaflet") {
+#               leaflet_stars(x,
+#                             map = map,
+#                             maxpixels = maxpixels,
+#                             col.regions = col.regions,
+#                             at = at,
+#                             na.color, na.color,
+#                             use.layer.names = use.layer.names,
+#                             values = values,
+#                             map.types = map.types,
+#                             alpha.regions = alpha.regions,
+#                             legend = legend,
+#                             legend.opacity = legend.opacity,
+#                             trim = trim,
+#                             verbose = verbose,
+#                             layer.name = layer.name,
+#                             homebutton = homebutton,
+#                             native.crs = native.crs,
+#                             method = method,
+#                             ...)
+#             } else {
+#               NULL
+#             }
+#
+#           }
+# )
 
 
 

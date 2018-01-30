@@ -22,9 +22,9 @@ test_that("mapview2leaflet() runs without any issues", {
 
 ### getSimpleClass -----
 test_that("getSimpleClass() runs without any issues", {
-  expect_equal(getSimpleClass(breweries91), "vec") # sf
+  expect_equal(getSimpleClass(leaflet::breweries91), "vec") # sf
   expect_equal(getSimpleClass(poppendorf), "rst") # raster
-  expect_equal(getSimpleClass(gadmCHE), "vec") # sp
+  expect_equal(getSimpleClass(franconia), "vec") # sp
 })
 
 ### makeLabels -----
@@ -40,7 +40,7 @@ test_that("makeLabels() runs without any issues", {
 ### getFeatureIds -----
 test_that("getFeatureIds() runs without issues", {
   expect_equal(getFeatureIds(franconia), row.names(franconia))
-  expect_equal(getFeatureIds(gadmCHE), row.names(gadmCHE))
+  expect_equal(getFeatureIds(leaflet::gadmCHE), row.names(leaflet::gadmCHE))
   expect_equal(getFeatureIds(sf::st_geometry(breweries)),
                1:length(sf::st_geometry(breweries)))
 })
