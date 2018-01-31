@@ -1,4 +1,8 @@
-## mapview 2.3.0
+## mapview 2.3.2
+
+new features:
+
+  * mapview for raster data has gained argument label (logical) to disable image query. https://twitter.com/pierreroudier/status/958476875344392193
 
 
 ## mapview 2.3.0
