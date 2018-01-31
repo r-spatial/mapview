@@ -44,7 +44,7 @@
   alpha.regions = 0.8, legend = mapviewGetOption("legend"),
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
   layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
-  method = c("bilinear", "ngb"), ...)
+  method = c("bilinear", "ngb"), label = TRUE, ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -53,7 +53,7 @@
   values = NULL, map.types = mapviewGetOption("basemaps"),
   legend = mapviewGetOption("legend"), legend.opacity = 1, trim = TRUE,
   verbose = mapviewGetOption("verbose"), homebutton = TRUE,
-  method = c("bilinear", "ngb"), ...)
+  method = c("bilinear", "ngb"), label = TRUE, ...)
 
 \S4method{mapView}{Satellite}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -240,6 +240,10 @@ which is appropriate for continuous variables. The other option, 'ngb'
 (nearest neighbor), is useful for categorical variables. Ignored if the raster
 layer is of class \code{factor} in which case "ngb" is used.}
 
+\item{label}{For vector data (sf/sp) a character vector of labels to be
+shown on mouseover. See \code{\link{addControl}} for details. For raster
+data (Raster*/stars) a logical indicating whether to add image query.}
+
 \item{...}{additional arguments passed on to repective functions.
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
@@ -264,9 +268,6 @@ of the column(s) to be used for defining the size of circles}
 \item{popup}{a \code{list} of HTML strings with the popup contents, usually
 created from \code{\link{popupTable}}. See \code{\link{addControl}} for
 details.}
-
-\item{label}{a character vector of labels to be shown on mouseover. See
-\code{\link{addControl}} for details.}
 
 \item{highlight}{either \code{FALSE}, \code{NULL} or a list of styling
 options for feature highlighting on mouse hover.

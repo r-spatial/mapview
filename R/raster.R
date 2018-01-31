@@ -23,6 +23,7 @@ leafletRL = function(x,
                      homebutton,
                      native.crs,
                      method,
+                     label,
                      ...) {
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
@@ -110,7 +111,8 @@ leafletRL = function(x,
                                 group = grp,
                                 layerId = grp,
                                 ...)
-    m = addImageQuery(m, x, group = grp, layerId = grp, position = "topright")
+    if (label)
+      m = addImageQuery(m, x, group = grp, layerId = grp, position = "topright")
     if (legend) {
       ## add legend
       # m = leaflet::addLegend(map = m,
@@ -167,6 +169,7 @@ leafletRSB = function(x,
                       layer.name,
                       homebutton,
                       method,
+                      label,
                       ...) {
 
   pkgs = c("leaflet", "raster", "magrittr")
@@ -190,6 +193,7 @@ leafletRSB = function(x,
                 layer.name = layer.name,
                 homebutton = homebutton,
                 method = method,
+                label = label,
                 ...)
     out = new('mapview', object = list(x), map = m@map)
   } else {
@@ -204,6 +208,7 @@ leafletRSB = function(x,
                 legend = legend,
                 homebutton = homebutton,
                 method = method,
+                label = label,
                 ...)
     for (i in 2:nlayers(x)) {
       m = mapView(x[[i]],
@@ -217,6 +222,7 @@ leafletRSB = function(x,
                   legend = legend,
                   homebutton = FALSE,
                   method = method,
+                  label = label,
                   ...)
     }
 
