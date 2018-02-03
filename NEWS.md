@@ -2,7 +2,12 @@
 
 new features:
 
-  * mapview for raster data has gained argument label (logical) to disable image query. https://twitter.com/pierreroudier/status/958476875344392193
+  * addImageQuery has gained argument prefix to modify the layerId prefix.
+  * mapview methods for raster data have gained arguments label, query.type, query.digits, query.position and query.prefix to modify raster value query settings. https://twitter.com/pierreroudier/status/958476875344392193
+  
+bugfixes:
+
+  * viewRGB failed because of missing method argument. #125
 
 
 ## mapview 2.3.0
