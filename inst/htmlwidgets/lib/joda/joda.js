@@ -28,7 +28,7 @@ rasterPicker.old = function(e, x, data) {
     }
 };
 
-rasterPicker.pick = function(event, leafletConfig, digits) {
+rasterPicker.pick = function(event, leafletConfig, digits, prefix) {
   var rasterLayers = this.getRasterLayers(leafletConfig);
   var pickedLayerData = {};
   // collect values of clicked raster layers
@@ -39,7 +39,7 @@ rasterPicker.pick = function(event, leafletConfig, digits) {
   }
   // render collected hit values
   var outputWidget = this.getInfoLegend(leafletConfig);
-  outputWidget.innerHTML = this.renderInfo(pickedLayerData, digits);
+  outputWidget.innerHTML = this.renderInfo(pickedLayerData, digits, prefix);
 };
 
 rasterPicker.getInfoLegend = function(leafletConfig) {
@@ -130,7 +130,7 @@ rasterPicker.getLayerData = function(rasterHitInfo, latlng, zoom) {
   return layerData;
 };
 
-rasterPicker.renderInfo = function(pickedLayerData, digits) {
+rasterPicker.renderInfo = function(pickedLayerData, digits, prefix) {
   var text = "";
   for (var layer_key in pickedLayerData) {
     var layer = pickedLayerData[layer_key];
@@ -138,9 +138,9 @@ rasterPicker.renderInfo = function(pickedLayerData, digits) {
       continue;
     }
     if(digits === null) {
-      text += "Layer <strong>"+ layer.layerId + ": </strong>"+ layer.value+ "</br>";
+      text += prefix+ "<strong>"+ layer.layerId + ": </strong>"+ layer.value+ "</br>";
     } else {
-      text += "Layer <strong>"+ layer.layerId + ": </strong>"+ layer.value.toFixed(digits)+ "</br>";
+      text += prefix+ "<strong>"+ layer.layerId + ": </strong>"+ layer.value.toFixed(digits)+ "</br>";
     }
     /*text += "<br/> (lat,lng=" + layer.lat + "," + layer.lng + ")";
     text += "<br/> (x,y=" + layer.index.x + "," + layer.index.y + ")";
