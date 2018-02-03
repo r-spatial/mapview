@@ -24,6 +24,10 @@ leafletRL = function(x,
                      native.crs,
                      method,
                      label,
+                     query.type,
+                     query.digits,
+                     query.position,
+                     query.prefix,
                      ...) {
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
@@ -112,7 +116,9 @@ leafletRL = function(x,
                                 layerId = grp,
                                 ...)
     if (label)
-      m = addImageQuery(m, x, group = grp, layerId = grp, position = "topright")
+      m = addImageQuery(m, x, group = grp, layerId = grp,
+                        type = query.type, digits = query.digits,
+                        position = query.position, prefix = query.prefix)
     if (legend) {
       ## add legend
       # m = leaflet::addLegend(map = m,
@@ -170,6 +176,10 @@ leafletRSB = function(x,
                       homebutton,
                       method,
                       label,
+                      query.type,
+                      query.digits,
+                      query.position,
+                      query.prefix,
                       ...) {
 
   pkgs = c("leaflet", "raster", "magrittr")
@@ -194,6 +204,10 @@ leafletRSB = function(x,
                 homebutton = homebutton,
                 method = method,
                 label = label,
+                query.type = query.type,
+                query.digits = query.digits,
+                query.position = query.position,
+                query.prefix = query.prefix,
                 ...)
     out = new('mapview', object = list(x), map = m@map)
   } else {
@@ -209,6 +223,10 @@ leafletRSB = function(x,
                 homebutton = homebutton,
                 method = method,
                 label = label,
+                query.type = query.type,
+                query.digits = query.digits,
+                query.position = query.position,
+                query.prefix = query.prefix,
                 ...)
     for (i in 2:nlayers(x)) {
       m = mapView(x[[i]],
@@ -223,6 +241,10 @@ leafletRSB = function(x,
                   homebutton = FALSE,
                   method = method,
                   label = label,
+                  query.type = query.type,
+                  query.digits = query.digits,
+                  query.position = query.position,
+                  query.prefix = query.prefix,
                   ...)
     }
 

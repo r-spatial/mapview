@@ -115,6 +115,11 @@ leaflet_stars = function(x,
                          homebutton,
                          native.crs,
                          method,
+                         label,
+                         query.type,
+                         query.digits,
+                         query.position,
+                         query.prefix,
                          ...) {
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
@@ -151,11 +156,11 @@ leaflet_stars = function(x,
       # if (is.fact) {
       #   at = x@data@attributes[[1]]$ID
       # } else {
-        offset = diff(range(as.numeric(x[[1]][, , 1]), na.rm = TRUE)) * 0.05
-        top = max(as.numeric(x[[1]][, , 1]), na.rm = TRUE) + offset
-        bot = min(as.numeric(x[[1]][, , 1]), na.rm = TRUE) - offset
-        values = seq(bot, top, length.out = 10)
-        values = round(values, 5)
+      offset = diff(range(as.numeric(x[[1]][, , 1]), na.rm = TRUE)) * 0.05
+      top = max(as.numeric(x[[1]][, , 1]), na.rm = TRUE) + offset
+      bot = min(as.numeric(x[[1]][, , 1]), na.rm = TRUE) - offset
+      values = seq(bot, top, length.out = 10)
+      values = round(values, 5)
       # }
     } else {
       values = round(values, 5)
@@ -167,20 +172,20 @@ leaflet_stars = function(x,
     #                              na.color = na.color)
     #   # pal2 = pal
     # } else {
-      pal = rasterColors(col.regions,
-                         at = at,
-                         na.color = na.color)
+    pal = rasterColors(col.regions,
+                       at = at,
+                       na.color = na.color)
 
-      # if (length(at) > 11) {
-      #   pal2 = leaflet::colorNumeric(palette = col.regions,
-      #                                 domain = at,
-      #                                 na.color = na.color)
-      # } else {
-      #   pal2 = leaflet::colorBin(palette = col.regions,
-      #                             bins = length(at),
-      #                             domain = at,
-      #                             na.color = na.color)
-      # }
+    # if (length(at) > 11) {
+    #   pal2 = leaflet::colorNumeric(palette = col.regions,
+    #                                 domain = at,
+    #                                 na.color = na.color)
+    # } else {
+    #   pal2 = leaflet::colorBin(palette = col.regions,
+    #                             bins = length(at),
+    #                             domain = at,
+    #                             na.color = na.color)
+    # }
 
     # }
 
@@ -192,15 +197,18 @@ leaflet_stars = function(x,
     }
 
     ## add layers to base map
-      m = addStarsImage(map = m,
-                        x = x,
-                        colors = pal,
-                        project = FALSE,
-                        opacity = alpha.regions,
-                        group = grp,
-                        layerId = grp,
-                        ...)
-    m = addImageQuery(m, x, group = grp, layerId = grp, position = "topright")
+    m = addStarsImage(map = m,
+                      x = x,
+                      colors = pal,
+                      project = FALSE,
+                      opacity = alpha.regions,
+                      group = grp,
+                      layerId = grp,
+                      ...)
+    if (label)
+      m = addImageQuery(m, x, group = grp, layerId = grp,
+                        type = query.type, digits = query.digits,
+                        position = query.position, prefix = query.prefix)
     if (legend) {
       stop("legend currently not supported for stars layers", call. = FALSE)
       ## add legend

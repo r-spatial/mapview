@@ -4,6 +4,7 @@
 \name{mapView}
 \alias{mapView}
 \alias{mapView,RasterLayer-method}
+\alias{mapView,stars-method}
 \alias{mapView,RasterStackBrick-method}
 \alias{mapView,Satellite-method}
 \alias{mapView,sf-method}
@@ -44,7 +45,21 @@
   alpha.regions = 0.8, legend = mapviewGetOption("legend"),
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
   layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
-  method = c("bilinear", "ngb"), label = TRUE, ...)
+  method = c("bilinear", "ngb"), label = TRUE, query.type = c("mousemove",
+  "click"), query.digits, query.position = "topright",
+  query.prefix = "Layer", ...)
+
+\S4method{mapView}{stars}(x, map = NULL,
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
+  col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
+  na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
+  values = NULL, map.types = mapviewGetOption("basemaps"),
+  alpha.regions = 0.8, legend = mapviewGetOption("legend"),
+  legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
+  layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
+  method = c("bilinear", "ngb"), label = TRUE, query.type = c("mousemove",
+  "click"), query.digits, query.position = "topright",
+  query.prefix = "Layer", ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -53,7 +68,9 @@
   values = NULL, map.types = mapviewGetOption("basemaps"),
   legend = mapviewGetOption("legend"), legend.opacity = 1, trim = TRUE,
   verbose = mapviewGetOption("verbose"), homebutton = TRUE,
-  method = c("bilinear", "ngb"), label = TRUE, ...)
+  method = c("bilinear", "ngb"), label = TRUE, query.type = c("mousemove",
+  "click"), query.digits, query.position = "topright",
+  query.prefix = "Layer", ...)
 
 \S4method{mapView}{Satellite}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -62,7 +79,7 @@
   map.types = mapviewGetOption("basemaps"),
   legend = mapviewGetOption("legend"), legend.opacity = 1, trim = TRUE,
   verbose = mapviewGetOption("verbose"), homebutton = TRUE,
-  method = c("bilinear", "ngb"), ...)
+  method = c("bilinear", "ngb"), label = TRUE, ...)
 
 \S4method{mapView}{sf}(x, map = NULL, zcol = NULL, burst = FALSE,
   color = mapviewGetOption("vector.palette"),
@@ -244,6 +261,19 @@ layer is of class \code{factor} in which case "ngb" is used.}
 shown on mouseover. See \code{\link{addControl}} for details. For raster
 data (Raster*/stars) a logical indicating whether to add image query.}
 
+\item{query.type}{for raster methods only. Whether to show raster value query
+on \code{'mousemove'} or \code{'click'}. Ignored if \code{label = FALSE}.}
+
+\item{query.digits}{for raster methods only. The amount of digits to be shown
+by raster value query. Ignored if \code{label = FALSE}.}
+
+\item{query.position}{for raster methods only. The position of the raster
+value query info box. See \code{position} argument of \code{\link{addLegend}}
+for possible values. Ignored if \code{label = FALSE}.}
+
+\item{query.prefix}{for raster methods only. a character string to be shown
+as prefix for the layerId. Ignored if \code{label = FALSE}.}
+
 \item{...}{additional arguments passed on to repective functions.
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
@@ -335,6 +365,8 @@ and fully queriable.
 }
 \section{Methods (by class)}{
 \itemize{
+\item \code{stars}: \code{\link{stars}}
+
 \item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{brick}}
 
 \item \code{Satellite}: \code{\link{satellite}}
@@ -395,10 +427,11 @@ and fully queriable.
 }}
 
 \examples{
-\dontrun{
 mapview()
 
 ## simple features ====================================================
+library(sf)
+
 # sf
 mapview(breweries)
 mapview(franconia)
@@ -419,25 +452,24 @@ mapview(poppendorf[[5]])
 
 ## spatial objects =====================================================
 mapview(leaflet::gadmCHE)
-mapview(atlStorms2005)
+mapview(leaflet::atlStorms2005)
 
 
 ## styling options & legends ===========================================
-mapview(cantons, color = "white", col.regions = "red")
-mapview(cantons, color = "magenta", col.regions = "white")
+mapview(franconia, color = "white", col.regions = "red")
+mapview(franconia, color = "magenta", col.regions = "white")
 
 mapview(breweries, zcol = "founded")
 mapview(breweries, zcol = "founded", at = seq(1400, 2200, 200), legend = TRUE)
-mapview(cantons, zcol = "NAME_1", legend = TRUE)
+mapview(franconia, zcol = "district", legend = TRUE)
 
-library(RColorBrewer)
-clrs <- colorRampPalette(brewer.pal(9, "Blues"))
-mapview(breweries, zcol = "founded", col.regions = clrs, legend = TRUE)
+clrs <- sf.colors
+mapview(franconia, zcol = "district", col.regions = clrs, legend = TRUE)
 
 ### multiple layers ====================================================
 mapview(franconia) + breweries
 mapview(list(breweries, franconia))
-mapview(breweries) + mapview(franconia) + stormtracks
+mapview(franconia) + mapview(breweries) + trails
 
 mapview(franconia, zcol = "district") + mapview(breweries, zcol = "village")
 mapview(list(franconia, breweries),
@@ -486,8 +518,6 @@ franconia \%>\%
   mutate(count = lengths(st_contains(., breweries)),
          density = count / st_area(.)) \%>\%
   mapview(zcol = "density")
-
-}
 
 }
 \author{

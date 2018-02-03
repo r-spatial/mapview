@@ -82,6 +82,15 @@ if ( !isGeneric('mapView') ) {
 #' @param maxpoints the maximum number of points making up the geometry.
 #' In case of lines and polygons this refers to the number of vertices. See
 #' Details for more information.
+#' @param query.type for raster methods only. Whether to show raster value query
+#' on \code{'mousemove'} or \code{'click'}. Ignored if \code{label = FALSE}.
+#' @param query.digits for raster methods only. The amount of digits to be shown
+#' by raster value query. Ignored if \code{label = FALSE}.
+#' @param query.position for raster methods only. The position of the raster
+#' value query info box. See \code{position} argument of \code{\link{addLegend}}
+#' for possible values. Ignored if \code{label = FALSE}.
+#' @param query.prefix for raster methods only. a character string to be shown
+#' as prefix for the layerId. Ignored if \code{label = FALSE}.
 #' @param ... additional arguments passed on to repective functions.
 #' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
@@ -106,10 +115,11 @@ if ( !isGeneric('mapView') ) {
 #' Tim Appelhans
 #'
 #' @examples
-#' \dontrun{
 #' mapview()
 #'
 #' ## simple features ====================================================
+#' library(sf)
+#'
 #' # sf
 #' mapview(breweries)
 #' mapview(franconia)
@@ -130,25 +140,24 @@ if ( !isGeneric('mapView') ) {
 #'
 #' ## spatial objects =====================================================
 #' mapview(leaflet::gadmCHE)
-#' mapview(atlStorms2005)
+#' mapview(leaflet::atlStorms2005)
 #'
 #'
 #' ## styling options & legends ===========================================
-#' mapview(cantons, color = "white", col.regions = "red")
-#' mapview(cantons, color = "magenta", col.regions = "white")
+#' mapview(franconia, color = "white", col.regions = "red")
+#' mapview(franconia, color = "magenta", col.regions = "white")
 #'
 #' mapview(breweries, zcol = "founded")
 #' mapview(breweries, zcol = "founded", at = seq(1400, 2200, 200), legend = TRUE)
-#' mapview(cantons, zcol = "NAME_1", legend = TRUE)
+#' mapview(franconia, zcol = "district", legend = TRUE)
 #'
-#' library(RColorBrewer)
-#' clrs <- colorRampPalette(brewer.pal(9, "Blues"))
-#' mapview(breweries, zcol = "founded", col.regions = clrs, legend = TRUE)
+#' clrs <- sf.colors
+#' mapview(franconia, zcol = "district", col.regions = clrs, legend = TRUE)
 #'
 #' ### multiple layers ====================================================
 #' mapview(franconia) + breweries
 #' mapview(list(breweries, franconia))
-#' mapview(breweries) + mapview(franconia) + stormtracks
+#' mapview(franconia) + mapview(breweries) + trails
 #'
 #' mapview(franconia, zcol = "district") + mapview(breweries, zcol = "village")
 #' mapview(list(franconia, breweries),
@@ -198,8 +207,6 @@ if ( !isGeneric('mapView') ) {
 #'          density = count / st_area(.)) %>%
 #'   mapview(zcol = "density")
 #'
-#' }
-#'
 #' @export
 #' @docType methods
 #' @name mapView
@@ -230,6 +237,10 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    native.crs = FALSE,
                    method = c("bilinear", "ngb"),
                    label = TRUE,
+                   query.type = c("mousemove", "click"),
+                   query.digits,
+                   query.position = "topright",
+                   query.prefix = "Layer",
                    ...) {
 
             method = match.arg(method)
@@ -253,7 +264,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                           maxpixels = maxpixels,
                           col.regions = col.regions,
                           at = at,
-                          na.color, na.color,
+                          na.color = na.color,
                           use.layer.names = use.layer.names,
                           values = values,
                           map.types = map.types,
@@ -267,6 +278,10 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                           native.crs = native.crs,
                           method = method,
                           label = label,
+                          query.type = query.type,
+                          query.digits = query.digits,
+                          query.position = query.position,
+                          query.prefix = query.prefix,
                           ...)
             } else {
               NULL
@@ -278,7 +293,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 
 
 ## Stars layer ==================================================================
-#' @describeIn mapview \code{stars}
+#' @describeIn mapView \code{\link{stars}}
 setMethod('mapView', signature(x = 'stars'),
           function(x,
                    map = NULL,
@@ -298,6 +313,11 @@ setMethod('mapView', signature(x = 'stars'),
                    homebutton = TRUE,
                    native.crs = FALSE,
                    method = c("bilinear", "ngb"),
+                   label = TRUE,
+                   query.type = c("mousemove", "click"),
+                   query.digits,
+                   query.position = "topright",
+                   query.prefix = "Layer",
                    ...) {
 
             method = match.arg(method)
@@ -326,6 +346,11 @@ setMethod('mapView', signature(x = 'stars'),
                             homebutton = homebutton,
                             native.crs = native.crs,
                             method = method,
+                            label = label,
+                            query.type = query.type,
+                            query.digits = query.digits,
+                            query.position = query.position,
+                            query.prefix = query.prefix,
                             ...)
             } else {
               NULL
@@ -356,6 +381,10 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                    homebutton = TRUE,
                    method = c("bilinear", "ngb"),
                    label = TRUE,
+                   query.type = c("mousemove", "click"),
+                   query.digits,
+                   query.position = "topright",
+                   query.prefix = "Layer",
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -403,6 +432,7 @@ setMethod('mapView', signature(x = 'Satellite'),
                    verbose = mapviewGetOption("verbose"),
                    homebutton = TRUE,
                    method = c("bilinear", "ngb"),
+                   label = TRUE,
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -420,6 +450,7 @@ setMethod('mapView', signature(x = 'Satellite'),
                                verbose = verbose,
                                homebutton = homebutton,
                                method = method,
+                               label = label,
                                ...)
             } else {
               NULL
