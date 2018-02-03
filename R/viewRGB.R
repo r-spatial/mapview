@@ -27,19 +27,22 @@ if ( !isGeneric('viewRGB') ) {
 #' for available options.
 #' @param na.color the color to be used for NA pixels
 #' @param layer.name the name of the layer to be shown on the map
+#' @param method Method used to compute
+#' values for the resampled layer that is passed on to leaflet. mapview does
+#' projection on-the-fly to ensure correct display and therefore needs to know
+#' how to do this projection. The default is 'bilinear' (bilinear interpolation),
+#' which is appropriate for continuous variables. The other option, 'ngb'
+#' (nearest neighbor), is useful for categorical variables.
 #' @param ... additional arguments passed on to \code{\link{mapView}}
 #'
 #' @author
 #' Tim Appelhans
 #'
 #' @examples
-#' \dontrun{
 #' library(raster)
 #'
 #' viewRGB(poppendorf, 4, 3, 2) # true-color
 #' viewRGB(poppendorf, 5, 4, 3) # false-color
-#' }
-#'
 #'
 #' @export
 #' @docType methods
@@ -56,11 +59,13 @@ setMethod("viewRGB", signature(x = "RasterStackBrick"),
                    na.color = mapviewGetOption("na.color"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
+                   method = c("bilinear", "ngb"),
                    ...) {
 
+            method = match.arg(method)
             m <- initMap(map, map.types, projection(x))
             x <- rasterCheckSize(x, maxpixels)
-            xout <- rasterCheckAdjustProjection(x)
+            xout <- rasterCheckAdjustProjection(x, method)
 
             mat <- cbind(xout[[r]][],
                          xout[[g]][],

@@ -11,7 +11,8 @@
   maxpixels = mapviewGetOption("mapview.maxpixels"),
   map.types = mapviewGetOption("basemaps"),
   na.color = mapviewGetOption("na.color"),
-  layer.name = deparse(substitute(x, env = parent.frame())), ...)
+  layer.name = deparse(substitute(x, env = parent.frame())),
+  method = c("bilinear", "ngb"), ...)
 }
 \arguments{
 \item{x}{a RasterBrick or RasterStack}
@@ -37,6 +38,13 @@ for available options.}
 
 \item{layer.name}{the name of the layer to be shown on the map}
 
+\item{method}{Method used to compute
+values for the resampled layer that is passed on to leaflet. mapview does
+projection on-the-fly to ensure correct display and therefore needs to know
+how to do this projection. The default is 'bilinear' (bilinear interpolation),
+which is appropriate for continuous variables. The other option, 'ngb'
+(nearest neighbor), is useful for categorical variables.}
+
 \item{...}{additional arguments passed on to \code{\link{mapView}}}
 }
 \description{
@@ -49,13 +57,10 @@ multi-band satellite images. Note, this text is plagirized, i.e. copied
 from \code{\link{plotRGB}}.
 }
 \examples{
-\dontrun{
 library(raster)
 
 viewRGB(poppendorf, 4, 3, 2) # true-color
 viewRGB(poppendorf, 5, 4, 3) # false-color
-}
-
 
 }
 \author{
