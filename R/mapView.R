@@ -404,6 +404,10 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                          homebutton = homebutton,
                          method = method,
                          label = label,
+                         query.type = query.type,
+                         query.digits = query.digits,
+                         query.position = query.position,
+                         query.prefix = query.prefix,
                          ...)
             } else {
               NULL
@@ -1070,6 +1074,11 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                    homebutton = TRUE,
                    native.crs = FALSE,
                    method = c("bilinear", "ngb"),
+                   label = TRUE,
+                   query.type = c("mousemove", "click"),
+                   query.digits,
+                   query.position = "topright",
+                   query.prefix = "Layer",
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -1092,6 +1101,11 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                               homebutton = homebutton,
                               native.crs = native.crs,
                               method = method,
+                              label = label,
+                              query.type = query.type,
+                              query.digits = query.digits,
+                              query.position = query.position,
+                              query.prefix = query.prefix,
                               ...)
             } else {
               NULL
@@ -1124,6 +1138,11 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                    homebutton = TRUE,
                    native.crs = FALSE,
                    method = c("bilinear", "ngb"),
+                   label = TRUE,
+                   query.type = c("mousemove", "click"),
+                   query.digits,
+                   query.position = "topright",
+                   query.prefix = "Layer",
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -1146,6 +1165,11 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                               homebutton = homebutton,
                               native.crs = native.crs,
                               method = method,
+                              label = label,
+                              query.type = query.type,
+                              query.digits = query.digits,
+                              query.position = query.position,
+                              query.prefix = query.prefix,
                               ...)
             } else {
               NULL

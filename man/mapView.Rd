@@ -173,7 +173,9 @@
   alpha.regions = 0.8, legend = mapviewGetOption("legend"),
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
   layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
-  method = c("bilinear", "ngb"), ...)
+  method = c("bilinear", "ngb"), label = TRUE, query.type = c("mousemove",
+  "click"), query.digits, query.position = "topright",
+  query.prefix = "Layer", ...)
 
 \S4method{mapView}{SpatialGridDataFrame}(x, map = NULL, zcol = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -183,7 +185,9 @@
   alpha.regions = 0.8, legend = mapviewGetOption("legend"),
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
   layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
-  method = c("bilinear", "ngb"), ...)
+  method = c("bilinear", "ngb"), label = TRUE, query.type = c("mousemove",
+  "click"), query.digits, query.position = "topright",
+  query.prefix = "Layer", ...)
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL,
   layer.name = NULL, ...)

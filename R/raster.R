@@ -282,6 +282,11 @@ leafletPixelsDF = function(x,
                            homebutton,
                            native.crs,
                            method,
+                           label,
+                           query.type,
+                           query.digits,
+                           query.position,
+                           query.prefix,
                            ...) {
 
   pkgs = c("leaflet", "sp", "magrittr")
@@ -316,6 +321,11 @@ leafletPixelsDF = function(x,
               homebutton = homebutton,
               native.crs = native.crs,
               method = method,
+              label = label,
+              query.type = query.type,
+              query.digits = query.digits,
+              query.position = query.position,
+              query.prefix = query.prefix,
               ...)
 
   out = new('mapview', object = list(x), map = m@map)
