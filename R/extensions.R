@@ -631,6 +631,7 @@ addGeometry = function(map,
 #'   to 'mousemove'.
 #' @param digits the number of digits to be shown in the display field.
 #' @param position where to place the display field. Default is 'topright'.
+#' @param prefix a character string to be shown as prefix for the layerId.
 #' @param ... currently not used.
 #'
 #' @return
@@ -660,6 +661,7 @@ addImageQuery = function(map,
                          type = c("mousemove", "click"),
                          digits,
                          position = 'topright',
+                         prefix = 'Layer',
                          ...) {
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
@@ -723,7 +725,7 @@ addImageQuery = function(map,
         'function(el, x, data) {
         var map = this;
         map.on("', type, '", function (e) {
-          rasterPicker.pick(e, x, ', digits, ');
+          rasterPicker.pick(e, x, ', digits, ', "', prefix, ' ");
         });
       }'
       )
