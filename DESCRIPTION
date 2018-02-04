@@ -13,7 +13,7 @@ Authors@R: c(
       person("Edzer", "Pebesma", role = c("ctb")),
       person("Kenton", "Russell", role = c("ctb")),
       person("Michael", "Sumner", role = c("ctb")),
-      person("jochen", "Darley", email = "Debugger@jedimasters.de", role = c("ctb")),
+      person("Jochen", "Darley", email = "Debugger@jedimasters.de", role = c("ctb")),
       person("Environmental Informatics Marburg", role = c("ctb"))
     )
 Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
