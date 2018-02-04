@@ -10,7 +10,7 @@ wrong_proj_warning <-
          "  projecting to '", llcrs, "'")
 
 # Check and potentially adjust projection of objects to be rendered =======
-checkAdjustProjection <- function(x, method) {
+checkAdjustProjection <- function(x, method = "bilinear") {
 
   x <- switch(class(x)[1],
               "RasterLayer" = rasterCheckAdjustProjection(x, method),

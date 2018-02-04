@@ -52,7 +52,6 @@ if ( !isGeneric('plainView') ) {
 #' Tim Appelhans
 #'
 #' @examples
-#' \dontrun{
 #' ### raster data ###
 #' library(sp)
 #' library(raster)
@@ -71,10 +70,8 @@ if ( !isGeneric('plainView') ) {
 #' m1 <- plainView(poppendorf[[5]])
 #' m1
 #'
-#' # raster stack
+#' # raster stack - true color
 #' plainview(poppendorf, 4, 3, 2)
-#'
-#' }
 #'
 #' @export plainView
 #' @name plainView

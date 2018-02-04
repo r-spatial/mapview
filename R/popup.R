@@ -14,7 +14,7 @@
 #' A \code{list} of HTML strings required to create feature popup tables.
 #'
 #' @examples
-#' \dontrun{
+#' library(leaflet)
 #'
 #' ## include columns 1 and 2 only
 #' mapview(franconia, popup = popupTable(franconia, zcol = 1:2))
@@ -23,7 +23,6 @@
 #' leaflet() %>% addCircleMarkers(data = breweries)
 #' leaflet() %>% addCircleMarkers(data = breweries,
 #'                                popup = popupTable(breweries))
-#' }
 #'
 #' @export popupTable
 #' @name popupTable
@@ -57,7 +56,6 @@ popupTable = function(x, zcol, row.numbers = TRUE) {
 #' A \code{list} of HTML strings required to create popup graphs.
 #'
 #' @examples
-#' \dontrun{
 #' ## remote images -----
 #' ### one image
 #' library(sf)
@@ -89,7 +87,6 @@ popupTable = function(x, zcol, row.numbers = TRUE) {
 #'                 coords = c("x", "y"), crs = 4326)
 #' img = system.file("img","Rlogo.png",package="png")
 #' mapview(pnt, popup = popupImage(img))
-#' }
 #'
 #' @export popupImage
 #' @name popupImage
@@ -203,7 +200,6 @@ popupRemoteImage = function(img, width = 300, height = "100%") {
 #' A \code{list} of HTML strings required to create popup graphs.
 #'
 #' @examples
-#' \dontrun{
 #' ### example: svg -----
 #'
 #' library(sp)
@@ -236,24 +232,11 @@ popupRemoteImage = function(img, width = 300, height = "100%") {
 #' mapview(pt, popup = popupGraph(p2, width = 300, height = 400))
 #'
 #' ### example: html -----
-#' library(scatterD3)
-#' p = lapply(1:length(meuse), function(i) {
-#'   clr =rep(0, length(meuse))
-#'   clr[[i]] = 1
-#'   scatterD3(x = meuse$cadmium,
-#'             y = meuse$copper,
-#'             col_var = clr,
-#'             legend_width = 0)
-#' })
-#'
-#' mapview(meuse, popup = popupGraph(p, type = "html", width = 400, height = 300))
-#'
 #' mapview(breweries[1, ], map.types = "Esri.WorldImagery",
 #'         popup = popupGraph(mapview(breweries[1, ])@map,
 #'                            type = "html",
 #'                            width = 500,
 #'                            height = 400))
-#' }
 #'
 #' @export popupGraph
 #' @name popupGraph

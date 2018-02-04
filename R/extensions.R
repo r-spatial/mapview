@@ -31,11 +31,15 @@
 #' If style is set to "basic", only 'lat', 'lon' and 'zoom' are shown.
 #'
 #' @examples
-#' \dontrun{
-#' leaflet() %>% addTiles() # without mouse position info
-#' leaflet() %>% addTiles() %>% addMouseCoordinates(style = "basic") # with basic mouse position info
-#' mapview(easter.egg = TRUE) # detailed mouse position info by default ;-)
-#' }
+#' library(leaflet)
+#'
+#' leaflet() %>% addProviderTiles("OpenStreetMap") # without mouse position info
+#' leaflet() %>%
+#'   addProviderTiles("OpenStreetMap") %>%
+#'   addMouseCoordinates(style = "basic") # with basic mouse position info
+#' leaflet() %>%
+#'   addProviderTiles("OpenStreetMap") %>%
+#'   addMouseCoordinates() # with detailed mouse position info
 #'
 #'
 #' @export addMouseCoordinates
@@ -155,16 +159,17 @@ addMouseCoordinates <- function(map, style = c("detailed", "basic"),
 #' @param add logical. Whether to add the button to the map (mainly for internal use).
 #'
 #' @examples
-#' \dontrun{
+#' library(leaflet)
 #' library(raster)
 #'
-#' m <- leaflet() %>% addTiles() %>% addCircleMarkers(data = breweries91) %>%
-#'   addHomeButton(extent(breweries91), "breweries91")
+#' m <- leaflet() %>%
+#'   addProviderTiles("OpenStreetMap") %>%
+#'   addCircleMarkers(data = breweries) %>%
+#'   addHomeButton(extent(breweries), "breweries")
 #' m
 #'
 #' ## remove the button
 #' removeHomeButton(m)
-#' }
 #'
 #'
 #' @export addHomeButton
@@ -175,6 +180,12 @@ addHomeButton <- function(map, ext, layer.name = "layer",
                           position = 'bottomright', add = TRUE) {
   if (inherits(map, "mapview")) map <- mapview2leaflet(map)
   stopifnot(inherits(map, "leaflet"))
+
+  # drop names in case extent of sf object
+  ext@xmin = unname(ext@xmin)
+  ext@xmax = unname(ext@xmax)
+  ext@ymin = unname(ext@ymin)
+  ext@ymax = unname(ext@ymax)
 
   hb <- try(getCallEntryFromMap(map, "addHomeButton"), silent = TRUE)
   if (!inherits(hb, "try-error") & length(hb) == 1) {
@@ -264,7 +275,7 @@ leafletHomeButtonDependencies <- function() {
 #' @param height height of the rendered image in pixels.
 #'
 #' @examples
-#' \dontrun{
+#' library(leaflet)
 #' ## default position is topleft next to zoom control
 #'
 #' img <- "https://www.r-project.org/logo/Rlogo.svg"
@@ -277,7 +288,6 @@ leafletHomeButtonDependencies <- function() {
 #' leaflet() %>% addTiles() %>% addLogo(img, src = "local", alpha = 0.3)
 #'
 #' ## dancing banana gif :-)
-#' library(magick)
 #' m <- mapview(breweries91)
 #'
 #' addLogo(m, "https://jeroenooms.github.io/images/banana.gif",
@@ -286,8 +296,6 @@ leafletHomeButtonDependencies <- function() {
 #'         offset.y = 40,
 #'         width = 100,
 #'         height = 100)
-#'
-#' }
 #'
 #'
 #' @export addLogo
@@ -495,16 +503,16 @@ remoteImage <- function(img, alpha, url, width, height) {
 #' A leaflet \code{map} object.
 #'
 #' @examples
-#' \dontrun{
-#' leaflet() %>% addTiles() %>% addCircleMarkers(data = breweries)
-#' leaflet() %>% addTiles() %>% addFeatures(data = breweries)
+#' library(leaflet)
 #'
-#' leaflet() %>% addTiles() %>% addPolylines(data = atlStorms2005)
-#' leaflet() %>% addTiles() %>% addFeatures(atlStorms2005)
+#' leaflet() %>% addProviderTiles("OpenStreetMap") %>% addCircleMarkers(data = breweries)
+#' leaflet() %>% addProviderTiles("OpenStreetMap") %>% addFeatures(data = breweries)
 #'
-#' leaflet() %>% addTiles() %>% addPolygons(data = franconia)
-#' leaflet() %>% addTiles() %>% addFeatures(franconia)
-#' }
+#' leaflet() %>% addProviderTiles("OpenStreetMap") %>% addPolylines(data = atlStorms2005)
+#' leaflet() %>% addProviderTiles("OpenStreetMap") %>% addFeatures(atlStorms2005)
+#'
+#' leaflet() %>% addProviderTiles("OpenStreetMap") %>% addPolygons(data = franconia)
+#' leaflet() %>% addProviderTiles("OpenStreetMap") %>% addFeatures(franconia)
 #'
 #' @export addFeatures
 #' @name addFeatures

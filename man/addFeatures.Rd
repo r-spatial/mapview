@@ -22,15 +22,15 @@ A leaflet \code{map} object.
 Add simple features geomertries from \code{\link[sf]{sf}}
 }
 \examples{
-\dontrun{
-leaflet() \%>\% addTiles() \%>\% addCircleMarkers(data = breweries)
-leaflet() \%>\% addTiles() \%>\% addFeatures(data = breweries)
+library(leaflet)
 
-leaflet() \%>\% addTiles() \%>\% addPolylines(data = atlStorms2005)
-leaflet() \%>\% addTiles() \%>\% addFeatures(atlStorms2005)
+leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addCircleMarkers(data = breweries)
+leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addFeatures(data = breweries)
 
-leaflet() \%>\% addTiles() \%>\% addPolygons(data = franconia)
-leaflet() \%>\% addTiles() \%>\% addFeatures(franconia)
-}
+leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addPolylines(data = atlStorms2005)
+leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addFeatures(atlStorms2005)
+
+leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addPolygons(data = franconia)
+leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addFeatures(franconia)
 
 }

@@ -35,7 +35,6 @@ point coordinates in one go, i.e. without being required to run through the
 single steps outlined in \code{\link{SpatialLines}}.
 }
 \examples{
-\dontrun{
 library(sp)
 
 coords1 <- cbind(c(2, 4, 4, 1, 2), c(2, 3, 5, 4, 2))
@@ -48,7 +47,6 @@ mapview(sln1)
 
 plot(sln1, col = "grey75")
 plot(sln2, col = "grey25", add = TRUE)
-}
 
 }
 \seealso{

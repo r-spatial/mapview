@@ -30,19 +30,14 @@ mapview + data adds spatial data (raster*, sf*, sp*) to a mapview map
 [...]
 }
 \examples{
-\dontrun{
-### raster data ###
-library(sp)
-library(raster)
-
-m1 <- mapView(poppendorf[[5]])
-
-### point vector data ###
-m2 <- mapView(breweries91)
+m1 <- mapView(franconia, col.regions = "red")
+m2 <- mapView(breweries)
 
 ### add two mapview objects
 m1 + m2
 '+'(m2, m1)
-}
+
+### add layers to a mapview object
+m1 + breweries + poppendorf[[4]]
 
 }

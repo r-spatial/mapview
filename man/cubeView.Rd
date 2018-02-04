@@ -52,7 +52,6 @@ move mouse down/up to zoom the cube.
 }}
 
 \examples{
-\dontrun{
 library(raster)
 
 kili_data <- system.file("extdata", "kiliNDVI.tif", package = "mapview")
@@ -60,10 +59,8 @@ kiliNDVI <- stack(kili_data)
 
 cubeView(kiliNDVI)
 
-library(RColorBrewer)
-clr <- colorRampPalette(brewer.pal(9, "BrBG"))
+clr <- viridisLite::viridis
 cubeView(kiliNDVI, at = seq(-0.15, 0.95, 0.1), col.regions = clr)
-}
 
 }
 \author{

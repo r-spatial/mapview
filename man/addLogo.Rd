@@ -36,7 +36,7 @@ This function adds an image to a map. Both local and remote (web) image
 sources are supported. Position on the map is completely controllable.
 }
 \examples{
-\dontrun{
+library(leaflet)
 ## default position is topleft next to zoom control
 
 img <- "https://www.r-project.org/logo/Rlogo.svg"
@@ -49,7 +49,6 @@ img <- system.file("img", "Rlogo.png", package="png")
 leaflet() \%>\% addTiles() \%>\% addLogo(img, src = "local", alpha = 0.3)
 
 ## dancing banana gif :-)
-library(magick)
 m <- mapview(breweries91)
 
 addLogo(m, "https://jeroenooms.github.io/images/banana.gif",
@@ -58,8 +57,6 @@ addLogo(m, "https://jeroenooms.github.io/images/banana.gif",
         offset.y = 40,
         width = 100,
         height = 100)
-
-}
 
 
 }

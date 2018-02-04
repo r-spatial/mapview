@@ -21,13 +21,13 @@
 #' Tim Appelhans
 #'
 #' @examples
-#' \dontrun{
+#' library(leaflet)
+#'
 #' viewExtent(poppendorf)
 #' viewExtent(breweries)
 #' viewExtent(franconia) + breweries
 #' viewExtent(trails) + trails + breweries
 #' leaflet() %>% addProviderTiles("OpenStreetMap") %>% addExtent(breweries)
-#' }
 #'
 #' @export viewExtent
 #' @name viewExtent
