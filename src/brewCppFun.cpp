@@ -62,7 +62,7 @@ std::string brewPopupRowC(std::string index, std::string colname,
   ssVal << value;
 
   std::string chValString;
-  chValString = std::string("<td>") + ssVal.str() + "</td>";
+  chValString = std::string("<td align='right'>") + ssVal.str() + "</td>";
 
   std::string chOutString;
   chOutString = std::string("<tr>" + chIndString + chColString + chValString + "</tr>");
@@ -92,7 +92,7 @@ std::string brewPopupRowAltC(std::string index, std::string colname,
   ssVal << value;
 
   std::string chValString;
-  chValString = std::string("<td>") + ssVal.str() + "</td>";
+  chValString = std::string("<td align='right'>") + ssVal.str() + "</td>";
 
   std::string chOutString;
   chOutString = std::string("<tr class=\'alt\'>" + chIndString + chColString + chValString + "</tr>");
@@ -117,7 +117,7 @@ std::string brewPopupCoords(std::string colname, std::string value) {
   ssVal << value;
 
   std::string chValString;
-  chValString = std::string("<td>") + ssVal.str() + "</td>";
+  chValString = std::string("<td align='right'>") + ssVal.str() + "</td>";
 
   std::string chOutString;
   chOutString = std::string("<tr class=\'coord\'>" + chIndString + chColString + chValString + "</tr>");

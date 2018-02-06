@@ -1,9 +1,10 @@
-mapview 2.3.4
+mapview 2.3.5
 
 new features:
 
   * addImageQuery has gained argument prefix to modify the layerId prefix.
   * mapview methods for raster data have gained arguments label, query.type, query.digits, query.position and query.prefix to modify raster value query settings. https://twitter.com/pierreroudier/status/958476875344392193
+  * popupTable now right aligns values.
   
 bugfixes:
 
