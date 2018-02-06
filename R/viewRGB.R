@@ -18,7 +18,7 @@ if ( !isGeneric('viewRGB') ) {
 #' @param r integer. Index of the Red channel, between 1 and nlayers(x)
 #' @param g integer. Index of the Green channel, between 1 and nlayers(x)
 #' @param b integer. Index of the Blue channel, between 1 and nlayers(x)
-#' @param quantiles the upper and lower quantiles used for color stretching
+#' @param quantiles the upper and lower quantiles used for color stretching. If set to NULL, no stretching is applied.
 #' @param map the map to which the layer should be added
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
@@ -71,14 +71,20 @@ setMethod("viewRGB", signature(x = "RasterStackBrick"),
                          xout[[g]][],
                          xout[[b]][])
 
-            for(i in seq(ncol(mat))){
-              z <- mat[, i]
-              lwr <- stats::quantile(z, quantiles[1], na.rm = TRUE)
-              upr <- stats::quantile(z, quantiles[2], na.rm = TRUE)
-              z <- (z - lwr) / (upr - lwr)
-              z[z < 0] <- 0
-              z[z > 1] <- 1
-              mat[, i] <- z
+            if (!is.null(quantiles)) {
+
+              for(i in seq(ncol(mat))){
+                z <- mat[, i]
+                lwr <- stats::quantile(z, quantiles[1], na.rm = TRUE)
+                upr <- stats::quantile(z, quantiles[2], na.rm = TRUE)
+                z <- (z - lwr) / (upr - lwr)
+                z[z < 0] <- 0
+                z[z > 1] <- 1
+                mat[, i] <- z
+              }
+            } else {
+              # If there is no stretch we just scale the data between 0 and 1
+              mat <- apply(mat, 2, scales::rescale)
             }
 
             na_indx <- apply(mat, 1, anyNA)
