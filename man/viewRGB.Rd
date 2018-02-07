@@ -23,7 +23,7 @@
 
 \item{b}{integer. Index of the Blue channel, between 1 and nlayers(x)}
 
-\item{quantiles}{the upper and lower quantiles used for color stretching}
+\item{quantiles}{the upper and lower quantiles used for color stretching. If set to NULL, no stretching is applied.}
 
 \item{map}{the map to which the layer should be added}
 
