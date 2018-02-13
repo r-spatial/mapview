@@ -56,7 +56,7 @@ std::string brewPopupRowC(std::string index, std::string colname,
   }
 
   std::string chColString;
-  chColString = std::string("<td>") + "<b>" + colname + "</b>" + "</td>";
+  chColString = std::string("<td>") + "<b>" + colname + "&emsp;</b>" + "</td>";
 
   std::ostringstream ssVal;
   ssVal << value;
@@ -86,7 +86,7 @@ std::string brewPopupRowAltC(std::string index, std::string colname,
   }
 
   std::string chColString;
-  chColString = std::string("<td>") + "<b>" + colname + "</b>" + "</td>";
+  chColString = std::string("<td>") + "<b>" + colname + "&emsp;</b>" + "</td>";
 
   std::ostringstream ssVal;
   ssVal << value;
