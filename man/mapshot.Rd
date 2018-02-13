@@ -4,7 +4,9 @@
 \alias{mapshot}
 \title{Save mapview or leaflet map as HTML and/or image}
 \usage{
-mapshot(x, url = NULL, file = NULL, remove_url = TRUE, ...)
+mapshot(x, url = NULL, file = NULL, remove_url = TRUE,
+  remove_controls = c("zoomControl", "layersControl", "homeButton",
+  "scaleBar"), ...)
 }
 \arguments{
 \item{x}{\code{mapview} or \code{leaflet} object.}
@@ -17,6 +19,11 @@ a temporary index file will be created.}
 \item{remove_url}{\code{logical}. If \code{TRUE} (default), the \code{.html}
 file is removed once processing is completed. Only applies if 'url' is not
 specified.}
+
+\item{remove_controls}{\code{character} vector of control buttons to be removed
+from the map when saving to file. Any combination of
+"zoomControl", "layersControl", "homeButton", "scaleBar". If set to \code{NULL}
+nothing will be removed.}
 
 \item{...}{Further arguments passed on to \code{\link{webshot}}.}
 }
@@ -50,6 +57,8 @@ mapshot(m, url = paste0(getwd(), "/map.html"))
 ## create standalone .png; temporary .html is removed automatically unless
 ## 'remove_url = FALSE' is specified
 mapshot(m, file = paste0(getwd(), "/map.png"))
+mapshot(m, file = paste0(getwd(), "/map.png"),
+        remove_controls = c("homeButton", "layersControl"))
 
 ## create .html and .png
 mapshot(m, url = paste0(getwd(), "/map.html"),
