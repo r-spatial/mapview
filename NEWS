@@ -1,11 +1,12 @@
-mapview 2.3.6
+mapview 2.3.7
 
 new features:
 
   * addImageQuery has gained argument prefix to modify the layerId prefix.
   * mapview methods for raster data have gained arguments label, query.type, query.digits, query.position and query.prefix to modify raster value query settings. https://twitter.com/pierreroudier/status/958476875344392193
   * popupTable now right aligns values.
-  * Thanks to Pierre Roudier quantile strectching in viewRGB can now be turned off by simply setting to NULL. #127 
+  * Thanks to Pierre Roudier quantile strectching in viewRGB can now be turned off by simply setting to NULL. #127
+  * mapshot has gained argument remove_controls to remove map junk when saving to file.
   
 bugfixes:
 

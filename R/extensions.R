@@ -549,7 +549,7 @@ addFeatures <- function(map,
 
 mw = 800
 
-### Point Features ========================================================
+### Point Features
 addPointFeatures <- function(map,
                              data,
                              ...) {
@@ -560,7 +560,7 @@ addPointFeatures <- function(map,
              ...)
 }
 
-### Line Features =========================================================
+### Line Features
 addLineFeatures <- function(map,
                             data,
                             ...) {
@@ -571,7 +571,7 @@ addLineFeatures <- function(map,
              ...)
 }
 
-### PolygonFeatures =======================================================
+### PolygonFeatures
 addPolygonFeatures <- function(map,
                                data,
                                ...) {
@@ -582,7 +582,7 @@ addPolygonFeatures <- function(map,
              ...)
 }
 
-### GeometryCollections ===================================================
+### GeometryCollections
 addGeometry = function(map,
                        data,
                        ...) {
