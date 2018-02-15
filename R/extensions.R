@@ -557,6 +557,7 @@ addPointFeatures <- function(map,
              data = sf::st_zm(sf::st_cast(data, "POINT")),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
+             labelOptions = labelOptions(sticky = TRUE),
              ...)
 }
 
@@ -568,6 +569,7 @@ addLineFeatures <- function(map,
              data = sf::st_zm(data),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
+             labelOptions = labelOptions(sticky = TRUE),
              ...)
 }
 
@@ -579,6 +581,7 @@ addPolygonFeatures <- function(map,
              data = sf::st_zm(data),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
+             labelOptions = labelOptions(sticky = TRUE),
              ...)
 }
 
