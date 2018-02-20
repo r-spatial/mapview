@@ -139,6 +139,19 @@ addMouseCoordinates <- function(map, style = c("detailed", "basic"),
   map
 }
 
+
+removeMouseCoordinates = function(map) {
+  if (inherits(map, "mapview")) map = mapview2leaflet(map)
+
+  rc = map$jsHooks$render
+  rc_lnlt = lapply(rc, grep, pattern = "lnlt")
+  for (i in seq_along(map$jsHooks$render)) {
+    map$jsHooks$render[[i]][rc_lnlt[[i]]] = NULL
+  }
+
+  return(map)
+}
+
 ##############################################################################
 
 
