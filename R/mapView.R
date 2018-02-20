@@ -699,6 +699,15 @@ setMethod('mapView', signature(x = 'data.frame'),
                    popup = popupTable(x),
                    label,
                    ...) {
+            if (missing(xcol) | missing(ycol)) {
+              obj = deparse(substitute(x, env = parent.frame()))
+              msg = paste0("\noops! Arguments xcol and/or ycol are missing!\n",
+                           "You probably expected ", obj,
+                           " to be a spatial object. \nHowever it is of class ",
+                           class(x), ". \nEither convert ", obj, " to a spatial object ",
+                           "or provide xcol and ycol.")
+              stop(msg, call. = FALSE)
+            }
             if (missing(label)) {
               labs = lapply(seq(nrow(x)), function(i) {
                 paste0(xcol, " (x) : ", x[[xcol]][i], '<br>',
