@@ -723,7 +723,8 @@ addImageQuery = function(map,
   ctrlid = ctrlid[imctrl]
 
   if (length(ctrlid) == 0) {
-    map = addControl(map, NULL, layerId = 'imageValues', position = position)
+    # must add empty character instead of NULL for html with addControl
+    map = addControl(map, html = "", layerId = 'imageValues', position = position)
   }
 
   map$dependencies <- c(map$dependencies,
