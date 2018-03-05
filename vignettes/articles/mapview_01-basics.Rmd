@@ -106,3 +106,13 @@ mapview(poppendorf[[5]], legend = TRUE)
 ## RasterStack/Brick
 
 `mapview(<RasterStack/Brick>)` will produce one map view layer for each layer in the stack/brick. Use the layers control to switch between the layers. By default all layers are shown (see chapter advanced for an example on how to hide all but one layer).
+
+The `kiliNDVI` data can be loaded like this:
+
+```{r kili, message = FALSE, warning=FALSE}
+kili_data <- system.file("extdata", "kiliNDVI.tif", package = "mapview")
+kiliNDVI <- raster::stack(kili_data)
+
+## view the first 3 layers
+mapview(kiliNDVI[[1:3]])
+```
