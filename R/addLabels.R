@@ -14,7 +14,7 @@
 #' \code{\link[leaflet]{addLabelOnlyMarkers}}.
 #'
 #' @return
-#' A \strong{leaflet} \code{map} object.
+#' A labelled \strong{mapview} object.
 #'
 #' @author
 #' Florian Detsch

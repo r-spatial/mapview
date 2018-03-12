@@ -19,7 +19,7 @@ defaults to the locations of the first dataset in 'map'.}
 \code{\link[leaflet]{addLabelOnlyMarkers}}.}
 }
 \value{
-A \strong{leaflet} \code{map} object.
+A labelled \strong{mapview} object.
 }
 \description{
 Being a wrapper around \code{\link[leaflet]{addLabelOnlyMarkers}}, this
