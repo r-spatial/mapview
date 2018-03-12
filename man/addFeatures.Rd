@@ -19,7 +19,7 @@ and \code{\link{addPolygons}}.}
 A leaflet \code{map} object.
 }
 \description{
-Add simple features geomertries from \code{\link[sf]{sf}}
+Add simple features geometries from \code{\link[sf]{sf}}
 }
 \examples{
 library(leaflet)
