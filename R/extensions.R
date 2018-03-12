@@ -504,7 +504,7 @@ remoteImage <- function(img, alpha, url, width, height) {
 #' Type agnositc version of \code{leaflet::add*} functions.
 #'
 #' @description
-#' Add simple features geomertries from \code{\link[sf]{sf}}
+#' Add simple features geometries from \code{\link[sf]{sf}}
 #'
 #' @param map A \code{leaflet} or \code{mapview} map.
 #' @param data A \code{sf} object to be added to the \code{map}.
