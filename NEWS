@@ -1,4 +1,4 @@
-mapview 2.3.9
+mapview 2.3.10
 
 new features:
 
@@ -7,6 +7,7 @@ new features:
   * popupTable now right aligns values.
   * Thanks to Pierre Roudier quantile strectching in viewRGB can now be turned off by simply setting to NULL. #127
   * mapshot has gained argument remove_controls to remove map junk when saving to file.
+  * new function addStaticLabels to add (surprise surprise) static labels to features. #136
   
 bugfixes:
 
