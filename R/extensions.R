@@ -822,8 +822,26 @@ addStaticLabels = function(
   map
   , data
   , label
+  , group = NULL
+  , layerId = NULL
   , ...
 ) {
+
+  if (inherits(map, "mapview") & missing(data)) {
+    data = map@object[[1]]
+    if (is.null(group)) {
+      group = mapview:::getLayerNamesFromMap(map@map)[1]
+    } else {
+      group = NULL
+    }
+  }
+
+  dots = list(...)
+  min_opts = list(noHide = TRUE,
+                  direction = "top",
+                  textOnly = TRUE)
+
+  dots = append(dots, min_opts)
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
 
@@ -841,10 +859,13 @@ addStaticLabels = function(
 
   if (missing(label)) {
     sf_col = attr(data, "sf_column")
-    if (ncol(data) == 2) {
-      label = data[, setdiff(colnames(data, sf_col))]
-    } else if (inherits(data, "sf")) {
-      label = seq(nrow(data))
+    if (inherits(data, "sf")) {
+      if (ncol(data) == 2) {
+        colnm = setdiff(colnames(data), sf_col)
+        label = data[[colnm]]
+      } else {
+        label = seq(nrow(data))
+      }
     } else {
       label = seq(length(data))
     }
@@ -861,11 +882,19 @@ addStaticLabels = function(
   }
 
   ## add labels to map
-  map = leaflet::addLabelOnlyMarkers(map,
-                                     lng = mat[, 1],
-                                     lat = mat[, 2],
-                                     label = as.character(label),
-                                     ...)
+  map = garnishMap(leaflet::addLabelOnlyMarkers,
+                   map = map,
+                   lng = mat[, 1],
+                   lat = mat[, 2],
+                   label = as.character(label),
+                   group = group,
+                   layerId = layerId,
+                   labelOptions = dots)
+  # map = leaflet::addLabelOnlyMarkers(map,
+  #                                    lng = mat[, 1],
+  #                                    lat = mat[, 2],
+  #                                    label = as.character(label),
+  #                                    ...)
 
   return(map)
 }

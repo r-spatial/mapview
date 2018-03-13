@@ -4,7 +4,7 @@
 \alias{addStaticLabels}
 \title{Add static labels to \code{leaflet} or \code{mapview} objects}
 \usage{
-addStaticLabels(map, data, label, ...)
+addStaticLabels(map, data, label, group = NULL, layerId = NULL, ...)
 }
 \arguments{
 \item{map}{A \code{leaflet} or \code{mapview} object.}
