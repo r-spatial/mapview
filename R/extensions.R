@@ -758,3 +758,117 @@ addImageQuery = function(map,
 }
 
 ##############################################################################
+
+
+
+### addStaticLabels ##########################################################
+##############################################################################
+#' Add static labels to \code{leaflet} or \code{mapview} objects
+#'
+#' @description
+#' Being a wrapper around \code{\link[leaflet]{addLabelOnlyMarkers}}, this
+#' function provides a smart-and-easy solution to add custom text labels to an
+#' existing \code{leaflet} or \code{mapview} map object.
+#'
+#' @param map A \code{leaflet} or \code{mapview} object.
+#' @param data A \code{sf} or \code{Spatial*} object used for label placement,
+#' defaults to the locations of the first dataset in 'map'.
+#' @param label The labels to be placed at the positions indicated by 'data' as
+#' \code{character}, or any vector that can be coerced to this type.
+#' @param ... Additional arguments passed to
+#' \code{\link[leaflet]{addLabelOnlyMarkers}}.
+#'
+#' @return
+#' A labelled \strong{mapview} object.
+#'
+#' @author
+#' Florian Detsch
+#'
+#' @seealso
+#' \code{\link[leaflet]{addLabelOnlyMarkers}}.
+#'
+#' @examples
+#' \dontrun{
+#' ## leaflet label display options
+#' library(leaflet)
+#'
+#' lopt = labelOptions(noHide = TRUE
+#'                     , direction = 'top'
+#'                     , textOnly = TRUE)
+#'
+#' ## point labels
+#' m1 = mapview(breweries)
+#' l1 = addStaticLabels(m1
+#'                      , label = breweries$number.of.types
+#'                      , labelOptions = lopt)
+#'
+#' ## polygon centroid labels
+#' m2 = mapview(franconia)
+#' l2 = addStaticLabels(m2
+#'                      , label = franconia$NAME_ASCI
+#'                      , labelOptions = lopt)
+#'
+#' ## custom labels
+#' m3 = m1 + m2
+#' l3 = addStaticLabels(m3
+#'                      , data = franconia
+#'                      , label = franconia$NAME_ASCI
+#'                      , labelOptions = lopt)
+#' }
+#'
+#' @export addStaticLabels
+#' @name addStaticLabels
+addStaticLabels = function(
+  map
+  , data
+  , label
+  , ...
+) {
+
+  if (inherits(map, "mapview")) map = mapview2leaflet(map)
+
+  ## 'Raster*' locations not supported so far -> error
+  if (inherits(data, "Raster")) {
+    stop(paste("'Raster*' input is not supported, yet."
+               , "Please refer to ?addLabels for compatible input formats.\n"),
+         call. = FALSE)
+  }
+
+  ## if input is 'Spatial*', convert to 'sf'
+  if (inherits(data, "Spatial")) {
+    data = sf::st_as_sf(data)
+  }
+
+  if (missing(label)) {
+    sf_col = attr(data, "sf_column")
+    if (ncol(data) == 2) {
+      label = data[, setdiff(colnames(data, sf_col))]
+    } else if (inherits(data, "sf")) {
+      label = seq(nrow(data))
+    } else {
+      label = seq(length(data))
+    }
+  }
+
+  if (getGeometryType(data) == "ln") {
+    crds = as.data.frame(sf::st_coordinates(data))
+    crds_lst = split(crds, crds[[ncol(crds)]])
+    mat = do.call(rbind, lapply(seq(crds_lst), function(i) {
+      crds_lst[[i]][sapply(crds_lst, nrow)[i], c("X", "Y")]
+    }))
+  } else {
+    mat = sf::st_coordinates(suppressWarnings(sf::st_centroid(data)))
+  }
+
+  ## add labels to map
+  map = leaflet::addLabelOnlyMarkers(map,
+                                     lng = mat[, 1],
+                                     lat = mat[, 2],
+                                     label = as.character(label),
+                                     ...)
+
+  return(map)
+}
+
+
+##############################################################################

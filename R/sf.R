@@ -1,10 +1,5 @@
-large_warn = paste("the supplied feature layer has more points/vertices than the set threshold.",
-                   "using special rendering function, hence things may not behave as expected from a standard leaflet map,",
-                   "e.g. you will likely need to zoom in to popup-query features\n",
-                   "to see the number of points/vertices of the layer use 'npts(x)'",
-                   "to see the threshold for the feature type use 'mapview:::getMaxFeatures(x)'",
-                   "to adjust the threshold use argument 'maxpoints'",
-                   sep = "\n  ")
+# large_warn = paste("\nthe supplied feature layer seems quite large.\n",
+#                    "would you like to view in the browser instead of RStudio viewer? (recommended)\n")
 
 ### sf ####################################################################
 leaflet_sf <- function(x,
@@ -168,24 +163,35 @@ leaflet_sfc <- function(x,
 
   m <- initMap(map, map.types, sf::st_crs(x), native.crs)
 
-  if (featureComplexity(x) > maxpoints) {
-    if (getGeometryType(x) == "ln") clrs <- color else clrs <-  col.regions
-    warning(large_warn)
-    m <- addLargeFeatures(m,
-                          data = x,
-                          radius = cex,
-                          weight = lwd,
-                          opacity = alpha,
-                          fillOpacity = alpha.regions,
-                          color = clrs,
-                          popup = popup,
-                          label = label,
-                          group = layer.name,
-                          maxpoints = maxpoints,
-                          attributes = attributes,
-                          ...)
+  # if (featureComplexity(x) > maxpoints) {
+  #   cat(large_warn)
+  #   if(interactive()) {
+  #     installChoice <- menu(c("yes", "no"))
+  #     if(installChoice == 1){
+  #       vwr = options("viewer")
+  #       options(viewer = NULL)
+  #     }
+  #   }
+  # }
 
-  } else {
+  # if (featureComplexity(x) > maxpoints) {
+  #   if (getGeometryType(x) == "ln") clrs <- color else clrs <-  col.regions
+  #   warning(large_warn)
+  #   m <- addLargeFeatures(m,
+  #                         data = x,
+  #                         radius = cex,
+  #                         weight = lwd,
+  #                         opacity = alpha,
+  #                         fillOpacity = alpha.regions,
+  #                         color = clrs,
+  #                         popup = popup,
+  #                         label = label,
+  #                         group = layer.name,
+  #                         maxpoints = maxpoints,
+  #                         attributes = attributes,
+  #                         ...)
+  #
+  # } else {
 
   m <- addFeatures(m,
                    data = x,
@@ -201,7 +207,7 @@ leaflet_sfc <- function(x,
                    highlightOptions = highlight,
                    ...)
 
-  }
+  # }
 
   if (!is.null(map)) m = updateOverlayGroups(m, layer.name)
 
