@@ -25,6 +25,8 @@ r_github_packages:
 
 warnings_are_errors: false
 
+before_install: R -q -e 'install.packages("remotes"); remotes::install_github("ropenscilabs/tic"); tic::prepare_all_stages(); tic::before_install()'
+
 script: R -q -e 'tic::script()'
 
 after_success: R -q -e 'tic::after_success()'
@@ -35,4 +37,6 @@ deploy:
    script: R -q -e 'tic::deploy()'
    on:
      branch: master
-     condition: $TRAVIS_PULL_REQUEST = false
+     condition:
+       - $TRAVIS_PULL_REQUEST = false
+       - $TRAVIS_EVENT_TYPE != cron
