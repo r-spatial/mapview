@@ -15,7 +15,7 @@ addons:
       - libgeos-dev
       - libgdal-dev
       - libudunits2-dev
-      - liblwgeom-dev
+      - postgis # for lwgeom
 
 r:
   - release
