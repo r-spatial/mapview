@@ -14,13 +14,25 @@ addons:
       - libproj-dev
       - libgeos-dev
       - libgdal-dev
+      - libudunits2-dev
 
 r:
   - release
   - devel
+
+r_github_packages:
+  - r-spatial/stars
 
 warnings_are_errors: false
 
 script: R -q -e 'tic::script()'
 
 after_success: R -q -e 'tic::after_success()'
+
+before_deploy: R -q -e 'tic::before_deploy()'
+deploy:
+   provider: script
+   script: R -q -e 'tic::deploy()'
+   on:
+     branch: master
+     condition: $TRAVIS_PULL_REQUEST = false
