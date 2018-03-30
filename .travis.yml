@@ -15,10 +15,14 @@ addons:
       - libgeos-dev
       - libgdal-dev
       - libudunits2-dev
+      - liblwgeom-dev
 
 r:
   - release
   - devel
+
+r_packages:
+  - lwgeom
 
 r_github_packages:
   - r-spatial/stars
