@@ -1,4 +1,4 @@
-## mapview 2.3.10
+## mapview 2.3.11
 
 new features:
 
@@ -8,6 +8,7 @@ new features:
   * Thanks to Pierre Roudier quantile strectching in viewRGB can now be turned off by simply setting to NULL. #127
   * mapshot has gained argument remove_controls to remove map junk when saving to file.
   * new function addStaticLabels to add (surprise surprise) static labels to features. #136
+  * mapview method for data.frame has gained argument crs to enable rendering on a basemap #138
   
 bugfixes:
 
