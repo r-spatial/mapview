@@ -1,11 +1,11 @@
 # make interactive scatter plots
 
-xyView = function(x, y, data, type = "p", grid = TRUE, aspect = 1, label, ...) {
+xyView = function(x, y, data, type = "p", grid = TRUE, aspect = 1, label, crs = NA, ...) {
 
   if (!missing(data)) {
     # nm = "data" #deparse(substitute(data))
     data[[y]] = data[[y]] * aspect
-    data = sf::st_as_sf(data, coords = c(x, y), remove = FALSE)
+    data = sf::st_as_sf(data, coords = c(x, y), remove = FALSE, crs = crs)
   } else if (!missing(x) & missing(y)) {
     y = x * aspect
     x = seq_along(y)
@@ -20,7 +20,8 @@ xyView = function(x, y, data, type = "p", grid = TRUE, aspect = 1, label, ...) {
     data = sf::st_as_sf(
       data.frame(x = x, y = y * aspect),
       coords = c("x", "y"),
-      remove = FALSE
+      remove = FALSE,
+      crs = crs
     )
     # nm = "data"
   }
@@ -32,7 +33,8 @@ xyView = function(x, y, data, type = "p", grid = TRUE, aspect = 1, label, ...) {
           data
         ),
         to = "LINESTRING"
-      )[[1]]
+      )[[1]],
+      crs = crs
     )
   }
 

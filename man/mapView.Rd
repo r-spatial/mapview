@@ -108,7 +108,7 @@
 \S4method{mapView}{numeric}(x, y, type = "p", grid = TRUE, label, ...)
 
 \S4method{mapView}{data.frame}(x, xcol, ycol, grid = TRUE, aspect = 1,
-  popup = popupTable(x), label, ...)
+  popup = popupTable(x), label, crs = NA, ...)
 
 \S4method{mapView}{XY}(x, map = NULL, color = standardColor(x),
   col.regions = standardColRegions(x), at = NULL,
@@ -327,6 +327,10 @@ data.frame method.}
 
 \item{aspect}{the ratio of x/y axis corrdinates to adjust the plotting
 space to fit the screen. Only relevant for the data.frame method.}
+
+\item{crs}{an optional crs specification for the provided data to enable
+rendering on a basemap. See argument description in \code{\link{st_sf}}
+for details.}
 }
 \description{
 this function produces an interactive view of the specified

@@ -690,6 +690,9 @@ setMethod('mapView', signature(x = 'numeric'),
 #' of the visualisation. Only relevant for the data.frame method.
 #' @param aspect the ratio of x/y axis corrdinates to adjust the plotting
 #' space to fit the screen. Only relevant for the data.frame method.
+#' @param crs an optional crs specification for the provided data to enable
+#' rendering on a basemap. See argument description in \code{\link{st_sf}}
+#' for details.
 setMethod('mapView', signature(x = 'data.frame'),
           function(x,
                    xcol,
@@ -698,6 +701,7 @@ setMethod('mapView', signature(x = 'data.frame'),
                    aspect = 1,
                    popup = popupTable(x),
                    label,
+                   crs = NA,
                    ...) {
             if (missing(xcol) | missing(ycol)) {
               obj = deparse(substitute(x, env = parent.frame()))
@@ -722,6 +726,7 @@ setMethod('mapView', signature(x = 'data.frame'),
                    aspect = aspect,
                    popup = popup,
                    label = label,
+                   crs = crs,
                    ...)
           }
 )
