@@ -30,10 +30,10 @@
 #' library(stars)
 #' library(leaflet)
 #' tif = system.file("tif/L7_ETMs.tif", package = "stars")
-#' x = st_stars(tif)
+#' x = read_stars(tif)
 #' leaflet() %>%
 #'   addProviderTiles("OpenStreetMap") %>%
-#'   addStarsImage(x)
+#'   addStarsImage(x, project = TRUE)
 #' }
 #'
 #' @export addStarsImage
@@ -53,7 +53,7 @@ addStarsImage <- function(map,
   if (is.null(group)) group = "stars"
   if (is.null(layerId)) layerId = group
   if (project) {
-    projected <- st_transform(x, crs = 4326)
+    projected <- st_transform(x, crs = 3857)
   } else {
     projected <- x
   }
@@ -195,7 +195,7 @@ leaflet_stars = function(x,
     } else {
       grp = layer.name
     }
-
+    x <- st_transform(x, crs = 3857)
     ## add layers to base map
     m = addStarsImage(map = m,
                       x = x,
