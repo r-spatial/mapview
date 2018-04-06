@@ -321,10 +321,10 @@ setMethod('mapView', signature(x = 'stars'),
                    ...) {
 
             method = match.arg(method)
-
+            if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , 1]
             if (is.null(at)) at <- lattice::do.breaks(
-              extendLimits(range(as.numeric(x[[1]][, , 1]),
-                                 na.rm = TRUE)), 256
+              extendLimits(range(layer, na.rm = TRUE)),
+              256
             )
 
             if (mapviewGetOption("platform") == "leaflet") {

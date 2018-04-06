@@ -65,8 +65,8 @@ addStarsImage <- function(map,
     colors <- colorNumeric(colors, domain = NULL,
                            na.color = "#00000000", alpha = TRUE)
   }
-
-  tileData <- as.numeric(projected[[1]][, , 1]) %>%
+  if(length(dim(projected)) == 2) layer = projected[[1]] else layer = projected[[1]][, , 1]
+  tileData <- as.numeric(layer) %>%
     colors() %>% grDevices::col2rgb(alpha = TRUE) %>% as.raw()
   dim(tileData) <- c(4, as.numeric(nrow(projected)), as.numeric(ncol(projected)))
   pngData <- png::writePNG(tileData)
@@ -151,14 +151,14 @@ leaflet_stars = function(x,
     # if (!is.na(raster::projection(x)) & trim) x = trim(x)
 
     # if (is.fact) x = raster::as.factor(x)
-
+    if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , 1]
     if (is.null(values)) {
       # if (is.fact) {
       #   at = x@data@attributes[[1]]$ID
       # } else {
-      offset = diff(range(as.numeric(x[[1]][, , 1]), na.rm = TRUE)) * 0.05
-      top = max(as.numeric(x[[1]][, , 1]), na.rm = TRUE) + offset
-      bot = min(as.numeric(x[[1]][, , 1]), na.rm = TRUE) - offset
+      offset = diff(range(as.numeric(layer), na.rm = TRUE)) * 0.05
+      top = max(as.numeric(layer), na.rm = TRUE) + offset
+      bot = min(as.numeric(layer), na.rm = TRUE) - offset
       values = seq(bot, top, length.out = 10)
       values = round(values, 5)
       # }
@@ -251,11 +251,12 @@ leaflet_stars = function(x,
 
 
 stars2Array = function(x) {
+  if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , 1]
   paste(
     sapply(seq(nrow(x[[1]])), function(i) {
       paste0(
         '[', gsub("NA", "null",
-                  paste(as.numeric(x[[1]][, , 1][i, ]), collapse = ",")), ']'
+                  paste(as.numeric(layer[i, ]), collapse = ",")), ']'
       )
     }),
     collapse = ","

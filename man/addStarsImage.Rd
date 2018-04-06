@@ -51,10 +51,10 @@ for details.
 library(stars)
 library(leaflet)
 tif = system.file("tif/L7_ETMs.tif", package = "stars")
-x = st_stars(tif)
+x = read_stars(tif)
 leaflet() \%>\%
   addProviderTiles("OpenStreetMap") \%>\%
-  addStarsImage(x)
+  addStarsImage(x, project = TRUE)
 }
 
 }
