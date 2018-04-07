@@ -132,7 +132,7 @@ xyGrid = function(x, aspect = 1) {
       noHide = TRUE,
       direction = "left",
       textOnly = TRUE,
-      offset = c(10, 25),
+      offset = c(-5, 0),
       opacity = 0.5
     )
   )
