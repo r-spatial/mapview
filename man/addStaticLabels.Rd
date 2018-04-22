@@ -31,28 +31,31 @@ existing \code{leaflet} or \code{mapview} map object.
 ## leaflet label display options
 library(leaflet)
 
-lopt = labelOptions(noHide = TRUE
-                    , direction = 'top'
-                    , textOnly = TRUE)
+lopt = labelOptions(noHide = TRUE,
+                    direction = 'top',
+                    textOnly = TRUE)
 
 ## point labels
 m1 = mapview(breweries)
-l1 = addStaticLabels(m1
-                     , label = breweries$number.of.types
-                     , labelOptions = lopt)
+l1 = addStaticLabels(m1,
+                     label = breweries$number.of.types,
+                     labelOptions = lopt)
+l1
 
 ## polygon centroid labels
 m2 = mapview(franconia)
-l2 = addStaticLabels(m2
-                     , label = franconia$NAME_ASCI
-                     , labelOptions = lopt)
+l2 = addStaticLabels(m2,
+                     label = franconia$NAME_ASCI,
+                     labelOptions = lopt)
+l2
 
 ## custom labels
-m3 = m1 + m2
-l3 = addStaticLabels(m3
-                     , data = franconia
-                     , label = franconia$NAME_ASCI
-                     , labelOptions = lopt)
+m3 = m2 + m1
+l3 = addStaticLabels(m3,
+                     data = franconia,
+                     label = franconia$NAME_ASCI,
+                     labelOptions = lopt)
+l3
 }
 
 }

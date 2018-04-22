@@ -792,40 +792,41 @@ addImageQuery = function(map,
 #' ## leaflet label display options
 #' library(leaflet)
 #'
-#' lopt = labelOptions(noHide = TRUE
-#'                     , direction = 'top'
-#'                     , textOnly = TRUE)
+#' lopt = labelOptions(noHide = TRUE,
+#'                     direction = 'top',
+#'                     textOnly = TRUE)
 #'
 #' ## point labels
 #' m1 = mapview(breweries)
-#' l1 = addStaticLabels(m1
-#'                      , label = breweries$number.of.types
-#'                      , labelOptions = lopt)
+#' l1 = addStaticLabels(m1,
+#'                      label = breweries$number.of.types,
+#'                      labelOptions = lopt)
+#' l1
 #'
 #' ## polygon centroid labels
 #' m2 = mapview(franconia)
-#' l2 = addStaticLabels(m2
-#'                      , label = franconia$NAME_ASCI
-#'                      , labelOptions = lopt)
+#' l2 = addStaticLabels(m2,
+#'                      label = franconia$NAME_ASCI,
+#'                      labelOptions = lopt)
+#' l2
 #'
 #' ## custom labels
-#' m3 = m1 + m2
-#' l3 = addStaticLabels(m3
-#'                      , data = franconia
-#'                      , label = franconia$NAME_ASCI
-#'                      , labelOptions = lopt)
+#' m3 = m2 + m1
+#' l3 = addStaticLabels(m3,
+#'                      data = franconia,
+#'                      label = franconia$NAME_ASCI,
+#'                      labelOptions = lopt)
+#' l3
 #' }
 #'
 #' @export addStaticLabels
 #' @name addStaticLabels
-addStaticLabels = function(
-  map
-  , data
-  , label
-  , group = NULL
-  , layerId = NULL
-  , ...
-) {
+addStaticLabels = function(map,
+                           data,
+                           label,
+                           group = NULL,
+                           layerId = NULL,
+                           ...) {
 
   if (inherits(map, "mapview") & missing(data)) {
     data = map@object[[1]]
@@ -857,19 +858,20 @@ addStaticLabels = function(
     data = sf::st_as_sf(data)
   }
 
-  if (missing(label)) {
-    sf_col = attr(data, "sf_column")
-    if (inherits(data, "sf")) {
-      if (ncol(data) == 2) {
-        colnm = setdiff(colnames(data), sf_col)
-        label = data[[colnm]]
-      } else {
-        label = seq(nrow(data))
-      }
-    } else {
-      label = seq(length(data))
-    }
-  }
+  if (missing(label)) label = makeLabels(data, NULL)
+  #   {
+  #   sf_col = attr(data, "sf_column")
+  #   if (inherits(data, "sf")) {
+  #     if (ncol(data) == 2) {
+  #       colnm = setdiff(colnames(data), sf_col)
+  #       label = data[[colnm]]
+  #     } else {
+  #       label = seq(nrow(data))
+  #     }
+  #   } else {
+  #     label = seq(length(data))
+  #   }
+  # }
 
   if (getGeometryType(data) == "ln") {
     crds = as.data.frame(sf::st_coordinates(data))
