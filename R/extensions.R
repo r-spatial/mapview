@@ -89,49 +89,50 @@ addMouseCoordinates <- function(map, style = c("detailed", "basic"),
       "
       function(el, x, data) {
 
-      // get the leaflet map
-      var map = this; //HTMLWidgets.find('#' + el.id);
+        // get the leaflet map
+        var map = this; //HTMLWidgets.find('#' + el.id);
 
-      // we need a new div element because we have to handle
-      // the mouseover output separately
-      // debugger;
-      function addElement () {
-      // generate new div Element
-      var newDiv = $(document.createElement('div'));
-      // append at end of leaflet htmlwidget container
-      $(el).append(newDiv);
-      //provide ID and style
-      newDiv.addClass('lnlt');
-      newDiv.css({
-      'position': 'relative',
-      'bottomleft':  '0px',
-      'background-color': 'rgba(255, 255, 255, 0.7)',
-      'box-shadow': '0 0 2px #bbb',
-      'background-clip': 'padding-box',
-      'margin': '0',
-      'padding-left': '5px',
-      'color': '#333',
-      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',
-      });
-      return newDiv;
-      }
+        // we need a new div element because we have to handle
+        // the mouseover output separately
+        // debugger;
+        function addElement () {
+          // generate new div Element
+         var newDiv = $(document.createElement('div'));
+          // append at end of leaflet htmlwidget container
+          $(el).append(newDiv);
+          //provide ID and style
+          newDiv.addClass('lnlt');
+          newDiv.css({
+            'position': 'relative',
+            'bottomleft':  '0px',
+            'background-color': 'rgba(255, 255, 255, 0.7)',
+            'box-shadow': '0 0 2px #bbb',
+            'background-clip': 'padding-box',
+            'margin': '0',
+            'padding-left': '5px',
+            'color': '#333',
+            'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',
+            'z-index': '700',
+          });
+          return newDiv;
+        }
 
-      // check for already existing lnlt class to not duplicate
-      var lnlt = $(el).find('.lnlt');
+        // check for already existing lnlt class to not duplicate
+        var lnlt = $(el).find('.lnlt');
 
-      if(!lnlt.length) {
-      lnlt = addElement();
-      //$(el).keypress(function (e) {
-      //  if (e.which == 32 || event.keyCode == 32) {
-      //    alert('space key is pressed');
-      //  }
-      //});
-      // grab the special div we generated in the beginning
-      // and put the mousmove output there
-      map.on('mousemove', function (e) {
-      lnlt.text(", txt, ");
-      });
-      };
+        if(!lnlt.length) {
+          lnlt = addElement();
+          //$(el).keypress(function (e) {
+          //  if (e.which == 32 || event.keyCode == 32) {
+          //    alert('space key is pressed');
+          //  }
+          //});
+          // grab the special div we generated in the beginning
+          // and put the mousmove output there
+          map.on('mousemove', function (e) {
+            lnlt.text(", txt, ");
+          });
+        };
       }
       "
   )
@@ -570,6 +571,8 @@ addPointFeatures <- function(map,
              data = sf::st_zm(sf::st_cast(data, "POINT")),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
+             labelOptions = labelOptions(sticky = TRUE,
+                                         opacity = 0.8),
              ...)
 }
 
@@ -581,6 +584,8 @@ addLineFeatures <- function(map,
              data = sf::st_zm(data),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
+             labelOptions = labelOptions(sticky = TRUE,
+                                         opacity = 0.8),
              ...)
 }
 
@@ -592,6 +597,8 @@ addPolygonFeatures <- function(map,
              data = sf::st_zm(data),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
+             labelOptions = labelOptions(sticky = TRUE,
+                                         opacity = 0.8),
              ...)
 }
 

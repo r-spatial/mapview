@@ -131,10 +131,10 @@ xyGrid = function(x, aspect = 1) {
     label = as.character(hlabs),
     group = "y_grid",
     labelOptions = leaflet::labelOptions(
-      noHide = T,
+      noHide = TRUE,
       direction = "left",
       textOnly = TRUE,
-      offset = c(0, -10),
+      offset = c(-5, 0),
       opacity = 0.5
     )
   )
@@ -146,10 +146,10 @@ xyGrid = function(x, aspect = 1) {
     label = as.character(vlabs),
     group = "x_grid",
     labelOptions = leaflet::labelOptions(
-      noHide = T,
-      direction = "left",
+      noHide = TRUE,
+      direction = "bottom",
       textOnly = TRUE,
-      offset = c(-10, 0),
+      offset = c(0, -10),
       opacity = 0.5
     )
   )
