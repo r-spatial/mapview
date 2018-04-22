@@ -1,4 +1,4 @@
-## mapview 2.3.13
+## mapview 2.3.14
 
 new features:
 
@@ -9,6 +9,7 @@ new features:
   * mapshot has gained argument remove_controls to remove map junk when saving to file.
   * new function addStaticLabels to add (surprise surprise) static labels to features. #136
   * mapview method for data.frame has gained argument crs to enable rendering on a basemap #138
+  * updated to work with leaflet 2.0.0 #129 (incl. deprecation of large methods)
   
 bugfixes:
 
