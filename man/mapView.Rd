@@ -4,7 +4,6 @@
 \name{mapView}
 \alias{mapView}
 \alias{mapView,RasterLayer-method}
-\alias{mapView,stars-method}
 \alias{mapView,RasterStackBrick-method}
 \alias{mapView,Satellite-method}
 \alias{mapView,sf-method}
@@ -38,18 +37,6 @@
 \title{View spatial objects interactively}
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL,
-  maxpixels = mapviewGetOption("mapview.maxpixels"),
-  col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
-  na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
-  values = NULL, map.types = mapviewGetOption("basemaps"),
-  alpha.regions = 0.8, legend = mapviewGetOption("legend"),
-  legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
-  layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
-  method = c("bilinear", "ngb"), label = TRUE, query.type = c("mousemove",
-  "click"), query.digits, query.position = "topright",
-  query.prefix = "Layer", ...)
-
-\S4method{mapView}{stars}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
   na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
@@ -373,8 +360,6 @@ and fully queriable.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{stars}: \code{\link{stars}}
-
 \item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{brick}}
 
 \item \code{Satellite}: \code{\link{satellite}}
@@ -435,6 +420,7 @@ and fully queriable.
 }}
 
 \examples{
+\dontrun{
 mapview()
 
 ## simple features ====================================================
@@ -526,6 +512,7 @@ franconia \%>\%
   mutate(count = lengths(st_contains(., breweries)),
          density = count / st_area(.)) \%>\%
   mapview(zcol = "density")
+}
 
 }
 \author{

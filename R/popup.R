@@ -56,6 +56,7 @@ popupTable = function(x, zcol, row.numbers = TRUE) {
 #' A \code{list} of HTML strings required to create popup graphs.
 #'
 #' @examples
+#' \dontrun{
 #' ## remote images -----
 #' ### one image
 #' library(sf)
@@ -87,6 +88,7 @@ popupTable = function(x, zcol, row.numbers = TRUE) {
 #'                 coords = c("x", "y"), crs = 4326)
 #' img = system.file("img","Rlogo.png",package="png")
 #' mapview(pnt, popup = popupImage(img))
+#' }
 #'
 #' @export popupImage
 #' @name popupImage
@@ -200,6 +202,7 @@ popupRemoteImage = function(img, width = 300, height = "100%") {
 #' A \code{list} of HTML strings required to create popup graphs.
 #'
 #' @examples
+#' \dontrun{
 #' ### example: svg -----
 #'
 #' library(sp)
@@ -237,6 +240,7 @@ popupRemoteImage = function(img, width = 300, height = "100%") {
 #'                            type = "html",
 #'                            width = 500,
 #'                            height = 400))
+#' }
 #'
 #' @export popupGraph
 #' @name popupGraph

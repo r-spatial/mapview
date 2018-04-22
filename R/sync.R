@@ -16,6 +16,7 @@
 #' @param no.initial.sync whether to sync the initial view (default TRUE).
 #'
 #' @examples
+#' \dontrun{
 #' library(sp)
 #' library(raster)
 #'
@@ -53,6 +54,7 @@
 #' latticeView(m1, m2, m3, m4) # not synced
 #' sync(m1, m2, m3, m4) # synced
 #' sync(m1, m2, m3, m4, no.initial.sync = FALSE) # all maps zoomed to m4 extent
+#' }
 #'
 #' @export latticeView
 #' @name latticeView

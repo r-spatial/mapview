@@ -77,6 +77,7 @@ leaflet() \%>\% addCircleMarkers(data = breweries)
 leaflet() \%>\% addCircleMarkers(data = breweries,
                                popup = popupTable(breweries))
 
+\dontrun{
 ## remote images -----
 ### one image
 library(sf)
@@ -108,7 +109,9 @@ pnt = st_as_sf(data.frame(x = 174.764474, y = -36.877245),
                 coords = c("x", "y"), crs = 4326)
 img = system.file("img","Rlogo.png",package="png")
 mapview(pnt, popup = popupImage(img))
+}
 
+\dontrun{
 ### example: svg -----
 
 library(sp)
@@ -146,5 +149,6 @@ mapview(breweries[1, ], map.types = "Esri.WorldImagery",
                            type = "html",
                            width = 500,
                            height = 400))
+}
 
 }
