@@ -571,8 +571,8 @@ addPointFeatures <- function(map,
              data = sf::st_zm(sf::st_cast(data, "POINT")),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
-             labelOptions = labelOptions(sticky = TRUE,
-                                         opacity = 0.8),
+             # labelOptions = labelOptions(sticky = TRUE,
+             #                             opacity = 0.8),
              ...)
 }
 
@@ -584,8 +584,8 @@ addLineFeatures <- function(map,
              data = sf::st_zm(data),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
-             labelOptions = labelOptions(sticky = TRUE,
-                                         opacity = 0.8),
+             # labelOptions = labelOptions(sticky = TRUE,
+             #                             opacity = 0.8),
              ...)
 }
 
@@ -597,8 +597,8 @@ addPolygonFeatures <- function(map,
              data = sf::st_zm(data),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
-             labelOptions = labelOptions(sticky = TRUE,
-                                         opacity = 0.8),
+             # labelOptions = labelOptions(sticky = TRUE,
+             #                             opacity = 0.8),
              ...)
 }
 
@@ -782,6 +782,8 @@ addImageQuery = function(map,
 #' defaults to the locations of the first dataset in 'map'.
 #' @param label The labels to be placed at the positions indicated by 'data' as
 #' \code{character}, or any vector that can be coerced to this type.
+#' @param group the group of the static labels layer.
+#' @param layerId the layerId of the static labels layer.
 #' @param ... Additional arguments passed to
 #' \code{\link[leaflet]{addLabelOnlyMarkers}}.
 #'
@@ -838,7 +840,7 @@ addStaticLabels = function(map,
   if (inherits(map, "mapview") & missing(data)) {
     data = map@object[[1]]
     if (is.null(group)) {
-      group = mapview:::getLayerNamesFromMap(map@map)[1]
+      group = getLayerNamesFromMap(map@map)[1]
     } else {
       group = NULL
     }

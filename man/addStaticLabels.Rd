@@ -15,6 +15,10 @@ defaults to the locations of the first dataset in 'map'.}
 \item{label}{The labels to be placed at the positions indicated by 'data' as
 \code{character}, or any vector that can be coerced to this type.}
 
+\item{group}{the group of the static labels layer.}
+
+\item{layerId}{the layerId of the static labels layer.}
+
 \item{...}{Additional arguments passed to
 \code{\link[leaflet]{addLabelOnlyMarkers}}.}
 }
