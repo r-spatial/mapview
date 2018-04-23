@@ -912,3 +912,72 @@ addStaticLabels = function(map,
 
 
 ##############################################################################
+
+### addStaticLabels ##########################################################
+##############################################################################
+#' Add additional panes to leaflet map to control layer order
+#'
+#' @description
+#' map panes can be created by supplying a name and a zIndex to control layer
+#' ordering. We recommend a \code{zIndex} value between 400 (the default
+#' overlay pane) and 500 (the default shadow pane). You can then use this pane
+#' to render overlays (points, lines, polygons) by setting the \code{pane}
+#' argument in \code{leafletOptions}. This will give you control
+#' over the order of the layers, e.g. points always on top of polygons.
+#' If two layers are provided to the same pane, overlay will be determined by
+#' order of adding. See examples below.
+#' See \url{http://www.leafletjs.com/reference-1.3.0.html#map-pane} for details.
+#'
+#' @param map A \code{leaflet} or \code{mapview} object.
+#' @param name The name of the new pane (refer to this in \code{leafletOptions}.
+#' @param zIndex The zIndex of the pane. Panes with higher index are rendered
+#' above panes with lower indices.
+#'
+#' @examples
+#' library(leaflet)
+#' library(mapview)
+#'
+#' ## points above polygons
+#' leaflet() %>%
+#'   addTiles() %>%
+#'   addMapPane("polygons", zIndex = 410) %>%
+#'   addMapPane("points", zIndex = 420) %>%
+#'   addPolygons(data = franconia,
+#'               group = "pol1",
+#'               fillOpacity = 0.7,
+#'               fillColor = "green",
+#'               color = "black",
+#'               options = leafletOptions(pane = "polygons")) %>%
+#'   addPolygons(data = franconia,
+#'               group = "pol2",
+#'               color = "black",
+#'               fillColor = "purple",
+#'               fillOpacity = 0.7,
+#'               options = leafletOptions(pane = "polygons")) %>%
+#'   addCircleMarkers(data = breweries,
+#'                    group = "pts",
+#'                    color = "darkblue",
+#'                    options = leafletOptions(pane = "points")) %>%
+#'   addLayersControl(overlayGroups = c("pol1", "pol2", "pts"))
+#'
+#'
+#' @export addMapPane
+#' @name addMapPane
+#'
+addMapPane = function(map, name, zIndex) {
+
+  map$dependencies <- c(map$dependencies, leafletMapPaneDependencies())
+  leaflet::invokeMethod(map, leaflet::getMapData(map), 'createMapPane',
+                        name, zIndex)
+
+}
+
+leafletMapPaneDependencies <- function() {
+  list(
+    htmltools::htmlDependency(
+      "mapPane",
+      '0.0.1',
+      system.file("htmlwidgets/lib/pane", package = "mapview"),
+      script = c('map-pane.js')
+    ))
+}
