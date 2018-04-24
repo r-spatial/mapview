@@ -33,6 +33,8 @@ if ( !isGeneric('mapView') ) {
 #' \code{sf} object or a list of any combination of those. Furthermore,
 #' this can also be a \code{data.frame} or a \code{numeric vector}.
 #' @param map an optional existing map to be updated/added to
+#' @param pane name of the map pane in which to render features. See
+#' \code{\link{addMapPane}} for details. Currently only supported for vector layers.
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color color (palette) for points/polygons/lines
@@ -476,6 +478,7 @@ setMethod('mapView', signature(x = 'Satellite'),
 setMethod('mapView', signature(x = 'sf'),
           function(x,
                    map = NULL,
+                   pane = NULL,
                    zcol = NULL,
                    burst = FALSE,
                    color = mapviewGetOption("vector.palette"),
@@ -540,6 +543,7 @@ setMethod('mapView', signature(x = 'sf'),
 
                 leaflet_sf(sf::st_cast(x),
                            map = map,
+                           pane = pane,
                            zcol = zcol,
                            color = color,
                            col.regions = col.regions,
@@ -596,6 +600,7 @@ setMethod('mapView', signature(x = 'sf'),
 setMethod('mapView', signature(x = 'sfc'),
           function(x,
                    map = NULL,
+                   pane = NULL,
                    color = standardColor(x), #mapviewGetOption("vector.palette"),
                    col.regions = standardColRegions(x), #mapviewGetOption("vector.palette"),
                    at = NULL,
@@ -622,6 +627,7 @@ setMethod('mapView', signature(x = 'sfc'),
 
               leaflet_sfc(sf::st_cast(x),
                           map = map,
+                          pane = pane,
                           color = color,
                           col.regions = col.regions,
                           na.color = na.color,
@@ -741,6 +747,7 @@ setMethod('mapView', signature(x = 'data.frame'),
 setMethod('mapView', signature(x = 'XY'),
           function(x,
                    map = NULL,
+                   pane = NULL,
                    color = standardColor(x), #mapviewGetOption("vector.palette"),
                    col.regions = standardColRegions(x), #mapviewGetOption("vector.palette"),
                    at = NULL,
@@ -768,6 +775,7 @@ setMethod('mapView', signature(x = 'XY'),
               x = sf::st_cast(sf::st_sfc(x))
               leaflet_sfc(x,
                           map = map,
+                          pane = pane,
                           color = color,
                           col.regions = col.regions,
                           na.color = na.color,

@@ -509,6 +509,7 @@ remoteImage <- function(img, alpha, url, width, height) {
 #'
 #' @param map A \code{leaflet} or \code{mapview} map.
 #' @param data A \code{sf} object to be added to the \code{map}.
+#' @param pane The name of the map pane for the features to be rendered in.
 #' @param ... Further arguments passed to the respective \code{leaflet::add*}
 #' functions. See \code{\link{addCircleMarkers}}, \code{\link{addPolylines}}
 #' and \code{\link{addPolygons}}.
@@ -533,25 +534,26 @@ remoteImage <- function(img, alpha, url, width, height) {
 #' @rdname addFeatures
 addFeatures <- function(map,
                         data,
+                        pane = "overlayPane",
                         ...) {
 
   if (inherits(data, "Spatial")) data = sf::st_as_sf(data)
 
   switch(getSFClass(sf::st_geometry(data)),
-         sfc_POINT           = addPointFeatures(map, data, ...),
-         sfc_MULTIPOINT      = addPointFeatures(map, data, ...),
-         sfc_LINESTRING      = addLineFeatures(map, data, ...),
-         sfc_MULTILINESTRING = addLineFeatures(map, data, ...),
-         sfc_POLYGON         = addPolygonFeatures(map, data, ...),
-         sfc_MULTIPOLYGON    = addPolygonFeatures(map, data, ...),
-         sfc_GEOMETRY        = addGeometry(map, data, ...),
-         POINT               = addPointFeatures(map, data, ...),
-         MULTIPOINT          = addPointFeatures(map, data, ...),
-         LINESTRING          = addLineFeatures(map, data, ...),
-         MULTILINESTRING     = addLineFeatures(map, data, ...),
-         POLYGON             = addPolygonFeatures(map, data, ...),
-         MULTIPOLYGON        = addPolygonFeatures(map, data, ...),
-         GEOMETRY            = addGeometry(map, data, ...))
+         sfc_POINT           = addPointFeatures(map, data, pane, ...),
+         sfc_MULTIPOINT      = addPointFeatures(map, data, pane, ...),
+         sfc_LINESTRING      = addLineFeatures(map, data, pane, ...),
+         sfc_MULTILINESTRING = addLineFeatures(map, data, pane, ...),
+         sfc_POLYGON         = addPolygonFeatures(map, data, pane, ...),
+         sfc_MULTIPOLYGON    = addPolygonFeatures(map, data, pane, ...),
+         sfc_GEOMETRY        = addGeometry(map, data, pane, ...),
+         POINT               = addPointFeatures(map, data, pane, ...),
+         MULTIPOINT          = addPointFeatures(map, data, pane, ...),
+         LINESTRING          = addLineFeatures(map, data, pane, ...),
+         MULTILINESTRING     = addLineFeatures(map, data, pane, ...),
+         POLYGON             = addPolygonFeatures(map, data, pane, ...),
+         MULTIPOLYGON        = addPolygonFeatures(map, data, pane, ...),
+         GEOMETRY            = addGeometry(map, data, pane, ...))
 
 }
 
@@ -566,47 +568,48 @@ mw = 800
 ### Point Features
 addPointFeatures <- function(map,
                              data,
+                             pane,
                              ...) {
   garnishMap(map, leaflet::addCircleMarkers,
              data = sf::st_zm(sf::st_cast(data, "POINT")),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
-             # labelOptions = labelOptions(sticky = TRUE,
-             #                             opacity = 0.8),
+             options = leafletOptions(pane = pane),
              ...)
 }
 
 ### Line Features
 addLineFeatures <- function(map,
                             data,
+                            pane,
                             ...) {
   garnishMap(map, leaflet::addPolylines,
              data = sf::st_zm(data),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
-             # labelOptions = labelOptions(sticky = TRUE,
-             #                             opacity = 0.8),
+             options = leafletOptions(pane = pane),
              ...)
 }
 
 ### PolygonFeatures
 addPolygonFeatures <- function(map,
                                data,
+                               pane,
                                ...) {
   garnishMap(map, leaflet::addPolygons,
              data = sf::st_zm(data),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
-             # labelOptions = labelOptions(sticky = TRUE,
-             #                             opacity = 0.8),
+             options = leafletOptions(pane = pane),
              ...)
 }
 
 ### GeometryCollections
 addGeometry = function(map,
                        data,
+                       pane,
                        ...) {
-  ls = list(...)
+  ls = append(list(pane), list(...))
   if (!is.null(ls$label))
     label = split(ls$label, f = as.character(sf::st_dimension(data)))
   if (!is.null(ls$popup))
@@ -965,6 +968,8 @@ addStaticLabels = function(map,
 #' @name addMapPane
 #'
 addMapPane = function(map, name, zIndex) {
+
+  if (inherits(map, "mapview")) map = mapview2leaflet(map)
 
   map$dependencies <- c(map$dependencies, leafletMapPaneDependencies())
   leaflet::invokeMethod(map, leaflet::getMapData(map), 'createMapPane',

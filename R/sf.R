@@ -4,6 +4,7 @@
 ### sf ####################################################################
 leaflet_sf <- function(x,
                        map,
+                       pane,
                        zcol,
                        cex,
                        lwd,
@@ -91,6 +92,7 @@ leaflet_sf <- function(x,
 
   leaflet_sfc(sf::st_geometry(x),
               map = map,
+              pane = pane,
               zcol = zcol,
               color = clrs,
               col.regions = clrs.regions,
@@ -120,6 +122,7 @@ leaflet_sf <- function(x,
 ### sfc ###################################################################
 leaflet_sfc <- function(x,
                         map,
+                        pane,
                         zcol,
                         cex,
                         lwd,
@@ -163,6 +166,12 @@ leaflet_sfc <- function(x,
 
   m <- initMap(map, map.types, sf::st_crs(x), native.crs)
 
+  if (is.null(pane)) {
+    pane = paneName(x)
+    zindex = zIndex(x)
+    m = addMapPane(m, pane, zindex)
+  }
+
   # if (featureComplexity(x) > maxpoints) {
   #   cat(large_warn)
   #   if(interactive()) {
@@ -195,6 +204,7 @@ leaflet_sfc <- function(x,
 
   m <- addFeatures(m,
                    data = x,
+                   pane = pane,
                    radius = cex,
                    weight = lwd,
                    opacity = alpha,

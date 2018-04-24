@@ -4,12 +4,14 @@
 \alias{addFeatures}
 \title{Type agnositc version of \code{leaflet::add*} functions.}
 \usage{
-addFeatures(map, data, ...)
+addFeatures(map, data, pane = "overlayPane", ...)
 }
 \arguments{
 \item{map}{A \code{leaflet} or \code{mapview} map.}
 
 \item{data}{A \code{sf} object to be added to the \code{map}.}
+
+\item{pane}{The name of the map pane for the features to be rendered in.}
 
 \item{...}{Further arguments passed to the respective \code{leaflet::add*}
 functions. See \code{\link{addCircleMarkers}}, \code{\link{addPolylines}}
