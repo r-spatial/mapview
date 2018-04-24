@@ -409,9 +409,10 @@ brewPopupTable = function(x, width = 300, height = 300, row.numbers = TRUE) {
   } else {
 
     # data.frame with 1 column
-    if (ncol(x) == 1) {
+    if (ncol(x) == 1 && names(x) == attr(x, "sf_column")) {
+      mat = as.matrix(class(x[, 1])[1])
+    } else if (ncol(x) == 1) {
       mat = matrix(as.character(x[, 1]))
-
     # data.frame with multiple columns
     } else {
 
