@@ -52,6 +52,7 @@ move mouse down/up to zoom the cube.
 }}
 
 \examples{
+\dontrun{
 library(raster)
 
 kili_data <- system.file("extdata", "kiliNDVI.tif", package = "mapview")
@@ -61,6 +62,7 @@ cubeView(kiliNDVI)
 
 clr <- viridisLite::viridis
 cubeView(kiliNDVI, at = seq(-0.15, 0.95, 0.1), col.regions = clr)
+}
 
 }
 \author{

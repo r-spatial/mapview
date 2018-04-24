@@ -89,49 +89,50 @@ addMouseCoordinates <- function(map, style = c("detailed", "basic"),
       "
       function(el, x, data) {
 
-      // get the leaflet map
-      var map = this; //HTMLWidgets.find('#' + el.id);
+        // get the leaflet map
+        var map = this; //HTMLWidgets.find('#' + el.id);
 
-      // we need a new div element because we have to handle
-      // the mouseover output separately
-      // debugger;
-      function addElement () {
-      // generate new div Element
-      var newDiv = $(document.createElement('div'));
-      // append at end of leaflet htmlwidget container
-      $(el).append(newDiv);
-      //provide ID and style
-      newDiv.addClass('lnlt');
-      newDiv.css({
-      'position': 'relative',
-      'bottomleft':  '0px',
-      'background-color': 'rgba(255, 255, 255, 0.7)',
-      'box-shadow': '0 0 2px #bbb',
-      'background-clip': 'padding-box',
-      'margin': '0',
-      'padding-left': '5px',
-      'color': '#333',
-      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',
-      });
-      return newDiv;
-      }
+        // we need a new div element because we have to handle
+        // the mouseover output separately
+        // debugger;
+        function addElement () {
+          // generate new div Element
+         var newDiv = $(document.createElement('div'));
+          // append at end of leaflet htmlwidget container
+          $(el).append(newDiv);
+          //provide ID and style
+          newDiv.addClass('lnlt');
+          newDiv.css({
+            'position': 'relative',
+            'bottomleft':  '0px',
+            'background-color': 'rgba(255, 255, 255, 0.7)',
+            'box-shadow': '0 0 2px #bbb',
+            'background-clip': 'padding-box',
+            'margin': '0',
+            'padding-left': '5px',
+            'color': '#333',
+            'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',
+            'z-index': '700',
+          });
+          return newDiv;
+        }
 
-      // check for already existing lnlt class to not duplicate
-      var lnlt = $(el).find('.lnlt');
+        // check for already existing lnlt class to not duplicate
+        var lnlt = $(el).find('.lnlt');
 
-      if(!lnlt.length) {
-      lnlt = addElement();
-      //$(el).keypress(function (e) {
-      //  if (e.which == 32 || event.keyCode == 32) {
-      //    alert('space key is pressed');
-      //  }
-      //});
-      // grab the special div we generated in the beginning
-      // and put the mousmove output there
-      map.on('mousemove', function (e) {
-      lnlt.text(", txt, ");
-      });
-      };
+        if(!lnlt.length) {
+          lnlt = addElement();
+          //$(el).keypress(function (e) {
+          //  if (e.which == 32 || event.keyCode == 32) {
+          //    alert('space key is pressed');
+          //  }
+          //});
+          // grab the special div we generated in the beginning
+          // and put the mousmove output there
+          map.on('mousemove', function (e) {
+            lnlt.text(", txt, ");
+          });
+        };
       }
       "
   )
@@ -508,6 +509,7 @@ remoteImage <- function(img, alpha, url, width, height) {
 #'
 #' @param map A \code{leaflet} or \code{mapview} map.
 #' @param data A \code{sf} object to be added to the \code{map}.
+#' @param pane The name of the map pane for the features to be rendered in.
 #' @param ... Further arguments passed to the respective \code{leaflet::add*}
 #' functions. See \code{\link{addCircleMarkers}}, \code{\link{addPolylines}}
 #' and \code{\link{addPolygons}}.
@@ -532,25 +534,26 @@ remoteImage <- function(img, alpha, url, width, height) {
 #' @rdname addFeatures
 addFeatures <- function(map,
                         data,
+                        pane = "overlayPane",
                         ...) {
 
   if (inherits(data, "Spatial")) data = sf::st_as_sf(data)
 
   switch(getSFClass(sf::st_geometry(data)),
-         sfc_POINT           = addPointFeatures(map, data, ...),
-         sfc_MULTIPOINT      = addPointFeatures(map, data, ...),
-         sfc_LINESTRING      = addLineFeatures(map, data, ...),
-         sfc_MULTILINESTRING = addLineFeatures(map, data, ...),
-         sfc_POLYGON         = addPolygonFeatures(map, data, ...),
-         sfc_MULTIPOLYGON    = addPolygonFeatures(map, data, ...),
-         sfc_GEOMETRY        = addGeometry(map, data, ...),
-         POINT               = addPointFeatures(map, data, ...),
-         MULTIPOINT          = addPointFeatures(map, data, ...),
-         LINESTRING          = addLineFeatures(map, data, ...),
-         MULTILINESTRING     = addLineFeatures(map, data, ...),
-         POLYGON             = addPolygonFeatures(map, data, ...),
-         MULTIPOLYGON        = addPolygonFeatures(map, data, ...),
-         GEOMETRY            = addGeometry(map, data, ...))
+         sfc_POINT           = addPointFeatures(map, data, pane, ...),
+         sfc_MULTIPOINT      = addPointFeatures(map, data, pane, ...),
+         sfc_LINESTRING      = addLineFeatures(map, data, pane, ...),
+         sfc_MULTILINESTRING = addLineFeatures(map, data, pane, ...),
+         sfc_POLYGON         = addPolygonFeatures(map, data, pane, ...),
+         sfc_MULTIPOLYGON    = addPolygonFeatures(map, data, pane, ...),
+         sfc_GEOMETRY        = addGeometry(map, data, pane, ...),
+         POINT               = addPointFeatures(map, data, pane, ...),
+         MULTIPOINT          = addPointFeatures(map, data, pane, ...),
+         LINESTRING          = addLineFeatures(map, data, pane, ...),
+         MULTILINESTRING     = addLineFeatures(map, data, pane, ...),
+         POLYGON             = addPolygonFeatures(map, data, pane, ...),
+         MULTIPOLYGON        = addPolygonFeatures(map, data, pane, ...),
+         GEOMETRY            = addGeometry(map, data, pane, ...))
 
 }
 
@@ -565,41 +568,48 @@ mw = 800
 ### Point Features
 addPointFeatures <- function(map,
                              data,
+                             pane,
                              ...) {
   garnishMap(map, leaflet::addCircleMarkers,
              data = sf::st_zm(sf::st_cast(data, "POINT")),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
+             options = leafletOptions(pane = pane),
              ...)
 }
 
 ### Line Features
 addLineFeatures <- function(map,
                             data,
+                            pane,
                             ...) {
   garnishMap(map, leaflet::addPolylines,
              data = sf::st_zm(data),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
+             options = leafletOptions(pane = pane),
              ...)
 }
 
 ### PolygonFeatures
 addPolygonFeatures <- function(map,
                                data,
+                               pane,
                                ...) {
   garnishMap(map, leaflet::addPolygons,
              data = sf::st_zm(data),
              popupOptions = popupOptions(maxWidth = mw,
                                          closeOnClick = TRUE),
+             options = leafletOptions(pane = pane),
              ...)
 }
 
 ### GeometryCollections
 addGeometry = function(map,
                        data,
+                       pane,
                        ...) {
-  ls = list(...)
+  ls = append(list(pane), list(...))
   if (!is.null(ls$label))
     label = split(ls$label, f = as.character(sf::st_dimension(data)))
   if (!is.null(ls$popup))
@@ -775,6 +785,8 @@ addImageQuery = function(map,
 #' defaults to the locations of the first dataset in 'map'.
 #' @param label The labels to be placed at the positions indicated by 'data' as
 #' \code{character}, or any vector that can be coerced to this type.
+#' @param group the group of the static labels layer.
+#' @param layerId the layerId of the static labels layer.
 #' @param ... Additional arguments passed to
 #' \code{\link[leaflet]{addLabelOnlyMarkers}}.
 #'
@@ -792,45 +804,46 @@ addImageQuery = function(map,
 #' ## leaflet label display options
 #' library(leaflet)
 #'
-#' lopt = labelOptions(noHide = TRUE
-#'                     , direction = 'top'
-#'                     , textOnly = TRUE)
+#' lopt = labelOptions(noHide = TRUE,
+#'                     direction = 'top',
+#'                     textOnly = TRUE)
 #'
 #' ## point labels
 #' m1 = mapview(breweries)
-#' l1 = addStaticLabels(m1
-#'                      , label = breweries$number.of.types
-#'                      , labelOptions = lopt)
+#' l1 = addStaticLabels(m1,
+#'                      label = breweries$number.of.types,
+#'                      labelOptions = lopt)
+#' l1
 #'
 #' ## polygon centroid labels
 #' m2 = mapview(franconia)
-#' l2 = addStaticLabels(m2
-#'                      , label = franconia$NAME_ASCI
-#'                      , labelOptions = lopt)
+#' l2 = addStaticLabels(m2,
+#'                      label = franconia$NAME_ASCI,
+#'                      labelOptions = lopt)
+#' l2
 #'
 #' ## custom labels
-#' m3 = m1 + m2
-#' l3 = addStaticLabels(m3
-#'                      , data = franconia
-#'                      , label = franconia$NAME_ASCI
-#'                      , labelOptions = lopt)
+#' m3 = m2 + m1
+#' l3 = addStaticLabels(m3,
+#'                      data = franconia,
+#'                      label = franconia$NAME_ASCI,
+#'                      labelOptions = lopt)
+#' l3
 #' }
 #'
 #' @export addStaticLabels
 #' @name addStaticLabels
-addStaticLabels = function(
-  map
-  , data
-  , label
-  , group = NULL
-  , layerId = NULL
-  , ...
-) {
+addStaticLabels = function(map,
+                           data,
+                           label,
+                           group = NULL,
+                           layerId = NULL,
+                           ...) {
 
   if (inherits(map, "mapview") & missing(data)) {
     data = map@object[[1]]
     if (is.null(group)) {
-      group = mapview:::getLayerNamesFromMap(map@map)[1]
+      group = getLayerNamesFromMap(map@map)[1]
     } else {
       group = NULL
     }
@@ -857,19 +870,20 @@ addStaticLabels = function(
     data = sf::st_as_sf(data)
   }
 
-  if (missing(label)) {
-    sf_col = attr(data, "sf_column")
-    if (inherits(data, "sf")) {
-      if (ncol(data) == 2) {
-        colnm = setdiff(colnames(data), sf_col)
-        label = data[[colnm]]
-      } else {
-        label = seq(nrow(data))
-      }
-    } else {
-      label = seq(length(data))
-    }
-  }
+  if (missing(label)) label = makeLabels(data, NULL)
+  #   {
+  #   sf_col = attr(data, "sf_column")
+  #   if (inherits(data, "sf")) {
+  #     if (ncol(data) == 2) {
+  #       colnm = setdiff(colnames(data), sf_col)
+  #       label = data[[colnm]]
+  #     } else {
+  #       label = seq(nrow(data))
+  #     }
+  #   } else {
+  #     label = seq(length(data))
+  #   }
+  # }
 
   if (getGeometryType(data) == "ln") {
     crds = as.data.frame(sf::st_coordinates(data))
@@ -901,3 +915,74 @@ addStaticLabels = function(
 
 
 ##############################################################################
+
+### addStaticLabels ##########################################################
+##############################################################################
+#' Add additional panes to leaflet map to control layer order
+#'
+#' @description
+#' map panes can be created by supplying a name and a zIndex to control layer
+#' ordering. We recommend a \code{zIndex} value between 400 (the default
+#' overlay pane) and 500 (the default shadow pane). You can then use this pane
+#' to render overlays (points, lines, polygons) by setting the \code{pane}
+#' argument in \code{leafletOptions}. This will give you control
+#' over the order of the layers, e.g. points always on top of polygons.
+#' If two layers are provided to the same pane, overlay will be determined by
+#' order of adding. See examples below.
+#' See \url{http://www.leafletjs.com/reference-1.3.0.html#map-pane} for details.
+#'
+#' @param map A \code{leaflet} or \code{mapview} object.
+#' @param name The name of the new pane (refer to this in \code{leafletOptions}.
+#' @param zIndex The zIndex of the pane. Panes with higher index are rendered
+#' above panes with lower indices.
+#'
+#' @examples
+#' library(leaflet)
+#' library(mapview)
+#'
+#' ## points above polygons
+#' leaflet() %>%
+#'   addTiles() %>%
+#'   addMapPane("polygons", zIndex = 410) %>%
+#'   addMapPane("points", zIndex = 420) %>%
+#'   addPolygons(data = franconia,
+#'               group = "pol1",
+#'               fillOpacity = 0.7,
+#'               fillColor = "green",
+#'               color = "black",
+#'               options = leafletOptions(pane = "polygons")) %>%
+#'   addPolygons(data = franconia,
+#'               group = "pol2",
+#'               color = "black",
+#'               fillColor = "purple",
+#'               fillOpacity = 0.7,
+#'               options = leafletOptions(pane = "polygons")) %>%
+#'   addCircleMarkers(data = breweries,
+#'                    group = "pts",
+#'                    color = "darkblue",
+#'                    options = leafletOptions(pane = "points")) %>%
+#'   addLayersControl(overlayGroups = c("pol1", "pol2", "pts"))
+#'
+#'
+#' @export addMapPane
+#' @name addMapPane
+#'
+addMapPane = function(map, name, zIndex) {
+
+  if (inherits(map, "mapview")) map = mapview2leaflet(map)
+
+  map$dependencies <- c(map$dependencies, leafletMapPaneDependencies())
+  leaflet::invokeMethod(map, leaflet::getMapData(map), 'createMapPane',
+                        name, zIndex)
+
+}
+
+leafletMapPaneDependencies <- function() {
+  list(
+    htmltools::htmlDependency(
+      "mapPane",
+      '0.0.1',
+      system.file("htmlwidgets/lib/pane", package = "mapview"),
+      script = c('map-pane.js')
+    ))
+}

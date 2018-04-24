@@ -89,6 +89,13 @@ appendMapCallEntries <- function(map1, map2) {
   m1_calls = map1$x$calls
   m2_calls = map2$x$calls
 
+  ## dependencies
+  m1_deps = map1$dependencies
+  m2_deps = map2$dependencies
+
+  mp_deps = append(m1_deps, m2_deps)
+  mp_deps = mp_deps[!duplicated(mp_deps)]
+
   ## base map controls
   ctrls1 <- getLayerControlEntriesFromMap(map1)
   ctrls2 <- getLayerControlEntriesFromMap(map2)
@@ -131,6 +138,7 @@ appendMapCallEntries <- function(map1, map2) {
   }, silent = TRUE)
 
   map1$x$calls <- mpcalls
+  map1$dependencies = mp_deps
   return(map1)
 }
 

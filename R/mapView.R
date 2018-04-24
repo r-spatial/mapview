@@ -33,6 +33,8 @@ if ( !isGeneric('mapView') ) {
 #' \code{sf} object or a list of any combination of those. Furthermore,
 #' this can also be a \code{data.frame} or a \code{numeric vector}.
 #' @param map an optional existing map to be updated/added to
+#' @param pane name of the map pane in which to render features. See
+#' \code{\link{addMapPane}} for details. Currently only supported for vector layers.
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color color (palette) for points/polygons/lines
@@ -115,6 +117,7 @@ if ( !isGeneric('mapView') ) {
 #' Tim Appelhans
 #'
 #' @examples
+#' \dontrun{
 #' mapview()
 #'
 #' ## simple features ====================================================
@@ -206,6 +209,7 @@ if ( !isGeneric('mapView') ) {
 #'   mutate(count = lengths(st_contains(., breweries)),
 #'          density = count / st_area(.)) %>%
 #'   mapview(zcol = "density")
+#' }
 #'
 #' @export
 #' @docType methods
@@ -292,72 +296,72 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 )
 
 
-## Stars layer ==================================================================
-#' @describeIn mapView \code{\link{stars}}
-setMethod('mapView', signature(x = 'stars'),
-          function(x,
-                   map = NULL,
-                   maxpixels = mapviewGetOption("mapview.maxpixels"),
-                   col.regions = mapviewGetOption("raster.palette")(256),
-                   at = NULL,
-                   na.color = mapviewGetOption("na.color"),
-                   use.layer.names = FALSE,
-                   values = NULL,
-                   map.types = mapviewGetOption("basemaps"),
-                   alpha.regions = 0.8,
-                   legend = mapviewGetOption("legend"),
-                   legend.opacity = 1,
-                   trim = TRUE,
-                   verbose = mapviewGetOption("verbose"),
-                   layer.name = NULL,
-                   homebutton = TRUE,
-                   native.crs = FALSE,
-                   method = c("bilinear", "ngb"),
-                   label = TRUE,
-                   query.type = c("mousemove", "click"),
-                   query.digits,
-                   query.position = "topright",
-                   query.prefix = "Layer",
-                   ...) {
-
-            method = match.arg(method)
-
-            if (is.null(at)) at <- lattice::do.breaks(
-              extendLimits(range(as.numeric(x[[1]][, , 1]),
-                                 na.rm = TRUE)), 256
-            )
-
-            if (mapviewGetOption("platform") == "leaflet") {
-              leaflet_stars(x,
-                            map = map,
-                            maxpixels = maxpixels,
-                            col.regions = col.regions,
-                            at = at,
-                            na.color, na.color,
-                            use.layer.names = use.layer.names,
-                            values = values,
-                            map.types = map.types,
-                            alpha.regions = alpha.regions,
-                            legend = legend,
-                            legend.opacity = legend.opacity,
-                            trim = trim,
-                            verbose = verbose,
-                            layer.name = layer.name,
-                            homebutton = homebutton,
-                            native.crs = native.crs,
-                            method = method,
-                            label = label,
-                            query.type = query.type,
-                            query.digits = query.digits,
-                            query.position = query.position,
-                            query.prefix = query.prefix,
-                            ...)
-            } else {
-              NULL
-            }
-
-          }
-)
+# ## Stars layer ==================================================================
+# #' @describeIn mapView \code{\link{stars}}
+# setMethod('mapView', signature(x = 'stars'),
+#           function(x,
+#                    map = NULL,
+#                    maxpixels = mapviewGetOption("mapview.maxpixels"),
+#                    col.regions = mapviewGetOption("raster.palette")(256),
+#                    at = NULL,
+#                    na.color = mapviewGetOption("na.color"),
+#                    use.layer.names = FALSE,
+#                    values = NULL,
+#                    map.types = mapviewGetOption("basemaps"),
+#                    alpha.regions = 0.8,
+#                    legend = mapviewGetOption("legend"),
+#                    legend.opacity = 1,
+#                    trim = TRUE,
+#                    verbose = mapviewGetOption("verbose"),
+#                    layer.name = NULL,
+#                    homebutton = TRUE,
+#                    native.crs = FALSE,
+#                    method = c("bilinear", "ngb"),
+#                    label = TRUE,
+#                    query.type = c("mousemove", "click"),
+#                    query.digits,
+#                    query.position = "topright",
+#                    query.prefix = "Layer",
+#                    ...) {
+#
+#             method = match.arg(method)
+#             if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , 1]
+#             if (is.null(at)) at <- lattice::do.breaks(
+#               extendLimits(range(layer, na.rm = TRUE)),
+#               256
+#             )
+#
+#             if (mapviewGetOption("platform") == "leaflet") {
+#               leaflet_stars(x,
+#                             map = map,
+#                             maxpixels = maxpixels,
+#                             col.regions = col.regions,
+#                             at = at,
+#                             na.color, na.color,
+#                             use.layer.names = use.layer.names,
+#                             values = values,
+#                             map.types = map.types,
+#                             alpha.regions = alpha.regions,
+#                             legend = legend,
+#                             legend.opacity = legend.opacity,
+#                             trim = trim,
+#                             verbose = verbose,
+#                             layer.name = layer.name,
+#                             homebutton = homebutton,
+#                             native.crs = native.crs,
+#                             method = method,
+#                             label = label,
+#                             query.type = query.type,
+#                             query.digits = query.digits,
+#                             query.position = query.position,
+#                             query.prefix = query.prefix,
+#                             ...)
+#             } else {
+#               NULL
+#             }
+#
+#           }
+# )
 
 
 
@@ -474,6 +478,7 @@ setMethod('mapView', signature(x = 'Satellite'),
 setMethod('mapView', signature(x = 'sf'),
           function(x,
                    map = NULL,
+                   pane = NULL,
                    zcol = NULL,
                    burst = FALSE,
                    color = mapviewGetOption("vector.palette"),
@@ -538,6 +543,7 @@ setMethod('mapView', signature(x = 'sf'),
 
                 leaflet_sf(sf::st_cast(x),
                            map = map,
+                           pane = pane,
                            zcol = zcol,
                            color = color,
                            col.regions = col.regions,
@@ -594,6 +600,7 @@ setMethod('mapView', signature(x = 'sf'),
 setMethod('mapView', signature(x = 'sfc'),
           function(x,
                    map = NULL,
+                   pane = NULL,
                    color = standardColor(x), #mapviewGetOption("vector.palette"),
                    col.regions = standardColRegions(x), #mapviewGetOption("vector.palette"),
                    at = NULL,
@@ -620,6 +627,7 @@ setMethod('mapView', signature(x = 'sfc'),
 
               leaflet_sfc(sf::st_cast(x),
                           map = map,
+                          pane = pane,
                           color = color,
                           col.regions = col.regions,
                           na.color = na.color,
@@ -690,6 +698,9 @@ setMethod('mapView', signature(x = 'numeric'),
 #' of the visualisation. Only relevant for the data.frame method.
 #' @param aspect the ratio of x/y axis corrdinates to adjust the plotting
 #' space to fit the screen. Only relevant for the data.frame method.
+#' @param crs an optional crs specification for the provided data to enable
+#' rendering on a basemap. See argument description in \code{\link{st_sf}}
+#' for details.
 setMethod('mapView', signature(x = 'data.frame'),
           function(x,
                    xcol,
@@ -698,6 +709,7 @@ setMethod('mapView', signature(x = 'data.frame'),
                    aspect = 1,
                    popup = popupTable(x),
                    label,
+                   crs = NA,
                    ...) {
             if (missing(xcol) | missing(ycol)) {
               obj = deparse(substitute(x, env = parent.frame()))
@@ -722,6 +734,7 @@ setMethod('mapView', signature(x = 'data.frame'),
                    aspect = aspect,
                    popup = popup,
                    label = label,
+                   crs = crs,
                    ...)
           }
 )
@@ -734,6 +747,7 @@ setMethod('mapView', signature(x = 'data.frame'),
 setMethod('mapView', signature(x = 'XY'),
           function(x,
                    map = NULL,
+                   pane = NULL,
                    color = standardColor(x), #mapviewGetOption("vector.palette"),
                    col.regions = standardColRegions(x), #mapviewGetOption("vector.palette"),
                    at = NULL,
@@ -761,6 +775,7 @@ setMethod('mapView', signature(x = 'XY'),
               x = sf::st_cast(sf::st_sfc(x))
               leaflet_sfc(x,
                           map = map,
+                          pane = pane,
                           color = color,
                           col.regions = col.regions,
                           na.color = na.color,

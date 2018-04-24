@@ -15,6 +15,10 @@ defaults to the locations of the first dataset in 'map'.}
 \item{label}{The labels to be placed at the positions indicated by 'data' as
 \code{character}, or any vector that can be coerced to this type.}
 
+\item{group}{the group of the static labels layer.}
+
+\item{layerId}{the layerId of the static labels layer.}
+
 \item{...}{Additional arguments passed to
 \code{\link[leaflet]{addLabelOnlyMarkers}}.}
 }
@@ -31,28 +35,31 @@ existing \code{leaflet} or \code{mapview} map object.
 ## leaflet label display options
 library(leaflet)
 
-lopt = labelOptions(noHide = TRUE
-                    , direction = 'top'
-                    , textOnly = TRUE)
+lopt = labelOptions(noHide = TRUE,
+                    direction = 'top',
+                    textOnly = TRUE)
 
 ## point labels
 m1 = mapview(breweries)
-l1 = addStaticLabels(m1
-                     , label = breweries$number.of.types
-                     , labelOptions = lopt)
+l1 = addStaticLabels(m1,
+                     label = breweries$number.of.types,
+                     labelOptions = lopt)
+l1
 
 ## polygon centroid labels
 m2 = mapview(franconia)
-l2 = addStaticLabels(m2
-                     , label = franconia$NAME_ASCI
-                     , labelOptions = lopt)
+l2 = addStaticLabels(m2,
+                     label = franconia$NAME_ASCI,
+                     labelOptions = lopt)
+l2
 
 ## custom labels
-m3 = m1 + m2
-l3 = addStaticLabels(m3
-                     , data = franconia
-                     , label = franconia$NAME_ASCI
-                     , labelOptions = lopt)
+m3 = m2 + m1
+l3 = addStaticLabels(m3,
+                     data = franconia,
+                     label = franconia$NAME_ASCI,
+                     labelOptions = lopt)
+l3
 }
 
 }

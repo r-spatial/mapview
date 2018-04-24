@@ -14,7 +14,7 @@
 #' \cr
 #' \emph{Maintainer:} Tim Appelhans \email{tim.appelhans@gmail.com}
 #'
-#' @import leaflet sp sf raster satellite stars scales Rcpp methods png lattice gdalUtils viridisLite base64enc
+#' @import leaflet sp sf raster satellite scales Rcpp methods png lattice gdalUtils viridisLite base64enc
 #' @importFrom grDevices rgb dev.off png svg colorRampPalette
 #' @importFrom utils find glob2rx
 #' @importFrom webshot webshot

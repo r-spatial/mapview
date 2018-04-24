@@ -267,3 +267,20 @@ makeListLayerNames = function(x, layer.name) {
 
   return(as.list(lnms))
 }
+
+
+paneName = function(x) {
+  switch(getGeometryType(x),
+         "pt" = "point",
+         "ln" = "line",
+         "pl" = "polygon",
+         "gc" = "gcollection")
+}
+
+zIndex = function(x) {
+  switch(getGeometryType(x),
+         "pt" = 440,
+         "ln" = 430,
+         "pl" = 420,
+         "gc" = 410)
+}

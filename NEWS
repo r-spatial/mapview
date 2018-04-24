@@ -1,4 +1,4 @@
-mapview 2.3.10
+mapview 2.3.16
 
 new features:
 
@@ -7,11 +7,15 @@ new features:
   * popupTable now right aligns values.
   * Thanks to Pierre Roudier quantile strectching in viewRGB can now be turned off by simply setting to NULL. #127
   * mapshot has gained argument remove_controls to remove map junk when saving to file.
-  * new function addStaticLabels to add (surprise surprise) static labels to features. #136
+  * mapview method for data.frame has gained argument crs to enable rendering on a basemap #138
+  * updated to work with leaflet 2.0.0 #129 (incl. deprecation of previously used large methods)
+  * added function addMapPane to enable control over layer order.
+  * mapview has gained argument pane as it now uses addMapPane to ensure points overlay lines overlay polygons.
   
 bugfixes:
 
   * viewRGB failed because of missing method argument. #125
+  * combineExtent didn't check properly for crs and failed for raster images.
 
 
 mapview 2.3.0
