@@ -22,8 +22,6 @@ r:
   - release
   - devel
 
-warnings_are_errors: false
-
 before_install:
   # install postgis from source (required for lwgeom installation):
   - wget http://download.osgeo.org/postgis/source/postgis-2.3.2.tar.gz
