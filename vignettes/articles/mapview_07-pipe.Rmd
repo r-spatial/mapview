@@ -26,6 +26,7 @@ library(mapview)
 library(leaflet)
 library(dplyr)
 library(sf)
+library(albersusa)
 
 franconia %>%
   st_union %>%
