@@ -56,3 +56,13 @@ test_that("isMultiFeature() runs without issues", {
   expect_equal(isMultiFeature(sf::st_geometry(franconia)[[1]]), TRUE)
   expect_equal(isMultiFeature(sf::st_geometry(breweries)[[1]]), FALSE)
 })
+
+### zIndex -----
+test_that("zIndex() runs without issues", {
+  expect_equal(zIndex(franconia), 420)
+})
+
+### paneName -----
+test_that("paneName runs without issues", {
+  expect_equal(paneName(breweries), "point")
+})
