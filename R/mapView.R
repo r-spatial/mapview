@@ -17,14 +17,6 @@ if ( !isGeneric('mapView') ) {
 #' a length one character vector (again referring to a column of
 #' the attribute table). \cr
 #' \cr
-#' The usage of big data sets is performed by loading local copies
-#' of json files from temporary storage. This works fine for most of
-#' the current browsers. If you are using Google's chrome browser you have to
-#' start the browser with the flag \code{-allow-file-access-from-files} (i.e
-#' for windows: "path_to_your_chrome_installation\\chrome.exe --allow-file-access-from-files",
-#' for linux: "/usr/bin/google-chrome --allow-access-from-files").
-#' See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
-#' \cr
 #' NOTE: if XYZ or XYM or XYZM data from package sf is passed to mapview,
 #' domensions Z and M will be stripped to ensure smooth rendering even though
 #' the popup will potentially still say something like "POLYGON Z".
@@ -35,6 +27,10 @@ if ( !isGeneric('mapView') ) {
 #' @param map an optional existing map to be updated/added to
 #' @param pane name of the map pane in which to render features. See
 #' \code{\link{addMapPane}} for details. Currently only supported for vector layers.
+#' Ignored if \code{canvas = TRUE}.
+#' @param canvas whether to use canvas rendering rather than svg. May help
+#' performance with larger data. See \url{http://leafletjs.com/reference-1.3.0.html#canvas}
+#' for more information.
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color color (palette) for points/polygons/lines
@@ -479,6 +475,7 @@ setMethod('mapView', signature(x = 'sf'),
           function(x,
                    map = NULL,
                    pane = NULL,
+                   canvas = FALSE,
                    zcol = NULL,
                    burst = FALSE,
                    color = mapviewGetOption("vector.palette"),
@@ -565,6 +562,7 @@ setMethod('mapView', signature(x = 'sf'),
                            native.crs = native.crs,
                            highlight = highlight,
                            maxpoints = maxpoints,
+                           canvas = canvas,
                            ...)
 
               } else {
@@ -583,6 +581,8 @@ setMethod('mapView', signature(x = 'sf'),
                         alpha = alpha,
                         alpha.regions = alpha.regions,
                         na.alpha = na.alpha,
+                        canvas = canvas,
+                        pane = pane,
                         ...)
 
               }
@@ -601,6 +601,7 @@ setMethod('mapView', signature(x = 'sfc'),
           function(x,
                    map = NULL,
                    pane = NULL,
+                   canvas = FALSE,
                    color = standardColor(x), #mapviewGetOption("vector.palette"),
                    col.regions = standardColRegions(x), #mapviewGetOption("vector.palette"),
                    at = NULL,
@@ -628,6 +629,7 @@ setMethod('mapView', signature(x = 'sfc'),
               leaflet_sfc(sf::st_cast(x),
                           map = map,
                           pane = pane,
+                          canvas = canvas,
                           color = color,
                           col.regions = col.regions,
                           na.color = na.color,
@@ -748,6 +750,7 @@ setMethod('mapView', signature(x = 'XY'),
           function(x,
                    map = NULL,
                    pane = NULL,
+                   canvas = FALSE,
                    color = standardColor(x), #mapviewGetOption("vector.palette"),
                    col.regions = standardColRegions(x), #mapviewGetOption("vector.palette"),
                    at = NULL,
@@ -776,6 +779,7 @@ setMethod('mapView', signature(x = 'XY'),
               leaflet_sfc(x,
                           map = map,
                           pane = pane,
+                          canvas = canvas,
                           color = color,
                           col.regions = col.regions,
                           na.color = na.color,
