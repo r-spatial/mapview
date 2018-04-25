@@ -506,6 +506,11 @@ setMethod('mapView', signature(x = 'sf'),
                 burst = TRUE
               }
 
+              if (length(zcol) > 1) {
+                x = x[, zcol]
+                burst = TRUE
+              }
+
               # if (inherits(sf::st_geometry(x), "sfc_GEOMETRY")) {
               #   x = split(x, f = sf::st_dimension(sf::st_geometry(x)))
               # }
