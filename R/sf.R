@@ -5,6 +5,7 @@
 leaflet_sf <- function(x,
                        map,
                        pane,
+                       canvas,
                        zcol,
                        cex,
                        lwd,
@@ -114,6 +115,7 @@ leaflet_sf <- function(x,
               highlight = highlight,
               maxpoints = maxpoints,
               attributes = sf2DataFrame(x, drop_sf_column = TRUE),
+              canvas = canvas,
               ...)
 
 }
@@ -123,6 +125,7 @@ leaflet_sf <- function(x,
 leaflet_sfc <- function(x,
                         map,
                         pane,
+                        canvas,
                         zcol,
                         cex,
                         lwd,
@@ -164,9 +167,9 @@ leaflet_sfc <- function(x,
     }
   }
 
-  m <- initMap(map, map.types, sf::st_crs(x), native.crs)
+  m <- initMap(map, map.types, sf::st_crs(x), native.crs, canvas = canvas)
 
-  if (is.null(pane)) {
+  if (is.null(pane) & !canvas) {
     pane = paneName(x)
     zindex = zIndex(x)
     m = addMapPane(m, pane, zindex)
