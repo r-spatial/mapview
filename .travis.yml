@@ -23,8 +23,6 @@ r:
   - devel
 
 before_install:
-  - echo $TRAVIS_R_VERSION_STRING
-  - echo $TRAVIS_PULL_REQUEST
   # install postgis from source (required for lwgeom installation):
   - wget http://download.osgeo.org/postgis/source/postgis-2.3.2.tar.gz
   - (mv postgis* /tmp; cd /tmp; tar xzf postgis-2.3.2.tar.gz)
