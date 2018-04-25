@@ -49,6 +49,6 @@ deploy:
      condition:
        - $TRAVIS_PULL_REQUEST = false
        - $TRAVIS_EVENT_TYPE != cron
-      # - $TRAVIS_R_VERSION = release
+       - $TRAVIS_R_VERSION_STRING = release
 
 after_success: R -q -e 'tic::after_success()'
