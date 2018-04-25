@@ -13,7 +13,6 @@ vignette: >
 
 ```{r setup, echo=FALSE, message=FALSE}
 knitr::opts_chunk$set(fig.width = 8.83, message = FALSE, warning = FALSE)
-library(mapview)
 ```
 
 **mapview** provides a few extra `add*` functions for use with leaflet (and mapview).
@@ -31,6 +30,9 @@ Here are some examples:
 let's us add mouse position information along with detailed information about the layer's projection and zoom level information
 
 ```{r addmc default}
+library(mapview)
+library(leaflet)
+
 leaflet() %>% addTiles() %>% addMouseCoordinates()
 ```
 

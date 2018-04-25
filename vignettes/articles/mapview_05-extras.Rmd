@@ -13,7 +13,6 @@ vignette: >
 
 ```{r setup, echo=FALSE, message=FALSE}
 knitr::opts_chunk$set(fig.width = 8.83, message = FALSE)
-library(mapview)
 ```
 
 **mapview** provides a couple of special convenience functions for all supported spatial data types:
@@ -40,6 +39,9 @@ please refer to the individual help pages (e.g. `?cubeview`)
 This can be handy to check whether features overlap or to just check where things are roughly located (e.g. in case we have big data sets, e.g. raster stacks).
 
 ```{r extent1}
+library(mapview)
+library(leaflet)
+
 viewExtent(poppendorf, color = "red") + viewExtent(breweries)
 ```
 

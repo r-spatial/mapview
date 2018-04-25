@@ -13,7 +13,6 @@ vignette: >
 
 ```{r setup, echo=FALSE, message=FALSE}
 knitr::opts_chunk$set(fig.width = 8.83, message = FALSE, warning = FALSE)
-library(mapview)
 ```
 
 **mapview** can be used in piped expressions using `%>%`, most likely at the very end of it...
@@ -23,6 +22,8 @@ Here are just a few examples of piped workflows:
 ## `plot`ting feature unions
 
 ```{r pipe1a}
+library(mapview)
+library(leaflet)
 library(dplyr)
 library(sf)
 
