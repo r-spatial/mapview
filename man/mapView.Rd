@@ -68,8 +68,8 @@
   verbose = mapviewGetOption("verbose"), homebutton = TRUE,
   method = c("bilinear", "ngb"), label = TRUE, ...)
 
-\S4method{mapView}{sf}(x, map = NULL, pane = NULL, zcol = NULL,
-  burst = FALSE, color = mapviewGetOption("vector.palette"),
+\S4method{mapView}{sf}(x, map = NULL, pane = NULL, canvas = FALSE,
+  zcol = NULL, burst = FALSE, color = mapviewGetOption("vector.palette"),
   col.regions = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
   alpha = 0.9, alpha.regions = regionOpacity(x),
@@ -81,7 +81,7 @@
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
-\S4method{mapView}{sfc}(x, map = NULL, pane = NULL,
+\S4method{mapView}{sfc}(x, map = NULL, pane = NULL, canvas = FALSE,
   color = standardColor(x), col.regions = standardColRegions(x),
   at = NULL, na.color = mapviewGetOption("na.color"), cex = 6,
   lwd = lineWidth(x), alpha = 0.9, alpha.regions = regionOpacity(x),
@@ -97,7 +97,7 @@
 \S4method{mapView}{data.frame}(x, xcol, ycol, grid = TRUE, aspect = 1,
   popup = popupTable(x), label, crs = NA, ...)
 
-\S4method{mapView}{XY}(x, map = NULL, pane = NULL,
+\S4method{mapView}{XY}(x, map = NULL, pane = NULL, canvas = FALSE,
   color = standardColor(x), col.regions = standardColRegions(x),
   at = NULL, na.color = mapviewGetOption("na.color"), cex = 6,
   lwd = lineWidth(x), alpha = 0.9, alpha.regions = regionOpacity(x),
@@ -270,7 +270,12 @@ See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
 
 \item{pane}{name of the map pane in which to render features. See
-\code{\link{addMapPane}} for details. Currently only supported for vector layers.}
+\code{\link{addMapPane}} for details. Currently only supported for vector layers.
+Ignored if \code{canvas = TRUE}.}
+
+\item{canvas}{whether to use canvas rendering rather than svg. May help
+performance with larger data. See \url{http://leafletjs.com/reference-1.3.0.html#canvas}
+for more information.}
 
 \item{zcol}{attribute name(s) or column number(s) in attribute table
 of the column(s) to be rendered. See also Details.}
@@ -333,14 +338,6 @@ and \code{burst} is \code{TRUE}, one layer for each unique value
 of \code{zcol} will be drawn. The same will happen if \code{burst} is
 a length one character vector (again referring to a column of
 the attribute table). \cr
-\cr
-The usage of big data sets is performed by loading local copies
-of json files from temporary storage. This works fine for most of
-the current browsers. If you are using Google's chrome browser you have to
-start the browser with the flag \code{-allow-file-access-from-files} (i.e
-for windows: "path_to_your_chrome_installation\\chrome.exe --allow-file-access-from-files",
-for linux: "/usr/bin/google-chrome --allow-access-from-files").
-See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
 \cr
 NOTE: if XYZ or XYM or XYZM data from package sf is passed to mapview,
 domensions Z and M will be stripped to ensure smooth rendering even though
