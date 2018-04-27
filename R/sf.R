@@ -169,10 +169,12 @@ leaflet_sfc <- function(x,
 
   m <- initMap(map, map.types, sf::st_crs(x), native.crs, canvas = canvas)
 
-  if (is.null(pane) & !canvas) {
-    pane = paneName(x)
-    zindex = zIndex(x)
-    m = addMapPane(m, pane, zindex)
+  if (!is.null(pane)) {
+    if (pane == "auto" & !canvas) {
+      pane = paneName(x)
+      zindex = zIndex(x)
+      m = addMapPane(m, pane, zindex)
+    }
   }
 
   # if (featureComplexity(x) > maxpoints) {
@@ -223,14 +225,16 @@ leaflet_sfc <- function(x,
   # }
 
   if (!is.null(map)) m = updateOverlayGroups(m, layer.name)
+  sclbrpos = getCallEntryFromMap(m, "addScaleBar")
+  if (length(sclbrpos) > 0 | native.crs) scalebar = FALSE else scalebar = TRUE
 
-  funs <- list(if (!native.crs) leaflet::addScaleBar,
+  funs <- list(if (scalebar) leaflet::addScaleBar,
                if (homebutton) addHomeButton,
                if (is.null(map)) mapViewLayersControl,
                addMouseCoordinates)
   funs <- funs[!sapply(funs, is.null)]
 
-  args <- list(if (!native.crs) list(position = "bottomleft"),
+  args <- list(if (scalebar) list(position = "bottomleft"),
                if (homebutton) list(ext = createExtent(x),
                                     layer.name = layer.name),
                if (is.null(map)) list(map.types = map.types,
