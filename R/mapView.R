@@ -23,11 +23,15 @@ if ( !isGeneric('mapView') ) {
 #'
 #' @param x a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
 #' \code{sf} object or a list of any combination of those. Furthermore,
-#' this can also be a \code{data.frame} or a \code{numeric vector}.
+#' this can also be a \code{data.frame} or a \code{numeric vector}. If missing,
+#' a blank map will be drawn.
 #' @param map an optional existing map to be updated/added to
 #' @param pane name of the map pane in which to render features. See
 #' \code{\link{addMapPane}} for details. Currently only supported for vector layers.
-#' Ignored if \code{canvas = TRUE}.
+#' Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
+#' for points, lines and polygons such that points overlay lines overlay polygons.
+#' Set to \code{NULL} to get default leaflet behaviour where allfeatures
+#' are rendered in the same pane and layer order is determined by automatically/sequencially.
 #' @param canvas whether to use canvas rendering rather than svg. May help
 #' performance with larger data. See \url{http://leafletjs.com/reference-1.3.0.html#canvas}
 #' for more information.

@@ -68,7 +68,7 @@
   verbose = mapviewGetOption("verbose"), homebutton = TRUE,
   method = c("bilinear", "ngb"), label = TRUE, ...)
 
-\S4method{mapView}{sf}(x, map = NULL, pane = NULL, canvas = FALSE,
+\S4method{mapView}{sf}(x, map = NULL, pane = "auto", canvas = FALSE,
   zcol = NULL, burst = FALSE, color = mapviewGetOption("vector.palette"),
   col.regions = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
@@ -81,7 +81,7 @@
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
-\S4method{mapView}{sfc}(x, map = NULL, pane = NULL, canvas = FALSE,
+\S4method{mapView}{sfc}(x, map = NULL, pane = "auto", canvas = FALSE,
   color = standardColor(x), col.regions = standardColRegions(x),
   at = NULL, na.color = mapviewGetOption("na.color"), cex = 6,
   lwd = lineWidth(x), alpha = 0.9, alpha.regions = regionOpacity(x),
@@ -97,7 +97,7 @@
 \S4method{mapView}{data.frame}(x, xcol, ycol, grid = TRUE, aspect = 1,
   popup = popupTable(x), label, crs = NA, ...)
 
-\S4method{mapView}{XY}(x, map = NULL, pane = NULL, canvas = FALSE,
+\S4method{mapView}{XY}(x, map = NULL, pane = "auto", canvas = FALSE,
   color = standardColor(x), col.regions = standardColRegions(x),
   at = NULL, na.color = mapviewGetOption("na.color"), cex = 6,
   lwd = lineWidth(x), alpha = 0.9, alpha.regions = regionOpacity(x),
@@ -194,7 +194,8 @@
 \arguments{
 \item{x}{a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
 \code{sf} object or a list of any combination of those. Furthermore,
-this can also be a \code{data.frame} or a \code{numeric vector}.}
+this can also be a \code{data.frame} or a \code{numeric vector}. If missing,
+a blank map will be drawn.}
 
 \item{map}{an optional existing map to be updated/added to}
 
@@ -271,7 +272,10 @@ See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 
 \item{pane}{name of the map pane in which to render features. See
 \code{\link{addMapPane}} for details. Currently only supported for vector layers.
-Ignored if \code{canvas = TRUE}.}
+Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
+for points, lines and polygons such that points overlay lines overlay polygons.
+Set to \code{NULL} to get default leaflet behaviour where allfeatures
+are rendered in the same pane and layer order is determined by automatically/sequencially.}
 
 \item{canvas}{whether to use canvas rendering rather than svg. May help
 performance with larger data. See \url{http://leafletjs.com/reference-1.3.0.html#canvas}
