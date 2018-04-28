@@ -19,21 +19,21 @@ them to the map. Arguments must be named. Functions can be plain or
 character strings.
 }
 \examples{
-\dontrun{
-m <- leaflet() \%>\% addTiles()
-garnishMap(m, addMouseCoordinates)
+library(leaflet)
+
+m <- leaflet() \%>\% addProviderTiles("OpenStreetMap")
+garnishMap(m, addMouseCoordinates, style = "basic")
 
 ## add more than one with named argument
 library(raster)
+
 m1 <- garnishMap(m, addMouseCoordinates, addHomeButton,
-                 ext = extent(breweries91))
+                 ext = extent(breweries))
 m1
 
 ## even more flexible
 m2 <- garnishMap(m1, addPolygons, data = franconia, popup = popupTable(franconia),
                  fillOpacity = 0.8, color = "black", fillColor = "#BEBEBE")
 garnishMap(m2, addCircleMarkers, data = breweries)
-
-}
 
 }

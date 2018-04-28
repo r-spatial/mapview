@@ -44,7 +44,9 @@
   alpha.regions = 0.8, legend = mapviewGetOption("legend"),
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
   layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
-  method = c("bilinear", "ngb"), ...)
+  method = c("bilinear", "ngb"), label = TRUE, query.type = c("mousemove",
+  "click"), query.digits, query.position = "topright",
+  query.prefix = "Layer", ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -53,7 +55,9 @@
   values = NULL, map.types = mapviewGetOption("basemaps"),
   legend = mapviewGetOption("legend"), legend.opacity = 1, trim = TRUE,
   verbose = mapviewGetOption("verbose"), homebutton = TRUE,
-  method = c("bilinear", "ngb"), ...)
+  method = c("bilinear", "ngb"), label = TRUE, query.type = c("mousemove",
+  "click"), query.digits, query.position = "topright",
+  query.prefix = "Layer", ...)
 
 \S4method{mapView}{Satellite}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -62,10 +66,10 @@
   map.types = mapviewGetOption("basemaps"),
   legend = mapviewGetOption("legend"), legend.opacity = 1, trim = TRUE,
   verbose = mapviewGetOption("verbose"), homebutton = TRUE,
-  method = c("bilinear", "ngb"), ...)
+  method = c("bilinear", "ngb"), label = TRUE, ...)
 
-\S4method{mapView}{sf}(x, map = NULL, zcol = NULL, burst = FALSE,
-  color = mapviewGetOption("vector.palette"),
+\S4method{mapView}{sf}(x, map = NULL, pane = "auto", canvas = FALSE,
+  zcol = NULL, burst = FALSE, color = mapviewGetOption("vector.palette"),
   col.regions = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
   alpha = 0.9, alpha.regions = regionOpacity(x),
@@ -77,11 +81,11 @@
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
-\S4method{mapView}{sfc}(x, map = NULL, color = standardColor(x),
-  col.regions = standardColRegions(x), at = NULL,
-  na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
-  alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
-  verbose = mapviewGetOption("verbose"), popup = NULL,
+\S4method{mapView}{sfc}(x, map = NULL, pane = "auto", canvas = FALSE,
+  color = standardColor(x), col.regions = standardColRegions(x),
+  at = NULL, na.color = mapviewGetOption("na.color"), cex = 6,
+  lwd = lineWidth(x), alpha = 0.9, alpha.regions = regionOpacity(x),
+  map.types = NULL, verbose = mapviewGetOption("verbose"), popup = NULL,
   layer.name = deparse(substitute(x, env = parent.frame(2))),
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
@@ -91,13 +95,13 @@
 \S4method{mapView}{numeric}(x, y, type = "p", grid = TRUE, label, ...)
 
 \S4method{mapView}{data.frame}(x, xcol, ycol, grid = TRUE, aspect = 1,
-  popup = popupTable(x), label, ...)
+  popup = popupTable(x), label, crs = NA, ...)
 
-\S4method{mapView}{XY}(x, map = NULL, color = standardColor(x),
-  col.regions = standardColRegions(x), at = NULL,
-  na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
-  alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
-  verbose = mapviewGetOption("verbose"), popup = NULL,
+\S4method{mapView}{XY}(x, map = NULL, pane = "auto", canvas = FALSE,
+  color = standardColor(x), col.regions = standardColRegions(x),
+  at = NULL, na.color = mapviewGetOption("na.color"), cex = 6,
+  lwd = lineWidth(x), alpha = 0.9, alpha.regions = regionOpacity(x),
+  map.types = NULL, verbose = mapviewGetOption("verbose"), popup = NULL,
   layer.name = deparse(substitute(x, env = parent.frame(1))),
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
@@ -156,7 +160,9 @@
   alpha.regions = 0.8, legend = mapviewGetOption("legend"),
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
   layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
-  method = c("bilinear", "ngb"), ...)
+  method = c("bilinear", "ngb"), label = TRUE, query.type = c("mousemove",
+  "click"), query.digits, query.position = "topright",
+  query.prefix = "Layer", ...)
 
 \S4method{mapView}{SpatialGridDataFrame}(x, map = NULL, zcol = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -166,7 +172,9 @@
   alpha.regions = 0.8, legend = mapviewGetOption("legend"),
   legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
   layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
-  method = c("bilinear", "ngb"), ...)
+  method = c("bilinear", "ngb"), label = TRUE, query.type = c("mousemove",
+  "click"), query.digits, query.position = "topright",
+  query.prefix = "Layer", ...)
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL,
   layer.name = NULL, ...)
@@ -186,7 +194,8 @@
 \arguments{
 \item{x}{a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
 \code{sf} object or a list of any combination of those. Furthermore,
-this can also be a \code{data.frame} or a \code{numeric vector}.}
+this can also be a \code{data.frame} or a \code{numeric vector}. If missing,
+a blank map will be drawn.}
 
 \item{map}{an optional existing map to be updated/added to}
 
@@ -240,9 +249,37 @@ which is appropriate for continuous variables. The other option, 'ngb'
 (nearest neighbor), is useful for categorical variables. Ignored if the raster
 layer is of class \code{factor} in which case "ngb" is used.}
 
+\item{label}{For vector data (sf/sp) a character vector of labels to be
+shown on mouseover. See \code{\link{addControl}} for details. For raster
+data (Raster*/stars) a logical indicating whether to add image query.}
+
+\item{query.type}{for raster methods only. Whether to show raster value query
+on \code{'mousemove'} or \code{'click'}. Ignored if \code{label = FALSE}.}
+
+\item{query.digits}{for raster methods only. The amount of digits to be shown
+by raster value query. Ignored if \code{label = FALSE}.}
+
+\item{query.position}{for raster methods only. The position of the raster
+value query info box. See \code{position} argument of \code{\link{addLegend}}
+for possible values. Ignored if \code{label = FALSE}.}
+
+\item{query.prefix}{for raster methods only. a character string to be shown
+as prefix for the layerId. Ignored if \code{label = FALSE}.}
+
 \item{...}{additional arguments passed on to repective functions.
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
+
+\item{pane}{name of the map pane in which to render features. See
+\code{\link{addMapPane}} for details. Currently only supported for vector layers.
+Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
+for points, lines and polygons such that points overlay lines overlay polygons.
+Set to \code{NULL} to get default leaflet behaviour where allfeatures
+are rendered in the same pane and layer order is determined by automatically/sequencially.}
+
+\item{canvas}{whether to use canvas rendering rather than svg. May help
+performance with larger data. See \url{http://leafletjs.com/reference-1.3.0.html#canvas}
+for more information.}
 
 \item{zcol}{attribute name(s) or column number(s) in attribute table
 of the column(s) to be rendered. See also Details.}
@@ -264,9 +301,6 @@ of the column(s) to be used for defining the size of circles}
 \item{popup}{a \code{list} of HTML strings with the popup contents, usually
 created from \code{\link{popupTable}}. See \code{\link{addControl}} for
 details.}
-
-\item{label}{a character vector of labels to be shown on mouseover. See
-\code{\link{addControl}} for details.}
 
 \item{highlight}{either \code{FALSE}, \code{NULL} or a list of styling
 options for feature highlighting on mouse hover.
@@ -292,6 +326,10 @@ data.frame method.}
 
 \item{aspect}{the ratio of x/y axis corrdinates to adjust the plotting
 space to fit the screen. Only relevant for the data.frame method.}
+
+\item{crs}{an optional crs specification for the provided data to enable
+rendering on a basemap. See argument description in \code{\link{st_sf}}
+for details.}
 }
 \description{
 this function produces an interactive view of the specified
@@ -304,14 +342,6 @@ and \code{burst} is \code{TRUE}, one layer for each unique value
 of \code{zcol} will be drawn. The same will happen if \code{burst} is
 a length one character vector (again referring to a column of
 the attribute table). \cr
-\cr
-The usage of big data sets is performed by loading local copies
-of json files from temporary storage. This works fine for most of
-the current browsers. If you are using Google's chrome browser you have to
-start the browser with the flag \code{-allow-file-access-from-files} (i.e
-for windows: "path_to_your_chrome_installation\\chrome.exe --allow-file-access-from-files",
-for linux: "/usr/bin/google-chrome --allow-access-from-files").
-See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
 \cr
 NOTE: if XYZ or XYM or XYZM data from package sf is passed to mapview,
 domensions Z and M will be stripped to ensure smooth rendering even though
@@ -398,6 +428,8 @@ and fully queriable.
 mapview()
 
 ## simple features ====================================================
+library(sf)
+
 # sf
 mapview(breweries)
 mapview(franconia)
@@ -418,25 +450,24 @@ mapview(poppendorf[[5]])
 
 ## spatial objects =====================================================
 mapview(leaflet::gadmCHE)
-mapview(atlStorms2005)
+mapview(leaflet::atlStorms2005)
 
 
 ## styling options & legends ===========================================
-mapview(cantons, color = "white", col.regions = "red")
-mapview(cantons, color = "magenta", col.regions = "white")
+mapview(franconia, color = "white", col.regions = "red")
+mapview(franconia, color = "magenta", col.regions = "white")
 
 mapview(breweries, zcol = "founded")
 mapview(breweries, zcol = "founded", at = seq(1400, 2200, 200), legend = TRUE)
-mapview(cantons, zcol = "NAME_1", legend = TRUE)
+mapview(franconia, zcol = "district", legend = TRUE)
 
-library(RColorBrewer)
-clrs <- colorRampPalette(brewer.pal(9, "Blues"))
-mapview(breweries, zcol = "founded", col.regions = clrs, legend = TRUE)
+clrs <- sf.colors
+mapview(franconia, zcol = "district", col.regions = clrs, legend = TRUE)
 
 ### multiple layers ====================================================
 mapview(franconia) + breweries
 mapview(list(breweries, franconia))
-mapview(breweries) + mapview(franconia) + stormtracks
+mapview(franconia) + mapview(breweries) + trails
 
 mapview(franconia, zcol = "district") + mapview(breweries, zcol = "village")
 mapview(list(franconia, breweries),
@@ -485,7 +516,6 @@ franconia \%>\%
   mutate(count = lengths(st_contains(., breweries)),
          density = count / st_area(.)) \%>\%
   mapview(zcol = "density")
-
 }
 
 }

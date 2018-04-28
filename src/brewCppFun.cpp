@@ -56,13 +56,13 @@ std::string brewPopupRowC(std::string index, std::string colname,
   }
 
   std::string chColString;
-  chColString = std::string("<td>") + "<b>" + colname + "</b>" + "</td>";
+  chColString = std::string("<td>") + "<b>" + colname + "&emsp;</b>" + "</td>";
 
   std::ostringstream ssVal;
   ssVal << value;
 
   std::string chValString;
-  chValString = std::string("<td>") + ssVal.str() + "</td>";
+  chValString = std::string("<td align='right'>") + ssVal.str() + "&emsp;</td>";
 
   std::string chOutString;
   chOutString = std::string("<tr>" + chIndString + chColString + chValString + "</tr>");
@@ -86,13 +86,13 @@ std::string brewPopupRowAltC(std::string index, std::string colname,
   }
 
   std::string chColString;
-  chColString = std::string("<td>") + "<b>" + colname + "</b>" + "</td>";
+  chColString = std::string("<td>") + "<b>" + colname + "&emsp;</b>" + "</td>";
 
   std::ostringstream ssVal;
   ssVal << value;
 
   std::string chValString;
-  chValString = std::string("<td>") + ssVal.str() + "</td>";
+  chValString = std::string("<td align='right'>") + ssVal.str() + "&emsp;</td>";
 
   std::string chOutString;
   chOutString = std::string("<tr class=\'alt\'>" + chIndString + chColString + chValString + "</tr>");
@@ -117,7 +117,7 @@ std::string brewPopupCoords(std::string colname, std::string value) {
   ssVal << value;
 
   std::string chValString;
-  chValString = std::string("<td>") + ssVal.str() + "</td>";
+  chValString = std::string("<td align='right'>") + ssVal.str() + "&emsp;</td>";
 
   std::string chOutString;
   chOutString = std::string("<tr class=\'coord\'>" + chIndString + chColString + chValString + "</tr>");

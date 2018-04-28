@@ -65,26 +65,20 @@
 #' \code{\link{rasterOptions}}, \code{\link{options}}
 #'
 #' @examples
-#' \dontrun{
 #' mapviewOptions()
 #' mapviewOptions(na.color = "pink")
 #' mapviewOptions()
 #'
 #' mapviewGetOption("platform")
-#' }
+#'
+#' mapviewOptions(default = TRUE)
+#' mapviewOptions()
 #'
 #'
 #' @export mapviewOptions
 #' @name mapviewOptions
 #' @rdname mapviewOptions
 #' @aliases mapviewOptions
-
-# pkgs <- c("viridis", "viridisLite")
-# viridis_avl <- try(sapply(pkgs, "requireNamespace",
-#                           quietly = TRUE, USE.NAMES = FALSE))
-# viridis_avl <- any(viridis_avl)
-
-
 mapviewOptions <- function(platform,
                            basemaps,
                            raster.size,

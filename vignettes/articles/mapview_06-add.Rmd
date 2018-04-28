@@ -13,7 +13,6 @@ vignette: >
 
 ```{r setup, echo=FALSE, message=FALSE}
 knitr::opts_chunk$set(fig.width = 8.83, message = FALSE, warning = FALSE)
-library(mapview)
 ```
 
 **mapview** provides a few extra `add*` functions for use with leaflet (and mapview).
@@ -21,8 +20,7 @@ library(mapview)
 - `addMouseCoordinates` - add a box with mouse position, projection information and zoom level information
 - `addLogo` - add images to maps
 - `addHomeButton` - add zoom-to button to a map
-- `addFeatures` - add features to a map, regardless of features type
-- `addLargeFeatures` - add largish data to a map that would usually make the map rather unresposnive
+- `addFeatures` - add features to a map, regardless of features type unresposnive
 
 Here are some examples:
 
@@ -31,6 +29,9 @@ Here are some examples:
 let's us add mouse position information along with detailed information about the layer's projection and zoom level information
 
 ```{r addmc default}
+library(mapview)
+library(leaflet)
+
 leaflet() %>% addTiles() %>% addMouseCoordinates()
 ```
 
@@ -58,7 +59,6 @@ leaflet() %>% addTiles() %>% addLogo(img, url = "https://www.r-project.org/logo/
 arguments `offset.x`, `offset.y` together with `position` give control about image placement. See `?addLogo` for details
 
 ```{r logo banana}
-library(magick)
 m <- mapview(breweries)
 
 addLogo(m, "https://jeroenooms.github.io/images/banana.gif",
@@ -105,31 +105,4 @@ leaflet() %>%
               opacity = 1, fillOpacity = 0.6)
 ```
 
-------
-
-## addLargeFeatures
-
-can be used to add largish data to a leaflet map. It is useful for data that is likely to be beyond the capabilities of the native leaflet `add*` functions. A rough estimate of size for which this is useful is somewhere beyond 50k features but not more than 300k features, depending on the feature complexity. Complexity can be seen (and in mapview internals isdefined) as the ratio of the number of points/vertices/nodes of features and the number of features. Therefore, defining a threshold based on the number of features is only valid for point features where the number of features equals the number of points. For lines and polygons these numbers can differ drastically. As a minimum, lines are made up of 2 points and polygons consist of at least 4 points in their simplest form. Thus, it is a matter of 'trial and error' whether `addLargeFeatures` will be able to handle the data you want to visualise. Rest assured though that it is in any case not performing worse than the standard leaflet functions.
-
-Note that the decision whether to add points, lines or polygons is made internally depending on the data type provided.
-
-Here's an example using around 80k points:
-
-```{r large}
-library(sf)
-library(ggmap)
-
-data(crime)
-crime <- crime[complete.cases(crime), ]
-crime_sf <- st_as_sf(crime, coords = c("lon", "lat"), crs = "+init=epsg:4326")
-
-leaflet() %>%
-  addTiles() %>%
-  addLargeFeatures(crime_sf, readius = 3)
-
-# mapview(crime_sf, zcol = "offense", cex = 3)
-```
-
 <br>
-
-The difference to the standard leaflet functions is that whenever there are many features in the current view, they are rendered as images (png) and are thus not qureyable. Whenever we zoom in or pan the map so that the number of features is deemed acceptable for standard (svg) rendering, features become qureyable (i.e. popups will appear when we click). Whether things are static (png) or reactive (svg) is indicated by a very subtle change in coloring. 

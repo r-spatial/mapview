@@ -96,7 +96,6 @@ For plainView there are a few keyboard shortcuts defined:
 }}
 
 \examples{
-\dontrun{
 ### raster data ###
 library(sp)
 library(raster)
@@ -115,10 +114,8 @@ plainView(meuse.grid, zcol = "dist")
 m1 <- plainView(poppendorf[[5]])
 m1
 
-# raster stack
+# raster stack - true color
 plainview(poppendorf, 4, 3, 2)
-
-}
 
 }
 \author{

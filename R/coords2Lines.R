@@ -25,7 +25,6 @@ if ( !isGeneric("coords2Lines") ) {
 #' \code{\link{SpatialLines-class}}, \code{\link{SpatialLinesDataFrame}}.
 #'
 #' @examples
-#' \dontrun{
 #' library(sp)
 #'
 #' coords1 <- cbind(c(2, 4, 4, 1, 2), c(2, 3, 5, 4, 2))
@@ -38,7 +37,6 @@ if ( !isGeneric("coords2Lines") ) {
 #'
 #' plot(sln1, col = "grey75")
 #' plot(sln2, col = "grey25", add = TRUE)
-#' }
 #'
 #' @export coords2Lines
 #' @name coords2Lines

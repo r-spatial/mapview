@@ -14,7 +14,7 @@
 #' A \code{list} of HTML strings required to create feature popup tables.
 #'
 #' @examples
-#' \dontrun{
+#' library(leaflet)
 #'
 #' ## include columns 1 and 2 only
 #' mapview(franconia, popup = popupTable(franconia, zcol = 1:2))
@@ -23,7 +23,6 @@
 #' leaflet() %>% addCircleMarkers(data = breweries)
 #' leaflet() %>% addCircleMarkers(data = breweries,
 #'                                popup = popupTable(breweries))
-#' }
 #'
 #' @export popupTable
 #' @name popupTable
@@ -236,18 +235,6 @@ popupRemoteImage = function(img, width = 300, height = "100%") {
 #' mapview(pt, popup = popupGraph(p2, width = 300, height = 400))
 #'
 #' ### example: html -----
-#' library(scatterD3)
-#' p = lapply(1:length(meuse), function(i) {
-#'   clr =rep(0, length(meuse))
-#'   clr[[i]] = 1
-#'   scatterD3(x = meuse$cadmium,
-#'             y = meuse$copper,
-#'             col_var = clr,
-#'             legend_width = 0)
-#' })
-#'
-#' mapview(meuse, popup = popupGraph(p, type = "html", width = 400, height = 300))
-#'
 #' mapview(breweries[1, ], map.types = "Esri.WorldImagery",
 #'         popup = popupGraph(mapview(breweries[1, ])@map,
 #'                            type = "html",
@@ -422,9 +409,10 @@ brewPopupTable = function(x, width = 300, height = 300, row.numbers = TRUE) {
   } else {
 
     # data.frame with 1 column
-    if (ncol(x) == 1) {
+    if (ncol(x) == 1 && names(x) == attr(x, "sf_column")) {
+      mat = as.matrix(class(x[, 1])[1])
+    } else if (ncol(x) == 1) {
       mat = matrix(as.character(x[, 1]))
-
     # data.frame with multiple columns
     } else {
 

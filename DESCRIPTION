@@ -1,8 +1,8 @@
 Package: mapview
 Type: Package
 Title: Interactive Viewing of Spatial Data in R
-Version: 2.3.0
-Date: 2018-01-30
+Version: 2.4.0
+Date: 2018-04-28
 Authors@R: c(
       person("Tim", "Appelhans", email = "tim.appelhans@gmail.com", role = c("cre", "aut")),
       person("Florian", "Detsch", email = "florian.detsch@staff.uni-marburg.de", role = c("aut")),
@@ -13,6 +13,8 @@ Authors@R: c(
       person("Edzer", "Pebesma", role = c("ctb")),
       person("Kenton", "Russell", role = c("ctb")),
       person("Michael", "Sumner", role = c("ctb")),
+      person("Jochen", "Darley", email = "Debugger@jedimasters.de", role = c("ctb")),
+      person("Pierre", "Roudier", role = c("ctb")),
       person("Environmental Informatics Marburg", role = c("ctb"))
     )
 Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
@@ -52,4 +54,5 @@ Suggests:
     rmarkdown,
     dplyr,
     testthat,
-    covr
+    covr,
+    lwgeom

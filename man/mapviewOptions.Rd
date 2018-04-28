@@ -95,13 +95,14 @@ query single mapviewOption parameters
 }}
 
 \examples{
-\dontrun{
 mapviewOptions()
 mapviewOptions(na.color = "pink")
 mapviewOptions()
 
 mapviewGetOption("platform")
-}
+
+mapviewOptions(default = TRUE)
+mapviewOptions()
 
 
 }

@@ -1,14 +1,11 @@
-large_warn = paste("the supplied feature layer has more points/vertices than the set threshold.",
-                   "using special rendering function, hence things may not behave as expected from a standard leaflet map,",
-                   "e.g. you will likely need to zoom in to popup-query features\n",
-                   "to see the number of points/vertices of the layer use 'npts(x)'",
-                   "to see the threshold for the feature type use 'mapview:::getMaxFeatures(x)'",
-                   "to adjust the threshold use argument 'maxpoints'",
-                   sep = "\n  ")
+# large_warn = paste("\nthe supplied feature layer seems quite large.\n",
+#                    "would you like to view in the browser instead of RStudio viewer? (recommended)\n")
 
 ### sf ####################################################################
 leaflet_sf <- function(x,
                        map,
+                       pane,
+                       canvas,
                        zcol,
                        cex,
                        lwd,
@@ -96,6 +93,7 @@ leaflet_sf <- function(x,
 
   leaflet_sfc(sf::st_geometry(x),
               map = map,
+              pane = pane,
               zcol = zcol,
               color = clrs,
               col.regions = clrs.regions,
@@ -117,6 +115,7 @@ leaflet_sf <- function(x,
               highlight = highlight,
               maxpoints = maxpoints,
               attributes = sf2DataFrame(x, drop_sf_column = TRUE),
+              canvas = canvas,
               ...)
 
 }
@@ -125,6 +124,8 @@ leaflet_sf <- function(x,
 ### sfc ###################################################################
 leaflet_sfc <- function(x,
                         map,
+                        pane,
+                        canvas,
                         zcol,
                         cex,
                         lwd,
@@ -150,7 +151,7 @@ leaflet_sfc <- function(x,
   if (!is.null(names(x))) {
     names(x) = NULL
   }
-  # x = x[!is.na(sf::st_dimension(x))]
+
   if (inherits(x, "XY")) x = sf::st_sfc(x)
 
   if (!native.crs) x <- checkAdjustProjection(x)
@@ -166,29 +167,23 @@ leaflet_sfc <- function(x,
     }
   }
 
-  m <- initMap(map, map.types, sf::st_crs(x), native.crs)
+  m <- initMap(map, map.types, sf::st_crs(x), native.crs, canvas = canvas)
 
-  if (featureComplexity(x) > maxpoints) {
-    if (getGeometryType(x) == "ln") clrs <- color else clrs <-  col.regions
-    warning(large_warn)
-    m <- addLargeFeatures(m,
-                          data = x,
-                          radius = cex,
-                          weight = lwd,
-                          opacity = alpha,
-                          fillOpacity = alpha.regions,
-                          color = clrs,
-                          popup = popup,
-                          label = label,
-                          group = layer.name,
-                          maxpoints = maxpoints,
-                          attributes = attributes,
-                          ...)
-
+  if (!canvas) {
+    if (!is.null(pane)) {
+      if (pane == "auto") {
+        pane = paneName(x)
+        zindex = zIndex(x)
+        m = addMapPane(m, pane, zindex)
+      }
+    }
   } else {
+    pane = NULL
+  }
 
   m <- addFeatures(m,
                    data = x,
+                   pane = pane,
                    radius = cex,
                    weight = lwd,
                    opacity = alpha,
@@ -201,17 +196,17 @@ leaflet_sfc <- function(x,
                    highlightOptions = highlight,
                    ...)
 
-  }
-
   if (!is.null(map)) m = updateOverlayGroups(m, layer.name)
+  sclbrpos = getCallEntryFromMap(m, "addScaleBar")
+  if (length(sclbrpos) > 0 | native.crs) scalebar = FALSE else scalebar = TRUE
 
-  funs <- list(if (!native.crs) leaflet::addScaleBar,
+  funs <- list(if (scalebar) leaflet::addScaleBar,
                if (homebutton) addHomeButton,
                if (is.null(map)) mapViewLayersControl,
                addMouseCoordinates)
   funs <- funs[!sapply(funs, is.null)]
 
-  args <- list(if (!native.crs) list(position = "bottomleft"),
+  args <- list(if (scalebar) list(position = "bottomleft"),
                if (homebutton) list(ext = createExtent(x),
                                     layer.name = layer.name),
                if (is.null(map)) list(map.types = map.types,

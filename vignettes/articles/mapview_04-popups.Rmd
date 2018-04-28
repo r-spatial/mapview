@@ -12,7 +12,6 @@ vignette: >
 
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set(fig.width = 8.83, mesage = FALSE)
-library(mapview)
 ```
 
 **mapview** provides a few special popup rendering functions. These can be used to generate:
@@ -28,6 +27,9 @@ library(mapview)
 `popupTable` is the standard popup function used in mapview. It provides a static table rendering of all attributes of the individual features.
 
 ```{r popupTable}
+library(mapview)
+library(leaflet)
+
 mapview(breweries, popup = popupTable(breweries,
                                       zcol = c("brewery",
                                                "village",

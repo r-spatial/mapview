@@ -26,7 +26,6 @@ if ( !isGeneric("coords2Polygons") ) {
 #' \code{\link{SpatialPolygons-class}}, \code{\link{SpatialPolygonsDataFrame}}.
 #'
 #' @examples
-#' \dontrun{
 #' library(sp)
 #'
 #' coords1 <- cbind(c(2, 4, 4, 1, 2), c(2, 3, 5, 4, 2))
@@ -37,7 +36,6 @@ if ( !isGeneric("coords2Polygons") ) {
 #'
 #' plot(spy1, col = "grey75")
 #' plot(spy2, col = "grey25", add = TRUE)
-#' }
 #'
 #' @export coords2Polygons
 #' @name coords2Polygons

@@ -89,6 +89,13 @@ appendMapCallEntries <- function(map1, map2) {
   m1_calls = map1$x$calls
   m2_calls = map2$x$calls
 
+  ## dependencies
+  m1_deps = map1$dependencies
+  m2_deps = map2$dependencies
+
+  mp_deps = append(m1_deps, m2_deps)
+  mp_deps = mp_deps[!duplicated(mp_deps)]
+
   ## base map controls
   ctrls1 <- getLayerControlEntriesFromMap(map1)
   ctrls2 <- getLayerControlEntriesFromMap(map2)
@@ -131,6 +138,7 @@ appendMapCallEntries <- function(map1, map2) {
   }, silent = TRUE)
 
   map1$x$calls <- mpcalls
+  map1$dependencies = mp_deps
   return(map1)
 }
 
@@ -171,7 +179,7 @@ rasterCheckSize <- function(x, maxpixels) {
 
 # Initialise mapView base maps --------------------------------------------
 
-initBaseMaps <- function(map.types) {
+initBaseMaps <- function(map.types, canvas = FALSE) {
   ## create base map using specified map types
   if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
   leafletHeight <- mapviewGetOption("leafletHeight")
@@ -183,7 +191,8 @@ initBaseMaps <- function(map.types) {
                           maxZoom = 100,
                           bounceAtZoomLimits = FALSE,
                           maxBounds = list(list(c(-90, -370)),
-                                           list(c(90, 370)))))
+                                           list(c(90, 370))),
+                          preferCanvas = canvas))
   m <- leaflet::addProviderTiles(m, provider = map.types[1],
                                  layerId = lid[1], group = map.types[1])
   if (length(map.types) > 1) {
@@ -201,7 +210,8 @@ initBaseMaps <- function(map.types) {
 initMap <- function(map = NULL,
                     map.types = NULL,
                     proj4str,
-                    native.crs = FALSE) {
+                    native.crs = FALSE,
+                    canvas = FALSE) {
 
   # if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
 
@@ -219,9 +229,10 @@ initMap <- function(map = NULL,
       m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth,
                             options = leaflet::leafletOptions(
                               minZoom = -1000,
-                              crs = leafletCRS(crsClass = "L.CRS.Simple")))
+                              crs = leafletCRS(crsClass = "L.CRS.Simple"),
+                              preferCanvas = canvas))
     } else {
-      m <- initBaseMaps(map.types)
+      m <- initBaseMaps(map.types, canvas = canvas)
     }
   } else {
     m <- map

@@ -18,7 +18,7 @@ if ( !isGeneric('viewRGB') ) {
 #' @param r integer. Index of the Red channel, between 1 and nlayers(x)
 #' @param g integer. Index of the Green channel, between 1 and nlayers(x)
 #' @param b integer. Index of the Blue channel, between 1 and nlayers(x)
-#' @param quantiles the upper and lower quantiles used for color stretching
+#' @param quantiles the upper and lower quantiles used for color stretching. If set to NULL, no stretching is applied.
 #' @param map the map to which the layer should be added
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
@@ -27,19 +27,22 @@ if ( !isGeneric('viewRGB') ) {
 #' for available options.
 #' @param na.color the color to be used for NA pixels
 #' @param layer.name the name of the layer to be shown on the map
+#' @param method Method used to compute
+#' values for the resampled layer that is passed on to leaflet. mapview does
+#' projection on-the-fly to ensure correct display and therefore needs to know
+#' how to do this projection. The default is 'bilinear' (bilinear interpolation),
+#' which is appropriate for continuous variables. The other option, 'ngb'
+#' (nearest neighbor), is useful for categorical variables.
 #' @param ... additional arguments passed on to \code{\link{mapView}}
 #'
 #' @author
 #' Tim Appelhans
 #'
 #' @examples
-#' \dontrun{
 #' library(raster)
 #'
 #' viewRGB(poppendorf, 4, 3, 2) # true-color
 #' viewRGB(poppendorf, 5, 4, 3) # false-color
-#' }
-#'
 #'
 #' @export
 #' @docType methods
@@ -56,24 +59,32 @@ setMethod("viewRGB", signature(x = "RasterStackBrick"),
                    na.color = mapviewGetOption("na.color"),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
+                   method = c("bilinear", "ngb"),
                    ...) {
 
+            method = match.arg(method)
             m <- initMap(map, map.types, projection(x))
             x <- rasterCheckSize(x, maxpixels)
-            xout <- rasterCheckAdjustProjection(x)
+            xout <- rasterCheckAdjustProjection(x, method)
 
             mat <- cbind(xout[[r]][],
                          xout[[g]][],
                          xout[[b]][])
 
-            for(i in seq(ncol(mat))){
-              z <- mat[, i]
-              lwr <- stats::quantile(z, quantiles[1], na.rm = TRUE)
-              upr <- stats::quantile(z, quantiles[2], na.rm = TRUE)
-              z <- (z - lwr) / (upr - lwr)
-              z[z < 0] <- 0
-              z[z > 1] <- 1
-              mat[, i] <- z
+            if (!is.null(quantiles)) {
+
+              for(i in seq(ncol(mat))){
+                z <- mat[, i]
+                lwr <- stats::quantile(z, quantiles[1], na.rm = TRUE)
+                upr <- stats::quantile(z, quantiles[2], na.rm = TRUE)
+                z <- (z - lwr) / (upr - lwr)
+                z[z < 0] <- 0
+                z[z > 1] <- 1
+                mat[, i] <- z
+              }
+            } else {
+              # If there is no stretch we just scale the data between 0 and 1
+              mat <- apply(mat, 2, scales::rescale)
             }
 
             na_indx <- apply(mat, 1, anyNA)

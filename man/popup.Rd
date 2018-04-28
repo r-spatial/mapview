@@ -67,7 +67,7 @@ Type \code{html} embeds via \code{"<iframe src = ..."}.
 \code{height} and \code{width} are set directly in pixels. \cr
 }
 \examples{
-\dontrun{
+library(leaflet)
 
 ## include columns 1 and 2 only
 mapview(franconia, popup = popupTable(franconia, zcol = 1:2))
@@ -76,7 +76,6 @@ mapview(breweries, zcol = "founded", legend = TRUE,
 leaflet() \%>\% addCircleMarkers(data = breweries)
 leaflet() \%>\% addCircleMarkers(data = breweries,
                                popup = popupTable(breweries))
-}
 
 \dontrun{
 ## remote images -----
@@ -145,18 +144,6 @@ p2 = levelplot(t(volcano), col.regions = terrain.colors(100))
 mapview(pt, popup = popupGraph(p2, width = 300, height = 400))
 
 ### example: html -----
-library(scatterD3)
-p = lapply(1:length(meuse), function(i) {
-  clr =rep(0, length(meuse))
-  clr[[i]] = 1
-  scatterD3(x = meuse$cadmium,
-            y = meuse$copper,
-            col_var = clr,
-            legend_width = 0)
-})
-
-mapview(meuse, popup = popupGraph(p, type = "html", width = 400, height = 300))
-
 mapview(breweries[1, ], map.types = "Esri.WorldImagery",
         popup = popupGraph(mapview(breweries[1, ])@map,
                            type = "html",

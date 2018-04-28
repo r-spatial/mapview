@@ -4,12 +4,14 @@
 \alias{addFeatures}
 \title{Type agnositc version of \code{leaflet::add*} functions.}
 \usage{
-addFeatures(map, data, ...)
+addFeatures(map, data, pane = "overlayPane", ...)
 }
 \arguments{
 \item{map}{A \code{leaflet} or \code{mapview} map.}
 
 \item{data}{A \code{sf} object to be added to the \code{map}.}
+
+\item{pane}{The name of the map pane for the features to be rendered in.}
 
 \item{...}{Further arguments passed to the respective \code{leaflet::add*}
 functions. See \code{\link{addCircleMarkers}}, \code{\link{addPolylines}}
@@ -19,18 +21,18 @@ and \code{\link{addPolygons}}.}
 A leaflet \code{map} object.
 }
 \description{
-Add simple features geomertries from \code{\link[sf]{sf}}
+Add simple features geometries from \code{\link[sf]{sf}}
 }
 \examples{
-\dontrun{
-leaflet() \%>\% addTiles() \%>\% addCircleMarkers(data = breweries)
-leaflet() \%>\% addTiles() \%>\% addFeatures(data = breweries)
+library(leaflet)
 
-leaflet() \%>\% addTiles() \%>\% addPolylines(data = atlStorms2005)
-leaflet() \%>\% addTiles() \%>\% addFeatures(atlStorms2005)
+leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addCircleMarkers(data = breweries)
+leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addFeatures(data = breweries)
 
-leaflet() \%>\% addTiles() \%>\% addPolygons(data = franconia)
-leaflet() \%>\% addTiles() \%>\% addFeatures(franconia)
-}
+leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addPolylines(data = atlStorms2005)
+leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addFeatures(atlStorms2005)
+
+leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addPolygons(data = franconia)
+leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addFeatures(franconia)
 
 }

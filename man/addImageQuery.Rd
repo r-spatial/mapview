@@ -5,7 +5,8 @@
 \title{Add image query functionality to leaflet/mapview map.}
 \usage{
 addImageQuery(map, x, group = NULL, layerId = NULL, project = TRUE,
-  type = c("mousemove", "click"), digits, position = "topright", ...)
+  type = c("mousemove", "click"), digits, position = "topright",
+  prefix = "Layer", ...)
 }
 \arguments{
 \item{map}{the map with the RasterLayer to be queried.}
@@ -27,6 +28,8 @@ to 'mousemove'.}
 \item{digits}{the number of digits to be shown in the display field.}
 
 \item{position}{where to place the display field. Default is 'topright'.}
+
+\item{prefix}{a character string to be shown as prefix for the layerId.}
 
 \item{...}{currently not used.}
 }

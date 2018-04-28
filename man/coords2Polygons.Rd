@@ -38,7 +38,6 @@ of point coordinates in one go, i.e. without being required to run through
 the single steps outlined in \code{\link{SpatialPolygons}}.
 }
 \examples{
-\dontrun{
 library(sp)
 
 coords1 <- cbind(c(2, 4, 4, 1, 2), c(2, 3, 5, 4, 2))
@@ -49,7 +48,6 @@ spy2 <- coords2Polygons(coords2, ID = "B")
 
 plot(spy1, col = "grey75")
 plot(spy2, col = "grey25", add = TRUE)
-}
 
 }
 \seealso{

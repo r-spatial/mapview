@@ -17,22 +17,24 @@ if ( !isGeneric('mapView') ) {
 #' a length one character vector (again referring to a column of
 #' the attribute table). \cr
 #' \cr
-#' The usage of big data sets is performed by loading local copies
-#' of json files from temporary storage. This works fine for most of
-#' the current browsers. If you are using Google's chrome browser you have to
-#' start the browser with the flag \code{-allow-file-access-from-files} (i.e
-#' for windows: "path_to_your_chrome_installation\\chrome.exe --allow-file-access-from-files",
-#' for linux: "/usr/bin/google-chrome --allow-access-from-files").
-#' See \url{http://www.chrome-allow-file-access-from-file.com/} for further details.
-#' \cr
 #' NOTE: if XYZ or XYM or XYZM data from package sf is passed to mapview,
 #' domensions Z and M will be stripped to ensure smooth rendering even though
 #' the popup will potentially still say something like "POLYGON Z".
 #'
 #' @param x a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
 #' \code{sf} object or a list of any combination of those. Furthermore,
-#' this can also be a \code{data.frame} or a \code{numeric vector}.
+#' this can also be a \code{data.frame} or a \code{numeric vector}. If missing,
+#' a blank map will be drawn.
 #' @param map an optional existing map to be updated/added to
+#' @param pane name of the map pane in which to render features. See
+#' \code{\link{addMapPane}} for details. Currently only supported for vector layers.
+#' Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
+#' for points, lines and polygons such that points overlay lines overlay polygons.
+#' Set to \code{NULL} to get default leaflet behaviour where allfeatures
+#' are rendered in the same pane and layer order is determined by automatically/sequencially.
+#' @param canvas whether to use canvas rendering rather than svg. May help
+#' performance with larger data. See \url{http://leafletjs.com/reference-1.3.0.html#canvas}
+#' for more information.
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color color (palette) for points/polygons/lines
@@ -60,8 +62,9 @@ if ( !isGeneric('mapView') ) {
 #' @param popup a \code{list} of HTML strings with the popup contents, usually
 #' created from \code{\link{popupTable}}. See \code{\link{addControl}} for
 #' details.
-#' @param label a character vector of labels to be shown on mouseover. See
-#' \code{\link{addControl}} for details.
+#' @param label For vector data (sf/sp) a character vector of labels to be
+#' shown on mouseover. See \code{\link{addControl}} for details. For raster
+#' data (Raster*/stars) a logical indicating whether to add image query.
 #' @param native.crs logical whether to reproject to web map coordinate
 #' reference system (web mercator - epsg:3857) or render using native CRS of
 #' the supplied data (can also be NA). Default is FALSE which will render in
@@ -81,6 +84,15 @@ if ( !isGeneric('mapView') ) {
 #' @param maxpoints the maximum number of points making up the geometry.
 #' In case of lines and polygons this refers to the number of vertices. See
 #' Details for more information.
+#' @param query.type for raster methods only. Whether to show raster value query
+#' on \code{'mousemove'} or \code{'click'}. Ignored if \code{label = FALSE}.
+#' @param query.digits for raster methods only. The amount of digits to be shown
+#' by raster value query. Ignored if \code{label = FALSE}.
+#' @param query.position for raster methods only. The position of the raster
+#' value query info box. See \code{position} argument of \code{\link{addLegend}}
+#' for possible values. Ignored if \code{label = FALSE}.
+#' @param query.prefix for raster methods only. a character string to be shown
+#' as prefix for the layerId. Ignored if \code{label = FALSE}.
 #' @param ... additional arguments passed on to repective functions.
 #' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
@@ -109,6 +121,8 @@ if ( !isGeneric('mapView') ) {
 #' mapview()
 #'
 #' ## simple features ====================================================
+#' library(sf)
+#'
 #' # sf
 #' mapview(breweries)
 #' mapview(franconia)
@@ -129,25 +143,24 @@ if ( !isGeneric('mapView') ) {
 #'
 #' ## spatial objects =====================================================
 #' mapview(leaflet::gadmCHE)
-#' mapview(atlStorms2005)
+#' mapview(leaflet::atlStorms2005)
 #'
 #'
 #' ## styling options & legends ===========================================
-#' mapview(cantons, color = "white", col.regions = "red")
-#' mapview(cantons, color = "magenta", col.regions = "white")
+#' mapview(franconia, color = "white", col.regions = "red")
+#' mapview(franconia, color = "magenta", col.regions = "white")
 #'
 #' mapview(breweries, zcol = "founded")
 #' mapview(breweries, zcol = "founded", at = seq(1400, 2200, 200), legend = TRUE)
-#' mapview(cantons, zcol = "NAME_1", legend = TRUE)
+#' mapview(franconia, zcol = "district", legend = TRUE)
 #'
-#' library(RColorBrewer)
-#' clrs <- colorRampPalette(brewer.pal(9, "Blues"))
-#' mapview(breweries, zcol = "founded", col.regions = clrs, legend = TRUE)
+#' clrs <- sf.colors
+#' mapview(franconia, zcol = "district", col.regions = clrs, legend = TRUE)
 #'
 #' ### multiple layers ====================================================
 #' mapview(franconia) + breweries
 #' mapview(list(breweries, franconia))
-#' mapview(breweries) + mapview(franconia) + stormtracks
+#' mapview(franconia) + mapview(breweries) + trails
 #'
 #' mapview(franconia, zcol = "district") + mapview(breweries, zcol = "village")
 #' mapview(list(franconia, breweries),
@@ -196,7 +209,6 @@ if ( !isGeneric('mapView') ) {
 #'   mutate(count = lengths(st_contains(., breweries)),
 #'          density = count / st_area(.)) %>%
 #'   mapview(zcol = "density")
-#'
 #' }
 #'
 #' @export
@@ -228,6 +240,11 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    homebutton = TRUE,
                    native.crs = FALSE,
                    method = c("bilinear", "ngb"),
+                   label = TRUE,
+                   query.type = c("mousemove", "click"),
+                   query.digits,
+                   query.position = "topright",
+                   query.prefix = "Layer",
                    ...) {
 
             method = match.arg(method)
@@ -251,7 +268,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                           maxpixels = maxpixels,
                           col.regions = col.regions,
                           at = at,
-                          na.color, na.color,
+                          na.color = na.color,
                           use.layer.names = use.layer.names,
                           values = values,
                           map.types = map.types,
@@ -264,6 +281,11 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                           homebutton = homebutton,
                           native.crs = native.crs,
                           method = method,
+                          label = label,
+                          query.type = query.type,
+                          query.digits = query.digits,
+                          query.position = query.position,
+                          query.prefix = query.prefix,
                           ...)
             } else {
               NULL
@@ -275,8 +297,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 
 
 # ## Stars layer ==================================================================
-# #' @describeIn mapview \code{stars}
-#
+# #' @describeIn mapView \code{\link{stars}}
 # setMethod('mapView', signature(x = 'stars'),
 #           function(x,
 #                    map = NULL,
@@ -296,13 +317,18 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 #                    homebutton = TRUE,
 #                    native.crs = FALSE,
 #                    method = c("bilinear", "ngb"),
+#                    label = TRUE,
+#                    query.type = c("mousemove", "click"),
+#                    query.digits,
+#                    query.position = "topright",
+#                    query.prefix = "Layer",
 #                    ...) {
 #
 #             method = match.arg(method)
-#
+#             if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , 1]
 #             if (is.null(at)) at <- lattice::do.breaks(
-#               extendLimits(range(as.numeric(x[[1]][, , 1]),
-#                                  na.rm = TRUE)), 256
+#               extendLimits(range(layer, na.rm = TRUE)),
+#               256
 #             )
 #
 #             if (mapviewGetOption("platform") == "leaflet") {
@@ -324,6 +350,11 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 #                             homebutton = homebutton,
 #                             native.crs = native.crs,
 #                             method = method,
+#                             label = label,
+#                             query.type = query.type,
+#                             query.digits = query.digits,
+#                             query.position = query.position,
+#                             query.prefix = query.prefix,
 #                             ...)
 #             } else {
 #               NULL
@@ -353,6 +384,11 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                    verbose = mapviewGetOption("verbose"),
                    homebutton = TRUE,
                    method = c("bilinear", "ngb"),
+                   label = TRUE,
+                   query.type = c("mousemove", "click"),
+                   query.digits,
+                   query.position = "topright",
+                   query.prefix = "Layer",
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -371,6 +407,11 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                          verbose = verbose,
                          homebutton = homebutton,
                          method = method,
+                         label = label,
+                         query.type = query.type,
+                         query.digits = query.digits,
+                         query.position = query.position,
+                         query.prefix = query.prefix,
                          ...)
             } else {
               NULL
@@ -399,6 +440,7 @@ setMethod('mapView', signature(x = 'Satellite'),
                    verbose = mapviewGetOption("verbose"),
                    homebutton = TRUE,
                    method = c("bilinear", "ngb"),
+                   label = TRUE,
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -416,6 +458,7 @@ setMethod('mapView', signature(x = 'Satellite'),
                                verbose = verbose,
                                homebutton = homebutton,
                                method = method,
+                               label = label,
                                ...)
             } else {
               NULL
@@ -435,6 +478,8 @@ setMethod('mapView', signature(x = 'Satellite'),
 setMethod('mapView', signature(x = 'sf'),
           function(x,
                    map = NULL,
+                   pane = "auto",
+                   canvas = FALSE,
                    zcol = NULL,
                    burst = FALSE,
                    color = mapviewGetOption("vector.palette"),
@@ -462,6 +507,11 @@ setMethod('mapView', signature(x = 'sf'),
             if (mapviewGetOption("platform") == "leaflet") {
               if (is.character(burst)) {
                 zcol = burst
+                burst = TRUE
+              }
+
+              if (length(zcol) > 1) {
+                x = x[, zcol]
                 burst = TRUE
               }
 
@@ -499,6 +549,7 @@ setMethod('mapView', signature(x = 'sf'),
 
                 leaflet_sf(sf::st_cast(x),
                            map = map,
+                           pane = pane,
                            zcol = zcol,
                            color = color,
                            col.regions = col.regions,
@@ -520,6 +571,7 @@ setMethod('mapView', signature(x = 'sf'),
                            native.crs = native.crs,
                            highlight = highlight,
                            maxpoints = maxpoints,
+                           canvas = canvas,
                            ...)
 
               } else {
@@ -538,6 +590,8 @@ setMethod('mapView', signature(x = 'sf'),
                         alpha = alpha,
                         alpha.regions = alpha.regions,
                         na.alpha = na.alpha,
+                        canvas = canvas,
+                        pane = pane,
                         ...)
 
               }
@@ -555,6 +609,8 @@ setMethod('mapView', signature(x = 'sf'),
 setMethod('mapView', signature(x = 'sfc'),
           function(x,
                    map = NULL,
+                   pane = "auto",
+                   canvas = FALSE,
                    color = standardColor(x), #mapviewGetOption("vector.palette"),
                    col.regions = standardColRegions(x), #mapviewGetOption("vector.palette"),
                    at = NULL,
@@ -581,6 +637,8 @@ setMethod('mapView', signature(x = 'sfc'),
 
               leaflet_sfc(sf::st_cast(x),
                           map = map,
+                          pane = pane,
+                          canvas = canvas,
                           color = color,
                           col.regions = col.regions,
                           na.color = na.color,
@@ -651,6 +709,9 @@ setMethod('mapView', signature(x = 'numeric'),
 #' of the visualisation. Only relevant for the data.frame method.
 #' @param aspect the ratio of x/y axis corrdinates to adjust the plotting
 #' space to fit the screen. Only relevant for the data.frame method.
+#' @param crs an optional crs specification for the provided data to enable
+#' rendering on a basemap. See argument description in \code{\link{st_sf}}
+#' for details.
 setMethod('mapView', signature(x = 'data.frame'),
           function(x,
                    xcol,
@@ -659,7 +720,17 @@ setMethod('mapView', signature(x = 'data.frame'),
                    aspect = 1,
                    popup = popupTable(x),
                    label,
+                   crs = NA,
                    ...) {
+            if (missing(xcol) | missing(ycol)) {
+              obj = deparse(substitute(x, env = parent.frame()))
+              msg = paste0("\noops! Arguments xcol and/or ycol are missing!\n",
+                           "You probably expected ", obj,
+                           " to be a spatial object. \nHowever it is of class ",
+                           class(x), ". \nEither convert ", obj, " to a spatial object ",
+                           "or provide xcol and ycol.")
+              stop(msg, call. = FALSE)
+            }
             if (missing(label)) {
               labs = lapply(seq(nrow(x)), function(i) {
                 paste0(xcol, " (x) : ", x[[xcol]][i], '<br>',
@@ -674,6 +745,7 @@ setMethod('mapView', signature(x = 'data.frame'),
                    aspect = aspect,
                    popup = popup,
                    label = label,
+                   crs = crs,
                    ...)
           }
 )
@@ -686,6 +758,8 @@ setMethod('mapView', signature(x = 'data.frame'),
 setMethod('mapView', signature(x = 'XY'),
           function(x,
                    map = NULL,
+                   pane = "auto",
+                   canvas = FALSE,
                    color = standardColor(x), #mapviewGetOption("vector.palette"),
                    col.regions = standardColRegions(x), #mapviewGetOption("vector.palette"),
                    at = NULL,
@@ -713,6 +787,8 @@ setMethod('mapView', signature(x = 'XY'),
               x = sf::st_cast(sf::st_sfc(x))
               leaflet_sfc(x,
                           map = map,
+                          pane = pane,
+                          canvas = canvas,
                           color = color,
                           col.regions = col.regions,
                           na.color = na.color,
@@ -1035,6 +1111,11 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                    homebutton = TRUE,
                    native.crs = FALSE,
                    method = c("bilinear", "ngb"),
+                   label = TRUE,
+                   query.type = c("mousemove", "click"),
+                   query.digits,
+                   query.position = "topright",
+                   query.prefix = "Layer",
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -1057,6 +1138,11 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                               homebutton = homebutton,
                               native.crs = native.crs,
                               method = method,
+                              label = label,
+                              query.type = query.type,
+                              query.digits = query.digits,
+                              query.position = query.position,
+                              query.prefix = query.prefix,
                               ...)
             } else {
               NULL
@@ -1089,6 +1175,11 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                    homebutton = TRUE,
                    native.crs = FALSE,
                    method = c("bilinear", "ngb"),
+                   label = TRUE,
+                   query.type = c("mousemove", "click"),
+                   query.digits,
+                   query.position = "topright",
+                   query.prefix = "Layer",
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -1111,6 +1202,11 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                               homebutton = homebutton,
                               native.crs = native.crs,
                               method = method,
+                              label = label,
+                              query.type = query.type,
+                              query.digits = query.digits,
+                              query.position = query.position,
+                              query.prefix = query.prefix,
                               ...)
             } else {
               NULL

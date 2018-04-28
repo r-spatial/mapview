@@ -41,11 +41,15 @@ If style is set to "detailed", the following information will be displayed:
 If style is set to "basic", only 'lat', 'lon' and 'zoom' are shown.
 }
 \examples{
-\dontrun{
-leaflet() \%>\% addTiles() # without mouse position info
-leaflet() \%>\% addTiles() \%>\% addMouseCoordinates(style = "basic") # with basic mouse position info
-mapview(easter.egg = TRUE) # detailed mouse position info by default ;-)
-}
+library(leaflet)
+
+leaflet() \%>\% addProviderTiles("OpenStreetMap") # without mouse position info
+leaflet() \%>\%
+  addProviderTiles("OpenStreetMap") \%>\%
+  addMouseCoordinates(style = "basic") # with basic mouse position info
+leaflet() \%>\%
+  addProviderTiles("OpenStreetMap") \%>\%
+  addMouseCoordinates() # with detailed mouse position info
 
 
 }

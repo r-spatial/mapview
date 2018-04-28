@@ -23,6 +23,11 @@ leafletRL = function(x,
                      homebutton,
                      native.crs,
                      method,
+                     label,
+                     query.type,
+                     query.digits,
+                     query.position,
+                     query.prefix,
                      ...) {
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
@@ -110,7 +115,10 @@ leafletRL = function(x,
                                 group = grp,
                                 layerId = grp,
                                 ...)
-    m = addImageQuery(m, x, group = grp, layerId = grp, position = "topright")
+    if (label)
+      m = addImageQuery(m, x, group = grp, layerId = grp,
+                        type = query.type, digits = query.digits,
+                        position = query.position, prefix = query.prefix)
     if (legend) {
       ## add legend
       # m = leaflet::addLegend(map = m,
@@ -167,6 +175,11 @@ leafletRSB = function(x,
                       layer.name,
                       homebutton,
                       method,
+                      label,
+                      query.type,
+                      query.digits,
+                      query.position,
+                      query.prefix,
                       ...) {
 
   pkgs = c("leaflet", "raster", "magrittr")
@@ -190,6 +203,11 @@ leafletRSB = function(x,
                 layer.name = layer.name,
                 homebutton = homebutton,
                 method = method,
+                label = label,
+                query.type = query.type,
+                query.digits = query.digits,
+                query.position = query.position,
+                query.prefix = query.prefix,
                 ...)
     out = new('mapview', object = list(x), map = m@map)
   } else {
@@ -204,6 +222,11 @@ leafletRSB = function(x,
                 legend = legend,
                 homebutton = homebutton,
                 method = method,
+                label = label,
+                query.type = query.type,
+                query.digits = query.digits,
+                query.position = query.position,
+                query.prefix = query.prefix,
                 ...)
     for (i in 2:nlayers(x)) {
       m = mapView(x[[i]],
@@ -217,6 +240,11 @@ leafletRSB = function(x,
                   legend = legend,
                   homebutton = FALSE,
                   method = method,
+                  label = label,
+                  query.type = query.type,
+                  query.digits = query.digits,
+                  query.position = query.position,
+                  query.prefix = query.prefix,
                   ...)
     }
 
@@ -254,6 +282,11 @@ leafletPixelsDF = function(x,
                            homebutton,
                            native.crs,
                            method,
+                           label,
+                           query.type,
+                           query.digits,
+                           query.position,
+                           query.prefix,
                            ...) {
 
   pkgs = c("leaflet", "sp", "magrittr")
@@ -288,6 +321,11 @@ leafletPixelsDF = function(x,
               homebutton = homebutton,
               native.crs = native.crs,
               method = method,
+              label = label,
+              query.type = query.type,
+              query.digits = query.digits,
+              query.position = query.position,
+              query.prefix = query.prefix,
               ...)
 
   out = new('mapview', object = list(x), map = m@map)
@@ -314,6 +352,73 @@ leafletSatellite = function(x, ...) {
 
   return(out)
 
+}
+
+
+
+
+# Convert RasterLayers to png or RasterStacks/Bricks to RGB png
+
+## raster layer -----------------------------------------------------------
+raster2PNG <- function(x,
+                       col.regions,
+                       at,
+                       na.color,
+                       maxpixels) {
+
+  x <- rasterCheckSize(x, maxpixels = maxpixels)
+
+  mat <- t(raster::as.matrix(x))
+
+  if (missing(at)) at <- lattice::do.breaks(range(mat, na.rm = TRUE), 256)
+
+  cols <- lattice::level.colors(mat,
+                                at = at,
+                                col.regions = col.regions)
+  cols[is.na(cols)] = na.color
+  cols = col2Hex(cols, alpha = TRUE)
+  #cols <- clrs(t(mat))
+  png_dat <- as.raw(grDevices::col2rgb(cols, alpha = TRUE))
+  dim(png_dat) <- c(4, ncol(x), nrow(x))
+
+  return(png_dat)
+}
+
+
+## raster stack/brick -----------------------------------------------------
+
+rgbStack2PNG <- function(x, r, g, b,
+                         na.color,
+                         quantiles = c(0.02, 0.98),
+                         maxpixels,
+                         ...) {
+
+  x <- rasterCheckSize(x, maxpixels = maxpixels)
+
+  x3 <- raster::subset(x, c(r, g, b))
+
+  mat <- cbind(x[[r]][],
+               x[[g]][],
+               x[[b]][])
+
+  for(i in seq(ncol(mat))){
+    z <- mat[, i]
+    lwr <- stats::quantile(z, quantiles[1], na.rm = TRUE)
+    upr <- stats::quantile(z, quantiles[2], na.rm = TRUE)
+    z <- (z - lwr) / (upr - lwr)
+    z[z < 0] <- 0
+    z[z > 1] <- 1
+    mat[, i] <- z
+  }
+
+  na_indx <- rowNA(mat) #apply(mat, 1, base::anyNA) #
+  cols <- rep(na.color, nrow(mat)) #mat[, 1] #
+  #cols[na_indx] <- na.color
+  cols[!na_indx] <- grDevices::rgb(mat[!na_indx, ], alpha = 1)
+  png_dat <- as.raw(grDevices::col2rgb(cols, alpha = TRUE))
+  dim(png_dat) <- c(4, ncol(x), nrow(x))
+
+  return(png_dat)
 }
 
 

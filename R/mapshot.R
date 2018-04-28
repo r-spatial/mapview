@@ -27,6 +27,10 @@
 #' @param remove_url \code{logical}. If \code{TRUE} (default), the \code{.html}
 #' file is removed once processing is completed. Only applies if 'url' is not
 #' specified.
+#' @param remove_controls \code{character} vector of control buttons to be removed
+#' from the map when saving to file. Any combination of
+#' "zoomControl", "layersControl", "homeButton", "scaleBar". If set to \code{NULL}
+#' nothing will be removed.
 #' @param ... Further arguments passed on to \code{\link{webshot}}.
 #'
 #' @seealso
@@ -42,6 +46,8 @@
 #' ## create standalone .png; temporary .html is removed automatically unless
 #' ## 'remove_url = FALSE' is specified
 #' mapshot(m, file = paste0(getwd(), "/map.png"))
+#' mapshot(m, file = paste0(getwd(), "/map.png"),
+#'         remove_controls = c("homeButton", "layersControl"))
 #'
 #' ## create .html and .png
 #' mapshot(m, url = paste0(getwd(), "/map.html"),
@@ -50,7 +56,15 @@
 #'
 #' @export mapshot
 #' @name mapshot
-mapshot <- function(x, url = NULL, file = NULL, remove_url = TRUE, ...) {
+mapshot <- function(x,
+                    url = NULL,
+                    file = NULL,
+                    remove_url = TRUE,
+                    remove_controls = c("zoomControl",
+                                        "layersControl",
+                                        "homeButton",
+                                        "scaleBar"),
+                    ...) {
 
   ## if both 'url' and 'file' are missing, throw an error
   avl_url <- !is.null(url)
@@ -64,8 +78,11 @@ mapshot <- function(x, url = NULL, file = NULL, remove_url = TRUE, ...) {
     x <- mapview2leaflet(x)
   }
 
-  ## remove layers control
-  # x <- leaflet::removeLayersControl(x)
+  if (avl_file & !avl_url) {
+    for (i in remove_controls) {
+      x = removeMapJunk(x, i)
+    }
+  }
 
   ## if url is missing, create temporary .html file
   if (!avl_url)
@@ -91,11 +108,23 @@ mapshot <- function(x, url = NULL, file = NULL, remove_url = TRUE, ...) {
   do.call(htmlwidgets::saveWidget, append(list(x), sw_ls[sw_args]))
 
   ## save to file
+
   if (avl_file) {
+    url_tmp = gsub(".html", "_tmp.html", url)
+    sw_ls[which(names(sw_ls) == "file")] = url_tmp
+    args$url = url_tmp
+    # names(sw_ls)[which(names(sw_ls) == "url")] <- "file"
+    x_tmp = x
+    for (i in remove_controls) {
+      x_tmp = removeMapJunk(x_tmp, i)
+    }
+    do.call(htmlwidgets::saveWidget, append(list(x_tmp), sw_ls[sw_args]))
     ws_args <- match.arg(names(args),
                          names(as.list(args(webshot::webshot))),
                          several.ok = TRUE)
     do.call(webshot::webshot, args[ws_args])
+    url_tmp_files = paste0(tools::file_path_sans_ext(url_tmp), "_files")
+    unlink(c(url_tmp, url_tmp_files), recursive = TRUE)
   }
 
   ## if url was missing, remove temporary .html file
@@ -106,3 +135,29 @@ mapshot <- function(x, url = NULL, file = NULL, remove_url = TRUE, ...) {
 
   return(invisible())
 }
+
+
+removeMapJunk = function(map, junk) {
+  if (inherits(map, "mapview")) map = mapview2leaflet(map)
+  switch(
+    junk,
+    "zoomControl" = removeZoomControl(map),
+    "layersControl" = leaflet::removeLayersControl(map),
+    "homeButton" = removeHomeButtons(map),
+    "scaleBar" = leaflet::removeScaleBar(map),
+    NULL = map
+  )
+}
+
+removeZoomControl = function(map) {
+  map$x$options = append(map$x$options, list("zoomControl" = FALSE))
+  return(map)
+}
+
+removeHomeButtons = function(map) {
+  hb_ind = getCallEntryFromMap(map, "addHomeButton")
+  map$x$calls[hb_ind] = NULL
+  return(map)
+}
+
+
