@@ -151,7 +151,7 @@ leaflet_sfc <- function(x,
   if (!is.null(names(x))) {
     names(x) = NULL
   }
-  # x = x[!is.na(sf::st_dimension(x))]
+
   if (inherits(x, "XY")) x = sf::st_sfc(x)
 
   if (!native.crs) x <- checkAdjustProjection(x)
@@ -169,43 +169,17 @@ leaflet_sfc <- function(x,
 
   m <- initMap(map, map.types, sf::st_crs(x), native.crs, canvas = canvas)
 
-  if (!is.null(pane)) {
-    if (pane == "auto" & !canvas) {
-      pane = paneName(x)
-      zindex = zIndex(x)
-      m = addMapPane(m, pane, zindex)
+  if (!canvas) {
+    if (!is.null(pane)) {
+      if (pane == "auto") {
+        pane = paneName(x)
+        zindex = zIndex(x)
+        m = addMapPane(m, pane, zindex)
+      }
     }
+  } else {
+    pane = NULL
   }
-
-  # if (featureComplexity(x) > maxpoints) {
-  #   cat(large_warn)
-  #   if(interactive()) {
-  #     installChoice <- menu(c("yes", "no"))
-  #     if(installChoice == 1){
-  #       vwr = options("viewer")
-  #       options(viewer = NULL)
-  #     }
-  #   }
-  # }
-
-  # if (featureComplexity(x) > maxpoints) {
-  #   if (getGeometryType(x) == "ln") clrs <- color else clrs <-  col.regions
-  #   warning(large_warn)
-  #   m <- addLargeFeatures(m,
-  #                         data = x,
-  #                         radius = cex,
-  #                         weight = lwd,
-  #                         opacity = alpha,
-  #                         fillOpacity = alpha.regions,
-  #                         color = clrs,
-  #                         popup = popup,
-  #                         label = label,
-  #                         group = layer.name,
-  #                         maxpoints = maxpoints,
-  #                         attributes = attributes,
-  #                         ...)
-  #
-  # } else {
 
   m <- addFeatures(m,
                    data = x,
@@ -221,8 +195,6 @@ leaflet_sfc <- function(x,
                    group = layer.name,
                    highlightOptions = highlight,
                    ...)
-
-  # }
 
   if (!is.null(map)) m = updateOverlayGroups(m, layer.name)
   sclbrpos = getCallEntryFromMap(m, "addScaleBar")
