@@ -181,9 +181,9 @@ rasterCheckSize <- function(x, maxpixels) {
 
 initBaseMaps <- function(map.types, canvas = FALSE) {
   ## create base map using specified map types
-  if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
-  leafletHeight <- mapviewGetOption("leafletHeight")
-  leafletWidth <- mapviewGetOption("leafletWidth")
+  if (missing(map.types)) map.types <- mapviewLayoutOptions()$map.types
+  leafletHeight <- mapviewLayoutOptions()$leaflet.height
+  leafletWidth <- mapviewLayoutOptions()$leaflet.width
   lid <- 1:length(map.types)
   m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth,
                         options = leaflet::leafletOptions(
@@ -216,17 +216,18 @@ initMap <- function(map = NULL,
   # if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
 
   if (is.null(map) & is.null(map.types)) {
-    map.types <- mapviewGetOption("basemaps")
+    map.types <- mapviewLayoutOptions()$map.types
   }
 
-  leafletHeight <- mapviewGetOption("leafletHeight")
-  leafletWidth <- mapviewGetOption("leafletWidth")
+  leafletHeight <- mapviewLayoutOptions()$leaflet.height
+  leafletWidth <- mapviewLayoutOptions()$leaflet.width
 
   if (missing(proj4str)) proj4str <- NA
   ## create base map using specified map types
   if (is.null(map)) {
     if (is.na(proj4str) | native.crs) {
-      m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth,
+      m <- leaflet::leaflet(height = leafletHeight,
+                            width = leafletWidth,
                             options = leaflet::leafletOptions(
                               minZoom = -1000,
                               crs = leafletCRS(crsClass = "L.CRS.Simple"),
@@ -416,16 +417,16 @@ mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
 
   if (!native.crs) {
     m <- leaflet::addLayersControl(map = map,
-                                   position = mapviewGetOption(
-                                     "layers.control.pos"),
+                                   position =
+                                     mapviewLayoutOptions()$layers.control.pos,
                                    baseGroups = bgm,
                                    overlayGroups = c(
                                      getLayerNamesFromMap(map),
                                      names))
   } else {
     m <- leaflet::addLayersControl(map = map,
-                                   position = mapviewGetOption(
-                                     "layers.control.pos"),
+                                   position =
+                                     mapviewLayoutOptions()$layers.control.pos,
                                    overlayGroups = c(
                                      getLayerNamesFromMap(map),
                                      names))

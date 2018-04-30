@@ -27,8 +27,7 @@ leafletRL = function(x,
                      query.type,
                      query.digits,
                      query.position,
-                     query.prefix,
-                     ...) {
+                     query.prefix) {
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol = NULL)
@@ -58,7 +57,7 @@ leafletRL = function(x,
     x = rasterCheckAdjustProjection(x, method)
     ext = raster::extent(raster::projectExtent(x, crs = llcrs))
 
-    if (!is.na(raster::projection(x)) & trim) x = trim(x)
+    if (!is.na(raster::projection(x)) & trim) x = raster::trim(x)
 
     if (is.fact) x = raster::as.factor(x)
 
@@ -113,8 +112,7 @@ leafletRL = function(x,
                                 project = FALSE,
                                 opacity = alpha.regions,
                                 group = grp,
-                                layerId = grp,
-                                ...)
+                                layerId = grp)
     if (label)
       m = addImageQuery(m, x, group = grp, layerId = grp,
                         type = query.type, digits = query.digits,

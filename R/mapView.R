@@ -224,35 +224,23 @@ if ( !isGeneric('mapView') ) {
 setMethod('mapView', signature(x = 'RasterLayer'),
           function(x,
                    map = NULL,
-                   maxpixels = mapviewGetOption("mapview.maxpixels"),
-                   col.regions = mapviewGetOption("raster.palette")(256),
+                   col.regions = viridisLite::inferno,
                    at = NULL,
-                   na.color = mapviewGetOption("na.color"),
-                   use.layer.names = FALSE,
-                   values = NULL,
-                   map.types = mapviewGetOption("basemaps"),
+                   na.color = "#BEBEBE80",
                    alpha.regions = 0.8,
-                   legend = mapviewGetOption("legend"),
-                   legend.opacity = 1,
-                   trim = TRUE,
-                   verbose = mapviewGetOption("verbose"),
                    layer.name = NULL,
-                   homebutton = TRUE,
-                   native.crs = FALSE,
                    method = c("bilinear", "ngb"),
-                   label = TRUE,
-                   query.type = c("mousemove", "click"),
-                   query.digits,
-                   query.position = "topright",
-                   query.prefix = "Layer",
+                   options = mapviewRasterOptions(),
                    ...) {
 
             method = match.arg(method)
 
+            options = utils::modifyList(options, list(...), keep.null = TRUE)
+
             if (is.null(at)) at <- lattice::do.breaks(
               extendLimits(range(x[], na.rm = TRUE)), 256)
 
-            if (mapviewGetOption("platform") == "leaflet") {
+            if (options$platform == "leaflet") {
               # if (maxpixels < raster::ncell(x)) {
               #   plainview(x,
               #             maxpixels = maxpixels,
@@ -265,28 +253,27 @@ setMethod('mapView', signature(x = 'RasterLayer'),
               # } else {
                 leafletRL(x,
                           map = map,
-                          maxpixels = maxpixels,
                           col.regions = col.regions,
                           at = at,
                           na.color = na.color,
-                          use.layer.names = use.layer.names,
-                          values = values,
-                          map.types = map.types,
                           alpha.regions = alpha.regions,
-                          legend = legend,
-                          legend.opacity = legend.opacity,
-                          trim = trim,
-                          verbose = verbose,
                           layer.name = layer.name,
-                          homebutton = homebutton,
-                          native.crs = native.crs,
                           method = method,
-                          label = label,
-                          query.type = query.type,
-                          query.digits = query.digits,
-                          query.position = query.position,
-                          query.prefix = query.prefix,
-                          ...)
+                          maxpixels = options$maxpixels,
+                          use.layer.names = options$use.layer.names,
+                          values = options$values,
+                          map.types = options$map.types,
+                          legend = options$legend,
+                          legend.opacity = options$legend.opacity,
+                          trim = options$trim,
+                          verbose = options$verbose,
+                          homebutton = options$homebutton,
+                          native.crs = options$native.crs,
+                          label = options$label,
+                          query.type = options$query.type,
+                          query.digits = options$query.digits,
+                          query.position = options$query.position,
+                          query.prefix = options$query.prefix)
             } else {
               NULL
             }

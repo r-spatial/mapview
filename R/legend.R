@@ -145,7 +145,7 @@ mapviewLegend <- function(values,
                           at,
                           na.color,
                           layer.name,
-                          position = mapviewGetOption("legend.pos")) {
+                          position = mapviewLayoutOptions()$legend.pos) {
 
   if (!is.function(colors) & inherits(colors, "character")) {
     colors <- grDevices::colorRampPalette(colors)
@@ -242,7 +242,7 @@ addVectorLegend <- function(x,
   }
 
   m <- leaflet::addLegend(map = map,
-                          position = mapviewGetOption("legend.pos"),
+                          position = mapviewLayoutOptions()$legend.pos,
                           values = leg_vals,
                           pal = pal2,
                           opacity = 1,
@@ -308,7 +308,7 @@ addRasterLegend <- function(x,
 
   if (isAvailableInLeaflet()$leggrp) {
     m <- leaflet::addLegend(map = map,
-                            position = mapviewGetOption("legend.pos"),
+                            position = mapviewLayoutOptions()$legend.pos,
                             values = leg_vals,
                             group = group,
                             pal = pal2,
@@ -317,7 +317,7 @@ addRasterLegend <- function(x,
                             title = title)
   } else {
     m <- leaflet::addLegend(map = map,
-                            position = mapviewGetOption("legend.pos"),
+                            position = mapviewLayoutOptions()$legend.pos,
                             values = leg_vals,
                             pal = pal2,
                             opacity = 1,

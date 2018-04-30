@@ -37,16 +37,9 @@
 \title{View spatial objects interactively}
 \usage{
 \S4method{mapView}{RasterLayer}(x, map = NULL,
-  maxpixels = mapviewGetOption("mapview.maxpixels"),
-  col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
-  na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
-  values = NULL, map.types = mapviewGetOption("basemaps"),
-  alpha.regions = 0.8, legend = mapviewGetOption("legend"),
-  legend.opacity = 1, trim = TRUE, verbose = mapviewGetOption("verbose"),
-  layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
-  method = c("bilinear", "ngb"), label = TRUE, query.type = c("mousemove",
-  "click"), query.digits, query.position = "topright",
-  query.prefix = "Layer", ...)
+  col.regions = viridisLite::inferno, at = NULL, na.color = "#BEBEBE80",
+  alpha.regions = 0.8, layer.name = NULL, method = c("bilinear", "ngb"),
+  options = mapviewRasterOptions(), ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -199,9 +192,6 @@ a blank map will be drawn.}
 
 \item{map}{an optional existing map to be updated/added to}
 
-\item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
-If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
-
 \item{col.regions}{color (palette) pixels.
 See \code{\link{levelplot}} for details.}
 
@@ -209,6 +199,25 @@ See \code{\link{levelplot}} for details.}
 See \code{\link{levelplot}} for details.}
 
 \item{na.color}{color for missing values}
+
+\item{alpha.regions}{opacity of the fills of points, polygons or raster layer(s)}
+
+\item{layer.name}{the name of the layer to be shown on the map}
+
+\item{method}{for raster data only (raster/stars). Method used to compute
+values for the resampled layer that is passed on to leaflet. mapview does
+projection on-the-fly to ensure correct display and therefore needs to know
+how to do this projection. The default is 'bilinear' (bilinear interpolation),
+which is appropriate for continuous variables. The other option, 'ngb'
+(nearest neighbor), is useful for categorical variables. Ignored if the raster
+layer is of class \code{factor} in which case "ngb" is used.}
+
+\item{...}{additional arguments passed on to repective functions.
+See \code{\link{addRasterImage}}, \code{\link{addCircles}},
+\code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
+
+\item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
+If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
 \item{use.layer.names}{should layer names of the Raster* object be used?}
 
@@ -219,8 +228,6 @@ Per default these are calculated based on the supplied raster* object.}
 see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
 for available options.}
 
-\item{alpha.regions}{opacity of the fills of points, polygons or raster layer(s)}
-
 \item{legend}{should a legend be plotted}
 
 \item{legend.opacity}{opacity of the legend}
@@ -229,25 +236,8 @@ for available options.}
 
 \item{verbose}{should some details be printed during the process}
 
-\item{layer.name}{the name of the layer to be shown on the map}
-
 \item{homebutton}{logical, whether to add a zoom-to-layer button to the map.
 Defaults to TRUE}
-
-\item{native.crs}{logical whether to reproject to web map coordinate
-reference system (web mercator - epsg:3857) or render using native CRS of
-the supplied data (can also be NA). Default is FALSE which will render in
-web mercator. If set to TRUE now background maps will be drawn (but rendering
-may be much quicker as no reprojecting is necessary). Currently only works
-for simple features.}
-
-\item{method}{for raster data only (raster/stars). Method used to compute
-values for the resampled layer that is passed on to leaflet. mapview does
-projection on-the-fly to ensure correct display and therefore needs to know
-how to do this projection. The default is 'bilinear' (bilinear interpolation),
-which is appropriate for continuous variables. The other option, 'ngb'
-(nearest neighbor), is useful for categorical variables. Ignored if the raster
-layer is of class \code{factor} in which case "ngb" is used.}
 
 \item{label}{For vector data (sf/sp) a character vector of labels to be
 shown on mouseover. See \code{\link{addControl}} for details. For raster
@@ -265,10 +255,6 @@ for possible values. Ignored if \code{label = FALSE}.}
 
 \item{query.prefix}{for raster methods only. a character string to be shown
 as prefix for the layerId. Ignored if \code{label = FALSE}.}
-
-\item{...}{additional arguments passed on to repective functions.
-See \code{\link{addRasterImage}}, \code{\link{addCircles}},
-\code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
 
 \item{pane}{name of the map pane in which to render features. See
 \code{\link{addMapPane}} for details. Currently only supported for vector layers.
@@ -301,6 +287,13 @@ of the column(s) to be used for defining the size of circles}
 \item{popup}{a \code{list} of HTML strings with the popup contents, usually
 created from \code{\link{popupTable}}. See \code{\link{addControl}} for
 details.}
+
+\item{native.crs}{logical whether to reproject to web map coordinate
+reference system (web mercator - epsg:3857) or render using native CRS of
+the supplied data (can also be NA). Default is FALSE which will render in
+web mercator. If set to TRUE now background maps will be drawn (but rendering
+may be much quicker as no reprojecting is necessary). Currently only works
+for simple features.}
 
 \item{highlight}{either \code{FALSE}, \code{NULL} or a list of styling
 options for feature highlighting on mouse hover.

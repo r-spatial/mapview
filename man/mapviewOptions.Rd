@@ -2,15 +2,9 @@
 % Please edit documentation in R/mapviewOptions.R
 \name{mapviewOptions}
 \alias{mapviewOptions}
-\alias{mapviewGetOption}
 \title{Global options for the mapview package}
 \usage{
-mapviewOptions(platform, basemaps, raster.size, mapview.maxpixels,
-  plainview.maxpixels, maxpoints, maxpolygons, maxlines, raster.palette,
-  vector.palette, verbose, na.color, legend, legend.pos, layers.control.pos,
-  default = FALSE, console = TRUE, leafletWidth, leafletHeight)
-
-mapviewGetOption(param)
+mapviewOptions(x, zcol = NULL, ...)
 }
 \arguments{
 \item{platform}{character. The platform to be used.
@@ -30,13 +24,13 @@ Set this higher if you have a potent machine or are patient enough to wait a lit
 objects to be rendered with \code{plainview}. Defaults to 10000000.
 Set this higher if you have a potent machine or are patient enough to wait a little.}
 
-\item{maxpoints}{numeric. Maximum number of points allowed for leaflet overlay
+\item{maxpolygons}{numeric. Maximum number of polygons allowed for leaflet overlay
 rendering. If this number is exceeded rendering will be done
 using special functionality which will provide much more speed and better handling.
 This means that standard functionality is reduced.
 For example adding layers via "+" is not possible anymore.}
 
-\item{maxpolygons}{numeric. Maximum number of polygons allowed for leaflet overlay
+\item{maxpoints}{numeric. Maximum number of points allowed for leaflet overlay
 rendering. If this number is exceeded rendering will be done
 using special functionality which will provide much more speed and better handling.
 This means that standard functionality is reduced.
@@ -66,16 +60,14 @@ behaviour. Set this to TRUE if you want to see these printed to the console.}
 \item{legend.pos}{Where should the legend be placed?
 One of "topleft", "topright", "bottomleft", "bottomright".}
 
-\item{layers.control.pos}{character. Where should the layer control be
-placed? One of "topleft", "topright", "bottomleft", "bottomright".}
-
 \item{default}{logical. If TRUE all options are set to their default values}
 
 \item{console}{logical. Should the options be printed to the console}
 
-\item{leafletWidth, leafletHeight}{height and width of the htmlwidget in px.}
+\item{layers.control.pos}{character. Where should the layer control be
+placed? One of "topleft", "topright", "bottomleft", "bottomright".}
 
-\item{param}{character. parameter to be queried.}
+\item{leafletWidth, leafletHeight}{height and width of the htmlwidget in px.}
 }
 \value{
 list of the current options (invisibly).
@@ -86,14 +78,7 @@ To permanently set any of these options, you can add them to
 <your R installation>/etc/Rprofile.site>. For example,
 to change the default number of pixels to be visualised for Raster* objects,
 add a line like this: options(mapviewMaxPixels = 700000) to that file.
-
-query single mapviewOption parameters
 }
-\section{Functions}{
-\itemize{
-\item \code{mapviewGetOption}: query single mapviewOption parameters
-}}
-
 \examples{
 mapviewOptions()
 mapviewOptions(na.color = "pink")
