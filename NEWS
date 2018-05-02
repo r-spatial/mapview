@@ -1,5 +1,9 @@
 mapview 2.4.1
 
+bugfixes:
+
+  * leaflet::addScalebar would prevent Raster* method from rendering correctly for multiple layers.
+
 
 mapview 2.4.0
 
