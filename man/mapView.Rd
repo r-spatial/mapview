@@ -39,18 +39,12 @@
 \S4method{mapView}{RasterLayer}(x, map = NULL,
   col.regions = viridisLite::inferno, at = NULL, na.color = "#BEBEBE80",
   alpha.regions = 0.8, layer.name = NULL, method = c("bilinear", "ngb"),
-  options = mapviewRasterOptions(), ...)
+  options = mapviewRasterOptions(x), ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
-  maxpixels = mapviewGetOption("mapview.maxpixels"),
-  col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
-  na.color = mapviewGetOption("na.color"), use.layer.names = TRUE,
-  values = NULL, map.types = mapviewGetOption("basemaps"),
-  legend = mapviewGetOption("legend"), legend.opacity = 1, trim = TRUE,
-  verbose = mapviewGetOption("verbose"), homebutton = TRUE,
-  method = c("bilinear", "ngb"), label = TRUE, query.type = c("mousemove",
-  "click"), query.digits, query.position = "topright",
-  query.prefix = "Layer", ...)
+  col.regions = viridisLite::inferno, at = NULL, na.color = "#BEBEBE80",
+  alpha.regions = 0.8, layer.name = NULL, method = c("bilinear", "ngb"),
+  options = mapviewRasterOptions(x), ...)
 
 \S4method{mapView}{Satellite}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -219,8 +213,6 @@ See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
 If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
-\item{use.layer.names}{should layer names of the Raster* object be used?}
-
 \item{values}{a vector of values for the visualisation of the layers.
 Per default these are calculated based on the supplied raster* object.}
 
@@ -242,19 +234,6 @@ Defaults to TRUE}
 \item{label}{For vector data (sf/sp) a character vector of labels to be
 shown on mouseover. See \code{\link{addControl}} for details. For raster
 data (Raster*/stars) a logical indicating whether to add image query.}
-
-\item{query.type}{for raster methods only. Whether to show raster value query
-on \code{'mousemove'} or \code{'click'}. Ignored if \code{label = FALSE}.}
-
-\item{query.digits}{for raster methods only. The amount of digits to be shown
-by raster value query. Ignored if \code{label = FALSE}.}
-
-\item{query.position}{for raster methods only. The position of the raster
-value query info box. See \code{position} argument of \code{\link{addLegend}}
-for possible values. Ignored if \code{label = FALSE}.}
-
-\item{query.prefix}{for raster methods only. a character string to be shown
-as prefix for the layerId. Ignored if \code{label = FALSE}.}
 
 \item{pane}{name of the map pane in which to render features. See
 \code{\link{addMapPane}} for details. Currently only supported for vector layers.
@@ -323,6 +302,21 @@ space to fit the screen. Only relevant for the data.frame method.}
 \item{crs}{an optional crs specification for the provided data to enable
 rendering on a basemap. See argument description in \code{\link{st_sf}}
 for details.}
+
+\item{use.layer.names}{should layer names of the Raster* object be used?}
+
+\item{query.type}{for raster methods only. Whether to show raster value query
+on \code{'mousemove'} or \code{'click'}. Ignored if \code{label = FALSE}.}
+
+\item{query.digits}{for raster methods only. The amount of digits to be shown
+by raster value query. Ignored if \code{label = FALSE}.}
+
+\item{query.position}{for raster methods only. The position of the raster
+value query info box. See \code{position} argument of \code{\link{addLegend}}
+for possible values. Ignored if \code{label = FALSE}.}
+
+\item{query.prefix}{for raster methods only. a character string to be shown
+as prefix for the layerId. Ignored if \code{label = FALSE}.}
 }
 \description{
 this function produces an interactive view of the specified

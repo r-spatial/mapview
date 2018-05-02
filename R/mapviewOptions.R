@@ -82,7 +82,7 @@
 mapviewOptions = function(x, zcol = NULL, ...) {
   out = switch(
     getSimpleClass(x),
-    "rst" = mapviewRasterOptions(...),
+    "rst" = mapviewRasterOptions(x, ...),
     "vec" = mapviewVectorOptions(x, zcol, ...)
   )
 
@@ -91,20 +91,34 @@ mapviewOptions = function(x, zcol = NULL, ...) {
 }
 
 
-mapviewRasterOptions = function(...) {
+mapviewRasterOptions = function(x, ...) {
   dots = list(...)
 
-  rstopts = list(
-    maxpixels = 5e5,
-    use.layer.names = FALSE,
-    values = NULL,
-    trim = TRUE,
-    raster.size = 8 * 1024 * 1024,
-    query.position = "topright",
-    query.type = "mousemove",
-    query.digits = unname(unlist(options("digits"))),
-    query.prefix = "Layer"
-  )
+  if (missing(x)) {
+    rstopts = list(
+      maxpixels = 5e5,
+      use.layer.names = FALSE,
+      values = NULL,
+      trim = TRUE,
+      raster.size = 8 * 1024 * 1024,
+      query.position = "topright",
+      query.type = "mousemove",
+      query.digits = unname(unlist(options("digits"))),
+      query.prefix = "Layer"
+    )
+  } else {
+    rstopts = list(
+      maxpixels = 5e5,
+      use.layer.names = ifelse(inherits(x, "RasterStackBrick"), TRUE, FALSE),
+      values = NULL,
+      trim = TRUE,
+      raster.size = 8 * 1024 * 1024,
+      query.position = "topright",
+      query.type = "mousemove",
+      query.digits = unname(unlist(options("digits"))),
+      query.prefix = "Layer"
+    )
+  }
 
   rstopts = utils::modifyList(rstopts, dots, keep.null = TRUE)
 

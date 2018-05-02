@@ -32,13 +32,9 @@ leafletRL = function(x,
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol = NULL)
 
-  pkgs = c("leaflet", "raster", "magrittr")
-  tst = sapply(pkgs, "requireNamespace",
-               quietly = TRUE, USE.NAMES = FALSE)
-
   if (native.crs) {
     plainView(x,
-              maxpixels = mapviewGetOption("plainview.maxpixels"),
+              maxpixels = mapviewRasterOptions()$plainview.maxpixels,
               col.regions = col.regions,
               at = at,
               na.color = na.color,
@@ -180,9 +176,9 @@ leafletRSB = function(x,
                       query.prefix,
                       ...) {
 
-  pkgs = c("leaflet", "raster", "magrittr")
-  tst = sapply(pkgs, "requireNamespace",
-               quietly = TRUE, USE.NAMES = FALSE)
+  # pkgs = c("leaflet", "raster", "magrittr")
+  # tst = sapply(pkgs, "requireNamespace",
+  #              quietly = TRUE, USE.NAMES = FALSE)
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
   m = initMap(map, map.types, sp::proj4string(x))
