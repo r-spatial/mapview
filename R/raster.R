@@ -140,7 +140,9 @@ leafletRL = function(x,
                              map.types = map.types,
                              names = grp)
 
-    if (isAvailableInLeaflet()$scl) m = leaflet::addScaleBar(map = m, position = "bottomleft")
+    sclbrpos = getCallEntryFromMap(m, "addScaleBar")
+    if (length(sclbrpos) > 0 | native.crs) scalebar = FALSE else scalebar = TRUE
+    if (scalebar) m = leaflet::addScaleBar(m, position = "bottomleft")
     m = addMouseCoordinates(m)
 
 
