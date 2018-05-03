@@ -1,4 +1,4 @@
-## mapview 2.4.1
+## mapview 2.4.2
 
 bugfixes:
 
