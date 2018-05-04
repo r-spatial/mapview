@@ -144,7 +144,7 @@ removeMapJunk = function(map, junk) {
     "zoomControl" = removeZoomControl(map),
     "layersControl" = leaflet::removeLayersControl(map),
     "homeButton" = removeHomeButtons(map),
-    "scaleBar" = leaflet::removeScaleBar(map),
+    "scaleBar" = removeScalebar(map),
     NULL = map
   )
 }
@@ -157,6 +157,12 @@ removeZoomControl = function(map) {
 removeHomeButtons = function(map) {
   hb_ind = getCallEntryFromMap(map, "addHomeButton")
   map$x$calls[hb_ind] = NULL
+  return(map)
+}
+
+removeScalebar = function(map) {
+  sb_ind = getCallEntryFromMap(map, "addScaleBar")
+  map$x$calls[sb_ind] = NULL
   return(map)
 }
 
