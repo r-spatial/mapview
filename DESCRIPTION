@@ -1,7 +1,7 @@
 Package: mapview
 Type: Package
 Title: Interactive Viewing of Spatial Data in R
-Version: 2.4.3
+Version: 2.4.4
 Date: 2018-05-06
 Authors@R: c(
       person("Tim", "Appelhans", email = "tim.appelhans@gmail.com", role = c("cre", "aut")),
