@@ -257,11 +257,20 @@ sf2DataFrame <- function(x, drop_sf_column = FALSE) {
 }
 
 
+# nNodes = function(x) {
+#   sum(sapply(x, function(y) {
+#     if (is.list(y)) nNodes(y) else nrow(y)
+#   }))
+# }
 nNodes = function(x) {
-  sum(sapply(x, function(y) {
-    if (is.list(y)) nNodes(y) else nrow(y)
-  }))
+  sapply(
+    sapply(x, function(y) {
+      if (is.list(y)) nNodes(y) else nrow(y)
+    }),
+    sum
+  )
 }
+
 
 nPoints = function(x) {
   if (getGeometryType(x) == "pt") {
@@ -273,18 +282,30 @@ nPoints = function(x) {
 
 #' count the number of points/vertices/nodes of sf objects
 #' @param x an sf/sfc object
+#' @param by_feature count total number of vertices (FALSE) of for each feature (TRUE).
+#'
+#' @note currently only works for *POINTS, *LINES and *POLYGONS (not GEOMETRYCOLLECTION).
 #'
 #' @export
 #'
 #' @examples
 #' npts(franconia)
+#' npts(franconia, by_feature = TRUE)
 #' npts(sf::st_geometry(franconia[1, ])) # first polygon
 #'
 #' npts(breweries) # is the same as
 #' nrow(breweries)
 #'
-npts = function(x) {
-  do.call(sum, lapply(split(x, as.character(sf::st_dimension(x))), nPoints))
+npts = function(x, by_feature = FALSE) {
+  if (by_feature) {
+    if (getGeometryType(sf::st_geometry(x)) == "pt") {
+      rep(1, length(sf::st_geometry(x)))
+    } else {
+      nPoints(sf::st_geometry(x))
+    }
+  } else {
+    do.call(sum, lapply(split(x, as.character(sf::st_dimension(x))), nPoints))
+  }
 }
 
 nfeats = function(x) {
