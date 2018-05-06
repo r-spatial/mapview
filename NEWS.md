@@ -1,4 +1,4 @@
-## mapview 2.4.2
+## mapview 2.4.3
 
 new features:
 
@@ -7,6 +7,7 @@ new features:
 bugfixes:
 
   * leaflet::addScalebar would prevent Raster* method from rendering correctly for multiple layers.
+  * cex was not respected when burst = TRUE. #149
 
 
 ## mapview 2.4.0

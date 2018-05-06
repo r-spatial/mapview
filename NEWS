@@ -1,4 +1,4 @@
-mapview 2.4.2
+mapview 2.4.3
 
 new features:
 
@@ -7,6 +7,7 @@ new features:
 bugfixes:
 
   * leaflet::addScalebar would prevent Raster* method from rendering correctly for multiple layers.
+  * cex was not respected when burst = TRUE. #149
 
 
 mapview 2.4.0
@@ -23,7 +24,7 @@ new features:
   * new function addMapPane to enable control over layer order.
   * mapview has gained argument pane as it now uses addMapPane to ensure points overlay lines overlay polygons.
   * mapview has gained argument canvas to enable canvas rendering.
-
+  
 bugfixes:
 
   * viewRGB failed because of missing method argument. #125
@@ -38,19 +39,19 @@ new features:
   * new function addStarsImage to visualise stars images.
   * new function addImageQuery to provide raster/stars value query on mouseover/click.
   * mapview has gained new argument `method` to specify the method used for resampling of raster data. #123
-
+  
 bugfixes:
 
   * raster method with native.crs = TRUE did throw an error on windows. #111
   * SpatialPixelsDataFrame and SpatialGridDataFrame failed because of missing map argument.
   * example for multiple popupImages was broken. #118
   * SpatialPixelsDataFrame failed when `zcol` was supplied. #124
-
+  
 misc:
 
   * added more details in description field as per request of Uwe Ligges.
   * moved leaflet from Depends to Imports.
-
+  
 
 mapview 2.2.0
 
@@ -79,10 +80,10 @@ bugfixes:
 
 mapview 2.1.4
 
-new features:
+new features: 
 
   * popupImage now accepts more than one file name (list or vector) in argument img.
-
+  
 bugfixes:
 
   * na.alpha caused list/burst methods to fail.
@@ -90,7 +91,7 @@ bugfixes:
 
 mapview 2.1.0
 
-new features:
+new features: 
 
   * plainview/cubeview now respects/has gained argument na.color.
   * mapview now supports st_GEOMETRY with truely mixed feature types (e.g. LINESTRING and POLYGON) - fixes #85
@@ -123,11 +124,11 @@ new features:
   * mapview now provides subtle highlighting of polygons (changing opacity slightly) and lines (changing thickness).
   * plainView, slideView and cubeView have gained argument legend. default is TRUE. Legends only available for non-RGB methods!
   * new data sets:
-
+  
       - 'franconia' (administrative district boundaries of Franconia)
       - 'breweries' (extended version of the 'breweries91' data)
       - 'trails' (selected hiking trails in franconia to connect the breweries)
-
+      
   * data sets 'breweries91', 'gadmCHE' and 'atlStorms2005' have been deleted and moved to leaflet.
 
 bugfixes:
