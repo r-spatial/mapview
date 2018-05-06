@@ -592,6 +592,7 @@ setMethod('mapView', signature(x = 'sf'),
                         na.alpha = na.alpha,
                         canvas = canvas,
                         pane = pane,
+                        cex = cex,
                         ...)
 
               }
