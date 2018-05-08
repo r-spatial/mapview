@@ -1,9 +1,10 @@
-## mapview 2.4.4
+## mapview 2.4.5
 
 new features:
 
   * addMouseCoordinates now displays basic info by default. Detailed info can be accessed by holding Ctrl keyboard button which also copies lon, lat and zoom info to the clipboard when Ctrl + clicking on the map. #113
   * npts has gained argument by_feature to count the number of vertices for each feature individually. #155
+  * canvas now auto-detected based on feature complexity.
 
 bugfixes:
 
