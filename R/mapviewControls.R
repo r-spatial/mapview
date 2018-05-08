@@ -287,11 +287,16 @@ zIndex = function(x) {
 
 
 useCanvas = function(x) {
-  switch(
-    getGeometryType(x),
-    "pt" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE),
-    "ln" = ifelse(featureComplexity(x) > 500000, TRUE, FALSE),
-    "pl" = ifelse(featureComplexity(x) > 500000, TRUE, FALSE),
-    "gc" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE)
-  )
+  if (inherits(x, "list")) {
+    lst = sapply(x, useCanvas)
+    ifelse(any(lst), TRUE, FALSE)
+  } else {
+    switch(
+      getGeometryType(x),
+      "pt" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE),
+      "ln" = ifelse(featureComplexity(x) > 500000, TRUE, FALSE),
+      "pl" = ifelse(featureComplexity(x) > 500000, TRUE, FALSE),
+      "gc" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE)
+    )
+  }
 }
