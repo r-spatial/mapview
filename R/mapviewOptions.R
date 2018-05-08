@@ -135,25 +135,21 @@ mapviewRasterOptions = function(x, ...) {
 }
 
 
-mapviewVectorOptions = function(x, zcol = NULL, ...) {
+mapviewVectorOptions = function(x,
+                                zcol = NULL,
+                                alpha.regions = 0.7,
+                                alpha = 0.9,
+                                lwd = 2,
+                                ...) {
   dots = list(...)
 
   vctopts = list(
     pane = "auto",
     canvas = FALSE,
     burst = FALSE,
-    color = viridisLite::viridis,
-    col.regions = viridisLite::viridis,
-    at = NULL,
-    na.color = "#BEBEBE80",
-    cex = 6,
-    lwd = lineWidth(x),
-    alpha = 0.9,
-    alpha.regions = regionOpacity(x),
-    na.alpha = regionOpacity(x),
-    popup = popupTable(x),
+    popup = if (!missing(x)) popupTable(x) else NULL,
     layer.name = NULL,
-    label = makeLabels(x, zcol)
+    label = if (!missing(x)) makeLabels(x, zcol) else NULL
   )
 
   vctopts = append(
@@ -161,9 +157,9 @@ mapviewVectorOptions = function(x, zcol = NULL, ...) {
     list(
       highlight = mapviewHighlightOptions(
         x,
-        vctopts$alpha.regions,
-        vctopts$alpha,
-        vctopts$lwd
+        alpha.regions,
+        alpha,
+        lwd
       )
     )
   )

@@ -55,18 +55,12 @@
   verbose = mapviewGetOption("verbose"), homebutton = TRUE,
   method = c("bilinear", "ngb"), label = TRUE, ...)
 
-\S4method{mapView}{sf}(x, map = NULL, pane = "auto", canvas = FALSE,
-  zcol = NULL, burst = FALSE, color = mapviewGetOption("vector.palette"),
-  col.regions = mapviewGetOption("vector.palette"), at = NULL,
-  na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
+\S4method{mapView}{sf}(x, map = NULL, zcol = NULL,
+  color = viridisLite::viridis, col.regions = viridisLite::viridis,
+  at = NULL, na.color = "#BEBEBE80", cex = 6, lwd = lineWidth(x),
   alpha = 0.9, alpha.regions = regionOpacity(x),
-  na.alpha = regionOpacity(x), map.types = NULL,
-  verbose = mapviewGetOption("verbose"), popup = popupTable(x),
-  layer.name = NULL, label = makeLabels(x, zcol),
-  legend = mapviewGetOption("legend"), legend.opacity = 1,
-  homebutton = TRUE, native.crs = FALSE,
-  highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
-  maxpoints = getMaxFeatures(x), ...)
+  na.alpha = regionOpacity(x), options = mapviewVectorOptions(x, zcol,
+  alpha.regions, alpha, lwd), ...)
 
 \S4method{mapView}{sfc}(x, map = NULL, pane = "auto", canvas = FALSE,
   color = standardColor(x), col.regions = standardColRegions(x),
@@ -235,22 +229,8 @@ Defaults to TRUE}
 shown on mouseover. See \code{\link{addControl}} for details. For raster
 data (Raster*/stars) a logical indicating whether to add image query.}
 
-\item{pane}{name of the map pane in which to render features. See
-\code{\link{addMapPane}} for details. Currently only supported for vector layers.
-Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
-for points, lines and polygons such that points overlay lines overlay polygons.
-Set to \code{NULL} to get default leaflet behaviour where allfeatures
-are rendered in the same pane and layer order is determined by automatically/sequencially.}
-
-\item{canvas}{whether to use canvas rendering rather than svg. May help
-performance with larger data. See \url{http://leafletjs.com/reference-1.3.0.html#canvas}
-for more information.}
-
 \item{zcol}{attribute name(s) or column number(s) in attribute table
 of the column(s) to be rendered. See also Details.}
-
-\item{burst}{whether to show all (TRUE) or only one (FALSE) layer(s).
-See also Details.}
 
 \item{color}{color (palette) for points/polygons/lines}
 
@@ -262,6 +242,17 @@ of the column(s) to be used for defining the size of circles}
 \item{alpha}{opacity of lines}
 
 \item{na.alpha}{opacity of missing values}
+
+\item{pane}{name of the map pane in which to render features. See
+\code{\link{addMapPane}} for details. Currently only supported for vector layers.
+Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
+for points, lines and polygons such that points overlay lines overlay polygons.
+Set to \code{NULL} to get default leaflet behaviour where allfeatures
+are rendered in the same pane and layer order is determined by automatically/sequencially.}
+
+\item{canvas}{whether to use canvas rendering rather than svg. May help
+performance with larger data. See \url{http://leafletjs.com/reference-1.3.0.html#canvas}
+for more information.}
 
 \item{popup}{a \code{list} of HTML strings with the popup contents, usually
 created from \code{\link{popupTable}}. See \code{\link{addControl}} for
@@ -302,6 +293,9 @@ space to fit the screen. Only relevant for the data.frame method.}
 \item{crs}{an optional crs specification for the provided data to enable
 rendering on a basemap. See argument description in \code{\link{st_sf}}
 for details.}
+
+\item{burst}{whether to show all (TRUE) or only one (FALSE) layer(s).
+See also Details.}
 
 \item{use.layer.names}{should layer names of the Raster* object be used?}
 

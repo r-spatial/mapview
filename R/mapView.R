@@ -457,33 +457,24 @@ setMethod('mapView', signature(x = 'Satellite'),
 setMethod('mapView', signature(x = 'sf'),
           function(x,
                    map = NULL,
-                   pane = "auto",
-                   canvas = FALSE,
                    zcol = NULL,
-                   burst = FALSE,
-                   color = mapviewGetOption("vector.palette"),
-                   col.regions = mapviewGetOption("vector.palette"),
+                   color = viridisLite::viridis,
+                   col.regions = viridisLite::viridis,
                    at = NULL,
-                   na.color = mapviewGetOption("na.color"),
+                   na.color = "#BEBEBE80",
                    cex = 6,
                    lwd = lineWidth(x),
                    alpha = 0.9,
                    alpha.regions = regionOpacity(x),
                    na.alpha = regionOpacity(x),
-                   map.types = NULL,
-                   verbose = mapviewGetOption("verbose"),
-                   popup = popupTable(x),
-                   layer.name = NULL,
-                   label = makeLabels(x, zcol),
-                   legend = mapviewGetOption("legend"),
-                   legend.opacity = 1,
-                   homebutton = TRUE,
-                   native.crs = FALSE,
-                   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
-                   maxpoints = getMaxFeatures(x),
+                   options = mapviewVectorOptions(x, zcol, alpha.regions, alpha, lwd),
                    ...) {
 
-            if (mapviewGetOption("platform") == "leaflet") {
+            dots = list(...)
+print(setdiff(names(dots), names(options)))
+            options = utils::modifyList(options, dots, keep.null = TRUE)
+
+            if (options$platform == "leaflet") {
               if (is.character(burst)) {
                 zcol = burst
                 burst = TRUE
@@ -497,19 +488,19 @@ setMethod('mapView', signature(x = 'sf'),
               # if (inherits(sf::st_geometry(x), "sfc_GEOMETRY")) {
               #   x = split(x, f = sf::st_dimension(sf::st_geometry(x)))
               # }
-              if (burst) {
+              if (options$burst) {
                 tmp <- burst(x = x,
                              zcol = zcol,
-                             burst = burst,
+                             burst = options$burst,
                              color = color,
                              col.regions = col.regions,
                              at = at,
                              na.color = na.color,
-                             popup = popup,
+                             popup = options$popup,
                              alpha = alpha,
                              alpha.regions = alpha.regions,
                              na.alpha = na.alpha,
-                             legend = legend)
+                             legend = options$legend)
 
                 if (is.function(tmp)) {
                   tmp = tmp()
@@ -528,7 +519,7 @@ setMethod('mapView', signature(x = 'sf'),
 
                 leaflet_sf(sf::st_cast(x),
                            map = map,
-                           pane = pane,
+                           pane = options$pane,
                            zcol = zcol,
                            color = color,
                            col.regions = col.regions,
@@ -539,19 +530,18 @@ setMethod('mapView', signature(x = 'sf'),
                            alpha = alpha,
                            alpha.regions = alpha.regions,
                            na.alpha = na.alpha,
-                           map.types = map.types,
-                           verbose = verbose,
-                           popup = popup,
-                           layer.name = layer.name,
-                           label = label,
-                           legend = legend,
-                           legend.opacity = legend.opacity,
-                           homebutton = homebutton,
-                           native.crs = native.crs,
-                           highlight = highlight,
-                           maxpoints = maxpoints,
-                           canvas = canvas,
-                           ...)
+                           map.types = options$map.types,
+                           verbose = options$verbose,
+                           popup = options$popup,
+                           layer.name = options$layer.name,
+                           label = options$label,
+                           legend = options$legend,
+                           legend.opacity = options$legend.opacity,
+                           homebutton = options$homebutton,
+                           native.crs = options$native.crs,
+                           highlight = options$highlight,
+                           maxpoints = options$maxpoints,
+                           canvas = options$canvas)
 
               } else {
 
@@ -560,17 +550,17 @@ setMethod('mapView', signature(x = 'sf'),
                         burst = FALSE,
                         color = color,
                         col.regions = col.regions,
-                        popup = popup,
-                        label = label,
-                        homebutton = homebutton,
-                        legend = legend,
-                        map.types = map.types,
-                        layer.name = layer.name,
+                        popup = options$popup,
+                        label = options$label,
+                        homebutton = options$homebutton,
+                        legend = options$legend,
+                        map.types = options$map.types,
+                        layer.name = options$layer.name,
                         alpha = alpha,
                         alpha.regions = alpha.regions,
                         na.alpha = na.alpha,
-                        canvas = canvas,
-                        pane = pane,
+                        canvas = options$canvas,
+                        pane = options$pane,
                         ...)
 
               }
