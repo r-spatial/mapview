@@ -68,8 +68,9 @@
   verbose = mapviewGetOption("verbose"), homebutton = TRUE,
   method = c("bilinear", "ngb"), label = TRUE, ...)
 
-\S4method{mapView}{sf}(x, map = NULL, pane = "auto", canvas = FALSE,
-  zcol = NULL, burst = FALSE, color = mapviewGetOption("vector.palette"),
+\S4method{mapView}{sf}(x, map = NULL, pane = "auto",
+  canvas = useCanvas(x), zcol = NULL, burst = FALSE,
+  color = mapviewGetOption("vector.palette"),
   col.regions = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
   alpha = 0.9, alpha.regions = regionOpacity(x),
@@ -81,11 +82,12 @@
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
-\S4method{mapView}{sfc}(x, map = NULL, pane = "auto", canvas = FALSE,
-  color = standardColor(x), col.regions = standardColRegions(x),
-  at = NULL, na.color = mapviewGetOption("na.color"), cex = 6,
-  lwd = lineWidth(x), alpha = 0.9, alpha.regions = regionOpacity(x),
-  map.types = NULL, verbose = mapviewGetOption("verbose"), popup = NULL,
+\S4method{mapView}{sfc}(x, map = NULL, pane = "auto",
+  canvas = useCanvas(x), color = standardColor(x),
+  col.regions = standardColRegions(x), at = NULL,
+  na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
+  alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
+  verbose = mapviewGetOption("verbose"), popup = NULL,
   layer.name = deparse(substitute(x, env = parent.frame(2))),
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
@@ -97,11 +99,12 @@
 \S4method{mapView}{data.frame}(x, xcol, ycol, grid = TRUE, aspect = 1,
   popup = popupTable(x), label, crs = NA, ...)
 
-\S4method{mapView}{XY}(x, map = NULL, pane = "auto", canvas = FALSE,
-  color = standardColor(x), col.regions = standardColRegions(x),
-  at = NULL, na.color = mapviewGetOption("na.color"), cex = 6,
-  lwd = lineWidth(x), alpha = 0.9, alpha.regions = regionOpacity(x),
-  map.types = NULL, verbose = mapviewGetOption("verbose"), popup = NULL,
+\S4method{mapView}{XY}(x, map = NULL, pane = "auto",
+  canvas = useCanvas(x), color = standardColor(x),
+  col.regions = standardColRegions(x), at = NULL,
+  na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
+  alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
+  verbose = mapviewGetOption("verbose"), popup = NULL,
   layer.name = deparse(substitute(x, env = parent.frame(1))),
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
