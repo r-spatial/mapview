@@ -280,6 +280,17 @@ nPoints = function(x) {
   }
 }
 
+nVerts = function(x) {
+  out = if (is.list(x)) sapply(sapply(x, nVerts), sum) else {
+    if (is.matrix(x))
+      nrow(x)
+    else {
+      if (sf::st_is_empty(x)) 0 else 1
+    }
+  }
+  unname(out)
+}
+
 #' count the number of points/vertices/nodes of sf objects
 #' @param x an sf/sfc object
 #' @param by_feature count total number of vertices (FALSE) of for each feature (TRUE).
@@ -297,16 +308,11 @@ nPoints = function(x) {
 #' nrow(breweries)
 #'
 npts = function(x, by_feature = FALSE) {
-  if (by_feature) {
-    if (getGeometryType(sf::st_geometry(x)) == "pt") {
-      rep(1, length(sf::st_geometry(x)))
-    } else {
-      nPoints(sf::st_geometry(x))
-    }
-  } else {
-    do.call(sum, lapply(split(x, as.character(sf::st_dimension(x))), nPoints))
-  }
+  if (by_feature) nVerts(sf::st_geometry(x)) else sum(nVerts(sf::st_geometry(x)))
 }
+
+
+
 
 nfeats = function(x) {
   if (inherits(x, "sf")) nrow(x) else length(x)
