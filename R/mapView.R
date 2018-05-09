@@ -471,7 +471,8 @@ setMethod('mapView', signature(x = 'sf'),
                    ...) {
 
             dots = list(...)
-print(setdiff(names(dots), names(options)))
+            lf_opts = extractOptions(options, dots, which = "leaflet")
+            options = extractOptions(options, dots, which = "mapview")
             options = utils::modifyList(options, dots, keep.null = TRUE)
 
             if (options$platform == "leaflet") {

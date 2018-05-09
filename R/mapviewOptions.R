@@ -126,7 +126,7 @@ mapviewRasterOptions = function(x, ...) {
     append,
     list(
       rstopts,
-      mapviewLayoutOptions(...),
+      mapviewLayoutOptions(zcol = 1, ...),
       mapviewGlobalOptions(...)
     )
   )
@@ -170,7 +170,7 @@ mapviewVectorOptions = function(x,
     append,
     list(
       vctopts,
-      mapviewLayoutOptions(...),
+      mapviewLayoutOptions(zcol, ...),
       mapviewGlobalOptions(...)
     )
   )
@@ -179,13 +179,13 @@ mapviewVectorOptions = function(x,
 }
 
 
-mapviewLayoutOptions = function(...) {
+mapviewLayoutOptions = function(zcol = NULL, ...) {
   dots = list(...)
 
   layopts = list(
     homebutton = TRUE,
     homebutton.pos = "bottomright",
-    legend = TRUE,
+    legend = ifelse(is.null(zcol), FALSE, TRUE),
     legend.opacity = 1,
     legend.pos = "topright",
     layers.control.pos = "topleft",
@@ -225,5 +225,11 @@ mapviewGlobalOptions = function(...) {
 }
 
 
+extractOptions = function(options, dots, which = c("leaflet", "mapview")) {
+  which = match.arg(which)
 
+  switch(which,
+         "leaflet" = dots[setdiff(names(dots), names(options))],
+         "mapview" = options[setdiff(names(options), names(dots))])
+}
 
