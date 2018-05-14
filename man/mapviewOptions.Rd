@@ -2,11 +2,33 @@
 % Please edit documentation in R/mapviewOptions.R
 \name{mapviewOptions}
 \alias{mapviewOptions}
-\title{Global options for the mapview package}
+\alias{mapviewRasterOptions}
+\alias{mapviewVectorOptions}
+\alias{mapviewLayoutOptions}
+\alias{mapviewGlobalOptions}
+\alias{mapviewGetOption}
+\title{Options for the mapview package}
 \usage{
-mapviewOptions(x, zcol = NULL, ...)
+mapviewOptions(...)
+
+mapviewRasterOptions(x, ...)
+
+mapviewVectorOptions(x, zcol = NULL, alpha.regions = 0.7, alpha = 0.9,
+  lwd = 2, ...)
+
+mapviewLayoutOptions(zcol = NULL, ...)
+
+mapviewGlobalOptions(...)
+
+mapviewGetOption(params)
 }
 \arguments{
+\item{...}{any valid option argument to be modified with regard to the default settings.}
+
+\item{x}{a spatial object (sf, sp, raster) to be used to set options}
+
+\item{params}{character. One or more parameters to be queried from mapviewOptions.}
+
 \item{platform}{character. The platform to be used.
 Current options are "leaflet" and "quickmapr".}
 
@@ -78,6 +100,12 @@ To permanently set any of these options, you can add them to
 <your R installation>/etc/Rprofile.site>. For example,
 to change the default number of pixels to be visualised for Raster* objects,
 add a line like this: options(mapviewMaxPixels = 700000) to that file.
+A complete list of mapview relevant options can be retrieved with
+\code{mapviewOptions()}.
+
+options for raster objects
+
+query a single mapviewOption parameter
 }
 \examples{
 mapviewOptions()

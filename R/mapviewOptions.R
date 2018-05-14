@@ -1,13 +1,17 @@
-### This functionality is a modified version of rasterOptions.
-### (c) Robert J. Hijmans
-
-#' Global options for the mapview package
+#' Options for the mapview package
 #'
 #' @description
 #' To permanently set any of these options, you can add them to
 #' <your R installation>/etc/Rprofile.site>. For example,
 #' to change the default number of pixels to be visualised for Raster* objects,
 #' add a line like this: options(mapviewMaxPixels = 700000) to that file.
+#' A complete list of mapview relevant options can be retrieved with
+#' \code{mapviewOptions()}.
+#'
+#' @param ... any valid option argument to be modified with regard to the default settings.
+#' @param x a spatial object (sf, sp, raster) to be used to set options
+#'
+#'
 #'
 #' @param platform character. The platform to be used.
 #' Current options are "leaflet" and "quickmapr".
@@ -79,18 +83,28 @@
 #' @name mapviewOptions
 #' @rdname mapviewOptions
 #' @aliases mapviewOptions
-mapviewOptions = function(x, zcol = NULL, ...) {
-  out = switch(
-    getSimpleClass(x),
-    "rst" = mapviewRasterOptions(x, ...),
-    "vec" = mapviewVectorOptions(x, zcol, ...)
+mapviewOptions = function(...) {
+
+  mvopts = do.call(
+    append,
+    list(
+      mapviewRasterOptions(...),
+      mapviewVectorOptions(...)
+    )
   )
+
+  out = utils::modifyList(mvopts, list(...))
 
   out[!duplicated(names(out))]
 
 }
 
-
+#' options for raster objects
+#'
+#' @export mapviewRasterOptions
+#' @name mapviewRasterOptions
+#' @rdname mapviewOptions
+#' @aliases mapviewRasterOptions
 mapviewRasterOptions = function(x, ...) {
   dots = list(...)
 
@@ -135,6 +149,10 @@ mapviewRasterOptions = function(x, ...) {
 }
 
 
+#' @export mapviewVectorOptions
+#' @name mapviewVectorOptions
+#' @rdname mapviewOptions
+#' @aliases mapviewVectorOptions
 mapviewVectorOptions = function(x,
                                 zcol = NULL,
                                 alpha.regions = 0.7,
@@ -152,17 +170,26 @@ mapviewVectorOptions = function(x,
     label = if (!missing(x)) makeLabels(x, zcol) else NULL
   )
 
-  vctopts = append(
-    vctopts,
-    list(
-      highlight = mapviewHighlightOptions(
-        x,
-        alpha.regions,
-        alpha,
-        lwd
+  if (!missing(x)) {
+    vctopts = append(
+      vctopts,
+      list(
+        highlight = mapviewHighlightOptions(
+          x,
+          alpha.regions,
+          alpha,
+          lwd
+        )
       )
     )
-  )
+  } else {
+    vctopts = append(
+      vctopts,
+      list(
+        highlight = NULL
+      )
+    )
+  }
 
   vctopts = utils::modifyList(vctopts, dots, keep.null = TRUE)
 
@@ -179,6 +206,10 @@ mapviewVectorOptions = function(x,
 }
 
 
+#' @export mapviewLayoutOptions
+#' @name mapviewLayoutOptions
+#' @rdname mapviewOptions
+#' @aliases mapviewLayoutOptions
 mapviewLayoutOptions = function(zcol = NULL, ...) {
   dots = list(...)
 
@@ -209,6 +240,10 @@ mapviewLayoutOptions = function(zcol = NULL, ...) {
 }
 
 
+#' @export mapviewGlobalOptions
+#' @name mapviewGlobalOptions
+#' @rdname mapviewOptions
+#' @aliases mapviewGlobalOptions
 mapviewGlobalOptions = function(...) {
   dots = list(...)
 
@@ -224,6 +259,21 @@ mapviewGlobalOptions = function(...) {
   return(glbopts)
 }
 
+#' query a single mapviewOption parameter
+#'
+#' @param params character. One or more parameters to be queried from mapviewOptions.
+#'
+#' @export mapviewGetOption
+#' @name mapviewGetOption
+#' @rdname mapviewOptions
+#' @aliases mapviewGetOption
+mapviewGetOption = function(params) {
+  if (length(param) == 1) {
+    mapviewOptions()[[params]]
+  } else {
+    lapply(params, mapviewGetOption)
+  }
+}
 
 extractOptions = function(options, dots, which = c("leaflet", "mapview")) {
   which = match.arg(which)
