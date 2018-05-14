@@ -210,7 +210,7 @@ CharacterVector enc2utf8_chrvec(const CharacterVector & x) {
 ////////////////////////////////////////////////////////////////////////////////
 
 // [[Rcpp::export]]
-List listPopupTemplates(CharacterMatrix x, CharacterVector names,
+StringVector listPopupTemplates(CharacterMatrix x, CharacterVector names,
                         std::string tmpPath, bool rowIndex) {
 
   // number of rows and columns
@@ -222,7 +222,7 @@ List listPopupTemplates(CharacterMatrix x, CharacterVector names,
   std::string chStr;
 
   // output list
-  List lsOut(nRows);
+  StringVector lsOut(nRows);
 
   // import template
   std::string chTemplate = createTemplate(tmpPath);

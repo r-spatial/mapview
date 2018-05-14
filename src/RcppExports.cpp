@@ -83,7 +83,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // listPopupTemplates
-List listPopupTemplates(CharacterMatrix x, CharacterVector names, std::string tmpPath, bool rowIndex);
+StringVector listPopupTemplates(CharacterMatrix x, CharacterVector names, std::string tmpPath, bool rowIndex);
 RcppExport SEXP _mapview_listPopupTemplates(SEXP xSEXP, SEXP namesSEXP, SEXP tmpPathSEXP, SEXP rowIndexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
