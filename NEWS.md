@@ -10,6 +10,7 @@ bugfixes:
 
   * leaflet::addScalebar would prevent Raster* method from rendering correctly for multiple layers.
   * cex was not respected when burst = TRUE. #149
+  * popupTable no longer causes a stack overflow with large point data. #154
 
 
 ## mapview 2.4.0
