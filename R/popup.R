@@ -321,18 +321,33 @@ popupSVGraph = function(graphs, #dsn = tempdir(),
 
     #lns = paste(readLines(fls), collapse = "")
     # file.remove(fls)
-    return(
-sprintf(
-"
-<div style='width: %dpx; height: %dpx;'>
-%s
-</div>
-" ,
-  width,
-  height,
-  svg_str
-)
+#     return(
+# sprintf(
+# "
+# <div style='width: %dpx; height: %dpx;'>
+# %s
+# </div>
+# " ,
+#   width,
+#   height,
+#   svg_str
+# )
+    # )
+    pop = sprintf(
+      "<div style='width: %dpx; height: %dpx;'>%s</div>",
+      width,
+      height,
+      svg_str
     )
+
+    popTemplate = system.file("templates/popup-graph.brew", package = "mapview")
+    myCon = textConnection("outputObj", open = "w")
+    brew::brew(popTemplate, output = myCon)
+    outputObj = outputObj
+    close(myCon)
+
+    return(paste(outputObj, collapse = ' '))
+
   })
 }
 
@@ -340,20 +355,42 @@ sprintf(
 ### png -----
 popupPNGraph = function(graphs, dsn = tempdir(),
                          width = 300, height = 300, ...) {
-  pngs = lapply(1:length(graphs), function(i) {
-    nm = paste0("tmp_", i, ".png")
-    fls = file.path(dsn, nm)
+  # pngs = lapply(1:length(graphs), function(i) {
+  #   nm = paste0("tmp_", i, ".png")
+  #   fls = file.path(dsn, nm)
+  #
+  #   png(filename = fls, width = width, height = height, units = "px", ...)
+  #   print(graphs[[i]])
+  #   dev.off()
+  #
+  #   rel_path = file.path("..", basename(dsn), nm)
+  #   return(rel_path)
+  # })
+  #
+  # popupImage(pngs, width = width, height = height, src = "local")
 
-    png(filename = fls, width = width, height = height, units = "px", ...)
+  pngs = lapply(1:length(graphs), function(i) {
+
+    fl = tempfile(fileext = ".png")
+
+    png(filename = fl, width = width, height = height, units = "px", ...)
     print(graphs[[i]])
     dev.off()
 
-    rel_path = file.path("..", basename(dsn), nm)
-    return(rel_path)
+    plt64 = base64enc::base64encode(fl)
+    pop = paste0('<img src="data:image/png;base64,', plt64, '" />')
+
+    # return(uri)
+    popTemplate = system.file("templates/popup-graph.brew", package = "mapview")
+    myCon = textConnection("outputObj", open = "w")
+    brew::brew(popTemplate, output = myCon)
+    outputObj = outputObj
+    close(myCon)
+
+    return(paste(outputObj, collapse = ' '))
   })
 
-  popupImage(pngs, width = width, height = height, src = "local")
-
+  return(pngs)
 }
 
 ### html -----

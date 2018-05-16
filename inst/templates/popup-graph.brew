@@ -11,6 +11,8 @@ border-collapse: collapse;
 div.scrollableContainer {
 max-height: 2000px;
 max-width: 2000px;
+overflow-y: auto;
+overflow-x: auto;
 margin: 0px;
 background: transparent;
 }
@@ -63,10 +65,9 @@ div::-webkit-scrollbar-corner {
 }
 
 .leaflet-popup-content {
-	margin: 1px 1px 1px 1px;
-	line-height: 1.5;
-	overflow-y: visible;
-	overflow-x: visible;
+	margin: 0px 0px 0px 0px;
+	overflow-y: hidden;
+	overflow-x: hidden;
 	width: <%=width%>px;
 	height: <%=height%>px;
 }
@@ -76,11 +77,13 @@ div::-webkit-scrollbar-corner {
 }
 
 .leaflet-popup-tip-container {
-	margin: auto;
 	width: 40px;
 	height: 20px;
-	position: relative;
+	position: absolute;
+	left: 50%;
+	margin-left: -20px;
 	overflow: hidden;
+	pointer-events: none;
 }
 
 .leaflet-popup-tip {
@@ -140,13 +143,12 @@ div::-webkit-scrollbar-corner {
 </head>
 <body>
 
-
 <div class="scrollableContainer">
-<table class="popup scrollable">
-<table id="popup">
+<table class="popup scrollable" id="popup">
 
 <%=pop%>
 
 </table>
+</div>
 </body>
 </html>
