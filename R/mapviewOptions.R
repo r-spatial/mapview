@@ -268,7 +268,7 @@ mapviewGlobalOptions = function(...) {
 #' @rdname mapviewOptions
 #' @aliases mapviewGetOption
 mapviewGetOption = function(params) {
-  if (length(param) == 1) {
+  if (length(params) == 1) {
     mapviewOptions()[[params]]
   } else {
     lapply(params, mapviewGetOption)

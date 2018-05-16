@@ -50,6 +50,7 @@ garnishMap <- function(map, ...) {
       return(tst)
     })
     fn_lst <- fn_lst[!sapply(fn_lst, is.null)]
+    # fn_lst = fn_lst[names(fn_lst) == ""]
 
     args <- !funs
 
