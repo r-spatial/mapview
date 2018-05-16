@@ -1,4 +1,4 @@
-mapview 2.4.5
+mapview 2.4.6
 
 new features:
 
@@ -10,6 +10,8 @@ bugfixes:
 
   * leaflet::addScalebar would prevent Raster* method from rendering correctly for multiple layers.
   * cex was not respected when burst = TRUE. #149
+  * popupTable no longer causes a stack overflow with large point data. #154
+  * popupGraph no longer relies on png files on disk but embeds graphs via base64. #156
 
 
 mapview 2.4.0
