@@ -19,7 +19,7 @@ if ( !isGeneric('plainView') ) {
 #' @param legend logical, whether to draw a legend for the raster layer.
 #' @param verbose should some details be printed during the process
 #' @param layer.name the name of the layer to be shown on the map
-#' @param gdal logical. If TRUE (default) gdalUtils::gdal_translate is used
+#' @param gdal logical. If TRUE (default) gdal_translate is used
 #' to create the png file for display when possible. See details for further
 #' information.
 #' @param ... additional arguments passed on to repective functions.
@@ -29,7 +29,7 @@ if ( !isGeneric('plainView') ) {
 #' @details
 #' If the raster object is not in memory
 #' (i.e. if \code{raster::inMemory} is \code{FLASE})
-#' and argument \code{gdal} is set to TRUE (default) gdalUtils::gdal_translate
+#' and argument \code{gdal} is set to TRUE (default) gdal_translate
 #' is used to translate the rsater object to a png file to be rendered in
 #' the viewer/browser. This is fast for large rasters. In this case, argument
 #' \code{maxpixels} is not used, instead the image is rendered in original resolution.
@@ -77,6 +77,7 @@ if ( !isGeneric('plainView') ) {
 #' @name plainView
 #' @rdname plainView
 #' @aliases plainView,RasterLayer-method
+#' @importFrom grDevices grey.colors
 
 ## RasterLayer ============================================================
 
@@ -99,11 +100,17 @@ setMethod('plainView', signature(x = 'RasterLayer'),
             fl <- paste0(dir, "/img", ".png")
 
             if (raster::fromDisk(x) & gdal) {
-              gdalUtils::gdal_translate(src_dataset = raster::filename(x),
-                                        dst_dataset = fl,
-                                        of = "PNG",
-                                        b = raster::bandnr(x),
-                                        verbose = verbose)
+              # gdalUtils::gdal_translate(src_dataset = raster::filename(x),
+              #                           dst_dataset = fl,
+              #                           of = "PNG",
+              #                           b = raster::bandnr(x),
+              #                           verbose = verbose)
+              tmp = sf::gdal_utils(util = "translate",
+                                   source = raster::filename(x),
+                                   destination = fl,
+                                   options = c("-of", "PNG", "-b",
+                                               as.character(raster::bandnr(x)),
+                                               "-scale", "-ot", "Byte"))
             } else {
               png <- raster2PNG(x,
                                 col.regions = col.regions,
@@ -117,6 +124,11 @@ setMethod('plainView', signature(x = 'RasterLayer'),
             leg_fl <- NULL
 
             if (legend) {
+              if (raster::fromDisk(x) & gdal) {
+                col.regions = grDevices::grey.colors(256, start = 0, end = 1, gamma = 1)
+              } else {
+                col.regions = col.regions
+              }
               rng <- range(x[], na.rm = TRUE)
               if (missing(at)) at <- lattice::do.breaks(rng, 256)
               leg_fl <- paste0(dir, "/legend", ".png")

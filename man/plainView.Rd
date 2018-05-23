@@ -45,7 +45,7 @@ If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
 \item{layer.name}{the name of the layer to be shown on the map}
 
-\item{gdal}{logical. If TRUE (default) gdalUtils::gdal_translate is used
+\item{gdal}{logical. If TRUE (default) gdal_translate is used
 to create the png file for display when possible. See details for further
 information.}
 
@@ -69,7 +69,7 @@ raster object(s) on a plain grey background but for any CRS.
 \details{
 If the raster object is not in memory
 (i.e. if \code{raster::inMemory} is \code{FLASE})
-and argument \code{gdal} is set to TRUE (default) gdalUtils::gdal_translate
+and argument \code{gdal} is set to TRUE (default) gdal_translate
 is used to translate the rsater object to a png file to be rendered in
 the viewer/browser. This is fast for large rasters. In this case, argument
 \code{maxpixels} is not used, instead the image is rendered in original resolution.
