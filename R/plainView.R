@@ -99,10 +99,10 @@ setMethod('plainView', signature(x = 'RasterLayer'),
             fl <- paste0(dir, "/img", ".png")
 
             if (raster::fromDisk(x) & gdal) {
-              gdalUtils::gdal_translate(src_dataset = filename(x),
+              gdalUtils::gdal_translate(src_dataset = raster::filename(x),
                                         dst_dataset = fl,
                                         of = "PNG",
-                                        b = bandnr(x),
+                                        b = raster::bandnr(x),
                                         verbose = verbose)
             } else {
               png <- raster2PNG(x,
@@ -349,7 +349,7 @@ setMethod('plainView', signature(x = 'SpatialPixelsDataFrame'),
                    ...) {
 
             if (is.character(zcol)) nm <- zcol else  nm <- names(x)[zcol]
-            x <- raster(x[zcol])
+            x <- raster::raster(x[zcol])
 
             plainView(x, layer.name = nm, ...)
 

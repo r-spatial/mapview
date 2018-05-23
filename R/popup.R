@@ -118,7 +118,14 @@ popupLocalImage = function(img, width = NULL, height = NULL) {
 
     fl = img[[i]]
 
-    info = sapply(fl, function(...) gdalUtils::gdalinfo(...))
+    info = strsplit(
+      sf::gdal_utils(
+        util = "info",
+        source = fl,
+        quiet = TRUE
+      ),
+      split = "\n"
+    )
     info = unlist(lapply(info, function(i) grep(glob2rx("Size is*"), i, value = TRUE)))
     cols = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[1]
     rows = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[2]
