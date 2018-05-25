@@ -117,7 +117,7 @@ function draw() {
     canvas.height = window.innerHeight;
   }
 	var ctx = canvas.getContext("2d");
-	ctx.mozImageSmoothingEnabled = !crisp;
+	ctx.imageSmoothingEnabled = !crisp;
 	ctx.webkitImageSmoothingEnabled = !crisp;
 	ctx.imageSmoothingEnabled  = !crisp;
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -147,7 +147,7 @@ function onmousemove(e) {
   var y = e.clientY - rect.top;
   var px = x / scale - offsetX;
   var py = y / scale - offsetY;
-  spanPos.innerHTML = px.toFixed(2) + ", " + py.toFixed(2);
+  spanPos.innerHTML = Math.ceil(px) + ", " + Math.ceil(py);
 
   if(e.which === 0) {
     dragging = false;
