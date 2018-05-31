@@ -1068,3 +1068,81 @@ leafletMapPaneDependencies <- function() {
       script = c('map-pane.js')
     ))
 }
+
+
+##############################################################################
+
+### addTiledImage ############################################################
+##############################################################################
+#' Add a tiled image
+#'
+#' @description
+#'
+addTiledImage = function(map, x, minzoom, maxzoom) {
+
+  png_dst = tempfile(fileext = ".png")
+
+  sf::gdal_utils(util = "translate",
+                 source = x,
+                 destination = png_dst,
+                 options = c("-of",  "PNG", "-b", "1",
+                             "-scale", "-ot", "Byte"))
+
+  if (missing(maxzoom)) {
+    info = strsplit(
+      sf::gdal_utils(
+        util = "info",
+        source = x,
+        quiet = TRUE
+      ),
+      split = "\n"
+    )
+
+    info = unlist(lapply(info, function(i) grep(glob2rx("Size is*"), i, value = TRUE)))
+    cols = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[1]
+    rows = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[2]
+
+    dm = max(cols, rows)
+
+    mxzm = ceiling(log2(dm/256)) + 1
+  } else {
+    mxzm = maxzoom
+  }
+
+  mnzm = minzoom
+
+  tiles_dst = paste0(tempdir(), "/tiles")
+  gdal2tiles(png_dst, tiles_dst, mnzm, mxzm)
+
+  map$dependencies <- c(map$dependencies, tiledDataDependency(tiles_dst))
+  map = addTiles(map, urlTemplate = paste0("lib/tiles-0.0.1/{z}/{x}/{y}.png"))
+
+  return(map)
+}
+
+
+gdal2tiles = function(x, destination, minzoom, maxzoom) {
+  zoomopt = paste0("-z ", minzoom, "-", maxzoom)
+  gdl_exe = system.file("gdal2tiles/gdal2tiles-multiprocess.py",
+                        package = "mapview")
+  cmnd = paste(
+    gdl_exe,
+    "-l -p raster",
+    zoomopt,
+    "-w none",
+    x,
+    destination)
+  system(cmnd, wait = TRUE)
+}
+
+
+tiledDataDependency <- function(tiles_dir) {
+  list(
+    htmltools::htmlDependency(
+      name = "tiles",
+      version = "0.0.1",
+      src = c(file = tiles_dir)
+    )
+  )
+}
+
