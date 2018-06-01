@@ -1072,50 +1072,48 @@ leafletMapPaneDependencies <- function() {
 
 ##############################################################################
 
-### addTiledImage ############################################################
+### addTiledRasterImage ######################################################
 ##############################################################################
 #' Add a tiled image
 #'
 #' @description
 #'
-addTiledImage = function(map, x, minzoom, maxzoom) {
+addTiledRasterImage = function(map,
+                               x,
+                               minzoom = 0,
+                               maxzoom,
+                               color = viridisLite::inferno,
+                               at,
+                               na.color = "#BEBEBE") {
 
   png_dst = tempfile(fileext = ".png")
 
-  sf::gdal_utils(util = "translate",
-                 source = x,
-                 destination = png_dst,
-                 options = c("-of",  "PNG", "-b", "1",
-                             "-scale", "-ot", "Byte"))
+  maxpixels = raster::ncell(x) + 1
+  png <- raster2PNG(x,
+                    col.regions = color,
+                    at = at,
+                    na.color = na.color,
+                    maxpixels = maxpixels)
+
+  png::writePNG(png, png_dst)
 
   if (missing(maxzoom)) {
-    info = strsplit(
-      sf::gdal_utils(
-        util = "info",
-        source = x,
-        quiet = TRUE
-      ),
-      split = "\n"
-    )
-
-    info = unlist(lapply(info, function(i) grep(glob2rx("Size is*"), i, value = TRUE)))
-    cols = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[1]
-    rows = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[2]
-
-    dm = max(cols, rows)
-
-    mxzm = ceiling(log2(dm/256)) + 1
+    mxzm = calcMaxZoom(png_dst)
   } else {
     mxzm = maxzoom
   }
 
   mnzm = minzoom
 
-  tiles_dst = paste0(tempdir(), "/tiles")
+  tiles_dst = tempfile("tiles")
   gdal2tiles(png_dst, tiles_dst, mnzm, mxzm)
 
+  Sys.sleep(1)
   map$dependencies <- c(map$dependencies, tiledDataDependency(tiles_dst))
-  map = addTiles(map, urlTemplate = paste0("lib/tiles-0.0.1/{z}/{x}/{y}.png"))
+  map = addTiles(map,
+                 urlTemplate = paste0("lib/",
+                                      basename(tiles_dst),
+                                      "-0.0.1/{z}/{x}/{y}.png"))
 
   return(map)
 }
@@ -1123,10 +1121,10 @@ addTiledImage = function(map, x, minzoom, maxzoom) {
 
 gdal2tiles = function(x, destination, minzoom, maxzoom) {
   zoomopt = paste0("-z ", minzoom, "-", maxzoom)
-  gdl_exe = system.file("gdal2tiles/gdal2tiles-multiprocess.py",
+  gdal_exe = system.file("gdal2tiles/gdal2tiles-multiprocess.py",
                         package = "mapview")
   cmnd = paste(
-    gdl_exe,
+    gdal_exe,
     "-l -p raster",
     zoomopt,
     "-w none",
@@ -1139,10 +1137,32 @@ gdal2tiles = function(x, destination, minzoom, maxzoom) {
 tiledDataDependency <- function(tiles_dir) {
   list(
     htmltools::htmlDependency(
-      name = "tiles",
+      name = basename(tiles_dir),
       version = "0.0.1",
       src = c(file = tiles_dir)
     )
   )
 }
 
+
+calcMaxZoom = function(x) {
+  if (inherits(x, "Raster")) {
+    cols = ncol(x)
+    rows = nrow(x)
+  } else {
+    info = strsplit(
+      sf::gdal_utils(
+        util = "info",
+        source = x,
+        quiet = TRUE
+      ),
+      split = "\n"
+    )
+
+    info = unlist(lapply(info, function(i) grep(glob2rx("Size is*"), i, value = TRUE)))
+    cols = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[1]
+    rows = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[2]
+  }
+  dm = max(cols, rows)
+  ceiling(log2(dm/256)) + 1
+}
