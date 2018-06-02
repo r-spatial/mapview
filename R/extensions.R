@@ -1078,6 +1078,42 @@ leafletMapPaneDependencies <- function() {
 #'
 #' @description
 #'
+#' @param map a leaflet map
+#' @param x a RasterLayer
+#' @param minzoom minimum zoom of the map
+#' @param maxzoom maximum zoom of the map. This will be set as the maximum zoom
+#' during tile generation
+#' @param color the color palette to be used
+#' @param at optionally specify breaks
+#' @param na.color color for NA values
+#'
+#' @examples
+#' \dontrun{
+#' library(leaflet)
+#' library(raster)
+#'
+#' # generate a large RasterLayer
+#' rst = raster(nrows = 5000, ncols = 10000,
+#'              xmn = 0, xmx = 10000,
+#'              ymn = -5000, ymx = 0)
+#' rst[] = runif(ncell(rst))
+#'
+#' # generate leaflet map with simple crs
+#' map = leaflet(
+#'   options = leaflet::leafletOptions(
+#'     crs = leafletCRS(
+#'       crsClass = "L.CRS.Simple"
+#'     )
+#'   )
+#' )
+#'
+#' options(viewer = NULL)
+#'
+#' map %>%
+#'   mapview:::addTiledRasterImage(rst)
+#' }
+#'
+#' @export
 addTiledRasterImage = function(map,
                                x,
                                minzoom = 0,
@@ -1104,18 +1140,25 @@ addTiledRasterImage = function(map,
   }
 
   mnzm = minzoom
+  width = raster::ncol(x)
+  height = raster::nrow(x)
 
   tiles_dst = tempfile("tiles")
   gdal2tiles(png_dst, tiles_dst, mnzm, mxzm)
 
   Sys.sleep(1)
-  map$dependencies <- c(map$dependencies, tiledDataDependency(tiles_dst))
-  map = addTiles(map,
-                 urlTemplate = paste0("lib/",
-                                      basename(tiles_dst),
-                                      "-0.0.1/{z}/{x}/{y}.png"))
-
-  return(map)
+  map$dependencies <- c(map$dependencies,
+                        tiledDataDependency(tiles_dst),
+                        rastercoordsDependency())
+  urlTemplate = paste0("lib/", basename(tiles_dst), "-0.0.1/{z}/{x}/{y}.png")
+  # map = addTiles(map,
+  #                urlTemplate = paste0("lib/",
+  #                                     basename(tiles_dst),
+  #                                     "-0.0.1/{z}/{x}/{y}.png"))
+  #
+  # return(map)
+  leaflet::invokeMethod(map, leaflet::getMapData(map), 'rastercoords',
+                        width, height, mxzm, urlTemplate)
 }
 
 
@@ -1129,7 +1172,8 @@ gdal2tiles = function(x, destination, minzoom, maxzoom) {
     zoomopt,
     "-w none",
     x,
-    destination)
+    destination
+  )
   system(cmnd, wait = TRUE)
 }
 
@@ -1140,6 +1184,18 @@ tiledDataDependency <- function(tiles_dir) {
       name = basename(tiles_dir),
       version = "0.0.1",
       src = c(file = tiles_dir)
+    )
+  )
+}
+
+
+rastercoordsDependency = function() {
+  list(
+    htmltools::htmlDependency(
+      "rastercoords",
+      '0.0.1',
+      system.file("htmlwidgets/lib/leaflet-rastercoords", package = "mapview"),
+      script = c("rastercoords.js", 'rastercoords-binding.js')
     )
   )
 }

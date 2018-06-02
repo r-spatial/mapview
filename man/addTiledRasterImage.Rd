@@ -7,6 +7,49 @@
 addTiledRasterImage(map, x, minzoom = 0, maxzoom,
   color = viridisLite::inferno, at, na.color = "#BEBEBE")
 }
+\arguments{
+\item{map}{a leaflet map}
+
+\item{x}{a RasterLayer}
+
+\item{minzoom}{minimum zoom of the map}
+
+\item{maxzoom}{maximum zoom of the map. This will be set as the maximum zoom
+during tile generation}
+
+\item{color}{the color palette to be used}
+
+\item{at}{optionally specify breaks}
+
+\item{na.color}{color for NA values}
+}
 \description{
+
+}
+\examples{
+\dontrun{
+library(leaflet)
+library(raster)
+
+# generate a large RasterLayer
+rst = raster(nrows = 5000, ncols = 10000,
+             xmn = 0, xmx = 10000,
+             ymn = -5000, ymx = 0)
+rst[] = runif(ncell(rst))
+
+# generate leaflet map with simple crs
+map = leaflet(
+  options = leaflet::leafletOptions(
+    crs = leafletCRS(
+      crsClass = "L.CRS.Simple"
+    )
+  )
+)
+
+options(viewer = NULL)
+
+map \%>\%
+  mapview:::addTiledRasterImage(rst)
+}
 
 }
