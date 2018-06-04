@@ -1167,12 +1167,13 @@ gdal2tiles = function(x, destination, minzoom, maxzoom) {
   gdal_exe = system.file("gdal2tiles/gdal2tiles-multiprocess.py",
                         package = "mapview")
   cmnd = paste(
-    gdal_exe,
-    "-l -p raster",
+    'python',
+    paste0('"', gdal_exe, '"'),
+    '-l -p raster',
     zoomopt,
-    "-w none",
+    '-w none',
     x,
-    destination
+    paste0('"', destination, '"')
   )
   system(cmnd, wait = TRUE)
 }
