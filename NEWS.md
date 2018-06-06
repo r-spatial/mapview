@@ -1,10 +1,11 @@
-## mapview 2.4.7
+## mapview 2.4.8
 
 new features:
 
   * addMouseCoordinates now displays basic info by default. Detailed info can be accessed by holding Ctrl keyboard button which also copies lon, lat and zoom info to the clipboard when Ctrl + clicking on the map. #113
   * npts has gained argument by_feature to count the number of vertices for each feature individually. #155
   * canvas now auto-detected based on feature complexity.
+  * new functions addTiledImage and addTiledRasterImage to add automatically tiled images/RasterLayers to a non-projected (L.CRS.Simple) leaflet map.
 
 bugfixes:
 
