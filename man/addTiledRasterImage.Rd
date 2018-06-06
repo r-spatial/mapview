@@ -2,15 +2,19 @@
 % Please edit documentation in R/extensions.R
 \name{addTiledRasterImage}
 \alias{addTiledRasterImage}
-\title{Add a tiled image}
+\alias{addTiledImage}
+\title{Add a tiled raster image}
 \usage{
 addTiledRasterImage(map, x, minzoom = 0, maxzoom,
   color = viridisLite::inferno, at, na.color = "#BEBEBE")
+
+addTiledImage(map, x, minzoom = 0, maxzoom)
 }
 \arguments{
 \item{map}{a leaflet map}
 
-\item{x}{a RasterLayer}
+\item{x}{for \code{addTiledRasterImage} a RasterLayer, for \code{addTiledImage}
+a file path to the image to be tiled.}
 
 \item{minzoom}{minimum zoom of the map}
 
@@ -24,7 +28,82 @@ during tile generation}
 \item{na.color}{color for NA values}
 }
 \description{
+Add a tiled raster image
 
+add tiled image data
+}
+\details{
+add non-projected/non-geographical tiled images to a non-projected
+leaflet map for better performance. The map should be set up with
+\code{leafletCRS(crsClass = "L.CRS.Simple")} - see example below. \cr
+\cr
+The use of these functions requires some system libraries to be installed.
+First and foremost, GDAL needs to be available on your system. Furthermore,
+you will need to have the \code{python-gdal} bindings. Installing GDAL
+is pretty straight forward for most systems and chances are you have it already,
+given that you were able to install \code{mapview}. The \code{gdal-python} bindings
+require some extra work. \cr
+\cr
+If you're useing a debian \strong{linux} system \cr
+\cr
+\code{sudo apt-get install python-gdal} \cr
+\cr
+should be sufficient.\cr
+\cr
+On \strong{windows} (as usual) things are a more involved. \cr
+The following describes how to get things set up to get these functions working
+under windows:
+
+\enumerate{
+  \item{
+    Download and install Python from \url{https://www.python.org/ftp/python},
+    e.g. python-2.7.9.amd64.msi for Python 2.7 64-bit (assumed in the following)
+  }
+  \item{
+    From \url{http://www.gisinternals.com/release.php}, download and install \cr
+      1. GDAL core, e.g. gdal-203-1911-x64-core.msi, \cr
+      2. then GDAL Python bindings, e.g. GDAL-2.3.0.win-amd64-py2.7.msi
+  }
+  \item{
+    Add required GDAL paths to system variables: \cr
+      1. PATH: C:\\Program Files (x86)\\GDAL \cr
+      2. GDAL_DATA: C:\\Program Files (x86)\\GDAL\\gdal-data \cr
+      3. GDAL_DRIVER_PATH: C:\\Program Files (x86)\\GDAL\\gdalplugins \cr
+  }
+  \item{
+    Download and install Microsoft Visual C++ Compiler for Python 2.7 from
+    \url{https://www.microsoft.com/en-us/download/confirmation.aspx?id=44266}
+    (required for installation of numpy package)
+  }
+  \item{
+    Download and extract numpy (e.g. numpy-1.14.3.zip from
+    \url{https://files.pythonhosted.org/packages/b0/2b/497c2bb7c660b2606d4a96e2035e92554429e139c6c71cdff67af66b58d2/numpy-1.14.3.zip}).
+    On the command line, navigate to decompressed folder and run \cr
+    \cr
+      >>> python setup.py install
+    \cr
+  }
+  \item{
+    To verify, run the following import statements in the Python shell on the command line: \cr
+      \cr
+      >>> import gdal \cr
+      >>> import ogr \cr
+      >>> import osr \cr
+      >>> import gdalnumeric \cr
+      >>> import gdalconst \cr
+  }
+}
+
+See also \cr
+\itemize{
+  \item{\url{https://pypi.org/project/GDAL/}} and \cr
+  \item{\url{https://sandbox.idre.ucla.edu/sandbox/tutorials/installing-gdal-for-windows}} \cr
+}
+for further details.
+
+On a \strong{mac} you're on your own for now (we don't have testing opportunities).
+Though we would appreciate a PR if you feel confident you have a solution for
+installing all needed dependencies/prerequisites.
 }
 \examples{
 \dontrun{
