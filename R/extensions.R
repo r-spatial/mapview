@@ -870,7 +870,7 @@ addImageQuery = function(map,
 #' @param group the group of the static labels layer.
 #' @param layerId the layerId of the static labels layer.
 #' @param ... Additional arguments passed to
-#' \code{\link[leaflet]{addLabelOnlyMarkers}}.
+#' \code{\link[leaflet]{labelOptions}}.
 #'
 #' @return
 #' A labelled \strong{mapview} object.
@@ -932,18 +932,20 @@ addStaticLabels = function(map,
   }
 
   dots = list(...)
-  min_opts = list(noHide = TRUE,
+  min_opts = list(permanent = TRUE,
                   direction = "top",
-                  textOnly = TRUE)
+                  textOnly = TRUE,
+                  offset = c(0, 20))
 
-  dots = append(dots, min_opts)
+  dots = utils::modifyList(dots, min_opts)
+  # dots = utils::modifyList(leafletOptions(), dots)
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
 
   ## 'Raster*' locations not supported so far -> error
   if (inherits(data, "Raster")) {
     stop(paste("'Raster*' input is not supported, yet."
-               , "Please refer to ?addLabels for compatible input formats.\n"),
+               , "Please refer to ?addStaticLabels for compatible input formats.\n"),
          call. = FALSE)
   }
 
@@ -978,19 +980,21 @@ addStaticLabels = function(map,
   }
 
   ## add labels to map
-  map = garnishMap(leaflet::addLabelOnlyMarkers,
-                   map = map,
-                   lng = mat[, 1],
-                   lat = mat[, 2],
-                   label = as.character(label),
-                   group = group,
-                   layerId = layerId,
-                   labelOptions = dots)
-  # map = leaflet::addLabelOnlyMarkers(map,
-  #                                    lng = mat[, 1],
-  #                                    lat = mat[, 2],
-  #                                    label = as.character(label),
-  #                                    ...)
+  # map = garnishMap(leaflet::addLabelOnlyMarkers,
+  #                  map = map,
+  #                  lng = unname(mat[, 1]),
+  #                  lat = unname(mat[, 2]),
+  #                  label = as.character(label),
+  #                  group = group,
+  #                  layerId = layerId,
+  #                  labelOptions = dots)
+  map = leaflet::addLabelOnlyMarkers(map,
+                                     lng = mat[, 1],
+                                     lat = mat[, 2],
+                                     label = as.character(label),
+                                     group = group,
+                                     layerId = layerId,
+                                     labelOptions = dots)
 
   return(map)
 }
