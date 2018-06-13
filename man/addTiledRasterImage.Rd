@@ -19,7 +19,7 @@ a file path to the image to be tiled.}
 \item{minzoom}{minimum zoom of the map}
 
 \item{maxzoom}{maximum zoom of the map. This will be set as the maximum zoom
-during tile generation}
+during tile generation. If missing, it is calculated based on image dimensions.}
 
 \item{color}{the color palette to be used}
 
@@ -28,9 +28,13 @@ during tile generation}
 \item{na.color}{color for NA values}
 }
 \description{
-Add a tiled raster image
-
-add tiled image data
+Create tiled image data and add to a leaflet or mapview map. The image data
+can be in the form of a character vector pointing to a file on disk such as
+.png, .jpg, .bmp, .tif files or a RasterLayer from the \code{raster} package. \cr
+\cr
+\strong{NOTE:} \cr In case you want to save your map with tiled imagery using
+\code{htmlwidgets::saveWidget} or \code{mapview::mapshot} make sure you set
+\code{libdir = "lib"} as otherwise tiles won't render in your .html.
 }
 \details{
 add non-projected/non-geographical tiled images to a non-projected
@@ -109,6 +113,7 @@ installing all needed dependencies/prerequisites.
 \dontrun{
 library(leaflet)
 library(raster)
+library(mapview)
 
 # generate a large RasterLayer
 rst = raster(nrows = 5000, ncols = 10000,
@@ -128,7 +133,7 @@ map = leaflet(
 options(viewer = NULL)
 
 map \%>\%
-  mapview:::addTiledRasterImage(rst)
+  addTiledRasterImage(rst)
 }
 
 }

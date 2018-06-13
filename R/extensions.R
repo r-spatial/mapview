@@ -1080,6 +1080,15 @@ leafletMapPaneDependencies <- function() {
 ##############################################################################
 #' Add a tiled raster image
 #'
+#' @description
+#' Create tiled image data and add to a leaflet or mapview map. The image data
+#' can be in the form of a character vector pointing to a file on disk such as
+#' .png, .jpg, .bmp, .tif files or a RasterLayer from the \code{raster} package. \cr
+#' \cr
+#' \strong{NOTE:} \cr In case you want to save your map with tiled imagery using
+#' \code{htmlwidgets::saveWidget} or \code{mapview::mapshot} make sure you set
+#' \code{libdir = "lib"} as otherwise tiles won't render in your .html.
+#'
 #' @details
 #' add non-projected/non-geographical tiled images to a non-projected
 #' leaflet map for better performance. The map should be set up with
@@ -1158,7 +1167,7 @@ leafletMapPaneDependencies <- function() {
 #' a file path to the image to be tiled.
 #' @param minzoom minimum zoom of the map
 #' @param maxzoom maximum zoom of the map. This will be set as the maximum zoom
-#' during tile generation
+#' during tile generation. If missing, it is calculated based on image dimensions.
 #' @param color the color palette to be used
 #' @param at optionally specify breaks
 #' @param na.color color for NA values
@@ -1167,6 +1176,7 @@ leafletMapPaneDependencies <- function() {
 #' \dontrun{
 #' library(leaflet)
 #' library(raster)
+#' library(mapview)
 #'
 #' # generate a large RasterLayer
 #' rst = raster(nrows = 5000, ncols = 10000,
@@ -1186,7 +1196,7 @@ leafletMapPaneDependencies <- function() {
 #' options(viewer = NULL)
 #'
 #' map %>%
-#'   mapview:::addTiledRasterImage(rst)
+#'   addTiledRasterImage(rst)
 #' }
 #'
 #' @export
@@ -1223,27 +1233,24 @@ addTiledRasterImage = function(map,
   height = raster::nrow(x)
 
   tiles_dst = tempfile("tiles")
-  gdal2tiles(png_dst, tiles_dst, mnzm, mxzm)
+  # gdal2tiles(png_dst, tiles_dst, mnzm, mxzm)
+  tiler::tile(png_dst,
+              tiles = tiles_dst,
+              zoom = paste(mnzm, mxzm, sep = "-"),
+              viewer = FALSE)
 
   Sys.sleep(1)
   map$dependencies <- c(map$dependencies,
                         tiledDataDependency(tiles_dst),
                         rastercoordsDependency())
   urlTemplate = paste0("lib/", basename(tiles_dst), "-0.0.1/{z}/{x}/{y}.png")
-  # map = addTiles(map,
-  #                urlTemplate = paste0("lib/",
-  #                                     basename(tiles_dst),
-  #                                     "-0.0.1/{z}/{x}/{y}.png"))
-  #
-  # return(map)
+
   leaflet::invokeMethod(map, leaflet::getMapData(map), 'rastercoords',
                         width, height, mxzm, urlTemplate)
 }
 
 
 
-#' add tiled image data
-#'
 #' @export
 #'
 #' @name addTiledImage
@@ -1276,19 +1283,18 @@ addTiledImage = function(map,
   height = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[2]
 
   tiles_dst = tempfile("tiles")
-  gdal2tiles(x, tiles_dst, mnzm, mxzm)
+  # gdal2tiles(x, tiles_dst, mnzm, mxzm)
+  tiler::tile(x,
+              tiles = tiles_dst,
+              zoom = paste(mnzm, mxzm, sep = "-"),
+              viewer = FALSE)
 
   Sys.sleep(1)
   map$dependencies <- c(map$dependencies,
                         tiledDataDependency(tiles_dst),
                         rastercoordsDependency())
   urlTemplate = paste0("lib/", basename(tiles_dst), "-0.0.1/{z}/{x}/{y}.png")
-  # map = addTiles(map,
-  #                urlTemplate = paste0("lib/",
-  #                                     basename(tiles_dst),
-  #                                     "-0.0.1/{z}/{x}/{y}.png"))
-  #
-  # return(map)
+
   leaflet::invokeMethod(map, leaflet::getMapData(map), 'rastercoords',
                         width, height, mxzm, urlTemplate)
 }
@@ -1354,5 +1360,5 @@ calcMaxZoom = function(x) {
     rows = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[2]
   }
   dm = max(cols, rows)
-  ceiling(log2(dm/256)) + 1
+  ceiling(log2(dm/256))
 }
