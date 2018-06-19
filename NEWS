@@ -1,4 +1,4 @@
-mapview 2.4.8
+mapview 2.4.9
 
 new features:
 
@@ -6,6 +6,7 @@ new features:
   * npts has gained argument by_feature to count the number of vertices for each feature individually. #155
   * canvas now auto-detected based on feature complexity.
   * new functions addTiledImage and addTiledRasterImage to add automatically tiled images/RasterLayers to a non-projected (L.CRS.Simple) leaflet map.
+  * layer.name is now cut at 50 characters which used to be especially problematic for dplyr chains inside a mapview call. Fixes #159
 
 bugfixes:
 
