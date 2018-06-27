@@ -929,6 +929,10 @@ addStaticLabels = function(map,
     } else {
       group = NULL
     }
+  } else if (inherits(map, "mapview") & !missing(data)) {
+    data = sf::st_transform(data, sf::st_crs(map@object[[1]]))
+  } else {
+    data = checkAdjustProjection(data)
   }
 
   dots = list(...)
