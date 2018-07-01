@@ -1,4 +1,4 @@
-## mapview 2.4.9
+## mapview 2.4.10
 
 new features:
 
@@ -7,6 +7,7 @@ new features:
   * canvas now auto-detected based on feature complexity.
   * new functions addTiledImage and addTiledRasterImage to add automatically tiled images/RasterLayers to a non-projected (L.CRS.Simple) leaflet map.
   * layer.name is now cut at 50 characters which used to be especially problematic for dplyr chains inside a mapview call. Fixes #159
+  * added '+' method for RHS class NULL. https://twitter.com/TimSalabim3/status/1012213914262794240
 
 bugfixes:
 
