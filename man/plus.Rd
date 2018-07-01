@@ -7,12 +7,16 @@
 \alias{+}
 \alias{+,mapview,ANY-method}
 \alias{+}
+\alias{+,mapview,NULL-method}
+\alias{+}
 \alias{+,mapview,character-method}
 \title{mapview + mapview adds data from the second map to the first}
 \usage{
 \S4method{+}{mapview,mapview}(e1, e2)
 
 \S4method{+}{mapview,ANY}(e1, e2)
+
+\S4method{+}{mapview,`NULL`}(e1, e2)
 
 \S4method{+}{mapview,character}(e1, e2)
 }
@@ -26,6 +30,8 @@ the objects should be added to e1.}
 mapview + mapview adds data from the second map to the first
 
 mapview + data adds spatial data (raster*, sf*, sp*) to a mapview map
+
+mapview + NULL returns the LHS map
 
 [...]
 }

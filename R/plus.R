@@ -83,6 +83,22 @@ setMethod("+",
           }
 )
 
+
+#' mapview + NULL returns the LHS map
+#' @name +
+#' @docType methods
+#' @rdname plus
+#' @aliases +,mapview,NULL-method
+#'
+setMethod("+",
+          signature(e1 = "mapview",
+                    e2 = "NULL"),
+          function (e1, e2) {
+            return(e1)
+          }
+)
+
+
 # #' @name +
 # #' @docType methods
 # #' @rdname plus
