@@ -48,8 +48,8 @@
 #' @aliases addMouseCoordinates
 
 addMouseCoordinates <- function(map, style = c("detailed", "basic"),
-                                 epsg = NULL, proj4string = NULL,
-                                 native.crs = FALSE) {
+                                epsg = NULL, proj4string = NULL,
+                                native.crs = FALSE) {
 
   style <- style[1]
 
@@ -218,7 +218,7 @@ addMouseCoordinates <- function(map, style = c("detailed", "basic"),
       }
       "
     )
-    )
+  )
   map
 }
 
@@ -514,7 +514,7 @@ addLogo <- function(map,
   map <- htmlwidgets::onRender(map, render_stuff)
 
   return(map)
-                    }
+}
 
 
 ### local image
@@ -958,6 +958,14 @@ addStaticLabels = function(map,
     data = sf::st_as_sf(data)
   }
 
+  # If `data` is passed, make sure that it is in lat/long 4326
+  # to allow proper placing of labels
+  if (!missing(data)) {
+    if (sf::st_crs(data)$epsg != 4326) {
+      data = sf::st_transform(data, 4326)
+    }
+  }
+
   if (missing(label)) label = makeLabels(data, NULL)
   #   {
   #   sf_col = attr(data, "sf_column")
@@ -1308,7 +1316,7 @@ addTiledImage = function(map,
 gdal2tiles = function(x, destination, minzoom, maxzoom) {
   zoomopt = paste0("-z ", minzoom, "-", maxzoom)
   gdal_exe = system.file("gdal2tiles/gdal2tiles-multiprocess.py",
-                        package = "mapview")
+                         package = "mapview")
   cmnd = paste(
     'python',
     paste0('"', gdal_exe, '"'),
