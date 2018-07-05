@@ -154,11 +154,12 @@ getMaxFeatures <- function(x) {
 
 
 lineWidth <- function(x) {
-  switch(getGeometryType(x),
-         "pt" = 2,
-         "ln" = 2,
-         "pl" = 1,
-         "gc" = 2)
+  lw = switch(getGeometryType(x),
+              "pt" = 2,
+              "ln" = 2,
+              "pl" = 1,
+              "gc" = 2)
+  return(lw)
 }
 
 

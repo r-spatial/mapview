@@ -464,6 +464,8 @@ setMethod('mapView', signature(x = 'sf'),
                              na.alpha = na.alpha,
                              legend = legend)
 
+                lwd = lwd
+
                 if (is.function(tmp)) {
                   tmp = tmp()
                   x <- tmp$obj
@@ -525,6 +527,7 @@ setMethod('mapView', signature(x = 'sf'),
                         canvas = canvas,
                         pane = pane,
                         cex = cex,
+                        lwd = lwd,
                         ...)
 
               }
