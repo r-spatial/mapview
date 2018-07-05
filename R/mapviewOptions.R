@@ -209,7 +209,7 @@ mapviewOptions <- function(platform,
     options(mapviewVectorPalette = mapviewPalette(name = "mapviewVectorColors"))
     options(mapviewVerbose = FALSE)
     options(mapviewNAColor = "#BEBEBE80")
-    options(mapviewLegend = FALSE)
+    options(mapviewLegend = TRUE)
     options(mapviewLegendPos = "topright")
     options(mapviewLayersControlPos = "topleft")
     options(mapviewleafletWidth = NULL)
@@ -424,7 +424,7 @@ mapviewOptions <- function(platform,
 
 
 .Legend <- function() {
-  default <- FALSE
+  default <- TRUE
   sl <- getOption('mapviewLegend')
   if (is.null(sl)) {
     return(default)
