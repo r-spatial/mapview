@@ -82,9 +82,9 @@ mapview(meuse,
 
 Here's a rather silly example of an interactive popup. I am sure there's many more sensible examples but for the fun of it here's a map in a map popup. 
 
-**A WARNING:** Including interactie popups can quickly lead to very large files that will take a long time to render and also become rather unresponsove.
+**A WARNING:** Including interactive popups can quickly lead to very large files that will take a long time to render and also become rather unresponsive.
 
-```{r popupGraph interactve}
+```{r popupGraph interactive}
 brew1 <- breweries91[1, ]
 
 mapview(brew1,
