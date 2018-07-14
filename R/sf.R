@@ -174,7 +174,7 @@ leaflet_sfc <- function(x,
       if (pane == "auto") {
         pane = paneName(x)
         zindex = zIndex(x)
-        m = addMapPane(m, pane, zindex)
+        m = leaflet::addMapPane(m, pane, zindex)
       }
     }
   } else {
