@@ -1,4 +1,4 @@
-mapview 2.4.11
+mapview 2.4.12
 
 new features:
 
@@ -16,10 +16,13 @@ bugfixes:
   * popupTable no longer causes a stack overflow with large point data. #154
   * popupGraph no longer relies on png files on disk but embeds graphs via base64. #156
   * popupImage for local images now also embeds images via base64.
+  * in mapshot, remove temporary url files only if remove_url = TRUE. #157
   
 miscellaneous:
 
   * dropped gdalUtils from Imports. gdalinfo and gdal_translate now used via sf.
+  * addMapPane has been migrated to leaflet.
+  * legend now TRUE by default as all legends are now linked to layers.
 
 
 mapview 2.4.0
