@@ -436,6 +436,11 @@ setMethod('mapView', signature(x = 'sf'),
                    maxpoints = getMaxFeatures(x),
                    ...) {
 
+            if (nrow(x) == 0) {
+              stop("\n", deparse(substitute(x, env = parent.frame())),
+                   " does not contain data \n", call. = FALSE)
+            }
+
             if (mapviewGetOption("platform") == "leaflet") {
               if (is.character(burst)) {
                 zcol = burst
