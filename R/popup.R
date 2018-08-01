@@ -49,6 +49,10 @@ popupTable = function(x, zcol, row.numbers = TRUE) {
 #' web-URL(s) to any sort of image file(s).
 #' @param src Whether the source is "local" (i.e. valid file path(s)) or
 #' "remote" (i.e. valid URL(s)).
+#' @param embed whether to embed the (local) images in the popup html as
+#' base64 ecoded. Set this to TRUE if you want to save and share your map, unless
+#' you want render many images, then set to FALSE and make sure to copy ../graphs
+#' when copying the map to a different location.
 #' @param ... further arguments passed on to underlying methods such as
 #' height and width.
 #'
@@ -93,7 +97,7 @@ popupTable = function(x, zcol, row.numbers = TRUE) {
 #' @export popupImage
 #' @name popupImage
 #' @rdname popup
-popupImage = function(img, src = c("local", "remote"), ...) {
+popupImage = function(img, src = c("local", "remote"), embed = FALSE, ...) {
 
   if (!is.list(img)) img = as.list(img)
   fex = sapply(img, file.exists)
@@ -102,7 +106,7 @@ popupImage = function(img, src = c("local", "remote"), ...) {
   pop = lapply(seq(img), function(i) {
     src = srcs[i]
     pop = switch(src,
-                 local = popupLocalImage(img = img[[i]], ...),
+                 local = popupLocalImage(img = img[[i]], embed = embed, ...),
                  remote = popupRemoteImage(img = img[[i]], ...))
   })
 
@@ -112,7 +116,7 @@ popupImage = function(img, src = c("local", "remote"), ...) {
 
 
 ### local images -----
-popupLocalImage = function(img, width = NULL, height = NULL) {
+popupLocalImage = function(img, width = NULL, height = NULL, embed = FALSE) {
 
   pngs = lapply(1:length(img), function(i) {
 
@@ -138,13 +142,31 @@ popupLocalImage = function(img, width = NULL, height = NULL) {
     } else if (is.null(height)) height = yx_ratio * width else
       if (is.null(width)) width = xy_ratio * height
 
-    plt64 = base64enc::base64encode(fl)
-    pop = paste0("<img ",
-                 " width=",
-                 width,
-                 " height=",
-                 height,
-                " src='data:image/png;base64,", plt64, "' />")
+    if (embed) {
+      plt64 = base64enc::base64encode(fl)
+      pop = paste0("<img ",
+                   " width=",
+                   width,
+                   " height=",
+                   height,
+                   " src='data:image/png;base64,", plt64, "' />")
+    }
+
+    if (!embed) {
+      nm = basename(fl)
+      drs = file.path(tempdir(), "graphs")
+      if (!dir.exists(drs)) dir.create(drs)
+      fls = file.path(drs, nm)
+      invisible(file.copy(fl, file.path(drs, nm)))
+
+      pop = paste0("<image src='../graphs/",
+                   basename(img),
+                   "' width=",
+                   width,
+                   " height=",
+                   height,
+                   ">")
+    }
 
     # return(uri)
     popTemplate = system.file("templates/popup-graph.brew", package = "mapview")
