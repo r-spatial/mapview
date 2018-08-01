@@ -1,4 +1,4 @@
-mapview 2.4.13
+mapview 2.4.14
 
 new features:
 
@@ -7,6 +7,7 @@ new features:
   * canvas now auto-detected based on feature complexity.
   * layer.name is now cut at 50 characters which used to be especially problematic for dplyr chains inside a mapview call. Fixes #159
   * added '+' method for RHS class NULL. https://twitter.com/TimSalabim3/status/1012213914262794240
+  * popupImage has gained argument embed to specify whether local images should be embeded as base64 in the popup html.
 
 bugfixes:
 
