@@ -7,15 +7,14 @@ new features:
   * canvas now auto-detected based on feature complexity.
   * layer.name is now cut at 50 characters which used to be especially problematic for dplyr chains inside a mapview call. Fixes #159
   * added '+' method for RHS class NULL. https://twitter.com/TimSalabim3/status/1012213914262794240
-  * popupImage has gained argument embed to specify whether local images should be embeded as base64 in the popup html.
+  * popupImage has gained argument embed to specify whether local images should be embeded as base64 in the popup html. #168
 
 bugfixes:
 
   * leaflet::addScalebar would prevent Raster* method from rendering correctly for multiple layers.
   * cex was not respected when burst = TRUE. #149
   * popupTable no longer causes a stack overflow with large point data. #154
-  * popupGraph no longer relies on png files on disk but embeds graphs via base64. #156
-  * popupImage for local images now also embeds images via base64.
+  * popupGraph no longer relies on png files on disk but embeds graphs via base64. #156 
   * in mapshot, remove temporary url files only if remove_url = TRUE. #157
   
 miscellaneous:
