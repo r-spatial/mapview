@@ -218,7 +218,7 @@ addMouseCoordinates <- function(map, style = c("detailed", "basic"),
       }
       "
     )
-    )
+  )
   map
 }
 
@@ -232,6 +232,20 @@ removeMouseCoordinates = function(map) {
     map$jsHooks$render[[i]][rc_lnlt[[i]]] = NULL
   }
 
+  map = htmlwidgets::onRender(
+    map,
+    paste0(
+      "
+      function(el, x, data) {
+          var map = this;
+          map.on('mousemove', function (e) {
+              var strip = document.querySelector('.lnlt');
+              strip.remove();
+          });
+      }
+      "
+    )
+  )
   return(map)
 }
 
