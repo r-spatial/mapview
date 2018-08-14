@@ -1,4 +1,4 @@
-## mapview 2.4.15
+## mapview 2.4.16
 
 new features:
 
@@ -9,6 +9,7 @@ new features:
   * added '+' method for RHS class NULL. https://twitter.com/TimSalabim3/status/1012213914262794240
   * popupImage has gained argument embed to specify whether local images should be embeded as base64 in the popup html. #168
   * stars methods re-enabled since now on CRAN.
+  * added viewRGB method for stars images.
 
 bugfixes:
 
@@ -23,6 +24,8 @@ miscellaneous:
   * dropped gdalUtils from Imports. gdalinfo and gdal_translate now used via sf.
   * addMapPane has been migrated to leaflet.
   * legend now TRUE by default as all legends are now linked to layers.
+  * better error messages in some cases (e.g. missing zcol, empty objects).
+  * package now depends on leaflet >= 1.0.0
 
 
 ## mapview 2.4.0

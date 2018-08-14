@@ -1,8 +1,8 @@
 Package: mapview
 Type: Package
 Title: Interactive Viewing of Spatial Data in R
-Version: 2.4.15
-Date: 2018-08-07
+Version: 2.4.16
+Date: 2018-08-14
 Authors@R: c(
       person("Tim", "Appelhans", email = "tim.appelhans@gmail.com", role = c("cre", "aut")),
       person("Florian", "Detsch", email = "fdetsch@web.de", role = c("aut")),
@@ -27,7 +27,7 @@ Depends:
     R (>= 2.10),  
     methods
 Imports:
-    leaflet,
+    leaflet(>= 1.0.0),
     sp,
     raster,
     satellite,
