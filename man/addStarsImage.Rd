@@ -4,14 +4,16 @@
 \alias{addStarsImage}
 \title{Add stars layer to a leaflet map}
 \usage{
-addStarsImage(map, x, colors = "Spectral", opacity = 1,
+addStarsImage(map, x, band = 1, colors = "Spectral", opacity = 1,
   attribution = NULL, layerId = NULL, group = NULL, project = FALSE,
   method = c("bilinear", "ngb"), maxBytes = 4 * 1024 * 1024)
 }
 \arguments{
 \item{map}{a mapview or leaflet object.}
 
-\item{x}{a stars layer}
+\item{x}{a stars layer.}
+
+\item{band}{the band number to be plotted.}
 
 \item{colors}{the color palette (see colorNumeric) or function to use to
 color the raster values (hint: if providing a function, set na.color

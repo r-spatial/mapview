@@ -4,19 +4,22 @@
 \alias{addImageQuery}
 \title{Add image query functionality to leaflet/mapview map.}
 \usage{
-addImageQuery(map, x, group = NULL, layerId = NULL, project = TRUE,
-  type = c("mousemove", "click"), digits, position = "topright",
-  prefix = "Layer", ...)
+addImageQuery(map, x, band = 1, group = NULL, layerId = NULL,
+  project = TRUE, type = c("mousemove", "click"), digits,
+  position = "topright", prefix = "Layer", ...)
 }
 \arguments{
 \item{map}{the map with the RasterLayer to be queried.}
 
 \item{x}{the RasterLayer that is to be queried.}
 
+\item{band}{for stars layers, the band number to be queried.}
+
 \item{group}{the group of the RasterLayer to be queried.}
 
 \item{layerId}{the layerId of the RasterLayer to be queried. Needs to be the
-same a supplied in \code{\link[leaflet]{addRasterImage}}.}
+same as supplied in \code{\link[leaflet]{addRasterImage}} or
+\code{link{addStrasImage}}.}
 
 \item{project}{whether to project the RasterLayer to conform with leaflets
 expected crs. Defaults to \code{TRUE} and things are likely to go haywire
@@ -40,10 +43,11 @@ A leaflet map object.
 Add image query functionality to leaflet/mapview map.
 }
 \details{
-This function enables Raster* objects added to leaflet/mapview maps to be
-queried. Standard query is on 'mousmove', but can be changed to 'click'.
+This function enables Raster*/stars objects added to leaflet/mapview maps to
+be queried. Standard query is on 'mousmove', but can be changed to 'click'.
 Note that for this to work, the \code{layerId} needs to be the same as the
-one that was set in \code{\link[leaflet]{addRasterImage}}. Currently only works for
+one that was set in \code{\link[leaflet]{addRasterImage}} or
+\code{link{addStrasImage}}. Currently only works for
 numeric values (i.e. numeric/integer and factor values are supported).
 }
 \examples{

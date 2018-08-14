@@ -15,13 +15,6 @@
 \alias{mapView,XYZ-method}
 \alias{mapView,XYM-method}
 \alias{mapView,XYZM-method}
-\alias{mapView,sfc_POINT-method}
-\alias{mapView,sfc_MULTIPOINT-method}
-\alias{mapView,sfc_LINESTRING-method}
-\alias{mapView,sfc_MULTILINESTRING-method}
-\alias{mapView,sfc_POLYGON-method}
-\alias{mapView,sfc_MULTIPOLYGON-method}
-\alias{mapView,sfc_GEOMETRY-method}
 \alias{mapView,bbox-method}
 \alias{mapView,missing-method}
 \alias{mapView,list-method}
@@ -49,7 +42,7 @@
   "click"), query.digits, query.position = "topright",
   query.prefix = "Layer", ...)
 
-\S4method{mapView}{stars}(x, map = NULL,
+\S4method{mapView}{stars}(x, band = 1, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
   na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
@@ -101,7 +94,7 @@
   na.color = mapviewGetOption("na.color"), cex = 6, lwd = lineWidth(x),
   alpha = 0.9, alpha.regions = regionOpacity(x), map.types = NULL,
   verbose = mapviewGetOption("verbose"), popup = NULL,
-  layer.name = deparse(substitute(x, env = parent.frame(2))),
+  layer.name = deparse(substitute(x, env = parent.frame())),
   label = makeLabels(x), legend = mapviewGetOption("legend"),
   legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
@@ -132,20 +125,6 @@
 
 \S4method{mapView}{XYZM}(x, layer.name = deparse(substitute(x, env =
   parent.frame(1))), ...)
-
-\S4method{mapView}{sfc_POINT}(x, ...)
-
-\S4method{mapView}{sfc_MULTIPOINT}(x, ...)
-
-\S4method{mapView}{sfc_LINESTRING}(x, ...)
-
-\S4method{mapView}{sfc_MULTILINESTRING}(x, ...)
-
-\S4method{mapView}{sfc_POLYGON}(x, ...)
-
-\S4method{mapView}{sfc_MULTIPOLYGON}(x, ...)
-
-\S4method{mapView}{sfc_GEOMETRY}(x, ...)
 
 \S4method{mapView}{bbox}(x, layer.name = deparse(substitute(x, env =
   parent.frame(1))), alpha.regions = 0.2, ...)
@@ -213,7 +192,7 @@
 this can also be a \code{data.frame} or a \code{numeric vector}. If missing,
 a blank map will be drawn.}
 
-\item{map}{an optional existing map to be updated/added to}
+\item{map}{an optional existing map to be updated/added to.}
 
 \item{maxpixels}{integer > 0. Maximum number of cells to use for the plot.
 If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
@@ -285,6 +264,8 @@ as prefix for the layerId. Ignored if \code{label = FALSE}.}
 \item{...}{additional arguments passed on to repective functions.
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
+
+\item{band}{for stars layers, the band number to be plotted.}
 
 \item{pane}{name of the map pane in which to render features. See
 \code{\link{addMapPane}} for details. Currently only supported for vector layers.
@@ -401,20 +382,6 @@ and fully queriable.
 \item \code{XYM}: \code{\link{st_sfc}}
 
 \item \code{XYZM}: \code{\link{st_sfc}}
-
-\item \code{sfc_POINT}: \code{\link{st_sfc}}
-
-\item \code{sfc_MULTIPOINT}: \code{\link{st_sfc}}
-
-\item \code{sfc_LINESTRING}: \code{\link{st_sfc}}
-
-\item \code{sfc_MULTILINESTRING}: \code{\link{st_sfc}}
-
-\item \code{sfc_POLYGON}: \code{\link{st_sfc}}
-
-\item \code{sfc_MULTIPOLYGON}: \code{\link{st_sfc}}
-
-\item \code{sfc_GEOMETRY}: \code{\link{st_sfc}}
 
 \item \code{bbox}: \code{\link{st_bbox}}
 
