@@ -25,7 +25,8 @@ if ( !isGeneric('mapView') ) {
 #' \code{sf} object or a list of any combination of those. Furthermore,
 #' this can also be a \code{data.frame} or a \code{numeric vector}. If missing,
 #' a blank map will be drawn.
-#' @param map an optional existing map to be updated/added to
+#' @param map an optional existing map to be updated/added to.
+#' @param band for stars layers, the band number to be plotted.
 #' @param pane name of the map pane in which to render features. See
 #' \code{\link{addMapPane}} for details. Currently only supported for vector layers.
 #' Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
@@ -301,6 +302,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 #' @describeIn mapView \code{\link{stars}}
 setMethod('mapView', signature(x = 'stars'),
           function(x,
+                   band = 1,
                    map = NULL,
                    maxpixels = mapviewGetOption("mapview.maxpixels"),
                    col.regions = mapviewGetOption("raster.palette")(256),
@@ -326,7 +328,7 @@ setMethod('mapView', signature(x = 'stars'),
                    ...) {
 
             method = match.arg(method)
-            if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , 1]
+            if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
             if (is.null(at)) at <- lattice::do.breaks(
               extendLimits(range(layer, na.rm = TRUE)),
               256
@@ -334,11 +336,12 @@ setMethod('mapView', signature(x = 'stars'),
 
             if (mapviewGetOption("platform") == "leaflet") {
               leaflet_stars(x,
+                            band = band,
                             map = map,
                             maxpixels = maxpixels,
                             col.regions = col.regions,
                             at = at,
-                            na.color, na.color,
+                            na.color = na.color,
                             use.layer.names = use.layer.names,
                             values = values,
                             map.types = map.types,
@@ -510,6 +513,14 @@ setMethod('mapView', signature(x = 'sf'),
                    " does not contain data \n", call. = FALSE)
             }
 
+            if (is.null(zcol)) legend = FALSE
+            if (!is.null(zcol) && !all(zcol %in% colnames(x))) {
+              stop("\n", "at least one of the following columns: \n",
+                   paste(zcol, collapse = ", "), "\nnot found in ",
+                   deparse(substitute(x, env = parent.frame())),
+                   call. = FALSE)
+            }
+
             if (mapviewGetOption("platform") == "leaflet") {
               if (is.character(burst)) {
                 zcol = burst
@@ -633,7 +644,7 @@ setMethod('mapView', signature(x = 'sfc'),
                    verbose = mapviewGetOption("verbose"),
                    popup = NULL,
                    layer.name = deparse(substitute(x,
-                                                   env = parent.frame(2))),
+                                                   env = parent.frame())),
                    label = makeLabels(x),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
@@ -642,6 +653,11 @@ setMethod('mapView', signature(x = 'sfc'),
                    highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
                    ...) {
+
+            if (length(x) == 0) {
+              stop("\n", deparse(substitute(x, env = parent.frame())),
+                   " does not contain data \n", call. = FALSE)
+            }
 
             if (mapviewGetOption("platform") == "leaflet") {
 
@@ -868,74 +884,74 @@ setMethod('mapView', signature(x = 'XYZM'),
 
 
 
-## sfc_POINT ==============================================================
-#' @describeIn mapView \code{\link{st_sfc}}
-
-setMethod('mapView', signature(x = 'sfc_POINT'),
-          function(x, ...) {
-            callNextMethod()
-          }
-)
-
-
-## sfc_MULTIPOINT =========================================================
-#' @describeIn mapView \code{\link{st_sfc}}
-
-setMethod('mapView', signature(x = 'sfc_MULTIPOINT'),
-          function(x, ...) {
-            callNextMethod()
-          }
-)
-
-
-## sfc_LINESTRING =========================================================
-#' @describeIn mapView \code{\link{st_sfc}}
-
-setMethod('mapView', signature(x = 'sfc_LINESTRING'),
-          function(x, ...) {
-            callNextMethod()
-          }
-)
-
-
-## sfc_MULTILINESTRING ====================================================
-#' @describeIn mapView \code{\link{st_sfc}}
-
-setMethod('mapView', signature(x = 'sfc_MULTILINESTRING'),
-          function(x, ...) {
-            callNextMethod()
-          }
-)
-
-
-## sfc_POLYGON =======================================================
-#' @describeIn mapView \code{\link{st_sfc}}
-
-setMethod('mapView', signature(x = 'sfc_POLYGON'),
-          function(x, ...) {
-            callNextMethod()
-          }
-)
-
-
-## sfc_MULTIPOLYGON =======================================================
-#' @describeIn mapView \code{\link{st_sfc}}
-
-setMethod('mapView', signature(x = 'sfc_MULTIPOLYGON'),
-          function(x, ...) {
-            callNextMethod()
-          }
-)
-
-
-## sfc_GEOMETRY =======================================================
-#' @describeIn mapView \code{\link{st_sfc}}
-
-setMethod('mapView', signature(x = 'sfc_GEOMETRY'),
-          function(x, ...) {
-            callNextMethod()
-          }
-)
+# ## sfc_POINT ==============================================================
+# #' @describeIn mapView \code{\link{st_sfc}}
+#
+# setMethod('mapView', signature(x = 'sfc_POINT'),
+#           function(x, ...) {
+#             callNextMethod()
+#           }
+# )
+#
+#
+# ## sfc_MULTIPOINT =========================================================
+# #' @describeIn mapView \code{\link{st_sfc}}
+#
+# setMethod('mapView', signature(x = 'sfc_MULTIPOINT'),
+#           function(x, ...) {
+#             callNextMethod()
+#           }
+# )
+#
+#
+# ## sfc_LINESTRING =========================================================
+# #' @describeIn mapView \code{\link{st_sfc}}
+#
+# setMethod('mapView', signature(x = 'sfc_LINESTRING'),
+#           function(x, ...) {
+#             callNextMethod()
+#           }
+# )
+#
+#
+# ## sfc_MULTILINESTRING ====================================================
+# #' @describeIn mapView \code{\link{st_sfc}}
+#
+# setMethod('mapView', signature(x = 'sfc_MULTILINESTRING'),
+#           function(x, ...) {
+#             callNextMethod()
+#           }
+# )
+#
+#
+# ## sfc_POLYGON =======================================================
+# #' @describeIn mapView \code{\link{st_sfc}}
+#
+# setMethod('mapView', signature(x = 'sfc_POLYGON'),
+#           function(x, ...) {
+#             callNextMethod()
+#           }
+# )
+#
+#
+# ## sfc_MULTIPOLYGON =======================================================
+# #' @describeIn mapView \code{\link{st_sfc}}
+#
+# setMethod('mapView', signature(x = 'sfc_MULTIPOLYGON'),
+#           function(x, ...) {
+#             callNextMethod()
+#           }
+# )
+#
+#
+# ## sfc_GEOMETRY =======================================================
+# #' @describeIn mapView \code{\link{st_sfc}}
+#
+# setMethod('mapView', signature(x = 'sfc_GEOMETRY'),
+#           function(x, ...) {
+#             callNextMethod()
+#           }
+# )
 
 
 ## bbox =======================================================
