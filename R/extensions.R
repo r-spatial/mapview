@@ -740,17 +740,20 @@ addGeometry = function(map,
 #' Add image query functionality to leaflet/mapview map.
 #'
 #' @details
-#' This function enables Raster* objects added to leaflet/mapview maps to be
-#' queried. Standard query is on 'mousmove', but can be changed to 'click'.
+#' This function enables Raster*/stars objects added to leaflet/mapview maps to
+#' be queried. Standard query is on 'mousmove', but can be changed to 'click'.
 #' Note that for this to work, the \code{layerId} needs to be the same as the
-#' one that was set in \code{\link[leaflet]{addRasterImage}}. Currently only works for
+#' one that was set in \code{\link[leaflet]{addRasterImage}} or
+#' \code{link{addStrasImage}}. Currently only works for
 #' numeric values (i.e. numeric/integer and factor values are supported).
 #'
 #' @param map the map with the RasterLayer to be queried.
 #' @param x the RasterLayer that is to be queried.
+#' @param band for stars layers, the band number to be queried.
 #' @param group the group of the RasterLayer to be queried.
 #' @param layerId the layerId of the RasterLayer to be queried. Needs to be the
-#'   same a supplied in \code{\link[leaflet]{addRasterImage}}.
+#'   same as supplied in \code{\link[leaflet]{addRasterImage}} or
+#'   \code{link{addStrasImage}}.
 #' @param project whether to project the RasterLayer to conform with leaflets
 #'   expected crs. Defaults to \code{TRUE} and things are likely to go haywire
 #'   if set to \code{FALSE}.
@@ -782,6 +785,7 @@ addGeometry = function(map,
 #' @rdname addImageQuery
 addImageQuery = function(map,
                          x,
+                         band = 1,
                          group = NULL,
                          layerId = NULL,
                          project = TRUE,
@@ -818,7 +822,7 @@ addImageQuery = function(map,
 
   pre <- paste0('var data = data || {}; data["', layerId, '"] = ')
   writeLines(pre, pathDatFn)
-  cat('[', image2Array(projected), '];',
+  cat('[', image2Array(projected, band = band), '];',
       file = pathDatFn, sep = "", append = TRUE)
 
   ## check for existing layerpicker control

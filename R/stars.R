@@ -1,7 +1,8 @@
 #' Add stars layer to a leaflet map
 #'
 #' @param map a mapview or leaflet object.
-#' @param x a stars layer
+#' @param x a stars layer.
+#' @param band the band number to be plotted.
 #' @param colors the color palette (see colorNumeric) or function to use to
 #' color the raster values (hint: if providing a function, set na.color
 #' to "#00000000" to make NA areas transparent)
@@ -39,6 +40,7 @@
 #' @export addStarsImage
 addStarsImage <- function(map,
                           x,
+                          band = 1,
                           colors = "Spectral",
                           opacity = 1,
                           attribution = NULL,
@@ -46,7 +48,7 @@ addStarsImage <- function(map,
                           group = NULL,
                           project = FALSE,
                           method = c("bilinear", "ngb"),
-                          maxBytes = 4*1024*1024) {
+                          maxBytes = 4 * 1024 * 1024) {
   stopifnot(inherits(x, "stars"))
   if (is.null(group)) group = "stars"
   if (is.null(layerId)) layerId = group
@@ -59,10 +61,14 @@ addStarsImage <- function(map,
   bb = sf::st_as_sfc(sf::st_bbox(projected))
   bounds = as.numeric(sf::st_bbox(sf::st_transform(bb, 4326)))
   if (!is.function(colors)) {
-    colors <- colorNumeric(colors, domain = NULL,
-                           na.color = "#00000000", alpha = TRUE)
+    colors <- leaflet::colorNumeric(colors, domain = NULL,
+                                    na.color = "#00000000", alpha = TRUE)
   }
-  if(length(dim(projected)) == 2) layer = projected[[1]] else layer = projected[[1]][, , 1]
+  if(length(dim(projected)) == 2) {
+    layer = projected[[1]]
+  } else {
+    layer = projected[[1]][, , band]
+  }
   tileData <- as.numeric(layer) %>%
     colors() %>% grDevices::col2rgb(alpha = TRUE) %>% as.raw()
   dim(tileData) <- c(4, as.numeric(nrow(projected)), as.numeric(ncol(projected)))
@@ -84,14 +90,15 @@ addStarsImage <- function(map,
   #                       starsDataDependency(jFn = pathDatFn,
   #                                           counter = 1,
   #                                           group = jsgroup))
-  invokeMethod(map, getMapData(map), "addRasterImage", uri, latlng, opacity,
-               attribution, layerId, group) %>%
-    expandLimits(c(bounds[2], bounds[4]),
-                 c(bounds[1], bounds[3]))
+  leaflet::invokeMethod(map, getMapData(map), "addRasterImage", uri, latlng,
+                        opacity, attribution, layerId, group) %>%
+    leaflet::expandLimits(c(bounds[2], bounds[4]),
+                          c(bounds[1], bounds[3]))
 }
 
 
 leaflet_stars = function(x,
+                         band,
                          map,
                          maxpixels,
                          col.regions,
@@ -116,7 +123,7 @@ leaflet_stars = function(x,
                          query.prefix,
                          ...) {
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
-  if (is.null(layer.name)) layer.name = makeLayerName(x, zcol = NULL)
+  if (is.null(layer.name)) layer.name = makeLayerName(x, zcol = band)
   if (native.crs) {
     stop("native.crs display of stars layers is not (yet) supported",
          call. = FALSE)
@@ -139,7 +146,7 @@ leaflet_stars = function(x,
     ext = createExtent(sf::st_transform(sf::st_as_sfc(sf::st_bbox(x)), crs = 4326))
     # if (!is.na(raster::projection(x)) & trim) x = trim(x)
     # if (is.fact) x = raster::as.factor(x)
-    if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , 1]
+    if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
     if (is.null(values)) {
       # if (is.fact) {
       #   at = x@data@attributes[[1]]$ID
@@ -184,6 +191,7 @@ leaflet_stars = function(x,
     ## add layers to base map
     m = addStarsImage(map = m,
                       x = x,
+                      band = band,
                       colors = pal,
                       project = FALSE,
                       opacity = alpha.regions,
@@ -191,7 +199,7 @@ leaflet_stars = function(x,
                       layerId = grp,
                       ...)
     if (label)
-      m = addImageQuery(m, x, group = grp, layerId = grp,
+      m = addImageQuery(m, x, band = band, group = grp, layerId = grp,
                         type = query.type, digits = query.digits,
                         position = query.position, prefix = query.prefix)
     if (legend) {
@@ -213,7 +221,7 @@ leaflet_stars = function(x,
     m = mapViewLayersControl(map = m,
                              map.types = map.types,
                              names = grp)
-    if (isAvailableInLeaflet()$scl) m = leaflet::addScaleBar(map = m, position = "bottomleft")
+    m = leaflet::addScaleBar(map = m, position = "bottomleft")
     m = addMouseCoordinates(m)
     if (homebutton) m = addHomeButton(m, ext, layer.name = layer.name)
     out = new('mapview', object = list(x), map = m)
@@ -226,8 +234,8 @@ leaflet_stars = function(x,
 
 
 
-stars2Array = function(x) {
-  if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , 1]
+stars2Array = function(x, band = 1) {
+  if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
   paste(
     sapply(seq(nrow(x[[1]])), function(i) {
       paste0(
@@ -254,9 +262,9 @@ rasterLayer2Array = function(x) {
 }
 
 
-image2Array = function(x) {
+image2Array = function(x, band = 1) {
   switch(class(x)[1],
-         "stars" = stars2Array(x),
+         "stars" = stars2Array(x, band = band),
          "RasterLayer" = rasterLayer2Array(x),
          stop("can only query single raster or stars layers so far"))
 }
