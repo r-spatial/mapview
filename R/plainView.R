@@ -65,13 +65,14 @@ if ( !isGeneric('plainView') ) {
 #' # SpatialPixelsDataFrame
 #' plainView(meuse.grid, zcol = "dist")
 #'
-#'
+#' \dontrun{
 #' # raster layer
 #' m1 <- plainView(poppendorf[[5]])
 #' m1
 #'
 #' # raster stack - true color
 #' plainview(poppendorf, 4, 3, 2)
+#' }
 #'
 #' @export plainView
 #' @name plainView

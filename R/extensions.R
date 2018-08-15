@@ -768,6 +768,7 @@ addGeometry = function(map,
 #' A leaflet map object.
 #'
 #' @examples
+#' \dontrun{
 #' library(leaflet)
 #' library(mapview)
 #'
@@ -778,7 +779,7 @@ addGeometry = function(map,
 #'   addImageQuery(poppendorf[[1]], project = TRUE,
 #'                 layerId = "poppendorf") %>%
 #'   addLayersControl(overlayGroups = "poppendorf")
-#'
+#' }
 #'
 #' @export addImageQuery
 #' @name addImageQuery

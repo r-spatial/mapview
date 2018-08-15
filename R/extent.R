@@ -23,7 +23,6 @@
 #' @examples
 #' library(leaflet)
 #'
-#' viewExtent(poppendorf)
 #' viewExtent(breweries)
 #' viewExtent(franconia) + breweries
 #' viewExtent(trails) + trails + breweries

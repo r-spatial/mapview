@@ -44,6 +44,8 @@ m1 + m2
 '+'(m2, m1)
 
 ### add layers to a mapview object
+\dontrun{
 m1 + breweries + poppendorf[[4]]
+}
 
 }

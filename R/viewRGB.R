@@ -39,10 +39,12 @@ if ( !isGeneric('viewRGB') ) {
 #' Tim Appelhans
 #'
 #' @examples
+#' \dontrun{
 #' library(raster)
 #'
 #' viewRGB(poppendorf, 4, 3, 2) # true-color
 #' viewRGB(poppendorf, 5, 4, 3) # false-color
+#' }
 #'
 #' @export
 #' @docType methods

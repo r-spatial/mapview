@@ -51,6 +51,7 @@ one that was set in \code{\link[leaflet]{addRasterImage}} or
 numeric values (i.e. numeric/integer and factor values are supported).
 }
 \examples{
+\dontrun{
 library(leaflet)
 library(mapview)
 
@@ -61,6 +62,6 @@ leaflet() \%>\%
   addImageQuery(poppendorf[[1]], project = TRUE,
                 layerId = "poppendorf") \%>\%
   addLayersControl(overlayGroups = "poppendorf")
-
+}
 
 }

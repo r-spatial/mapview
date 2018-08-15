@@ -70,10 +70,12 @@ from \code{\link{plotRGB}}.
 }}
 
 \examples{
+\dontrun{
 library(raster)
 
 viewRGB(poppendorf, 4, 3, 2) # true-color
 viewRGB(poppendorf, 5, 4, 3) # false-color
+}
 
 }
 \author{
