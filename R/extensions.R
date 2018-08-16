@@ -222,30 +222,22 @@ addMouseCoordinates <- function(map, style = c("detailed", "basic"),
   map
 }
 
-
+#' Remove mouse coordinates information at top of map.
+#'
+#' @examples
+#' m = mapview(breweries)
+#' removeMouseCoordinates(m)
+#'
+#' @describeIn addMouseCoordinates remove mouse coordinates information from a map
+#' @aliases removeMouseCoordinates
+#' @export removeMouseCoordinates
 removeMouseCoordinates = function(map) {
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
 
   rc = map$jsHooks$render
-  rc_lnlt = lapply(rc, grep, pattern = "lnlt")
-  for (i in seq_along(map$jsHooks$render)) {
-    map$jsHooks$render[[i]][rc_lnlt[[i]]] = NULL
-  }
+  rc_lnlt = grepl("lnlt", rc) #lapply(rc, grepl, pattern = "lnlt")
+  map$jsHooks$render = map$jsHooks$render[!rc_lnlt]
 
-  map = htmlwidgets::onRender(
-    map,
-    paste0(
-      "
-      function(el, x, data) {
-          var map = this;
-          map.on('mousemove', function (e) {
-              var strip = document.querySelector('.lnlt');
-              strip.remove();
-          });
-      }
-      "
-    )
-  )
   return(map)
 }
 

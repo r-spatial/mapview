@@ -2,10 +2,13 @@
 % Please edit documentation in R/extensions.R
 \name{addMouseCoordinates}
 \alias{addMouseCoordinates}
+\alias{removeMouseCoordinates}
 \title{Add mouse coordinate information at top of map.}
 \usage{
 addMouseCoordinates(map, style = c("detailed", "basic"), epsg = NULL,
   proj4string = NULL, native.crs = FALSE)
+
+removeMouseCoordinates(map)
 }
 \arguments{
 \item{map}{a mapview or leaflet object.}
@@ -25,6 +28,8 @@ This function adds a box displaying the current cursor location
 mapview or leaflet map. In case of mapview, this is automatically added.
 NOTE: The information will only render once a mouse movement has happened
 on the map.
+
+Remove mouse coordinates information at top of map.
 }
 \details{
 If style is set to "detailed", the following information will be displayed:
@@ -40,6 +45,11 @@ If style is set to "detailed", the following information will be displayed:
 
 If style is set to "basic", only 'lat', 'lon' and 'zoom' are shown.
 }
+\section{Functions}{
+\itemize{
+\item \code{removeMouseCoordinates}: remove mouse coordinates information from a map
+}}
+
 \examples{
 library(leaflet)
 
@@ -51,5 +61,8 @@ leaflet() \%>\%
   addProviderTiles("OpenStreetMap") \%>\%
   addMouseCoordinates() # with detailed mouse position info
 
+
+m = mapview(breweries)
+removeMouseCoordinates(m)
 
 }
