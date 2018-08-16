@@ -1,4 +1,4 @@
-## mapview 2.4.18
+## mapview 2.4.19
 
 new features:
 
@@ -28,6 +28,7 @@ miscellaneous:
   * legend now TRUE by default as all legends are now linked to layers.
   * better error messages in some cases (e.g. missing zcol, empty objects).
   * package now depends on leaflet >= 1.0.0
+  * highlight now also accepts FALSE in addition to NULL to stop highlighting.
 
 
 ## mapview 2.4.0
