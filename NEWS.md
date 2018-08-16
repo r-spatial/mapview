@@ -1,4 +1,4 @@
-## mapview 2.4.17
+## mapview 2.4.18
 
 new features:
 
@@ -19,6 +19,7 @@ bugfixes:
   * popupGraph no longer relies on png files on disk but embeds graphs via base64. #156 
   * in mapshot, remove temporary url files only if remove_url = TRUE. #157
   * removeMouseCoordinates should work properly now (also exported). #145
+  * home button for single point now zooms to maximum zoom 18.
   
 miscellaneous:
 
