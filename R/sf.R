@@ -151,7 +151,7 @@ leaflet_sfc <- function(x,
   if (!is.null(names(x))) {
     names(x) = NULL
   }
-
+  if (!highlight) highlight = NULL
   if (inherits(x, "XY")) x = sf::st_sfc(x)
 
   if (!native.crs) x <- checkAdjustProjection(x)
