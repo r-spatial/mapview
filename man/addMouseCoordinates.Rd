@@ -28,8 +28,6 @@ This function adds a box displaying the current cursor location
 mapview or leaflet map. In case of mapview, this is automatically added.
 NOTE: The information will only render once a mouse movement has happened
 on the map.
-
-Remove mouse coordinates information at top of map.
 }
 \details{
 If style is set to "detailed", the following information will be displayed:

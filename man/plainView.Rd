@@ -14,8 +14,9 @@
   maxpixels = mapviewGetOption("plainview.maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at,
   na.color = mapviewGetOption("na.color"), legend = TRUE,
-  verbose = mapviewGetOption("verbose"), layer.name = deparse(substitute(x,
-  env = parent.frame())), gdal = TRUE, ...)
+  verbose = mapviewGetOption("verbose"),
+  layer.name = deparse(substitute(x, env = parent.frame())),
+  gdal = TRUE, ...)
 
 \S4method{plainView}{RasterStackBrick}(x, r = 3, g = 2, b = 1,
   na.color = mapviewGetOption("na.color"),

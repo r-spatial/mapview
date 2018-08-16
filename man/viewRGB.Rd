@@ -15,8 +15,9 @@
   layer.name = deparse(substitute(x, env = parent.frame())),
   method = c("bilinear", "ngb"), ...)
 
-\S4method{viewRGB}{stars}(x, r = 3, g = 2, b = 1, quantiles = c(0.02,
-  0.98), map = NULL, maxpixels = mapviewGetOption("mapview.maxpixels"),
+\S4method{viewRGB}{stars}(x, r = 3, g = 2, b = 1,
+  quantiles = c(0.02, 0.98), map = NULL,
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
   map.types = mapviewGetOption("basemaps"),
   na.color = mapviewGetOption("na.color"),
   layer.name = deparse(substitute(x, env = parent.frame())),

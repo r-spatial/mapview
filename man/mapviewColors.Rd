@@ -6,8 +6,9 @@
 \alias{mapViewPalette}
 \title{mapview version of leaflet::color* functions}
 \usage{
-mapviewColors(x, zcol = NULL, colors = mapviewGetOption("vector.palette"),
-  at = NULL, na.color = mapviewGetOption("na.color"), ...)
+mapviewColors(x, zcol = NULL,
+  colors = mapviewGetOption("vector.palette"), at = NULL,
+  na.color = mapviewGetOption("na.color"), ...)
 
 mapviewPalette(name = "mapviewVectorColors")
 

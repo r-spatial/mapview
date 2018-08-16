@@ -4,11 +4,8 @@
 \name{+}
 \alias{+}
 \alias{+,mapview,mapview-method}
-\alias{+}
 \alias{+,mapview,ANY-method}
-\alias{+}
 \alias{+,mapview,NULL-method}
-\alias{+}
 \alias{+,mapview,character-method}
 \title{mapview + mapview adds data from the second map to the first}
 \usage{

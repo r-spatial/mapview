@@ -14,29 +14,29 @@
 \usage{
 \S4method{slideView}{RasterStackBrick,RasterStackBrick}(img1, img2,
   label1 = deparse(substitute(img1, env = parent.frame())),
-  label2 = deparse(substitute(img2, env = parent.frame())), r = 3, g = 2,
-  b = 1, na.color = mapviewGetOption("na.color"),
+  label2 = deparse(substitute(img2, env = parent.frame())), r = 3,
+  g = 2, b = 1, na.color = mapviewGetOption("na.color"),
   maxpixels = mapviewGetOption("plainview.maxpixels"), ...)
 
 \S4method{slideView}{RasterLayer,RasterLayer}(img1, img2,
   label1 = deparse(substitute(img1, env = parent.frame())),
-  label2 = deparse(substitute(img2, env = parent.frame())), legend = TRUE,
-  col.regions = mapviewGetOption("raster.palette")(256),
+  label2 = deparse(substitute(img2, env = parent.frame())),
+  legend = TRUE, col.regions = mapviewGetOption("raster.palette")(256),
   na.color = mapviewGetOption("na.color"),
   maxpixels = mapviewGetOption("plainview.maxpixels"))
 
 \S4method{slideView}{RasterStackBrick,RasterLayer}(img1, img2,
   label1 = deparse(substitute(img1, env = parent.frame())),
-  label2 = deparse(substitute(img2, env = parent.frame())), legend = TRUE,
-  r = 3, g = 2, b = 1,
+  label2 = deparse(substitute(img2, env = parent.frame())),
+  legend = TRUE, r = 3, g = 2, b = 1,
   col.regions = mapviewGetOption("raster.palette")(256),
   na.color = mapviewGetOption("na.color"),
   maxpixels = mapviewGetOption("plainview.maxpixels"), ...)
 
 \S4method{slideView}{RasterLayer,RasterStackBrick}(img1, img2,
   label1 = deparse(substitute(img1, env = parent.frame())),
-  label2 = deparse(substitute(img2, env = parent.frame())), legend = TRUE,
-  r = 3, g = 2, b = 1,
+  label2 = deparse(substitute(img2, env = parent.frame())),
+  legend = TRUE, r = 3, g = 2, b = 1,
   col.regions = mapviewGetOption("raster.palette")(256),
   na.color = mapviewGetOption("na.color"),
   maxpixels = mapviewGetOption("plainview.maxpixels"), ...)

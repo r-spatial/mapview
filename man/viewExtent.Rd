@@ -3,7 +3,6 @@
 \name{viewExtent}
 \alias{viewExtent}
 \alias{viewExtent,addExtent}
-\alias{viewExtent}
 \alias{addExtent}
 \title{View extent/bbox of spatial objects interactively}
 \usage{

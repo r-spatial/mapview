@@ -26,8 +26,6 @@ string)}
 \description{
 This function adds a button to the map that enables zooming to a
 provided \code{\link{extent}} / \code{\link{bbox}}.
-
-Use removeHomeButton to remove home button
 }
 \section{Functions}{
 \itemize{
