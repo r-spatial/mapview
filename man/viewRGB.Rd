@@ -4,9 +4,18 @@
 \name{viewRGB}
 \alias{viewRGB}
 \alias{viewRGB,RasterStackBrick-method}
+\alias{viewRGB,stars-method}
 \title{Red-Green-Blue map view of a multi-layered Raster object}
 \usage{
 \S4method{viewRGB}{RasterStackBrick}(x, r = 3, g = 2, b = 1,
+  quantiles = c(0.02, 0.98), map = NULL,
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
+  map.types = mapviewGetOption("basemaps"),
+  na.color = mapviewGetOption("na.color"),
+  layer.name = deparse(substitute(x, env = parent.frame())),
+  method = c("bilinear", "ngb"), ...)
+
+\S4method{viewRGB}{stars}(x, r = 3, g = 2, b = 1,
   quantiles = c(0.02, 0.98), map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
   map.types = mapviewGetOption("basemaps"),
@@ -17,11 +26,11 @@
 \arguments{
 \item{x}{a RasterBrick or RasterStack}
 
-\item{r}{integer. Index of the Red channel, between 1 and nlayers(x)}
+\item{r}{integer. Index of the Red channel/band, between 1 and nlayers(x)}
 
-\item{g}{integer. Index of the Green channel, between 1 and nlayers(x)}
+\item{g}{integer. Index of the Green channel/band, between 1 and nlayers(x)}
 
-\item{b}{integer. Index of the Blue channel, between 1 and nlayers(x)}
+\item{b}{integer. Index of the Blue channel/band, between 1 and nlayers(x)}
 
 \item{quantiles}{the upper and lower quantiles used for color stretching. If set to NULL, no stretching is applied.}
 
@@ -56,11 +65,18 @@ be used to make 'true (or false) color images' from Landsat and other
 multi-band satellite images. Note, this text is plagirized, i.e. copied
 from \code{\link{plotRGB}}.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{stars}: \code{\link{stars}}
+}}
+
 \examples{
+\dontrun{
 library(raster)
 
 viewRGB(poppendorf, 4, 3, 2) # true-color
 viewRGB(poppendorf, 5, 4, 3) # false-color
+}
 
 }
 \author{

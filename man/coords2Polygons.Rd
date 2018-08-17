@@ -10,7 +10,8 @@
 \S4method{coords2Polygons}{matrix}(coords, hole = NA, ID, data,
   match.ID = TRUE, ...)
 
-\S4method{coords2Polygons}{Polygon}(coords, ID, data, match.ID = TRUE, ...)
+\S4method{coords2Polygons}{Polygon}(coords, ID, data, match.ID = TRUE,
+  ...)
 }
 \arguments{
 \item{coords}{\code{Polygon} object or 2-column \code{numeric} matrix with x

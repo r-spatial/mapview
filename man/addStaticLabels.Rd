@@ -20,7 +20,7 @@ defaults to the locations of the first dataset in 'map'.}
 \item{layerId}{the layerId of the static labels layer.}
 
 \item{...}{Additional arguments passed to
-\code{\link[leaflet]{addLabelOnlyMarkers}}.}
+\code{\link[leaflet]{labelOptions}}.}
 }
 \value{
 A labelled \strong{mapview} object.

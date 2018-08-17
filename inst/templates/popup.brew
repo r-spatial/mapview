@@ -6,11 +6,11 @@
 <body>
 
 <div class="scrollableContainer">
-<table class="popup scrollable">
-<table id="popup">
+<table class="popup scrollable" id="popup">
 
 <%=pop%>
 
 </table>
+</div>
 </body>
 </html>

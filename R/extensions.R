@@ -48,8 +48,8 @@
 #' @aliases addMouseCoordinates
 
 addMouseCoordinates <- function(map, style = c("detailed", "basic"),
-                                epsg = NULL, proj4string = NULL,
-                                native.crs = FALSE) {
+                                 epsg = NULL, proj4string = NULL,
+                                 native.crs = FALSE) {
 
   style <- style[1]
 
@@ -58,13 +58,13 @@ addMouseCoordinates <- function(map, style = c("detailed", "basic"),
 
   if (style == "detailed" && !native.crs) {
     txt_detailed <- paste0("
-                           ' x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +
+                           ' lon: ' + (e.latlng.lng).toFixed(5) +
+                           ' | lat: ' + (e.latlng.lat).toFixed(5) +
+                           ' | zoom: ' + map.getZoom() +
+                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +
                            ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +
                            ' | epsg: 3857 ' +
-                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ' +
-                           ' | lon: ' + (e.latlng.lng).toFixed(5) +
-                           ' | lat: ' + (e.latlng.lat).toFixed(5) +
-                           ' | zoom: ' + map.getZoom() + ' '")
+                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs '")
   } else {
     txt_detailed <- paste0("
                            ' x: ' + (e.latlng.lng).toFixed(5) +
@@ -88,67 +88,155 @@ addMouseCoordinates <- function(map, style = c("detailed", "basic"),
     paste0(
       "
       function(el, x, data) {
+      // get the leaflet map
+      var map = this; //HTMLWidgets.find('#' + el.id);
+      // we need a new div element because we have to handle
+      // the mouseover output separately
+      // debugger;
+      function addElement () {
+      // generate new div Element
+      var newDiv = $(document.createElement('div'));
+      // append at end of leaflet htmlwidget container
+      $(el).append(newDiv);
+      //provide ID and style
+      newDiv.addClass('lnlt');
+      newDiv.css({
+      'position': 'relative',
+      'bottomleft':  '0px',
+      'background-color': 'rgba(255, 255, 255, 0.7)',
+      'box-shadow': '0 0 2px #bbb',
+      'background-clip': 'padding-box',
+      'margin': '0',
+      'padding-left': '5px',
+      'color': '#333',
+      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',
+      'z-index': '700',
+      });
+      return newDiv;
+      }
 
-        // get the leaflet map
-        var map = this; //HTMLWidgets.find('#' + el.id);
 
-        // we need a new div element because we have to handle
-        // the mouseover output separately
-        // debugger;
-        function addElement () {
-          // generate new div Element
-         var newDiv = $(document.createElement('div'));
-          // append at end of leaflet htmlwidget container
-          $(el).append(newDiv);
-          //provide ID and style
-          newDiv.addClass('lnlt');
-          newDiv.css({
-            'position': 'relative',
-            'bottomleft':  '0px',
-            'background-color': 'rgba(255, 255, 255, 0.7)',
-            'box-shadow': '0 0 2px #bbb',
-            'background-clip': 'padding-box',
-            'margin': '0',
-            'padding-left': '5px',
-            'color': '#333',
-            'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',
-            'z-index': '700',
-          });
-          return newDiv;
-        }
+      // check for already existing lnlt class to not duplicate
+      var lnlt = $(el).find('.lnlt');
 
-        // check for already existing lnlt class to not duplicate
-        var lnlt = $(el).find('.lnlt');
+      if(!lnlt.length) {
+      lnlt = addElement();
 
-        if(!lnlt.length) {
-          lnlt = addElement();
-          //$(el).keypress(function (e) {
-          //  if (e.which == 32 || event.keyCode == 32) {
-          //    alert('space key is pressed');
-          //  }
-          //});
-          // grab the special div we generated in the beginning
-          // and put the mousmove output there
-          map.on('mousemove', function (e) {
-            lnlt.text(", txt, ");
-          });
-        };
+      // grab the special div we generated in the beginning
+      // and put the mousmove output there
+
+      map.on('mousemove', function (e) {
+      if (e.originalEvent.ctrlKey) {
+      if (document.querySelector('.lnlt') === null) lnlt = addElement();
+      lnlt.text(", txt_detailed, ");
+      } else {
+      if (document.querySelector('.lnlt') === null) lnlt = addElement();
+      lnlt.text(", txt_basic, ");
+      }
+      });
+
+      // remove the lnlt div when mouse leaves map
+      map.on('mouseout', function (e) {
+      var strip = document.querySelector('.lnlt');
+      strip.remove();
+      });
+
+      };
+
+      //$(el).keypress(67, function(e) {
+      map.on('preclick', function(e) {
+      if (e.originalEvent.ctrlKey) {
+      if (document.querySelector('.lnlt') === null) lnlt = addElement();
+      lnlt.text(", txt_basic, ");
+      var txt = document.querySelector('.lnlt').textContent;
+      console.log(txt);
+      //txt.innerText.focus();
+      //txt.select();
+      setClipboardText('\"' + txt + '\"');
+      }
+      });
+
+      //map.on('click', function (e) {
+      //  var txt = document.querySelector('.lnlt').textContent;
+      //  console.log(txt);
+      //  //txt.innerText.focus();
+      //  //txt.select();
+      //  setClipboardText(txt);
+      //});
+
+      function setClipboardText(text){
+      var id = 'mycustom-clipboard-textarea-hidden-id';
+      var existsTextarea = document.getElementById(id);
+
+      if(!existsTextarea){
+      console.log('Creating textarea');
+      var textarea = document.createElement('textarea');
+      textarea.id = id;
+      // Place in top-left corner of screen regardless of scroll position.
+      textarea.style.position = 'fixed';
+      textarea.style.top = 0;
+      textarea.style.left = 0;
+
+      // Ensure it has a small width and height. Setting to 1px / 1em
+      // doesn't work as this gives a negative w/h on some browsers.
+      textarea.style.width = '1px';
+      textarea.style.height = '1px';
+
+      // We don't need padding, reducing the size if it does flash render.
+      textarea.style.padding = 0;
+
+      // Clean up any borders.
+      textarea.style.border = 'none';
+      textarea.style.outline = 'none';
+      textarea.style.boxShadow = 'none';
+
+      // Avoid flash of white box if rendered for any reason.
+      textarea.style.background = 'transparent';
+      document.querySelector('body').appendChild(textarea);
+      console.log('The textarea now exists :)');
+      existsTextarea = document.getElementById(id);
+      }else{
+      console.log('The textarea already exists :3')
+      }
+
+      existsTextarea.value = text;
+      existsTextarea.select();
+
+      try {
+      var status = document.execCommand('copy');
+      if(!status){
+      console.error('Cannot copy text');
+      }else{
+      console.log('The text is now on the clipboard');
+      }
+      } catch (err) {
+      console.log('Unable to copy.');
+      }
+      }
+
+
       }
       "
+    )
   )
-)
   map
 }
 
-
+#' Remove mouse coordinates information at top of map.
+#'
+#' @examples
+#' m = mapview(breweries)
+#' removeMouseCoordinates(m)
+#'
+#' @describeIn addMouseCoordinates remove mouse coordinates information from a map
+#' @aliases removeMouseCoordinates
+#' @export removeMouseCoordinates
 removeMouseCoordinates = function(map) {
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
 
   rc = map$jsHooks$render
-  rc_lnlt = lapply(rc, grep, pattern = "lnlt")
-  for (i in seq_along(map$jsHooks$render)) {
-    map$jsHooks$render[[i]][rc_lnlt[[i]]] = NULL
-  }
+  rc_lnlt = grepl("lnlt", rc) #lapply(rc, grepl, pattern = "lnlt")
+  map$jsHooks$render = map$jsHooks$render[!rc_lnlt]
 
   return(map)
 }
@@ -644,17 +732,20 @@ addGeometry = function(map,
 #' Add image query functionality to leaflet/mapview map.
 #'
 #' @details
-#' This function enables Raster* objects added to leaflet/mapview maps to be
-#' queried. Standard query is on 'mousmove', but can be changed to 'click'.
+#' This function enables Raster*/stars objects added to leaflet/mapview maps to
+#' be queried. Standard query is on 'mousmove', but can be changed to 'click'.
 #' Note that for this to work, the \code{layerId} needs to be the same as the
-#' one that was set in \code{\link[leaflet]{addRasterImage}}. Currently only works for
+#' one that was set in \code{\link[leaflet]{addRasterImage}} or
+#' \code{link{addStrasImage}}. Currently only works for
 #' numeric values (i.e. numeric/integer and factor values are supported).
 #'
 #' @param map the map with the RasterLayer to be queried.
 #' @param x the RasterLayer that is to be queried.
+#' @param band for stars layers, the band number to be queried.
 #' @param group the group of the RasterLayer to be queried.
 #' @param layerId the layerId of the RasterLayer to be queried. Needs to be the
-#'   same a supplied in \code{\link[leaflet]{addRasterImage}}.
+#'   same as supplied in \code{\link[leaflet]{addRasterImage}} or
+#'   \code{link{addStrasImage}}.
 #' @param project whether to project the RasterLayer to conform with leaflets
 #'   expected crs. Defaults to \code{TRUE} and things are likely to go haywire
 #'   if set to \code{FALSE}.
@@ -669,6 +760,7 @@ addGeometry = function(map,
 #' A leaflet map object.
 #'
 #' @examples
+#' \dontrun{
 #' library(leaflet)
 #' library(mapview)
 #'
@@ -679,13 +771,14 @@ addGeometry = function(map,
 #'   addImageQuery(poppendorf[[1]], project = TRUE,
 #'                 layerId = "poppendorf") %>%
 #'   addLayersControl(overlayGroups = "poppendorf")
-#'
+#' }
 #'
 #' @export addImageQuery
 #' @name addImageQuery
 #' @rdname addImageQuery
 addImageQuery = function(map,
                          x,
+                         band = 1,
                          group = NULL,
                          layerId = NULL,
                          project = TRUE,
@@ -722,7 +815,7 @@ addImageQuery = function(map,
 
   pre <- paste0('var data = data || {}; data["', layerId, '"] = ')
   writeLines(pre, pathDatFn)
-  cat('[', image2Array(projected), '];',
+  cat('[', image2Array(projected, band = band), '];',
       file = pathDatFn, sep = "", append = TRUE)
 
   ## check for existing layerpicker control
@@ -788,7 +881,7 @@ addImageQuery = function(map,
 #' @param group the group of the static labels layer.
 #' @param layerId the layerId of the static labels layer.
 #' @param ... Additional arguments passed to
-#' \code{\link[leaflet]{addLabelOnlyMarkers}}.
+#' \code{\link[leaflet]{labelOptions}}.
 #'
 #' @return
 #' A labelled \strong{mapview} object.
@@ -847,21 +940,27 @@ addStaticLabels = function(map,
     } else {
       group = NULL
     }
+  } else if (inherits(map, "mapview") & !missing(data)) {
+    data = sf::st_transform(data, sf::st_crs(map@object[[1]]))
+  } else {
+    data = checkAdjustProjection(data)
   }
 
   dots = list(...)
-  min_opts = list(noHide = TRUE,
+  min_opts = list(permanent = TRUE,
                   direction = "top",
-                  textOnly = TRUE)
+                  textOnly = TRUE,
+                  offset = c(0, 20))
 
-  dots = append(dots, min_opts)
+  dots = utils::modifyList(dots, min_opts)
+  # dots = utils::modifyList(leafletOptions(), dots)
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
 
   ## 'Raster*' locations not supported so far -> error
   if (inherits(data, "Raster")) {
     stop(paste("'Raster*' input is not supported, yet."
-               , "Please refer to ?addLabels for compatible input formats.\n"),
+               , "Please refer to ?addStaticLabels for compatible input formats.\n"),
          call. = FALSE)
   }
 
@@ -896,93 +995,22 @@ addStaticLabels = function(map,
   }
 
   ## add labels to map
-  map = garnishMap(leaflet::addLabelOnlyMarkers,
-                   map = map,
-                   lng = mat[, 1],
-                   lat = mat[, 2],
-                   label = as.character(label),
-                   group = group,
-                   layerId = layerId,
-                   labelOptions = dots)
-  # map = leaflet::addLabelOnlyMarkers(map,
-  #                                    lng = mat[, 1],
-  #                                    lat = mat[, 2],
-  #                                    label = as.character(label),
-  #                                    ...)
+  # map = garnishMap(leaflet::addLabelOnlyMarkers,
+  #                  map = map,
+  #                  lng = unname(mat[, 1]),
+  #                  lat = unname(mat[, 2]),
+  #                  label = as.character(label),
+  #                  group = group,
+  #                  layerId = layerId,
+  #                  labelOptions = dots)
+  map = leaflet::addLabelOnlyMarkers(map,
+                                     lng = mat[, 1],
+                                     lat = mat[, 2],
+                                     label = as.character(label),
+                                     group = group,
+                                     layerId = layerId,
+                                     labelOptions = dots)
 
   return(map)
 }
 
-
-##############################################################################
-
-### addStaticLabels ##########################################################
-##############################################################################
-#' Add additional panes to leaflet map to control layer order
-#'
-#' @description
-#' map panes can be created by supplying a name and a zIndex to control layer
-#' ordering. We recommend a \code{zIndex} value between 400 (the default
-#' overlay pane) and 500 (the default shadow pane). You can then use this pane
-#' to render overlays (points, lines, polygons) by setting the \code{pane}
-#' argument in \code{leafletOptions}. This will give you control
-#' over the order of the layers, e.g. points always on top of polygons.
-#' If two layers are provided to the same pane, overlay will be determined by
-#' order of adding. See examples below.
-#' See \url{http://www.leafletjs.com/reference-1.3.0.html#map-pane} for details.
-#'
-#' @param map A \code{leaflet} or \code{mapview} object.
-#' @param name The name of the new pane (refer to this in \code{leafletOptions}.
-#' @param zIndex The zIndex of the pane. Panes with higher index are rendered
-#' above panes with lower indices.
-#'
-#' @examples
-#' library(leaflet)
-#' library(mapview)
-#'
-#' ## points above polygons
-#' leaflet() %>%
-#'   addTiles() %>%
-#'   addMapPane("polygons", zIndex = 410) %>%
-#'   addMapPane("points", zIndex = 420) %>%
-#'   addPolygons(data = franconia,
-#'               group = "pol1",
-#'               fillOpacity = 0.7,
-#'               fillColor = "green",
-#'               color = "black",
-#'               options = leafletOptions(pane = "polygons")) %>%
-#'   addPolygons(data = franconia,
-#'               group = "pol2",
-#'               color = "black",
-#'               fillColor = "purple",
-#'               fillOpacity = 0.7,
-#'               options = leafletOptions(pane = "polygons")) %>%
-#'   addCircleMarkers(data = breweries,
-#'                    group = "pts",
-#'                    color = "darkblue",
-#'                    options = leafletOptions(pane = "points")) %>%
-#'   addLayersControl(overlayGroups = c("pol1", "pol2", "pts"))
-#'
-#'
-#' @export addMapPane
-#' @name addMapPane
-#'
-addMapPane = function(map, name, zIndex) {
-
-  if (inherits(map, "mapview")) map = mapview2leaflet(map)
-
-  map$dependencies <- c(map$dependencies, leafletMapPaneDependencies())
-  leaflet::invokeMethod(map, leaflet::getMapData(map), 'createMapPane',
-                        name, zIndex)
-
-}
-
-leafletMapPaneDependencies <- function() {
-  list(
-    htmltools::htmlDependency(
-      "mapPane",
-      '0.0.1',
-      system.file("htmlwidgets/lib/pane", package = "mapview"),
-      script = c('map-pane.js')
-    ))
-}

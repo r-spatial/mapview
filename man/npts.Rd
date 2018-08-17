@@ -4,16 +4,22 @@
 \alias{npts}
 \title{count the number of points/vertices/nodes of sf objects}
 \usage{
-npts(x)
+npts(x, by_feature = FALSE)
 }
 \arguments{
 \item{x}{an sf/sfc object}
+
+\item{by_feature}{count total number of vertices (FALSE) of for each feature (TRUE).}
 }
 \description{
 count the number of points/vertices/nodes of sf objects
 }
+\note{
+currently only works for *POINTS, *LINES and *POLYGONS (not GEOMETRYCOLLECTION).
+}
 \examples{
 npts(franconia)
+npts(franconia, by_feature = TRUE)
 npts(sf::st_geometry(franconia[1, ])) # first polygon
 
 npts(breweries) # is the same as

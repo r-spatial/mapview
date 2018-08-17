@@ -1,3 +1,36 @@
+mapview 2.5.0
+
+new features:
+
+  * addMouseCoordinates now displays basic info by default. Detailed info can be accessed by holding Ctrl keyboard button which also copies lon, lat and zoom info to the clipboard when Ctrl + clicking on the map. #113
+  * npts has gained argument by_feature to count the number of vertices for each feature individually. #155
+  * canvas now auto-detected based on feature complexity.
+  * layer.name is now cut at 50 characters which used to be especially problematic for dplyr chains inside a mapview call. Fixes #159
+  * added '+' method for RHS class NULL. https://twitter.com/TimSalabim3/status/1012213914262794240
+  * popupImage has gained argument embed to specify whether local images should be embeded as base64 in the popup html. #168
+  * stars methods re-enabled since now on CRAN.
+  * added viewRGB method for stars images.
+
+bugfixes:
+
+  * leaflet::addScalebar would prevent Raster* method from rendering correctly for multiple layers.
+  * cex was not respected when burst = TRUE. #149
+  * popupTable no longer causes a stack overflow with large point data. #154
+  * popupGraph no longer relies on png files on disk but embeds graphs via base64. #156 
+  * in mapshot, remove temporary url files only if remove_url = TRUE. #157
+  * removeMouseCoordinates should work properly now (also exported). #145
+  * home button for single point now zooms to maximum zoom 18.
+  
+miscellaneous:
+
+  * dropped gdalUtils from Imports. gdalinfo and gdal_translate now used via sf.
+  * addMapPane has been migrated to leaflet.
+  * legend now TRUE by default as all legends are now linked to layers.
+  * better error messages in some cases (e.g. missing zcol, empty objects).
+  * package now depends on leaflet >= 1.0.0
+  * highlight now also accepts FALSE in addition to NULL to stop highlighting.
+
+
 mapview 2.4.0
 
 new features:

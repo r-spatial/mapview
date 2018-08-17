@@ -4,15 +4,16 @@
 \name{+}
 \alias{+}
 \alias{+,mapview,mapview-method}
-\alias{+}
 \alias{+,mapview,ANY-method}
-\alias{+}
+\alias{+,mapview,NULL-method}
 \alias{+,mapview,character-method}
 \title{mapview + mapview adds data from the second map to the first}
 \usage{
 \S4method{+}{mapview,mapview}(e1, e2)
 
 \S4method{+}{mapview,ANY}(e1, e2)
+
+\S4method{+}{mapview,`NULL`}(e1, e2)
 
 \S4method{+}{mapview,character}(e1, e2)
 }
@@ -27,6 +28,8 @@ mapview + mapview adds data from the second map to the first
 
 mapview + data adds spatial data (raster*, sf*, sp*) to a mapview map
 
+mapview + NULL returns the LHS map
+
 [...]
 }
 \examples{
@@ -38,6 +41,8 @@ m1 + m2
 '+'(m2, m1)
 
 ### add layers to a mapview object
+\dontrun{
 m1 + breweries + poppendorf[[4]]
+}
 
 }

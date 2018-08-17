@@ -18,7 +18,9 @@ if ( !isGeneric('+') ) {
 #' '+'(m2, m1)
 #'
 #' ### add layers to a mapview object
+#' \dontrun{
 #' m1 + breweries + poppendorf[[4]]
+#' }
 #'
 #' @name +
 #' @docType methods
@@ -82,6 +84,22 @@ setMethod("+",
             # return(out)
           }
 )
+
+
+#' mapview + NULL returns the LHS map
+#' @name +
+#' @docType methods
+#' @rdname plus
+#' @aliases +,mapview,NULL-method
+#'
+setMethod("+",
+          signature(e1 = "mapview",
+                    e2 = "NULL"),
+          function (e1, e2) {
+            return(e1)
+          }
+)
+
 
 # #' @name +
 # #' @docType methods

@@ -7,8 +7,9 @@
 \usage{
 mapviewOptions(platform, basemaps, raster.size, mapview.maxpixels,
   plainview.maxpixels, maxpoints, maxpolygons, maxlines, raster.palette,
-  vector.palette, verbose, na.color, legend, legend.pos, layers.control.pos,
-  default = FALSE, console = TRUE, leafletWidth, leafletHeight)
+  vector.palette, verbose, na.color, legend, legend.pos,
+  layers.control.pos, default = FALSE, console = TRUE, leafletWidth,
+  leafletHeight)
 
 mapviewGetOption(param)
 }
@@ -86,8 +87,6 @@ To permanently set any of these options, you can add them to
 <your R installation>/etc/Rprofile.site>. For example,
 to change the default number of pixels to be visualised for Raster* objects,
 add a line like this: options(mapviewMaxPixels = 700000) to that file.
-
-query single mapviewOption parameters
 }
 \section{Functions}{
 \itemize{

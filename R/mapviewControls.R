@@ -154,11 +154,12 @@ getMaxFeatures <- function(x) {
 
 
 lineWidth <- function(x) {
-  switch(getGeometryType(x),
-         "pt" = 2,
-         "ln" = 2,
-         "pl" = 1,
-         "gc" = 2)
+  lw = switch(getGeometryType(x),
+              "pt" = 2,
+              "ln" = 2,
+              "pl" = 1,
+              "gc" = 2)
+  return(lw)
 }
 
 
@@ -237,7 +238,8 @@ extentOverlap <- function(x, y) {
 
 
 makeLayerName = function(x, zcol, up = 3) {
-  lnm = deparse(substitute(x, env = parent.frame(up)))
+  lnm = deparse(substitute(x, env = parent.frame(up)), width.cutoff = 500)
+  lnm = toString(lnm[1], width = 50)
   if (is.null(zcol)) lnm else paste(lnm, zcol, sep = " - ")
 }
 
@@ -283,4 +285,20 @@ zIndex = function(x) {
          "ln" = 430,
          "pl" = 420,
          "gc" = 410)
+}
+
+
+useCanvas = function(x) {
+  if (inherits(x, "list")) {
+    lst = sapply(x, useCanvas)
+    ifelse(any(lst), TRUE, FALSE)
+  } else {
+    switch(
+      getGeometryType(x),
+      "pt" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE),
+      "ln" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE),
+      "pl" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE),
+      "gc" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE)
+    )
+  }
 }

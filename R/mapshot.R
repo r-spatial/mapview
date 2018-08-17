@@ -123,14 +123,14 @@ mapshot <- function(x,
                          names(as.list(args(webshot::webshot))),
                          several.ok = TRUE)
     do.call(webshot::webshot, args[ws_args])
-    url_tmp_files = paste0(tools::file_path_sans_ext(url_tmp), "_files")
-    unlink(c(url_tmp, url_tmp_files), recursive = TRUE)
   }
 
   ## if url was missing, remove temporary .html file
   if (!avl_url & remove_url) {
     url_files = paste0(tools::file_path_sans_ext(url), "_files")
     unlink(c(url, url_files), recursive = TRUE)
+    url_tmp_files = paste0(tools::file_path_sans_ext(url_tmp), "_files")
+    unlink(c(url_tmp, url_tmp_files), recursive = TRUE)
   }
 
   return(invisible())
@@ -144,7 +144,7 @@ removeMapJunk = function(map, junk) {
     "zoomControl" = removeZoomControl(map),
     "layersControl" = leaflet::removeLayersControl(map),
     "homeButton" = removeHomeButtons(map),
-    "scaleBar" = leaflet::removeScaleBar(map),
+    "scaleBar" = removeScalebar(map),
     NULL = map
   )
 }
@@ -157,6 +157,12 @@ removeZoomControl = function(map) {
 removeHomeButtons = function(map) {
   hb_ind = getCallEntryFromMap(map, "addHomeButton")
   map$x$calls[hb_ind] = NULL
+  return(map)
+}
+
+removeScalebar = function(map) {
+  sb_ind = getCallEntryFromMap(map, "addScaleBar")
+  map$x$calls[sb_ind] = NULL
   return(map)
 }
 

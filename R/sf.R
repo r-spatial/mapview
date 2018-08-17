@@ -151,7 +151,7 @@ leaflet_sfc <- function(x,
   if (!is.null(names(x))) {
     names(x) = NULL
   }
-
+  if (isFALSE(highlight)) highlight = NULL
   if (inherits(x, "XY")) x = sf::st_sfc(x)
 
   if (!native.crs) x <- checkAdjustProjection(x)
@@ -174,7 +174,7 @@ leaflet_sfc <- function(x,
       if (pane == "auto") {
         pane = paneName(x)
         zindex = zIndex(x)
-        m = addMapPane(m, pane, zindex)
+        m = leaflet::addMapPane(m, pane, zindex)
       }
     }
   } else {
@@ -257,11 +257,20 @@ sf2DataFrame <- function(x, drop_sf_column = FALSE) {
 }
 
 
+# nNodes = function(x) {
+#   sum(sapply(x, function(y) {
+#     if (is.list(y)) nNodes(y) else nrow(y)
+#   }))
+# }
 nNodes = function(x) {
-  sum(sapply(x, function(y) {
-    if (is.list(y)) nNodes(y) else nrow(y)
-  }))
+  sapply(
+    sapply(x, function(y) {
+      if (is.list(y)) nNodes(y) else nrow(y)
+    }),
+    sum
+  )
 }
+
 
 nPoints = function(x) {
   if (getGeometryType(x) == "pt") {
@@ -271,21 +280,39 @@ nPoints = function(x) {
   }
 }
 
+nVerts = function(x) {
+  out = if (is.list(x)) sapply(sapply(x, nVerts), sum) else {
+    if (is.matrix(x))
+      nrow(x)
+    else {
+      if (sf::st_is_empty(x)) 0 else 1
+    }
+  }
+  unname(out)
+}
+
 #' count the number of points/vertices/nodes of sf objects
 #' @param x an sf/sfc object
+#' @param by_feature count total number of vertices (FALSE) of for each feature (TRUE).
+#'
+#' @note currently only works for *POINTS, *LINES and *POLYGONS (not GEOMETRYCOLLECTION).
 #'
 #' @export
 #'
 #' @examples
 #' npts(franconia)
+#' npts(franconia, by_feature = TRUE)
 #' npts(sf::st_geometry(franconia[1, ])) # first polygon
 #'
 #' npts(breweries) # is the same as
 #' nrow(breweries)
 #'
-npts = function(x) {
-  do.call(sum, lapply(split(x, as.character(sf::st_dimension(x))), nPoints))
+npts = function(x, by_feature = FALSE) {
+  if (by_feature) nVerts(sf::st_geometry(x)) else sum(nVerts(sf::st_geometry(x)))
 }
+
+
+
 
 nfeats = function(x) {
   if (inherits(x, "sf")) nrow(x) else length(x)

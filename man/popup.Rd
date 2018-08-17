@@ -8,7 +8,7 @@
 \usage{
 popupTable(x, zcol, row.numbers = TRUE)
 
-popupImage(img, src = c("local", "remote"), ...)
+popupImage(img, src = c("local", "remote"), embed = FALSE, ...)
 
 popupGraph(graphs, type = c("png", "svg", "html"), width = 300,
   height = 300, ...)
@@ -26,6 +26,11 @@ web-URL(s) to any sort of image file(s).}
 
 \item{src}{Whether the source is "local" (i.e. valid file path(s)) or
 "remote" (i.e. valid URL(s)).}
+
+\item{embed}{whether to embed the (local) images in the popup html as
+base64 ecoded. Set this to TRUE if you want to save and share your map, unless
+you want render many images, then set to FALSE and make sure to copy ../graphs
+when copying the map to a different location.}
 
 \item{...}{further arguments passed on to underlying methods such as
 height and width.}

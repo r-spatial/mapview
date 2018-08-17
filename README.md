@@ -68,7 +68,7 @@ mapview(breweries)
 
 will produce a web map visualisation of the breweries data with the following components:
 
-![](https://raw.githubusercontent.com/r-spatial/mapview/develop/docs/basic_small.png)
+![](https://raw.githubusercontent.com/r-spatial/mapview/develop/inst/extdata/basic_small.png)
 
 ## Contact ##
 

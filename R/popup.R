@@ -49,6 +49,10 @@ popupTable = function(x, zcol, row.numbers = TRUE) {
 #' web-URL(s) to any sort of image file(s).
 #' @param src Whether the source is "local" (i.e. valid file path(s)) or
 #' "remote" (i.e. valid URL(s)).
+#' @param embed whether to embed the (local) images in the popup html as
+#' base64 ecoded. Set this to TRUE if you want to save and share your map, unless
+#' you want render many images, then set to FALSE and make sure to copy ../graphs
+#' when copying the map to a different location.
 #' @param ... further arguments passed on to underlying methods such as
 #' height and width.
 #'
@@ -93,7 +97,7 @@ popupTable = function(x, zcol, row.numbers = TRUE) {
 #' @export popupImage
 #' @name popupImage
 #' @rdname popup
-popupImage = function(img, src = c("local", "remote"), ...) {
+popupImage = function(img, src = c("local", "remote"), embed = FALSE, ...) {
 
   if (!is.list(img)) img = as.list(img)
   fex = sapply(img, file.exists)
@@ -102,7 +106,7 @@ popupImage = function(img, src = c("local", "remote"), ...) {
   pop = lapply(seq(img), function(i) {
     src = srcs[i]
     pop = switch(src,
-                 local = popupLocalImage(img = img[[i]], ...),
+                 local = popupLocalImage(img = img[[i]], embed = embed, ...),
                  remote = popupRemoteImage(img = img[[i]], ...))
   })
 
@@ -112,46 +116,111 @@ popupImage = function(img, src = c("local", "remote"), ...) {
 
 
 ### local images -----
-popupLocalImage = function(img, width, height) {
-  nm = basename(img)
-  drs = file.path(tempdir(), "graphs")
-  if (!dir.exists(drs)) dir.create(drs)
-  fls = file.path(drs, nm)
-  invisible(file.copy(img, file.path(drs, nm)))
-  rel_path = file.path("..", basename(drs), basename(img))
+popupLocalImage = function(img, width = NULL, height = NULL, embed = FALSE) {
 
-  # info = sapply(img, function(...) rgdal::GDALinfo(..., silent = TRUE))
-  info = sapply(img, function(...) gdalUtils::gdalinfo(...))
-  info = unlist(lapply(info, function(i) grep(glob2rx("Size is*"), i, value = TRUE)))
-  cols = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[1]
-  rows = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[2]
-  yx_ratio = rows / cols
-  xy_ratio = cols / rows
+  pngs = lapply(1:length(img), function(i) {
 
-  if (missing(height) && missing(width)) {
-    width = 300
-    height = yx_ratio * width
-  } else if (missing(height)) height = yx_ratio * width else
-    if (missing(width)) width = xy_ratio * height
+    fl = img[[i]]
 
-  # maxheight = 2000
-  # width = width
-  # height = height + 5
-  pop = paste0("<image src='../graphs/",
-               basename(img),
-               "' width=",
-               width,
-               " height=",
-               height,
-               ">")
+    info = strsplit(
+      sf::gdal_utils(
+        util = "info",
+        source = fl,
+        quiet = TRUE
+      ),
+      split = "\n"
+    )
+    info = unlist(lapply(info, function(i) grep(glob2rx("Size is*"), i, value = TRUE)))
+    cols = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[1]
+    rows = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[2]
+    yx_ratio = rows / cols
+    xy_ratio = cols / rows
 
-  popTemplate = system.file("templates/popup-graph.brew", package = "mapview")
-  myCon = textConnection("outputObj", open = "w")
-  brew::brew(popTemplate, output = myCon)
-  outputObj = outputObj
-  close(myCon)
+    if (is.null(height) && is.null(width)) {
+      width = 300
+      height = yx_ratio * width
+    } else if (is.null(height)) height = yx_ratio * width else
+      if (is.null(width)) width = xy_ratio * height
 
-  return(paste(outputObj, collapse = ' '))
+    if (embed) {
+      plt64 = base64enc::base64encode(fl)
+      pop = paste0("<img ",
+                   " width=",
+                   width,
+                   " height=",
+                   height,
+                   " src='data:image/png;base64,", plt64, "' />")
+    }
+
+    if (!embed) {
+      nm = basename(fl)
+      drs = file.path(tempdir(), "graphs")
+      if (!dir.exists(drs)) dir.create(drs)
+      fls = file.path(drs, nm)
+      invisible(file.copy(fl, file.path(drs, nm)))
+
+      pop = paste0("<image src='../graphs/",
+                   basename(img),
+                   "' width=",
+                   width,
+                   " height=",
+                   height,
+                   ">")
+    }
+
+    # return(uri)
+    popTemplate = system.file("templates/popup-graph.brew", package = "mapview")
+    myCon = textConnection("outputObj", open = "w")
+    brew::brew(popTemplate, output = myCon)
+    outputObj = outputObj
+    close(myCon)
+
+    return(paste(outputObj, collapse = ' '))
+  })
+
+  return(unlist(pngs))
+  #
+  #
+  #
+  # nm = basename(img)
+  # drs = file.path(tempdir(), "graphs")
+  # if (!dir.exists(drs)) dir.create(drs)
+  # fls = file.path(drs, nm)
+  # invisible(file.copy(img, file.path(drs, nm)))
+  # rel_path = file.path("..", basename(drs), basename(img))
+  #
+  # # info = sapply(img, function(...) rgdal::GDALinfo(..., silent = TRUE))
+  # info = sapply(img, function(...) gdalUtils::gdalinfo(...))
+  # info = unlist(lapply(info, function(i) grep(glob2rx("Size is*"), i, value = TRUE)))
+  # cols = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[1]
+  # rows = as.numeric(strsplit(gsub("Size is ", "", info), split = ", ")[[1]])[2]
+  # yx_ratio = rows / cols
+  # xy_ratio = cols / rows
+  #
+  # if (missing(height) && missing(width)) {
+  #   width = 300
+  #   height = yx_ratio * width
+  # } else if (missing(height)) height = yx_ratio * width else
+  #   if (missing(width)) width = xy_ratio * height
+  #
+  # # maxheight = 2000
+  # # width = width
+  # # height = height + 5
+  # pop = paste0("<image src='../graphs/",
+  #              basename(img),
+  #              "' width=",
+  #              width,
+  #              " height=",
+  #              height,
+  #              ">")
+  #
+  # popTemplate = system.file("templates/popup-graph.brew", package = "mapview")
+  # myCon = textConnection("outputObj", open = "w")
+  # brew::brew(popTemplate, output = myCon)
+  # outputObj = outputObj
+  # close(myCon)
+  #
+  # return(paste(outputObj, collapse = ' '))
 
 }
 
@@ -321,18 +390,33 @@ popupSVGraph = function(graphs, #dsn = tempdir(),
 
     #lns = paste(readLines(fls), collapse = "")
     # file.remove(fls)
-    return(
-sprintf(
-"
-<div style='width: %dpx; height: %dpx;'>
-%s
-</div>
-" ,
-  width,
-  height,
-  svg_str
-)
+#     return(
+# sprintf(
+# "
+# <div style='width: %dpx; height: %dpx;'>
+# %s
+# </div>
+# " ,
+#   width,
+#   height,
+#   svg_str
+# )
+    # )
+    pop = sprintf(
+      "<div style='width: %dpx; height: %dpx;'>%s</div>",
+      width,
+      height,
+      svg_str
     )
+
+    popTemplate = system.file("templates/popup-graph.brew", package = "mapview")
+    myCon = textConnection("outputObj", open = "w")
+    brew::brew(popTemplate, output = myCon)
+    outputObj = outputObj
+    close(myCon)
+
+    return(paste(outputObj, collapse = ' '))
+
   })
 }
 
@@ -340,20 +424,42 @@ sprintf(
 ### png -----
 popupPNGraph = function(graphs, dsn = tempdir(),
                          width = 300, height = 300, ...) {
-  pngs = lapply(1:length(graphs), function(i) {
-    nm = paste0("tmp_", i, ".png")
-    fls = file.path(dsn, nm)
+  # pngs = lapply(1:length(graphs), function(i) {
+  #   nm = paste0("tmp_", i, ".png")
+  #   fls = file.path(dsn, nm)
+  #
+  #   png(filename = fls, width = width, height = height, units = "px", ...)
+  #   print(graphs[[i]])
+  #   dev.off()
+  #
+  #   rel_path = file.path("..", basename(dsn), nm)
+  #   return(rel_path)
+  # })
+  #
+  # popupImage(pngs, width = width, height = height, src = "local")
 
-    png(filename = fls, width = width, height = height, units = "px", ...)
+  pngs = lapply(1:length(graphs), function(i) {
+
+    fl = tempfile(fileext = ".png")
+
+    png(filename = fl, width = width, height = height, units = "px", ...)
     print(graphs[[i]])
     dev.off()
 
-    rel_path = file.path("..", basename(dsn), nm)
-    return(rel_path)
+    plt64 = base64enc::base64encode(fl)
+    pop = paste0('<img src="data:image/png;base64,', plt64, '" />')
+
+    # return(uri)
+    popTemplate = system.file("templates/popup-graph.brew", package = "mapview")
+    myCon = textConnection("outputObj", open = "w")
+    brew::brew(popTemplate, output = myCon)
+    outputObj = outputObj
+    close(myCon)
+
+    return(paste(outputObj, collapse = ' '))
   })
 
-  popupImage(pngs, width = width, height = height, src = "local")
-
+  return(pngs)
 }
 
 ### html -----
