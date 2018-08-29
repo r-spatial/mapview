@@ -15,6 +15,7 @@ addons:
       - libgeos-dev
       - libgdal-dev
       - libudunits2-dev
+      - netcdf-bin # for stars netcdf dep
       - postgresql-server-dev-9.6 # required for postgis installation
 
 r:
