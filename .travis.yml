@@ -4,6 +4,7 @@ dist: trusty
 cache: packages
 latex: false
 
+# we cannot install lwgeom via apt as it requires v2.4.0 but only v2.1.2 is in the repos
 addons:
   postgresql: "9.6"
   apt:
@@ -14,7 +15,6 @@ addons:
       - libgeos-dev
       - libgdal-dev
       - libudunits2-dev
-      #- liblwgeom-dev
       - postgresql-server-dev-9.6 # required for postgis installation
 
 r:
@@ -33,7 +33,7 @@ before_install:
   - psql -d postgis -c "GRANT CREATE ON DATABASE postgis TO travis"
   - createdb empty
   - psql -d empty -c "CREATE EXTENSION postgis;"
-  - R -q -e 'install.packages("remotes"); remotes::install_github("ropenscilabs/tic"); tic::prepare_all_stages(); tic::before_install()'
+  - R -q -e 'install.packages("remotes"); remotes::install_github("pat-s/tic@rcmdcheck-build-args"); tic::prepare_all_stages(); tic::before_install()'
 install: R -q -e 'tic::install()'
 script: R -q -e 'tic::script()'
 
