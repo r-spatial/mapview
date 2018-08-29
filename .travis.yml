@@ -1,9 +1,7 @@
 language: r
 sudo: required
 dist: trusty
-cache:
-  - packages
-  - ccache
+cache: packages
 latex: false
 
 addons:
@@ -16,6 +14,7 @@ addons:
       - libgeos-dev
       - libgdal-dev
       - libudunits2-dev
+      #- liblwgeom-dev
       - postgresql-server-dev-9.6 # required for postgis installation
 
 r:
