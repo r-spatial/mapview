@@ -148,12 +148,9 @@ leaflet_sfc <- function(x,
                         maxpoints,
                         attributes = NULL,
                         ...) {
-  if (!is.null(names(x))) {
-    names(x) = NULL
-  }
-  if (isFALSE(highlight)) highlight = NULL
+  if (!is.null(names(x))) names(x) = NULL
+  if (is_strictly_false(highlight)) highlight = NULL
   if (inherits(x, "XY")) x = sf::st_sfc(x)
-
   if (!native.crs) x <- checkAdjustProjection(x)
   if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
 
