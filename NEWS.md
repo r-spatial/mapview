@@ -1,3 +1,11 @@
+## mapview 2.5.1
+
+bugfixes:
+
+  * isFALSE (cased errors on R < 3.5) is now handled properly.
+  * mapshot does not unintentionally delete url anymore if saving to png with same name.
+  * mapshot now properly deletes temporary url when saving to png (or png and html).
+
 ## mapview 2.5.0
 
 new features:
