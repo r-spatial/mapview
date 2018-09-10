@@ -237,7 +237,7 @@ extentOverlap <- function(x, y) {
 }
 
 
-makeLayerName = function(x, zcol, up = 3) {
+makeLayerName = function(x, zcol = NULL, up = 3) {
   lnm = deparse(substitute(x, env = parent.frame(up)), width.cutoff = 500)
   lnm = toString(lnm[1], width = 50)
   if (is.null(zcol)) lnm else paste(lnm, zcol, sep = " - ")
@@ -303,7 +303,7 @@ useCanvas = function(x) {
   }
 }
 
-is_strictly_false = function(x) {
+is_literally_false = function(x) {
   if (getRversion() >= 3.5) {
     isFALSE(x)
   } else {
