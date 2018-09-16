@@ -277,7 +277,7 @@ as prefix for the layerId. Ignored if \code{label = FALSE}.}
 \item{viewer.suppress}{whether to render the map in the browser (\code{TRUE})
 or the RStudio viewer (\code{FALSE}). When not using RStudio, maps will open
 in the browser by default. This is passed to \link[htmlwidgets]{sizingPolicy}
-via \link[leaflet]{sizingPolicy}. For raster data the default is \code{FALSE}.
+via \link[leaflet]{leafletSizingPolicy}. For raster data the default is \code{FALSE}.
 For vector data it deoends on argument \code{canvas}.}
 
 \item{...}{additional arguments passed on to repective functions.

@@ -21,6 +21,8 @@ included in the output popup table. If missing, all columns are displayed.}
 
 \item{row.numbers}{\code{logical} whether to include row numbers in the popup table.}
 
+\item{feature.id}{\code{logical} whether to add 'Feature ID' entry to popup table.}
+
 \item{img}{A character \code{vector} of file path(s) or
 web-URL(s) to any sort of image file(s).}
 
@@ -42,8 +44,6 @@ height and width.}
 \item{width}{popup width in pixels.}
 
 \item{height}{popup height in pixels.}
-
-\item{featurre.id}{\code{logical} whether to add 'Feature ID' entry to popup table.}
 }
 \value{
 A \code{list} of HTML strings required to create feature popup tables.

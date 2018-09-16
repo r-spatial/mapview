@@ -9,7 +9,7 @@
 #' @param zcol \code{numeric} or \code{character} vector indicating the columns
 #' included in the output popup table. If missing, all columns are displayed.
 #' @param row.numbers \code{logical} whether to include row numbers in the popup table.
-#' @param featurre.id \code{logical} whether to add 'Feature ID' entry to popup table.
+#' @param feature.id \code{logical} whether to add 'Feature ID' entry to popup table.
 #'
 #' @return
 #' A \code{list} of HTML strings required to create feature popup tables.

@@ -40,7 +40,7 @@ if ( !isGeneric('mapView') ) {
 #' @param viewer.suppress whether to render the map in the browser (\code{TRUE})
 #' or the RStudio viewer (\code{FALSE}). When not using RStudio, maps will open
 #' in the browser by default. This is passed to \link[htmlwidgets]{sizingPolicy}
-#' via \link[leaflet]{sizingPolicy}. For raster data the default is \code{FALSE}.
+#' via \link[leaflet]{leafletSizingPolicy}. For raster data the default is \code{FALSE}.
 #' For vector data it deoends on argument \code{canvas}.
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
