@@ -1,10 +1,16 @@
 ## mapview 2.5.1
 
+new features:
+
+  * mapview has gained argument viewer.suppress to enable rendering in the browser.
+  * popupTable has gained argument feature.id to choose whether to show or hide 'Feature ID' column. #182
+
 bugfixes:
 
-  * isFALSE (cased errors on R < 3.5) is now handled properly.
+  * isFALSE (caused errors on R < 3.5) is now handled properly.
   * mapshot does not unintentionally delete url anymore if saving to png with same name.
   * mapshot now properly deletes temporary url when saving to png (or png and html).
+  * internal function mapview:::nrings now calculates number of polygon rings correctly. #181
 
 ## mapview 2.5.0
 
