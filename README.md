@@ -1,6 +1,6 @@
 # mapview #
 
-[![cran checks](https://cranchecks.info/badges/worst/mapview)](https://cran.rstudio.com/web/checks/check_results_mapview.html)
+[![cran checks](https://cranchecks.info/badges/worst/mapview)](https://cran.r-project.org/web/checks/check_results_mapview.html)
 [![Travis-CI Build Status](https://travis-ci.org/r-spatial/mapview.svg?branch=develop)](https://travis-ci.org/r-spatial/mapview)
 [![monthly](http://cranlogs.r-pkg.org/badges/mapview)](https://www.rpackages.io/package/mapview) 
 [![total](http://cranlogs.r-pkg.org/badges/grand-total/mapview)](https://www.rpackages.io/package/mapview)
