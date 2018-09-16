@@ -295,10 +295,10 @@ useCanvas = function(x) {
   } else {
     switch(
       getGeometryType(x),
-      "pt" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE),
+      "pt" = ifelse(featureComplexity(x) > 500, TRUE, FALSE),
       "ln" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE),
-      "pl" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE),
-      "gc" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE)
+      "pl" = ifelse(featureComplexity(x) > 2000, TRUE, FALSE),
+      "gc" = ifelse(featureComplexity(x) > 500, TRUE, FALSE)
     )
   }
 }

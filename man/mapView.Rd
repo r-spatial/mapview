@@ -41,7 +41,7 @@
   homebutton = TRUE, native.crs = FALSE, method = c("bilinear",
   "ngb"), label = TRUE, query.type = c("mousemove", "click"),
   query.digits, query.position = "topright", query.prefix = "Layer",
-  ...)
+  viewer.suppress = FALSE, ...)
 
 \S4method{mapView}{stars}(x, band = 1, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -54,7 +54,7 @@
   homebutton = TRUE, native.crs = FALSE, method = c("bilinear",
   "ngb"), label = TRUE, query.type = c("mousemove", "click"),
   query.digits, query.position = "topright", query.prefix = "Layer",
-  ...)
+  viewer.suppress = FALSE, ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -65,7 +65,8 @@
   trim = TRUE, verbose = mapviewGetOption("verbose"),
   homebutton = TRUE, method = c("bilinear", "ngb"), label = TRUE,
   query.type = c("mousemove", "click"), query.digits,
-  query.position = "topright", query.prefix = "Layer", ...)
+  query.position = "topright", query.prefix = "Layer",
+  viewer.suppress = FALSE, ...)
 
 \S4method{mapView}{Satellite}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -78,8 +79,8 @@
   ...)
 
 \S4method{mapView}{sf}(x, map = NULL, pane = "auto",
-  canvas = useCanvas(x), zcol = NULL, burst = FALSE,
-  color = mapviewGetOption("vector.palette"),
+  canvas = useCanvas(x), viewer.suppress = canvas, zcol = NULL,
+  burst = FALSE, color = mapviewGetOption("vector.palette"),
   col.regions = mapviewGetOption("vector.palette"), at = NULL,
   na.color = mapviewGetOption("na.color"), cex = 6,
   lwd = lineWidth(x), alpha = 0.9, alpha.regions = regionOpacity(x),
@@ -92,9 +93,9 @@
   maxpoints = getMaxFeatures(x), ...)
 
 \S4method{mapView}{sfc}(x, map = NULL, pane = "auto",
-  canvas = useCanvas(x), color = standardColor(x),
-  col.regions = standardColRegions(x), at = NULL,
-  na.color = mapviewGetOption("na.color"), cex = 6,
+  canvas = useCanvas(x), viewer.suppress = canvas,
+  color = standardColor(x), col.regions = standardColRegions(x),
+  at = NULL, na.color = mapviewGetOption("na.color"), cex = 6,
   lwd = lineWidth(x), alpha = 0.9, alpha.regions = regionOpacity(x),
   map.types = NULL, verbose = mapviewGetOption("verbose"),
   popup = NULL, layer.name = deparse(substitute(x, env =
@@ -110,9 +111,9 @@
   popup = popupTable(x), label, crs = NA, ...)
 
 \S4method{mapView}{XY}(x, map = NULL, pane = "auto",
-  canvas = useCanvas(x), color = standardColor(x),
-  col.regions = standardColRegions(x), at = NULL,
-  na.color = mapviewGetOption("na.color"), cex = 6,
+  canvas = useCanvas(x), viewer.suppress = canvas,
+  color = standardColor(x), col.regions = standardColRegions(x),
+  at = NULL, na.color = mapviewGetOption("na.color"), cex = 6,
   lwd = lineWidth(x), alpha = 0.9, alpha.regions = regionOpacity(x),
   map.types = NULL, verbose = mapviewGetOption("verbose"),
   popup = NULL, layer.name = deparse(substitute(x, env =
@@ -165,7 +166,7 @@
   homebutton = TRUE, native.crs = FALSE, method = c("bilinear",
   "ngb"), label = TRUE, query.type = c("mousemove", "click"),
   query.digits, query.position = "topright", query.prefix = "Layer",
-  ...)
+  viewer.suppress = FALSE, ...)
 
 \S4method{mapView}{SpatialGridDataFrame}(x, map = NULL, zcol = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
@@ -178,7 +179,7 @@
   homebutton = TRUE, native.crs = FALSE, method = c("bilinear",
   "ngb"), label = TRUE, query.type = c("mousemove", "click"),
   query.digits, query.position = "topright", query.prefix = "Layer",
-  ...)
+  viewer.suppress = FALSE, ...)
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL,
   layer.name = NULL, ...)
@@ -273,6 +274,12 @@ for possible values. Ignored if \code{label = FALSE}.}
 \item{query.prefix}{for raster methods only. a character string to be shown
 as prefix for the layerId. Ignored if \code{label = FALSE}.}
 
+\item{viewer.suppress}{whether to render the map in the browser (\code{TRUE})
+or the RStudio viewer (\code{FALSE}). When not using RStudio, maps will open
+in the browser by default. This is passed to \link[htmlwidgets]{sizingPolicy}
+via \link[leaflet]{sizingPolicy}. For raster data the default is \code{FALSE}.
+For vector data it deoends on argument \code{canvas}.}
+
 \item{...}{additional arguments passed on to repective functions.
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
@@ -288,7 +295,8 @@ are rendered in the same pane and layer order is determined by automatically/seq
 
 \item{canvas}{whether to use canvas rendering rather than svg. May help
 performance with larger data. See \url{http://leafletjs.com/reference-1.3.0.html#canvas}
-for more information.}
+for more information. Only applicable for vector data. The default setting will
+decide automatically, based on feature complexity.}
 
 \item{zcol}{attribute name(s) or column number(s) in attribute table
 of the column(s) to be rendered. See also Details.}
