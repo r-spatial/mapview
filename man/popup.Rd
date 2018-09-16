@@ -6,7 +6,7 @@
 \alias{popupGraph}
 \title{Create HTML strings for popups}
 \usage{
-popupTable(x, zcol, row.numbers = TRUE)
+popupTable(x, zcol, row.numbers = TRUE, feature.id = TRUE)
 
 popupImage(img, src = c("local", "remote"), embed = FALSE, ...)
 
@@ -42,6 +42,8 @@ height and width.}
 \item{width}{popup width in pixels.}
 
 \item{height}{popup height in pixels.}
+
+\item{featurre.id}{\code{logical} whether to add 'Feature ID' entry to popup table.}
 }
 \value{
 A \code{list} of HTML strings required to create feature popup tables.
