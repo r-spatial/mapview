@@ -90,9 +90,6 @@ Suggests:
     testthat
 LinkingTo: 
     Rcpp
-Remotes: 
-    hrbrmstr/albersusa,
-    r-spatial/stars
 ByteCompile: yes
 LazyData: TRUE
 RoxygenNote: 6.1.0
