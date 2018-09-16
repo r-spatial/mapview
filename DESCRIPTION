@@ -44,6 +44,9 @@ Authors@R:
       person(given = "Pierre",
              family = "Roudier",
              role = "ctb"),
+      person(given = "Patrick",
+             family = "Schratz",
+             role = "ctb"),
       person(given = "Environmental Informatics Marburg",
              role = "ctb"))
 Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
