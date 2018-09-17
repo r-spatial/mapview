@@ -347,7 +347,7 @@ featureComplexity = function(x) {
       getGeometryType(x),
       "pt" = nNodes(x) / 1e6 * dm[1] * dm[2],
       "ln" = nNodes(x) / 1e6 * dm[1] * dm[2],
-      "pl" = nNodes(x) / 1e6 * nrings(x) * dm[1] * dm[2],
+      "pl" = nNodes(x) / 1e6 * nrings(x) * dm[2],
       "gc" = nNodes(x) / 1e6 * dm[1] * dm[2]
     )
   } else {
@@ -355,7 +355,7 @@ featureComplexity = function(x) {
       getGeometryType(x),
       "pt" = nNodes(x) / 1e6 * length(x),
       "ln" = nNodes(x) / 1e6 * length(x),
-      "pl" = nNodes(x) / 1e6 * nrings(x) * length(x),
+      "pl" = nNodes(x) / 1e6 * nrings(x),
       "gc" = nNodes(x) / 1e6 * length(x)
     )
   }
