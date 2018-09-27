@@ -1,3 +1,10 @@
+## mapview 2.6.1
+
+miscellaneous:
+  
+  * argument popup now also accepts FALSE in addition to NULL to suppress popups.
+
+
 ## mapview 2.6.0
 
 new features:
