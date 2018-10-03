@@ -40,7 +40,8 @@ If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
 \item{na.color}{color for missing values.}
 
-\item{legend}{logical, whether to draw a legend for the raster layer.}
+\item{legend}{either logical or a list specifying any of the components
+decribed in the \code{colorkey} section of \link[lattice]{levelplot}.}
 
 \item{verbose}{should some details be printed during the process}
 

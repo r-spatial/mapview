@@ -190,10 +190,14 @@ setMethod("slideView", signature(img1 = "RasterLayer",
               leg_flr <- paste0(dir, "/legendr", label1, ".png")
               png(leg_flr, height = 200, width = 80, units = "px",
                   bg = "transparent", pointsize = 14)
-              rasterLegend(col = col.regions,
-                           at = atr,
-                           height = 0.9,
-                           space = "right")
+              rasterLegend(
+                list(
+                  col = col.regions,
+                  at = atr,
+                  height = 0.9,
+                  space = "right"
+                )
+              )
               dev.off()
 
               ## legend two (left)
@@ -203,10 +207,14 @@ setMethod("slideView", signature(img1 = "RasterLayer",
               leg_fll <- paste0(dir, "/legendl", label2, ".png")
               png(leg_fll, height = 200, width = 80, units = "px",
                   bg = "transparent", pointsize = 14)
-              rasterLegend(col = col.regions,
-                           at = atl,
-                           height = 0.9,
-                           space = "left")
+              rasterLegend(
+                list(
+                  col = col.regions,
+                  at = atl,
+                  height = 0.9,
+                  space = "left"
+                )
+              )
               dev.off()
             }
 
@@ -270,10 +278,14 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
               leg_fll <- paste0(dir, "/legendl", label2, ".png")
               png(leg_fll, height = 200, width = 80, units = "px",
                   bg = "transparent", pointsize = 14)
-              rasterLegend(col = col.regions,
-                           at = atl,
-                           height = 0.9,
-                           space = "left")
+              rasterLegend(
+                list(
+                  col = col.regions,
+                  at = atl,
+                  height = 0.9,
+                  space = "left"
+                )
+              )
               dev.off()
             }
 
@@ -340,10 +352,14 @@ setMethod("slideView", signature(img1 = "RasterLayer",
               leg_flr <- paste0(dir, "/legendr", label1, ".png")
               png(leg_flr, height = 200, width = 80, units = "px",
                   bg = "transparent", pointsize = 14)
-              rasterLegend(col = col.regions,
-                           at = atr,
-                           height = 0.9,
-                           space = "right")
+              rasterLegend(
+                list(
+                  col = col.regions,
+                  at = atr,
+                  height = 0.9,
+                  space = "right"
+                )
+              )
               dev.off()
             }
 

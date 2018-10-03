@@ -16,7 +16,8 @@ if ( !isGeneric('plainView') ) {
 #' @param at the breakpoints used for the visualisation. See
 #' \code{\link{levelplot}} for details.
 #' @param na.color color for missing values.
-#' @param legend logical, whether to draw a legend for the raster layer.
+#' @param legend either logical or a list specifying any of the components
+#' decribed in the \code{colorkey} section of \link[lattice]{levelplot}.
 #' @param verbose should some details be printed during the process
 #' @param layer.name the name of the layer to be shown on the map
 #' @param gdal logical. If TRUE (default) gdal_translate is used
@@ -124,7 +125,7 @@ setMethod('plainView', signature(x = 'RasterLayer'),
 
             leg_fl <- NULL
 
-            if (legend) {
+            if (!is_literally_false(legend)) {
               if (raster::fromDisk(x) & gdal) {
                 col.regions = grDevices::grey.colors(256, start = 0, end = 1, gamma = 1)
               } else {
@@ -132,13 +133,22 @@ setMethod('plainView', signature(x = 'RasterLayer'),
               }
               rng <- range(x[], na.rm = TRUE)
               if (missing(at)) at <- lattice::do.breaks(rng, 256)
-              leg_fl <- paste0(dir, "/legend", ".png")
-              png(leg_fl, height = 200, width = 80, units = "px",
-                  bg = "transparent", pointsize = 14, antialias = "none")
-              rasterLegend(col = col.regions,
+
+              if (isTRUE(legend)) {
+                legend = list(NULL)
+              }
+                key = list(col = col.regions,
                            at = at,
                            height = 0.9,
                            space = "right")
+              # }
+
+              key = modifyList(key, legend)
+
+              leg_fl <- paste0(dir, "/legend", ".png")
+              png(leg_fl, height = 200, width = 80, units = "px",
+                  bg = "transparent", pointsize = 14, antialias = "none")
+              rasterLegend(key)
               dev.off()
             }
 
