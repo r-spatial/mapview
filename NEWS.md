@@ -4,6 +4,7 @@ miscellaneous:
   
   * argument popup now also accepts FALSE in addition to NULL to suppress popups.
   * plainview argument legend now accepts a list describing the colorkey (see ?lattice::levelplot for details). #187
+  * mapview popup css nao has white background (for better leaflet integration).
 
 
 ## mapview 2.6.0
