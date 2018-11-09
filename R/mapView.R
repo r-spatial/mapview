@@ -526,7 +526,7 @@ setMethod('mapView', signature(x = 'sf'),
                    " does not contain data \n", call. = FALSE)
             }
 
-            if (is.null(zcol)) legend = FALSE
+            if (is.null(zcol) & is.null(legend)) legend = FALSE
             if (!is.null(zcol) && !all(zcol %in% colnames(x))) {
               stop("\n", "at least one of the following columns: \n",
                    paste(zcol, collapse = ", "), "\nnot found in ",
