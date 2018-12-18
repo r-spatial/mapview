@@ -68,7 +68,7 @@ Imports:
     htmltools,
     htmlwidgets,
     lattice,
-    leaflet (>= 1.0.0),
+    leaflet (>= 2.0.0),
     png,
     raster,
     Rcpp (>= 0.11.3),
@@ -76,7 +76,6 @@ Imports:
     scales (>= 0.2.5),
     sf,
     sp,
-    stars,
     svglite,
     uuid,
     viridisLite,
@@ -87,6 +86,7 @@ Suggests:
     knitr,
     lwgeom,
     rmarkdown,
+    stars,
     testthat
 LinkingTo: 
     Rcpp
