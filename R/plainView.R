@@ -143,7 +143,7 @@ setMethod('plainView', signature(x = 'RasterLayer'),
                            space = "right")
               # }
 
-              key = modifyList(key, legend)
+              key = utils::modifyList(key, legend)
 
               leg_fl <- paste0(dir, "/legend", ".png")
               png(leg_fl, height = 200, width = 80, units = "px",
