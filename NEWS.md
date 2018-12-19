@@ -1,10 +1,11 @@
-## mapview 2.6.2
+## mapview 2.6.3
 
 miscellaneous:
   
   * argument popup now also accepts FALSE in addition to NULL to suppress popups.
   * plainview argument legend now accepts a list describing the colorkey (see ?lattice::levelplot for details). #187
-  * mapview popup css nao has white background (for better leaflet integration).
+  * mapview popup css now has white background (for better leaflet integration).
+  * NAMESPACE now registers S3method (knitr::knit_print) conditionally as requested by KH.
 
 
 ## mapview 2.6.0
