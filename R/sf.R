@@ -30,8 +30,6 @@ leaflet_sf <- function(x,
   if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT"))
     x = suppressWarnings(sf::st_cast(x, "POINT"))
 
-  if (inherits(x[[zcol]], "logical")) x[[zcol]] = as.character(x[[zcol]])
-
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
   cex <- circleRadius(x, cex)
   if (is.null(zcol) & ncol(sf2DataFrame(x, drop_sf_column = TRUE)) == 1) {
@@ -39,6 +37,7 @@ leaflet_sf <- function(x,
     label = makeLabels(x, zcol)
   }
   if (!is.null(zcol)) {
+    if (inherits(x[[zcol]], "logical")) x[[zcol]] = as.character(x[[zcol]])
     if (length(unique(x[[zcol]])) == 1) {
       color = ifelse(is.function(color), standardColor(x), color)
       col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
