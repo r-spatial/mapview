@@ -27,8 +27,10 @@ leaflet_sf <- function(x,
                        maxpoints,
                        ...) {
 
-  if (inherits(st_geometry(x), "sfc_MULTIPOINT"))
-    x = suppressWarnings(st_cast(x, "POINT"))
+  if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT"))
+    x = suppressWarnings(sf::st_cast(x, "POINT"))
+
+  if (inherits(x[[zcol]], "logical")) x[[zcol]] = as.character(x[[zcol]])
 
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
   cex <- circleRadius(x, cex)
