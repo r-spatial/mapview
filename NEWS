@@ -1,3 +1,10 @@
+mapview 2.6.4
+
+bugfixes:
+
+  * mapview would return NULL if zcol was of type logic. #200
+
+
 mapview 2.6.3
 
 miscellaneous:
