@@ -1,10 +1,11 @@
-add_package_checks(error_on = "error")
+add_package_checks()
 
 get_stage("install") %>%
   # install lwgeom with its own library since linking again postgis source install fails sometimes
   add_code_step(install.packages("lwgeom", configure.args="--without-liblwgeom")) %>% # normal installation does not work
   add_code_step(remotes::install_github("r-spatial/stars")) %>%
   add_code_step(remotes::install_github("hrbrmstr/albersusa")) %>%
+  add_step(step_rcmdcheck(error_on = "error"))
 
 ###
 # deploy pkgdowm site
