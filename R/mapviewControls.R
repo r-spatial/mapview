@@ -237,7 +237,7 @@ extentOverlap <- function(x, y) {
 }
 
 
-makeLayerName = function(x, zcol, up = 3) {
+makeLayerName = function(x, zcol = NULL, up = 3) {
   lnm = deparse(substitute(x, env = parent.frame(up)), width.cutoff = 500)
   lnm = toString(lnm[1], width = 50)
   if (is.null(zcol)) lnm else paste(lnm, zcol, sep = " - ")
@@ -295,10 +295,18 @@ useCanvas = function(x) {
   } else {
     switch(
       getGeometryType(x),
-      "pt" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE),
+      "pt" = ifelse(featureComplexity(x) > 500, TRUE, FALSE),
       "ln" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE),
-      "pl" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE),
-      "gc" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE)
+      "pl" = ifelse(featureComplexity(x) > 2000, TRUE, FALSE),
+      "gc" = ifelse(featureComplexity(x) > 500, TRUE, FALSE)
     )
+  }
+}
+
+is_literally_false = function(x) {
+  if (getRversion() >= 3.5) {
+    isFALSE(x)
+  } else {
+    is.logical(x) && length(x) == 1L && !is.na(x) && !x
   }
 }

@@ -24,3 +24,4 @@ setOldClass("XYM")
 setOldClass("XYZM")
 setOldClass("bbox")
 
+setOldClass("stars")

@@ -6,7 +6,7 @@
 \alias{popupGraph}
 \title{Create HTML strings for popups}
 \usage{
-popupTable(x, zcol, row.numbers = TRUE)
+popupTable(x, zcol, row.numbers = TRUE, feature.id = TRUE)
 
 popupImage(img, src = c("local", "remote"), embed = FALSE, ...)
 
@@ -20,6 +20,8 @@ popupGraph(graphs, type = c("png", "svg", "html"), width = 300,
 included in the output popup table. If missing, all columns are displayed.}
 
 \item{row.numbers}{\code{logical} whether to include row numbers in the popup table.}
+
+\item{feature.id}{\code{logical} whether to add 'Feature ID' entry to popup table.}
 
 \item{img}{A character \code{vector} of file path(s) or
 web-URL(s) to any sort of image file(s).}

@@ -39,7 +39,11 @@ characterLegend <- function(map,
                             colors,
                             na.color,
                             layer.name) {
-  vals = unique(values[!is.na(values)])
+  if( is.function(colors)) {
+    vals = unique(values[!is.na(values)])
+  } else {
+    vals = values
+  }
   pal <- factorPalette(palette = zcolColors(x = vals,
                                             colors = colors,
                                             na.color = na.color,
@@ -147,7 +151,9 @@ mapviewLegend <- function(values,
                           layer.name,
                           position = mapviewGetOption("legend.pos")) {
 
-  if (!is.function(colors) & inherits(colors, "character")) {
+  if (!is.function(colors) &
+      inherits(colors, "character") &
+      !length(colors) == length(values)) {
     colors <- grDevices::colorRampPalette(colors)
   }
 
@@ -331,8 +337,6 @@ addRasterLegend <- function(x,
 
 
 ## legend for plainview, slideview, cubeview ==============================
-rasterLegend <- function(col, at, ...) {
-  draw.colorkey(key = list(col = col,
-                           at = at,
-                           ...), draw = TRUE)
+rasterLegend <- function(key) {
+  draw.colorkey(key = key, draw = TRUE)
 }

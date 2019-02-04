@@ -121,6 +121,7 @@ leaflet_stars = function(x,
                          query.digits,
                          query.position,
                          query.prefix,
+                         viewer.suppress,
                          ...) {
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol = band)
@@ -140,7 +141,7 @@ leaflet_stars = function(x,
   } else {
     is.fact = FALSE # raster::is.factor(x)
     # ext = raster::extent(raster::projectExtent(x, crs = llcrs))
-    m = initMap(map, map.types, sf::st_crs(x)$proj4string)
+    m = initMap(map, map.types, sf::st_crs(x)$proj4string, viewer.suppress = viewer.suppress)
     # x = rasterCheckSize(x, maxpixels = maxpixels)
     # x = starsCheckAdjustProjection(x, method)
     ext = createExtent(sf::st_transform(sf::st_as_sfc(sf::st_bbox(x)), crs = 4326))

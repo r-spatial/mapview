@@ -1,3 +1,34 @@
+mapview 2.6.4
+
+bugfixes:
+
+  * mapview would return NULL if zcol was of type logic. #200
+
+
+mapview 2.6.3
+
+miscellaneous:
+  
+  * argument popup now also accepts FALSE in addition to NULL to suppress popups.
+  * plainview argument legend now accepts a list describing the colorkey (see ?lattice::levelplot for details). #187
+  * mapview popup css now has white background (for better leaflet integration).
+  * NAMESPACE now registers S3method (knitr::knit_print) conditionally as requested by KH.
+
+
+mapview 2.6.0
+
+new features:
+
+  * mapview has gained argument viewer.suppress to enable rendering in the browser.
+  * popupTable has gained argument feature.id to choose whether to show or hide 'Feature ID' column. #182
+
+bugfixes:
+
+  * isFALSE (caused errors on R < 3.5) is now handled properly.
+  * mapshot does not unintentionally delete url anymore if saving to png with same name.
+  * mapshot now properly deletes temporary url when saving to png (or png and html).
+  * internal function mapview:::nrings now calculates number of polygon rings correctly. #181
+
 mapview 2.5.0
 
 new features:

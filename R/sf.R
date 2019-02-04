@@ -1,11 +1,9 @@
-# large_warn = paste("\nthe supplied feature layer seems quite large.\n",
-#                    "would you like to view in the browser instead of RStudio viewer? (recommended)\n")
-
 ### sf ####################################################################
 leaflet_sf <- function(x,
                        map,
                        pane,
                        canvas,
+                       viewer.suppress,
                        zcol,
                        cex,
                        lwd,
@@ -29,8 +27,8 @@ leaflet_sf <- function(x,
                        maxpoints,
                        ...) {
 
-  if (inherits(st_geometry(x), "sfc_MULTIPOINT"))
-    x = suppressWarnings(st_cast(x, "POINT"))
+  if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT"))
+    x = suppressWarnings(sf::st_cast(x, "POINT"))
 
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
   cex <- circleRadius(x, cex)
@@ -39,6 +37,7 @@ leaflet_sf <- function(x,
     label = makeLabels(x, zcol)
   }
   if (!is.null(zcol)) {
+    if (inherits(x[[zcol]], "logical")) x[[zcol]] = as.character(x[[zcol]])
     if (length(unique(x[[zcol]])) == 1) {
       color = ifelse(is.function(color), standardColor(x), color)
       col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
@@ -116,6 +115,7 @@ leaflet_sf <- function(x,
               maxpoints = maxpoints,
               attributes = sf2DataFrame(x, drop_sf_column = TRUE),
               canvas = canvas,
+              viewer.suppress = viewer.suppress,
               ...)
 
 }
@@ -126,6 +126,7 @@ leaflet_sfc <- function(x,
                         map,
                         pane,
                         canvas,
+                        viewer.suppress,
                         zcol,
                         cex,
                         lwd,
@@ -148,12 +149,10 @@ leaflet_sfc <- function(x,
                         maxpoints,
                         attributes = NULL,
                         ...) {
-  if (!is.null(names(x))) {
-    names(x) = NULL
-  }
-  if (isFALSE(highlight)) highlight = NULL
+  if (!is.null(names(x))) names(x) = NULL
+  if (is_literally_false(highlight)) highlight = NULL
+  if (is_literally_false(popup)) popup = NULL
   if (inherits(x, "XY")) x = sf::st_sfc(x)
-
   if (!native.crs) x <- checkAdjustProjection(x)
   if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
 
@@ -167,7 +166,14 @@ leaflet_sfc <- function(x,
     }
   }
 
-  m <- initMap(map, map.types, sf::st_crs(x), native.crs, canvas = canvas)
+  m <- initMap(
+    map,
+    map.types,
+    sf::st_crs(x),
+    native.crs,
+    canvas = canvas,
+    viewer.suppress = viewer.suppress
+  )
 
   if (!canvas) {
     if (!is.null(pane)) {
@@ -262,23 +268,23 @@ sf2DataFrame <- function(x, drop_sf_column = FALSE) {
 #     if (is.list(y)) nNodes(y) else nrow(y)
 #   }))
 # }
-nNodes = function(x) {
-  sapply(
-    sapply(x, function(y) {
-      if (is.list(y)) nNodes(y) else nrow(y)
-    }),
-    sum
-  )
-}
+# nNodes = function(x) {
+#   sapply(
+#     sapply(x, function(y) {
+#       if (is.list(y)) nNodes(y) else nrow(y)
+#     }),
+#     sum
+#   )
+# }
+nNodes = function(x) length(unlist(sf::st_geometry(x), use.names = FALSE)) / 2
 
-
-nPoints = function(x) {
-  if (getGeometryType(x) == "pt") {
-    length(sf::st_geometry(x))
-  } else {
-    nNodes(sf::st_geometry(x))
-  }
-}
+# nPoints = function(x) {
+#   if (getGeometryType(x) == "pt") {
+#     length(sf::st_geometry(x))
+#   } else {
+#     nNodes(sf::st_geometry(x))
+#   }
+# }
 
 nVerts = function(x) {
   out = if (is.list(x)) sapply(sapply(x, nVerts), sum) else {
@@ -314,26 +320,45 @@ npts = function(x, by_feature = FALSE) {
 
 
 
-nfeats = function(x) {
-  if (inherits(x, "sf")) nrow(x) else length(x)
-}
+# nfeats = function(x) {
+#   if (inherits(x, "sf")) nrow(x) else length(x)
+# }
 
 nrings = function(pol) {
-  do.call(sum, lapply(sf::st_geometry(pol), lengths))
+  if (inherits(pol, "MULTIPOLYGON"))
+    return(sum(lengths(pol)))
+  pol = sf::st_geometry(pol)
+  if (inherits(pol, "sfc_MULTIPOLYGON"))
+    return(do.call(sum, lapply(pol, lengths)))
+  if (inherits(pol, "sfc_POLYGON"))
+    return(sum(lengths(pol)))
 }
 
-polygonComplexity = function(pol) {
-  nrings(pol) + npts(pol) + nfeats(pol)
-}
+# polygonComplexity = function(pol) {
+#   nrings(pol) + npts(pol) + nfeats(pol)
+# }
 
-lineComplexity = function(ln) {
-  npts(ln) + nfeats(ln)
-}
+# lineComplexity = function(ln) {
+#   npts(ln) + nfeats(ln)
+# }
 
 featureComplexity = function(x) {
-  switch(getGeometryType(x),
-         "pt" = nPoints(x),
-         "ln" = lineComplexity(x),
-         "pl" = polygonComplexity(x),
-         "gc" = polygonComplexity(x))
+  if (inherits(x, "sf")) {
+    dm = dim(x)
+    switch(
+      getGeometryType(x),
+      "pt" = nNodes(x) / 1e6 * dm[1] * dm[2],
+      "ln" = nNodes(x) / 1e6 * dm[1] * dm[2],
+      "pl" = nNodes(x) / 1e6 * nrings(x) * dm[2],
+      "gc" = nNodes(x) / 1e6 * dm[1] * dm[2]
+    )
+  } else {
+    switch(
+      getGeometryType(x),
+      "pt" = nNodes(x) / 1e6 * length(x),
+      "ln" = nNodes(x) / 1e6 * length(x),
+      "pl" = nNodes(x) / 1e6 * nrings(x),
+      "gc" = nNodes(x) / 1e6 * length(x)
+    )
+  }
 }
