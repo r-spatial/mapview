@@ -2,7 +2,7 @@ language: r
 sudo: required
 dist: xenial
 cache: packages
-latex: false
+latex: true
 
 # we cannot install lwgeom via apt as it requires v2.4.0 but only v2.1.2 is in the repos
 addons:
