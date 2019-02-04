@@ -4,6 +4,7 @@ dist: xenial
 cache: packages
 latex: false
 
+# we cannot install lwgeom via apt as it requires v2.4.0 but only v2.1.2 is in the repos
 addons:
   postgresql: "9.6"
   apt:
@@ -14,6 +15,7 @@ addons:
       - libgeos-dev
       - libgdal-dev
       - libudunits2-dev
+      - netcdf-bin # for stars netcdf dep
       - postgresql-server-dev-9.6 # required for postgis installation
 
 r:
@@ -21,13 +23,10 @@ r:
   - devel
 
 before_install:
-  # install postgis from source, to avoid dependency conflict with GDAL >= 2.0:
-  - wget http://download.osgeo.org/postgis/source/postgis-2.4.3.tar.gz
-  - (mv postgis* /tmp; cd /tmp; tar xzf postgis-2.4.3.tar.gz)
-  - (cd /tmp/postgis-2.4.3 ; ./configure; make; sudo make install)
-
-  # activate liblwgeom by:
-  - sudo ldconfig
+  # install postgis from source (required for lwgeom installation):
+  - wget http://download.osgeo.org/postgis/source/postgis-2.4.4.tar.gz
+  - (mv postgis* /tmp; cd /tmp; tar xzf postgis-2.4.4.tar.gz)
+  - (cd /tmp/postgis-2.4.4 ; ./configure; make; sudo make install)
   # create postgis databases:
   - sudo service postgresql restart
   - createdb postgis

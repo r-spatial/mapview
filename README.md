@@ -1,5 +1,6 @@
 # mapview #
 
+[![cran checks](https://cranchecks.info/badges/worst/mapview)](https://cran.r-project.org/web/checks/check_results_mapview.html)
 [![Travis-CI Build Status](https://travis-ci.org/r-spatial/mapview.svg?branch=develop)](https://travis-ci.org/r-spatial/mapview)
 [![monthly](http://cranlogs.r-pkg.org/badges/mapview)](https://www.rpackages.io/package/mapview) 
 [![total](http://cranlogs.r-pkg.org/badges/grand-total/mapview)](https://www.rpackages.io/package/mapview)
@@ -8,6 +9,8 @@
 [![Coverage Status](https://img.shields.io/codecov/c/github/r-spatial/mapview/develop.svg)](https://codecov.io/github/r-spatial/mapview?branch=develop)
 
 ### Interactive viewing of spatial data in R ###
+
+<a href="https://github.com/tim-salabim/mvl"><img align="right" src="https://github.com/tim-salabim/mvl/blob/cstriestohelp/imagery/animated/box_anim.gif?raw=true" /></a>
 
 **mapview** is an R package created to help researchers during their spatial data analysis workflow. It provides functions to very quickly and conveniently create interactive visualisations of spatial data. It was created to fill the gap of quick (not presentation grade) interactive plotting to examine and visually investigate both aspects of spatial data, the geometries and their attributes.
 

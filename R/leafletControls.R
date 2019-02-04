@@ -179,20 +179,28 @@ rasterCheckSize <- function(x, maxpixels) {
 
 # Initialise mapView base maps --------------------------------------------
 
-initBaseMaps <- function(map.types, canvas = FALSE) {
+initBaseMaps <- function(map.types, canvas = FALSE, viewer.suppress = FALSE) {
   ## create base map using specified map types
   if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
   leafletHeight <- mapviewGetOption("leafletHeight")
   leafletWidth <- mapviewGetOption("leafletWidth")
   lid <- 1:length(map.types)
-  m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth,
-                        options = leaflet::leafletOptions(
-                          minZoom = 1,
-                          maxZoom = 100,
-                          bounceAtZoomLimits = FALSE,
-                          maxBounds = list(list(c(-90, -370)),
-                                           list(c(90, 370))),
-                          preferCanvas = canvas))
+  m <- leaflet::leaflet(
+    height = leafletHeight,
+    width = leafletWidth,
+    options = leaflet::leafletOptions(
+      minZoom = 1,
+      maxZoom = 100,
+      bounceAtZoomLimits = FALSE,
+      maxBounds = list(
+        list(c(-90, -370)),
+        list(c(90, 370))),
+      preferCanvas = canvas),
+    sizingPolicy = leafletSizingPolicy(
+      viewer.suppress = viewer.suppress,
+      browser.external = viewer.suppress
+    )
+  )
   m <- leaflet::addProviderTiles(m, provider = map.types[1],
                                  layerId = lid[1], group = map.types[1])
   if (length(map.types) > 1) {
@@ -211,7 +219,8 @@ initMap <- function(map = NULL,
                     map.types = NULL,
                     proj4str,
                     native.crs = FALSE,
-                    canvas = FALSE) {
+                    canvas = FALSE,
+                    viewer.suppress = FALSE) {
 
   # if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
 
@@ -226,13 +235,20 @@ initMap <- function(map = NULL,
   ## create base map using specified map types
   if (is.null(map)) {
     if (is.na(proj4str) | native.crs) {
-      m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth,
-                            options = leaflet::leafletOptions(
-                              minZoom = -1000,
-                              crs = leafletCRS(crsClass = "L.CRS.Simple"),
-                              preferCanvas = canvas))
+      m <- leaflet::leaflet(
+        height = leafletHeight,
+        width = leafletWidth,
+        options = leaflet::leafletOptions(
+          minZoom = -1000,
+          crs = leafletCRS(crsClass = "L.CRS.Simple"),
+          preferCanvas = canvas),
+        sizingPolicy = leafletSizingPolicy(
+          viewer.suppress = viewer.suppress,
+          browser.external = viewer.suppress
+        )
+      )
     } else {
-      m <- initBaseMaps(map.types, canvas = canvas)
+      m <- initBaseMaps(map.types, canvas = canvas, viewer.suppress = viewer.suppress)
     }
   } else {
     m <- map

@@ -1,58 +1,96 @@
-Package: mapview
 Type: Package
+Package: mapview
 Title: Interactive Viewing of Spatial Data in R
-Version: 2.5.0
-Date: 2018-08-16
-Authors@R: c(
-      person("Tim", "Appelhans", email = "tim.appelhans@gmail.com", role = c("cre", "aut")),
-      person("Florian", "Detsch", email = "fdetsch@web.de", role = c("aut")),
-      person("Christoph", "Reudenbach", email = "reudenbach@geo.uni-marburg.de", role = c("aut")),
-      person("Stefan", "Woellauer", email = "stephan.woellauer@geo.uni-marburg.de", role = c("aut")),
-      person("Spaska", "Forteva", email = "spaska.forteva@geo.uni-marburg.de", role = c("ctb")),
-      person("Thomas", "Nauss", email = "nauss@staff.uni-marburg.de", role = c("ctb")),
-      person("Edzer", "Pebesma", role = c("ctb")),
-      person("Kenton", "Russell", role = c("ctb")),
-      person("Michael", "Sumner", role = c("ctb")),
-      person("Jochen", "Darley", email = "Debugger@jedimasters.de", role = c("ctb")),
-      person("Pierre", "Roudier", role = c("ctb")),
-      person("Environmental Informatics Marburg", role = c("ctb"))
-    )
+Version: 2.6.4
+Date: 2019-01-27
+Authors@R: 
+    c(person(given = "Tim",
+             family = "Appelhans",
+             role = c("cre", "aut"),
+             email = "tim.appelhans@gmail.com"),
+      person(given = "Florian",
+             family = "Detsch",
+             role = "aut",
+             email = "fdetsch@web.de"),
+      person(given = "Christoph",
+             family = "Reudenbach",
+             role = "aut",
+             email = "reudenbach@geo.uni-marburg.de"),
+      person(given = "Stefan",
+             family = "Woellauer",
+             role = "aut",
+             email = "stephan.woellauer@geo.uni-marburg.de"),
+      person(given = "Spaska",
+             family = "Forteva",
+             role = "ctb",
+             email = "spaska.forteva@geo.uni-marburg.de"),
+      person(given = "Thomas",
+             family = "Nauss",
+             role = "ctb",
+             email = "nauss@staff.uni-marburg.de"),
+      person(given = "Edzer",
+             family = "Pebesma",
+             role = "ctb"),
+      person(given = "Kenton",
+             family = "Russell",
+             role = "ctb"),
+      person(given = "Michael",
+             family = "Sumner",
+             role = "ctb"),
+      person(given = "Jochen",
+             family = "Darley",
+             role = "ctb",
+             email = "Debugger@jedimasters.de"),
+      person(given = "Pierre",
+             family = "Roudier",
+             role = "ctb"),
+      person(given = "Patrick",
+             family = "Schratz",
+             role = "ctb"),
+      person(given = "Environmental Informatics Marburg",
+             role = "ctb"))
 Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
-Description: Quickly and conveniently create interactive visualisations of spatial data with or without background maps. Attributes of displayed features are fully queryable via pop-up windows. Additional functionality includes methods to visualise true- and false-color raster images, bounding boxes, small multiples and 3D raster data cubes. 
+Description: Quickly and conveniently create interactive
+    visualisations of spatial data with or without background maps.
+    Attributes of displayed features are fully queryable via pop-up
+    windows. Additional functionality includes methods to visualise true-
+    and false-color raster images, bounding boxes, small multiples and 3D
+    raster data cubes.
 License: GPL (>= 3) | file LICENSE
 URL: https://github.com/r-spatial/mapview
 BugReports: https://github.com/r-spatial/mapview/issues
-LazyData: TRUE
 Depends:
-    R (>= 2.10),  
-    methods
+    methods,
+    R (>= 2.10)
 Imports:
-    leaflet(>= 1.0.0),
-    sp,
+    base64enc,
+    brew,
+    htmltools,
+    htmlwidgets,
+    lattice,
+    leaflet (>= 2.0.0),
+    png,
     raster,
+    Rcpp (>= 0.11.3),
     satellite,
     scales (>= 0.2.5),
-    brew,
-    htmlwidgets,
-    htmltools,
-    png,
-    Rcpp (>= 0.11.3),
-    lattice,
-    webshot,
-    viridisLite,
     sf,
-    stars,
-    base64enc,
+    sp,
     svglite,
-    uuid
-LinkingTo: Rcpp
+    uuid,
+    viridisLite,
+    webshot
+Suggests:
+    covr,
+    dplyr,
+    knitr,
+    lwgeom,
+    rmarkdown,
+    stars,
+    testthat
+LinkingTo: 
+    Rcpp
+ByteCompile: yes
+LazyData: TRUE
 RoxygenNote: 6.1.0
 SystemRequirements: GNU make
-ByteCompile: yes
-Suggests:
-    knitr,
-    rmarkdown,
-    dplyr,
-    testthat,
-    covr,
-    lwgeom

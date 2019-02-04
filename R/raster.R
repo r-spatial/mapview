@@ -28,6 +28,7 @@ leafletRL = function(x,
                      query.digits,
                      query.position,
                      query.prefix,
+                     viewer.suppress,
                      ...) {
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
@@ -53,7 +54,7 @@ leafletRL = function(x,
     is.fact = raster::is.factor(x)
     # ext = raster::extent(raster::projectExtent(x, crs = llcrs))
 
-    m = initMap(map, map.types, sp::proj4string(x))
+    m = initMap(map, map.types, sp::proj4string(x), viewer.suppress = viewer.suppress)
     x = rasterCheckSize(x, maxpixels = maxpixels)
     x = rasterCheckAdjustProjection(x, method)
     ext = raster::extent(raster::projectExtent(x, crs = llcrs))
@@ -182,6 +183,7 @@ leafletRSB = function(x,
                       query.digits,
                       query.position,
                       query.prefix,
+                      viewer.suppress,
                       ...) {
 
   pkgs = c("leaflet", "raster", "magrittr")
@@ -189,7 +191,7 @@ leafletRSB = function(x,
                quietly = TRUE, USE.NAMES = FALSE)
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
-  m = initMap(map, map.types, sp::proj4string(x))
+  m = initMap(map, map.types, sp::proj4string(x), viewer.suppress = viewer.suppress)
 
   if (nlayers(x) == 1) {
     x = raster(x, layer = 1)
@@ -289,6 +291,7 @@ leafletPixelsDF = function(x,
                            query.digits,
                            query.position,
                            query.prefix,
+                           viewer.suppress,
                            ...) {
 
   pkgs = c("leaflet", "sp", "magrittr")
@@ -328,6 +331,7 @@ leafletPixelsDF = function(x,
               query.digits = query.digits,
               query.position = query.position,
               query.prefix = query.prefix,
+              viewer.suppress = viewer.suppress,
               ...)
 
   out = new('mapview', object = list(x), map = m@map)

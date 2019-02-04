@@ -9,6 +9,7 @@
 #' @param zcol \code{numeric} or \code{character} vector indicating the columns
 #' included in the output popup table. If missing, all columns are displayed.
 #' @param row.numbers \code{logical} whether to include row numbers in the popup table.
+#' @param feature.id \code{logical} whether to add 'Feature ID' entry to popup table.
 #'
 #' @return
 #' A \code{list} of HTML strings required to create feature popup tables.
@@ -27,7 +28,7 @@
 #' @export popupTable
 #' @name popupTable
 #' @rdname popup
-popupTable = function(x, zcol, row.numbers = TRUE) {
+popupTable = function(x, zcol, row.numbers = TRUE, feature.id = TRUE) {
 
   if (inherits(x, "sfc")) {
     return(NULL)
@@ -35,7 +36,7 @@ popupTable = function(x, zcol, row.numbers = TRUE) {
     if (!missing(zcol))
       x = x[, zcol, drop = FALSE]
   }
-  brewPopupTable(x, row.numbers = row.numbers)
+  brewPopupTable(x, row.numbers = row.numbers, feature.id = feature.id)
 }
 
 
@@ -502,7 +503,11 @@ popupIframe = function(src, width = 300, height = 300) {
 
 ### controls ==============================================================
 # create popup table of attributes
-brewPopupTable = function(x, width = 300, height = 300, row.numbers = TRUE) {
+brewPopupTable = function(x,
+                          width = 300,
+                          height = 300,
+                          row.numbers = TRUE,
+                          feature.id = TRUE) {
 
   if (inherits(x, "Spatial")) x = x@data
   if (inherits(x, "sf")) x = sf2DataFrame(x)
@@ -541,8 +546,10 @@ brewPopupTable = function(x, width = 300, height = 300, row.numbers = TRUE) {
     # if (nrow(x) == 1) mat = t(mat)
   }
 
-  fid = rownames(x)
-  mat = cbind("Feature ID" = fid, mat)
+  if (feature.id) {
+    fid = rownames(x)
+    mat = cbind("Feature ID" = fid, mat)
+  }
 
   ## create list with row-specific html code
   cols = colnames(mat)

@@ -35,7 +35,13 @@ if ( !isGeneric('mapView') ) {
 #' are rendered in the same pane and layer order is determined by automatically/sequencially.
 #' @param canvas whether to use canvas rendering rather than svg. May help
 #' performance with larger data. See \url{http://leafletjs.com/reference-1.3.0.html#canvas}
-#' for more information.
+#' for more information. Only applicable for vector data. The default setting will
+#' decide automatically, based on feature complexity.
+#' @param viewer.suppress whether to render the map in the browser (\code{TRUE})
+#' or the RStudio viewer (\code{FALSE}). When not using RStudio, maps will open
+#' in the browser by default. This is passed to \link[htmlwidgets]{sizingPolicy}
+#' via \link[leaflet]{leafletSizingPolicy}. For raster data the default is \code{FALSE}.
+#' For vector data it deoends on argument \code{canvas}.
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color color (palette) for points/polygons/lines
@@ -246,6 +252,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    query.digits,
                    query.position = "topright",
                    query.prefix = "Layer",
+                   viewer.suppress = FALSE,
                    ...) {
 
             method = match.arg(method)
@@ -287,6 +294,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                           query.digits = query.digits,
                           query.position = query.position,
                           query.prefix = query.prefix,
+                          viewer.suppress = viewer.suppress,
                           ...)
             } else {
               NULL
@@ -325,6 +333,7 @@ setMethod('mapView', signature(x = 'stars'),
                    query.digits,
                    query.position = "topright",
                    query.prefix = "Layer",
+                   viewer.suppress = FALSE,
                    ...) {
 
             method = match.arg(method)
@@ -359,6 +368,7 @@ setMethod('mapView', signature(x = 'stars'),
                             query.digits = query.digits,
                             query.position = query.position,
                             query.prefix = query.prefix,
+                            viewer.suppress = viewer.suppress,
                             ...)
             } else {
               NULL
@@ -393,6 +403,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                    query.digits,
                    query.position = "topright",
                    query.prefix = "Layer",
+                   viewer.suppress = FALSE,
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -416,6 +427,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                          query.digits = query.digits,
                          query.position = query.position,
                          query.prefix = query.prefix,
+                         viewer.suppress = viewer.suppress,
                          ...)
             } else {
               NULL
@@ -484,6 +496,7 @@ setMethod('mapView', signature(x = 'sf'),
                    map = NULL,
                    pane = "auto",
                    canvas = useCanvas(x),
+                   viewer.suppress = canvas,
                    zcol = NULL,
                    burst = FALSE,
                    color = mapviewGetOption("vector.palette"),
@@ -513,7 +526,7 @@ setMethod('mapView', signature(x = 'sf'),
                    " does not contain data \n", call. = FALSE)
             }
 
-            if (is.null(zcol)) legend = FALSE
+            if (is.null(zcol) & is.null(legend)) legend = FALSE
             if (!is.null(zcol) && !all(zcol %in% colnames(x))) {
               stop("\n", "at least one of the following columns: \n",
                    paste(zcol, collapse = ", "), "\nnot found in ",
@@ -591,6 +604,7 @@ setMethod('mapView', signature(x = 'sf'),
                            highlight = highlight,
                            maxpoints = maxpoints,
                            canvas = canvas,
+                           viewer.suppress = viewer.suppress,
                            ...)
 
               } else {
@@ -610,6 +624,7 @@ setMethod('mapView', signature(x = 'sf'),
                         alpha.regions = alpha.regions,
                         na.alpha = na.alpha,
                         canvas = canvas,
+                        viewer.suppress = viewer.suppress,
                         pane = pane,
                         cex = cex,
                         lwd = lwd,
@@ -632,6 +647,7 @@ setMethod('mapView', signature(x = 'sfc'),
                    map = NULL,
                    pane = "auto",
                    canvas = useCanvas(x),
+                   viewer.suppress = canvas,
                    color = standardColor(x), #mapviewGetOption("vector.palette"),
                    col.regions = standardColRegions(x), #mapviewGetOption("vector.palette"),
                    at = NULL,
@@ -665,6 +681,7 @@ setMethod('mapView', signature(x = 'sfc'),
                           map = map,
                           pane = pane,
                           canvas = canvas,
+                          viewer.suppress = viewer.suppress,
                           color = color,
                           col.regions = col.regions,
                           na.color = na.color,
@@ -786,6 +803,7 @@ setMethod('mapView', signature(x = 'XY'),
                    map = NULL,
                    pane = "auto",
                    canvas = useCanvas(x),
+                   viewer.suppress = canvas,
                    color = standardColor(x), #mapviewGetOption("vector.palette"),
                    col.regions = standardColRegions(x), #mapviewGetOption("vector.palette"),
                    at = NULL,
@@ -815,6 +833,7 @@ setMethod('mapView', signature(x = 'XY'),
                           map = map,
                           pane = pane,
                           canvas = canvas,
+                          viewer.suppress = viewer.suppress,
                           color = color,
                           col.regions = col.regions,
                           na.color = na.color,
@@ -882,76 +901,6 @@ setMethod('mapView', signature(x = 'XYZM'),
           }
 )
 
-
-
-# ## sfc_POINT ==============================================================
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_POINT'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_MULTIPOINT =========================================================
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_MULTIPOINT'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_LINESTRING =========================================================
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_LINESTRING'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_MULTILINESTRING ====================================================
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_MULTILINESTRING'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_POLYGON =======================================================
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_POLYGON'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_MULTIPOLYGON =======================================================
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_MULTIPOLYGON'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_GEOMETRY =======================================================
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_GEOMETRY'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
 
 
 ## bbox =======================================================
@@ -1142,6 +1091,7 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                    query.digits,
                    query.position = "topright",
                    query.prefix = "Layer",
+                   viewer.suppress = FALSE,
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -1169,6 +1119,7 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                               query.digits = query.digits,
                               query.position = query.position,
                               query.prefix = query.prefix,
+                              viewer.suppress = viewer.suppress,
                               ...)
             } else {
               NULL
@@ -1206,6 +1157,7 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                    query.digits,
                    query.position = "topright",
                    query.prefix = "Layer",
+                   viewer.suppress = FALSE,
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -1233,6 +1185,7 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                               query.digits = query.digits,
                               query.position = query.position,
                               query.prefix = query.prefix,
+                              viewer.suppress = viewer.suppress,
                               ...)
             } else {
               NULL
@@ -1338,3 +1291,75 @@ setMethod('mapView', signature(x = 'SpatialLines'),
           }
 )
 
+
+
+
+# legacy -----
+# ## sfc_POINT
+# #' @describeIn mapView \code{\link{st_sfc}}
+#
+# setMethod('mapView', signature(x = 'sfc_POINT'),
+#           function(x, ...) {
+#             callNextMethod()
+#           }
+# )
+#
+#
+# ## sfc_MULTIPOINT
+# #' @describeIn mapView \code{\link{st_sfc}}
+#
+# setMethod('mapView', signature(x = 'sfc_MULTIPOINT'),
+#           function(x, ...) {
+#             callNextMethod()
+#           }
+# )
+#
+#
+# ## sfc_LINESTRING
+# #' @describeIn mapView \code{\link{st_sfc}}
+#
+# setMethod('mapView', signature(x = 'sfc_LINESTRING'),
+#           function(x, ...) {
+#             callNextMethod()
+#           }
+# )
+#
+#
+# ## sfc_MULTILINESTRING
+# #' @describeIn mapView \code{\link{st_sfc}}
+#
+# setMethod('mapView', signature(x = 'sfc_MULTILINESTRING'),
+#           function(x, ...) {
+#             callNextMethod()
+#           }
+# )
+#
+#
+# ## sfc_POLYGON
+# #' @describeIn mapView \code{\link{st_sfc}}
+#
+# setMethod('mapView', signature(x = 'sfc_POLYGON'),
+#           function(x, ...) {
+#             callNextMethod()
+#           }
+# )
+#
+#
+# ## sfc_MULTIPOLYGON
+# #' @describeIn mapView \code{\link{st_sfc}}
+#
+# setMethod('mapView', signature(x = 'sfc_MULTIPOLYGON'),
+#           function(x, ...) {
+#             callNextMethod()
+#           }
+# )
+#
+#
+# ## sfc_GEOMETRY
+# #' @describeIn mapView \code{\link{st_sfc}}
+#
+# setMethod('mapView', signature(x = 'sfc_GEOMETRY'),
+#           function(x, ...) {
+#             callNextMethod()
+#           }
+# )
