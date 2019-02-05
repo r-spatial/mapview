@@ -15,7 +15,6 @@ addons:
       - libgdal-dev
       - libudunits2-dev
       - netcdf-bin # for stars netcdf dep
-      - liblwgeom-dev
 
 r:
   - release
