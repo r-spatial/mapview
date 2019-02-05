@@ -1,10 +1,10 @@
 add_package_checks()
 
-get_stage("before_install") %>%
+get_stage("install") %>%
   # install lwgeom with its own library since linking again postgis source install fails sometimes
   add_step(step_install_cran("lwgeom", configure.args="--without-liblwgeom"))  # normal installation does not work
 
-get_stage("install") %>%
+get_stage("script") %>%
   add_step(step_install_github("r-spatial/stars")) %>%
   add_step(step_install_github("hrbrmstr/albersusa")) %>%
   add_step(step_rcmdcheck(error_on = "error"))
