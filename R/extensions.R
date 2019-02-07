@@ -10,8 +10,6 @@
 #' on the map.
 #'
 #' @param map a mapview or leaflet object.
-#' @param style whether to show 'detailed' or 'basic' mouse position info.
-#' See Details for an explanation.
 #' @param epsg the epsg string to be shown.
 #' @param proj4string the proj4string to be shown.
 #' @param native.crs logical. whether to use the native crs in the coordinates box.
@@ -28,35 +26,35 @@
 #'   \item zoom: the current zoom level
 #' }
 #'
-#' If style is set to "basic", only 'lat', 'lon' and 'zoom' are shown.
+#' By default, only 'lat', 'lon' and 'zoom' are shown. To show the details about
+#' epsg, proj4 press and hold 'Ctrl' and move the mouse. 'Ctrl' + click will
+#' copy the current contents of the box/strip at the top of the map to the clipboard,
+#' though currently only copying of 'lon', 'lat' and 'zoom' are supported, not
+#' 'epsg' and 'proj4' as these do not change with pan and zoom.
 #'
 #' @examples
 #' library(leaflet)
 #'
-#' leaflet() %>% addProviderTiles("OpenStreetMap") # without mouse position info
+#' leaflet() %>%
+#'   addProviderTiles("OpenStreetMap") # without mouse position info
 #' leaflet() %>%
 #'   addProviderTiles("OpenStreetMap") %>%
-#'   addMouseCoordinates(style = "basic") # with basic mouse position info
-#' leaflet() %>%
-#'   addProviderTiles("OpenStreetMap") %>%
-#'   addMouseCoordinates() # with detailed mouse position info
-#'
+#'   addMouseCoordinates()
 #'
 #' @export addMouseCoordinates
 #' @name addMouseCoordinates
 #' @rdname addMouseCoordinates
 #' @aliases addMouseCoordinates
 
-addMouseCoordinates <- function(map, style = c("detailed", "basic"),
-                                 epsg = NULL, proj4string = NULL,
-                                 native.crs = FALSE) {
-
-  style <- style[1]
+addMouseCoordinates <- function(map,
+                                epsg = NULL,
+                                proj4string = NULL,
+                                native.crs = FALSE) {
 
   if (inherits(map, "mapview")) map <- mapview2leaflet(map)
   stopifnot(inherits(map, "leaflet"))
 
-  if (style == "detailed" && !native.crs) {
+  if (!native.crs) {
     txt_detailed <- paste0("
                            ' lon: ' + (e.latlng.lng).toFixed(5) +
                            ' | lat: ' + (e.latlng.lat).toFixed(5) +
@@ -78,10 +76,6 @@ addMouseCoordinates <- function(map, style = c("detailed", "basic"),
                       ' lon: ' + (e.latlng.lng).toFixed(5) +
                       ' | lat: ' + (e.latlng.lat).toFixed(5) +
                       ' | zoom: ' + map.getZoom() + ' '")
-
-  txt <- switch(style,
-                detailed = txt_detailed,
-                basic = txt_basic)
 
   map <- htmlwidgets::onRender(
     map,

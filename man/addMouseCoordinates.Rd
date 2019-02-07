@@ -5,16 +5,13 @@
 \alias{removeMouseCoordinates}
 \title{Add mouse coordinate information at top of map.}
 \usage{
-addMouseCoordinates(map, style = c("detailed", "basic"), epsg = NULL,
-  proj4string = NULL, native.crs = FALSE)
+addMouseCoordinates(map, epsg = NULL, proj4string = NULL,
+  native.crs = FALSE)
 
 removeMouseCoordinates(map)
 }
 \arguments{
 \item{map}{a mapview or leaflet object.}
-
-\item{style}{whether to show 'detailed' or 'basic' mouse position info.
-See Details for an explanation.}
 
 \item{epsg}{the epsg string to be shown.}
 
@@ -41,7 +38,11 @@ If style is set to "detailed", the following information will be displayed:
   \item zoom: the current zoom level
 }
 
-If style is set to "basic", only 'lat', 'lon' and 'zoom' are shown.
+By default, only 'lat', 'lon' and 'zoom' are shown. To show the details about
+epsg, proj4 press and hold 'Ctrl' and move the mouse. 'Ctrl' + click will
+copy the current contents of the box/strip at the top of the map to the clipboard,
+though currently only copying of 'lon', 'lat' and 'zoom' are supported, not
+'epsg' and 'proj4' as these do not change with pan and zoom.
 }
 \section{Functions}{
 \itemize{
@@ -51,14 +52,11 @@ If style is set to "basic", only 'lat', 'lon' and 'zoom' are shown.
 \examples{
 library(leaflet)
 
-leaflet() \%>\% addProviderTiles("OpenStreetMap") # without mouse position info
+leaflet() \%>\%
+  addProviderTiles("OpenStreetMap") # without mouse position info
 leaflet() \%>\%
   addProviderTiles("OpenStreetMap") \%>\%
-  addMouseCoordinates(style = "basic") # with basic mouse position info
-leaflet() \%>\%
-  addProviderTiles("OpenStreetMap") \%>\%
-  addMouseCoordinates() # with detailed mouse position info
-
+  addMouseCoordinates()
 
 m = mapview(breweries)
 removeMouseCoordinates(m)
