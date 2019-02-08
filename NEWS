@@ -1,4 +1,8 @@
-mapview 2.6.4
+mapview 2.6.5
+
+miscellaneous:
+
+  * addMouseCoordinates now also displays native coordinates for leaflet maps. #205
 
 bugfixes:
 
