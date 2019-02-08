@@ -1,7 +1,4 @@
-add_package_checks(warnings_are_errors = FALSE)
-
-get_stage("install") %>%
-  add_step(step_install_cran("lwgeom", configure.args="--without-liblwgeom"))
+add_package_checks(error_on = "error")
 
 ###
 # deploy pkgdowm site
