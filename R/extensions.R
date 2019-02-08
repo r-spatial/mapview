@@ -54,7 +54,14 @@ addMouseCoordinates <- function(map,
   if (inherits(map, "mapview")) map <- mapview2leaflet(map)
   stopifnot(inherits(map, "leaflet"))
 
-  if (!native.crs) {
+  if (native.crs | map$x$options$crs$crsClass == "L.CRS.Simple") {
+    txt_detailed <- paste0("
+                           ' x: ' + (e.latlng.lng).toFixed(5) +
+                           ' | y: ' + (e.latlng.lat).toFixed(5) +
+                           ' | epsg: ", epsg, " ' +
+                           ' | proj4: ", proj4string, " ' +
+                           ' | zoom: ' + map.getZoom() + ' '")
+  } else {
     txt_detailed <- paste0("
                            ' lon: ' + (e.latlng.lng).toFixed(5) +
                            ' | lat: ' + (e.latlng.lat).toFixed(5) +
@@ -63,13 +70,6 @@ addMouseCoordinates <- function(map,
                            ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +
                            ' | epsg: 3857 ' +
                            ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs '")
-  } else {
-    txt_detailed <- paste0("
-                           ' x: ' + (e.latlng.lng).toFixed(5) +
-                           ' | y: ' + (e.latlng.lat).toFixed(5) +
-                           ' | epsg: ", epsg, " ' +
-                           ' | proj4: ", proj4string, " ' +
-                           ' | zoom: ' + map.getZoom() + ' '")
   }
 
   txt_basic <- paste0("
