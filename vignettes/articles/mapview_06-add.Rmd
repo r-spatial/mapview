@@ -26,21 +26,13 @@ Here are some examples:
 
 ## addMouseCoordinates
 
-let's us add mouse position information along with detailed information about the layer's projection and zoom level information
+let's us add mouse position information along with detailed information about the layer's projection and zoom level information. By default, only `lon`, `lat` and `zoom` are shown. To also show info on the `epsg code` and the `proj4string` press and hold Ctrl and move the mouse. `addMouseCoordinates` also allows us to copy the info about the current mouse position to the clipboard by holding the Ctrl and left-clicking on the map.
 
 ```{r addmc default}
 library(mapview)
 library(leaflet)
 
 leaflet() %>% addTiles() %>% addMouseCoordinates()
-```
-
-<br>
-
-or a basic version only showing information about mouse cursor position (long/lat) and zoom level
-
-```{r addmc basic}
-leaflet() %>% addTiles() %>% addMouseCoordinates(style = "basic")
 ```
 
 ------
