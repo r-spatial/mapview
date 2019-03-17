@@ -1,8 +1,9 @@
-mapview 2.6.5
+mapview 2.6.6
 
 miscellaneous:
 
   * addMouseCoordinates now also displays native coordinates for leaflet maps. #205
+  * deprecated slideview, cubeview, latticeview & sync
 
 bugfixes:
 
