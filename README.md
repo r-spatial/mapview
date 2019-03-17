@@ -19,9 +19,9 @@ The main user relevant functions are:
 * `mapview` - view potentially multiple spatial objects on a set of background maps
 * `viewExtent` - view extent / bounding box of spatial objects
 * `viewRGB` - view RGB true- or false-color images of raster objects
-* `latticeView` & `sync` - view small multiples of several potentially synchronised maps
-* `slideView` - view two overlaid raster objects with a horizontal slider to hide/reveal one of them
-* `cubeView` - 3D view of raster data cubes (e.g. space-time cube) with keyboard control over position of slices
+* `latticeView` & `sync` - deprecated, use package [leafsync](https://CRAN.R-project.org/package=leafsync) instead
+* `slideView` - deprecated, use package [slideview](https://CRAN.R-project.org/package=slideview) instead
+* `cubeView` - deprecated, use package [cubeview](https://CRAN.R-project.org/package=cubeview) instead
 * `plainview` - view large rasters on a plain background (i.e. no background map)
 * `mapshot` - easily save maps (including leaflet maps) as `html` or `png` (or other image formats)
 

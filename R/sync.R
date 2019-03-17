@@ -67,6 +67,9 @@ latticeView <- function(...,
                         sync.cursor = FALSE,
                         no.initial.sync = TRUE) {
 
+  .Deprecated(new = "leafsync::latticeView", package = "mapview",
+              old = "mapview::latticeView")
+
   ## convert all ... objects to list or extract list if list was passed
   ls <- list(...)
   if (length(ls) == 1) ls <- ls[[1]]
@@ -154,7 +157,11 @@ latticeView <- function(...,
 #' @describeIn latticeView alias for ease of typing
 #' @aliases latticeview
 #' @export latticeview
-latticeview <- function(...) latticeView(...)
+latticeview <- function(...) {
+  .Deprecated(new = "leafsync::latticeview", package = "mapview",
+              old = "mapview::latticeview")
+  latticeView(...)
+}
 
 #' @describeIn latticeView convenience function for syncing maps
 #' @aliases sync
@@ -164,6 +171,9 @@ sync <- function(...,
                  sync = "all",
                  sync.cursor = TRUE,
                  no.initial.sync = TRUE) {
+
+  .Deprecated(new = "leafsync::sync", package = "leafsync",
+              old = "mapview::sync")
 
   latticeView(...,
               ncol = ncol,

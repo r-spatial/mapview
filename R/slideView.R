@@ -115,6 +115,9 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
                    maxpixels = mapviewGetOption("plainview.maxpixels"),
                    ...) {
 
+            .Deprecated(new = "slideview::slideView", package = "mapview",
+                        old = "mapview::slideView")
+
             png1 <- rgbStack2PNG(img1, r = r, g = g, b = b,
                                  na.color = na.color,
                                  maxpixels = maxpixels,
@@ -158,6 +161,9 @@ setMethod("slideView", signature(img1 = "RasterLayer",
                    col.regions = mapviewGetOption("raster.palette")(256),
                    na.color = mapviewGetOption("na.color"),
                    maxpixels = mapviewGetOption("plainview.maxpixels")) {
+
+            .Deprecated(new = "slideview::slideView", package = "mapview",
+                        old = "mapview::slideView")
 
             png1 <- raster2PNG(img1, col.regions = col.regions,
                                na.color = na.color,
@@ -247,6 +253,9 @@ setMethod("slideView", signature(img1 = "RasterStackBrick",
                    maxpixels = mapviewGetOption("plainview.maxpixels"),
                    ...) {
 
+            .Deprecated(new = "slideview::slideView", package = "mapview",
+                        old = "mapview::slideView")
+
             png1 <- rgbStack2PNG(img1, r = r, g = g, b = b,
                                  na.color = na.color,
                                  maxpixels = maxpixels,
@@ -320,6 +329,9 @@ setMethod("slideView", signature(img1 = "RasterLayer",
                    maxpixels = mapviewGetOption("plainview.maxpixels"),
                    ...) {
 
+            .Deprecated(new = "slideview::slideView", package = "mapview",
+                        old = "mapview::slideView")
+
             png1 <- raster2PNG(img1, col.regions = col.regions,
                                na.color = na.color,
                                maxpixels = maxpixels)
@@ -383,6 +395,9 @@ setMethod("slideView", signature(img1 = "character",
           function(img1, img2,
                    label1 = deparse(substitute(img1, env = parent.frame())),
                    label2 = deparse(substitute(img2, env = parent.frame()))) {
+
+            .Deprecated(new = "slideview::slideView", package = "mapview",
+                        old = "mapview::slideView")
 
             png1 <- png::readPNG(img1)
             png2 <- png::readPNG(img2)
@@ -479,14 +494,31 @@ slideViewInternal <- function(message,
 }
 
 
-
+#' Widget output function for use in Shiny
+#'
+#' @param outputId Output variable to read from
+#' @param width,height the width and height of the canas element
+#' (see \code{\link{shinyWidgetOutput}})
+#'
+#' @export
 slideViewOutput <- function(outputId, width = '100%', height = '400px'){
+  .Deprecated(new = "slideview::slideViewOutput", package = "mapview",
+              old = "mapview::slideViewOutput")
   htmlwidgets::shinyWidgetOutput(outputId, 'slideView',
                                  width, height, package = 'mapview')
 }
 
-
+#' Widget render function for use in Shiny
+#'
+#' @param expr An expression that generates an HTML widget
+#' @param env The environment in which to evaluate expr
+#' @param quoted Is expr a quoted expression (with quote())?
+#' This is useful if you want to save an expression in a variable
+#'
+#' @export
 renderslideView <- function(expr, env = parent.frame(), quoted = FALSE) {
+  .Deprecated(new = "slideview::renderslideView", package = "mapview",
+              old = "mapview::renderslideView")
   if (!quoted) { expr <- substitute(expr) } # force quoted
   htmlwidgets::shinyRenderWidget(expr, slideViewOutput, env, quoted = TRUE)
 }
@@ -504,5 +536,9 @@ if ( !isGeneric('slideview') ) {
 #' @export slideview
 
 setMethod('slideview', signature('ANY'),
-          function(...) slideView(...))
+          function(...) {
+            .Deprecated(new = "slideview::slideview", package = "mapview",
+                        old = "mapview::slideview")
+            slideView(...)
+          })
 

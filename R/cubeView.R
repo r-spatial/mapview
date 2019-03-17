@@ -55,6 +55,9 @@ cubeView <- function(x,
                      na.color = mapviewGetOption("na.color"),
                      legend = TRUE) {
 
+  .Deprecated(new = "cubeview::cubeView", package = "mapview",
+              old = "mapview::cubeView")
+
   stopifnot(inherits(x, "RasterStack") | inherits(x, "RasterBrick"))
 
   #v <- raster::as.matrix(flip(x, direction = "y"))
@@ -239,6 +242,8 @@ cubeViewRaw <- function(grey = NULL,
 #'
 #' @export
 cubeViewOutput <- function(outputId, width = '100%', height = '400px'){
+  .Deprecated(new = "cubeview::cubeViewOutput", package = "mapview",
+              old = "mapview::cubeViewOutput")
   htmlwidgets::shinyWidgetOutput(outputId, 'cubeView',
                                  width, height, package = 'mapview')
 }
@@ -252,6 +257,8 @@ cubeViewOutput <- function(outputId, width = '100%', height = '400px'){
 #'
 #' @export
 renderCubeView <- function(expr, env = parent.frame(), quoted = FALSE) {
+  .Deprecated(new = "cubeview::renderCubeView", package = "mapview",
+              old = "mapview::renderCubeView")
   if (!quoted) { expr <- substitute(expr) } # force quoted
   htmlwidgets::shinyRenderWidget(expr, cubeViewOutput, env, quoted = TRUE)
 }
@@ -262,5 +269,9 @@ renderCubeView <- function(expr, env = parent.frame(), quoted = FALSE) {
 #' @aliases cubeview
 #' @export cubeview
 
-cubeview <-  function(...) cubeView(...)
+cubeview <-  function(...) {
+  .Deprecated(new = "cubeview::cubeview", package = "mapview",
+              old = "mapview::cubeview")
+  cubeView(...)
+}
 
