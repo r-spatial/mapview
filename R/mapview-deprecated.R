@@ -34,6 +34,12 @@
 #'  \item \code{\link{sync}}: This function is deprecated, and will
 #'  be removed in the next version of this package. This function has been
 #'  migrated to package 'leafsync'.
+#'  \item \code{\link{plainview}}: This function is deprecated, and will
+#'  be removed in the next version of this package. This function has been
+#'  migrated to package 'plainview'.
+#'  \item \code{\link{plainView}}: This function is deprecated, and will
+#'  be removed in the next version of this package. This function has been
+#'  migrated to package 'plainview'.
 #' }
 #'
 #' @name mapview-deprecated

@@ -39,5 +39,11 @@ See below for information on which package they have been moved to.
  \item \code{\link{sync}}: This function is deprecated, and will
  be removed in the next version of this package. This function has been
  migrated to package 'leafsync'.
+ \item \code{\link{plainview}}: This function is deprecated, and will
+ be removed in the next version of this package. This function has been
+ migrated to package 'plainview'.
+ \item \code{\link{plainView}}: This function is deprecated, and will
+ be removed in the next version of this package. This function has been
+ migrated to package 'plainview'.
 }
 }

@@ -53,26 +53,27 @@ if ( !isGeneric('plainView') ) {
 #' Tim Appelhans
 #'
 #' @examples
-#' ### raster data ###
-#' library(sp)
-#' library(raster)
+#' if (interactive()) {
+#'  ### raster data ###
+#'  library(sp)
+#'  library(raster)
 #'
-#' data(meuse.grid)
-#' coordinates(meuse.grid) = ~x+y
-#' proj4string(meuse.grid) <- CRS("+init=epsg:28992")
-#' gridded(meuse.grid) = TRUE
-#' meuse_rst <- stack(meuse.grid)
+#'  data(meuse.grid)
+#'  coordinates(meuse.grid) = ~x+y
+#'  proj4string(meuse.grid) <- CRS("+init=epsg:28992")
+#'  gridded(meuse.grid) = TRUE
+#'  meuse_rst <- stack(meuse.grid)
 #'
-#' # SpatialPixelsDataFrame
-#' plainView(meuse.grid, zcol = "dist")
+#'  # SpatialPixelsDataFrame
+#'  plainView(meuse.grid, zcol = "dist")
 #'
-#' \dontrun{
-#' # raster layer
-#' m1 <- plainView(poppendorf[[5]])
-#' m1
 #'
-#' # raster stack - true color
-#' plainview(poppendorf, 4, 3, 2)
+#'  # raster layer
+#'  m1 <- plainView(poppendorf[[5]])
+#'  m1
+#'
+#'  # raster stack - true color
+#'  plainview(poppendorf, 4, 3, 2)
 #' }
 #'
 #' @export plainView
@@ -96,221 +97,89 @@ setMethod('plainView', signature(x = 'RasterLayer'),
                    gdal = TRUE,
                    ...) {
 
-            ## temp dir
-            dir <- tempfile()
-            dir.create(dir)
-            fl <- paste0(dir, "/img", ".png")
+            .Deprecated(new = "plainview::plainView", package = "mapview",
+                        old = "mapview::plainView")
 
-            if (raster::fromDisk(x) & gdal) {
-              # gdalUtils::gdal_translate(src_dataset = raster::filename(x),
-              #                           dst_dataset = fl,
-              #                           of = "PNG",
-              #                           b = raster::bandnr(x),
-              #                           verbose = verbose)
-              tmp = sf::gdal_utils(util = "translate",
-                                   source = raster::filename(x),
-                                   destination = fl,
-                                   options = c("-of", "PNG", "-b",
-                                               as.character(raster::bandnr(x)),
-                                               "-scale", "-ot", "Byte"))
-            } else {
-              png <- raster2PNG(x,
-                                col.regions = col.regions,
-                                at = at,
-                                na.color = na.color,
-                                maxpixels = maxpixels)
+            plainview::plainView(
+              x = x,
+              maxpixels = maxpixels,
+              col.regions = col.regions,
+              at = at,
+              na.color = na.color,
+              legend = legend,
+              verbose = verbose,
+              layer.name = layer.name,
+              gdal = gdal,
+              ...
+            )
 
-              png::writePNG(png, fl)
-            }
-
-            leg_fl <- NULL
-
-            if (!is_literally_false(legend)) {
-              if (raster::fromDisk(x) & gdal) {
-                col.regions = grDevices::grey.colors(256, start = 0, end = 1, gamma = 1)
-              } else {
-                col.regions = col.regions
-              }
-              rng <- range(x[], na.rm = TRUE)
-              if (missing(at)) at <- lattice::do.breaks(rng, 256)
-
-              if (isTRUE(legend)) {
-                legend = list(NULL)
-              }
-                key = list(col = col.regions,
-                           at = at,
-                           height = 0.9,
-                           space = "right")
-              # }
-
-              key = utils::modifyList(key, legend)
-
-              leg_fl <- paste0(dir, "/legend", ".png")
-              png(leg_fl, height = 200, width = 80, units = "px",
-                  bg = "transparent", pointsize = 14, antialias = "none")
-              rasterLegend(key)
-              dev.off()
-            }
-
-            plainViewInternal(filename = fl,
-                              imgnm = layer.name,
-                              leg_fl = leg_fl,
-                              crs = raster::projection(x),
-                              dims = c(raster::nrow(x),
-                                       raster::ncol(x),
-                                       raster::ncell(x)))
+            # ## temp dir
+            # dir <- tempfile()
+            # dir.create(dir)
+            # fl <- paste0(dir, "/img", ".png")
+            #
+            # if (raster::fromDisk(x) & gdal) {
+            #   # gdalUtils::gdal_translate(src_dataset = raster::filename(x),
+            #   #                           dst_dataset = fl,
+            #   #                           of = "PNG",
+            #   #                           b = raster::bandnr(x),
+            #   #                           verbose = verbose)
+            #   tmp = sf::gdal_utils(util = "translate",
+            #                        source = raster::filename(x),
+            #                        destination = fl,
+            #                        options = c("-of", "PNG", "-b",
+            #                                    as.character(raster::bandnr(x)),
+            #                                    "-scale", "-ot", "Byte"))
+            # } else {
+            #   png <- raster2PNG(x,
+            #                     col.regions = col.regions,
+            #                     at = at,
+            #                     na.color = na.color,
+            #                     maxpixels = maxpixels)
+            #
+            #   png::writePNG(png, fl)
+            # }
+            #
+            # leg_fl <- NULL
+            #
+            # if (!is_literally_false(legend)) {
+            #   if (raster::fromDisk(x) & gdal) {
+            #     col.regions = grDevices::grey.colors(256, start = 0, end = 1, gamma = 1)
+            #   } else {
+            #     col.regions = col.regions
+            #   }
+            #   rng <- range(x[], na.rm = TRUE)
+            #   if (missing(at)) at <- lattice::do.breaks(rng, 256)
+            #
+            #   if (isTRUE(legend)) {
+            #     legend = list(NULL)
+            #   }
+            #     key = list(col = col.regions,
+            #                at = at,
+            #                height = 0.9,
+            #                space = "right")
+            #   # }
+            #
+            #   key = utils::modifyList(key, legend)
+            #
+            #   leg_fl <- paste0(dir, "/legend", ".png")
+            #   png(leg_fl, height = 200, width = 80, units = "px",
+            #       bg = "transparent", pointsize = 14, antialias = "none")
+            #   rasterLegend(key)
+            #   dev.off()
+            # }
+            #
+            # plainViewInternal(filename = fl,
+            #                   imgnm = layer.name,
+            #                   leg_fl = leg_fl,
+            #                   crs = raster::projection(x),
+            #                   dims = c(raster::nrow(x),
+            #                            raster::ncol(x),
+            #                            raster::ncell(x)))
 
           }
 
 )
-
-# ## Raster Stack/Brick ===========================================================
-# #' @describeIn plainView \code{\link{stack}} / \code{\link{brick}}
-#
-# setMethod('plainView', signature(x = 'RasterStackBrick'),
-#           function(x,
-#                    map = NULL,
-#                    maxpixels = mapviewOptions(console = FALSE)$maxpixels,
-#                    color = mapViewPalette(7),
-#                    na.color = mapviewOptions(console = FALSE)$nacolor,
-#                    values = NULL,
-#                    legend = FALSE,
-#                    legend.opacity = 1,
-#                    trim = TRUE,
-#                    verbose = mapviewOptions(console = FALSE)$verbose,
-#                    ...) {
-#
-#             if (mapviewOptions(console = FALSE)$platform == "leaflet") {
-#               leafletPlainRSB(x,
-#                               map,
-#                               maxpixels,
-#                               color,
-#                               na.color,
-#                               values,
-#                               legend,
-#                               legend.opacity,
-#                               trim,
-#                               verbose,
-#                               ...)
-#             } else {
-#               NULL
-#             }
-#
-#           }
-# )
-#
-#
-#
-# ## Satellite object =======================================================
-# #' @describeIn plainView \code{\link{satellite}}
-#
-# setMethod('plainView', signature(x = 'Satellite'),
-#           function(x,
-#                    ...) {
-#
-#             pkgs <- c("leaflet", "satellite", "magrittr")
-#             tst <- sapply(pkgs, "requireNamespace",
-#                           quietly = TRUE, USE.NAMES = FALSE)
-#
-#             lyrs <- x@layers
-#
-#             m <- plainView(lyrs[[1]], ...)
-#
-#             if (length(lyrs) > 1) {
-#               for (i in 2:length(lyrs)) {
-#                 m <- plainView(lyrs[[i]], m, ...)
-#               }
-#             }
-#
-#             if (length(getLayerNamesFromMap(m)) > 1) {
-#               m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
-#             }
-#
-#             out <- new('mapview', object = list(x), map = m)
-#
-#             return(out)
-#
-#           }
-#
-# )
-#
-#
-# ## SpatialPixelsDataFrame =================================================
-# #' @describeIn plainView \code{\link{SpatialPixelsDataFrame}}
-# #'
-# setMethod('plainView', signature(x = 'SpatialPixelsDataFrame'),
-#           function(x,
-#                    zcol = NULL,
-#                    ...) {
-#
-#             if (mapviewOptions(console = FALSE)$platform == "leaflet") {
-#               leafletPlainPixelsDF(x,
-#                                    zcol,
-#                                    ...)
-#             } else {
-#               NULL
-#             }
-#
-#           }
-# )
-#
-#
-# #' <Add Title>
-# #'
-# #' <Add Description>
-# #'
-# #' @import htmlwidgets
-# #'
-# #' @export
-
-plainViewInternal <- function(filename, imgnm, crs, dims, leg_fl = NULL) {
-
-  x <- list(imgnm = imgnm,
-            crs = crs,
-            dims = dims,
-            legend = !is.null(leg_fl))
-
-  image_dir <- dirname(filename)
-  image_file <- basename(filename)
-
-  attachments <- list(image_file)
-
-  if(!is.null(leg_fl)) {
-    legend_dir <- dirname(leg_fl)  #same as image_dir  not checked
-    legend_file <- basename(leg_fl)
-    attachments <- c(attachments, legend_file)
-  }
-
-  dep1 <- htmltools::htmlDependency(name = "image",
-                                    version = "1",
-                                    src = c(file = image_dir),
-                                    attachment = attachments)
-
-  deps <- list(dep1)
-
-  sizing <- htmlwidgets::sizingPolicy(padding = 0, browser.fill = TRUE)
-
-  htmlwidgets::createWidget(
-    name = 'plainView',
-    x = x,
-    package = 'mapview',
-    dependencies = deps,
-    sizingPolicy = sizing
-  )
-}
-
-
-plainViewOutput <- function(outputId, width = '100%', height = '400px'){
-  htmlwidgets::shinyWidgetOutput(outputId, 'plainView',
-                                 width, height, package = 'mapview')
-}
-
-
-renderPlainView <- function(expr, env = parent.frame(), quoted = FALSE) {
-  if (!quoted) { expr <- substitute(expr) } # force quoted
-  htmlwidgets::shinyRenderWidget(expr, plainViewOutput, env, quoted = TRUE)
-}
-
 
 
 ## Raster Stack/Brick ===========================================================
@@ -328,31 +197,45 @@ setMethod('plainView', signature(x = 'RasterStackBrick'),
                                                    env = parent.frame())),
                    ...) {
 
-            ## temp dir
-            dir <- tempfile()
-            dir.create(dir)
-            fl <- paste0(dir, "/img", ".png")
+            .Deprecated(new = "plainview::plainView", package = "mapview",
+                        old = "mapview::plainView")
 
-            #             if (raster::filename(x) != "") {
-            #               gdalUtils::gdal_translate(src_dataset = filename(x),
-            #                                         dst_dataset = fl,
-            #                                         of = "PNG",
-            #                                         verbose = TRUE)
-            #             } else {
-            png <- rgbStack2PNG(x, r = r, g = g, b = b,
-                                na.color = na.color,
-                                maxpixels = maxpixels,
-                                ...)
-            png::writePNG(png, fl)
-            #}
+            plainview::plainView(
+              x = x,
+              r = r,
+              g = g,
+              b = b,
+              na.color = na.color,
+              maxpixels = maxpixels,
+              layer.name = layer.name,
+              ...
+            )
 
-            layer.name <- paste0(layer.name, "_", r, ".", g, ".", b)
-            plainViewInternal(filename = fl,
-                              imgnm = layer.name,
-                              crs = raster::projection(x),
-                              dims = c(raster::nrow(x),
-                                       raster::ncol(x),
-                                       raster::ncell(x)))
+            # ## temp dir
+            # dir <- tempfile()
+            # dir.create(dir)
+            # fl <- paste0(dir, "/img", ".png")
+            #
+            # #             if (raster::filename(x) != "") {
+            # #               gdalUtils::gdal_translate(src_dataset = filename(x),
+            # #                                         dst_dataset = fl,
+            # #                                         of = "PNG",
+            # #                                         verbose = TRUE)
+            # #             } else {
+            # png <- rgbStack2PNG(x, r = r, g = g, b = b,
+            #                     na.color = na.color,
+            #                     maxpixels = maxpixels,
+            #                     ...)
+            # png::writePNG(png, fl)
+            # #}
+            #
+            # layer.name <- paste0(layer.name, "_", r, ".", g, ".", b)
+            # plainViewInternal(filename = fl,
+            #                   imgnm = layer.name,
+            #                   crs = raster::projection(x),
+            #                   dims = c(raster::nrow(x),
+            #                            raster::ncol(x),
+            #                            raster::ncell(x)))
 
           }
 
@@ -371,18 +254,22 @@ setMethod('plainView', signature(x = 'SpatialPixelsDataFrame'),
                    zcol = 1,
                    ...) {
 
-            if (is.character(zcol)) nm <- zcol else  nm <- names(x)[zcol]
-            x <- raster::raster(x[zcol])
+            .Deprecated(new = "plainview::plainView", package = "mapview",
+                        old = "mapview::plainView")
 
-            plainView(x, layer.name = nm, ...)
+            plainview::plainView(
+              x = x,
+              zcol = zcol,
+              ...
+            )
+
+            # if (is.character(zcol)) nm <- zcol else  nm <- names(x)[zcol]
+            # x <- raster::raster(x[zcol])
+            #
+            # plainView(x, layer.name = nm, ...)
 
           }
 )
-
-
-
-
-
 
 
 ## plainview ==============================================================
@@ -397,53 +284,13 @@ if ( !isGeneric('plainview') ) {
 #' @export plainview
 
 setMethod('plainview', signature('ANY'),
-          function(...) plainView(...))
+          function(...) {
 
+            .Deprecated(new = "plainview::plainView", package = "mapview",
+                        old = "mapview::plainView")
 
+            plainview::plainView(...)
 
-
-
-
-
-
-
-
-
-#
-#
-# ## Satellite object =======================================================
-# #' @describeIn plainView \code{\link{satellite}}
-#
-# setMethod('plainView', signature(x = 'Satellite'),
-#           function(x,
-#                    ...) {
-#
-#             pkgs <- c("leaflet", "satellite", "magrittr")
-#             tst <- sapply(pkgs, "requireNamespace",
-#                           quietly = TRUE, USE.NAMES = FALSE)
-#
-#             lyrs <- x@layers
-#
-#             m <- plainView(lyrs[[1]], ...)
-#
-#             if (length(lyrs) > 1) {
-#               for (i in 2:length(lyrs)) {
-#                 m <- plainView(lyrs[[i]], m, ...)
-#               }
-#             }
-#
-#             if (length(getLayerNamesFromMap(m)) > 1) {
-#               m <- leaflet::hideGroup(map = m, group = layers2bHidden(m))
-#             }
-#
-#             out <- new('mapview', object = list(x), map = m)
-#
-#             return(out)
-#
-#           }
-#
-# )
-#
-#
-
+          }
+)
 

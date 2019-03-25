@@ -22,7 +22,7 @@ The main user relevant functions are:
 * `latticeView` & `sync` - deprecated, use package [leafsync](https://CRAN.R-project.org/package=leafsync) instead
 * `slideView` - deprecated, use package [slideview](https://CRAN.R-project.org/package=slideview) instead
 * `cubeView` - deprecated, use package [cubeview](https://CRAN.R-project.org/package=cubeview) instead
-* `plainview` - view large rasters on a plain background (i.e. no background map)
+* `plainview` - deprecated, use package [plainview](https://CRAN.R-project.org/package=plainview) instead
 * `mapshot` - easily save maps (including leaflet maps) as `html` or `png` (or other image formats)
 
 Objects of the following spatial classes are supported:

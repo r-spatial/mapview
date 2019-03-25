@@ -39,16 +39,25 @@ leafletRL = function(x,
                quietly = TRUE, USE.NAMES = FALSE)
 
   if (native.crs) {
-    plainView(x,
-              maxpixels = mapviewGetOption("plainview.maxpixels"),
-              col.regions = col.regions,
-              at = at,
-              na.color = na.color,
-              legend = legend,
-              verbose = verbose,
-              layer.name = layer.name,
-              gdal = TRUE,
-              ...)
+
+    if (!requireNamespace("plainview", quietly = TRUE)) {
+      stop(
+        paste("\nviewing rasters with native CRS requires package 'plainview'.\n",
+              "To install use install.packages('plainview')"),
+        call. = FALSE
+      )
+    }
+
+    plainview::plainView(x,
+                         maxpixels = mapviewGetOption("plainview.maxpixels"),
+                         col.regions = col.regions,
+                         at = at,
+                         na.color = na.color,
+                         legend = legend,
+                         verbose = verbose,
+                         layer.name = layer.name,
+                         gdal = TRUE,
+                         ...)
   } else {
 
     is.fact = raster::is.factor(x)
