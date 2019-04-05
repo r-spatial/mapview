@@ -85,10 +85,10 @@
   na.color = mapviewGetOption("na.color"), cex = 6,
   lwd = lineWidth(x), alpha = 0.9, alpha.regions = regionOpacity(x),
   na.alpha = regionOpacity(x), map.types = NULL,
-  verbose = mapviewGetOption("verbose"), popup = popupTable(x),
-  layer.name = NULL, label = makeLabels(x, zcol),
-  legend = mapviewGetOption("legend"), legend.opacity = 1,
-  homebutton = TRUE, native.crs = FALSE,
+  verbose = mapviewGetOption("verbose"),
+  popup = leafpop::popupTable(x), layer.name = NULL,
+  label = makeLabels(x, zcol), legend = mapviewGetOption("legend"),
+  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
@@ -108,7 +108,7 @@
 \S4method{mapView}{numeric}(x, y, type = "p", grid = TRUE, label, ...)
 
 \S4method{mapView}{data.frame}(x, xcol, ycol, grid = TRUE, aspect = 1,
-  popup = popupTable(x), label, crs = NA, ...)
+  popup = leafpop::popupTable(x), label, crs = NA, ...)
 
 \S4method{mapView}{XY}(x, map = NULL, pane = "auto",
   canvas = useCanvas(x), viewer.suppress = canvas,
@@ -146,7 +146,7 @@
   alpha.regions = lapply(seq(x), function(i) 0.6),
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"), popup = lapply(seq(x),
-  function(i) {     popupTable(x[[i]]) }),
+  function(i) {     leafpop::popupTable(x[[i]]) }),
   layer.name = deparse(substitute(x, env = parent.frame())),
   label = lapply(seq(x), function(i) {     makeLabels(x[[i]], zcol =
   zcol[[i]]) }), legend = mapviewGetOption("legend"),
@@ -316,7 +316,7 @@ of the column(s) to be used for defining the size of circles}
 \item{na.alpha}{opacity of missing values}
 
 \item{popup}{a \code{list} of HTML strings with the popup contents, usually
-created from \code{\link{popupTable}}. See \code{\link{addControl}} for
+created from \code{\link[leafpop]{popupTable}}. See \code{\link{addControl}} for
 details.}
 
 \item{highlight}{either \code{FALSE}, \code{NULL} or a list of styling

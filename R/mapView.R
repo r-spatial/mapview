@@ -67,7 +67,7 @@ if ( !isGeneric('mapView') ) {
 #' @param homebutton logical, whether to add a zoom-to-layer button to the map.
 #' Defaults to TRUE
 #' @param popup a \code{list} of HTML strings with the popup contents, usually
-#' created from \code{\link{popupTable}}. See \code{\link{addControl}} for
+#' created from \code{\link[leafpop]{popupTable}}. See \code{\link{addControl}} for
 #' details.
 #' @param label For vector data (sf/sp) a character vector of labels to be
 #' shown on mouseover. See \code{\link{addControl}} for details. For raster
@@ -510,7 +510,7 @@ setMethod('mapView', signature(x = 'sf'),
                    na.alpha = regionOpacity(x),
                    map.types = NULL,
                    verbose = mapviewGetOption("verbose"),
-                   popup = popupTable(x),
+                   popup = leafpop::popupTable(x),
                    layer.name = NULL,
                    label = makeLabels(x, zcol),
                    legend = mapviewGetOption("legend"),
@@ -761,7 +761,7 @@ setMethod('mapView', signature(x = 'data.frame'),
                    ycol,
                    grid = TRUE,
                    aspect = 1,
-                   popup = popupTable(x),
+                   popup = leafpop::popupTable(x),
                    label,
                    crs = NA,
                    ...) {
@@ -959,7 +959,7 @@ setMethod('mapView', signature(x = 'list'),
                    map.types = mapviewGetOption("basemaps"),
                    verbose = mapviewGetOption("verbose"),
                    popup = lapply(seq(x), function(i) {
-                     popupTable(x[[i]])
+                     leafpop::popupTable(x[[i]])
                    }),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
@@ -1001,7 +1001,7 @@ setMethod('mapView', signature(x = 'list'),
 
             if (mapviewGetOption("platform") == "leaflet") {
               m <- Reduce("+", lapply(seq(x), function(i) {
-                if (is.null(popup)) popup <- popupTable(x[[i]])
+                if (is.null(popup)) popup <- leafpop::popupTable(x[[i]])
                 if (inherits(x[[i]], "sf")) {
                   mapView(x = sf::st_cast(x[[i]]),
                           layer.name = lyrnms[[i]],

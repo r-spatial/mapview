@@ -45,5 +45,14 @@ See below for information on which package they have been moved to.
  \item \code{\link{plainView}}: This function is deprecated, and will
  be removed in the next version of this package. This function has been
  migrated to package 'plainview'.
+ \item \code{\link{popupTable}}: This function is deprecated, and will
+ be removed in the next version of this package. This function has been
+ migrated to package 'leafpop'.
+ \item \code{\link{popupImage}}: This function is deprecated, and will
+ be removed in the next version of this package. This function has been
+ migrated to package 'leafpop'.
+ \item \code{\link{popupGraph}}: This function is deprecated, and will
+ be removed in the next version of this package. This function has been
+ migrated to package 'leafpop'.
 }
 }
