@@ -1,8 +1,8 @@
 Type: Package
 Package: mapview
 Title: Interactive Viewing of Spatial Data in R
-Version: 2.6.7
-Date: 2019-03-25
+Version: 2.6.8
+Date: 2019-04-05
 Authors@R: 
     c(person(given = "Tim",
              family = "Appelhans",
@@ -69,6 +69,7 @@ Imports:
     htmlwidgets,
     lattice,
     leaflet (>= 2.0.0),
+    leafpop,
     png,
     raster,
     Rcpp (>= 0.11.3),
