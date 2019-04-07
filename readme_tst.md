@@ -42,6 +42,8 @@ functionality:
   - `addExtent` - add a polygon denoting the extent/bbox of a spatial
     object to a map
   - `addImageQuery` - add query for Raster\* and stars\* objects
+  - `mapshot` - easily save maps (including leaflet maps) as `html` or
+    `png` (or other image formats)
 
 Functions that have been deprecated recently:
 
@@ -53,8 +55,6 @@ Functions that have been deprecated recently:
     [cubeview](https://CRAN.R-project.org/package=cubeview) instead
   - `plainview` - deprecated, use package
     [plainview](https://CRAN.R-project.org/package=plainview) instead
-  - `mapshot` - easily save maps (including leaflet maps) as `html` or
-    `png` (or other image formats)
   - `popupTable`, `popupGraph` & `popupImage` - deprecated, use package
     [leafpop](https://CRAN.R-project.org/package=leafpop) instead
 

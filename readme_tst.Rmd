@@ -41,6 +41,7 @@ In addition, **mapview** provides some extra leaflet compatible functionality:
 * `addMouseCoordinates` - add mouse cursor postion information when moving over the map
 * `addExtent` - add a polygon denoting the extent/bbox of a spatial object to a map
 * `addImageQuery` - add query for Raster* and stars* objects
+* `mapshot` - easily save maps (including leaflet maps) as `html` or `png` (or other image formats)
 
 Functions that have been deprecated recently:
 
@@ -48,7 +49,6 @@ Functions that have been deprecated recently:
 * `slideView` - deprecated, use package [slideview](https://CRAN.R-project.org/package=slideview) instead
 * `cubeView` - deprecated, use package [cubeview](https://CRAN.R-project.org/package=cubeview) instead
 * `plainview` - deprecated, use package [plainview](https://CRAN.R-project.org/package=plainview) instead
-* `mapshot` - easily save maps (including leaflet maps) as `html` or `png` (or other image formats)
 * `popupTable`, `popupGraph` & `popupImage` - deprecated, use package [leafpop](https://CRAN.R-project.org/package=leafpop) instead
 
 Objects of the following spatial classes are supported:
