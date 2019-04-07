@@ -58,7 +58,7 @@ burstByColumn <- function(x,
                           col.regions,
                           at,
                           na.color,
-                          popup = popupTable(x),
+                          popup = leafpop::popupTable(x),
                           nms = NULL,
                           alpha,
                           alpha.regions,
@@ -153,7 +153,7 @@ burstByRow <- function(x,
                                     at = at,
                                     na.color = na.color))
 
-  popup <- popupTable(x)
+  popup <- leafpop::popupTable(x)
   names(popup) <- as.character(x[[zcol]])
   popup <- lapply(names(lst), function(i) {
     tst <- popup[names(popup) %in% i]
