@@ -725,16 +725,20 @@ setMethod('mapView', signature(x = 'character'),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
-
-              leaflet_tiles(x = x,
-                            map = map,
-                            map.types = map.types,
-                            verbose = verbose,
-                            layer.name = layer.name,
-                            homebutton = homebutton,
-                            native.crs = native.crs,
-                            viewer.suppress = viewer.suppress,
-                            ...)
+              if (dir.exists(x)) {
+                leaflet_tiles(x = x,
+                              map = map,
+                              map.types = map.types,
+                              verbose = verbose,
+                              layer.name = layer.name,
+                              homebutton = homebutton,
+                              native.crs = native.crs,
+                              viewer.suppress = viewer.suppress,
+                              ...)
+              } else {
+                stop(sprintf("%s is not a directory!", layer.name),
+                     call. = FALSE)
+              }
             }
           }
 )
