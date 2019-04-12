@@ -1,4 +1,8 @@
-mapview 2.6.8
+mapview 2.6.9
+
+new features:
+
+  * new method for tiled image collections (created with e.g. gdal2tiles). #222
 
 miscellaneous:
 
