@@ -9,6 +9,7 @@
 \alias{mapView,Satellite-method}
 \alias{mapView,sf-method}
 \alias{mapView,sfc-method}
+\alias{mapView,character-method}
 \alias{mapView,numeric-method}
 \alias{mapView,data.frame-method}
 \alias{mapView,XY-method}
@@ -104,6 +105,11 @@
   homebutton = TRUE, native.crs = FALSE,
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
+
+\S4method{mapView}{character}(x, map = NULL, map.types = NULL,
+  verbose = FALSE, layer.name = deparse(substitute(x, env =
+  parent.frame())), homebutton = TRUE, native.crs = FALSE,
+  viewer.suppress = FALSE, ...)
 
 \S4method{mapView}{numeric}(x, y, type = "p", grid = TRUE, label, ...)
 
@@ -202,7 +208,8 @@
 \arguments{
 \item{x}{a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
 \code{sf} object or a list of any combination of those. Furthermore,
-this can also be a \code{data.frame} or a \code{numeric vector}. If missing,
+this can also be a \code{data.frame}, a \code{numeric vector} or a
+\code{character string} pointing to a tile image folder. If missing,
 a blank map will be drawn.}
 
 \item{map}{an optional existing map to be updated/added to.}
@@ -390,6 +397,8 @@ and fully queriable.
 \item \code{sf}: \code{\link{st_sf}}
 
 \item \code{sfc}: \code{\link{st_sfc}}
+
+\item \code{character}: \code{\link{character}}
 
 \item \code{numeric}: \code{\link{numeric}}
 

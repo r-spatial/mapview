@@ -23,7 +23,8 @@ if ( !isGeneric('mapView') ) {
 #'
 #' @param x a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
 #' \code{sf} object or a list of any combination of those. Furthermore,
-#' this can also be a \code{data.frame} or a \code{numeric vector}. If missing,
+#' this can also be a \code{data.frame}, a \code{numeric vector} or a
+#' \code{character string} pointing to a tile image folder. If missing,
 #' a blank map will be drawn.
 #' @param map an optional existing map to be updated/added to.
 #' @param band for stars layers, the band number to be plotted.
@@ -708,6 +709,35 @@ setMethod('mapView', signature(x = 'sfc'),
           }
 )
 
+
+## character ==============================================================
+#' @describeIn mapView \code{\link{character}}
+setMethod('mapView', signature(x = 'character'),
+          function(x,
+                   map = NULL,
+                   map.types = NULL,
+                   verbose = FALSE,
+                   layer.name = deparse(substitute(x,
+                                                   env = parent.frame())),
+                   homebutton = TRUE,
+                   native.crs = FALSE,
+                   viewer.suppress = FALSE,
+                   ...) {
+
+            if (mapviewGetOption("platform") == "leaflet") {
+
+              leaflet_tiles(x = x,
+                            map = map,
+                            map.types = map.types,
+                            verbose = verbose,
+                            layer.name = layer.name,
+                            homebutton = homebutton,
+                            native.crs = native.crs,
+                            viewer.suppress = viewer.suppress,
+                            ...)
+            }
+          }
+)
 
 ## numeric ================================================================
 #' @describeIn mapView \code{\link{numeric}}
