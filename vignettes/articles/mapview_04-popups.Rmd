@@ -29,6 +29,7 @@ knitr::opts_chunk$set(fig.width = 8.83, mesage = FALSE)
 ```{r popupTable}
 library(mapview)
 library(leaflet)
+library(leafpop)
 
 mapview(breweries, popup = popupTable(breweries,
                                       zcol = c("brewery",
@@ -122,7 +123,7 @@ There's also a hidden function that enables us to include all sorts of things vi
 But let the Dude show us how this can be used...
 
 ```{r mapview popupIrame, echo=TRUE, message=FALSE}
-mapview(pnt, popup = mapview:::popupIframe("https://www.youtube.com/embed/iApz08Bh53w?autoplay=1", width = 300, height = 225))
+mapview(pnt, popup = leafpop:::popupIframe("https://www.youtube.com/embed/iApz08Bh53w?autoplay=1", width = 300, height = 225))
 ```
 
 As with **htmlwidgets** in popups, this may quickly produce html files and hence become rather unresponsive.

@@ -43,13 +43,14 @@ In addition, **mapview** provides some extra leaflet compatible functionality:
 * `addImageQuery` - add query for Raster* and stars* objects
 * `mapshot` - easily save maps (including leaflet maps) as `html` or `png` (or other image formats)
 
-Functions that have been deprecated recently:
+Functions that have been deprecated/deleted recently:
 
 * `latticeView` & `sync` - deprecated, use package [leafsync](https://CRAN.R-project.org/package=leafsync) instead
 * `slideView` - deprecated, use package [slideview](https://CRAN.R-project.org/package=slideview) instead
 * `cubeView` - deprecated, use package [cubeview](https://CRAN.R-project.org/package=cubeview) instead
 * `plainview` - deprecated, use package [plainview](https://CRAN.R-project.org/package=plainview) instead
 * `popupTable`, `popupGraph` & `popupImage` - deprecated, use package [leafpop](https://CRAN.R-project.org/package=leafpop) instead
+* `addLargeFeatures` - use [leafgl](https://github.com/r-spatial/leafgl)`::addGL*` functions instead - **currently not on CRAN!**
 
 Objects of the following spatial classes are supported:
 
