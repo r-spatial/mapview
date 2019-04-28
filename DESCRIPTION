@@ -94,5 +94,6 @@ LinkingTo:
     Rcpp
 ByteCompile: yes
 LazyData: TRUE
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
+Encoding: UTF-8
 SystemRequirements: GNU make
