@@ -133,15 +133,15 @@ popupImage = function(img, src = c("local", "remote"), embed = FALSE, ...) {
 
 
 ### local images -----
-popupLocalImage = function(img, width = NULL, height = NULL, embed = FALSE) {
-
-  .Deprecated(new = "leafpop::popupLocalImage", package = "mapview",
-              old = "mapview::popupLocalImage")
-
-  leafpop::popupLocalImage(img = img,
-                           width = width,
-                           height = height,
-                           embed = embed)
+# popupLocalImage = function(img, width = NULL, height = NULL, embed = FALSE) {
+#
+#   .Deprecated(new = "leafpop::popupLocalImage", package = "mapview",
+#               old = "mapview::popupLocalImage")
+#
+#   leafpop::popupLocalImage(img = img,
+#                            width = width,
+#                            height = height,
+#                            embed = embed)
 
   # pngs = lapply(1:length(img), function(i) {
   #
@@ -247,18 +247,18 @@ popupLocalImage = function(img, width = NULL, height = NULL, embed = FALSE) {
   #
   # return(paste(outputObj, collapse = ' '))
 
-}
+# }
 
 
 ### remote images -----
-popupRemoteImage = function(img, width = 300, height = "100%") {
-
-  .Deprecated(new = "leafpop::popupRemoteImage", package = "mapview",
-              old = "mapview::popupRemoteImage")
-
-  leafpop::popupRemoteImage(img = img,
-                            width = width,
-                            height = height)
+# popupRemoteImage = function(img, width = 300, height = "100%") {
+#
+#   .Deprecated(new = "leafpop::popupRemoteImage", package = "mapview",
+#               old = "mapview::popupRemoteImage")
+#
+#   leafpop::popupRemoteImage(img = img,
+#                             width = width,
+#                             height = height)
 
   # pop = paste0("<image src='",
   #              img,
@@ -275,7 +275,7 @@ popupRemoteImage = function(img, width = 300, height = "100%") {
   # close(myCon)
   #
   # return(paste(outputObj, collapse = ' '))
-}
+# }
 
 
 
@@ -386,16 +386,16 @@ popupGraph = function(graphs, type = c("png", "svg", "html"),
 
 
 ### svg -----
-popupSVGraph = function(graphs, #dsn = tempdir(),
-                         width = 300, height = 300, ...) {
-
-  .Deprecated(new = "leafpop::popupSVGraph", package = "mapview",
-              old = "mapview::popupSVGraph")
-
-  leafpop::popupSVGraph(graphs = graphs,
-                        width = width,
-                        height = height,
-                        ...)
+# popupSVGraph = function(graphs, #dsn = tempdir(),
+#                          width = 300, height = 300, ...) {
+#
+#   .Deprecated(new = "leafpop::popupSVGraph", package = "mapview",
+#               old = "mapview::popupSVGraph")
+#
+#   leafpop::popupSVGraph(graphs = graphs,
+#                         width = width,
+#                         height = height,
+#                         ...)
 
 #   lapply(1:length(graphs), function(i) {
 #     #nm = paste0("tmp_", i, ".svg")
@@ -469,21 +469,21 @@ popupSVGraph = function(graphs, #dsn = tempdir(),
 #     return(paste(outputObj, collapse = ' '))
 #
 #   })
-}
+# }
 
 
 ### png -----
-popupPNGraph = function(graphs, dsn = tempdir(),
-                         width = 300, height = 300, ...) {
-
-  .Deprecated(new = "leafpop::popupPNGraph", package = "mapview",
-              old = "mapview::popupPNGraph")
-
-  leafpop::popupPNGraph(graphs = graphs,
-                        dsn = dsn,
-                        width = width,
-                        height = heoght,
-                        ...)
+# popupPNGraph = function(graphs, dsn = tempdir(),
+#                          width = 300, height = 300, ...) {
+#
+#   .Deprecated(new = "leafpop::popupPNGraph", package = "mapview",
+#               old = "mapview::popupPNGraph")
+#
+#   leafpop:::popupPNGraph(graphs = graphs,
+#                          dsn = dsn,
+#                          width = width,
+#                          height = height,
+#                          ...)
 
   # # pngs = lapply(1:length(graphs), function(i) {
   # #   nm = paste0("tmp_", i, ".png")
@@ -521,20 +521,20 @@ popupPNGraph = function(graphs, dsn = tempdir(),
   # })
   #
   # return(pngs)
-}
+# }
 
 ### html -----
-popupHTMLGraph = function(graphs, dsn = tempdir(),
-                           width = 300, height = 300, ...) {
-
-  .Deprecated(new = "leafpop::popupHTMLGraph", package = "mapview",
-              old = "mapview::popupHTMLGraph")
-
-  leafpop::popupHTMLGraph(graphs = graphs,
-                          dsn = dsn,
-                          width = width,
-                          height = height,
-                          ...)
+# popupHTMLGraph = function(graphs, dsn = tempdir(),
+#                            width = 300, height = 300, ...) {
+#
+#   .Deprecated(new = "leafpop::popupHTMLGraph", package = "mapview",
+#               old = "mapview::popupHTMLGraph")
+#
+#   leafpop::popupHTMLGraph(graphs = graphs,
+#                           dsn = dsn,
+#                           width = width,
+#                           height = height,
+#                           ...)
 
   # lapply(1:length(graphs), function(i) {
   #   nm = paste0("tmp_", i, ".html")
@@ -546,36 +546,36 @@ popupHTMLGraph = function(graphs, dsn = tempdir(),
   #   popupIframe(file.path(rel_path, basename(fls)), width + 5, height + 5)
   #
   # })
-}
+# }
 
 
 ### iframe -----
-popupIframe = function(src, width = 300, height = 300) {
-
-  .Deprecated(new = "leafpop::popupIframe", package = "mapview",
-              old = "mapview::popupIframe")
-
-  leafpop::popupIframe(src = src,
-                       width = width,
-                       height = height)
-
-  # pop = paste0("<iframe src='",
-  #              src,
-  #              "' frameborder=0 width=",
-  #              width,
-  #              " height=",
-  #              height,
-  #              #" align=middle",
-  #              "></iframe>")
-  #
-  # popTemplate = system.file("templates/popup-graph.brew", package = "mapview")
-  # myCon = textConnection("outputObj", open = "w")
-  # brew::brew(popTemplate, output = myCon)
-  # outputObj = outputObj
-  # close(myCon)
-  #
-  # return(paste(outputObj, collapse = ' '))
-}
+# popupIframe = function(src, width = 300, height = 300) {
+#
+#   .Deprecated(new = "leafpop::popupIframe", package = "mapview",
+#               old = "mapview::popupIframe")
+#
+#   leafpop::popupIframe(src = src,
+#                        width = width,
+#                        height = height)
+#
+#   # pop = paste0("<iframe src='",
+#   #              src,
+#   #              "' frameborder=0 width=",
+#   #              width,
+#   #              " height=",
+#   #              height,
+#   #              #" align=middle",
+#   #              "></iframe>")
+#   #
+#   # popTemplate = system.file("templates/popup-graph.brew", package = "mapview")
+#   # myCon = textConnection("outputObj", open = "w")
+#   # brew::brew(popTemplate, output = myCon)
+#   # outputObj = outputObj
+#   # close(myCon)
+#   #
+#   # return(paste(outputObj, collapse = ' '))
+# }
 
 
 
