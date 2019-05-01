@@ -54,5 +54,29 @@ See below for information on which package they have been moved to.
  \item \code{\link{popupGraph}}: This function is deprecated, and will
  be removed in the next version of this package. This function has been
  migrated to package 'leafpop'.
+ \item \code{\link{addFeatures}}: This function is deprecated, and will
+ be removed in the next version of this package. This function has been
+ migrated to package 'leafem'.
+ \item \code{\link{garnishMap}}: This function is deprecated, and will
+ be removed in the next version of this package. This function has been
+ migrated to package 'leafem'.
+ \item \code{\link{addHomeButton}}: This function is deprecated, and will
+ be removed in the next version of this package. This function has been
+ migrated to package 'leafem'.
+ \item \code{\link{removeHomeButton}}: This function is deprecated, and will
+ be removed in the next version of this package. This function has been
+ migrated to package 'leafem'.
+ \item \code{\link{addImageQuery}}: This function is deprecated, and will
+ be removed in the next version of this package. This function has been
+ migrated to package 'leafem'.
+ \item \code{\link{addLogo}}: This function is deprecated, and will
+ be removed in the next version of this package. This function has been
+ migrated to package 'leafem'.
+ \item \code{\link{addMouseCoordinates}}: This function is deprecated, and will
+ be removed in the next version of this package. This function has been
+ migrated to package 'leafem'.
+ \item \code{\link{removeMouseCoordinates}}: This function is deprecated, and will
+ be removed in the next version of this package. This function has been
+ migrated to package 'leafem'.
 }
 }

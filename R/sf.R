@@ -187,29 +187,29 @@ leaflet_sfc <- function(x,
     pane = NULL
   }
 
-  m <- addFeatures(m,
-                   data = x,
-                   pane = pane,
-                   radius = cex,
-                   weight = lwd,
-                   opacity = alpha,
-                   fillOpacity = alpha.regions,
-                   color = color,
-                   fillColor = col.regions,
-                   popup = popup,
-                   label = label,
-                   group = layer.name,
-                   highlightOptions = highlight,
-                   ...)
+  m <- leafem::addFeatures(m,
+                           data = x,
+                           pane = pane,
+                           radius = cex,
+                           weight = lwd,
+                           opacity = alpha,
+                           fillOpacity = alpha.regions,
+                           color = color,
+                           fillColor = col.regions,
+                           popup = popup,
+                           label = label,
+                           group = layer.name,
+                           highlightOptions = highlight,
+                           ...)
 
   if (!is.null(map)) m = updateOverlayGroups(m, layer.name)
   sclbrpos = getCallEntryFromMap(m, "addScaleBar")
   if (length(sclbrpos) > 0 | native.crs) scalebar = FALSE else scalebar = TRUE
 
   funs <- list(if (scalebar) leaflet::addScaleBar,
-               if (homebutton) addHomeButton,
+               if (homebutton) leafem::addHomeButton,
                if (is.null(map)) mapViewLayersControl,
-               addMouseCoordinates)
+               leafem::addMouseCoordinates)
   funs <- funs[!sapply(funs, is.null)]
 
   args <- list(if (scalebar) list(position = "bottomleft"),

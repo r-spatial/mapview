@@ -46,7 +46,7 @@ setMethod("+",
             zf = grep("Zoom full", m$x$calls[hbcalls])
             ind = hbcalls[zf]
             if (length(zf) > 0) m$x$calls[ind] = NULL
-            m = addZoomFullButton(m, out_obj)
+            m = leafem:::addZoomFullButton(m, out_obj)
 
             out <- methods::new('mapview', object = out_obj, map = m)
             return(out)
