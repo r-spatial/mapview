@@ -1,8 +1,8 @@
 Type: Package
 Package: mapview
 Title: Interactive Viewing of Spatial Data in R
-Version: 2.6.9
-Date: 2019-04-12
+Version: 2.6.10
+Date: 2019-05-01
 Authors@R: 
     c(person(given = "Tim",
              family = "Appelhans",
@@ -68,6 +68,7 @@ Imports:
     htmltools,
     htmlwidgets,
     lattice,
+    leafem,
     leaflet (>= 2.0.0),
     leafpop,
     png,
@@ -94,5 +95,6 @@ LinkingTo:
     Rcpp
 ByteCompile: yes
 LazyData: TRUE
+Encoding: UTF-8
 RoxygenNote: 6.1.0
 SystemRequirements: GNU make

@@ -1,4 +1,4 @@
-mapview 2.6.9
+mapview 2.6.10
 
 new features:
 
@@ -6,8 +6,9 @@ new features:
 
 miscellaneous:
 
-  * addMouseCoordinates now also displays native coordinates for leaflet maps. #205
+  * addMouseCoordinates now also displays native coordinates for leaflet maps. #205 - now moved to package leafem.
   * deprecated slideview, cubeview, latticeview & sync, plainview, popup* functions.
+  * deprecated addFeatures, garnishMap, addHomeButton, addImageQuery, addLogo, addMouseCoordinates.
 
 bugfixes:
 
