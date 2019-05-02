@@ -711,23 +711,36 @@ setMethod('mapView', signature(x = 'sfc'),
 
 
 ## character ==============================================================
+#' @param tms whether the tiles are served as TMS tiles.
+#'
 #' @describeIn mapView \code{\link{character}}
 setMethod('mapView', signature(x = 'character'),
           function(x,
                    map = NULL,
+                   tms = TRUE,
+                   color = standardColor(),
+                   col.regions = standardColRegions(),
+                   at = NULL,
+                   na.color = mapviewGetOption("na.color"),
+                   cex = 6,
+                   lwd = 2,
+                   alpha = 0.9,
+                   alpha.regions = 0.6,
+                   na.alpha = 0.6,
                    map.types = NULL,
                    verbose = FALSE,
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
+                   layer.name = x,
                    homebutton = TRUE,
                    native.crs = FALSE,
+                   canvas = FALSE,
                    viewer.suppress = FALSE,
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
-              if (dir.exists(x)) {
+              if (utils::file_test("-d", x)) {
                 leaflet_tiles(x = x,
                               map = map,
+                              tms = tms,
                               map.types = map.types,
                               verbose = verbose,
                               layer.name = layer.name,
@@ -735,6 +748,30 @@ setMethod('mapView', signature(x = 'character'),
                               native.crs = native.crs,
                               viewer.suppress = viewer.suppress,
                               ...)
+              } else if (utils::file_test("-f", x)) {
+
+                layer.name = basename(tools::file_path_sans_ext(layer.name))
+
+                leaflet_file(x = x,
+                             map = map,
+                             color = color,
+                             col.regions = col.regions,
+                             at = at,
+                             na.color = na.color,
+                             cex = cex,
+                             lwd = lwd,
+                             alpha = alpha,
+                             alpha.regions = alpha.regions,
+                             na.alpha = na.alpha,
+                             map.types = map.types,
+                             verbose = verbose,
+                             layer.name = layer.name,
+                             homebutton = homebutton,
+                             native.crs = native.crs,
+                             canvas = canvas,
+                             viewer.suppress = viewer.suppress,
+                             ...)
+
               } else {
                 stop(sprintf("%s is not a directory!", layer.name),
                      call. = FALSE)

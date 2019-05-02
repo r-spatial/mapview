@@ -225,6 +225,7 @@ zcolColors <- function(x, # a vector, not a sp or sf object
 
 
 standardColor <- function(x) {
+  if (missing(x)) return("#6666ff")
   switch(getGeometryType(x),
          "pt" = "#333333", #"#66b3ff",
          "ln" = "#6666ff", #"#66b3ff",
@@ -234,6 +235,7 @@ standardColor <- function(x) {
 
 
 standardColRegions <- function(x) {
+  if (missing(x)) return("#6666ff")
   switch(getGeometryType(x),
          "pt" = "#6666ff", #"#66b3ff",
          "ln" = "#6666ff", #"#66b3ff",

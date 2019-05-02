@@ -1,5 +1,7 @@
+### tiles ----
 leaflet_tiles = function(x,
                          map,
+                         tms = TRUE,
                          map.types,
                          verbose,
                          layer.name,
@@ -26,6 +28,13 @@ leaflet_tiles = function(x,
               "+proj=longlat +datum=WGS84 +no_defs",
               viewer.suppress = viewer.suppress)
 
+  m = leafem::addTileFolder(map = m,
+                            folder = x,
+                            group = layer.name,
+                            tms = tms,
+                            ...)
+
+
   fldrs = list.dirs(x, recursive = FALSE)
   bsn = basename(fldrs)
 
@@ -51,23 +60,23 @@ leaflet_tiles = function(x,
 
   ll_mn = tilenum_to_lonlat(x_mn, y_mn + 1, mnzm)
   ll_mx = tilenum_to_lonlat(x_mx, y_mx, mnzm)
-
-  m = leaflet::addTiles(
-    map = m,
-    urlTemplate = paste0(
-      "lib/",
-      basename(x),
-      "-0.0.1/{z}/{x}/{y}.png"
-    ),
-    group = layer.name,
-    options = tileOptions(
-      minZoom = min(zooms),
-      maxZoom = 18,
-      tms = TRUE,
-      maxNativeZoom = max(zooms)
-    )
-  )
-
+  #
+  # m = leaflet::addTiles(
+  #   map = m,
+  #   urlTemplate = paste0(
+  #     "lib/",
+  #     basename(x),
+  #     "-0.0.1/{z}/{x}/{y}.png"
+  #   ),
+  #   group = layer.name,
+  #   options = tileOptions(
+  #     minZoom = min(zooms),
+  #     maxZoom = 18,
+  #     tms = TRUE,
+  #     maxNativeZoom = max(zooms)
+  #   )
+  # )
+  #
   m = leaflet::setView(
     map = m,
     lng = diff(c(ll_mn$lon, ll_mx$lon)) / 2 + ll_mn$lon,
@@ -82,17 +91,19 @@ leaflet_tiles = function(x,
   sclbrpos = getCallEntryFromMap(m, "addScaleBar")
   if (length(sclbrpos) > 0 | native.crs) scalebar = FALSE else scalebar = TRUE
   if (scalebar) m = leaflet::addScaleBar(m, position = "bottomleft")
-  m = addMouseCoordinates(m)
+  m = leafem::addMouseCoordinates(m)
 
   if (homebutton) {
-    m = addHomeButton(
+    m = leafem::addHomeButton(
       m,
       ext = raster::extent(ll_mn$lon, ll_mx$lon, ll_mn$lat, ll_mx$lat),
       layer.name = layer.name
     )
   }
+  #
+  # m$dependencies =  c(m$dependencies, tiledDataDependency(x))
 
-  m$dependencies =  c(m$dependencies, tiledDataDependency(x))
+  if (!is.null(map)) map = updateOverlayGroups(map, layer.name)
 
   out = new('mapview', object = list(x), map = m)
 
@@ -101,6 +112,89 @@ leaflet_tiles = function(x,
 }
 
 
+### file ----
+leaflet_file = function(x,
+                        map,
+                        color,
+                        col.regions,
+                        at,
+                        na.color,
+                        cex,
+                        lwd,
+                        alpha,
+                        alpha.regions,
+                        na.alpha,
+                        map.types,
+                        verbose,
+                        layer.name,
+                        homebutton,
+                        native.crs,
+                        canvas,
+                        viewer.suppress,
+                        ...) {
+
+  if (is.null(map.types)) {
+    map.types = basemaps(standardColor())
+  }
+
+  m <- initMap(
+    map,
+    map.types = map.types,
+    sf::st_crs(4326),
+    native.crs = native.crs,
+    canvas = canvas,
+    viewer.suppress = viewer.suppress
+  )
+
+  m = leafem::addLocalFile(
+    map = m,
+    file = x,
+    group = layer.name,
+    radius = cex,
+    stroke = TRUE,
+    color = color,
+    weight = lwd,
+    opacity = alpha,
+    fill = TRUE,
+    fillColor = col.regions,
+    fillOpacity = alpha.regions,
+    dashArray = NULL,
+    options = NULL
+  )
+
+  if (!is.null(map)) m = updateOverlayGroups(m, layer.name)
+  sclbrpos = getCallEntryFromMap(m, "addScaleBar")
+  if (length(sclbrpos) > 0 | native.crs) scalebar = FALSE else scalebar = TRUE
+
+  funs <- list(if (scalebar) leaflet::addScaleBar,
+               if (homebutton) leafem::addHomeButton,
+               if (is.null(map)) mapViewLayersControl,
+               leafem::addMouseCoordinates)
+  funs <- funs[!sapply(funs, is.null)]
+
+  args <- list(if (scalebar) list(position = "bottomleft"),
+               if (homebutton) list(layer.name = layer.name),
+               if (is.null(map)) list(map.types = map.types,
+                                      names = layer.name,
+                                      native.crs = native.crs),
+               list(epsg = 4326,
+                    proj4string = "longlat",
+                    native.crs = FALSE))
+  args <- args[!sapply(args, is.null)]
+
+  m <- decorateMap(map = m,
+                   funs = funs,
+                   args = args)
+
+  m = removeDuplicatedMapDependencies(m)
+  out = new('mapview', object = list(x), map = m)
+
+  return(out)
+
+}
+
+
+### utils ----
 tiledDataDependency <- function(tiles_dir) {
   list(
     htmltools::htmlDependency(

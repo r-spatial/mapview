@@ -106,9 +106,12 @@
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x), ...)
 
-\S4method{mapView}{character}(x, map = NULL, map.types = NULL,
-  verbose = FALSE, layer.name = deparse(substitute(x, env =
-  parent.frame())), homebutton = TRUE, native.crs = FALSE,
+\S4method{mapView}{character}(x, map = NULL, tms = TRUE,
+  color = standardColor(), col.regions = standardColRegions(),
+  at = NULL, na.color = mapviewGetOption("na.color"), cex = 6,
+  lwd = 2, alpha = 0.9, alpha.regions = 0.6, na.alpha = 0.6,
+  map.types = NULL, verbose = FALSE, layer.name = x,
+  homebutton = TRUE, native.crs = FALSE, canvas = FALSE,
   viewer.suppress = FALSE, ...)
 
 \S4method{mapView}{numeric}(x, y, type = "p", grid = TRUE, label, ...)
@@ -333,6 +336,8 @@ See \code{\link{highlightOptions}} for details.}
 \item{maxpoints}{the maximum number of points making up the geometry.
 In case of lines and polygons this refers to the number of vertices. See
 Details for more information.}
+
+\item{tms}{whether the tiles are served as TMS tiles.}
 
 \item{y}{numeric vector.}
 
