@@ -6,8 +6,8 @@ if ( !isGeneric('plainView') ) {
 #' View raster objects interactively without background map but in any CRS
 #'
 #' @description
-#' this function produces an interactive view of the specified
-#' raster object(s) on a plain grey background but for any CRS.
+#' This function is deprecated.
+#' Pleasue use plainview::\code{\link[plainview]{plainView}} instead.
 #'
 #' @param x a \code{\link{raster}}* object
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
@@ -26,55 +26,6 @@ if ( !isGeneric('plainView') ) {
 #' @param ... additional arguments passed on to repective functions.
 #' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
-#'
-#' @details
-#' If the raster object is not in memory
-#' (i.e. if \code{raster::inMemory} is \code{FLASE})
-#' and argument \code{gdal} is set to TRUE (default) gdal_translate
-#' is used to translate the rsater object to a png file to be rendered in
-#' the viewer/browser. This is fast for large rasters. In this case, argument
-#' \code{maxpixels} is not used, instead the image is rendered in original resolution.
-#' However, this means that RasterLayers will be shown in greyscale.
-#' If you want to set a color palette manually, use \code{gdal = FALSE} and
-#' (optionally provide) \code{col.regions}.\cr
-#' \cr
-#' For plainView there are a few keyboard shortcuts defined:
-#' \itemize{
-#'   \item plus/minus - zoom in/out
-#'   \item space - toggle antialiasing
-#'   \item esc - zoom to layer extent
-#'   \item enter - set zoom to 1
-#'   \item ctrl - increase panning speed by 10
-#' }
-#'
-#' @author
-#' Stephan Woellauer
-#' @author
-#' Tim Appelhans
-#'
-#' @examples
-#' if (interactive()) {
-#'  ### raster data ###
-#'  library(sp)
-#'  library(raster)
-#'
-#'  data(meuse.grid)
-#'  coordinates(meuse.grid) = ~x+y
-#'  proj4string(meuse.grid) <- CRS("+init=epsg:28992")
-#'  gridded(meuse.grid) = TRUE
-#'  meuse_rst <- stack(meuse.grid)
-#'
-#'  # SpatialPixelsDataFrame
-#'  plainView(meuse.grid, zcol = "dist")
-#'
-#'
-#'  # raster layer
-#'  m1 <- plainView(poppendorf[[5]])
-#'  m1
-#'
-#'  # raster stack - true color
-#'  plainview(poppendorf, 4, 3, 2)
-#' }
 #'
 #' @export plainView
 #' @name plainView

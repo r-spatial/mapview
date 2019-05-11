@@ -81,6 +81,8 @@ mapview(breweries, zcol = "founded", legend = TRUE)
 These options will now be available until the current session is closed. i.e. you quit R
 
 ```{r options rgb, message = FALSE}
+library(plainview)
+
 mapview(poppendorf[[5]])
 ```
 

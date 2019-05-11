@@ -223,7 +223,7 @@ leaflet_stars = function(x,
                              map.types = map.types,
                              names = grp)
     m = leaflet::addScaleBar(map = m, position = "bottomleft")
-    m = addMouseCoordinates(m)
+    m = leafem::addMouseCoordinates(m)
     if (homebutton) m = addHomeButton(m, ext, layer.name = layer.name)
     out = new('mapview', object = list(x), map = m)
     return(out)

@@ -39,11 +39,12 @@ if ( !isGeneric('viewRGB') ) {
 #' Tim Appelhans
 #'
 #' @examples
-#' \dontrun{
-#' library(raster)
+#' if (interactive()) {
+#'   library(raster)
+#'   library(plainview)
 #'
-#' viewRGB(poppendorf, 4, 3, 2) # true-color
-#' viewRGB(poppendorf, 5, 4, 3) # false-color
+#'   viewRGB(plainview::poppendorf, 4, 3, 2) # true-color
+#'   viewRGB(plainview::poppendorf, 5, 4, 3) # false-color
 #' }
 #'
 #' @export
@@ -108,7 +109,7 @@ setMethod("viewRGB", signature(x = "RasterStackBrick"),
                                       names = grp)
 
             m <- leaflet::addScaleBar(map = m, position = "bottomleft")
-            m <- addMouseCoordinates(m)
+            m <- leafem::addMouseCoordinates(m)
             m = addHomeButton(m, ext, layer.name = layer.name)
 
             out <- methods::new('mapview', object = list(xout), map = m)
@@ -176,8 +177,8 @@ setMethod("viewRGB", signature(x = "stars"),
                                       names = grp)
 
             m <- leaflet::addScaleBar(map = m, position = "bottomleft")
-            m <- addMouseCoordinates(m)
-            m = addHomeButton(m, ext, layer.name = layer.name)
+            m <- leafem::addMouseCoordinates(m)
+            m = leafem::addHomeButton(m, ext, layer.name = layer.name)
 
             out <- methods::new('mapview', object = list(xout), map = m)
 

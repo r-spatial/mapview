@@ -36,32 +36,10 @@ to 'mousemove'.}
 
 \item{...}{currently not used.}
 }
-\value{
-A leaflet map object.
-}
 \description{
 Add image query functionality to leaflet/mapview map.
 }
 \details{
-This function enables Raster*/stars objects added to leaflet/mapview maps to
-be queried. Standard query is on 'mousmove', but can be changed to 'click'.
-Note that for this to work, the \code{layerId} needs to be the same as the
-one that was set in \code{\link[leaflet]{addRasterImage}} or
-\code{link{addStrasImage}}. Currently only works for
-numeric values (i.e. numeric/integer and factor values are supported).
-}
-\examples{
-\dontrun{
-library(leaflet)
-library(mapview)
-
-leaflet() \%>\%
-  addProviderTiles("OpenStreetMap") \%>\%
-  addRasterImage(poppendorf[[1]], project = TRUE, group = "poppendorf",
-                 layerId = "poppendorf") \%>\%
-  addImageQuery(poppendorf[[1]], project = TRUE,
-                layerId = "poppendorf") \%>\%
-  addLayersControl(overlayGroups = "poppendorf")
-}
-
+This function is deprecated.
+Please use leafem::\code{\link[leafem]{addImageQuery}} instead.
 }

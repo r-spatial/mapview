@@ -31,8 +31,9 @@ let's us add mouse position information along with detailed information about th
 ```{r addmc default}
 library(mapview)
 library(leaflet)
+library(leafem)
 
-leaflet() %>% addTiles() %>% addMouseCoordinates()
+leaflet() %>% addTiles() %>% leafem::addMouseCoordinates()
 ```
 
 ------
@@ -83,6 +84,8 @@ leaflet() %>%
 is a type agnostic `add*` function which will call the approprate `leaflet::add*` function based on the provided feature type (points, lines, polygons). It is currently defined for handling objects from packages `sf` and `sp`. For `sf` objects, in addition to the standard feature types `POINT`, `MULTIPOINT`, `LINESTRING`, `MULTILINESTRING`, `POLYGON` and `MULTIPOLYGON` it can also handle features of type `sfc_GEOMETRY` which are a collection of mixed types.
 
 ```{r addpols}
+library(leafem)
+
 leaflet() %>% addTiles() %>% addFeatures(breweries)
 ```
 
@@ -91,6 +94,8 @@ leaflet() %>% addTiles() %>% addFeatures(breweries)
 The standard styling arguments for `leaflet::add*` functions can be used just like in the original `add*` function
 
 ```{r addpols style}
+library(leafem)
+
 leaflet() %>% 
   addTiles() %>% 
   addFeatures(franconia, weight = 1, fillColor = "grey", color = "black",

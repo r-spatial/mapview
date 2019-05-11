@@ -22,8 +22,10 @@ test_that("mapview2leaflet() runs without any issues", {
 
 ### getSimpleClass -----
 test_that("getSimpleClass() runs without any issues", {
+  library(plainview)
+
   expect_equal(getSimpleClass(leaflet::breweries91), "vec") # sf
-  expect_equal(getSimpleClass(poppendorf), "rst") # raster
+  expect_equal(getSimpleClass(plainview::poppendorf), "rst") # raster
   expect_equal(getSimpleClass(franconia), "vec") # sp
 })
 

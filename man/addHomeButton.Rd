@@ -24,26 +24,12 @@ string)}
 \item{add}{logical. Whether to add the button to the map (mainly for internal use).}
 }
 \description{
-This function adds a button to the map that enables zooming to a
-provided \code{\link{extent}} / \code{\link{bbox}}.
+These functions are deprecated.
+Please use leafem::\code{\link[leafem]{addHomeButton}}
+and leafem::\code{\link[leafem]{removeHomeButton}} instead.
 }
 \section{Functions}{
 \itemize{
 \item \code{removeHomeButton}: remove a homeButton from a map
 }}
 
-\examples{
-library(leaflet)
-library(raster)
-
-m <- leaflet() \%>\%
-  addProviderTiles("OpenStreetMap") \%>\%
-  addCircleMarkers(data = breweries) \%>\%
-  addHomeButton(extent(breweries), "breweries")
-m
-
-## remove the button
-removeHomeButton(m)
-
-
-}

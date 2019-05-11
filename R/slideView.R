@@ -8,19 +8,8 @@ if ( !isGeneric('slideView') ) {
 #' @title slideView
 #'
 #' @description
-#' Two images are overlaid and a slider is provided to interactively
-#' compare the two images in a before-after like fashion. \code{img1} and
-#' \code{img2} can either be two RasterLayers, two RasterBricks/Stacks or
-#' two character strings. In the latter case it is assumed that these
-#' point to .png images on the disk.
-#'
-#' NOTE: In case you want to include multiple slideviews in one page in a
-#' Rmd or flexdashboard we highly recommend using package widgetframe.
-#' Also, make sure to use different image names and/or labels
-#' for each of the RasterLayers/Bricks/Stacks.
-#' Otherwise things will likely not work properly.
-#'
-#' This is a modified implementation of http://bl.ocks.org/rfriberg/8327361
+#' This function is deprecated.
+#' Please use slideview::\code{\link[slideview]{slideView}} instead.
 #'
 #' @param img1 a RasterStack/Brick, RasterLayer or path to a .png file
 #' @param img2 a RasterStack/Brick, RasterLayer or path to a .png file
@@ -37,64 +26,6 @@ if ( !isGeneric('slideView') ) {
 #' @param legend whether to plot legends for the two images (ignored for
 #' RatserStacks/*Bricks).
 #' @param ... additional arguments passed on to repective functions.
-#'
-#' @details
-#' For slideView there are a few keyboard shortcuts defined:
-#' \itemize{
-#'   \item space - toggle antialiasing
-#'   \item esc - zoom to layer extent
-#'   \item enter - set zoom to 1
-#'   \item ctrl - increase panning speed by 10
-#' }
-#'
-#' @author
-#' Tim Appelhans
-#' @author
-#' Stephan Woellauer
-#'
-#' @examples
-#' \dontrun{
-#' ### raster data ###
-#' library(sp)
-#' library(raster)
-#'
-#' data(poppendorf)
-#'
-#' stck1 <- subset(poppendorf, c(3, 4, 5))
-#' stck2 <- subset(poppendorf, c(2, 3, 4))
-#' slideView(stck1, stck2)
-#'
-#' ### example taken from
-#' ### http://www.news.com.au/technology/environment/nasa-images-reveal-
-#' ### aral-sea-is-shrinking-before-our-eyes/story-e6frflp0-1227074133835
-#'
-#' library(jpeg)
-#' library(raster)
-#'
-#' web_img2000 <- "http://cdn.newsapi.com.au/image/v1/68565a36c0fccb1bc43c09d96e8fb029"
-#'
-#' jpg2000 <- readJPEG(readBin(web_img2000, "raw", 1e6))
-#'
-#' # Convert imagedata to raster
-#' rst_blue2000 <- raster(jpg2000[, , 1])
-#' rst_green2000 <- raster(jpg2000[, , 2])
-#' rst_red2000 <- raster(jpg2000[, , 3])
-#'
-#' img2000 <- brick(rst_red2000, rst_green2000, rst_blue2000)
-#'
-#' web_img2013 <- "http://cdn.newsapi.com.au/image/v1/5707499d769db4b8ec76e8df61933f2a"
-#'
-#' jpg2013 <- readJPEG(readBin(web_img2013, "raw", 1e6))
-#'
-#' # Convert imagedata to raster
-#' rst_blue2013 <- raster(jpg2013[, , 1])
-#' rst_green2013 <- raster(jpg2013[, , 2])
-#' rst_red2013 <- raster(jpg2013[, , 3])
-#'
-#' img2013 <- brick(rst_red2013, rst_green2013, rst_blue2013)
-#'
-#' slideView(img2000, img2013, label1 = "before", label2 = "after")
-#' }
 #'
 #' @export
 #' @docType methods

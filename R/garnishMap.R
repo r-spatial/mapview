@@ -12,19 +12,22 @@
 #'
 #' @examples
 #' library(leaflet)
+#' library(leafem)
+#' library(leafpop)
 #'
 #' m <- leaflet() %>% addProviderTiles("OpenStreetMap")
-#' garnishMap(m, addMouseCoordinates, style = "basic")
+#' garnishMap(m, leafem::addMouseCoordinates, style = "basic")
 #'
 #' ## add more than one with named argument
 #' library(raster)
 #'
-#' m1 <- garnishMap(m, addMouseCoordinates, addHomeButton,
+#' m1 <- garnishMap(m, leafem::addMouseCoordinates, leafem::addHomeButton,
 #'                  ext = extent(breweries))
 #' m1
 #'
 #' ## even more flexible
-#' m2 <- garnishMap(m1, addPolygons, data = franconia, popup = popupTable(franconia),
+#' m2 <- garnishMap(m1, addPolygons, data = franconia,
+#'                  popup = leafpop::popupTable(franconia),
 #'                  fillOpacity = 0.8, color = "black", fillColor = "#BEBEBE")
 #' garnishMap(m2, addCircleMarkers, data = breweries)
 #'

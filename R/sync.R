@@ -1,9 +1,9 @@
 #' View two or more (possibly synchronised) mapview or leaflet maps
 #'
 #' @description
-#' This function produces a lattice like view of two or more maps. It is possible to sync
-#' any combination of panels or all or none. For synchronising all panels it
-#' is best to use the provided convenience function \code{sync}.
+#' These functions are deprecated.
+#' Please use leafsync::\code{\link[leafsync]{sync}} and
+#' leafsync::\code{\link[leafsync]{latticeView}} instead.
 #'
 #' @param ... any number of mapview or leaflet objects or a list thereof
 #' @param ncol how many columns should be plotted
@@ -14,47 +14,6 @@
 #' to bottom left.
 #' @param sync.cursor whether to show cursor position in synced panels (default TRUE).
 #' @param no.initial.sync whether to sync the initial view (default TRUE).
-#'
-#' @examples
-#' \dontrun{
-#' library(sp)
-#' library(raster)
-#'
-#' data(meuse)
-#' coordinates(meuse) <- ~x+y
-#' proj4string(meuse) <- CRS("+init=epsg:28992")
-#'
-#' ## view different aspects of same data set
-#' m1 <- mapview(meuse, zcol = "soil", burst = TRUE)
-#' m2 <- mapview(meuse, zcol = "lead")
-#' m3 <- mapview(meuse, zcol = "landuse", map.types = "Esri.WorldImagery")
-#' m4 <- mapview(meuse, zcol = "dist.m")
-#'
-#' latticeView(m1, m2, m3, m4) # 4 panels
-#' sync(m1, m2, m3, m4) # 4 panels synchronised
-#' latticeView(m1, m2) # 2 panels, split vertical
-#' latticeView(m1, m2, ncol = 1) # 2 panels split horizontal
-#' sync(m1, m2, ncol = 1) # same but synchronised
-#' sync(m1, m2, m3, m4, sync = list(c(1, 2), c(3, 4))) # individual syncing
-#' sync(m1, m2, m3, m4, sync = list(c(1, 2, 4)))
-#'
-#' ## view all layers of raster stack
-#' map_list <- lapply(seq(nlayers(poppendorf)), function(i) {
-#'   mapview(poppendorf[[i]], layer.name = names(poppendorf)[i])
-#' })
-#'
-#' latticeView(map_list, ncol = 5)
-#'
-#' ## view multiple data sets
-#' m1 <- mapview(breweries, zcol = "founded")
-#' m2 <- mapview(trails, zcol = "district", burst = TRUE)
-#' m3 <- mapview(poppendorf[[5]], use.layer.names = TRUE)
-#' m4 <- mapview(franconia, col.regions = "black")
-#'
-#' latticeView(m1, m2, m3, m4) # not synced
-#' sync(m1, m2, m3, m4) # synced
-#' sync(m1, m2, m3, m4, no.initial.sync = FALSE) # all maps zoomed to m4 extent
-#' }
 #'
 #' @export latticeView
 #' @name latticeView

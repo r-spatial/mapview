@@ -32,31 +32,6 @@ the disk, "remote" for web image sources).}
 \item{height}{height of the rendered image in pixels.}
 }
 \description{
-This function adds an image to a map. Both local and remote (web) image
-sources are supported. Position on the map is completely controllable.
-}
-\examples{
-library(leaflet)
-## default position is topleft next to zoom control
-
-img <- "https://www.r-project.org/logo/Rlogo.svg"
-leaflet() \%>\% addTiles() \%>\% addLogo(img, url = "https://www.r-project.org/logo/")
-
-## with local image
-library(png)
-
-img <- system.file("img", "Rlogo.png", package="png")
-leaflet() \%>\% addTiles() \%>\% addLogo(img, src = "local", alpha = 0.3)
-
-## dancing banana gif :-)
-m <- mapview(breweries91)
-
-addLogo(m, "https://jeroenooms.github.io/images/banana.gif",
-        position = "bottomleft",
-        offset.x = 5,
-        offset.y = 40,
-        width = 100,
-        height = 100)
-
-
+This function is deprecated.
+Please use leafem::\code{\link[leafem]{addLogo}} instead.
 }

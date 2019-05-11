@@ -86,8 +86,8 @@ leafletMissing = function(map.types, ...) {
                                       overlayGroups = "envinMR")
         m = leaflet::setView(map = m, 8.771676, 50.814891, zoom = 4)
         if (isAvailableInLeaflet()$scl) m = leaflet::addScaleBar(map = m, position = "bottomleft")
-        m = addMouseCoordinates(m) %>% addHomeButton(extent(envinMR),
-                                                     "mapview home")
+        m = leafem::addMouseCoordinates(m) %>% leafem::addHomeButton(extent(envinMR),
+                                                                     "mapview home")
         out = new('mapview', object = list(NULL), map = m)
       } else {
         m = initBaseMaps(map.types)
@@ -97,7 +97,7 @@ leafletMissing = function(map.types, ...) {
                                       position = mapviewGetOption(
                                         "layers.control.pos"))
         if (isAvailableInLeaflet()$scl) m = leaflet::addScaleBar(map = m, position = "bottomleft")
-        m = addMouseCoordinates(m)
+        m = leafem::addMouseCoordinates(m)
         out = new('mapview', object = list(NULL), map = m)
       }
       return(out)

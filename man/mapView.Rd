@@ -465,7 +465,11 @@ pts = list(outer, hole1, hole2)
 mapview(pl1)
 
 ## raster ==============================================================
-mapview(poppendorf[[5]])
+if (interactive()) {
+  library(plainview)
+
+  mapview(plainview::poppendorf[[5]])
+}
 
 ## spatial objects =====================================================
 mapview(leaflet::gadmCHE)

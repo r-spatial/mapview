@@ -17,22 +17,7 @@ addFeatures(map, data, pane = "overlayPane", ...)
 functions. See \code{\link{addCircleMarkers}}, \code{\link{addPolylines}}
 and \code{\link{addPolygons}}.}
 }
-\value{
-A leaflet \code{map} object.
-}
 \description{
-Add simple features geometries from \code{\link[sf]{sf}}
-}
-\examples{
-library(leaflet)
-
-leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addCircleMarkers(data = breweries)
-leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addFeatures(data = breweries)
-
-leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addPolylines(data = atlStorms2005)
-leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addFeatures(atlStorms2005)
-
-leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addPolygons(data = franconia)
-leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addFeatures(franconia)
-
+This function is deprecated.
+Please use leafem::\code{\link[leafem]{addFeatures}} instead.
 }

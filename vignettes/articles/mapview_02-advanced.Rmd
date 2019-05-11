@@ -163,6 +163,8 @@ mapview(franconia, alpha.regions = 0.2, aplha = 1)
 In addition to easily style maps, **mapview** also makes it easy to add multiple layers to a (possibly laready existing) map. This can be done either by using `+` or by supplying a list of objects (or both).
 
 ```{r layers obj}
+library(plainview)
+
 # mapview + object
 mapview(list(franconia, breweries)) + poppendorf[[5]]
 ```
@@ -177,6 +179,8 @@ mapview(franconia, zcol = "district") + mapview(breweries, zcol = "founded")
 <br>
 
 ```{r layers list}
+library(plainview)
+
 # mapview w list of objects
 mapview(list(breweries, franconia),
         zcol = list(NULL, "district"),

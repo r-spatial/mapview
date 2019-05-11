@@ -54,7 +54,7 @@ viewExtent <- function(x,
   )
 
   if (is.null(popup)) {
-    pop = popupTable(as.data.frame(t(attributes(x)$bbox[1:4])))
+    pop = leafpop::popupTable(as.data.frame(t(attributes(x)$bbox[1:4])))
   }
 
   mapView(x,
@@ -78,7 +78,7 @@ addExtent <- function(map, data, ...) {
       checkAdjustProjection(data)
     )
   )
-  m = addFeatures(x, map = map, ...)
+  m = leafem::addFeatures(x, map = map, ...)
   return(m)
 }
 

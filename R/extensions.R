@@ -3,43 +3,14 @@
 #' Add mouse coordinate information at top of map.
 #'
 #' @description
-#' This function adds a box displaying the current cursor location
-#' (latitude, longitude and zoom level) at the top of a rendered
-#' mapview or leaflet map. In case of mapview, this is automatically added.
-#' NOTE: The information will only render once a mouse movement has happened
-#' on the map.
+#' These functions are deprecated.
+#' Please use leafem::\code{\link[leafem]{addMouseCoordinates}}
+#' and leafem::\code{\link[leafem]{removeMouseCoordinates}} instead.
 #'
 #' @param map a mapview or leaflet object.
 #' @param epsg the epsg string to be shown.
 #' @param proj4string the proj4string to be shown.
 #' @param native.crs logical. whether to use the native crs in the coordinates box.
-#'
-#' @details
-#' If style is set to "detailed", the following information will be displayed:
-#' \itemize{
-#'   \item x: x-position of the mouse cursor in projected coordinates
-#'   \item y: y-position of the mouse cursor in projected coordinates
-#'   \item epsg: the epsg code of the coordinate reference system of the map
-#'   \item proj4: the proj4 definition of the coordinate reference system of the map
-#'   \item lat: latitude position of the mouse cursor
-#'   \item lon: longitude position of the mouse cursor
-#'   \item zoom: the current zoom level
-#' }
-#'
-#' By default, only 'lat', 'lon' and 'zoom' are shown. To show the details about
-#' epsg, proj4 press and hold 'Ctrl' and move the mouse. 'Ctrl' + click will
-#' copy the current contents of the box/strip at the top of the map to the clipboard,
-#' though currently only copying of 'lon', 'lat' and 'zoom' are supported, not
-#' 'epsg' and 'proj4' as these do not change with pan and zoom.
-#'
-#' @examples
-#' library(leaflet)
-#'
-#' leaflet() %>%
-#'   addProviderTiles("OpenStreetMap") # without mouse position info
-#' leaflet() %>%
-#'   addProviderTiles("OpenStreetMap") %>%
-#'   addMouseCoordinates()
 #'
 #' @export addMouseCoordinates
 #' @name addMouseCoordinates
@@ -226,10 +197,6 @@ addMouseCoordinates <- function(map,
 
 #' Remove mouse coordinates information at top of map.
 #'
-#' @examples
-#' m = mapview(breweries)
-#' removeMouseCoordinates(m)
-#'
 #' @describeIn addMouseCoordinates remove mouse coordinates information from a map
 #' @aliases removeMouseCoordinates
 #' @export removeMouseCoordinates
@@ -257,8 +224,9 @@ removeMouseCoordinates = function(map) {
 #' Add a home button / zoom-to-layer button to a map.
 #'
 #' @description
-#' This function adds a button to the map that enables zooming to a
-#' provided \code{\link{extent}} / \code{\link{bbox}}.
+#' These functions are deprecated.
+#' Please use leafem::\code{\link[leafem]{addHomeButton}}
+#' and leafem::\code{\link[leafem]{removeHomeButton}} instead.
 #'
 #' @param map a mapview or leaflet object.
 #' @param ext the \code{\link{extent}} / \code{\link{bbox}} to zoom to.
@@ -267,20 +235,6 @@ removeMouseCoordinates = function(map) {
 #' @param position the position of the button (one of 'topleft', 'topright',
 #' 'bottomleft', 'bottomright'). Defaults to 'bottomright'.
 #' @param add logical. Whether to add the button to the map (mainly for internal use).
-#'
-#' @examples
-#' library(leaflet)
-#' library(raster)
-#'
-#' m <- leaflet() %>%
-#'   addProviderTiles("OpenStreetMap") %>%
-#'   addCircleMarkers(data = breweries) %>%
-#'   addHomeButton(extent(breweries), "breweries")
-#' m
-#'
-#' ## remove the button
-#' removeHomeButton(m)
-#'
 #'
 #' @export addHomeButton
 #' @name addHomeButton
@@ -384,8 +338,8 @@ removeHomeButton <- function(map) {
 #' add a local or remote image (png, jpg, gif, bmp, ...) to a leaflet map
 #'
 #' @description
-#' This function adds an image to a map. Both local and remote (web) image
-#' sources are supported. Position on the map is completely controllable.
+#' This function is deprecated.
+#' Please use leafem::\code{\link[leafem]{addLogo}} instead.
 #'
 #' @param map a mapview or leaflet object.
 #' @param img the image to be added to the map.
@@ -399,30 +353,6 @@ removeHomeButton <- function(map) {
 #' @param offset.y the offset in y direction from the chosen position (in pixels).
 #' @param width width of the rendered image in pixels.
 #' @param height height of the rendered image in pixels.
-#'
-#' @examples
-#' library(leaflet)
-#' ## default position is topleft next to zoom control
-#'
-#' img <- "https://www.r-project.org/logo/Rlogo.svg"
-#' leaflet() %>% addTiles() %>% addLogo(img, url = "https://www.r-project.org/logo/")
-#'
-#' ## with local image
-#' library(png)
-#'
-#' img <- system.file("img", "Rlogo.png", package="png")
-#' leaflet() %>% addTiles() %>% addLogo(img, src = "local", alpha = 0.3)
-#'
-#' ## dancing banana gif :-)
-#' m <- mapview(breweries91)
-#'
-#' addLogo(m, "https://jeroenooms.github.io/images/banana.gif",
-#'         position = "bottomleft",
-#'         offset.x = 5,
-#'         offset.y = 40,
-#'         width = 100,
-#'         height = 100)
-#'
 #'
 #' @export addLogo
 #' @name addLogo
@@ -632,7 +562,8 @@ addLogo <- function(map,
 #' Type agnositc version of \code{leaflet::add*} functions.
 #'
 #' @description
-#' Add simple features geometries from \code{\link[sf]{sf}}
+#' This function is deprecated.
+#' Please use leafem::\code{\link[leafem]{addFeatures}} instead.
 #'
 #' @param map A \code{leaflet} or \code{mapview} map.
 #' @param data A \code{sf} object to be added to the \code{map}.
@@ -640,21 +571,6 @@ addLogo <- function(map,
 #' @param ... Further arguments passed to the respective \code{leaflet::add*}
 #' functions. See \code{\link{addCircleMarkers}}, \code{\link{addPolylines}}
 #' and \code{\link{addPolygons}}.
-#'
-#' @return
-#' A leaflet \code{map} object.
-#'
-#' @examples
-#' library(leaflet)
-#'
-#' leaflet() %>% addProviderTiles("OpenStreetMap") %>% addCircleMarkers(data = breweries)
-#' leaflet() %>% addProviderTiles("OpenStreetMap") %>% addFeatures(data = breweries)
-#'
-#' leaflet() %>% addProviderTiles("OpenStreetMap") %>% addPolylines(data = atlStorms2005)
-#' leaflet() %>% addProviderTiles("OpenStreetMap") %>% addFeatures(atlStorms2005)
-#'
-#' leaflet() %>% addProviderTiles("OpenStreetMap") %>% addPolygons(data = franconia)
-#' leaflet() %>% addProviderTiles("OpenStreetMap") %>% addFeatures(franconia)
 #'
 #' @export addFeatures
 #' @name addFeatures
@@ -779,12 +695,8 @@ addFeatures <- function(map,
 #' Add image query functionality to leaflet/mapview map.
 #'
 #' @details
-#' This function enables Raster*/stars objects added to leaflet/mapview maps to
-#' be queried. Standard query is on 'mousmove', but can be changed to 'click'.
-#' Note that for this to work, the \code{layerId} needs to be the same as the
-#' one that was set in \code{\link[leaflet]{addRasterImage}} or
-#' \code{link{addStrasImage}}. Currently only works for
-#' numeric values (i.e. numeric/integer and factor values are supported).
+#' This function is deprecated.
+#' Please use leafem::\code{\link[leafem]{addImageQuery}} instead.
 #'
 #' @param map the map with the RasterLayer to be queried.
 #' @param x the RasterLayer that is to be queried.
@@ -802,23 +714,6 @@ addFeatures <- function(map,
 #' @param position where to place the display field. Default is 'topright'.
 #' @param prefix a character string to be shown as prefix for the layerId.
 #' @param ... currently not used.
-#'
-#' @return
-#' A leaflet map object.
-#'
-#' @examples
-#' \dontrun{
-#' library(leaflet)
-#' library(mapview)
-#'
-#' leaflet() %>%
-#'   addProviderTiles("OpenStreetMap") %>%
-#'   addRasterImage(poppendorf[[1]], project = TRUE, group = "poppendorf",
-#'                  layerId = "poppendorf") %>%
-#'   addImageQuery(poppendorf[[1]], project = TRUE,
-#'                 layerId = "poppendorf") %>%
-#'   addLayersControl(overlayGroups = "poppendorf")
-#' }
 #'
 #' @export addImageQuery
 #' @name addImageQuery

@@ -71,11 +71,12 @@ from \code{\link{plotRGB}}.
 }}
 
 \examples{
-\dontrun{
-library(raster)
+if (interactive()) {
+  library(raster)
+  library(plainview)
 
-viewRGB(poppendorf, 4, 3, 2) # true-color
-viewRGB(poppendorf, 5, 4, 3) # false-color
+  viewRGB(plainview::poppendorf, 4, 3, 2) # true-color
+  viewRGB(plainview::poppendorf, 5, 4, 3) # false-color
 }
 
 }
