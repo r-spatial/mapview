@@ -212,8 +212,8 @@
 \item{x}{a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
 \code{sf} object or a list of any combination of those. Furthermore,
 this can also be a \code{data.frame}, a \code{numeric vector} or a
-\code{character string} pointing to a tile image folder. If missing,
-a blank map will be drawn.}
+\code{character string} pointing to a tile image folder or file on disk.
+If missing, a blank map will be drawn.}
 
 \item{map}{an optional existing map to be updated/added to.}
 

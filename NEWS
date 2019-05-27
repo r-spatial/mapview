@@ -1,9 +1,11 @@
-mapview 2.6.11
+mapview 2.7.1
 
 new features:
 
   * new method for tiled image collections (created with e.g. gdal2tiles). #222
   * new method file path (currently vector only) without loading into R.
+
+mapview 2.7.0
 
 miscellaneous:
 
