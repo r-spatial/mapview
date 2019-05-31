@@ -638,6 +638,21 @@ setMethod('mapView', signature(x = 'sf'),
               }
 
             } else {
+              # ls = list(...)
+              # nms = names(ls)
+              # toc = match.arg(
+              #   nms,
+              #   names(as.list(args(mapdeck))),
+              #   several.ok = TRUE
+              # )
+              # toc = ls[toc]
+              # map = do.call(mapdeck, toc)
+              # map %>%
+              #   add_polygon(
+              #     data = x,
+              #     layer = layer.name,
+              #     fill_colour = zcol
+              #   )
               NULL
             }
           }
