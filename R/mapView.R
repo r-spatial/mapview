@@ -18,7 +18,7 @@ if ( !isGeneric('mapView') ) {
 #' the attribute table). \cr
 #' \cr
 #' NOTE: if XYZ or XYM or XYZM data from package sf is passed to mapview,
-#' domensions Z and M will be stripped to ensure smooth rendering even though
+#' dimensions Z and M will be stripped to ensure smooth rendering even though
 #' the popup will potentially still say something like "POLYGON Z".
 #'
 #' @param x a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
@@ -33,7 +33,7 @@ if ( !isGeneric('mapView') ) {
 #' Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
 #' for points, lines and polygons such that points overlay lines overlay polygons.
 #' Set to \code{NULL} to get default leaflet behaviour where allfeatures
-#' are rendered in the same pane and layer order is determined by automatically/sequencially.
+#' are rendered in the same pane and layer order is determined automatically/sequentially.
 #' @param canvas whether to use canvas rendering rather than svg. May help
 #' performance with larger data. See \url{http://leafletjs.com/reference-1.3.0.html#canvas}
 #' for more information. Only applicable for vector data. The default setting will
@@ -42,7 +42,7 @@ if ( !isGeneric('mapView') ) {
 #' or the RStudio viewer (\code{FALSE}). When not using RStudio, maps will open
 #' in the browser by default. This is passed to \link[htmlwidgets]{sizingPolicy}
 #' via \link[leaflet]{leafletSizingPolicy}. For raster data the default is \code{FALSE}.
-#' For vector data it deoends on argument \code{canvas}.
+#' For vector data it depends on argument \code{canvas}.
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color color (palette) for points/polygons/lines
@@ -62,7 +62,7 @@ if ( !isGeneric('mapView') ) {
 #' @param na.alpha opacity of missing values
 #' @param legend should a legend be plotted
 #' @param legend.opacity opacity of the legend
-#' @param trim should the raster be trimmed in case there are NAs on the egdes
+#' @param trim should the raster be trimmed in case there are NAs on the edges
 #' @param verbose should some details be printed during the process
 #' @param layer.name the name of the layer to be shown on the map
 #' @param homebutton logical, whether to add a zoom-to-layer button to the map.
@@ -101,7 +101,7 @@ if ( !isGeneric('mapView') ) {
 #' for possible values. Ignored if \code{label = FALSE}.
 #' @param query.prefix for raster methods only. a character string to be shown
 #' as prefix for the layerId. Ignored if \code{label = FALSE}.
-#' @param ... additional arguments passed on to repective functions.
+#' @param ... additional arguments passed on to respective functions.
 #' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
 #'
@@ -111,13 +111,13 @@ if ( !isGeneric('mapView') ) {
 #' if the number of points (in case of point data) or vertices (in case of
 #' polygon or line data) > \code{maxpoints} then render using special render
 #' function. Within this render function we approximate the complexity of
-#' fetures by \cr
+#' features by \cr
 #' \cr
 #' \code{maxFeatures <- maxfeatures / (npts(data) / length(data))} \cr
 #' \cr
-#' where \code{npts} determines the umber of points/vertices and \code{length}
+#' where \code{npts} determines the number of points/vertices and \code{length}
 #' the number of features (points, lines or polygons). When the number of
-#' fetures in the current view window is larger than \code{maxFeatures} then
+#' features in the current view window is larger than \code{maxFeatures} then
 #' features are rendered on the canvas, otherwise they are rendered as svg objects
 #' and fully queriable.
 #'
