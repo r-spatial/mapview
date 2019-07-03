@@ -4,20 +4,10 @@
 \name{viewRGB}
 \alias{viewRGB}
 \alias{viewRGB,RasterStackBrick-method}
-\alias{viewRGB,stars-method}
 \title{Red-Green-Blue map view of a multi-layered Raster object}
 \usage{
-\S4method{viewRGB}{RasterStackBrick}(x, r = 3, g = 2, b = 1,
-  quantiles = c(0.02, 0.98), map = NULL,
-  maxpixels = mapviewGetOption("mapview.maxpixels"),
-  map.types = mapviewGetOption("basemaps"),
-  na.color = mapviewGetOption("na.color"),
-  layer.name = deparse(substitute(x, env = parent.frame())),
-  method = c("bilinear", "ngb"), ...)
-
-\S4method{viewRGB}{stars}(x, r = 3, g = 2, b = 1,
-  quantiles = c(0.02, 0.98), map = NULL,
-  maxpixels = mapviewGetOption("mapview.maxpixels"),
+viewRGB(x, r = 3, g = 2, b = 1, quantiles = c(0.02, 0.98),
+  map = NULL, maxpixels = mapviewGetOption("mapview.maxpixels"),
   map.types = mapviewGetOption("basemaps"),
   na.color = mapviewGetOption("na.color"),
   layer.name = deparse(substitute(x, env = parent.frame())),
@@ -65,11 +55,6 @@ be used to make 'true (or false) color images' from Landsat and other
 multi-band satellite images. Note, this text is plagirized, i.e. copied
 from \code{\link{plotRGB}}.
 }
-\section{Methods (by class)}{
-\itemize{
-\item \code{stars}: \code{\link{stars}}
-}}
-
 \examples{
 if (interactive()) {
   library(raster)

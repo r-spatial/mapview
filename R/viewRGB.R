@@ -1,8 +1,3 @@
-if ( !isGeneric('viewRGB') ) {
-  setGeneric('viewRGB', function(x, ...)
-    standardGeneric('viewRGB'))
-}
-
 #' Red-Green-Blue map view of a multi-layered Raster object
 #'
 #' @description
@@ -47,142 +42,55 @@ if ( !isGeneric('viewRGB') ) {
 #'   viewRGB(plainview::poppendorf, 5, 4, 3) # false-color
 #' }
 #'
+#' @importFrom leafem addRasterRGB
+#' @importFrom raster projection
+#' @importFrom sf st_crs
 #' @export
 #' @docType methods
 #' @name viewRGB
 #' @rdname viewRGB
 #' @aliases viewRGB,RasterStackBrick-method
 
-setMethod("viewRGB", signature(x = "RasterStackBrick"),
-          function(x, r = 3, g = 2, b = 1,
-                   quantiles = c(0.02, 0.98),
-                   map = NULL,
-                   maxpixels = mapviewGetOption("mapview.maxpixels"),
-                   map.types = mapviewGetOption("basemaps"),
-                   na.color = mapviewGetOption("na.color"),
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
-                   method = c("bilinear", "ngb"),
-                   ...) {
+viewRGB <- function(x, r = 3, g = 2, b = 1,
+                    quantiles = c(0.02, 0.98),
+                    map = NULL,
+                    maxpixels = mapviewGetOption("mapview.maxpixels"),
+                    map.types = mapviewGetOption("basemaps"),
+                    na.color = mapviewGetOption("na.color"),
+                    layer.name = deparse(substitute(x, env = parent.frame())),
+                    method = c("bilinear", "ngb"),
+                    ...) {
 
-            method = match.arg(method)
-            m <- initMap(map, map.types, projection(x))
-            x <- rasterCheckSize(x, maxpixels)
-            xout <- rasterCheckAdjustProjection(x, method)
+  if(!inherits(x, "Raster") & !inherits(x, "stars")) {
+    stop("'x' must be a Raster* or stars object.")
+  }
 
-            mat <- cbind(xout[[r]][],
-                         xout[[g]][],
-                         xout[[b]][])
+  method = match.arg(method)
+  projstring <- if (inherits(x, "Raster")) projection(x) else sf::st_crs(x)$proj4string
+  m <- initMap(map, map.types, projstring)
 
-            if (!is.null(quantiles)) {
+  grp <- layer.name
+  lyrs <- paste(r, g, b, sep = ".")
+  grp <- paste(grp, lyrs, sep = "_")
 
-              for(i in seq(ncol(mat))){
-                z <- mat[, i]
-                lwr <- stats::quantile(z, quantiles[1], na.rm = TRUE)
-                upr <- stats::quantile(z, quantiles[2], na.rm = TRUE)
-                z <- (z - lwr) / (upr - lwr)
-                z[z < 0] <- 0
-                z[z > 1] <- 1
-                mat[, i] <- z
-              }
-            } else {
-              # If there is no stretch we just scale the data between 0 and 1
-              mat <- apply(mat, 2, scales::rescale)
-            }
+  ext = createExtent(x)
 
-            na_indx <- apply(mat, 1, anyNA)
-            cols <- mat[, 1]
-            cols[na_indx] <- na.color
-            cols[!na_indx] <- grDevices::rgb(mat[!na_indx, ], alpha = 1)
-            p <- function(x) cols
+  m <- leafem::addRasterRGB(map = m, x = x, r = r, g = g, b = b,
+                            quantiles = quantiles,
+                            maxpixels = maxpixels,
+                            na.color = na.color,
+                            method = method,
+                            group = grp)
+  m <- mapViewLayersControl(map = m,
+                            map.types = map.types,
+                            names = grp)
 
-            grp <- layer.name
-            lyrs <- paste(r, g, b, sep = ".")
-            grp <- paste(grp, lyrs, sep = "_")
+  m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+  m <- leafem::addMouseCoordinates(m)
+  m = leafem::addHomeButton(m, ext, layer.name = layer.name)
 
-            ext = createExtent(xout)
+  out <- methods::new('mapview', object = list(x), map = m)
 
-            m <- leaflet::addRasterImage(map = m, x = xout[[r]], colors = p,
-                                         group = grp)
-            m <- mapViewLayersControl(map = m,
-                                      map.types = map.types,
-                                      names = grp)
+  return(out)
 
-            m <- leaflet::addScaleBar(map = m, position = "bottomleft")
-            m <- leafem::addMouseCoordinates(m)
-            m = addHomeButton(m, ext, layer.name = layer.name)
-
-            out <- methods::new('mapview', object = list(xout), map = m)
-
-            return(out)
-
-          }
-)
-
-
-#' @describeIn viewRGB \code{\link{stars}}
-setMethod("viewRGB", signature(x = "stars"),
-          function(x, r = 3, g = 2, b = 1,
-                   quantiles = c(0.02, 0.98),
-                   map = NULL,
-                   maxpixels = mapviewGetOption("mapview.maxpixels"),
-                   map.types = mapviewGetOption("basemaps"),
-                   na.color = mapviewGetOption("na.color"),
-                   layer.name = deparse(substitute(x,
-                                                   env = parent.frame())),
-                   method = c("bilinear", "ngb"),
-                   ...) {
-
-            method = match.arg(method)
-            m <- initMap(map, map.types, sf::st_crs(x)$proj4string)
-            # x <- rasterCheckSize(x, maxpixels)
-            xout <- starsCheckAdjustProjection(x, method)
-
-            mat <- cbind(as.vector(xout[[1]][, , r]),
-                         as.vector(xout[[1]][, , g]),
-                         as.vector(xout[[1]][, , b]))
-
-            if (!is.null(quantiles)) {
-
-              for(i in seq(ncol(mat))){
-                z <- mat[, i]
-                lwr <- stats::quantile(z, quantiles[1], na.rm = TRUE)
-                upr <- stats::quantile(z, quantiles[2], na.rm = TRUE)
-                z <- (z - lwr) / (upr - lwr)
-                z[z < 0] <- 0
-                z[z > 1] <- 1
-                mat[, i] <- z
-              }
-            } else {
-              # If there is no stretch we just scale the data between 0 and 1
-              mat <- apply(mat, 2, scales::rescale)
-            }
-
-            na_indx <- apply(mat, 1, anyNA)
-            cols <- mat[, 1]
-            cols[na_indx] <- na.color
-            cols[!na_indx] <- grDevices::rgb(mat[!na_indx, ], alpha = 1)
-            p <- function(x) cols
-
-            grp <- layer.name
-            lyrs <- paste(r, g, b, sep = ".")
-            grp <- paste(grp, lyrs, sep = "_")
-
-            ext = createExtent(sf::st_transform(sf::st_as_sfc(sf::st_bbox(x)), crs = 4326))
-
-            m <- addStarsImage(map = m, x = xout, band = r,
-                               colors = p, group = grp)
-            m <- mapViewLayersControl(map = m,
-                                      map.types = map.types,
-                                      names = grp)
-
-            m <- leaflet::addScaleBar(map = m, position = "bottomleft")
-            m <- leafem::addMouseCoordinates(m)
-            m = leafem::addHomeButton(m, ext, layer.name = layer.name)
-
-            out <- methods::new('mapview', object = list(xout), map = m)
-
-            return(out)
-
-          }
-)
+}
