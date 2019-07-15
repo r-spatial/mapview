@@ -2,7 +2,6 @@
 % Please edit documentation in R/extent.R
 \name{viewExtent}
 \alias{viewExtent}
-\alias{viewExtent,addExtent}
 \alias{addExtent}
 \title{View extent/bbox of spatial objects interactively}
 \usage{
@@ -14,7 +13,7 @@ addExtent(map, data, ...)
 \arguments{
 \item{x}{either a Raster*, sf* or Spatial* object}
 
-\item{map}{a leaflet map the extent should be added to. If NULL
+\item{map}{a leaflet or mapview map the extent should be added to. If NULL
 standard background layers are created.}
 
 \item{popup}{a \code{list} of HTML strings with the popup contents, usually
@@ -29,8 +28,6 @@ details.}
 \code{\link{addControl}} for details.}
 
 \item{...}{additional arguments passed on to \code{\link{addRectangles}}}
-
-\item{data}{either a Raster*, sf* or Spatial* object}
 }
 \description{
 This function produces an interactive view of the extent/bbox
@@ -38,7 +35,9 @@ of the supplied spatial object
 }
 \section{Functions}{
 \itemize{
-\item \code{addExtent}: add extent/bbox of spatial/sf objects to a leaflet map
+\item \code{addExtent}: add extent/bbox of spatial/sf objects to a leaflet map -
+This function is deprecated.
+Please use leafem::\code{\link[leafem]{addExtent}} instead.
 }}
 
 \examples{
@@ -46,7 +45,9 @@ library(leaflet)
 
 viewExtent(breweries)
 viewExtent(franconia) + breweries
-leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% addExtent(breweries)
+mapview(franconia) \%>\% leafem::addExtent(franconia, fillColor = "yellow")
+leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% leafem::addExtent(breweries)
+leaflet() \%>\% addProviderTiles("OpenStreetMap") \%>\% leafem::addExtent(breweries)
 
 }
 \author{
