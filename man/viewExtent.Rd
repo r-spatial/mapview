@@ -28,6 +28,8 @@ details.}
 \code{\link{addControl}} for details.}
 
 \item{...}{additional arguments passed on to \code{\link{addRectangles}}}
+
+\item{data}{either a Raster*, sf* or Spatial* object}
 }
 \description{
 This function produces an interactive view of the extent/bbox

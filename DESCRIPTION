@@ -48,6 +48,9 @@ Authors@R:
              family = "Schratz",
              role = "ctb"),
       person(given = "Environmental Informatics Marburg",
+             role = "ctb"),
+      person(given = "Lorenzo",
+             family = "Busetto",
              role = "ctb"))
 Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
 Description: Quickly and conveniently create interactive
@@ -96,5 +99,5 @@ LinkingTo:
 ByteCompile: yes
 LazyData: TRUE
 Encoding: UTF-8
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 SystemRequirements: GNU make

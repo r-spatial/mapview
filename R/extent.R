@@ -4,6 +4,7 @@
 #' of the supplied spatial object
 #'
 #' @param x either a Raster*, sf* or Spatial* object
+#' @param data either a Raster*, sf* or Spatial* object
 #' @param map a leaflet or mapview map the extent should be added to. If NULL
 #' standard background layers are created.
 #' @param alpha.regions opacity of the fills or the raster layer(s).
