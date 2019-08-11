@@ -243,7 +243,7 @@ for available options.}
 
 \item{legend.opacity}{opacity of the legend}
 
-\item{trim}{should the raster be trimmed in case there are NAs on the egdes}
+\item{trim}{should the raster be trimmed in case there are NAs on the edges}
 
 \item{verbose}{should some details be printed during the process}
 
@@ -288,9 +288,9 @@ as prefix for the layerId. Ignored if \code{label = FALSE}.}
 or the RStudio viewer (\code{FALSE}). When not using RStudio, maps will open
 in the browser by default. This is passed to \link[htmlwidgets]{sizingPolicy}
 via \link[leaflet]{leafletSizingPolicy}. For raster data the default is \code{FALSE}.
-For vector data it deoends on argument \code{canvas}.}
+For vector data it depends on argument \code{canvas}.}
 
-\item{...}{additional arguments passed on to repective functions.
+\item{...}{additional arguments passed on to respective functions.
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
 
@@ -301,7 +301,7 @@ See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
 for points, lines and polygons such that points overlay lines overlay polygons.
 Set to \code{NULL} to get default leaflet behaviour where allfeatures
-are rendered in the same pane and layer order is determined by automatically/sequencially.}
+are rendered in the same pane and layer order is determined automatically/sequentially.}
 
 \item{canvas}{whether to use canvas rendering rather than svg. May help
 performance with larger data. See \url{http://leafletjs.com/reference-1.3.0.html#canvas}
@@ -373,7 +373,7 @@ a length one character vector (again referring to a column of
 the attribute table). \cr
 \cr
 NOTE: if XYZ or XYM or XYZM data from package sf is passed to mapview,
-domensions Z and M will be stripped to ensure smooth rendering even though
+dimensions Z and M will be stripped to ensure smooth rendering even though
 the popup will potentially still say something like "POLYGON Z".
 
 \code{maxpoints} is taken to determine when to switch rendering from svg
@@ -381,13 +381,13 @@ to canvas overlay for perfomance. The threshold calculation is done as follows: 
 if the number of points (in case of point data) or vertices (in case of
 polygon or line data) > \code{maxpoints} then render using special render
 function. Within this render function we approximate the complexity of
-fetures by \cr
+features by \cr
 \cr
 \code{maxFeatures <- maxfeatures / (npts(data) / length(data))} \cr
 \cr
-where \code{npts} determines the umber of points/vertices and \code{length}
+where \code{npts} determines the number of points/vertices and \code{length}
 the number of features (points, lines or polygons). When the number of
-fetures in the current view window is larger than \code{maxFeatures} then
+features in the current view window is larger than \code{maxFeatures} then
 features are rendered on the canvas, otherwise they are rendered as svg objects
 and fully queriable.
 }

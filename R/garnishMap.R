@@ -37,40 +37,45 @@
 #' @aliases garnishMap
 garnishMap <- function(map, ...) {
 
-  if (inherits(map, "mapview")) map <- mapview2leaflet(map)
-  stopifnot(inherits(map, "leaflet"))
+  .Deprecated(new = "leafem::addFeatures", package = "mapview",
+              old = "mapview::addFeatures")
 
-  ls <- list(...)
+  leafem::garnishMap(map, ...)
 
-  funs <- sapply(ls, is.function)
-
-  if (all(sapply(ls, is.null)) && all(sapply(funs, is.null))) {
-    return(map)
-  } else {
-    fn_lst <- lapply(ls[funs], function(i) {
-      tst <- try(match.fun(i), silent = TRUE)
-      if (class(tst) == "try-error") tst <- NULL
-      return(tst)
-    })
-    fn_lst <- fn_lst[!sapply(fn_lst, is.null)]
-
-    args <- !funs
-
-    arg_lst <- ls[args]
-    nms <- names(arg_lst)[names(arg_lst) != ""]
-
-    arg_nms <- lapply(fn_lst, function(i) {
-      ma <- match.arg(c("map", nms), names(as.list(args(i))),
-                      several.ok = TRUE)
-      ma[!ma %in% "map"]
-    })
-
-    for (i in seq(fn_lst)) {
-      vec <- arg_nms[[i]]
-      map <- do.call(fn_lst[[i]], append(list(map), arg_lst[vec]))
-    }
-    return(map)
-  }
+  # if (inherits(map, "mapview")) map <- mapview2leaflet(map)
+  # stopifnot(inherits(map, "leaflet"))
+  #
+  # ls <- list(...)
+  #
+  # funs <- sapply(ls, is.function)
+  #
+  # if (all(sapply(ls, is.null)) && all(sapply(funs, is.null))) {
+  #   return(map)
+  # } else {
+  #   fn_lst <- lapply(ls[funs], function(i) {
+  #     tst <- try(match.fun(i), silent = TRUE)
+  #     if (class(tst) == "try-error") tst <- NULL
+  #     return(tst)
+  #   })
+  #   fn_lst <- fn_lst[!sapply(fn_lst, is.null)]
+  #
+  #   args <- !funs
+  #
+  #   arg_lst <- ls[args]
+  #   nms <- names(arg_lst)[names(arg_lst) != ""]
+  #
+  #   arg_nms <- lapply(fn_lst, function(i) {
+  #     ma <- match.arg(c("map", nms), names(as.list(args(i))),
+  #                     several.ok = TRUE)
+  #     ma[!ma %in% "map"]
+  #   })
+  #
+  #   for (i in seq(fn_lst)) {
+  #     vec <- arg_nms[[i]]
+  #     map <- do.call(fn_lst[[i]], append(list(map), arg_lst[vec]))
+  #   }
+  #   return(map)
+  # }
 }
 
 ### decorateMap lets you pass lists of functions with respective lists of
