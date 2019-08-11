@@ -37,8 +37,8 @@
 #' @aliases garnishMap
 garnishMap <- function(map, ...) {
 
-  .Deprecated(new = "leafem::addFeatures", package = "mapview",
-              old = "mapview::addFeatures")
+  .Deprecated(new = "leafem::garnishMap", package = "mapview",
+              old = "mapview::garnishMap")
 
   leafem::garnishMap(map, ...)
 
