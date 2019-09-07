@@ -274,6 +274,8 @@ addRasterLegend <- function(x,
 
   if (is.fact) {
     vals <- as.character(x[])
+  } else if (inherits(x, "stars")) {
+    vals = as.vector(x1[, , , 1][[1]][])
   } else {
     vals <- x[] # orig values needed for legend creation later on
   }
@@ -297,6 +299,7 @@ addRasterLegend <- function(x,
   if (is.fact) {
     pal2 <- leaflet::colorFactor(palette = col.regions,
                                  domain = at,
+                                 # levels = as.character(levels(x)[[1]][, 2]),
                                  na.color = col2Hex(na.color))
   } else {
     if (length(at) > 11) {
