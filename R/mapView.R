@@ -1024,6 +1024,15 @@ setMethod('mapView', signature(x = 'missing'),
           }
 )
 
+## NULL ===================================================================
+#' @describeIn mapView initiate a map without an object
+#'
+setMethod('mapView', signature(x = 'NULL'),
+          function(x, ...) {
+              NULL
+          }
+)
+
 
 
 ## list ===================================================================

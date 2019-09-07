@@ -18,6 +18,7 @@
 \alias{mapView,XYZM-method}
 \alias{mapView,bbox-method}
 \alias{mapView,missing-method}
+\alias{mapView,NULL-method}
 \alias{mapView,list-method}
 \alias{mapview,ANY-method}
 \alias{mapview}
@@ -146,6 +147,8 @@
 
 \S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
   ...)
+
+\S4method{mapView}{`NULL`}(x, ...)
 
 \S4method{mapView}{list}(x, map = NULL, zcol = NULL, burst = FALSE,
   color = mapviewGetOption("vector.palette"),
@@ -420,6 +423,8 @@ and fully queriable.
 \item \code{bbox}: \code{\link{st_bbox}}
 
 \item \code{missing}: initiate a map without an object
+
+\item \code{NULL}: initiate a map without an object
 
 \item \code{list}: \code{\link{list}}
 
