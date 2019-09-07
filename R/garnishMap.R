@@ -83,7 +83,7 @@ garnishMap <- function(map, ...) {
 ### decorateMap(map, list(addCircleMarkers), list(list(data = breweries91)))
 decorateMap <- function(map, funs, args) {
   for (i in seq(funs)) {
-    map <- do.call("garnishMap", c(list(map), funs[[i]], args[[i]]))
+    map <- do.call(leafem::garnishMap, c(list(map), funs[[i]], args[[i]]))
   }
   return(map)
 }
