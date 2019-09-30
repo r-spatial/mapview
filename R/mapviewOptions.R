@@ -9,8 +9,8 @@
 #' to change the default number of pixels to be visualised for Raster* objects,
 #' add a line like this: options(mapviewMaxPixels = 700000) to that file.
 #'
-#' @param platform character. The platform to be used.
-#' Current options are "leaflet" and "quickmapr".
+#' @param platform character. The rendering platform to be used.
+#' Current options are "leaflet" and "mapdeck".
 #' @param basemaps character. The basemaps to be used for rendering data. See
 #' \url{http://leaflet-extras.github.io/leaflet-providers/preview/} for possible
 #' values
@@ -99,13 +99,32 @@ mapviewOptions <- function(platform,
                            leafletWidth,
                            leafletHeight) {
 
+  ### 1. global options -----
+
+
   ## platform
   setPlatform <- function(platform) {
-    if (!platform %in% c("leaflet", "quickmapr")) {
-      warning("currently only platform leaflet is allowed")
+    if (!platform %in% c("leaflet", "mapdeck")) {
+      warning(
+        sprintf(
+          "currently only platforms %s & %s are allowed!
+          \nUsing default platform %s", "'leaflet'", "'mapdeck'", "'leaflet'"
+        )
+        , call. = FALSE
+      )
       options(mapviewPlatform = "leaflet")
     } else {
       options(mapviewPlatform = platform)
+    }
+  }
+
+  .platform <- function() {
+    default <- "leaflet"
+    pf <- getOption('mapviewPlatform')
+    if (is.null(pf)) {
+      return(default)
+    } else {
+      return(pf)
     }
   }
 
@@ -114,44 +133,19 @@ mapviewOptions <- function(platform,
     options(mapviewBasemaps = basemaps)
   }
 
-  ## raster.size
-  setRasterSize <- function(raster.size) {
-    options(mapviewRasterSize = raster.size)
-  }
+  .basemaps <- function() {
+    default <- c("CartoDB.Positron",
+                 "CartoDB.DarkMatter",
+                 "OpenStreetMap",
+                 "Esri.WorldImagery",
+                 "OpenTopoMap")
 
-  ## mapview maxpixels
-  setMapviewMaxPixels <- function(mapview.maxpixels) {
-    options(mapviewMaxPixels = mapview.maxpixels)
-  }
-
-  ## plainview maxpixels
-  setPlainviewMaxPixels <- function(plainview.maxpixels) {
-    options(plainviewMaxPixels = plainview.maxpixels)
-  }
-
-  ## maxpolygons
-  setMaxPolygons <- function(maxpolygons) {
-    options(mapviewMaxPolygons = maxpolygons)
-  }
-
-  ## maxpoints
-  setMaxPoints <- function(maxpoints) {
-    options(mapviewMaxPoints = maxpoints)
-  }
-
-  ## maxlines
-  setMaxLines <- function(maxlines) {
-    options(mapviewMaxLines = maxlines)
-  }
-
-  ## raster.palette
-  setRasterPalette <- function(raster.palette) {
-    options(mapviewRasterPalette = raster.palette)
-  }
-
-  ## vector.palette
-  setVectorPalette <- function(vector.palette) {
-    options(mapviewVectorPalette = vector.palette)
+    bm <- getOption('mapviewBasemaps')
+    if (is.null(bm)) {
+      return(default)
+    } else {
+      return(bm)
+    }
   }
 
   ## verbose
@@ -159,9 +153,29 @@ mapviewOptions <- function(platform,
     options(mapviewVerbose = verbose)
   }
 
+  .verbose <- function() {
+    default <- FALSE
+    vb <- getOption('mapviewVerbose')
+    if (is.null(vb)) {
+      return(default)
+    } else {
+      return(as.logical(vb))
+    }
+  }
+
   ## na.color
   setNAColor <- function(na.color) {
     options(mapviewNAColor = na.color)
+  }
+
+  .naColor <- function() {
+    default <- "#BEBEBE80"
+    nc <- getOption('mapviewNAColor')
+    if (is.null(nc)) {
+      return(default)
+    } else {
+      return(nc)
+    }
   }
 
   ## legend
@@ -169,9 +183,29 @@ mapviewOptions <- function(platform,
     options(mapviewLegend = legend)
   }
 
+  .Legend <- function() {
+    default <- TRUE
+    sl <- getOption('mapviewLegend')
+    if (is.null(sl)) {
+      return(default)
+    } else {
+      return(sl)
+    }
+  }
+
   ## legend.pos
   setLegendPos <- function(legend.pos) {
     options(mapviewLegendPos = legend.pos)
+  }
+
+  .legendPos <- function() {
+    default <- "topright"
+    lp <- getOption('mapviewLegendPos')
+    if (is.null(lp)) {
+      return(default)
+    } else {
+      return(lp)
+    }
   }
 
   ## layers control position
@@ -179,15 +213,175 @@ mapviewOptions <- function(platform,
     options(mapviewLayersControlPos = layers.control.pos)
   }
 
+  .layersControlPos <- function() {
+    default <- "topleft"
+    lcp <- getOption('mapviewLayersControlPos')
+    if (is.null(lcp)) {
+      return(default)
+    } else {
+      return(lcp)
+    }
+  }
+
   ## leaflet() height
   setleafletHeight <- function(leafletHeight) {
     options(leafletHeight = leafletHeight)
+  }
+
+  .leafletHeight <- function() {
+    default <- NULL #"800px"
+    lhgt <- getOption('leafletHeight')
+    if (is.null(lhgt)) {
+      return(default)
+    } else {
+      return(lhgt)
+    }
   }
 
   ## leaflet() width
   setleafletWidth <- function(leafletWidth) {
     options(leafletWidth = leafletWidth)
   }
+
+  .leafletWidth <- function() {
+    default <- NULL #"100%"
+    lwth <- getOption('leafletWidth')
+    if (is.null(lwth)) {
+      return(default)
+    } else {
+      return(lwth)
+    }
+  }
+
+  ### 2. raster relevant options -----
+
+
+  ## raster.palette
+  setRasterPalette <- function(raster.palette) {
+    options(mapviewRasterPalette = raster.palette)
+  }
+
+  .rasterPalette <- function() {
+    default <- mapviewPalette(name = "mapviewRasterColors")
+    rp <- getOption('mapviewRasterPalette')
+    if (is.null(rp)) {
+      return(default)
+    } else {
+      return(rp)
+    }
+  }
+
+  ## raster.size
+  setRasterSize <- function(raster.size) {
+    options(mapviewRasterSize = raster.size)
+  }
+
+  .rasterSize <- function() {
+    default <- 8 * 1024 * 1024
+    rs <- getOption('mapviewRasterSize')
+    if (is.null(rs)) {
+      return(default)
+    } else {
+      return(rs)
+    }
+  }
+
+  ## mapview maxpixels
+  setMapviewMaxPixels <- function(mapview.maxpixels) {
+    options(mapviewMaxPixels = mapview.maxpixels)
+  }
+
+  .mapviewMaxpixels <- function() {
+    default <- 500000
+    mmp <- getOption('mapviewMaxPixels')
+    if (is.null(mmp)) {
+      return(default)
+    } else {
+      return(mmp)
+    }
+  }
+
+  ## plainview maxpixels
+  setPlainviewMaxPixels <- function(plainview.maxpixels) {
+    options(plainviewMaxPixels = plainview.maxpixels)
+  }
+
+  .plainviewMaxpixels <- function() {
+    default <- 10000000
+    pmp <- getOption('plainviewMaxPixels')
+    if (is.null(pmp)) {
+      return(default)
+    } else {
+      return(pmp)
+    }
+  }
+
+  ### 3. vector relevant options -----
+
+
+  ## maxpolygons
+  setMaxPolygons <- function(maxpolygons) {
+    options(mapviewMaxPolygons = maxpolygons)
+  }
+
+  .maxpolygons <- function() {
+    default <- 30000
+    mp <- getOption('mapviewMaxPolygons')
+    if (is.null(mp)) {
+      return(default)
+    } else {
+      return(mp)
+    }
+  }
+
+  ## maxpoints
+  setMaxPoints <- function(maxpoints) {
+    options(mapviewMaxPoints = maxpoints)
+  }
+
+  .maxpoints <- function() {
+    default <- 20000
+    mp <- getOption('mapviewMaxPoints')
+    if (is.null(mp)) {
+      return(default)
+    } else {
+      return(mp)
+    }
+  }
+
+  ## maxlines
+  setMaxLines <- function(maxlines) {
+    options(mapviewMaxLines = maxlines)
+  }
+
+  .maxlines <- function() {
+    default <- 30000
+    ml <- getOption('mapviewMaxLines')
+    if (is.null(ml)) {
+      return(default)
+    } else {
+      return(ml)
+    }
+  }
+
+  ## vector.palette
+  setVectorPalette <- function(vector.palette) {
+    options(mapviewVectorPalette = vector.palette)
+  }
+
+  .vectorPalette <- function() {
+    default <- mapviewPalette(name = "mapviewVectorColors")
+    rp <- getOption('mapviewVectorPalette')
+    if (is.null(rp)) {
+      return(default)
+    } else {
+      return(rp)
+    }
+  }
+
+
+  ### 4. default options -----
+
 
   cnt <- 0
 
@@ -202,7 +396,7 @@ mapviewOptions <- function(platform,
     options(mapviewraster.size = 8 * 1024 * 1024)
     options(mapviewMaxPixels = 500000)
     options(plainviewMaxPixels = 10000000)
-    options(write.table = 30000)
+    options(mapviewMaxPolygons = 30000)
     options(mapviewMaxPoints = 20000)
     options(mapviewMaxLines = 30000)
     options(mapviewRasterPalette = mapviewPalette(name = "mapviewRasterColors"))
@@ -286,194 +480,6 @@ mapviewOptions <- function(platform,
 
 }
 
-
-.platform <- function() {
-  default <- "leaflet"
-  pf <- getOption('mapviewPlatform')
-  if (is.null(pf)) {
-    return(default)
-  } else {
-    return(pf)
-  }
-}
-
-
-.basemaps <- function() {
-  default <- c("CartoDB.Positron",
-               "CartoDB.DarkMatter",
-               "OpenStreetMap",
-               "Esri.WorldImagery",
-               "OpenTopoMap")
-
-  bm <- getOption('mapviewBasemaps')
-  if (is.null(bm)) {
-    return(default)
-  } else {
-    return(bm)
-  }
-}
-
-
-.rasterSize <- function() {
-  default <- 8 * 1024 * 1024
-  rs <- getOption('mapviewRasterSize')
-  if (is.null(rs)) {
-    return(default)
-  } else {
-    return(rs)
-  }
-}
-
-
-.mapviewMaxpixels <- function() {
-  default <- 500000
-  mmp <- getOption('mapviewMaxPixels')
-  if (is.null(mmp)) {
-    return(default)
-  } else {
-    return(mmp)
-  }
-}
-
-
-.plainviewMaxpixels <- function() {
-  default <- 10000000
-  pmp <- getOption('plainviewMaxPixels')
-  if (is.null(pmp)) {
-    return(default)
-  } else {
-    return(pmp)
-  }
-}
-
-
-.maxpolygons <- function() {
-  default <- 30000
-  mp <- getOption('mapviewMaxPolygons')
-  if (is.null(mp)) {
-    return(default)
-  } else {
-    return(mp)
-  }
-}
-
-
-.maxpoints <- function() {
-  default <- 20000
-  mp <- getOption('mapviewMaxPoints')
-  if (is.null(mp)) {
-    return(default)
-  } else {
-    return(mp)
-  }
-}
-
-
-.maxlines <- function() {
-  default <- 30000
-  ml <- getOption('mapviewMaxLines')
-  if (is.null(ml)) {
-    return(default)
-  } else {
-    return(ml)
-  }
-}
-
-.rasterPalette <- function() {
-  default <- mapviewPalette(name = "mapviewRasterColors")
-  rp <- getOption('mapviewRasterPalette')
-  if (is.null(rp)) {
-    return(default)
-  } else {
-    return(rp)
-  }
-}
-
-
-.vectorPalette <- function() {
-  default <- mapviewPalette(name = "mapviewVectorColors")
-  rp <- getOption('mapviewVectorPalette')
-  if (is.null(rp)) {
-    return(default)
-  } else {
-    return(rp)
-  }
-}
-
-
-.verbose <- function() {
-  default <- FALSE
-  vb <- getOption('mapviewVerbose')
-  if (is.null(vb)) {
-    return(default)
-  } else {
-    return(as.logical(vb))
-  }
-}
-
-
-.naColor <- function() {
-  default <- "#BEBEBE80"
-  nc <- getOption('mapviewNAColor')
-  if (is.null(nc)) {
-    return(default)
-  } else {
-    return(nc)
-  }
-}
-
-
-.Legend <- function() {
-  default <- TRUE
-  sl <- getOption('mapviewLegend')
-  if (is.null(sl)) {
-    return(default)
-  } else {
-    return(sl)
-  }
-}
-
-
-.legendPos <- function() {
-  default <- "topright"
-  lp <- getOption('mapviewLegendPos')
-  if (is.null(lp)) {
-    return(default)
-  } else {
-    return(lp)
-  }
-}
-
-
-.layersControlPos <- function() {
-  default <- "topleft"
-  lcp <- getOption('mapviewLayersControlPos')
-  if (is.null(lcp)) {
-    return(default)
-  } else {
-    return(lcp)
-  }
-}
-
-.leafletWidth <- function() {
-  default <- NULL #"100%"
-  lwth <- getOption('leafletWidth')
-  if (is.null(lwth)) {
-    return(default)
-  } else {
-    return(lwth)
-  }
-}
-
-.leafletHeight <- function() {
-  default <- NULL #"800px"
-  lhgt <- getOption('leafletHeight')
-  if (is.null(lhgt)) {
-    return(default)
-  } else {
-    return(lhgt)
-  }
-}
 #' query single mapviewOption parameters
 #' @describeIn mapviewOptions query single mapviewOption parameters
 #' @param param character. parameter to be queried.
