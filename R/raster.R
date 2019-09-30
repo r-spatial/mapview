@@ -12,7 +12,6 @@ leafletRL = function(x,
                      at,
                      na.color,
                      use.layer.names,
-                     values,
                      map.types,
                      alpha.regions,
                      legend,
@@ -72,23 +71,23 @@ leafletRL = function(x,
 
     if (is.fact) x = raster::as.factor(x)
 
-    if (is.null(values)) {
-      if (is.fact) {
-        at = x@data@attributes[[1]]$ID
-      } else {
-        offset = diff(range(x[], na.rm = TRUE)) * 0.05
-        top = max(x[], na.rm = TRUE) + offset
-        bot = min(x[], na.rm = TRUE) - offset
-        values = seq(bot, top, length.out = 10)
-        values = round(values, 5)
-      }
-    } else {
-      values = round(values, 5)
-    }
+    # if (is.null(values)) {
+    #   if (is.fact) {
+    #     at = x@data@attributes[[1]]$ID
+    #   } else {
+    #     offset = diff(range(x[], na.rm = TRUE)) * 0.05
+    #     top = max(x[], na.rm = TRUE) + offset
+    #     bot = min(x[], na.rm = TRUE) - offset
+    #     values = seq(bot, top, length.out = 10)
+    #     values = round(values, 5)
+    #   }
+    # } else {
+    #   values = round(values, 5)
+    # }
 
     if (is.fact) {
       pal = leaflet::colorFactor(palette = col.regions,
-                                 domain = values,
+                                 domain = x@data@attributes[[1]]$ID,
                                  na.color = na.color)
       # pal2 = pal
     } else {
@@ -178,7 +177,6 @@ leafletRSB = function(x,
                       at,
                       na.color,
                       use.layer.names,
-                      values,
                       map.types,
                       legend,
                       legend.opacity,
@@ -284,7 +282,6 @@ leafletPixelsDF = function(x,
                            at,
                            na.color,
                            use.layer.names,
-                           values,
                            map.types,
                            alpha.regions,
                            legend,
@@ -324,7 +321,6 @@ leafletPixelsDF = function(x,
               at = at,
               na.color = na.color,
               use.layer.names = TRUE,
-              values = values,
               map.types = map.types,
               alpha.regions = alpha.regions,
               legend = legend,

@@ -105,7 +105,6 @@ leaflet_stars = function(x,
                          at,
                          na.color,
                          use.layer.names,
-                         values,
                          map.types,
                          alpha.regions,
                          legend,
@@ -148,22 +147,23 @@ leaflet_stars = function(x,
     # if (!is.na(raster::projection(x)) & trim) x = trim(x)
     # if (is.fact) x = raster::as.factor(x)
     if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
-    if (is.null(values)) {
-      # if (is.fact) {
-      #   at = x@data@attributes[[1]]$ID
-      # } else {
-      offset = diff(range(as.numeric(layer), na.rm = TRUE)) * 0.05
-      top = max(as.numeric(layer), na.rm = TRUE) + offset
-      bot = min(as.numeric(layer), na.rm = TRUE) - offset
-      values = seq(bot, top, length.out = 10)
-      values = round(values, 5)
-      # }
-    } else {
-      values = round(values, 5)
-    }
+    # if (is.null(values)) {
+    #   # if (is.fact) {
+    #   #   at = x@data@attributes[[1]]$ID
+    #   # } else {
+    #   offset = diff(range(as.numeric(layer), na.rm = TRUE)) * 0.05
+    #   top = max(as.numeric(layer), na.rm = TRUE) + offset
+    #   bot = min(as.numeric(layer), na.rm = TRUE) - offset
+    #   values = seq(bot, top, length.out = 10)
+    #   values = round(values, 5)
+    #   # }
+    # } else {
+    #   values = round(values, 5)
+    # }
     if (is.fact) {
+      ### delete at some stage!!! ###
       pal = leaflet::colorFactor(palette = col.regions,
-                                 domain = values,
+                                 domain = seq(0, 255, 1),
                                  na.color = na.color)
       # pal2 = pal
     } else {

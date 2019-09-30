@@ -36,33 +36,33 @@
   maxpixels = mapviewGetOption("mapview.maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
   na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
-  values = NULL, map.types = mapviewGetOption("basemaps"),
-  alpha.regions = 0.8, legend = mapviewGetOption("legend"),
-  legend.opacity = 1, trim = TRUE,
-  verbose = mapviewGetOption("verbose"), layer.name = NULL,
-  homebutton = TRUE, native.crs = FALSE, method = c("bilinear",
-  "ngb"), label = TRUE, query.type = c("mousemove", "click"),
-  query.digits, query.position = "topright", query.prefix = "Layer",
+  map.types = mapviewGetOption("basemaps"), alpha.regions = 0.8,
+  legend = mapviewGetOption("legend"), legend.opacity = 1,
+  trim = TRUE, verbose = mapviewGetOption("verbose"),
+  layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
+  method = c("bilinear", "ngb"), label = TRUE,
+  query.type = c("mousemove", "click"), query.digits,
+  query.position = "topright", query.prefix = "Layer",
   viewer.suppress = FALSE, ...)
 
 \S4method{mapView}{stars}(x, band = 1, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
   na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
-  values = NULL, map.types = mapviewGetOption("basemaps"),
-  alpha.regions = 0.8, legend = mapviewGetOption("legend"),
-  legend.opacity = 1, trim = TRUE,
-  verbose = mapviewGetOption("verbose"), layer.name = NULL,
-  homebutton = TRUE, native.crs = FALSE, method = c("bilinear",
-  "ngb"), label = TRUE, query.type = c("mousemove", "click"),
-  query.digits, query.position = "topright", query.prefix = "Layer",
+  map.types = mapviewGetOption("basemaps"), alpha.regions = 0.8,
+  legend = mapviewGetOption("legend"), legend.opacity = 1,
+  trim = TRUE, verbose = mapviewGetOption("verbose"),
+  layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
+  method = c("bilinear", "ngb"), label = TRUE,
+  query.type = c("mousemove", "click"), query.digits,
+  query.position = "topright", query.prefix = "Layer",
   viewer.suppress = FALSE, ...)
 
 \S4method{mapView}{RasterStackBrick}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
   na.color = mapviewGetOption("na.color"), use.layer.names = TRUE,
-  values = NULL, map.types = mapviewGetOption("basemaps"),
+  map.types = mapviewGetOption("basemaps"),
   legend = mapviewGetOption("legend"), legend.opacity = 1,
   trim = TRUE, verbose = mapviewGetOption("verbose"),
   homebutton = TRUE, method = c("bilinear", "ngb"), label = TRUE,
@@ -73,7 +73,7 @@
 \S4method{mapView}{Satellite}(x, map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
-  na.color = mapviewGetOption("na.color"), values = NULL,
+  na.color = mapviewGetOption("na.color"),
   map.types = mapviewGetOption("basemaps"),
   legend = mapviewGetOption("legend"), legend.opacity = 1,
   trim = TRUE, verbose = mapviewGetOption("verbose"),
@@ -171,26 +171,26 @@
   maxpixels = mapviewGetOption("mapview.maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
   na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
-  values = NULL, map.types = mapviewGetOption("basemaps"),
-  alpha.regions = 0.8, legend = mapviewGetOption("legend"),
-  legend.opacity = 1, trim = TRUE,
-  verbose = mapviewGetOption("verbose"), layer.name = NULL,
-  homebutton = TRUE, native.crs = FALSE, method = c("bilinear",
-  "ngb"), label = TRUE, query.type = c("mousemove", "click"),
-  query.digits, query.position = "topright", query.prefix = "Layer",
+  map.types = mapviewGetOption("basemaps"), alpha.regions = 0.8,
+  legend = mapviewGetOption("legend"), legend.opacity = 1,
+  trim = TRUE, verbose = mapviewGetOption("verbose"),
+  layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
+  method = c("bilinear", "ngb"), label = TRUE,
+  query.type = c("mousemove", "click"), query.digits,
+  query.position = "topright", query.prefix = "Layer",
   viewer.suppress = FALSE, ...)
 
 \S4method{mapView}{SpatialGridDataFrame}(x, map = NULL, zcol = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
   col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
   na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
-  values = NULL, map.types = mapviewGetOption("basemaps"),
-  alpha.regions = 0.8, legend = mapviewGetOption("legend"),
-  legend.opacity = 1, trim = TRUE,
-  verbose = mapviewGetOption("verbose"), layer.name = NULL,
-  homebutton = TRUE, native.crs = FALSE, method = c("bilinear",
-  "ngb"), label = TRUE, query.type = c("mousemove", "click"),
-  query.digits, query.position = "topright", query.prefix = "Layer",
+  map.types = mapviewGetOption("basemaps"), alpha.regions = 0.8,
+  legend = mapviewGetOption("legend"), legend.opacity = 1,
+  trim = TRUE, verbose = mapviewGetOption("verbose"),
+  layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
+  method = c("bilinear", "ngb"), label = TRUE,
+  query.type = c("mousemove", "click"), query.digits,
+  query.position = "topright", query.prefix = "Layer",
   viewer.suppress = FALSE, ...)
 
 \S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL,
@@ -232,9 +232,6 @@ See \code{\link{levelplot}} for details.}
 \item{na.color}{color for missing values}
 
 \item{use.layer.names}{should layer names of the Raster* object be used?}
-
-\item{values}{a vector of values for the visualisation of the layers.
-Per default these are calculated based on the supplied raster* object.}
 
 \item{map.types}{character spcifications for the base maps.
 see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
