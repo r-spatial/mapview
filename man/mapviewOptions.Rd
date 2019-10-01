@@ -5,11 +5,12 @@
 \alias{mapviewGetOption}
 \title{Global options for the mapview package}
 \usage{
-mapviewOptions(platform, basemaps, raster.size, mapview.maxpixels,
-  plainview.maxpixels, maxpoints, maxpolygons, maxlines, raster.palette,
-  vector.palette, verbose, na.color, legend, legend.pos,
-  layers.control.pos, default = FALSE, console = TRUE, leafletWidth,
-  leafletHeight)
+mapviewOptions(platform, basemaps, raster.palette, vector.palette, verbose,
+  na.color, legend, legend.pos, layers.control.pos, leafletWidth,
+  leafletHeight, raster.size, mapview.maxpixels, plainview.maxpixels,
+  use.layer.names, trim, method, query.type, query.digits, query.position,
+  query.prefix, maxpoints, maxpolygons, maxlines, default = FALSE,
+  console = TRUE)
 
 mapviewGetOption(param)
 }
@@ -20,34 +21,6 @@ Current options are "leaflet" and "mapdeck".}
 \item{basemaps}{character. The basemaps to be used for rendering data. See
 \url{http://leaflet-extras.github.io/leaflet-providers/preview/} for possible
 values}
-
-\item{raster.size}{numeric. see the maxBytes argument in \code{\link{addRasterImage}}}
-
-\item{mapview.maxpixels}{numeric. The maximum amount of pixels allowed for Raster*
-objects to be rendered with \code{mapview}. Defaults to 500000.
-Set this higher if you have a potent machine or are patient enough to wait a little.}
-
-\item{plainview.maxpixels}{numeric. The maximum amount of pixels allowed for Raster*
-objects to be rendered with \code{plainview}. Defaults to 10000000.
-Set this higher if you have a potent machine or are patient enough to wait a little.}
-
-\item{maxpoints}{numeric. Maximum number of points allowed for leaflet overlay
-rendering. If this number is exceeded rendering will be done
-using special functionality which will provide much more speed and better handling.
-This means that standard functionality is reduced.
-For example adding layers via "+" is not possible anymore.}
-
-\item{maxpolygons}{numeric. Maximum number of polygons allowed for leaflet overlay
-rendering. If this number is exceeded rendering will be done
-using special functionality which will provide much more speed and better handling.
-This means that standard functionality is reduced.
-For example adding layers via "+" is not possible anymore.}
-
-\item{maxlines}{numeric. Maximum number of lines allowed for leaflet overlay
-rendering. If this number is exceeded rendering will be done
-using special functionality which will provide much more speed and better handling.
-This means that standard functionality is reduced.
-For example adding layers via "+" is not possible anymore.}
 
 \item{raster.palette}{a color palette function for raster visualisation.
 Should be a function that takes an integer as input and returns a vector of colors.
@@ -70,11 +43,64 @@ One of "topleft", "topright", "bottomleft", "bottomright".}
 \item{layers.control.pos}{character. Where should the layer control be
 placed? One of "topleft", "topright", "bottomleft", "bottomright".}
 
+\item{leafletWidth, leafletHeight}{height and width of the htmlwidget in px.}
+
+\item{raster.size}{numeric. see the maxBytes argument in \code{\link{addRasterImage}}}
+
+\item{mapview.maxpixels}{numeric. The maximum amount of pixels allowed for Raster*
+objects to be rendered with \code{mapview}. Defaults to 500000.
+Set this higher if you have a potent machine or are patient enough to wait a little.}
+
+\item{plainview.maxpixels}{numeric. The maximum amount of pixels allowed for Raster*
+objects to be rendered with \code{plainview}. Defaults to 10000000.
+Set this higher if you have a potent machine or are patient enough to wait a little.}
+
+\item{use.layer.names}{whether to use layer names when plotting raster layers.}
+
+\item{trim}{should the raster be trimmed in case there are NAs on the edges.}
+
+\item{method}{for raster data only (raster/stars). Method used to compute
+values for the resampled layer that is passed on to leaflet. mapview does
+projection on-the-fly to ensure correct display and therefore needs to know
+how to do this projection. The default is 'bilinear' (bilinear interpolation),
+which is appropriate for continuous variables. The other option, 'ngb'
+(nearest neighbor), is useful for categorical variables. Ignored if the raster
+layer is of class \code{factor} in which case "ngb" is used.}
+
+\item{query.type}{for raster methods only. Whether to show raster value query
+on \code{'mousemove'} or \code{'click'}. Ignored if \code{label = FALSE}.}
+
+\item{query.digits}{for raster methods only. The amount of digits to be shown
+by raster value query. Ignored if \code{label = FALSE}.}
+
+\item{query.position}{for raster methods only. The position of the raster
+value query info box. See \code{position} argument of \code{\link{addLegend}}
+for possible values. Ignored if \code{label = FALSE}.}
+
+\item{query.prefix}{for raster methods only. a character string to be shown
+as prefix for the layerId. Ignored if \code{label = FALSE}.}
+
+\item{maxpoints}{numeric. Maximum number of points allowed for leaflet overlay
+rendering. If this number is exceeded rendering will be done
+using special functionality which will provide much more speed and better handling.
+This means that standard functionality is reduced.
+For example adding layers via "+" is not possible anymore.}
+
+\item{maxpolygons}{numeric. Maximum number of polygons allowed for leaflet overlay
+rendering. If this number is exceeded rendering will be done
+using special functionality which will provide much more speed and better handling.
+This means that standard functionality is reduced.
+For example adding layers via "+" is not possible anymore.}
+
+\item{maxlines}{numeric. Maximum number of lines allowed for leaflet overlay
+rendering. If this number is exceeded rendering will be done
+using special functionality which will provide much more speed and better handling.
+This means that standard functionality is reduced.
+For example adding layers via "+" is not possible anymore.}
+
 \item{default}{logical. If TRUE all options are set to their default values}
 
 \item{console}{logical. Should the options be printed to the console}
-
-\item{leafletWidth, leafletHeight}{height and width of the htmlwidget in px.}
 
 \item{param}{character. parameter to be queried.}
 }
