@@ -55,6 +55,13 @@ if ( !isGeneric('mapView') ) {
 #' @param map.types character spcifications for the base maps.
 #' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
 #' for available options.
+#' @param burst whether to show all (TRUE) or only one (FALSE) layer(s).
+#' See also Details.
+#' @param zcol attribute name(s) or column number(s) in attribute table
+#' of the column(s) to be rendered. See also Details.
+#' @param cex attribute name(s) or column number(s) in attribute table
+#' of the column(s) to be used for defining the size of circles
+#' @param lwd line width
 #' @param alpha opacity of lines
 #' @param alpha.regions opacity of the fills of points, polygons or raster layer(s)
 #' @param na.alpha opacity of missing values
@@ -238,23 +245,23 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    col.regions = mapviewGetOption("raster.palette")(256),
                    at = NULL,
                    na.color = mapviewGetOption("na.color"),
-                   use.layer.names = FALSE,
+                   use.layer.names = mapviewGetOption("use.layer.names"),
                    map.types = mapviewGetOption("basemaps"),
                    alpha.regions = 0.8,
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
-                   trim = TRUE,
+                   trim = mapviewGetOption("trim"),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = NULL,
-                   homebutton = TRUE,
-                   native.crs = FALSE,
-                   method = c("bilinear", "ngb"),
+                   homebutton = mapviewGetOption("homebutton"),
+                   native.crs = mapviewGetOption("native.crs"),
+                   method = mapviewGetOption("method"),
                    label = TRUE,
-                   query.type = c("mousemove", "click"),
-                   query.digits,
-                   query.position = "topright",
-                   query.prefix = "Layer",
-                   viewer.suppress = FALSE,
+                   query.type = mapviewGetOption("query.type"),
+                   query.digits = mapviewGetOption("query.digits"),
+                   query.position = mapviewGetOption("query.position"),
+                   query.prefix = mapviewGetOption("query.prefix"),
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                    ...) {
 
             method = match.arg(method)
@@ -317,23 +324,23 @@ setMethod('mapView', signature(x = 'stars'),
                    col.regions = mapviewGetOption("raster.palette")(256),
                    at = NULL,
                    na.color = mapviewGetOption("na.color"),
-                   use.layer.names = FALSE,
+                   use.layer.names = mapviewGetOption("use.layer.names"),
                    map.types = mapviewGetOption("basemaps"),
                    alpha.regions = 0.8,
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
-                   trim = TRUE,
+                   trim = mapviewGetOption("trim"),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = NULL,
-                   homebutton = TRUE,
-                   native.crs = FALSE,
-                   method = c("bilinear", "ngb"),
+                   homebutton = mapviewGetOption("homebutton"),
+                   native.crs = mapviewGetOption("native.crs"),
+                   method = mapviewGetOption("method"),
                    label = TRUE,
-                   query.type = c("mousemove", "click"),
-                   query.digits,
-                   query.position = "topright",
-                   query.prefix = "Layer",
-                   viewer.suppress = FALSE,
+                   query.type = mapviewGetOption("query.type"),
+                   query.digits = mapviewGetOption("query.digits"),
+                   query.position = mapviewGetOption("query.position"),
+                   query.prefix = mapviewGetOption("query.prefix"),
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                    ...) {
 
             method = match.arg(method)
@@ -1278,14 +1285,6 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
 
 ## SpatialPointsDataFrame =================================================
 #' @describeIn mapView \code{\link{SpatialPointsDataFrame}}
-#' @param burst whether to show all (TRUE) or only one (FALSE) layer(s).
-#' See also Details.
-#' @param zcol attribute name(s) or column number(s) in attribute table
-#' of the column(s) to be rendered. See also Details.
-#' @param cex attribute name(s) or column number(s) in attribute table
-#' of the column(s) to be used for defining the size of circles
-#' @param lwd line width
-
 setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
           function(x,
                    zcol = NULL,

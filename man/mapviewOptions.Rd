@@ -6,10 +6,11 @@
 \title{Global options for the mapview package}
 \usage{
 mapviewOptions(platform, basemaps, raster.palette, vector.palette, verbose,
-  na.color, legend, legend.pos, layers.control.pos, leafletWidth,
-  leafletHeight, raster.size, mapview.maxpixels, plainview.maxpixels,
-  use.layer.names, trim, method, query.type, query.digits, query.position,
-  query.prefix, maxpoints, maxpolygons, maxlines, default = FALSE,
+  na.color, legend, legend.opacity, legend.pos, layers.control.pos,
+  leafletWidth, leafletHeight, viewer.suppress, homebutton, native.crs,
+  raster.size, mapview.maxpixels, plainview.maxpixels, use.layer.names,
+  trim, method, query.type, query.digits, query.position, query.prefix,
+  maxpoints, maxpolygons, maxlines, pane, cex, alpha, default = FALSE,
   console = TRUE)
 
 mapviewGetOption(param)
@@ -37,6 +38,8 @@ behaviour. Set this to TRUE if you want to see these printed to the console.}
 
 \item{legend}{logical. Whether or not to show a legend for the layer(s).}
 
+\item{legend.opacity}{opacity of the legend.}
+
 \item{legend.pos}{Where should the legend be placed?
 One of "topleft", "topright", "bottomleft", "bottomright".}
 
@@ -44,6 +47,17 @@ One of "topleft", "topright", "bottomleft", "bottomright".}
 placed? One of "topleft", "topright", "bottomleft", "bottomright".}
 
 \item{leafletWidth, leafletHeight}{height and width of the htmlwidget in px.}
+
+\item{viewer.suppress}{whether to render the map in the browser (\code{TRUE})
+or the RStudio viewer (\code{FALSE}).}
+
+\item{homebutton}{logical, whether to add a zoom-to-layer button to the map.}
+
+\item{native.crs}{logical whether to reproject to web map coordinate
+reference system (web mercator - epsg:3857) or render using native CRS of
+the supplied data (can also be NA). Default is FALSE which will render in
+web mercator. If set to TRUE now background maps will be drawn (but rendering
+may be much quicker as no reprojecting is necessary).}
 
 \item{raster.size}{numeric. see the maxBytes argument in \code{\link{addRasterImage}}}
 
@@ -97,6 +111,18 @@ rendering. If this number is exceeded rendering will be done
 using special functionality which will provide much more speed and better handling.
 This means that standard functionality is reduced.
 For example adding layers via "+" is not possible anymore.}
+
+\item{pane}{name of the map pane in which to render features. See
+\code{\link{addMapPane}} for details. Currently only supported for vector layers.
+Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
+for points, lines and polygons such that points overlay lines overlay polygons.
+Set to \code{NULL} to get default leaflet behaviour where allfeatures
+are rendered in the same pane and layer order is determined automatically/sequentially.}
+
+\item{cex}{numeric or attribute name(s) or column number(s) in attribute table
+of the column(s) to be used for defining the size of circles.}
+
+\item{alpha}{opacity of lines.}
 
 \item{default}{logical. If TRUE all options are set to their default values}
 

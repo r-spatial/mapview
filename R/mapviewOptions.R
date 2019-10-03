@@ -24,6 +24,7 @@
 #' behaviour. Set this to TRUE if you want to see these printed to the console.
 #' @param na.color character. The default color to be used for NA values.
 #' @param legend logical. Whether or not to show a legend for the layer(s).
+#' @param legend.opacity opacity of the legend.
 #' @param legend.pos Where should the legend be placed?
 #' One of "topleft", "topright", "bottomleft", "bottomright".
 #' @param default logical. If TRUE all options are set to their default values
@@ -31,6 +32,14 @@
 #' @param layers.control.pos character. Where should the layer control be
 #' placed? One of "topleft", "topright", "bottomleft", "bottomright".
 #' @param leafletWidth,leafletHeight height and width of the htmlwidget in px.
+#' @param viewer.suppress whether to render the map in the browser (\code{TRUE})
+#' or the RStudio viewer (\code{FALSE}).
+#' @param homebutton logical, whether to add a zoom-to-layer button to the map.
+#' @param native.crs logical whether to reproject to web map coordinate
+#' reference system (web mercator - epsg:3857) or render using native CRS of
+#' the supplied data (can also be NA). Default is FALSE which will render in
+#' web mercator. If set to TRUE now background maps will be drawn (but rendering
+#' may be much quicker as no reprojecting is necessary).
 #' @param raster.size numeric. see the maxBytes argument in \code{\link{addRasterImage}}
 #' @param mapview.maxpixels numeric. The maximum amount of pixels allowed for Raster*
 #' objects to be rendered with \code{mapview}. Defaults to 500000.
@@ -71,6 +80,15 @@
 #' using special functionality which will provide much more speed and better handling.
 #' This means that standard functionality is reduced.
 #' For example adding layers via "+" is not possible anymore.
+#' @param pane name of the map pane in which to render features. See
+#' \code{\link{addMapPane}} for details. Currently only supported for vector layers.
+#' Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
+#' for points, lines and polygons such that points overlay lines overlay polygons.
+#' Set to \code{NULL} to get default leaflet behaviour where allfeatures
+#' are rendered in the same pane and layer order is determined automatically/sequentially.
+#' @param cex numeric or attribute name(s) or column number(s) in attribute table
+#' of the column(s) to be used for defining the size of circles.
+#' @param alpha opacity of lines.
 #'
 #' @author
 #' Tim Appelhans
@@ -104,10 +122,14 @@ mapviewOptions <- function(platform,
                            verbose,
                            na.color,
                            legend,
+                           legend.opacity,
                            legend.pos,
                            layers.control.pos,
                            leafletWidth,
                            leafletHeight,
+                           viewer.suppress,
+                           homebutton,
+                           native.crs,
                            raster.size,
                            mapview.maxpixels,
                            plainview.maxpixels,
@@ -121,6 +143,9 @@ mapviewOptions <- function(platform,
                            maxpoints,
                            maxpolygons,
                            maxlines,
+                           pane,
+                           cex,
+                           alpha,
                            default = FALSE,
                            console = TRUE) {
 
@@ -217,6 +242,21 @@ mapviewOptions <- function(platform,
     }
   }
 
+  ## legend.opacity
+  etLegendOpacity = function(legend.opacity) {
+    options(mapviewLegendOpacity = legend.opacity)
+  }
+
+  .legenOpacity = function() {
+    default = 1
+    lo = getOption("mapviewLegendOpacity")
+    if (is.null(lo)) {
+      return(default)
+    } else {
+      return(lo)
+    }
+  }
+
   ## legend.pos
   setLegendPos <- function(legend.pos) {
     options(mapviewLegendPos = legend.pos)
@@ -274,6 +314,51 @@ mapviewOptions <- function(platform,
       return(default)
     } else {
       return(lwth)
+    }
+  }
+
+  ## viewer suppress
+  setViewerSuppress = function(viewer.suppress) {
+    options(mapviewViewerSuppress = viewer.suppress)
+  }
+
+  .viewerSuppress = function() {
+    default = FALSE
+    vwrspprs = getOption("mapviewViewerSuppress")
+    if (is.null(vwrspprs)) {
+      return(default)
+    } else {
+      return(vwrspprs)
+    }
+  }
+
+  ## homebutton
+  setHomebutton = function(homebutton) {
+    options(mapviewHomebutton = homebutton)
+  }
+
+  .homebutton = function() {
+    default = TRUE
+    hbtn = getOption("mapviewHomebutton")
+    if (is.null(hbtn)) {
+      return(default)
+    } else {
+      return(hbtn)
+    }
+  }
+
+  ## native.crs
+  setNativeCRS = function(native.crs) {
+    options(mapviewNativeCRS = native.crs)
+  }
+
+  .nativeCRS = function() {
+    default = FALSE
+    ntvcrs = getOption("mapviewNativeCRS")
+    if (is.null(ntvcrs)) {
+      return(default)
+    } else {
+      return(ntvcrs)
     }
   }
 
@@ -542,6 +627,51 @@ mapviewOptions <- function(platform,
     }
   }
 
+  ## pane
+  setPane = function(pane) {
+    options(mapviewPane = pane)
+  }
+
+  .pane = function() {
+    default = "auto"
+    pn = getOption("mapviewPane")
+    if (is.null(pn)) {
+      return(default)
+    } else {
+      return(pn)
+    }
+  }
+
+  ## cex
+  setCex = function(cex) {
+    options(mapviewCex = cex)
+  }
+
+  .cex = function() {
+    default = 6
+    cx = getOption("mapviewCex")
+    if (is.null(cx)) {
+      return(default)
+    } else {
+      return(cx)
+    }
+  }
+
+  ## alpha
+  setAlpha = function(alpha) {
+    options(mapviewAlpha = alpha)
+  }
+
+  .alpha = function() {
+    default = 0.9
+    alph = getOption("mapviewAlpha")
+    if (is.null(alph)) {
+      return(default)
+    } else {
+      return(alph)
+    }
+  }
+
 
   ### 4. default options -----
 
@@ -563,10 +693,14 @@ mapviewOptions <- function(platform,
     options(mapviewVerbose = FALSE)
     options(mapviewNAColor = "#BEBEBE80")
     options(mapviewLegend = TRUE)
+    options(mapviewLegendOpacity = 1)
     options(mapviewLegendPos = "topright")
     options(mapviewLayersControlPos = "topleft")
     options(mapviewleafletWidth = NULL)
     options(mapviewleafletHeight = NULL)
+    options(mapviewViewerSuppress = FALSE)
+    options(mapviewHomebutton = TRUE)
+    options(mapviewNativeCRS = FALSE)
 
     ## raster
     options(mapviewraster.size = 8 * 1024 * 1024)
@@ -584,6 +718,9 @@ mapviewOptions <- function(platform,
     options(mapviewMaxPolygons = 30000)
     options(mapviewMaxPoints = 20000)
     options(mapviewMaxLines = 30000)
+    options(mapviewPane = "auto")
+    options(mapviewCex = 0.6)
+    options(mapviewAlpha = 0.9)
 
   }
 
@@ -600,12 +737,19 @@ mapviewOptions <- function(platform,
   if (!missing(verbose)) { setVerbose(verbose); cnt <- cnt + 1 }
   if (!missing(na.color)) { setNAColor(na.color); cnt <- cnt + 1 }
   if (!missing(legend)) { setLegend(legend); cnt <- cnt + 1 }
+  if (!missing(legend.opacity)) { setLegend(legend.opacity); cnt <- cnt + 1 }
   if (!missing(legend.pos)) { setLegendPos(legend.pos); cnt <- cnt + 1 }
   if (!missing(layers.control.pos)) {
     setLayersControlPos(layers.control.pos); cnt <- cnt + 1
   }
   if (!missing(leafletWidth)) { setleafletWidth(leafletWidth); cnt <- cnt + 1 }
   if (!missing(leafletHeight)) { setleafletHeight(leafletHeight); cnt <- cnt + 1 }
+  if (!missing(viewer.suppress)) {
+    setViewerSuppress(viewer.suppress); cnt <- cnt + 1
+  }
+  if (!missing(homebutton)) { setHomebutton(homebutton); cnt <- cnt + 1 }
+  if (!missing(native.crs)) { setNativeCRS(native.crs); cnt <- cnt + 1 }
+
 
   ## raster
   if (!missing(raster.size)) { setRasterSize(raster.size); cnt <- cnt + 1 }
@@ -629,6 +773,9 @@ mapviewOptions <- function(platform,
   if (!missing(maxpolygons)) { setMaxPolygons(maxpolygons); cnt <- cnt + 1 }
   if (!missing(maxpoints)) { setMaxPoints(maxpoints); cnt <- cnt + 1 }
   if (!missing(maxlines)) { setMaxLines(maxlines); cnt <- cnt + 1 }
+  if (!missing(pane)) { setPane(pane); cnt <- cnt + 1 }
+  if (!missing(cex)) { setCex(cex); cnt <- cnt + 1 }
+  if (!missing(alpha)) { setAlpha(alpha); cnt <- cnt + 1 }
 
   lst <- list(
 
@@ -640,10 +787,14 @@ mapviewOptions <- function(platform,
     , verbose = .verbose()
     , na.color = .naColor()
     , legend = .Legend()
+    , legend.opacity = .legenOpacity()
     , legend.pos = .legendPos()
     , layers.control.pos = .layersControlPos()
     , leafletWidth = .leafletWidth()
     , leafletHeight = .leafletHeight()
+    , viewer.suppress = .viewerSuppress()
+    , homebutton = .homebutton()
+    , native.crs = .nativeCRS()
 
     ## raster
     , raster.size = .rasterSize()
@@ -661,6 +812,9 @@ mapviewOptions <- function(platform,
     , maxpolygons = .maxpolygons()
     , maxpoints = .maxpoints()
     , maxlines = .maxlines()
+    , pane = .pane()
+    , cex = .cex()
+    , alpha = .alpha()
 
   )
 
@@ -670,6 +824,7 @@ mapviewOptions <- function(platform,
     if (cnt == 0) {
 
       ## global
+      cat("\n global options: \n\n")
       cat('platform            :', lst$platform, '\n' )
       cat('basemaps            :', lst$basemaps, '\n')
       cat('raster.palette      :', format(.rasterPalette())[1], '\n')
@@ -677,12 +832,17 @@ mapviewOptions <- function(platform,
       cat('verbose             :', lst$verbose, '\n')
       cat('na.color            :', lst$na.color, '\n')
       cat('legend              :', lst$legend, '\n')
+      cat('legend.opacity      :', lst$legend.opacity, '\n')
       cat('legend.pos          :', lst$legend.pos, '\n')
       cat('layers.control.pos  :', lst$layers.control.pos, '\n')
       cat('leafletWidth        :', lst$leafletWidth, '\n')
       cat('leafletHeight       :', lst$leafletHeight, '\n')
+      cat('viewer.suppress     :', lst$viewer.suppress, '\n')
+      cat('homebutton          :', lst$homebutton, '\n')
+      cat('native.crs          :', lst$native.crs, '\n')
 
       ## raster
+      cat("\n raster data related options: \n\n")
       cat('raster.size         :', lst$raster.size, '\n')
       cat('mapview.maxpixels   :', lst$mapview.maxpixels, '\n')
       cat('plainview.maxpixels :', lst$plainview.maxpixels, '\n')
@@ -695,9 +855,13 @@ mapviewOptions <- function(platform,
       cat('query.prefix        :', lst$query.prefix, '\n')
 
       ## vector
+      cat("\n vector data realted options: \n\n")
       cat('maxpolygons         :', lst$maxpolygons, '\n')
       cat('maxpoints           :', lst$maxpoints, '\n')
       cat('maxlines            :', lst$maxlines, '\n')
+      cat('pane                :', lst$pane, '\n')
+      cat('cex                 :', lst$cex, '\n')
+      cat('alpha               :', lst$alpha, '\n')
 
     }
   }
