@@ -75,8 +75,8 @@
   map.types = mapviewGetOption("basemaps"),
   legend = mapviewGetOption("legend"), legend.opacity = 1,
   trim = TRUE, verbose = mapviewGetOption("verbose"),
-  homebutton = TRUE, method = c("bilinear", "ngb"), label = TRUE,
-  query.type = c("mousemove", "click"), query.digits,
+  homebutton = TRUE, method = mapviewGetOption("method"),
+  label = TRUE, query.type = c("mousemove", "click"), query.digits,
   query.position = "topright", query.prefix = "Layer",
   viewer.suppress = FALSE, ...)
 
@@ -185,7 +185,7 @@
   legend = mapviewGetOption("legend"), legend.opacity = 1,
   trim = TRUE, verbose = mapviewGetOption("verbose"),
   layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
-  method = c("bilinear", "ngb"), label = TRUE,
+  method = mapviewGetOption("method"), label = TRUE,
   query.type = c("mousemove", "click"), query.digits,
   query.position = "topright", query.prefix = "Layer",
   viewer.suppress = FALSE, ...)
@@ -198,7 +198,7 @@
   legend = mapviewGetOption("legend"), legend.opacity = 1,
   trim = TRUE, verbose = mapviewGetOption("verbose"),
   layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
-  method = c("bilinear", "ngb"), label = TRUE,
+  method = mapviewGetOption("method"), label = TRUE,
   query.type = c("mousemove", "click"), query.digits,
   query.position = "topright", query.prefix = "Layer",
   viewer.suppress = FALSE, ...)

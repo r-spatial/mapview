@@ -264,8 +264,6 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    viewer.suppress = mapviewGetOption("viewer.suppress"),
                    ...) {
 
-            method = match.arg(method)
-
             if (is.null(at)) at <- lattice::do.breaks(
               extendLimits(range(x[], na.rm = TRUE)), 256)
 
@@ -402,7 +400,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
                    homebutton = TRUE,
-                   method = c("bilinear", "ngb"),
+                   method = mapviewGetOption("method"),
                    label = TRUE,
                    query.type = c("mousemove", "click"),
                    query.digits,
@@ -1176,7 +1174,7 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                    layer.name = NULL,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   method = c("bilinear", "ngb"),
+                   method = mapviewGetOption("method"),
                    label = TRUE,
                    query.type = c("mousemove", "click"),
                    query.digits,
@@ -1240,7 +1238,7 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                    layer.name = NULL,
                    homebutton = TRUE,
                    native.crs = FALSE,
-                   method = c("bilinear", "ngb"),
+                   method = mapviewGetOption("method"),
                    label = TRUE,
                    query.type = c("mousemove", "click"),
                    query.digits,
@@ -1307,7 +1305,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                    ...) {
             if (is.null(layer.name))
               layer.name = makeLayerName(x, zcol, up = 2)
-            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
+            mapView(st_as_sfc(x), layer.name = layer.name, zcol = zcol, ...)
           }
 )
 
@@ -1337,7 +1335,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                    ...) {
             if (is.null(layer.name))
               layer.name = makeLayerName(x, zcol, up = 2)
-            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
+            mapView(st_as_sfc(x), layer.name = layer.name, zcol = zcol, ...)
           }
 )
 
@@ -1367,7 +1365,7 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                    ...) {
             if (is.null(layer.name))
               layer.name = makeLayerName(x, zcol, up = 2)
-            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
+            mapView(st_as_sfc(x), layer.name = layer.name, zcol = zcol, ...)
           }
 )
 
