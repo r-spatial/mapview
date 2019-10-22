@@ -197,14 +197,16 @@ zcolColors <- function(x, # a vector, not a sp or sf object
   # }
 
   if (is.character(x)) x <- as.factor(x)
+  nint = length(levels(x))
+  rng = range(seq_along(levels(x)), na.rm = TRUE)
+
   x <- as.numeric(x)
 
   if (length(unique(x)) == 1) {
     cols <- colors(1) #"#ffffff" #"#6666ff"
   } else {
     if (is.null(at)) {
-      at <- lattice::do.breaks(extendLimits(range(x, na.rm = TRUE)),
-                               length(unique(x)))
+      at <- lattice::do.breaks(extendLimits(rng), nint)
     }
 
     if (length(colors) != length(x) | is.function(colors)) {
