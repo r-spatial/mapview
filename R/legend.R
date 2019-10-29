@@ -158,7 +158,11 @@ mapviewLegend <- function(values,
   }
 
   function(map) {
-    switch(class(values),
+
+    # if values inherits from more than one class, select
+    value.class = class(values)[length(class(values))]
+
+    switch(value.class,
            factor = factorLegend(map,
                                  position = position,
                                  values = values,
