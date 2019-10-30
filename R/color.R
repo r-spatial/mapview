@@ -197,8 +197,15 @@ zcolColors <- function(x, # a vector, not a sp or sf object
   # }
 
   if (is.character(x)) x <- as.factor(x)
-  nint = length(levels(x))
-  rng = range(seq_along(levels(x)), na.rm = TRUE)
+
+  if (is.factor(x)) {
+    nint = length(levels(x))
+    rng = range(seq_along(levels(x)), na.rm = TRUE)
+  } else {
+    nint = length(unique(x))
+    rng = range(x, na.rm = TRUE)
+  }
+
 
   x <- as.numeric(x)
 
