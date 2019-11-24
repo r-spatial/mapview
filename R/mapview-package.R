@@ -26,17 +26,6 @@
 NULL
 #'
 #' @docType data
-#' @name poppendorf
-#' @title Landsat 8 detail of Franconian Switzerland centered on Poppendorf
-#' @description Landsat 8 detail of Franconian Switzerland centered on Poppendorf
-#' @details Use of this data requires your agreement to the USGS regulations on
-#' using Landsat data.
-#' @format \code{"RasterBrick-class"} with 5 bands (bands 1 to 5).
-#' @source
-#' \url{https://earthexplorer.usgs.gov}
-NULL
-#'
-#' @docType data
 #' @name breweries
 #' @title Selected breweries in Franconia
 #' @description Selected breweries in Franconia
