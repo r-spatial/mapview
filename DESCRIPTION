@@ -96,5 +96,5 @@ LinkingTo:
 ByteCompile: yes
 LazyData: TRUE
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.1
 SystemRequirements: GNU make

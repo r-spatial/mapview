@@ -7,21 +7,35 @@
 \alias{viewRGB,stars-method}
 \title{Red-Green-Blue map view of a multi-layered Raster object}
 \usage{
-\S4method{viewRGB}{RasterStackBrick}(x, r = 3, g = 2, b = 1,
-  quantiles = c(0.02, 0.98), map = NULL,
+\S4method{viewRGB}{RasterStackBrick}(
+  x,
+  r = 3,
+  g = 2,
+  b = 1,
+  quantiles = c(0.02, 0.98),
+  map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
   map.types = mapviewGetOption("basemaps"),
   na.color = mapviewGetOption("na.color"),
   layer.name = deparse(substitute(x, env = parent.frame())),
-  method = c("bilinear", "ngb"), ...)
+  method = c("bilinear", "ngb"),
+  ...
+)
 
-\S4method{viewRGB}{stars}(x, r = 3, g = 2, b = 1,
-  quantiles = c(0.02, 0.98), map = NULL,
+\S4method{viewRGB}{stars}(
+  x,
+  r = 3,
+  g = 2,
+  b = 1,
+  quantiles = c(0.02, 0.98),
+  map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
   map.types = mapviewGetOption("basemaps"),
   na.color = mapviewGetOption("na.color"),
   layer.name = deparse(substitute(x, env = parent.frame())),
-  method = c("bilinear", "ngb"), ...)
+  method = c("bilinear", "ngb"),
+  ...
+)
 }
 \arguments{
 \item{x}{a RasterBrick or RasterStack}

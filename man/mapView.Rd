@@ -32,194 +32,339 @@
 \alias{mapView,SpatialLines-method}
 \title{View spatial objects interactively}
 \usage{
-\S4method{mapView}{RasterLayer}(x, map = NULL,
+\S4method{mapView}{RasterLayer}(
+  x,
+  map = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
-  col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
+  col.regions = mapviewGetOption("raster.palette")(256),
+  at = NULL,
   na.color = mapviewGetOption("na.color"),
   use.layer.names = mapviewGetOption("use.layer.names"),
-  map.types = mapviewGetOption("basemaps"), alpha.regions = 0.8,
-  legend = mapviewGetOption("legend"), legend.opacity = 1,
-  trim = mapviewGetOption("trim"),
-  verbose = mapviewGetOption("verbose"), layer.name = NULL,
-  homebutton = mapviewGetOption("homebutton"),
-  native.crs = mapviewGetOption("native.crs"),
-  method = mapviewGetOption("method"), label = TRUE,
-  query.type = mapviewGetOption("query.type"),
-  query.digits = mapviewGetOption("query.digits"),
-  query.position = mapviewGetOption("query.position"),
-  query.prefix = mapviewGetOption("query.prefix"),
-  viewer.suppress = mapviewGetOption("viewer.suppress"), ...)
-
-\S4method{mapView}{stars}(x, band = 1, map = NULL,
-  maxpixels = mapviewGetOption("mapview.maxpixels"),
-  col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
-  na.color = mapviewGetOption("na.color"),
-  use.layer.names = mapviewGetOption("use.layer.names"),
-  map.types = mapviewGetOption("basemaps"), alpha.regions = 0.8,
-  legend = mapviewGetOption("legend"), legend.opacity = 1,
-  trim = mapviewGetOption("trim"),
-  verbose = mapviewGetOption("verbose"), layer.name = NULL,
-  homebutton = mapviewGetOption("homebutton"),
-  native.crs = mapviewGetOption("native.crs"),
-  method = mapviewGetOption("method"), label = TRUE,
-  query.type = mapviewGetOption("query.type"),
-  query.digits = mapviewGetOption("query.digits"),
-  query.position = mapviewGetOption("query.position"),
-  query.prefix = mapviewGetOption("query.prefix"),
-  viewer.suppress = mapviewGetOption("viewer.suppress"), ...)
-
-\S4method{mapView}{RasterStackBrick}(x, map = NULL,
-  maxpixels = mapviewGetOption("mapview.maxpixels"),
-  col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
-  na.color = mapviewGetOption("na.color"), use.layer.names = TRUE,
   map.types = mapviewGetOption("basemaps"),
-  legend = mapviewGetOption("legend"), legend.opacity = 1,
-  trim = TRUE, verbose = mapviewGetOption("verbose"),
-  homebutton = TRUE, method = mapviewGetOption("method"),
-  label = TRUE, query.type = c("mousemove", "click"), query.digits,
-  query.position = "topright", query.prefix = "Layer",
-  viewer.suppress = FALSE, ...)
-
-\S4method{mapView}{Satellite}(x, map = NULL,
-  maxpixels = mapviewGetOption("mapview.maxpixels"),
-  col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
-  na.color = mapviewGetOption("na.color"),
-  map.types = mapviewGetOption("basemaps"),
-  legend = mapviewGetOption("legend"), legend.opacity = 1,
-  trim = TRUE, verbose = mapviewGetOption("verbose"),
-  homebutton = TRUE, method = c("bilinear", "ngb"), label = TRUE,
-  ...)
-
-\S4method{mapView}{sf}(x, map = NULL, pane = "auto",
-  canvas = useCanvas(x), viewer.suppress = canvas, zcol = NULL,
-  burst = FALSE, color = mapviewGetOption("vector.palette"),
-  col.regions = mapviewGetOption("vector.palette"), at = NULL,
-  na.color = mapviewGetOption("na.color"), cex = 6,
-  lwd = lineWidth(x), alpha = 0.9, alpha.regions = regionOpacity(x),
-  na.alpha = regionOpacity(x), map.types = NULL,
+  alpha.regions = 0.8,
+  legend = mapviewGetOption("legend"),
+  legend.opacity = 1,
+  trim = mapviewGetOption("trim"),
   verbose = mapviewGetOption("verbose"),
-  popup = leafpop::popupTable(x), layer.name = NULL,
-  label = makeLabels(x, zcol), legend = mapviewGetOption("legend"),
-  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
-  highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
-  maxpoints = getMaxFeatures(x), ...)
+  layer.name = NULL,
+  homebutton = mapviewGetOption("homebutton"),
+  native.crs = mapviewGetOption("native.crs"),
+  method = mapviewGetOption("method"),
+  label = TRUE,
+  query.type = mapviewGetOption("query.type"),
+  query.digits = mapviewGetOption("query.digits"),
+  query.position = mapviewGetOption("query.position"),
+  query.prefix = mapviewGetOption("query.prefix"),
+  viewer.suppress = mapviewGetOption("viewer.suppress"),
+  ...
+)
 
-\S4method{mapView}{sfc}(x, map = NULL, pane = "auto",
-  canvas = useCanvas(x), viewer.suppress = canvas,
-  color = standardColor(x), col.regions = standardColRegions(x),
-  at = NULL, na.color = mapviewGetOption("na.color"), cex = 6,
-  lwd = lineWidth(x), alpha = 0.9, alpha.regions = regionOpacity(x),
-  map.types = NULL, verbose = mapviewGetOption("verbose"),
-  popup = NULL, layer.name = deparse(substitute(x, env =
-  parent.frame())), label = makeLabels(x),
-  legend = mapviewGetOption("legend"), legend.opacity = 1,
-  homebutton = TRUE, native.crs = FALSE,
-  highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
-  maxpoints = getMaxFeatures(x), ...)
+\S4method{mapView}{stars}(
+  x,
+  band = 1,
+  map = NULL,
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
+  col.regions = mapviewGetOption("raster.palette")(256),
+  at = NULL,
+  na.color = mapviewGetOption("na.color"),
+  use.layer.names = mapviewGetOption("use.layer.names"),
+  map.types = mapviewGetOption("basemaps"),
+  alpha.regions = 0.8,
+  legend = mapviewGetOption("legend"),
+  legend.opacity = 1,
+  trim = mapviewGetOption("trim"),
+  verbose = mapviewGetOption("verbose"),
+  layer.name = NULL,
+  homebutton = mapviewGetOption("homebutton"),
+  native.crs = mapviewGetOption("native.crs"),
+  method = mapviewGetOption("method"),
+  label = TRUE,
+  query.type = mapviewGetOption("query.type"),
+  query.digits = mapviewGetOption("query.digits"),
+  query.position = mapviewGetOption("query.position"),
+  query.prefix = mapviewGetOption("query.prefix"),
+  viewer.suppress = mapviewGetOption("viewer.suppress"),
+  ...
+)
 
-\S4method{mapView}{character}(x, map = NULL, tms = TRUE,
-  color = standardColor(), col.regions = standardColRegions(),
-  at = NULL, na.color = mapviewGetOption("na.color"), cex = 6,
-  lwd = 2, alpha = 0.9, alpha.regions = 0.6, na.alpha = 0.6,
-  map.types = NULL, verbose = FALSE, layer.name = x,
-  homebutton = TRUE, native.crs = FALSE, canvas = FALSE,
-  viewer.suppress = FALSE, ...)
+\S4method{mapView}{RasterStackBrick}(
+  x,
+  map = NULL,
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
+  col.regions = mapviewGetOption("raster.palette")(256),
+  at = NULL,
+  na.color = mapviewGetOption("na.color"),
+  use.layer.names = TRUE,
+  map.types = mapviewGetOption("basemaps"),
+  legend = mapviewGetOption("legend"),
+  legend.opacity = 1,
+  trim = TRUE,
+  verbose = mapviewGetOption("verbose"),
+  homebutton = TRUE,
+  method = mapviewGetOption("method"),
+  label = TRUE,
+  query.type = c("mousemove", "click"),
+  query.digits,
+  query.position = "topright",
+  query.prefix = "Layer",
+  viewer.suppress = FALSE,
+  ...
+)
+
+\S4method{mapView}{Satellite}(
+  x,
+  map = NULL,
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
+  col.regions = mapviewGetOption("raster.palette")(256),
+  at = NULL,
+  na.color = mapviewGetOption("na.color"),
+  map.types = mapviewGetOption("basemaps"),
+  legend = mapviewGetOption("legend"),
+  legend.opacity = 1,
+  trim = TRUE,
+  verbose = mapviewGetOption("verbose"),
+  homebutton = TRUE,
+  method = c("bilinear", "ngb"),
+  label = TRUE,
+  ...
+)
+
+\S4method{mapView}{sf}(
+  x,
+  map = NULL,
+  pane = "auto",
+  canvas = useCanvas(x),
+  viewer.suppress = canvas,
+  zcol = NULL,
+  burst = FALSE,
+  color = mapviewGetOption("vector.palette"),
+  col.regions = mapviewGetOption("vector.palette"),
+  at = NULL,
+  na.color = mapviewGetOption("na.color"),
+  cex = 6,
+  lwd = lineWidth(x),
+  alpha = 0.9,
+  alpha.regions = regionOpacity(x),
+  na.alpha = regionOpacity(x),
+  map.types = NULL,
+  verbose = mapviewGetOption("verbose"),
+  popup = leafpop::popupTable(x),
+  layer.name = NULL,
+  label = makeLabels(x, zcol),
+  legend = mapviewGetOption("legend"),
+  legend.opacity = 1,
+  homebutton = TRUE,
+  native.crs = FALSE,
+  highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
+  maxpoints = getMaxFeatures(x),
+  ...
+)
+
+\S4method{mapView}{sfc}(
+  x,
+  map = NULL,
+  pane = "auto",
+  canvas = useCanvas(x),
+  viewer.suppress = canvas,
+  color = standardColor(x),
+  col.regions = standardColRegions(x),
+  at = NULL,
+  na.color = mapviewGetOption("na.color"),
+  cex = 6,
+  lwd = lineWidth(x),
+  alpha = 0.9,
+  alpha.regions = regionOpacity(x),
+  map.types = NULL,
+  verbose = mapviewGetOption("verbose"),
+  popup = NULL,
+  layer.name = deparse(substitute(x, env = parent.frame())),
+  label = makeLabels(x),
+  legend = mapviewGetOption("legend"),
+  legend.opacity = 1,
+  homebutton = TRUE,
+  native.crs = FALSE,
+  highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
+  maxpoints = getMaxFeatures(x),
+  ...
+)
+
+\S4method{mapView}{character}(
+  x,
+  map = NULL,
+  tms = TRUE,
+  color = standardColor(),
+  col.regions = standardColRegions(),
+  at = NULL,
+  na.color = mapviewGetOption("na.color"),
+  cex = 6,
+  lwd = 2,
+  alpha = 0.9,
+  alpha.regions = 0.6,
+  na.alpha = 0.6,
+  map.types = NULL,
+  verbose = FALSE,
+  layer.name = x,
+  homebutton = TRUE,
+  native.crs = FALSE,
+  canvas = FALSE,
+  viewer.suppress = FALSE,
+  ...
+)
 
 \S4method{mapView}{numeric}(x, y, type = "p", grid = TRUE, label, ...)
 
-\S4method{mapView}{data.frame}(x, xcol, ycol, grid = TRUE, aspect = 1,
-  popup = leafpop::popupTable(x), label, crs = NA, ...)
+\S4method{mapView}{data.frame}(
+  x,
+  xcol,
+  ycol,
+  grid = TRUE,
+  aspect = 1,
+  popup = leafpop::popupTable(x),
+  label,
+  crs = NA,
+  ...
+)
 
-\S4method{mapView}{XY}(x, map = NULL, pane = "auto",
-  canvas = useCanvas(x), viewer.suppress = canvas,
-  color = standardColor(x), col.regions = standardColRegions(x),
-  at = NULL, na.color = mapviewGetOption("na.color"), cex = 6,
-  lwd = lineWidth(x), alpha = 0.9, alpha.regions = regionOpacity(x),
-  map.types = NULL, verbose = mapviewGetOption("verbose"),
-  popup = NULL, layer.name = deparse(substitute(x, env =
-  parent.frame(1))), label = makeLabels(x),
-  legend = mapviewGetOption("legend"), legend.opacity = 1,
-  homebutton = TRUE, native.crs = FALSE,
+\S4method{mapView}{XY}(
+  x,
+  map = NULL,
+  pane = "auto",
+  canvas = useCanvas(x),
+  viewer.suppress = canvas,
+  color = standardColor(x),
+  col.regions = standardColRegions(x),
+  at = NULL,
+  na.color = mapviewGetOption("na.color"),
+  cex = 6,
+  lwd = lineWidth(x),
+  alpha = 0.9,
+  alpha.regions = regionOpacity(x),
+  map.types = NULL,
+  verbose = mapviewGetOption("verbose"),
+  popup = NULL,
+  layer.name = deparse(substitute(x, env = parent.frame(1))),
+  label = makeLabels(x),
+  legend = mapviewGetOption("legend"),
+  legend.opacity = 1,
+  homebutton = TRUE,
+  native.crs = FALSE,
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
-  maxpoints = getMaxFeatures(x), ...)
+  maxpoints = getMaxFeatures(x),
+  ...
+)
 
-\S4method{mapView}{XYZ}(x, layer.name = deparse(substitute(x, env =
-  parent.frame(1))), ...)
+\S4method{mapView}{XYZ}(x, layer.name = deparse(substitute(x, env = parent.frame(1))), ...)
 
-\S4method{mapView}{XYM}(x, layer.name = deparse(substitute(x, env =
-  parent.frame(1))), ...)
+\S4method{mapView}{XYM}(x, layer.name = deparse(substitute(x, env = parent.frame(1))), ...)
 
-\S4method{mapView}{XYZM}(x, layer.name = deparse(substitute(x, env =
-  parent.frame(1))), ...)
+\S4method{mapView}{XYZM}(x, layer.name = deparse(substitute(x, env = parent.frame(1))), ...)
 
-\S4method{mapView}{bbox}(x, layer.name = deparse(substitute(x, env =
-  parent.frame(1))), alpha.regions = 0.2, ...)
+\S4method{mapView}{bbox}(
+  x,
+  layer.name = deparse(substitute(x, env = parent.frame(1))),
+  alpha.regions = 0.2,
+  ...
+)
 
-\S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"),
-  ...)
+\S4method{mapView}{missing}(map.types = mapviewGetOption("basemaps"), ...)
 
 \S4method{mapView}{`NULL`}(x, ...)
 
-\S4method{mapView}{list}(x, map = NULL, zcol = NULL, burst = FALSE,
+\S4method{mapView}{list}(
+  x,
+  map = NULL,
+  zcol = NULL,
+  burst = FALSE,
   color = mapviewGetOption("vector.palette"),
-  col.regions = mapviewGetOption("vector.palette"), at = NULL,
-  na.color = mapviewGetOption("na.color"), cex = 6, lwd = lapply(x,
-  lineWidth), alpha = lapply(seq(x), function(i) 0.9),
+  col.regions = mapviewGetOption("vector.palette"),
+  at = NULL,
+  na.color = mapviewGetOption("na.color"),
+  cex = 6,
+  lwd = lapply(x, lineWidth),
+  alpha = lapply(seq(x), function(i) 0.9),
   alpha.regions = lapply(seq(x), function(i) 0.6),
   map.types = mapviewGetOption("basemaps"),
-  verbose = mapviewGetOption("verbose"), popup = lapply(seq(x),
-  function(i) {     leafpop::popupTable(x[[i]]) }),
+  verbose = mapviewGetOption("verbose"),
+  popup = lapply(seq(x), function(i) {     leafpop::popupTable(x[[i]]) }),
   layer.name = deparse(substitute(x, env = parent.frame())),
-  label = lapply(seq(x), function(i) {     makeLabels(x[[i]], zcol =
-  zcol[[i]]) }), legend = mapviewGetOption("legend"),
-  legend.opacity = 1, homebutton = TRUE, native.crs = FALSE,
-  maxpoints = NULL, ...)
+  label = lapply(seq(x), function(i) {     makeLabels(x[[i]], zcol = zcol[[i]]) }),
+  legend = mapviewGetOption("legend"),
+  legend.opacity = 1,
+  homebutton = TRUE,
+  native.crs = FALSE,
+  maxpoints = NULL,
+  ...
+)
 
 \S4method{mapview}{ANY}(...)
 
-\S4method{mapView}{SpatialPixelsDataFrame}(x, map = NULL, zcol = NULL,
+\S4method{mapView}{SpatialPixelsDataFrame}(
+  x,
+  map = NULL,
+  zcol = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
-  col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
-  na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
-  map.types = mapviewGetOption("basemaps"), alpha.regions = 0.8,
-  legend = mapviewGetOption("legend"), legend.opacity = 1,
-  trim = TRUE, verbose = mapviewGetOption("verbose"),
-  layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
-  method = mapviewGetOption("method"), label = TRUE,
-  query.type = c("mousemove", "click"), query.digits,
-  query.position = "topright", query.prefix = "Layer",
-  viewer.suppress = FALSE, ...)
+  col.regions = mapviewGetOption("raster.palette")(256),
+  at = NULL,
+  na.color = mapviewGetOption("na.color"),
+  use.layer.names = FALSE,
+  map.types = mapviewGetOption("basemaps"),
+  alpha.regions = 0.8,
+  legend = mapviewGetOption("legend"),
+  legend.opacity = 1,
+  trim = TRUE,
+  verbose = mapviewGetOption("verbose"),
+  layer.name = NULL,
+  homebutton = TRUE,
+  native.crs = FALSE,
+  method = mapviewGetOption("method"),
+  label = TRUE,
+  query.type = c("mousemove", "click"),
+  query.digits,
+  query.position = "topright",
+  query.prefix = "Layer",
+  viewer.suppress = FALSE,
+  ...
+)
 
-\S4method{mapView}{SpatialGridDataFrame}(x, map = NULL, zcol = NULL,
+\S4method{mapView}{SpatialGridDataFrame}(
+  x,
+  map = NULL,
+  zcol = NULL,
   maxpixels = mapviewGetOption("mapview.maxpixels"),
-  col.regions = mapviewGetOption("raster.palette")(256), at = NULL,
-  na.color = mapviewGetOption("na.color"), use.layer.names = FALSE,
-  map.types = mapviewGetOption("basemaps"), alpha.regions = 0.8,
-  legend = mapviewGetOption("legend"), legend.opacity = 1,
-  trim = TRUE, verbose = mapviewGetOption("verbose"),
-  layer.name = NULL, homebutton = TRUE, native.crs = FALSE,
-  method = mapviewGetOption("method"), label = TRUE,
-  query.type = c("mousemove", "click"), query.digits,
-  query.position = "topright", query.prefix = "Layer",
-  viewer.suppress = FALSE, ...)
+  col.regions = mapviewGetOption("raster.palette")(256),
+  at = NULL,
+  na.color = mapviewGetOption("na.color"),
+  use.layer.names = FALSE,
+  map.types = mapviewGetOption("basemaps"),
+  alpha.regions = 0.8,
+  legend = mapviewGetOption("legend"),
+  legend.opacity = 1,
+  trim = TRUE,
+  verbose = mapviewGetOption("verbose"),
+  layer.name = NULL,
+  homebutton = TRUE,
+  native.crs = FALSE,
+  method = mapviewGetOption("method"),
+  label = TRUE,
+  query.type = c("mousemove", "click"),
+  query.digits,
+  query.position = "topright",
+  query.prefix = "Layer",
+  viewer.suppress = FALSE,
+  ...
+)
 
-\S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL,
-  layer.name = NULL, ...)
+\S4method{mapView}{SpatialPointsDataFrame}(x, zcol = NULL, layer.name = NULL, ...)
 
-\S4method{mapView}{SpatialPoints}(x, zcol = NULL, layer.name = NULL,
-  ...)
+\S4method{mapView}{SpatialPoints}(x, zcol = NULL, layer.name = NULL, ...)
 
-\S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL,
-  layer.name = NULL, ...)
+\S4method{mapView}{SpatialPolygonsDataFrame}(x, zcol = NULL, layer.name = NULL, ...)
 
-\S4method{mapView}{SpatialPolygons}(x, zcol = NULL, layer.name = NULL,
-  ...)
+\S4method{mapView}{SpatialPolygons}(x, zcol = NULL, layer.name = NULL, ...)
 
-\S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL,
-  layer.name = NULL, ...)
+\S4method{mapView}{SpatialLinesDataFrame}(x, zcol = NULL, layer.name = NULL, ...)
 
-\S4method{mapView}{SpatialLines}(x, zcol = NULL, layer.name = NULL,
-  ...)
+\S4method{mapView}{SpatialLines}(x, zcol = NULL, layer.name = NULL, ...)
 }
 \arguments{
 \item{x}{a \code{Raster*} or \code{Spatial*} or \code{Satellite} or

@@ -5,13 +5,41 @@
 \alias{mapviewGetOption}
 \title{Global options for the mapview package}
 \usage{
-mapviewOptions(platform, basemaps, raster.palette, vector.palette, verbose,
-  na.color, legend, legend.opacity, legend.pos, layers.control.pos,
-  leafletWidth, leafletHeight, viewer.suppress, homebutton, native.crs,
-  raster.size, mapview.maxpixels, plainview.maxpixels, use.layer.names,
-  trim, method, query.type, query.digits, query.position, query.prefix,
-  maxpoints, maxpolygons, maxlines, pane, cex, alpha, default = FALSE,
-  console = TRUE)
+mapviewOptions(
+  platform,
+  basemaps,
+  raster.palette,
+  vector.palette,
+  verbose,
+  na.color,
+  legend,
+  legend.opacity,
+  legend.pos,
+  layers.control.pos,
+  leafletWidth,
+  leafletHeight,
+  viewer.suppress,
+  homebutton,
+  native.crs,
+  raster.size,
+  mapview.maxpixels,
+  plainview.maxpixels,
+  use.layer.names,
+  trim,
+  method,
+  query.type,
+  query.digits,
+  query.position,
+  query.prefix,
+  maxpoints,
+  maxpolygons,
+  maxlines,
+  pane,
+  cex,
+  alpha,
+  default = FALSE,
+  console = TRUE
+)
 
 mapviewGetOption(param)
 }

@@ -4,9 +4,14 @@
 \alias{mapshot}
 \title{Save mapview or leaflet map as HTML and/or image}
 \usage{
-mapshot(x, url = NULL, file = NULL, remove_url = TRUE,
-  remove_controls = c("zoomControl", "layersControl", "homeButton",
-  "scaleBar"), ...)
+mapshot(
+  x,
+  url = NULL,
+  file = NULL,
+  remove_url = TRUE,
+  remove_controls = c("zoomControl", "layersControl", "homeButton", "scaleBar"),
+  ...
+)
 }
 \arguments{
 \item{x}{\code{mapview} or \code{leaflet} object.}

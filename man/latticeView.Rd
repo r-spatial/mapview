@@ -6,13 +6,17 @@
 \alias{sync}
 \title{View two or more (possibly synchronised) mapview or leaflet maps}
 \usage{
-latticeView(..., ncol = 2, sync = "none", sync.cursor = FALSE,
-  no.initial.sync = TRUE)
+latticeView(
+  ...,
+  ncol = 2,
+  sync = "none",
+  sync.cursor = FALSE,
+  no.initial.sync = TRUE
+)
 
 latticeview(...)
 
-sync(..., ncol = 2, sync = "all", sync.cursor = TRUE,
-  no.initial.sync = TRUE)
+sync(..., ncol = 2, sync = "all", sync.cursor = TRUE, no.initial.sync = TRUE)
 }
 \arguments{
 \item{...}{any number of mapview or leaflet objects or a list thereof}
