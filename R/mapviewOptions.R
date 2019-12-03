@@ -183,11 +183,16 @@ mapviewOptions <- function(platform,
   }
 
   .basemaps <- function() {
-    default <- c("CartoDB.Positron",
-                 "CartoDB.DarkMatter",
-                 "OpenStreetMap",
-                 "Esri.WorldImagery",
-                 "OpenTopoMap")
+    pf <- getOption('mapviewPlatform')
+    if (is.null(pf) || pf == "leaflet") {
+      default <- c("CartoDB.Positron",
+                   "CartoDB.DarkMatter",
+                   "OpenStreetMap",
+                   "Esri.WorldImagery",
+                   "OpenTopoMap")
+    } else if (pf == "mapdeck") {
+      default = mapdeck::mapdeck_style("dark")
+    }
 
     bm <- getOption('mapviewBasemaps')
     if (is.null(bm)) {

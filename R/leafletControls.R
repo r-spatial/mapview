@@ -220,39 +220,67 @@ initMap <- function(map = NULL,
                     proj4str,
                     native.crs = FALSE,
                     canvas = FALSE,
-                    viewer.suppress = FALSE) {
+                    viewer.suppress = FALSE,
+                    platform = mapviewGetOption("platform"),
+                    ...) {
 
   # if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
+  ls = list(...)
+  nms = names(ls)
 
-  if (is.null(map) & is.null(map.types)) {
-    map.types <- mapviewGetOption("basemaps")
-  }
+  if (platform == "leaflet") {
 
-  leafletHeight <- mapviewGetOption("leafletHeight")
-  leafletWidth <- mapviewGetOption("leafletWidth")
-
-  if (missing(proj4str)) proj4str <- NA
-  ## create base map using specified map types
-  if (is.null(map)) {
-    if (is.na(proj4str) | native.crs) {
-      m <- leaflet::leaflet(
-        height = leafletHeight,
-        width = leafletWidth,
-        options = leaflet::leafletOptions(
-          minZoom = -1000,
-          crs = leafletCRS(crsClass = "L.CRS.Simple"),
-          preferCanvas = canvas),
-        sizingPolicy = leafletSizingPolicy(
-          viewer.suppress = viewer.suppress,
-          browser.external = viewer.suppress
-        )
-      )
-    } else {
-      m <- initBaseMaps(map.types, canvas = canvas, viewer.suppress = viewer.suppress)
+    if (is.null(map) & is.null(map.types)) {
+      map.types <- mapviewGetOption("basemaps")
     }
-  } else {
-    m <- map
+
+    leafletHeight <- mapviewGetOption("leafletHeight")
+    leafletWidth <- mapviewGetOption("leafletWidth")
+
+    if (missing(proj4str)) proj4str <- NA
+    ## create base map using specified map types
+    if (is.null(map)) {
+      if (is.na(proj4str) | native.crs) {
+        m <- leaflet::leaflet(
+          height = leafletHeight,
+          width = leafletWidth,
+          options = leaflet::leafletOptions(
+            minZoom = -1000,
+            crs = leafletCRS(crsClass = "L.CRS.Simple"),
+            preferCanvas = canvas),
+          sizingPolicy = leafletSizingPolicy(
+            viewer.suppress = viewer.suppress,
+            browser.external = viewer.suppress
+          )
+        )
+      } else {
+        m <- initBaseMaps(map.types, canvas = canvas, viewer.suppress = viewer.suppress)
+      }
+    } else {
+      m <- map
+    }
+
+  } else if (platform == "mapdeck") {
+
+    if (is.null(map)) {
+      if (is.null(map.types)) {
+        map.types <- mapviewGetOption("basemaps")
+      }
+
+      md_args = match.arg(
+        nms,
+        names(as.list(args(mapdeck::mapdeck))),
+        several.ok = TRUE
+      )
+      md_args = ls[md_args]
+      md_args$style = map.types
+      m = do.call(mapdeck::mapdeck, md_args)
+
+    } else {
+      m = map
+    }
   }
+
   return(m)
 }
 
