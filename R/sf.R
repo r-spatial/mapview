@@ -31,7 +31,7 @@ leaflet_sf <- function(x,
     x = suppressWarnings(sf::st_cast(x, "POINT"))
 
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
-  cex <- circleRadius(x, cex)
+  cex <- circleRadius(x, cex, ...)
   if (is.null(zcol) & ncol(sf2DataFrame(x, drop_sf_column = TRUE)) == 1) {
     zcol = colnames(sf2DataFrame(x, drop_sf_column = TRUE))[1]
     label = makeLabels(x, zcol)
@@ -120,6 +120,96 @@ leaflet_sf <- function(x,
 
 }
 
+
+mapdeck_sf = function(x,
+                      map,
+                      zcol,
+                      color,
+                      col.regions,
+                      at,
+                      na.color,
+                      cex,
+                      lwd,
+                      alpha,
+                      alpha.regions,
+                      na.alpha,
+                      map.types,
+                      verbose,
+                      popup,
+                      layer.name,
+                      label,
+                      legend,
+                      legend.opacity,
+                      homebutton,
+                      native.crs,
+                      highlight,
+                      maxpoints,
+                      viewer.suppress,
+                      ...) {
+
+  if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT"))
+    x = suppressWarnings(sf::st_cast(x, "POINT"))
+
+  if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
+  cex <- circleRadius(x, cex, ...)
+  if (is.null(zcol) & ncol(sf2DataFrame(x, drop_sf_column = TRUE)) == 1) {
+    zcol = colnames(sf2DataFrame(x, drop_sf_column = TRUE))[1]
+    label = makeLabels(x, zcol)
+  }
+  if (!is.null(zcol)) {
+    if (inherits(x[[zcol]], "logical")) x[[zcol]] = as.character(x[[zcol]])
+    if (length(unique(x[[zcol]])) == 1) {
+      color = ifelse(is.function(color), standardColor(x), color)
+      col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
+    }
+  }
+
+  # x = sf::st_geometry(x)
+  #
+  # if (!is.null(names(x))) names(x) = NULL
+  # if (is_literally_false(highlight)) highlight = NULL
+  # if (is_literally_false(popup)) popup = NULL
+  # if (inherits(x, "XY")) x = sf::st_sfc(x)
+  if (!native.crs) x <- checkAdjustProjection(x)
+  if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
+
+  if (is.null(map.types)) {
+    if (getGeometryType(x) %in% c("pl", "pt")) {
+      if (is.function(col.regions)) col.regions <- standardColRegions(x)
+      map.types <- basemaps(col.regions)
+    } else {
+      if (is.function(color)) color <- standardColor(x)
+      map.types <- basemaps(color)
+    }
+  }
+
+  if (is.function(color)) color = color(nrow(x))
+  if (is.function(col.regions)) col.regions = col.regions(nrow(x))
+
+  m <- initMap(
+    map,
+    map.types,
+    sf::st_crs(x),
+    native.crs,
+    viewer.suppress = viewer.suppress,
+    ...
+  )
+
+  m <- leafem::addFeatures(m,
+                           data = x,
+                           radius = cex,
+                           stroke_width = lwd,
+                           stroke_opacity = alpha,
+                           fill_opacity = alpha.regions,
+                           stroke_colour = color,
+                           fill_colour = col.regions,
+                           tooltip = label)
+
+  out <- new("mapview", object = list(x), map = m)
+
+  return(out)
+
+}
 
 ### sfc ###################################################################
 leaflet_sfc <- function(x,

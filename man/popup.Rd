@@ -10,8 +10,13 @@ popupTable(x, zcol, row.numbers = TRUE, feature.id = TRUE)
 
 popupImage(img, src = c("local", "remote"), embed = FALSE, ...)
 
-popupGraph(graphs, type = c("png", "svg", "html"), width = 300,
-  height = 300, ...)
+popupGraph(
+  graphs,
+  type = c("png", "svg", "html"),
+  width = 300,
+  height = 300,
+  ...
+)
 }
 \arguments{
 \item{x}{A \code{Spatial*} object.}

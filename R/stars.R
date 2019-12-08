@@ -74,7 +74,6 @@ leaflet_stars = function(x,
                          at,
                          na.color,
                          use.layer.names,
-                         values,
                          map.types,
                          alpha.regions,
                          legend,
@@ -117,22 +116,23 @@ leaflet_stars = function(x,
     # if (!is.na(raster::projection(x)) & trim) x = trim(x)
     # if (is.fact) x = raster::as.factor(x)
     if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
-    if (is.null(values)) {
-      # if (is.fact) {
-      #   at = x@data@attributes[[1]]$ID
-      # } else {
-      offset = diff(range(as.numeric(layer), na.rm = TRUE)) * 0.05
-      top = max(as.numeric(layer), na.rm = TRUE) + offset
-      bot = min(as.numeric(layer), na.rm = TRUE) - offset
-      values = seq(bot, top, length.out = 10)
-      values = round(values, 5)
-      # }
-    } else {
-      values = round(values, 5)
-    }
+    # if (is.null(values)) {
+    #   # if (is.fact) {
+    #   #   at = x@data@attributes[[1]]$ID
+    #   # } else {
+    #   offset = diff(range(as.numeric(layer), na.rm = TRUE)) * 0.05
+    #   top = max(as.numeric(layer), na.rm = TRUE) + offset
+    #   bot = min(as.numeric(layer), na.rm = TRUE) - offset
+    #   values = seq(bot, top, length.out = 10)
+    #   values = round(values, 5)
+    #   # }
+    # } else {
+    #   values = round(values, 5)
+    # }
     if (is.fact) {
+      ### delete at some stage!!! ###
       pal = leaflet::colorFactor(palette = col.regions,
-                                 domain = values,
+                                 domain = seq(0, 255, 1),
                                  na.color = na.color)
       # pal2 = pal
     } else {
@@ -169,9 +169,9 @@ leaflet_stars = function(x,
                       layerId = grp,
                       ...)
     if (label)
-      m = addImageQuery(m, x, band = band, group = grp, layerId = grp,
-                        type = query.type, digits = query.digits,
-                        position = query.position, prefix = query.prefix)
+      m = leafem::addImageQuery(m, x, band = band, group = grp, layerId = grp,
+                                type = query.type, digits = query.digits,
+                                position = query.position, prefix = query.prefix)
     if (legend) {
       # stop("legend currently not supported for stars layers", call. = FALSE)
       ## add legend
@@ -193,7 +193,7 @@ leaflet_stars = function(x,
                              names = grp)
     m = leaflet::addScaleBar(map = m, position = "bottomleft")
     m = leafem::addMouseCoordinates(m)
-    if (homebutton) m = addHomeButton(m, ext, layer.name = layer.name)
+    if (homebutton) m = leafem::addHomeButton(m, ext, layer.name = layer.name)
     out = new('mapview', object = list(x), map = m)
     return(out)
   }

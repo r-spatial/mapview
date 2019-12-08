@@ -223,12 +223,12 @@ extendLimits <- function(lim, length = 1, prop = 0.07) {
 }
 
 
-circleRadius <- function(x, radius = 6, min.rad = 3, max.rad = 15) {
+circleRadius <- function(x, radius = 6, min.rad = 3, max.rad = 15, na.rad = 2, ...) {
 
   if (is.character(radius)) {
     rad <- scales::rescale(as.numeric(x[[radius]]),
                            to = c(min.rad, max.rad))
-    rad[is.na(rad)] = 1
+    rad[is.na(rad)] = na.rad
   } else rad <- radius
   return(rad)
 }

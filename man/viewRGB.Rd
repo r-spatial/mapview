@@ -11,7 +11,9 @@ viewRGB(x, r = 3, g = 2, b = 1, quantiles = c(0.02, 0.98),
   map.types = mapviewGetOption("basemaps"),
   na.color = mapviewGetOption("na.color"),
   layer.name = deparse(substitute(x, env = parent.frame())),
-  method = c("bilinear", "ngb"), ...)
+  method = c("bilinear", "ngb"),
+  ...
+)
 }
 \arguments{
 \item{x}{a RasterBrick or RasterStack}

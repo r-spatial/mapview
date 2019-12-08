@@ -5,8 +5,7 @@
 \alias{removeMouseCoordinates}
 \title{Add mouse coordinate information at top of map.}
 \usage{
-addMouseCoordinates(map, epsg = NULL, proj4string = NULL,
-  native.crs = FALSE)
+addMouseCoordinates(map, epsg = NULL, proj4string = NULL, native.crs = FALSE)
 
 removeMouseCoordinates(map)
 }

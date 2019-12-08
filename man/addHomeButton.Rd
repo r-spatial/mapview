@@ -5,8 +5,13 @@
 \alias{removeHomeButton}
 \title{Add a home button / zoom-to-layer button to a map.}
 \usage{
-addHomeButton(map, ext, layer.name = "layer", position = "bottomright",
-  add = TRUE)
+addHomeButton(
+  map,
+  ext,
+  layer.name = "layer",
+  position = "bottomright",
+  add = TRUE
+)
 
 removeHomeButton(map)
 }
