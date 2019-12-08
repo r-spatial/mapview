@@ -71,14 +71,16 @@ createExtent <- function(x, offset = NULL) {
   } else {
     if (inherits(x, "Raster")) {
       ext <- raster::extent(
-        raster::projectExtent(x, crs = llcrs))
+        raster::projectExtent(x, crs = sp::CRS("+init=epsg:4326")))
     } else if (inherits(x, "Spatial")) {
-      ext <- raster::extent(raster::xmin(x),
-                            raster::xmax(x),
-                            raster::ymin(x),
-                            raster::ymax(x))
-    } else if (inherits(x, "sfc") | inherits(x, "sf") | inherits(x, "XY")) {
-      bb <- sf::st_bbox(x)
+      x1 <- spTransform(x, sp::CRS("+init=epsg:4326"))
+      ext <- raster::extent(raster::xmin(x1),
+                            raster::xmax(x1),
+                            raster::ymin(x1),
+                            raster::ymax(x1))
+    } else if (inherits(x, "sfc") | inherits(x, "sf") |
+               inherits(x, "XY") | inherits(x, "stars")) {
+      bb <- sf::st_bbox(st_transform(x, 4326))
       ext <- raster::extent(bb[1], bb[3], bb[2], bb[4])
     }
 

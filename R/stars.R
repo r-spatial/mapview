@@ -49,51 +49,20 @@ addStarsImage <- function(map,
                           project = FALSE,
                           method = c("bilinear", "ngb"),
                           maxBytes = 4 * 1024 * 1024) {
-  stopifnot(inherits(x, "stars"))
-  if (is.null(group)) group = "stars"
-  if (is.null(layerId)) layerId = group
-  if (project) {
-    projected <- sf::st_transform(x, crs = 3857)
-  } else {
-    projected <- x
-  }
-  # bounds <- raster::extent(raster::projectExtent(raster::projectExtent(x, crs = sp::CRS(epsg3857)), crs = sp::CRS(epsg4326)))
-  bb = sf::st_as_sfc(sf::st_bbox(projected))
-  bounds = as.numeric(sf::st_bbox(sf::st_transform(bb, 4326)))
-  if (!is.function(colors)) {
-    colors <- leaflet::colorNumeric(colors, domain = NULL,
-                                    na.color = "#00000000", alpha = TRUE)
-  }
-  if(length(dim(projected)) == 2) {
-    layer = projected[[1]]
-  } else {
-    layer = projected[[1]][, , band]
-  }
-  tileData <- as.numeric(layer) %>%
-    colors() %>% grDevices::col2rgb(alpha = TRUE) %>% as.raw()
-  dim(tileData) <- c(4, as.numeric(nrow(projected)), as.numeric(ncol(projected)))
-  pngData <- png::writePNG(tileData)
-  if (length(pngData) > maxBytes) {
-    stop("Raster image too large; ",
-         length(pngData),
-         " bytes is greater than maximum ",
-         maxBytes,
-         " bytes")
-  }
-  encoded <- base64enc::base64encode(pngData)
-  uri <- paste0("data:image/png;base64,", encoded)
-  latlng <- list(
-    list(bounds[4], bounds[1]),
-    list(bounds[2], bounds[3])
-  )
-  # map$dependencies <- c(map$dependencies,
-  #                       starsDataDependency(jFn = pathDatFn,
-  #                                           counter = 1,
-  #                                           group = jsgroup))
-  leaflet::invokeMethod(map, getMapData(map), "addRasterImage", uri, latlng,
-                        opacity, attribution, layerId, group) %>%
-    leaflet::expandLimits(c(bounds[2], bounds[4]),
-                          c(bounds[1], bounds[3]))
+  .Deprecated(new = "leafem::addStarsImage", package = "mapview",
+              old = "mapview::addStarsImage")
+
+  leafem::addStarsImage(map = map,
+                        x = x,
+                        band = band,
+                        colors = colors,
+                        opacity = opacity,
+                        attribution = attribution,
+                        layerId = layerId,
+                        group = group,
+                        project = project,
+                        method = method,
+                        maxBytes = maxBytes)
 }
 
 

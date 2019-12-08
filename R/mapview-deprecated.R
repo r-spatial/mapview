@@ -73,6 +73,9 @@
 #'  \item \code{\link{removeMouseCoordinates}}: This function is deprecated, and will
 #'  be removed in the next version of this package. This function has been
 #'  migrated to package 'leafem'.
+#'  \item \code{\link{addStarsImage}}: This function is deprecated, and will
+#'  be removed in the next version of this package. This function has been
+#'  migrated to package 'leafem'.
 #' }
 #'
 #' @name mapview-deprecated
