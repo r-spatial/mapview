@@ -159,15 +159,15 @@ leaflet_stars = function(x,
     }
     x <- sf::st_transform(x, crs = 3857)
     ## add layers to base map
-    m = addStarsImage(map = m,
-                      x = x,
-                      band = band,
-                      colors = pal,
-                      project = FALSE,
-                      opacity = alpha.regions,
-                      group = grp,
-                      layerId = grp,
-                      ...)
+    m = leafem::addStarsImage(map = m,
+                              x = x,
+                              band = band,
+                              colors = pal,
+                              project = FALSE,
+                              opacity = alpha.regions,
+                              group = grp,
+                              layerId = grp,
+                              ...)
     if (label)
       m = leafem::addImageQuery(m, x, band = band, group = grp, layerId = grp,
                                 type = query.type, digits = query.digits,
