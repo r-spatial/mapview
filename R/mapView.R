@@ -341,7 +341,7 @@ setMethod('mapView', signature(x = 'stars'),
                    viewer.suppress = mapviewGetOption("viewer.suppress"),
                    ...) {
 
-            method = match.arg(method)
+            # method = match.arg(method)
             if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
             if (is.null(at)) at <- lattice::do.breaks(
               extendLimits(range(layer, na.rm = TRUE)),
