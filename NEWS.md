@@ -1,4 +1,4 @@
-## mapview 2.7.3
+## mapview 2.7.4
 
 new features:
 
@@ -9,6 +9,7 @@ new features:
 miscellaneous:
 
   * deprecated addStarsImage - now in package leafem.
+  * dropped Rcpp dependency
 
 ## mapview 2.7.0
 
