@@ -203,7 +203,9 @@ mapdeck_sf = function(x,
                            fill_opacity = alpha.regions,
                            stroke_colour = color,
                            fill_colour = col.regions,
-                           tooltip = label)
+                           tooltip = label,
+                           legend = legend,
+                           ...)
 
   out <- new("mapview", object = list(x), map = m)
 
