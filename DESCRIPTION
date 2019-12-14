@@ -72,7 +72,6 @@ Imports:
     leafpop,
     png,
     raster,
-    Rcpp (>= 0.11.3),
     satellite,
     scales (>= 0.2.5),
     sf,
@@ -89,8 +88,6 @@ Suggests:
     rmarkdown,
     stars,
     testthat
-LinkingTo: 
-    Rcpp
 ByteCompile: yes
 LazyData: TRUE
 Encoding: UTF-8

@@ -14,13 +14,12 @@
 #' \cr
 #' \emph{Maintainer:} Tim Appelhans \email{tim.appelhans@gmail.com}
 #'
-#' @import leaflet sp sf raster satellite scales Rcpp methods png lattice viridisLite base64enc
+#' @import leaflet sp sf raster satellite scales methods png lattice viridisLite base64enc
 #' @importFrom grDevices rgb dev.off png svg colorRampPalette grey.colors
 #' @importFrom utils find glob2rx
 #' @importFrom webshot webshot
 #' @importFrom utils modifyList
 #'
-#' @rawNamespace useDynLib(mapview, .registration = TRUE)
 #' @keywords package
 #'
 NULL
