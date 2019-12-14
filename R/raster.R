@@ -115,15 +115,18 @@ leafletRL = function(x,
       grp = layer.name
     }
 
-    ## add layers to base map
-    m = leaflet::addRasterImage(map = m,
-                                x = x,
-                                colors = pal,
-                                project = FALSE,
-                                opacity = alpha.regions,
-                                group = grp,
-                                layerId = grp,
-                                ...)
+    m = leafem::garnishMap(
+      map = m
+      , leaflet::addRasterImage
+      , x = x
+      , colors = pal
+      , project = FALSE
+      , opacity = alpha.regions
+      , group = grp
+      , layerId = grp
+      , ...
+    )
+
     if (label)
       m = leafem::addImageQuery(m, x, group = grp, layerId = grp,
                                 type = query.type, digits = query.digits,
@@ -422,7 +425,7 @@ rgbStack2PNG <- function(x, r, g, b,
     mat[, i] <- z
   }
 
-  na_indx <- rowNA(mat) #apply(mat, 1, base::anyNA) #
+  na_indx = apply(mat, 1, base::anyNA) # na_indx <- rowNA(mat)
   cols <- rep(na.color, nrow(mat)) #mat[, 1] #
   #cols[na_indx] <- na.color
   cols[!na_indx] <- grDevices::rgb(mat[!na_indx, ], alpha = 1)
