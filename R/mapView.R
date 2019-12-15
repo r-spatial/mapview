@@ -632,7 +632,7 @@ setMethod('mapView', signature(x = 'sf'),
 
               }
 
-            } else {
+            } else if (mapviewGetOption("platform") == "mapdeck") {
 
               mapdeck_sf(x,
                          map = map,
@@ -660,6 +660,8 @@ setMethod('mapView', signature(x = 'sf'),
                          viewer.suppress = viewer.suppress,
                          ...)
 
+            } else {
+              NULL
             }
           }
 )
@@ -704,6 +706,33 @@ setMethod('mapView', signature(x = 'sfc'),
             if (mapviewGetOption("platform") == "leaflet") {
 
               leaflet_sfc(sf::st_cast(x),
+                          map = map,
+                          pane = pane,
+                          canvas = canvas,
+                          viewer.suppress = viewer.suppress,
+                          color = color,
+                          col.regions = col.regions,
+                          na.color = na.color,
+                          cex = cex,
+                          lwd = lwd,
+                          alpha = alpha,
+                          alpha.regions = alpha.regions,
+                          map.types = map.types,
+                          verbose = verbose,
+                          popup = popup,
+                          layer.name = layer.name,
+                          label = label,
+                          legend = legend,
+                          legend.opacity = legend.opacity,
+                          homebutton = homebutton,
+                          native.crs = native.crs,
+                          highlight = highlight,
+                          maxpoints = maxpoints,
+                          ...)
+
+            } else if (mapviewGetOption("platform") == "mapdeck") {
+
+              mapdeck_sfc(sf::st_cast(x),
                           map = map,
                           pane = pane,
                           canvas = canvas,

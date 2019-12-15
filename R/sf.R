@@ -336,6 +336,41 @@ leaflet_sfc <- function(x,
 }
 
 
+mapdeck_sfc = function(x, map, ...) {
+
+  ls = list(...)
+  ls = utils::modifyList(mapviewOptions(console = FALSE), ls)
+
+  if (inherits(x, "XY")) x = sf::st_sfc(x)
+  if (!ls$native.crs) x <- checkAdjustProjection(x)
+
+  x = sf::st_sf(id = as.character(1:length(x)),
+                geometry = x)
+
+  m <- initMap(
+    map,
+    ls$map.types,
+    sf::st_crs(x),
+    ls$native.crs,
+    viewer.suppress = ls$viewer.suppress
+  )
+
+  m <- leafem::addFeatures(map = m,
+                           data = x,
+                           radius = ls$cex,
+                           stroke_width = ls$lwd,
+                           stroke_opacity = ls$alpha,
+                           fill_opacity = ls$alpha.regions,
+                           stroke_colour = ls$color,
+                           fill_colour = "id",
+                           tooltip = ls$label,
+                           legend = ls$legend,
+                           ...)
+
+  out <- new("mapview", object = list(x), map = m)
+
+  return(out)
+}
 
 
 ### MISC ==================================================================

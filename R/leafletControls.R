@@ -274,7 +274,7 @@ initMap <- function(map = NULL,
       )
       md_args = ls[md_args]
       md_args$style = map.types
-      m = do.call(mapdeck::mapdeck, md_args)
+      m = do.call(mapdeck::mapdeck, Filter(Negate(is.null), md_args))
 
     } else {
       m = map
