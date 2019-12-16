@@ -267,15 +267,21 @@ initMap <- function(map = NULL,
         map.types <- mapviewGetOption("basemaps")
       }
 
-      md_args = match.arg(
-        nms,
-        names(as.list(args(mapdeck::mapdeck))),
-        several.ok = TRUE
+      md_args = try(
+        match.arg(
+          nms,
+          names(as.list(args(mapdeck::mapdeck))),
+          several.ok = TRUE
+        )
+        , silent = TRUE
       )
-      md_args = ls[md_args]
-      md_args$style = map.types
-      m = do.call(mapdeck::mapdeck, Filter(Negate(is.null), md_args))
-
+      if (!inherits(md_args, "try-error")) {
+        md_args = ls[md_args]
+        md_args$style = map.types
+        m = do.call(mapdeck::mapdeck, Filter(Negate(is.null), md_args))
+      } else {
+        m = mapdeck::mapdeck()
+      }
     } else {
       m = map
     }

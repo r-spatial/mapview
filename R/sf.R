@@ -147,14 +147,10 @@ mapdeck_sf = function(x,
                       viewer.suppress,
                       ...) {
 
-  if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT"))
-    x = suppressWarnings(sf::st_cast(x, "POINT"))
-
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
   cex <- circleRadius(x, cex, ...)
   if (is.null(zcol) & ncol(sf2DataFrame(x, drop_sf_column = TRUE)) == 1) {
     zcol = colnames(sf2DataFrame(x, drop_sf_column = TRUE))[1]
-    label = makeLabels(x, zcol)
   }
   if (!is.null(zcol)) {
     if (inherits(x[[zcol]], "logical")) x[[zcol]] = as.character(x[[zcol]])
@@ -174,7 +170,7 @@ mapdeck_sf = function(x,
   if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
 
   if (is.null(map.types)) {
-    if (getGeometryType(x) %in% c("pl", "pt")) {
+    if (getGeometryType(x) %in% c("pl")) {
       if (is.function(col.regions)) col.regions <- standardColRegions(x)
       map.types <- basemaps(col.regions)
     } else {
@@ -183,8 +179,18 @@ mapdeck_sf = function(x,
     }
   }
 
-  if (is.function(color)) color = color(nrow(x))
-  if (is.function(col.regions)) col.regions = col.regions(nrow(x))
+  # if (is.function(color)) color = color(nrow(x))
+  # if (is.function(col.regions)) col.regions = col.regions(nrow(x))
+  if (!is.null(zcol)) {
+    color = ifelse(getGeometryType(x) %in% c("pl", "pt"), standardColor(x), zcol)
+    col.regions = ifelse(getGeometryType(x) %in% c("pl", "pt"), zcol, standardColor(x))
+  } else {
+    color = standardColor(x)
+    col.regions = standardColRegions(x)
+  }
+
+  label = makeLabels(x, zcol)
+  x$label = label
 
   m <- initMap(
     map,
@@ -195,19 +201,23 @@ mapdeck_sf = function(x,
     ...
   )
 
-  m <- leafem::addFeatures(m,
-                           data = x,
-                           radius = cex,
-                           stroke_width = lwd,
-                           stroke_opacity = alpha,
-                           fill_opacity = alpha.regions,
-                           stroke_colour = color,
-                           fill_colour = col.regions,
-                           tooltip = label,
-                           legend = legend,
-                           ...)
+  m <- leafem::addFeatures(
+    m
+    , data = x
+    , radius = cex
+    , stroke_width = lwd * 100
+    , stroke_opacity = alpha * 255
+    , fill_opacity = alpha.regions * 255
+    , stroke_colour = color
+    , fill_colour = col.regions
+    , tooltip = "label"
+    , legend = legend
+    , legend_options = list(title = layer.name)
+    , group = layer.name
+    , ...
+  )
 
-  out <- new("mapview", object = list(x), map = m)
+  out <- new("mapview", object = list(sf::st_geometry(x)), map = m)
 
   return(out)
 
@@ -336,40 +346,68 @@ leaflet_sfc <- function(x,
 }
 
 
-mapdeck_sfc = function(x, map, ...) {
-
-  ls = list(...)
-  ls = utils::modifyList(mapviewOptions(console = FALSE), ls)
+mapdeck_sfc = function(x,
+                       map,
+                       zcol,
+                       color,
+                       col.regions,
+                       at,
+                       na.color,
+                       cex,
+                       lwd,
+                       alpha,
+                       alpha.regions,
+                       na.alpha,
+                       map.types,
+                       verbose,
+                       popup,
+                       layer.name,
+                       label,
+                       legend,
+                       legend.opacity,
+                       homebutton,
+                       native.crs,
+                       highlight,
+                       maxpoints,
+                       viewer.suppress,
+                       ...) {
 
   if (inherits(x, "XY")) x = sf::st_sfc(x)
-  if (!ls$native.crs) x <- checkAdjustProjection(x)
 
   x = sf::st_sf(id = as.character(1:length(x)),
+                jnk = 1L,
                 geometry = x)
 
-  m <- initMap(
-    map,
-    ls$map.types,
-    sf::st_crs(x),
-    ls$native.crs,
-    viewer.suppress = ls$viewer.suppress
+  if (!native.crs) x <- checkAdjustProjection(x)
+
+  mapdeck_sf(
+    x = x
+    , map = map
+    , zcol = NULL
+    , color = color
+    , col.regions = col.regions
+    , at = at
+    , na.color = na.color
+    , cex = cex
+    , lwd = lwd
+    , alpha = alpha
+    , alpha.regions = alpha.regions
+    , na.alpha = na.alpha
+    , map.types = map.types
+    , verbose = verbose
+    , popup = popup
+    , layer.name = layer.name
+    , label = "id"
+    , legend = FALSE
+    , legend.opacity = legend.opacity
+    , homebutton = homebutton
+    , native.crs = native.crs
+    , hightlight = highlight
+    , maxpoints = maxpoints
+    , viewer.suppress = viewer.suppress
+    , ...
   )
 
-  m <- leafem::addFeatures(map = m,
-                           data = x,
-                           radius = ls$cex,
-                           stroke_width = ls$lwd,
-                           stroke_opacity = ls$alpha,
-                           fill_opacity = ls$alpha.regions,
-                           stroke_colour = ls$color,
-                           fill_colour = "id",
-                           tooltip = ls$label,
-                           legend = ls$legend,
-                           ...)
-
-  out <- new("mapview", object = list(x), map = m)
-
-  return(out)
 }
 
 
