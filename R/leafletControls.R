@@ -84,7 +84,7 @@ getLayerNamesFromMap <- function(map) {
 
 # Append calls to a map ---------------------------------------------------
 
-appendMapCallEntries <- function(map1, map2) {
+appendMapCallEntries_lf <- function(map1, map2) {
   ## calls
   m1_calls = map1$x$calls
   m2_calls = map2$x$calls
@@ -143,6 +143,22 @@ appendMapCallEntries <- function(map1, map2) {
 }
 
 
+appendMapCallEntries_md = function(map1, map2) {
+
+  m1_calls = map1$x$calls
+  m2_calls = map2$x$calls
+  mpcalls = append(m1_calls, m2_calls)
+
+  m1_deps = map1$dependencies
+  m2_deps = map2$dependencies
+  mp_deps = append(m1_deps, m2_deps)
+
+  map1$x$calls = mpcalls
+  map1$dependencies = mp_deps
+
+  map1 = removeDuplicatedMapDependencies(map1)
+  return(map1)
+}
 
 # Remove duuplicated map calls --------------------------------------------
 

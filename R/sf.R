@@ -185,8 +185,8 @@ mapdeck_sf = function(x,
     color = ifelse(getGeometryType(x) %in% c("pl", "pt"), standardColor(x), zcol)
     col.regions = ifelse(getGeometryType(x) %in% c("pl", "pt"), zcol, standardColor(x))
   } else {
-    color = standardColor(x)
-    col.regions = standardColRegions(x)
+    color = ifelse(is.function(color), standardColor(x), color)
+    col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
   }
 
   label = makeLabels(x, zcol)
