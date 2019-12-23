@@ -213,7 +213,7 @@ mapdeck_sf = function(x,
     , tooltip = "label"
     , legend = legend
     , legend_options = list(title = layer.name)
-    , group = layer.name
+    , layer_id = layer.name
     , ...
   )
 
