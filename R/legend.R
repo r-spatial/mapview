@@ -28,7 +28,7 @@ factorLegend <- function(map,
               pal = pal,
               values = values,
               opacity = 1,
-              title = layer.name)
+              title = ifelse(length(values) > 1, layer.name, ""))
 
 }
 
@@ -57,7 +57,7 @@ characterLegend <- function(map,
               pal = pal,
               values = values,
               opacity = 1,
-              title = layer.name)
+              title = ifelse(length(values) > 1, layer.name, ""))
 }
 
 
@@ -117,7 +117,7 @@ numericLegend <- function(map,
                 pal = pal,
                 values = values,
                 opacity = 1,
-                title = layer.name)
+                title = ifelse(length(values) > 1, layer.name, ""))
 
   } else {
     pal <- numericPalette(palette = colors(n_unique),
@@ -130,7 +130,7 @@ numericLegend <- function(map,
                 pal = pal,
                 values = values,
                 opacity = 1,
-                title = layer.name)
+                title = ifelse(length(values) > 1, layer.name, ""))
 
   }
 }
