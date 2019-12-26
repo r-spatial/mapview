@@ -1,12 +1,11 @@
 #' View extent/bbox of spatial objects interactively
-#'
 #' @description
 #' This function produces an interactive view of the extent/bbox
 #' of the supplied spatial object
 #'
 #' @param x either a Raster*, sf* or Spatial* object
 #' @param data either a Raster*, sf* or Spatial* object
-#' @param map a leaflet map the extent should be added to. If NULL
+#' @param map a leaflet or mapview map the extent should be added to. If NULL
 #' standard background layers are created.
 #' @param alpha.regions opacity of the fills or the raster layer(s).
 #' @param layer.name the name of the layer to be shown on the map.
@@ -25,11 +24,13 @@
 #'
 #' viewExtent(breweries)
 #' viewExtent(franconia) + breweries
-#' leaflet() %>% addProviderTiles("OpenStreetMap") %>% addExtent(breweries)
+#' mapview(franconia) %>% leafem::addExtent(franconia, fillColor = "yellow")
+#' leaflet() %>% addProviderTiles("OpenStreetMap") %>% leafem::addExtent(breweries)
+#' leaflet() %>% addProviderTiles("OpenStreetMap") %>% leafem::addExtent(breweries)
 #'
 #' @export viewExtent
 #' @name viewExtent
-#' @aliases viewExtent,addExtent
+#' @aliases viewExtent
 #'
 NULL
 
@@ -42,6 +43,9 @@ viewExtent <- function(x,
                        alpha.regions = 0.2,
                        label = NULL,
                        ...) {
+
+  # new line allows to do m <- mapview(trails) ; viewExtent(trails, m)
+  if (inherits(map, "mapview")) map <- mapview2leaflet(map)
 
   if (is.null(layer.name)) {
     layer.name = paste(deparse(substitute(x)), "extent", sep = "-")
@@ -68,18 +72,29 @@ viewExtent <- function(x,
 }
 
 ## Add Extent =============================================================
-#' @describeIn viewExtent add extent/bbox of spatial/sf objects to a leaflet map
+#' @describeIn viewExtent add extent/bbox of spatial/sf objects to a leaflet map -
+#' This function is deprecated.
+#' Please use leafem::\code{\link[leafem]{addExtent}} instead.
+#'
 #' @export addExtent
 
 addExtent <- function(map, data, ...) {
-  if (inherits(data, "Spatial")) data = sf::st_as_sfc(data)
-  x <- sf::st_as_sfc(
-    sf::st_bbox(
-      checkAdjustProjection(data)
-    )
-  )
-  m = leafem::addFeatures(x, map = map, ...)
-  return(m)
+
+  .Deprecated(new = "leafem::addExtent", package = "mapview",
+              old = "mapview::addExtent")
+
+  leafem::addExtent(map = map,
+                    data = data,
+                    ...)
+
+  # if (inherits(data, "Spatial")) data = sf::st_as_sfc(data)
+  # x <- sf::st_as_sfc(
+  #   sf::st_bbox(
+  #     checkAdjustProjection(data)
+  #   )
+  # )
+  # m = leafem::addFeatures(x, map = map, ...)
+  # return(m)
 }
 
 
@@ -90,12 +105,14 @@ combineExtent = function(lst, sf = FALSE, crs = 4326) {
   # bb = do.call(rbind, lapply(lst, sf::st_bbox))
   bb = do.call(rbind, lapply(seq(lst), function(i) {
 
+  if (!is.null(lst[[i]])) {
     if (!is.na(getProjection(lst[[i]]))) {
       sf::st_bbox(sf::st_transform(sf::st_as_sfc(sf::st_bbox(lst[[i]])),
                                    crs = crs))
     } else {
       sf::st_bbox(sf::st_as_sfc(sf::st_bbox(lst[[i]])))
     }
+  }
   }))
 
   bbmin = apply(bb, 2, min)

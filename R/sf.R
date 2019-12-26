@@ -302,6 +302,7 @@ leaflet_sfc <- function(x,
                            label = label,
                            group = layer.name,
                            highlightOptions = highlight,
+                           native.crs = native.crs,
                            ...)
 
   if (!is.null(map)) m = updateOverlayGroups(m, layer.name)

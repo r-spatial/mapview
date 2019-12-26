@@ -36,6 +36,8 @@ setMethod("+",
             if (mapviewGetOption("platform") == "leaflet") {
               m <- appendMapCallEntries_lf(e1@map, e2@map)
               out_obj <- append(e1@object, e2@object)
+              # avoids error if calling, for example, mapview() + viewExtent(in)
+              out_obj <- out_obj[lengths(out_obj) != 0]
               bb = combineExtent(out_obj, sf = FALSE)
               names(bb) = NULL
               m <- leaflet::fitBounds(map = m,
@@ -55,7 +57,7 @@ setMethod("+",
               m = appendMapCallEntries_md(e1@map, e2@map)
               out_obj <- append(e1@object, e2@object)
             }
-
+            
             out <- methods::new('mapview', object = out_obj, map = m)
             return(out)
           }

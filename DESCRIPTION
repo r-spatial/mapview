@@ -48,6 +48,9 @@ Authors@R:
              family = "Schratz",
              role = "ctb"),
       person(given = "Environmental Informatics Marburg",
+             role = "ctb"),
+      person(given = "Lorenzo",
+             family = "Busetto",
              role = "ctb"))
 Maintainer: Tim Appelhans <tim.appelhans@gmail.com>
 Description: Quickly and conveniently create interactive

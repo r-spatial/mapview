@@ -30,6 +30,10 @@ Being a wrapper around \code{\link[leaflet]{addLabelOnlyMarkers}}, this
 function provides a smart-and-easy solution to add custom text labels to an
 existing \code{leaflet} or \code{mapview} map object.
 }
+\details{
+This function is deprecated.
+Please use leafem::\code{\link[leafem]{addStaticLabels}} instead.
+}
 \examples{
 \dontrun{
 ## leaflet label display options
@@ -64,7 +68,7 @@ l3
 
 }
 \seealso{
-\code{\link[leaflet]{addLabelOnlyMarkers}}.
+\code{\link[leafem]{addStaticLabels}}, \code{\link[leaflet]{addLabelOnlyMarkers}}.
 }
 \author{
 Florian Detsch

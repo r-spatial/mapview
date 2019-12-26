@@ -389,106 +389,106 @@ addLogo <- function(map,
                   width = width,
                   height = height)
 
-#   # check for duplication?
-#   #  not sure of a good way to do this
-#   if (inherits(map, "mapview")) map <- mapview2leaflet(map)
-#   stopifnot(inherits(map, "leaflet"))
-#
-#   if (!missing(url)) url <- paste0('"', url, '"')
-#
-#   position <- position[1]
-#   src <- src[1]
-#
-#
-#   div_topleft <- paste0("newDiv.css({
-#                         'position': 'absolute',
-#                         'top': '", offset.y, "px',
-#                         'left': '", offset.x, "px',
-#                         'background-color': 'transparent',
-#                         'border': '0px solid black',
-#                         'width': '", width, "px',
-#                         'height': '", height, "px',
-# });")
-#
-#   div_topright <- paste0("newDiv.css({
-#                          'position': 'absolute',
-#                          'top': '", offset.y, "px',
-#                          'right': '", offset.x, "px',
-#                          'background-color': 'transparent',
-#                          'border': '0px solid black',
-#                          'width': '", width, "px',
-#                          'height': '", height, "px',
-#                          });")
-#
-#   div_bottomleft <- paste0("newDiv.css({
-#                            'position': 'absolute',
-#                            'bottom': '", offset.y, "px',
-#                            'left': '", offset.x, "px',
-#                            'background-color': 'transparent',
-#                            'border': '0px solid black',
-#                            'width': '", width, "px',
-#                            'height': '", height, "px',
-#                            });")
-#
-#   div_bottomright <- paste0("newDiv.css({
-#                             'position': 'absolute',
-#                             'bottom': '", offset.y, "px',
-#                             'right': '", offset.x, "px',
-#                             'background-color': 'transparent',
-#                             'border': '0px solid black',
-#                             'width': '", width, "px',
-#                             'height': '", height, "px',
-#                             });")
-#
-#   div <- switch(position,
-#                 topleft = div_topleft,
-#                 topright = div_topright,
-#                 bottomleft = div_bottomleft,
-#                 bottomright = div_bottomright)
-#
-#   div_funk <- paste0("function(el, x, data) {
-#                      // we need a new div element because we have to handle
-#                      // the mouseover output seperately
-#                      // debugger;
-#                      function addElement () {
-#                      // generate new div Element
-#                      var newDiv = $(document.createElement('div'));
-#                      // append at end of leaflet htmlwidget container
-#                      $(el).append(newDiv);
-#                      //provide ID and style
-#                      newDiv.addClass('logo');\n",
-#                      div,
-#                      "return newDiv;
-#                      }")
-#
-#   div_add <- paste0("// check for already existing logo class to not duplicate
-#                     var logo = $(el).find('.logo');
-#                     if(!logo.length) {
-#                     logo = addElement();")
-#
-#   # if (missing(url)) {
-#   #   div_html <- paste0("logo.html('<img src=", img,
-#   #                      ", width=", width, "height=", height, "></a>');
-#   #                      var map = HTMLWidgets.find('#' + el.id).getMap();
-#   #                      };
-#   #                      }")
-#   # } else {
-#   #   div_html <- paste0("logo.html('<a href=", url, "><img src=", img,
-#   #                      ", width=", width, "height=", height, "></a>');
-#   #                      var map = HTMLWidgets.find('#' + el.id).getMap();
-#   #                      };
-#   #                      }")
-#   # }
-#
-#   div_html <- switch(src,
-#                      remote = remoteImage(img, alpha, url, width, height),
-#                      local = localImage(img, alpha, url, width, height))
-#
-#   render_stuff <- paste0(div_funk, div_add, div_html)
-#
-#   map <- htmlwidgets::onRender(map, render_stuff)
-#
-#   return(map)
+  #   # check for duplication?
+  #   #  not sure of a good way to do this
+  #   if (inherits(map, "mapview")) map <- mapview2leaflet(map)
+  #   stopifnot(inherits(map, "leaflet"))
+  #
+  #   if (!missing(url)) url <- paste0('"', url, '"')
+  #
+  #   position <- position[1]
+  #   src <- src[1]
+  #
+  #
+  #   div_topleft <- paste0("newDiv.css({
+  #                         'position': 'absolute',
+  #                         'top': '", offset.y, "px',
+  #                         'left': '", offset.x, "px',
+  #                         'background-color': 'transparent',
+  #                         'border': '0px solid black',
+  #                         'width': '", width, "px',
+  #                         'height': '", height, "px',
+  # });")
+  #
+  #   div_topright <- paste0("newDiv.css({
+  #                          'position': 'absolute',
+  #                          'top': '", offset.y, "px',
+  #                          'right': '", offset.x, "px',
+  #                          'background-color': 'transparent',
+  #                          'border': '0px solid black',
+  #                          'width': '", width, "px',
+  #                          'height': '", height, "px',
+  #                          });")
+  #
+  #   div_bottomleft <- paste0("newDiv.css({
+  #                            'position': 'absolute',
+  #                            'bottom': '", offset.y, "px',
+  #                            'left': '", offset.x, "px',
+  #                            'background-color': 'transparent',
+  #                            'border': '0px solid black',
+  #                            'width': '", width, "px',
+  #                            'height': '", height, "px',
+  #                            });")
+  #
+  #   div_bottomright <- paste0("newDiv.css({
+  #                             'position': 'absolute',
+  #                             'bottom': '", offset.y, "px',
+  #                             'right': '", offset.x, "px',
+  #                             'background-color': 'transparent',
+  #                             'border': '0px solid black',
+  #                             'width': '", width, "px',
+  #                             'height': '", height, "px',
+  #                             });")
+  #
+  #   div <- switch(position,
+  #                 topleft = div_topleft,
+  #                 topright = div_topright,
+  #                 bottomleft = div_bottomleft,
+  #                 bottomright = div_bottomright)
+  #
+  #   div_funk <- paste0("function(el, x, data) {
+  #                      // we need a new div element because we have to handle
+  #                      // the mouseover output seperately
+  #                      // debugger;
+  #                      function addElement () {
+  #                      // generate new div Element
+  #                      var newDiv = $(document.createElement('div'));
+  #                      // append at end of leaflet htmlwidget container
+  #                      $(el).append(newDiv);
+  #                      //provide ID and style
+  #                      newDiv.addClass('logo');\n",
+  #                      div,
+  #                      "return newDiv;
+  #                      }")
+  #
+  #   div_add <- paste0("// check for already existing logo class to not duplicate
+  #                     var logo = $(el).find('.logo');
+  #                     if(!logo.length) {
+  #                     logo = addElement();")
+  #
+  #   # if (missing(url)) {
+  #   #   div_html <- paste0("logo.html('<img src=", img,
+  #   #                      ", width=", width, "height=", height, "></a>');
+  #   #                      var map = HTMLWidgets.find('#' + el.id).getMap();
+  #   #                      };
+  #   #                      }")
+  #   # } else {
+  #   #   div_html <- paste0("logo.html('<a href=", url, "><img src=", img,
+  #   #                      ", width=", width, "height=", height, "></a>');
+  #   #                      var map = HTMLWidgets.find('#' + el.id).getMap();
+  #   #                      };
+  #   #                      }")
+  #   # }
+  #
+  #   div_html <- switch(src,
+  #                      remote = remoteImage(img, alpha, url, width, height),
+  #                      local = localImage(img, alpha, url, width, height))
+  #
+  #   render_stuff <- paste0(div_funk, div_add, div_html)
+  #
+  #   map <- htmlwidgets::onRender(map, render_stuff)
+  #
+  #   return(map)
 }
 
 
@@ -824,6 +824,9 @@ addImageQuery = function(map,
 ### addStaticLabels ##########################################################
 ##############################################################################
 #' Add static labels to \code{leaflet} or \code{mapview} objects
+#' @details
+#' This function is deprecated.
+#' Please use leafem::\code{\link[leafem]{addStaticLabels}} instead.
 #'
 #' @description
 #' Being a wrapper around \code{\link[leaflet]{addLabelOnlyMarkers}}, this
@@ -847,7 +850,7 @@ addImageQuery = function(map,
 #' Florian Detsch
 #'
 #' @seealso
-#' \code{\link[leaflet]{addLabelOnlyMarkers}}.
+#' \code{\link[leafem]{addStaticLabels}}, \code{\link[leaflet]{addLabelOnlyMarkers}}.
 #'
 #' @examples
 #' \dontrun{
@@ -890,84 +893,95 @@ addStaticLabels = function(map,
                            layerId = NULL,
                            ...) {
 
-  if (inherits(map, "mapview") & missing(data)) {
-    data = map@object[[1]]
-    if (is.null(group)) {
-      group = getLayerNamesFromMap(map@map)[1]
-    } else {
-      group = NULL
-    }
-  } else if (inherits(map, "mapview") & !missing(data)) {
-    data = sf::st_transform(data, sf::st_crs(map@object[[1]]))
-  } else {
-    data = checkAdjustProjection(data)
-  }
+  .Deprecated(new = "leafem::addStaticLabels", package = "mapview",
+              old = "mapview::addStaticLabels")
 
-  dots = list(...)
-  min_opts = list(permanent = TRUE,
-                  direction = "top",
-                  textOnly = TRUE,
-                  offset = c(0, 20))
+  leafem::addStaticLabels(map = map,
+                        data = data,
+                        label = label,
+                        group = group,
+                        layerId = layerId,
+                        ...)
 
-  dots = utils::modifyList(dots, min_opts)
-  # dots = utils::modifyList(leafletOptions(), dots)
 
-  if (inherits(map, "mapview")) map = mapview2leaflet(map)
-
-  ## 'Raster*' locations not supported so far -> error
-  if (inherits(data, "Raster")) {
-    stop(paste("'Raster*' input is not supported, yet."
-               , "Please refer to ?addStaticLabels for compatible input formats.\n"),
-         call. = FALSE)
-  }
-
-  ## if input is 'Spatial*', convert to 'sf'
-  if (inherits(data, "Spatial")) {
-    data = sf::st_as_sf(data)
-  }
-
-  if (missing(label)) label = makeLabels(data, NULL)
-  #   {
-  #   sf_col = attr(data, "sf_column")
-  #   if (inherits(data, "sf")) {
-  #     if (ncol(data) == 2) {
-  #       colnm = setdiff(colnames(data), sf_col)
-  #       label = data[[colnm]]
-  #     } else {
-  #       label = seq(nrow(data))
-  #     }
+  # if (inherits(map, "mapview") & missing(data)) {
+  #   data = map@object[[1]]
+  #   if (is.null(group)) {
+  #     group = getLayerNamesFromMap(map@map)[1]
   #   } else {
-  #     label = seq(length(data))
+  #     group = NULL
   #   }
+  # } else if (inherits(map, "mapview") & !missing(data)) {
+  #   data = sf::st_transform(data, sf::st_crs(map@object[[1]]))
+  # } else {
+  #   data = checkAdjustProjection(data)
   # }
-
-  if (getGeometryType(data) == "ln") {
-    crds = as.data.frame(sf::st_coordinates(data))
-    crds_lst = split(crds, crds[[ncol(crds)]])
-    mat = do.call(rbind, lapply(seq(crds_lst), function(i) {
-      crds_lst[[i]][sapply(crds_lst, nrow)[i], c("X", "Y")]
-    }))
-  } else {
-    mat = sf::st_coordinates(suppressWarnings(sf::st_centroid(data)))
-  }
-
-  ## add labels to map
-  # map = garnishMap(leaflet::addLabelOnlyMarkers,
-  #                  map = map,
-  #                  lng = unname(mat[, 1]),
-  #                  lat = unname(mat[, 2]),
-  #                  label = as.character(label),
-  #                  group = group,
-  #                  layerId = layerId,
-  #                  labelOptions = dots)
-  map = leaflet::addLabelOnlyMarkers(map,
-                                     lng = mat[, 1],
-                                     lat = mat[, 2],
-                                     label = as.character(label),
-                                     group = group,
-                                     layerId = layerId,
-                                     labelOptions = dots)
-
-  return(map)
+  #
+  # dots = list(...)
+  # min_opts = list(permanent = TRUE,
+  #                 direction = "top",
+  #                 textOnly = TRUE,
+  #                 offset = c(0, 20))
+  #
+  # dots = utils::modifyList(dots, min_opts)
+  # # dots = utils::modifyList(leafletOptions(), dots)
+  #
+  # if (inherits(map, "mapview")) map = mapview2leaflet(map)
+  #
+  # ## 'Raster*' locations not supported so far -> error
+  # if (inherits(data, "Raster")) {
+  #   stop(paste("'Raster*' input is not supported, yet."
+  #              , "Please refer to ?addStaticLabels for compatible input formats.\n"),
+  #        call. = FALSE)
+  # }
+  #
+  # ## if input is 'Spatial*', convert to 'sf'
+  # if (inherits(data, "Spatial")) {
+  #   data = sf::st_as_sf(data)
+  # }
+  #
+  # if (missing(label)) label = makeLabels(data, NULL)
+  # #   {
+  # #   sf_col = attr(data, "sf_column")
+  # #   if (inherits(data, "sf")) {
+  # #     if (ncol(data) == 2) {
+  # #       colnm = setdiff(colnames(data), sf_col)
+  # #       label = data[[colnm]]
+  # #     } else {
+  # #       label = seq(nrow(data))
+  # #     }
+  # #   } else {
+  # #     label = seq(length(data))
+  # #   }
+  # # }
+  #
+  # if (getGeometryType(data) == "ln") {
+  #   crds = as.data.frame(sf::st_coordinates(data))
+  #   crds_lst = split(crds, crds[[ncol(crds)]])
+  #   mat = do.call(rbind, lapply(seq(crds_lst), function(i) {
+  #     crds_lst[[i]][sapply(crds_lst, nrow)[i], c("X", "Y")]
+  #   }))
+  # } else {
+  #   mat = sf::st_coordinates(suppressWarnings(sf::st_centroid(data)))
+  # }
+  #
+  # ## add labels to map
+  # # map = garnishMap(leaflet::addLabelOnlyMarkers,
+  # #                  map = map,
+  # #                  lng = unname(mat[, 1]),
+  # #                  lat = unname(mat[, 2]),
+  # #                  label = as.character(label),
+  # #                  group = group,
+  # #                  layerId = layerId,
+  # #                  labelOptions = dots)
+  # map = leaflet::addLabelOnlyMarkers(map,
+  #                                    lng = mat[, 1],
+  #                                    lat = mat[, 2],
+  #                                    label = as.character(label),
+  #                                    group = group,
+  #                                    layerId = layerId,
+  #                                    labelOptions = dots)
+  #
+  # return(map)
 }
 
