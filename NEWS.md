@@ -1,15 +1,16 @@
-## mapview 2.7.4
+## mapview 2.7.5
 
 new features:
 
   * new method for tiled image collections (created with e.g. gdal2tiles). #222
   * new method file path (currently vector only) without loading into R.
-  * initial support for platform 'mapdeck'.
+  * initial support for 'mapdeck' as a rendering platform.
   
 miscellaneous:
 
-  * deprecated addStarsImage - now in package leafem.
-  * dropped Rcpp dependency
+  * deprecated addStarsImage - now in package leafem. Thanks to Luigig Ranghetti #230
+  * deprecated addExtent - now in package leafem. Thanks to Lorenzo Busetto #233
+  * dropped Rcpp dependency.
 
 ## mapview 2.7.0
 
