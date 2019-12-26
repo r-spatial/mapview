@@ -12,7 +12,6 @@ leafletRL = function(x,
                      at,
                      na.color,
                      use.layer.names,
-                     values,
                      map.types,
                      alpha.regions,
                      legend,
@@ -72,23 +71,23 @@ leafletRL = function(x,
 
     if (is.fact) x = raster::as.factor(x)
 
-    if (is.null(values)) {
-      if (is.fact) {
-        at = x@data@attributes[[1]]$ID
-      } else {
-        offset = diff(range(x[], na.rm = TRUE)) * 0.05
-        top = max(x[], na.rm = TRUE) + offset
-        bot = min(x[], na.rm = TRUE) - offset
-        values = seq(bot, top, length.out = 10)
-        values = round(values, 5)
-      }
-    } else {
-      values = round(values, 5)
-    }
+    # if (is.null(values)) {
+    #   if (is.fact) {
+    #     at = x@data@attributes[[1]]$ID
+    #   } else {
+    #     offset = diff(range(x[], na.rm = TRUE)) * 0.05
+    #     top = max(x[], na.rm = TRUE) + offset
+    #     bot = min(x[], na.rm = TRUE) - offset
+    #     values = seq(bot, top, length.out = 10)
+    #     values = round(values, 5)
+    #   }
+    # } else {
+    #   values = round(values, 5)
+    # }
 
     if (is.fact) {
       pal = leaflet::colorFactor(palette = col.regions,
-                                 domain = values,
+                                 domain = x@data@attributes[[1]]$ID,
                                  na.color = na.color)
       # pal2 = pal
     } else {
@@ -116,15 +115,18 @@ leafletRL = function(x,
       grp = layer.name
     }
 
-    ## add layers to base map
-    m = leaflet::addRasterImage(map = m,
-                                x = x,
-                                colors = pal,
-                                project = FALSE,
-                                opacity = alpha.regions,
-                                group = grp,
-                                layerId = grp,
-                                ...)
+    m = leafem::garnishMap(
+      map = m
+      , leaflet::addRasterImage
+      , x = x
+      , colors = pal
+      , project = FALSE
+      , opacity = alpha.regions
+      , group = grp
+      , layerId = grp
+      , ...
+    )
+
     if (label)
       m = leafem::addImageQuery(m, x, group = grp, layerId = grp,
                                 type = query.type, digits = query.digits,
@@ -178,7 +180,6 @@ leafletRSB = function(x,
                       at,
                       na.color,
                       use.layer.names,
-                      values,
                       map.types,
                       legend,
                       legend.opacity,
@@ -284,7 +285,6 @@ leafletPixelsDF = function(x,
                            at,
                            na.color,
                            use.layer.names,
-                           values,
                            map.types,
                            alpha.regions,
                            legend,
@@ -324,7 +324,6 @@ leafletPixelsDF = function(x,
               at = at,
               na.color = na.color,
               use.layer.names = TRUE,
-              values = values,
               map.types = map.types,
               alpha.regions = alpha.regions,
               legend = legend,
@@ -426,7 +425,7 @@ rgbStack2PNG <- function(x, r, g, b,
     mat[, i] <- z
   }
 
-  na_indx <- rowNA(mat) #apply(mat, 1, base::anyNA) #
+  na_indx = apply(mat, 1, base::anyNA) # na_indx <- rowNA(mat)
   cols <- rep(na.color, nrow(mat)) #mat[, 1] #
   #cols[na_indx] <- na.color
   cols[!na_indx] <- grDevices::rgb(mat[!na_indx, ], alpha = 1)

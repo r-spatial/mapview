@@ -49,51 +49,20 @@ addStarsImage <- function(map,
                           project = FALSE,
                           method = c("bilinear", "ngb"),
                           maxBytes = 4 * 1024 * 1024) {
-  stopifnot(inherits(x, "stars"))
-  if (is.null(group)) group = "stars"
-  if (is.null(layerId)) layerId = group
-  if (project) {
-    projected <- sf::st_transform(x, crs = 3857)
-  } else {
-    projected <- x
-  }
-  # bounds <- raster::extent(raster::projectExtent(raster::projectExtent(x, crs = sp::CRS(epsg3857)), crs = sp::CRS(epsg4326)))
-  bb = sf::st_as_sfc(sf::st_bbox(projected))
-  bounds = as.numeric(sf::st_bbox(sf::st_transform(bb, 4326)))
-  if (!is.function(colors)) {
-    colors <- leaflet::colorNumeric(colors, domain = NULL,
-                                    na.color = "#00000000", alpha = TRUE)
-  }
-  if(length(dim(projected)) == 2) {
-    layer = projected[[1]]
-  } else {
-    layer = projected[[1]][, , band]
-  }
-  tileData <- as.numeric(layer) %>%
-    colors() %>% grDevices::col2rgb(alpha = TRUE) %>% as.raw()
-  dim(tileData) <- c(4, as.numeric(nrow(projected)), as.numeric(ncol(projected)))
-  pngData <- png::writePNG(tileData)
-  if (length(pngData) > maxBytes) {
-    stop("Raster image too large; ",
-         length(pngData),
-         " bytes is greater than maximum ",
-         maxBytes,
-         " bytes")
-  }
-  encoded <- base64enc::base64encode(pngData)
-  uri <- paste0("data:image/png;base64,", encoded)
-  latlng <- list(
-    list(bounds[4], bounds[1]),
-    list(bounds[2], bounds[3])
-  )
-  # map$dependencies <- c(map$dependencies,
-  #                       starsDataDependency(jFn = pathDatFn,
-  #                                           counter = 1,
-  #                                           group = jsgroup))
-  leaflet::invokeMethod(map, getMapData(map), "addRasterImage", uri, latlng,
-                        opacity, attribution, layerId, group) %>%
-    leaflet::expandLimits(c(bounds[2], bounds[4]),
-                          c(bounds[1], bounds[3]))
+  .Deprecated(new = "leafem::addStarsImage", package = "mapview",
+              old = "mapview::addStarsImage")
+
+  leafem::addStarsImage(map = map,
+                        x = x,
+                        band = band,
+                        colors = colors,
+                        opacity = opacity,
+                        attribution = attribution,
+                        layerId = layerId,
+                        group = group,
+                        project = project,
+                        method = method,
+                        maxBytes = maxBytes)
 }
 
 
@@ -105,7 +74,6 @@ leaflet_stars = function(x,
                          at,
                          na.color,
                          use.layer.names,
-                         values,
                          map.types,
                          alpha.regions,
                          legend,
@@ -148,22 +116,23 @@ leaflet_stars = function(x,
     # if (!is.na(raster::projection(x)) & trim) x = trim(x)
     # if (is.fact) x = raster::as.factor(x)
     if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
-    if (is.null(values)) {
-      # if (is.fact) {
-      #   at = x@data@attributes[[1]]$ID
-      # } else {
-      offset = diff(range(as.numeric(layer), na.rm = TRUE)) * 0.05
-      top = max(as.numeric(layer), na.rm = TRUE) + offset
-      bot = min(as.numeric(layer), na.rm = TRUE) - offset
-      values = seq(bot, top, length.out = 10)
-      values = round(values, 5)
-      # }
-    } else {
-      values = round(values, 5)
-    }
+    # if (is.null(values)) {
+    #   # if (is.fact) {
+    #   #   at = x@data@attributes[[1]]$ID
+    #   # } else {
+    #   offset = diff(range(as.numeric(layer), na.rm = TRUE)) * 0.05
+    #   top = max(as.numeric(layer), na.rm = TRUE) + offset
+    #   bot = min(as.numeric(layer), na.rm = TRUE) - offset
+    #   values = seq(bot, top, length.out = 10)
+    #   values = round(values, 5)
+    #   # }
+    # } else {
+    #   values = round(values, 5)
+    # }
     if (is.fact) {
+      ### delete at some stage!!! ###
       pal = leaflet::colorFactor(palette = col.regions,
-                                 domain = values,
+                                 domain = seq(0, 255, 1),
                                  na.color = na.color)
       # pal2 = pal
     } else {
@@ -190,19 +159,19 @@ leaflet_stars = function(x,
     }
     x <- sf::st_transform(x, crs = 3857)
     ## add layers to base map
-    m = addStarsImage(map = m,
-                      x = x,
-                      band = band,
-                      colors = pal,
-                      project = FALSE,
-                      opacity = alpha.regions,
-                      group = grp,
-                      layerId = grp,
-                      ...)
+    m = leafem::addStarsImage(map = m,
+                              x = x,
+                              band = band,
+                              colors = pal,
+                              project = FALSE,
+                              opacity = alpha.regions,
+                              group = grp,
+                              layerId = grp,
+                              ...)
     if (label)
-      m = addImageQuery(m, x, band = band, group = grp, layerId = grp,
-                        type = query.type, digits = query.digits,
-                        position = query.position, prefix = query.prefix)
+      m = leafem::addImageQuery(m, x, band = band, group = grp, layerId = grp,
+                                type = query.type, digits = query.digits,
+                                position = query.position, prefix = query.prefix)
     if (legend) {
       # stop("legend currently not supported for stars layers", call. = FALSE)
       ## add legend
@@ -224,7 +193,7 @@ leaflet_stars = function(x,
                              names = grp)
     m = leaflet::addScaleBar(map = m, position = "bottomleft")
     m = leafem::addMouseCoordinates(m)
-    if (homebutton) m = addHomeButton(m, ext, layer.name = layer.name)
+    if (homebutton) m = leafem::addHomeButton(m, ext, layer.name = layer.name)
     out = new('mapview', object = list(x), map = m)
     return(out)
   }

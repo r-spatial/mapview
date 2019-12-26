@@ -28,7 +28,7 @@ factorLegend <- function(map,
               pal = pal,
               values = values,
               opacity = 1,
-              title = layer.name)
+              title = ifelse(length(values) > 1, layer.name, ""))
 
 }
 
@@ -57,7 +57,7 @@ characterLegend <- function(map,
               pal = pal,
               values = values,
               opacity = 1,
-              title = layer.name)
+              title = ifelse(length(values) > 1, layer.name, ""))
 }
 
 
@@ -117,7 +117,7 @@ numericLegend <- function(map,
                 pal = pal,
                 values = values,
                 opacity = 1,
-                title = layer.name)
+                title = ifelse(length(values) > 1, layer.name, ""))
 
   } else {
     pal <- numericPalette(palette = colors(n_unique),
@@ -130,7 +130,7 @@ numericLegend <- function(map,
                 pal = pal,
                 values = values,
                 opacity = 1,
-                title = layer.name)
+                title = ifelse(length(values) > 1, layer.name, ""))
 
   }
 }
@@ -158,7 +158,11 @@ mapviewLegend <- function(values,
   }
 
   function(map) {
-    switch(class(values),
+
+    # if values inherits from more than one class, select
+    value.class = class(values)[length(class(values))]
+
+    switch(value.class,
            factor = factorLegend(map,
                                  position = position,
                                  values = values,
@@ -274,6 +278,8 @@ addRasterLegend <- function(x,
 
   if (is.fact) {
     vals <- as.character(x[])
+  } else if (inherits(x, "stars")) {
+    vals = as.vector(x[, , , 1][[1]][])
   } else {
     vals <- x[] # orig values needed for legend creation later on
   }
@@ -297,6 +303,7 @@ addRasterLegend <- function(x,
   if (is.fact) {
     pal2 <- leaflet::colorFactor(palette = col.regions,
                                  domain = at,
+                                 # levels = as.character(levels(x)[[1]][, 2]),
                                  na.color = col2Hex(na.color))
   } else {
     if (length(at) > 11) {

@@ -84,7 +84,7 @@ getLayerNamesFromMap <- function(map) {
 
 # Append calls to a map ---------------------------------------------------
 
-appendMapCallEntries <- function(map1, map2) {
+appendMapCallEntries_lf <- function(map1, map2) {
   ## calls
   m1_calls = map1$x$calls
   m2_calls = map2$x$calls
@@ -143,6 +143,22 @@ appendMapCallEntries <- function(map1, map2) {
 }
 
 
+appendMapCallEntries_md = function(map1, map2) {
+
+  m1_calls = map1$x$calls
+  m2_calls = map2$x$calls
+  mpcalls = append(m1_calls, m2_calls)
+
+  m1_deps = map1$dependencies
+  m2_deps = map2$dependencies
+  mp_deps = append(m1_deps, m2_deps)
+
+  map1$x$calls = mpcalls
+  map1$dependencies = mp_deps
+
+  map1 = removeDuplicatedMapDependencies(map1)
+  return(map1)
+}
 
 # Remove duuplicated map calls --------------------------------------------
 
@@ -190,7 +206,7 @@ initBaseMaps <- function(map.types, canvas = FALSE, viewer.suppress = FALSE) {
     width = leafletWidth,
     options = leaflet::leafletOptions(
       minZoom = 1,
-      maxZoom = 100,
+      maxZoom = 52,
       bounceAtZoomLimits = FALSE,
       maxBounds = list(
         list(c(-90, -370)),
@@ -220,39 +236,73 @@ initMap <- function(map = NULL,
                     proj4str,
                     native.crs = FALSE,
                     canvas = FALSE,
-                    viewer.suppress = FALSE) {
+                    viewer.suppress = FALSE,
+                    platform = mapviewGetOption("platform"),
+                    ...) {
 
   # if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
+  ls = list(...)
+  nms = names(ls)
 
-  if (is.null(map) & is.null(map.types)) {
-    map.types <- mapviewGetOption("basemaps")
-  }
+  if (platform == "leaflet") {
 
-  leafletHeight <- mapviewGetOption("leafletHeight")
-  leafletWidth <- mapviewGetOption("leafletWidth")
-
-  if (missing(proj4str)) proj4str <- NA
-  ## create base map using specified map types
-  if (is.null(map)) {
-    if (is.na(proj4str) | native.crs) {
-      m <- leaflet::leaflet(
-        height = leafletHeight,
-        width = leafletWidth,
-        options = leaflet::leafletOptions(
-          minZoom = -1000,
-          crs = leafletCRS(crsClass = "L.CRS.Simple"),
-          preferCanvas = canvas),
-        sizingPolicy = leafletSizingPolicy(
-          viewer.suppress = viewer.suppress,
-          browser.external = viewer.suppress
-        )
-      )
-    } else {
-      m <- initBaseMaps(map.types, canvas = canvas, viewer.suppress = viewer.suppress)
+    if (is.null(map) & is.null(map.types)) {
+      map.types <- mapviewGetOption("basemaps")
     }
-  } else {
-    m <- map
+
+    leafletHeight <- mapviewGetOption("leafletHeight")
+    leafletWidth <- mapviewGetOption("leafletWidth")
+
+    if (missing(proj4str)) proj4str <- NA
+    ## create base map using specified map types
+    if (is.null(map)) {
+      if (is.na(proj4str) | native.crs) {
+        m <- leaflet::leaflet(
+          height = leafletHeight,
+          width = leafletWidth,
+          options = leaflet::leafletOptions(
+            minZoom = -1000,
+            crs = leafletCRS(crsClass = "L.CRS.Simple"),
+            preferCanvas = canvas),
+          sizingPolicy = leafletSizingPolicy(
+            viewer.suppress = viewer.suppress,
+            browser.external = viewer.suppress
+          )
+        )
+      } else {
+        m <- initBaseMaps(map.types, canvas = canvas, viewer.suppress = viewer.suppress)
+      }
+    } else {
+      m <- map
+    }
+
+  } else if (platform == "mapdeck") {
+
+    if (is.null(map)) {
+      if (is.null(map.types)) {
+        map.types <- mapviewGetOption("basemaps")
+      }
+
+      md_args = try(
+        match.arg(
+          nms,
+          names(as.list(args(mapdeck::mapdeck))),
+          several.ok = TRUE
+        )
+        , silent = TRUE
+      )
+      if (!inherits(md_args, "try-error")) {
+        md_args = ls[md_args]
+        md_args$style = map.types
+        m = do.call(mapdeck::mapdeck, Filter(Negate(is.null), md_args))
+      } else {
+        m = mapdeck::mapdeck()
+      }
+    } else {
+      m = map
+    }
   }
+
   return(m)
 }
 

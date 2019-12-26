@@ -33,28 +33,31 @@ setMethod("+",
                     e2 = "mapview"),
           function (e1, e2) {
 
-            m <- appendMapCallEntries(e1@map, e2@map)
+            if (mapviewGetOption("platform") == "leaflet") {
+              m <- appendMapCallEntries_lf(e1@map, e2@map)
+              out_obj <- append(e1@object, e2@object)
+              # avoids error if calling, for example, mapview() + viewExtent(in)
+              out_obj <- out_obj[lengths(out_obj) != 0]
+              bb = combineExtent(out_obj, sf = FALSE)
+              names(bb) = NULL
+              m <- leaflet::fitBounds(map = m,
+                                      lng1 = bb[1],
+                                      lat1 = bb[2],
+                                      lng2 = bb[3],
+                                      lat2 = bb[4])
 
-            out_obj <- append(e1@object, e2@object)
+              hbcalls = getCallEntryFromMap(m, "addHomeButton")
+              zf = grep("Zoom full", m$x$calls[hbcalls])
+              ind = hbcalls[zf]
+              if (length(zf) > 0) m$x$calls[ind] = NULL
+              m = leafem:::addZoomFullButton(m, out_obj)
+            }
 
-            # avoids error if calling, for example, mapview() + viewExtent(in)
-            out_obj <- out_obj[lengths(out_obj) != 0]
-
-            bb = combineExtent(out_obj, sf = FALSE)
-            names(bb) = NULL
-            m <- leaflet::fitBounds(map = m,
-                                    lng1 = bb[1],
-                                    lat1 = bb[2],
-                                    lng2 = bb[3],
-                                    lat2 = bb[4])
-
-            hbcalls = getCallEntryFromMap(m, "addHomeButton")
-            zf = grep("Zoom full", m$x$calls[hbcalls])
-            ind = hbcalls[zf]
-            if (length(zf) > 0) m$x$calls[ind] = NULL
-
-            m = leafem:::addZoomFullButton(m, out_obj)
-
+            if (mapviewGetOption("platform") == "mapdeck") {
+              m = appendMapCallEntries_md(e1@map, e2@map)
+              out_obj <- append(e1@object, e2@object)
+            }
+            
             out <- methods::new('mapview', object = out_obj, map = m)
             return(out)
           }
@@ -72,7 +75,7 @@ setMethod("+",
           function (e1, e2) {
 
             nm <- deparse(substitute(e2))
-            e1 + mapview(e2, layer.name = nm)
+            e1 + mapview(e2, layer.name = nm, update_view = TRUE)
 
             # nm <- deparse(substitute(e2))
             # e1@map = removeMouseCoordinates(e1@map)

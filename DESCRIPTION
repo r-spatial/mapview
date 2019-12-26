@@ -1,8 +1,8 @@
 Type: Package
 Package: mapview
 Title: Interactive Viewing of Spatial Data in R
-Version: 2.7.1
-Date: 2019-05-27
+Version: 2.7.4
+Date: 2019-12-14
 Authors@R: 
     c(person(given = "Tim",
              family = "Appelhans",
@@ -67,7 +67,6 @@ Depends:
     R (>= 2.10)
 Imports:
     base64enc,
-    brew,
     htmltools,
     htmlwidgets,
     lattice,
@@ -76,13 +75,10 @@ Imports:
     leafpop,
     png,
     raster,
-    Rcpp (>= 0.11.3),
     satellite,
     scales (>= 0.2.5),
     sf,
     sp,
-    svglite,
-    uuid,
     viridisLite,
     webshot
 Suggests:
@@ -90,14 +86,13 @@ Suggests:
     dplyr,
     knitr,
     lwgeom,
+    mapdeck,
     plainview,
     rmarkdown,
     stars,
     testthat
-LinkingTo: 
-    Rcpp
 ByteCompile: yes
 LazyData: TRUE
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 SystemRequirements: GNU make

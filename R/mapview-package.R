@@ -14,26 +14,14 @@
 #' \cr
 #' \emph{Maintainer:} Tim Appelhans \email{tim.appelhans@gmail.com}
 #'
-#' @import leaflet sp sf raster satellite scales Rcpp methods png lattice viridisLite base64enc
+#' @import leaflet sp sf raster satellite scales methods png lattice viridisLite base64enc
 #' @importFrom grDevices rgb dev.off png svg colorRampPalette grey.colors
 #' @importFrom utils find glob2rx
 #' @importFrom webshot webshot
 #' @importFrom utils modifyList
 #'
-#' @rawNamespace useDynLib(mapview, .registration = TRUE)
 #' @keywords package
 #'
-NULL
-#'
-#' @docType data
-#' @name poppendorf
-#' @title Landsat 8 detail of Franconian Switzerland centered on Poppendorf
-#' @description Landsat 8 detail of Franconian Switzerland centered on Poppendorf
-#' @details Use of this data requires your agreement to the USGS regulations on
-#' using Landsat data.
-#' @format \code{"RasterBrick-class"} with 5 bands (bands 1 to 5).
-#' @source
-#' \url{https://earthexplorer.usgs.gov}
 NULL
 #'
 #' @docType data

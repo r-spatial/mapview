@@ -5,8 +5,13 @@
 \alias{cubeview}
 \title{View a RasterStack or RasterBrick as 3-dimensional data cube.}
 \usage{
-cubeView(x, at, col.regions = mapviewGetOption("raster.palette"),
-  na.color = mapviewGetOption("na.color"), legend = TRUE)
+cubeView(
+  x,
+  at,
+  col.regions = mapviewGetOption("raster.palette"),
+  na.color = mapviewGetOption("na.color"),
+  legend = TRUE
+)
 
 cubeview(...)
 }

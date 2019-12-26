@@ -84,5 +84,8 @@ See below for information on which package they have been moved to.
  \item \code{\link{addExtent}}: This function is deprecated, and will
  be removed in the next version of this package. This function has been
  migrated to package 'leafem'.
+ \item \code{\link{addStarsImage}}: This function is deprecated, and will
+ be removed in the next version of this package. This function has been
+ migrated to package 'leafem'.
 }
 }

@@ -4,9 +4,18 @@
 \alias{addLogo}
 \title{add a local or remote image (png, jpg, gif, bmp, ...) to a leaflet map}
 \usage{
-addLogo(map, img, alpha = 1, src = c("remote", "local"), url,
+addLogo(
+  map,
+  img,
+  alpha = 1,
+  src = c("remote", "local"),
+  url,
   position = c("topleft", "topright", "bottomleft", "bottomright"),
-  offset.x = 50, offset.y = 13, width = 60, height = 60)
+  offset.x = 50,
+  offset.y = 13,
+  width = 60,
+  height = 60
+)
 }
 \arguments{
 \item{map}{a mapview or leaflet object.}

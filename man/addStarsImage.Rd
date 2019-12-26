@@ -4,10 +4,19 @@
 \alias{addStarsImage}
 \title{Add stars layer to a leaflet map}
 \usage{
-addStarsImage(map, x, band = 1, colors = "Spectral", opacity = 1,
-  attribution = NULL, layerId = NULL, group = NULL,
-  project = FALSE, method = c("bilinear", "ngb"), maxBytes = 4 * 1024
-  * 1024)
+addStarsImage(
+  map,
+  x,
+  band = 1,
+  colors = "Spectral",
+  opacity = 1,
+  attribution = NULL,
+  layerId = NULL,
+  group = NULL,
+  project = FALSE,
+  method = c("bilinear", "ngb"),
+  maxBytes = 4 * 1024 * 1024
+)
 }
 \arguments{
 \item{map}{a mapview or leaflet object.}

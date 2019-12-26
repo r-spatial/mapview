@@ -5,8 +5,15 @@
 \alias{addExtent}
 \title{View extent/bbox of spatial objects interactively}
 \usage{
-viewExtent(x, map = NULL, popup = NULL, layer.name = NULL,
-  alpha.regions = 0.2, label = NULL, ...)
+viewExtent(
+  x,
+  map = NULL,
+  popup = NULL,
+  layer.name = NULL,
+  alpha.regions = 0.2,
+  label = NULL,
+  ...
+)
 
 addExtent(map, data, ...)
 }

@@ -4,9 +4,19 @@
 \alias{addImageQuery}
 \title{Add image query functionality to leaflet/mapview map.}
 \usage{
-addImageQuery(map, x, band = 1, group = NULL, layerId = NULL,
-  project = TRUE, type = c("mousemove", "click"), digits,
-  position = "topright", prefix = "Layer", ...)
+addImageQuery(
+  map,
+  x,
+  band = 1,
+  group = NULL,
+  layerId = NULL,
+  project = TRUE,
+  type = c("mousemove", "click"),
+  digits,
+  position = "topright",
+  prefix = "Layer",
+  ...
+)
 }
 \arguments{
 \item{map}{the map with the RasterLayer to be queried.}
