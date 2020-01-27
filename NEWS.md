@@ -8,7 +8,7 @@ new features:
   
 miscellaneous:
 
-  * deprecated addStarsImage - now in package leafem. Thanks to Luigig Ranghetti #230
+  * deprecated addStarsImage - now in package leafem. Thanks to Luigi Ranghetti #230
   * deprecated addExtent - now in package leafem. Thanks to Lorenzo Busetto #233
   * dropped Rcpp dependency.
 
