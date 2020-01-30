@@ -84,7 +84,10 @@ mapshot <- function(x,
     x <- mapview2leaflet(x)
   }
 
-  ## if saved to file remove map junk
+  if (!inherits(x, "leaflet"))
+    remove_controls = NULL
+
+  ## if leaflet & saved to file remove map junk
   if (avl_file & !avl_url) {
     for (i in remove_controls) {
       x = removeMapJunk(x, i)
