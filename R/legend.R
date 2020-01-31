@@ -15,7 +15,7 @@ factorLegend <- function(map,
                          colors,
                          na.color,
                          layer.name) {
-  pal <- factorPalette(palette = zcolColors(x = levels(values),
+  pal <- factorPalette(palette = zcolColors(x = values,
                                             colors = colors,
                                             na.color = na.color,
                                             return.sorted = TRUE),
@@ -152,9 +152,10 @@ mapviewLegend <- function(values,
                           position = mapviewGetOption("legend.pos")) {
 
   if (!is.function(colors) &
-      inherits(colors, "character") &
-      !length(colors) == length(values)) {
-    colors <- grDevices::colorRampPalette(colors)
+      inherits(colors, "character")) {
+    colors = colors[sort(as.numeric(unique(values)))]
+    if (is.factor(values)) values = droplevels(values)
+    colors = grDevices::colorRampPalette(colors)(length(unique(values)))
   }
 
   function(map) {
@@ -165,8 +166,8 @@ mapviewLegend <- function(values,
     switch(value.class,
            factor = factorLegend(map,
                                  position = position,
-                                 values = values,
-                                 colors = colors,
+                                 values = levels(values),
+                                 colors = unique(colors),
                                  na.color = na.color,
                                  layer.name = layer.name),
            character = characterLegend(map,
