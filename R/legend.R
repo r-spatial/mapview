@@ -152,8 +152,13 @@ mapviewLegend <- function(values,
                           position = mapviewGetOption("legend.pos")) {
 
   if (!is.function(colors) &
-      inherits(colors, "character")) {
-    colors = colors[sort(as.numeric(unique(values)))]
+      inherits(colors, "character") &
+      length(colors) > 1) {
+    if (length(colors) == length(values)) {
+      colors = levels(as.factor(colors))[order(as.numeric(droplevels(unique(values))))]
+    } else {
+      colors = colors[sort(as.numeric(unique(values)))]
+    }
     if (is.factor(values)) values = droplevels(values)
     colors = grDevices::colorRampPalette(colors)(length(unique(values)))
   }
