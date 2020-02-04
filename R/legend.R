@@ -155,7 +155,9 @@ mapviewLegend <- function(values,
       inherits(colors, "character") &
       length(colors) > 1) {
     if (length(colors) == length(values)) {
-      colors = levels(as.factor(colors))[order(as.numeric(droplevels(unique(values))))]
+      clrs = unique(colors)
+      indx = as.numeric(unique(droplevels(values)))
+      colors = clrs[order(indx)]
     } else {
       colors = colors[sort(as.numeric(unique(values)))]
     }
