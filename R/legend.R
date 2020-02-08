@@ -162,8 +162,11 @@ mapviewLegend <- function(values,
       colors = colors[sort(as.numeric(unique(values)))]
     }
     if (is.factor(values)) values = droplevels(values)
-    colors = grDevices::colorRampPalette(colors)(length(unique(values)))
+    colors = grDevices::colorRampPalette(colors)(length(levels(values)))
   }
+
+  if (is.function(colors))
+    colors = colors(length(unique(values)))
 
   function(map) {
 
