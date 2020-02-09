@@ -165,8 +165,8 @@ mapviewLegend <- function(values,
     colors = grDevices::colorRampPalette(colors)(length(levels(values)))
   }
 
-  if (is.function(colors))
-    colors = colors(length(unique(values)))
+  # if (is.function(colors))
+  #   colors = colors(length(unique(values)))
 
   function(map) {
 
