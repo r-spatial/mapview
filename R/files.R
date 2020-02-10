@@ -97,7 +97,7 @@ leaflet_tiles = function(x,
     m = leafem::addHomeButton(
       m,
       ext = raster::extent(ll_mn$lon, ll_mx$lon, ll_mn$lat, ll_mx$lat),
-      layer.name = layer.name
+      group = layer.name
     )
   }
   #
@@ -173,7 +173,7 @@ leaflet_file = function(x,
   funs <- funs[!sapply(funs, is.null)]
 
   args <- list(if (scalebar) list(position = "bottomleft"),
-               if (homebutton) list(layer.name = layer.name),
+               if (homebutton) list(group = layer.name),
                if (is.null(map)) list(map.types = map.types,
                                       names = layer.name,
                                       native.crs = native.crs),

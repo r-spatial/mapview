@@ -248,7 +248,7 @@ addHomeButton <- function(map, ext, layer.name = "layer",
 
   leafem::addHomeButton(map = map,
                         ext = ext,
-                        layer.name = layer.name,
+                        group = layer.name,
                         position = position,
                         add = add)
 

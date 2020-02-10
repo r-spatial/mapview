@@ -70,11 +70,12 @@ can be used to add 'zoom-to-layer' buttons to a map. By default located in the b
 
 ```{r home}
 library(raster)
+library(leafem)
 
 leaflet() %>% 
   addTiles() %>% 
   addCircleMarkers(data = breweries91) %>% 
-  addHomeButton(ext = extent(breweries91), layer.name = "Breweries")
+  leafem::addHomeButton(ext = extent(breweries91), group = "Breweries")
 ```
 
 ------

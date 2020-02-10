@@ -87,7 +87,7 @@ viewRGB <- function(x, r = 3, g = 2, b = 1,
 
   m <- leaflet::addScaleBar(map = m, position = "bottomleft")
   m <- leafem::addMouseCoordinates(m)
-  m = leafem::addHomeButton(m, ext, layer.name = layer.name)
+  m = leafem::addHomeButton(m, ext, group = layer.name)
 
   out <- methods::new('mapview', object = list(x), map = m)
 

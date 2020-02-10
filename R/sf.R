@@ -317,7 +317,7 @@ leaflet_sfc <- function(x,
 
   args <- list(if (scalebar) list(position = "bottomleft"),
                if (homebutton) list(ext = createExtent(x),
-                                    layer.name = layer.name),
+                                    group = layer.name),
                if (is.null(map)) list(map.types = map.types,
                                       names = layer.name,
                                       native.crs = native.crs),

@@ -159,7 +159,7 @@ leafletRL = function(x,
 
 
 
-    if (homebutton) m = leafem::addHomeButton(m, ext, layer.name = layer.name)
+    if (homebutton) m = leafem::addHomeButton(m, ext, group = layer.name)
 
     out = new('mapview', object = list(x), map = m)
 
