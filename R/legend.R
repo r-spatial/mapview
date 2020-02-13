@@ -285,12 +285,19 @@ addRasterLegend <- function(x,
                             col.regions,
                             na.color) {
 
-  is.fact <- is.factor(x)
+  is.fact <- if (inherits(x, "stars"))
+		is.factor(x[[1]])
+  	else
+		is.factor(x)
 
   if (is.fact) {
     vals <- as.character(x[])
   } else if (inherits(x, "stars")) {
-    vals = as.vector(x[, , , 1][[1]][])
+	stopifnot (length(dim(x)) <= 3)
+	if (length(dim(x)) == 3)
+    	vals = as.vector(x[, , , 1][[1]][])
+	else
+    	vals = as.vector(x[[1]])
   } else {
     vals <- x[] # orig values needed for legend creation later on
   }

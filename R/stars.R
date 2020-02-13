@@ -65,7 +65,6 @@ addStarsImage <- function(map,
                         maxBytes = maxBytes)
 }
 
-
 leaflet_stars = function(x,
                          band,
                          map,
@@ -107,7 +106,7 @@ leaflet_stars = function(x,
     #           gdal = TRUE,
     #           ...)
   } else {
-    is.fact = FALSE # raster::is.factor(x)
+    is.fact = is.factor(x[[1]]) # raster::is.factor(x)
     # ext = raster::extent(raster::projectExtent(x, crs = llcrs))
     m = initMap(map, map.types, sf::st_crs(x)$proj4string, viewer.suppress = viewer.suppress)
     # x = rasterCheckSize(x, maxpixels = maxpixels)
@@ -115,6 +114,7 @@ leaflet_stars = function(x,
     ext = createExtent(sf::st_transform(sf::st_as_sfc(sf::st_bbox(x)), crs = 4326))
     # if (!is.na(raster::projection(x)) & trim) x = trim(x)
     # if (is.fact) x = raster::as.factor(x)
+	# EJP FIXME: to be corrected for dim(x)>3:
     if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
     # if (is.null(values)) {
     #   # if (is.fact) {
@@ -132,7 +132,7 @@ leaflet_stars = function(x,
     if (is.fact) {
       ### delete at some stage!!! ###
       pal = leaflet::colorFactor(palette = col.regions,
-                                 domain = seq(0, 255, 1),
+                                 domain = seq(1, length.out = length(levels(x[[1]]))),
                                  na.color = na.color)
       # pal2 = pal
     } else {
@@ -200,11 +200,8 @@ leaflet_stars = function(x,
 }
 
 
-
-
-
-
 stars2Array = function(x, band = 1) {
+  # FIXME: t.b.fixed if dim(x)>3:
   if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
   paste(
     sapply(seq(nrow(x[[1]])), function(i) {
