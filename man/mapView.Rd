@@ -369,9 +369,9 @@
 \arguments{
 \item{x}{a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
 \code{sf} object or a list of any combination of those. Furthermore,
-this can also be a \code{data.frame}, a \code{numeric vector} or a
+  this can also be a \code{data.frame}, a \code{numeric vector} or a
 \code{character string} pointing to a tile image folder or file on disk.
-If missing, a blank map will be drawn.}
+  If missing, a blank map will be drawn. A value of NULL will return NULL.}
 
 \item{map}{an optional existing map to be updated/added to.}
 
@@ -402,7 +402,11 @@ for available options.}
 
 \item{verbose}{should some details be printed during the process}
 
-\item{layer.name}{the name of the layer to be shown on the map}
+\item{layer.name}{the name of the layer to be shown on the map.
+By default this is the character version of whatever is passed to \code{x}.
+NOTE: This is being passed to underlying leaflet functions as the group argument.
+So if you use mapview to set up a map and want to refer to a certain layer
+later on, this is what you should refer to in \code{group}.}
 
 \item{homebutton}{logical, whether to add a zoom-to-layer button to the map.
 Defaults to TRUE}
@@ -446,17 +450,17 @@ via \link[leaflet]{leafletSizingPolicy}. For raster data the default is \code{FA
 For vector data it depends on argument \code{canvas}.}
 
 \item{...}{additional arguments passed on to respective functions.
-See \code{\link{addRasterImage}}, \code{\link{addCircles}},
+  See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
 
 \item{band}{for stars layers, the band number to be plotted.}
 
 \item{pane}{name of the map pane in which to render features. See
 \code{\link{addMapPane}} for details. Currently only supported for vector layers.
-Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
-for points, lines and polygons such that points overlay lines overlay polygons.
-Set to \code{NULL} to get default leaflet behaviour where allfeatures
-are rendered in the same pane and layer order is determined automatically/sequentially.}
+  Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
+  for points, lines and polygons such that points overlay lines overlay polygons.
+  Set to \code{NULL} to get default leaflet behaviour where allfeatures
+  are rendered in the same pane and layer order is determined automatically/sequentially.}
 
 \item{canvas}{whether to use canvas rendering rather than svg. May help
 performance with larger data. See \url{http://leafletjs.com/reference-1.3.0.html#canvas}
@@ -532,19 +536,19 @@ dimensions Z and M will be stripped to ensure smooth rendering even though
 the popup will potentially still say something like "POLYGON Z".
 
 \code{maxpoints} is taken to determine when to switch rendering from svg
-to canvas overlay for perfomance. The threshold calculation is done as follows: \cr
-if the number of points (in case of point data) or vertices (in case of
-polygon or line data) > \code{maxpoints} then render using special render
-function. Within this render function we approximate the complexity of
-features by \cr
+  to canvas overlay for perfomance. The threshold calculation is done as follows: \cr
+  if the number of points (in case of point data) or vertices (in case of
+  polygon or line data) > \code{maxpoints} then render using special render
+  function. Within this render function we approximate the complexity of
+  features by \cr
 \cr
 \code{maxFeatures <- maxfeatures / (npts(data) / length(data))} \cr
 \cr
-where \code{npts} determines the number of points/vertices and \code{length}
-the number of features (points, lines or polygons). When the number of
-features in the current view window is larger than \code{maxFeatures} then
-features are rendered on the canvas, otherwise they are rendered as svg objects
-and fully queriable.
+  where \code{npts} determines the number of points/vertices and \code{length}
+  the number of features (points, lines or polygons). When the number of
+  features in the current view window is larger than \code{maxFeatures} then
+  features are rendered on the canvas, otherwise they are rendered as svg objects
+  and fully queriable.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -601,101 +605,101 @@ and fully queriable.
 
 \examples{
 \dontrun{
-mapview()
-
-## simple features ====================================================
-library(sf)
-
-# sf
-mapview(breweries)
-mapview(franconia)
-
-# sfc
-mapview(st_geometry(breweries)) # no popup
-
-# sfg / XY - taken from ?sf::st_point
-outer = matrix(c(0,0,10,0,10,10,0,10,0,0),ncol=2, byrow=TRUE)
-hole1 = matrix(c(1,1,1,2,2,2,2,1,1,1),ncol=2, byrow=TRUE)
-hole2 = matrix(c(5,5,5,6,6,6,6,5,5,5),ncol=2, byrow=TRUE)
-pts = list(outer, hole1, hole2)
-(pl1 = st_polygon(pts))
-mapview(pl1)
-
-## raster ==============================================================
-if (interactive()) {
-  library(plainview)
-
-  mapview(plainview::poppendorf[[5]])
-}
-
-## spatial objects =====================================================
-mapview(leaflet::gadmCHE)
-mapview(leaflet::atlStorms2005)
-
-
-## styling options & legends ===========================================
-mapview(franconia, color = "white", col.regions = "red")
-mapview(franconia, color = "magenta", col.regions = "white")
-
-mapview(breweries, zcol = "founded")
-mapview(breweries, zcol = "founded", at = seq(1400, 2200, 200), legend = TRUE)
-mapview(franconia, zcol = "district", legend = TRUE)
-
-clrs <- sf.colors
-mapview(franconia, zcol = "district", col.regions = clrs, legend = TRUE)
-
-### multiple layers ====================================================
-mapview(franconia) + breweries
-mapview(list(breweries, franconia))
-mapview(franconia) + mapview(breweries) + trails
-
-mapview(franconia, zcol = "district") + mapview(breweries, zcol = "village")
-mapview(list(franconia, breweries),
-        zcol = list("district", NULL),
-        legend = list(TRUE, FALSE))
-
-
-### burst ==============================================================
-mapview(franconia, burst = TRUE)
-mapview(franconia, burst = TRUE, hide = TRUE)
-mapview(franconia, zcol = "district", burst = TRUE)
-
-
-### ceci constitue la fin du pipe ======================================
-library(dplyr)
-library(sf)
-
-franconia \%>\%
-  sf::st_union() \%>\%
   mapview()
 
-franconia \%>\%
-  group_by(district) \%>\%
-  summarize() \%>\%
-  mapview(zcol = "district")
+  ## simple features ====================================================
+  library(sf)
 
-franconia \%>\%
-  group_by(district) \%>\%
-  summarize() \%>\%
-  mutate(area = st_area(.) / 1e6) \%>\%
-  mapview(zcol = "area")
+  # sf
+  mapview(breweries)
+  mapview(franconia)
 
-franconia \%>\%
-  mutate(area = sf::st_area(.)) \%>\%
-  mapview(zcol = "area", legend = TRUE)
+  # sfc
+  mapview(st_geometry(breweries)) # no popup
 
-breweries \%>\%
-  st_intersection(franconia) \%>\%
-  mapview(zcol = "district")
+  # sfg / XY - taken from ?sf::st_point
+  outer = matrix(c(0,0,10,0,10,10,0,10,0,0),ncol=2, byrow=TRUE)
+  hole1 = matrix(c(1,1,1,2,2,2,2,1,1,1),ncol=2, byrow=TRUE)
+  hole2 = matrix(c(5,5,5,6,6,6,6,5,5,5),ncol=2, byrow=TRUE)
+  pts = list(outer, hole1, hole2)
+  (pl1 = st_polygon(pts))
+  mapview(pl1)
 
-franconia \%>\%
-  mutate(count = lengths(st_contains(., breweries))) \%>\%
-  mapview(zcol = "count")
+  ## raster ==============================================================
+  if (interactive()) {
+    library(plainview)
 
-franconia \%>\%
-  mutate(count = lengths(st_contains(., breweries)),
-         density = count / st_area(.)) \%>\%
-  mapview(zcol = "density")
+    mapview(plainview::poppendorf[[5]])
+  }
+
+  ## spatial objects =====================================================
+  mapview(leaflet::gadmCHE)
+  mapview(leaflet::atlStorms2005)
+
+
+  ## styling options & legends ===========================================
+  mapview(franconia, color = "white", col.regions = "red")
+  mapview(franconia, color = "magenta", col.regions = "white")
+
+  mapview(breweries, zcol = "founded")
+  mapview(breweries, zcol = "founded", at = seq(1400, 2200, 200), legend = TRUE)
+  mapview(franconia, zcol = "district", legend = TRUE)
+
+  clrs <- sf.colors
+  mapview(franconia, zcol = "district", col.regions = clrs, legend = TRUE)
+
+  ### multiple layers ====================================================
+  mapview(franconia) + breweries
+  mapview(list(breweries, franconia))
+  mapview(franconia) + mapview(breweries) + trails
+
+  mapview(franconia, zcol = "district") + mapview(breweries, zcol = "village")
+  mapview(list(franconia, breweries),
+          zcol = list("district", NULL),
+          legend = list(TRUE, FALSE))
+
+
+  ### burst ==============================================================
+  mapview(franconia, burst = TRUE)
+  mapview(franconia, burst = TRUE, hide = TRUE)
+  mapview(franconia, zcol = "district", burst = TRUE)
+
+
+  ### ceci constitue la fin du pipe ======================================
+  library(dplyr)
+  library(sf)
+
+  franconia \%>\%
+    sf::st_union() \%>\%
+    mapview()
+
+  franconia \%>\%
+    group_by(district) \%>\%
+    summarize() \%>\%
+    mapview(zcol = "district")
+
+  franconia \%>\%
+    group_by(district) \%>\%
+    summarize() \%>\%
+    mutate(area = st_area(.) / 1e6) \%>\%
+    mapview(zcol = "area")
+
+  franconia \%>\%
+    mutate(area = sf::st_area(.)) \%>\%
+    mapview(zcol = "area", legend = TRUE)
+
+  breweries \%>\%
+    st_intersection(franconia) \%>\%
+    mapview(zcol = "district")
+
+  franconia \%>\%
+    mutate(count = lengths(st_contains(., breweries))) \%>\%
+    mapview(zcol = "count")
+
+  franconia \%>\%
+    mutate(count = lengths(st_contains(., breweries)),
+           density = count / st_area(.)) \%>\%
+    mapview(zcol = "density")
 }
 
 }
