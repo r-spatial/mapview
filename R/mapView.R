@@ -1083,101 +1083,20 @@ setMethod('mapView', signature(x = 'NULL'),
 setMethod('mapView', signature(x = 'list'),
           function(x,
                    map = NULL,
-                   zcol = NULL,
-                   burst = FALSE,
-                   color = mapviewGetOption("vector.palette"),
-                   col.regions = mapviewGetOption("vector.palette"),
-                   at = NULL,
-                   na.color = mapviewGetOption("na.color"),
-                   cex = 6,
-                   lwd = lapply(x, lineWidth),
-                   alpha = lapply(seq(x), function(i) 0.9),
-                   alpha.regions = lapply(seq(x), function(i) 0.6),
-                   map.types = mapviewGetOption("basemaps"),
-                   verbose = mapviewGetOption("verbose"),
-                   popup = lapply(seq(x), function(i) {
-                     leafpop::popupTable(x[[i]])
-                   }),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   label = lapply(seq(x), function(i) {
-                     makeLabels(x[[i]], zcol = zcol[[i]])
-                   }),
-                   legend = mapviewGetOption("legend"),
-                   legend.opacity = 1,
-                   homebutton = TRUE,
-                   native.crs = FALSE,
-                   maxpoints = NULL, #lapply(x, getMaxFeatures),
                    ...) {
 
             lyrnms = makeListLayerNames(x, layer.name)
 
-            if (!is.list(color))
-              color <- rep(list(color), length(x))
-            if (!is.list(col.regions))
-              col.regions <- rep(list(col.regions), length(x))
-            if (!is.list(legend))
-              legend <- rep(list(legend), length(x))
-            if (!is.list(homebutton))
-              homebutton <- rep(list(homebutton), length(x))
-            if (!is.list(cex))
-              cex <- rep(list(cex), length(x))
-            if (!is.list(lwd))
-              lwd <- rep(list(lwd), length(x))
-            # if (!is.list(highlight))
-            #   highlight <- rep(list(highlight), length(x))
-            # if (!is.list(label))
-            #   label <- rep(list(label), length(x))
-            if (length(popup) != length(x))
-              popup <- rep(list(popup), length(x))
-            if (length(alpha) != length(x))
-              alpha <- rep(list(alpha), length(x))
-            if (length(alpha.regions) != length(x))
-              alpha.regions <- rep(list(alpha.regions), length(x))
+            m <- Reduce("+", lapply(seq(x), function(i) {
+              mapView(x = x[[i]],
+                      layer.name = lyrnms[[i]],
+                      ...)
+            }))@map
 
-
-            if (mapviewGetOption("platform") == "leaflet") {
-              m <- Reduce("+", lapply(seq(x), function(i) {
-                if (is.null(popup)) popup <- leafpop::popupTable(x[[i]])
-                if (inherits(x[[i]], "sf")) {
-                  mapView(x = sf::st_cast(x[[i]]),
-                          layer.name = lyrnms[[i]],
-                          zcol = zcol[[i]],
-                          color = color[[i]],
-                          col.regions = col.regions[[i]],
-                          legend = legend[[i]],
-                          label = label[[i]],
-                          popup = popup[[i]],
-                          homebutton = homebutton[[i]],
-                          native.crs = native.crs,
-                          cex = cex[[i]],
-                          lwd = lwd[[i]],
-                          map.types = map.types,
-                          alpha = alpha[[i]],
-                          alpha.regions = alpha.regions[[i]],
-                          burst = FALSE,
-                          ...)
-                  } else {
-                    mapView(x = sf::st_cast(x[[i]]),
-                            layer.name = lyrnms[[i]],
-                            homebutton = homebutton[[i]],
-                            native.crs = native.crs,
-                            cex = cex[[i]],
-                            lwd = lwd[[i]],
-                            map.types = map.types,
-                            burst = FALSE,
-                            ...)
-                  }
-                }))@map
-              m <- leaflet::hideGroup(map = m,
-                                      group = layers2bHidden(m, ...))
-              out <- new("mapview", object = x, map = m)
-              # print(str(out@map), 4)
-              # stop("hallo")
-              return(out)
-            } else {
-              NULL
-            }
+            out <- new("mapview", object = x, map = m)
+            return(out)
           }
 )
 
