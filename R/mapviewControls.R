@@ -193,7 +193,7 @@ getProjection <- function(x) {
   if (inherits(x, c("Raster", "Spatial"))) {
     prj <- raster::projection(x)
   } else {
-    prj <- sf::st_crs(x)$"proj4string"
+    prj <- sf::st_crs(x)$proj4string
   }
 
   return(prj)
