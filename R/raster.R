@@ -61,8 +61,12 @@ leafletRL = function(x,
 
     is.fact = raster::is.factor(x)
     # ext = raster::extent(raster::projectExtent(x, crs = llcrs))
-
-    m = initMap(map, map.types, sp::proj4string(x), viewer.suppress = viewer.suppress)
+    if (use.layer.names) {
+      grp = names(x)
+      layer.name = names(x)
+    } else {
+      grp = layer.name
+    }
     x = rasterCheckSize(x, maxpixels = maxpixels)
     x = rasterCheckAdjustProjection(x, method)
     ext = raster::extent(raster::projectExtent(x, crs = llcrs))
@@ -71,6 +75,7 @@ leafletRL = function(x,
 
     if (is.fact) x = raster::as.factor(x)
 
+    m = initMap(map, map.types, sp::proj4string(x), viewer.suppress = viewer.suppress)
     # if (is.null(values)) {
     #   if (is.fact) {
     #     at = x@data@attributes[[1]]$ID
@@ -108,13 +113,6 @@ leafletRL = function(x,
 
     }
 
-    if (use.layer.names) {
-      grp = names(x)
-      layer.name = names(x)
-    } else {
-      grp = layer.name
-    }
-
     m = leafem::garnishMap(
       map = m
       , leaflet::addRasterImage
@@ -127,6 +125,11 @@ leafletRL = function(x,
       , ...
     )
 
+    m = removeLayersControl(m)
+    m = mapViewLayersControl(map = m,
+                             map.types = map.types,
+                             names = grp)
+
     if (label)
       m = leafem::addImageQuery(m, x, group = grp, layerId = grp,
                                 type = query.type, digits = query.digits,
@@ -138,27 +141,28 @@ leafletRL = function(x,
       #                         opacity = legend.opacity,
       #                         values = at,
       #                         title = grp)
+      if (!is.fact) vals = x[] else vals = as.factor(x[])
+      legend = mapviewLegend(values = vals,
+                             colors = col.regions,
+                             at = at,
+                             na.color = col2Hex(na.color),
+                             layer.name = layer.name)
 
-      m = addRasterLegend(x = x,
-                          map = m,
-                          title = grp,
-                          group = grp,
-                          at = at,
-                          col.regions = col.regions,
-                          na.color = na.color)
+      m = legend(m)
+
+      # m = addRasterLegend(x = x,
+      #                     map = m,
+      #                     title = grp,
+      #                     group = grp,
+      #                     at = at,
+      #                     col.regions = col.regions,
+      #                     na.color = na.color)
     }
-
-    m = mapViewLayersControl(map = m,
-                             map.types = map.types,
-                             names = grp)
 
     sclbrpos = getCallEntryFromMap(m, "addScaleBar")
     if (length(sclbrpos) > 0 | native.crs) scalebar = FALSE else scalebar = TRUE
     if (scalebar) m = leaflet::addScaleBar(m, position = "bottomleft")
     m = leafem::addMouseCoordinates(m)
-
-
-
     if (homebutton) m = leafem::addHomeButton(m, ext, group = layer.name)
 
     out = new('mapview', object = list(x), map = m)
