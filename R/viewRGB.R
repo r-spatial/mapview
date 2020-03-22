@@ -51,13 +51,13 @@
 #' @rdname viewRGB
 #' @aliases viewRGB,RasterStackBrick-method
 
-viewRGB <- function(x, r = 3, g = 2, b = 1,
+viewRGB = function(x, r = 3, g = 2, b = 1,
                     quantiles = c(0.02, 0.98),
                     map = NULL,
                     maxpixels = mapviewGetOption("mapview.maxpixels"),
                     map.types = mapviewGetOption("basemaps"),
                     na.color = mapviewGetOption("na.color"),
-                    layer.name = deparse(substitute(x, env = parent.frame())),
+                    layer.name = NULL,
                     method = c("bilinear", "ngb"),
                     ...) {
 
@@ -65,31 +65,38 @@ viewRGB <- function(x, r = 3, g = 2, b = 1,
     stop("'x' must be a Raster* or stars object.")
   }
 
-  method = match.arg(method)
-  projstring <- if (inherits(x, "Raster")) projection(x) else sf::st_crs(x)$proj4string
-  m <- initMap(map, map.types, projstring)
+  if (is.null(layer.name)) layer.name = makeLayerName(x, zcol = NULL, up = 1)
 
-  grp <- layer.name
-  lyrs <- paste(r, g, b, sep = ".")
-  grp <- paste(grp, lyrs, sep = "_")
+  method = match.arg(method)
+  x = rasterCheckSize(x, maxpixels = maxpixels)
+  x = rasterCheckAdjustProjection(x, method)
+  projstring = if (inherits(x, "Raster")) {
+    projection(x)
+  } else {
+    sf::st_crs(x)$proj4string
+  }
+  m = initMap(map, map.types, projstring)
+
+  lyrs = paste(r, g, b, sep = ".")
+  grp = paste(layer.name, lyrs, sep = "_")
 
   ext = createExtent(x)
 
-  m <- leafem::addRasterRGB(map = m, x = x, r = r, g = g, b = b,
+  m = leafem::addRasterRGB(map = m, x = x, r = r, g = g, b = b,
                             quantiles = quantiles,
-                            maxpixels = maxpixels,
+                            # maxpixels = maxpixels,
                             na.color = na.color,
                             method = method,
                             group = grp)
-  m <- mapViewLayersControl(map = m,
+  m = mapViewLayersControl(map = m,
                             map.types = map.types,
                             names = grp)
 
-  m <- leaflet::addScaleBar(map = m, position = "bottomleft")
-  m <- leafem::addMouseCoordinates(m)
-  m = leafem::addHomeButton(m, ext, group = layer.name)
+  m = leaflet::addScaleBar(map = m, position = "bottomleft")
+  m = leafem::addMouseCoordinates(m)
+  m = leafem::addHomeButton(m, ext, group = grp)
 
-  out <- methods::new('mapview', object = list(x), map = m)
+  out = methods::new('mapview', object = list(x), map = m)
 
   return(out)
 

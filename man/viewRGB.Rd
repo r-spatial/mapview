@@ -16,7 +16,7 @@ viewRGB(
   maxpixels = mapviewGetOption("mapview.maxpixels"),
   map.types = mapviewGetOption("basemaps"),
   na.color = mapviewGetOption("na.color"),
-  layer.name = deparse(substitute(x, env = parent.frame())),
+  layer.name = NULL,
   method = c("bilinear", "ngb"),
   ...
 )
