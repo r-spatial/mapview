@@ -73,7 +73,7 @@ leafletRL = function(x,
 
     if (!is.na(raster::projection(x)) & trim) x = trim(x)
 
-    if (is.fact) x = raster::as.factor(x)
+    # if (is.fact) x = raster::as.factor(x)
 
     m = initMap(map, map.types, sp::proj4string(x), viewer.suppress = viewer.suppress)
     # if (is.null(values)) {
@@ -91,8 +91,9 @@ leafletRL = function(x,
     # }
 
     if (is.fact) {
-      pal = leaflet::colorFactor(palette = col.regions,
-                                 domain = x@data@attributes[[1]]$ID,
+      vals = as.factor(x@data@attributes[[1]]$ID)
+      pal = leaflet::colorFactor(palette = col.regions(length(vals)),
+                                 domain = vals,
                                  na.color = na.color)
       # pal2 = pal
     } else {
@@ -141,9 +142,20 @@ leafletRL = function(x,
       #                         opacity = legend.opacity,
       #                         values = at,
       #                         title = grp)
-      if (!is.fact) vals = x[] else vals = as.factor(x[])
+      if (!is.fact) {
+        vals = x[]
+      } else {
+        if (ncol(x@data@attributes[[1]]) >= 2) {
+          vals = factor(
+            x@data@attributes[[1]][[2]]
+            , levels = x@data@attributes[[1]][[2]]
+          )
+        } else {
+          vals = as.factor(x[])
+        }
+      }
       legend = mapviewLegend(values = vals,
-                             colors = col.regions,
+                             colors = col.regions(length(levels(vals))),
                              at = at,
                              na.color = col2Hex(na.color),
                              layer.name = layer.name)

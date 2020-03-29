@@ -38,11 +38,15 @@ leaflet_sf <- function(x,
   }
   if (!is.null(zcol)) {
     if (inherits(x[[zcol]], "logical")) x[[zcol]] = as.character(x[[zcol]])
+    if (inherits(x[[zcol]], "character")) x[[zcol]] = as.factor(x[[zcol]])
+    ## colors ---
     if (length(unique(x[[zcol]])) == 1) {
       color = ifelse(is.function(color), standardColor(x), color)
       col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
     }
   }
+
+  ## legend ----
   if (legend) {
     # if (is.null(zcol)) zcol = 1
     if (is.null(zcol)) vals = layer.name else vals = x[[zcol]]
@@ -57,20 +61,6 @@ leaflet_sf <- function(x,
                             na.color = col2Hex(na.color),
                             layer.name = layer.name)
   }
-
-  #   # layer.name <- paste(layer.name, zcol)
-  #   if (length(unique(x[[zcol]])) <= 1) {
-  #     warning(
-  #       sprintf(
-  #         "column %s has only one unique value/level, ignoring color and legend",
-  #         zcol
-  #       )
-  #     )
-  #     # zcol <- NULL
-  #   }
-  # }
-
-  # if (!native.crs) x <- checkAdjustProjection(x)
 
   clrs <- vectorColors(x = x,
                        zcol = zcol,

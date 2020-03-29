@@ -62,10 +62,12 @@ rasterCheckAdjustProjection <- function(x, method) {
     raster::extent(x) <- scaleExtent(x)
     raster::projection(x) <- llcrs
   } else if (is.fact) {
+    att = x@data@attributes
     x <- raster::projectRaster(
       x, raster::projectExtent(x, crs = sp::CRS(wmcrs)),
       method = "ngb")
     x <- raster::as.factor(x)
+    x@data@attributes = att
   } else {
     x <- raster::projectRaster(
       x, raster::projectExtent(x, crs = sp::CRS(wmcrs)),

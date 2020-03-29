@@ -151,22 +151,58 @@ mapviewLegend <- function(values,
                           layer.name,
                           position = mapviewGetOption("legend.pos")) {
 
-  if (!is.function(colors) &
-      inherits(colors, "character") &
-      length(colors) > 1) {
-    if (length(colors) == length(values)) {
-      clrs = unique(colors)
-      indx = as.numeric(unique(droplevels(values)))
-      colors = clrs[order(indx)]
-    } else {
-      colors = colors[sort(as.numeric(unique(values)))]
-    }
-    if (is.factor(values)) values = droplevels(values)
-    colors = grDevices::colorRampPalette(colors)(length(levels(values)))
+  ## factor
+  ## if character convert to factor
+  if (inherits(values, "character")) {
+    values = as.factor(values)
   }
 
-  # if (is.function(colors))
-  #   colors = colors(length(unique(values)))
+  ## numeric
+  ## if interger convert to numeric
+  if (inherits (values, "integer")) {
+    values = as.numeric(values)
+  }
+
+  if (length(colors) > 1) {
+
+    if (inherits(values, "factor")) {
+      if (length(values) == length(colors)) {
+        values = unique(droplevels(values))
+        colors = unique(colors)[as.numeric(values)]
+      } else if (length(levels(values)) >= length(unique(colors))) {
+        values = unique(values)
+        colors = as.vector(na.omit(colors[levels(values) %in% values]))
+        values = droplevels(values)
+      } else {
+        values = unique(droplevels(values))
+        colors = unique(colors)
+      }
+
+      if (length(colors) > length(values)) {
+        colors = colors[1:length(values)]
+      } else if (length(colors) < length(values)) {
+        colors = rep_len(colors, length(values))
+      }
+
+    }
+
+    if (inherits(values, "numeric")) {
+      values = unique(values)
+      colors = unique(colors)
+
+      if (length(colors) > length(values)) {
+        colors = grDevices::colorRampPalette(colors[1:length(values)])
+      } else if (length(colors) < length(values)) {
+        colors = grDevices::colorRampPalette(colors)
+      }
+      if (length(colors) == length(values)) {
+        colors = colors[order(values)]
+        values = as.factor(values)
+      }
+    }
+
+
+  }
 
   function(map) {
 
