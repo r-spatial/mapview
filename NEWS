@@ -1,4 +1,4 @@
-mapview 2.7.7
+mapview 2.7.8
 
 new features:
 
@@ -6,6 +6,7 @@ new features:
   * new method file path (currently vector only) without loading into R.
   * initial support for 'mapdeck' as a rendering platform.
   * mapshot now works for all and any htmlwidget.
+  * new functions startWatching/stopWatching to automatically mapview all spatial objects in a given environment (default .GlaobalEnv).
   
 miscellaneous:
 

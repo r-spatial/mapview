@@ -23,27 +23,27 @@ test_that("mapview() runs without any issues for bbox", {
 })
 
 ### character -----
-test_that("mapview() runs without any issues for character", {
-  library(sf)
-  tmpfl = tempfile(fileext = ".gpkg")
-  st_write(franconia, tmpfl, delete_dsn = TRUE, quiet = TRUE)
-
-  ## mapview
-  map = mapview(tmpfl)
-
-  expect_s4_class(map, "mapview")
-  expect_s3_class(map@map, "leaflet")
-  expect_type(map@object, "list")
-  expect_type(map@object[[1]], "character")
-
-  ## mapView
-  map = mapView(tmpfl)
-
-  expect_s4_class(map, "mapview")
-  expect_s3_class(map@map, "leaflet")
-  expect_type(map@object, "list")
-  expect_type(map@object[[1]], "character")
-})
+# test_that("mapview() runs without any issues for character", {
+#   library(sf)
+#   tmpfl = tempfile(fileext = ".gpkg")
+#   st_write(franconia, tmpfl, delete_dsn = TRUE, quiet = TRUE)
+#
+#   ## mapview
+#   map = mapview(tmpfl)
+#
+#   expect_s4_class(map, "mapview")
+#   expect_s3_class(map@map, "leaflet")
+#   expect_type(map@object, "list")
+#   expect_type(map@object[[1]], "character")
+#
+#   ## mapView
+#   map = mapView(tmpfl)
+#
+#   expect_s4_class(map, "mapview")
+#   expect_s3_class(map@map, "leaflet")
+#   expect_type(map@object, "list")
+#   expect_type(map@object[[1]], "character")
+# })
 
 ### data frame -----
 test_that("mapview() runs without any issues for data frames", {

@@ -444,7 +444,7 @@ For vector data it depends on argument \code{canvas}.}
   are rendered in the same pane and layer order is determined automatically/sequentially.}
 
 \item{canvas}{whether to use canvas rendering rather than svg. May help
-performance with larger data. See \url{http://leafletjs.com/reference-1.3.0.html#canvas}
+performance with larger data. See \url{https://leafletjs.com/reference-1.6.0.html#canvas}
 for more information. Only applicable for vector data. The default setting will
 decide automatically, based on feature complexity.}
 
