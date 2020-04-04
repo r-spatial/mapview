@@ -185,7 +185,7 @@ leaflet_stars = function(x,
       #                         opacity = legend.opacity,
       #                         values = at,
       #                         title = grp)
-      legend = mapviewLegend(values = as.vector(x1[[1]]),
+      legend = mapviewLegend(values = as.vector(x[[1]]),
                              colors = col.regions,
                              at = at,
                              na.color = col2Hex(na.color),

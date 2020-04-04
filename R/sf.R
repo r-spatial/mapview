@@ -160,12 +160,12 @@ mapdeck_sf = function(x,
   if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
 
   if (is.null(map.types)) {
-    if (getGeometryType(x) %in% c("pl")) {
+    if (getGeometryType(x) %in% c("pl", "pt")) {
       if (is.function(col.regions)) col.regions <- standardColRegions(x)
-      map.types <- basemaps(col.regions)
+      map.types <- as.vector(stats::na.omit(basemaps(col.regions)))
     } else {
       if (is.function(color)) color <- standardColor(x)
-      map.types <- basemaps(color)
+      map.types <- as.vector(stats::na.omit(basemaps(color)))
     }
   }
 
@@ -191,13 +191,15 @@ mapdeck_sf = function(x,
     ...
   )
 
+  lwd = ifelse(getGeometryType(x) == "pl", lwd * 100, lwd)
+
   m <- leafem::addFeatures(
     m
     , data = x
     , radius = cex
-    , stroke_width = lwd * 100
-    , stroke_opacity = alpha * 255
-    , fill_opacity = alpha.regions * 255
+    , stroke_width = lwd # * 100
+    , stroke_opacity = alpha # * 255
+    , fill_opacity = alpha.regions # * 255
     , stroke_colour = color
     , fill_colour = col.regions
     , tooltip = "label"

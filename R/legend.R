@@ -142,7 +142,7 @@ mvAddLegend = function(grp_avail = isAvailableInLeaflet()$leggrp,
     leaflet::addLegend(...)
 }
 
-
+#' @importFrom stats na.omit
 ### mapviewLegend =========================================================
 mapviewLegend <- function(values,
                           colors,
@@ -171,7 +171,7 @@ mapviewLegend <- function(values,
         colors = unique(colors)[as.numeric(values)]
       } else if (length(levels(values)) >= length(unique(colors))) {
         values = unique(values)
-        colors = as.vector(na.omit(colors[levels(values) %in% values]))
+        colors = as.vector(stats::na.omit(colors[levels(values) %in% values]))
         values = droplevels(values)
       } else {
         values = unique(droplevels(values))
