@@ -137,6 +137,13 @@ mapdeck_sf = function(x,
                       viewer.suppress,
                       ...) {
 
+  ## if x is polygon and elevation is provided -> set color and lwd to NULL to
+  ## enable extrusion
+  if ("elevation" %in% names(list(...)) & getGeometryType(x) == "pl") {
+    color = NULL
+    lwd = NULL
+  }
+
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
   cex <- circleRadius(x, cex, ...)
   if (is.null(zcol) & ncol(sf2DataFrame(x, drop_sf_column = TRUE)) == 1) {
@@ -172,10 +179,14 @@ mapdeck_sf = function(x,
   # if (is.function(color)) color = color(nrow(x))
   # if (is.function(col.regions)) col.regions = col.regions(nrow(x))
   if (!is.null(zcol)) {
-    color = ifelse(getGeometryType(x) %in% c("pl", "pt"), standardColor(x), zcol)
+    if (!is.null(color)) {
+      color = ifelse(getGeometryType(x) %in% c("pl", "pt"), standardColor(x), zcol)
+    }
     col.regions = ifelse(getGeometryType(x) %in% c("pl", "pt"), zcol, standardColor(x))
   } else {
-    color = ifelse(is.function(color), standardColor(x), color)
+    if (!is.null(color)) {
+      color = ifelse(is.function(color), standardColor(x), color)
+    }
     col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
   }
 
@@ -191,12 +202,16 @@ mapdeck_sf = function(x,
     ...
   )
 
-  lwd = ifelse(getGeometryType(x) == "pl", lwd * 100, lwd)
+  if (!is.null(lwd)) {
+    lwd = ifelse(getGeometryType(x) == "pl", lwd * 100, lwd)
+  }
 
   m <- leafem::addFeatures(
     m
     , data = x
     , radius = cex
+    , radius_min_pixels = cex
+    , radius_max_pixels = cex
     , stroke_width = lwd # * 100
     , stroke_opacity = alpha # * 255
     , fill_opacity = alpha.regions # * 255
