@@ -298,7 +298,7 @@ initMap <- function(map = NULL,
         md_args$style = map.types
         m = do.call(mapdeck::mapdeck, Filter(Negate(is.null), md_args))
       } else {
-        m = mapdeck::mapdeck()
+        m = mapdeck::mapdeck(style = map.types)
       }
     } else {
       m = map
