@@ -474,26 +474,28 @@ test_that("mapview() runs without any issues for SpatialPolygonsDataFrame", {
 
 ### stars -----
 test_that("mapview() runs without any issues for stars", {
-  library(stars)
+  if (utils::packageVersion("stars") >= "0.4-1") {
+    library(stars)
 
-  tif = system.file("tif/L7_ETMs.tif", package = "stars")
-  x1 = read_stars(tif)
+    tif = system.file("tif/L7_ETMs.tif", package = "stars")
+    x1 = read_stars(tif)
 
-  ## mapview
-  map = mapview(x1)
+    ## mapview
+    map = mapview(x1)
 
-  expect_s4_class(map, "mapview")
-  expect_s3_class(map@map, "leaflet")
-  expect_type(map@object, "list")
-  expect_s3_class(map@object[[1]], "stars")
+    expect_s4_class(map, "mapview")
+    expect_s3_class(map@map, "leaflet")
+    expect_type(map@object, "list")
+    expect_s3_class(map@object[[1]], "stars")
 
-  ## mapView
-  map = mapView(x1)
+    ## mapView
+    map = mapView(x1)
 
-  expect_s4_class(map, "mapview")
-  expect_s3_class(map@map, "leaflet")
-  expect_type(map@object, "list")
-  expect_s3_class(map@object[[1]], "stars")
+    expect_s4_class(map, "mapview")
+    expect_s3_class(map@map, "leaflet")
+    expect_type(map@object, "list")
+    expect_s3_class(map@object[[1]], "stars")
+  }
 })
 
 ### XY(ZM) -----
