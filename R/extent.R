@@ -80,21 +80,8 @@ viewExtent <- function(x,
 
 addExtent <- function(map, data, ...) {
 
-  .Deprecated(new = "leafem::addExtent", package = "mapview",
-              old = "mapview::addExtent")
+  .Defunct(new = "leafem::addExtent", package = "mapview")
 
-  leafem::addExtent(map = map,
-                    data = data,
-                    ...)
-
-  # if (inherits(data, "Spatial")) data = sf::st_as_sfc(data)
-  # x <- sf::st_as_sfc(
-  #   sf::st_bbox(
-  #     checkAdjustProjection(data)
-  #   )
-  # )
-  # m = leafem::addFeatures(x, map = map, ...)
-  # return(m)
 }
 
 

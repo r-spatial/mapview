@@ -49,20 +49,7 @@ addStarsImage <- function(map,
                           project = FALSE,
                           method = c("bilinear", "ngb"),
                           maxBytes = 4 * 1024 * 1024) {
-  .Deprecated(new = "leafem::addStarsImage", package = "mapview",
-              old = "mapview::addStarsImage")
-
-  leafem::addStarsImage(map = map,
-                        x = x,
-                        band = band,
-                        colors = colors,
-                        opacity = opacity,
-                        attribution = attribution,
-                        layerId = layerId,
-                        group = group,
-                        project = project,
-                        method = method,
-                        maxBytes = maxBytes)
+  .Defunct(new = "leafem::addStarsImage", package = "mapview")
 }
 
 leaflet_stars = function(x,
