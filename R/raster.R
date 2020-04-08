@@ -136,15 +136,14 @@ leafletRL = function(x,
                                 type = query.type, digits = query.digits,
                                 position = query.position, prefix = query.prefix)
     if (legend) {
-      ## add legend
-      # m = leaflet::addLegend(map = m,
-      #                         pal = pal2,
-      #                         opacity = legend.opacity,
-      #                         values = at,
-      #                         title = grp)
       if (!is.fact) {
         vals = x[]
-        clrs = col.regions(length(vals))
+        clrs = col.regions
+        # if (is.function(col.regions)) {
+        #   clrs = col.regions
+        # } else {
+        #   clrs = colorRampPalette(col.regions)
+        # }
       } else {
         if (ncol(x@data@attributes[[1]]) >= 2) {
           vals = factor(
