@@ -5,26 +5,19 @@
 \title{Save mapview or leaflet map as HTML and/or image}
 \usage{
 mapshot(
-  x,
+  map,
   url = NULL,
   file = NULL,
-  remove_url = TRUE,
   remove_controls = c("zoomControl", "layersControl", "homeButton", "scaleBar",
     "drawToolbar", "easyButton"),
   ...
 )
 }
 \arguments{
-\item{x}{\code{mapview} or \code{leaflet} object.}
-
 \item{url}{Output \code{.html} file. If not supplied and 'file' is specified,
 a temporary index file will be created.}
 
 \item{file}{Output \code{.png}, \code{.pdf}, or \code{.jpeg} file.}
-
-\item{remove_url}{\code{logical}. If \code{TRUE} (default), the \code{.html}
-file is removed once processing is completed. Only applies if 'url' is not
-specified.}
 
 \item{remove_controls}{\code{character} vector of control buttons to be removed
 from the map when saving to file. Any combination of
@@ -32,6 +25,12 @@ from the map when saving to file. Any combination of
 "easyButton". If set to \code{NULL} nothing will be removed.}
 
 \item{...}{Further arguments passed on to \code{\link{webshot}}.}
+
+\item{x}{\code{mapview} or \code{leaflet} object.}
+
+\item{remove_url}{\code{logical}. If \code{TRUE} (default), the \code{.html}
+file is removed once processing is completed. Only applies if 'url' is not
+specified.}
 }
 \description{
 Save a mapview or leaflet map as \code{.html} index file or \code{.png},
@@ -55,7 +54,7 @@ sure to also move the respective *-graphs folder one level above.
 }
 \examples{
 \dontrun{
-m <- mapview(breweries)
+m = mapview(breweries)
 
 ## create standalone .html
 mapshot(m, url = paste0(getwd(), "/map.html"))

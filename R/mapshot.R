@@ -38,7 +38,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' m <- mapview(breweries)
+#' m = mapview(breweries)
 #'
 #' ## create standalone .html
 #' mapshot(m, url = paste0(getwd(), "/map.html"))
@@ -56,23 +56,20 @@
 #'
 #' @export mapshot
 #' @name mapshot
-mapshot <- function(x,
-                    url = NULL,
-                    file = NULL,
-                    remove_url = TRUE,
-                    remove_controls = c("zoomControl",
-                                        "layersControl",
-                                        "homeButton",
-                                        "scaleBar",
-                                        "drawToolbar",
-                                        "easyButton"),
-                    ...) {
+mapshot = function(map,
+                   url = NULL,
+                   file = NULL,
+                   remove_controls = c("zoomControl",
+                                       "layersControl",
+                                       "homeButton",
+                                       "scaleBar",
+                                       "drawToolbar",
+                                       "easyButton"),
+                   ...) {
 
   ## if both 'url' and 'file' are missing, throw an error
-  avl_url <- !is.null(url)
-  avl_file <- !is.null(file)
-
-  tmp_ptrn = paste0("_tmp", createFileId(), ".html")
+  avl_url = !is.null(url)
+  avl_file = !is.null(file)
 
   if (!avl_url & !avl_file)
     stop("Please provide a valid 'url' or 'file' argument (or both).")
@@ -82,58 +79,43 @@ mapshot <- function(x,
   if (avl_file) file = normalizePath(file, mustWork = FALSE)
 
   ## if a 'mapview' object is supplied, extract map
-  if (inherits(x, "mapview")) {
-    x <- mapview2leaflet(x)
+  if (inherits(map, "mapview")) {
+    map = mapview2leaflet(map)
   }
 
-  if (!inherits(x, "leaflet"))
+  if (!inherits(map, "leaflet") | is_literally_false(remove_controls))
     remove_controls = NULL
 
-  ## if leaflet & saved to file remove map junk
-  if (avl_file & !avl_url) {
-    for (i in remove_controls) {
-      x = removeMapJunk(x, i)
-    }
+  tmp_ptrn = paste0("_tmp", createFileId(), ".html")
+
+  args = list(url = url, file = file, ...)
+  sw_ls = args
+  sw_ls[names(sw_ls) == "file"] = NULL
+  names(sw_ls)[which(names(sw_ls) == "url")] = "file"
+  sw_args = match.arg(names(sw_ls),
+                      names(as.list(args(htmlwidgets::saveWidget))),
+                      several.ok = TRUE)
+
+  ## if url is provided saveWidget to provided url
+  if (avl_url) {
+    do.call(htmlwidgets::saveWidget, append(list(map), sw_ls))
   }
 
-  ## if url is missing, create temporary .html file
-  if (!avl_url) {
-    url <- gsub(tools::file_ext(file), "html", file)
-    url = gsub(".html", tmp_ptrn, url)
-  }
+  ## if only saved to file remove map junk - needs temporary saveWidget call
+  if (!avl_url & avl_file) {
+    url_tmp = gsub(tools::file_ext(file), "html", file)
+    url_tmp = gsub(".html", tmp_ptrn, url_tmp)
 
-  if (dir.exists(file.path(tempdir(), "popup_graphs"))) {
-    file.copy(from = file.path(tempdir(), "popup_graphs"),
-              to = paste0(dirname(url), "/"), recursive = TRUE)
-    file.copy(from = file.path(dirname(url),  "popup_graphs"),
-              to = paste0(dirname(dirname(url)), "/"), recursive = TRUE)
-    unlink(file.path(dirname(url),  "popup_graphs"), recursive = TRUE)
-  }
-
-  ## save to url
-  args <- list(url = url, file = file, ...)
-  sw_ls <- args
-  sw_ls[names(sw_ls) == "file"] <- NULL
-  names(sw_ls)[which(names(sw_ls) == "url")] <- "file"
-  sw_args <- match.arg(names(sw_ls),
-                       names(as.list(args(htmlwidgets::saveWidget))),
-                       several.ok = TRUE)
-
-  do.call(htmlwidgets::saveWidget, append(list(x), sw_ls[sw_args]))
-
-  ## save to file
-  if (avl_file) {
-    url_tmp = ifelse(avl_url, gsub(".html", tmp_ptrn, url), url)
     url_tmp_files = paste0(tools::file_path_sans_ext(url_tmp), "_files")
     sw_ls[which(names(sw_ls) == "file")] = url_tmp
     args$url = url_tmp
-    # names(sw_ls)[which(names(sw_ls) == "url")] <- "file"
-    x_tmp = x
+    # names(sw_ls)[which(names(sw_ls) == "url")] = "file"
+    map_tmp = map
     for (i in remove_controls) {
-      x_tmp = removeMapJunk(x_tmp, i)
+      map_tmp = removeMapJunk(map_tmp, i)
     }
-    do.call(htmlwidgets::saveWidget, append(list(x_tmp), sw_ls[sw_args]))
-    ws_args <- match.arg(names(args),
+    do.call(htmlwidgets::saveWidget, append(list(map_tmp), sw_ls[sw_args]))
+    ws_args = match.arg(names(args),
                          names(as.list(args(webshot::webshot))),
                          several.ok = TRUE)
     do.call(webshot::webshot, args[ws_args])
@@ -141,13 +123,95 @@ mapshot <- function(x,
     ## finally, delete the temporary url used to remove the map junk
     if (file.exists(url_tmp)) unlink(url_tmp, recursive = TRUE)
     if (file.exists(url_tmp_files)) unlink(url_tmp_files, recursive = TRUE)
+
+    return(invisible())
+    # for (i in remove_controls) {
+    #   x = removeMapJunk(x, i)
+    # }
   }
 
-  ## if url was missing, remove temporary .html file
-  if (!avl_url && remove_url) {
-    url_files = paste0(tools::file_path_sans_ext(url), "_files")
-    unlink(c(url, url_files), recursive = TRUE)
+  ## if also saving file
+  if (avl_file & avl_url & !is.null(remove_controls)) {
+    url_tmp = gsub(tools::file_ext(file), "html", file)
+    url_tmp = gsub(".html", tmp_ptrn, url_tmp)
+
+    url_tmp_files = paste0(tools::file_path_sans_ext(url_tmp), "_files")
+    sw_ls[which(names(sw_ls) == "file")] = url_tmp
+    args$url = url_tmp
+    # names(sw_ls)[which(names(sw_ls) == "url")] = "file"
+    map_tmp = map
+    for (i in remove_controls) {
+      map_tmp = removeMapJunk(map_tmp, i)
+    }
+    do.call(htmlwidgets::saveWidget, append(list(map_tmp), sw_ls[sw_args]))
+    ws_args = match.arg(names(args),
+                        names(as.list(args(webshot::webshot))),
+                        several.ok = TRUE)
+    do.call(webshot::webshot, args[ws_args])
+
+    ## finally, delete the temporary url used to remove the map junk
+    if (file.exists(url_tmp)) unlink(url_tmp, recursive = TRUE)
+    if (file.exists(url_tmp_files)) unlink(url_tmp_files, recursive = TRUE)
+
+    return(invisible())
   }
+
+  if (avl_file & avl_url & !is.null(remove_controls)) {
+    do.call(webshot::webshot, args)
+  }
+
+  # ## if url is missing, create temporary .html file
+  # if (!avl_url) {
+  #   url = gsub(tools::file_ext(file), "html", file)
+  #   url = gsub(".html", tmp_ptrn, url)
+  # }
+  #
+  # if (dir.exists(file.path(tempdir(), "popup_graphs"))) {
+  #   file.copy(from = file.path(tempdir(), "popup_graphs"),
+  #             to = paste0(dirname(url), "/"), recursive = TRUE)
+  #   file.copy(from = file.path(dirname(url),  "popup_graphs"),
+  #             to = paste0(dirname(dirname(url)), "/"), recursive = TRUE)
+  #   unlink(file.path(dirname(url),  "popup_graphs"), recursive = TRUE)
+  # }
+  #
+  # ## save to url
+  # args = list(url = url, file = file, ...)
+  # sw_ls = args
+  # sw_ls[names(sw_ls) == "file"] = NULL
+  # names(sw_ls)[which(names(sw_ls) == "url")] = "file"
+  # sw_args = match.arg(names(sw_ls),
+  #                      names(as.list(args(htmlwidgets::saveWidget))),
+  #                      several.ok = TRUE)
+  #
+  # do.call(htmlwidgets::saveWidget, append(list(x), sw_ls[sw_args]))
+  #
+  # ## save to file
+  # if (avl_file) {
+  #   url_tmp = ifelse(avl_url, gsub(".html", tmp_ptrn, url), url)
+  #   url_tmp_files = paste0(tools::file_path_sans_ext(url_tmp), "_files")
+  #   sw_ls[which(names(sw_ls) == "file")] = url_tmp
+  #   args$url = url_tmp
+  #   # names(sw_ls)[which(names(sw_ls) == "url")] = "file"
+  #   x_tmp = x
+  #   for (i in remove_controls) {
+  #     x_tmp = removeMapJunk(x_tmp, i)
+  #   }
+  #   do.call(htmlwidgets::saveWidget, append(list(x_tmp), sw_ls[sw_args]))
+  #   ws_args = match.arg(names(args),
+  #                        names(as.list(args(webshot::webshot))),
+  #                        several.ok = TRUE)
+  #   do.call(webshot::webshot, args[ws_args])
+  #
+  #   ## finally, delete the temporary url used to remove the map junk
+  #   if (file.exists(url_tmp)) unlink(url_tmp, recursive = TRUE)
+  #   if (file.exists(url_tmp_files)) unlink(url_tmp_files, recursive = TRUE)
+  # }
+  #
+  # ## if url was missing, remove temporary .html file
+  # if (!avl_url && remove_url) {
+  #   url_files = paste0(tools::file_path_sans_ext(url), "_files")
+  #   unlink(c(url, url_files), recursive = TRUE)
+  # }
 
   return(invisible())
 }
