@@ -89,6 +89,9 @@
 #' @param cex numeric or attribute name(s) or column number(s) in attribute table
 #' of the column(s) to be used for defining the size of circles.
 #' @param alpha opacity of lines.
+#' @param watch whether to watch a certain environment and automatically
+#' render cahnges to the list of spatial data in that environment. See
+#' \link{mapviewWatcher} for details.
 #'
 #' @author
 #' Tim Appelhans
@@ -147,7 +150,8 @@ mapviewOptions <- function(platform,
                            cex,
                            alpha,
                            default = FALSE,
-                           console = TRUE) {
+                           console = TRUE,
+                           watch = FALSE) {
 
   ### 1. global options -----
 
@@ -185,13 +189,18 @@ mapviewOptions <- function(platform,
   .basemaps <- function() {
     pf <- getOption('mapviewPlatform')
     if (is.null(pf) || pf == "leaflet") {
-      default <- c("CartoDB.Positron",
-                   "CartoDB.DarkMatter",
-                   "OpenStreetMap",
-                   "Esri.WorldImagery",
-                   "OpenTopoMap")
+      default <- c(
+        "CartoDB.Positron"
+        , "CartoDB.DarkMatter"
+        , "OpenStreetMap"
+        , "Esri.WorldImagery"
+        , "OpenTopoMap"
+      )
     } else if (pf == "mapdeck") {
-      default = mapdeck::mapdeck_style("dark")
+      default = c(
+        mapdeck::mapdeck_style("light")
+        , mapdeck::mapdeck_style("dark")
+      )
     }
 
     bm <- getOption('mapviewBasemaps')
@@ -364,6 +373,21 @@ mapviewOptions <- function(platform,
       return(default)
     } else {
       return(ntvcrs)
+    }
+  }
+
+  ## watch
+  setWatcher = function(watch) {
+    options(mapviewWatcher = watch)
+  }
+
+  .watch = function() {
+    default = FALSE
+    wtch = getOption("mapviewWatcher")
+    if (is.null(wtch)) {
+      return(default)
+    } else {
+      return(wtch)
     }
   }
 
@@ -706,6 +730,7 @@ mapviewOptions <- function(platform,
     options(mapviewViewerSuppress = FALSE)
     options(mapviewHomebutton = TRUE)
     options(mapviewNativeCRS = FALSE)
+    options(mapviewWatcher = FALSE)
 
     ## raster
     options(mapviewraster.size = 8 * 1024 * 1024)
@@ -754,6 +779,7 @@ mapviewOptions <- function(platform,
   }
   if (!missing(homebutton)) { setHomebutton(homebutton); cnt <- cnt + 1 }
   if (!missing(native.crs)) { setNativeCRS(native.crs); cnt <- cnt + 1 }
+  if (!missing(watch)) { setWatcher(watch); cnt <- cnt + 1 }
 
 
   ## raster
@@ -800,6 +826,7 @@ mapviewOptions <- function(platform,
     , viewer.suppress = .viewerSuppress()
     , homebutton = .homebutton()
     , native.crs = .nativeCRS()
+    , watch = .watch()
 
     ## raster
     , raster.size = .rasterSize()
@@ -845,6 +872,7 @@ mapviewOptions <- function(platform,
       cat('viewer.suppress     :', lst$viewer.suppress, '\n')
       cat('homebutton          :', lst$homebutton, '\n')
       cat('native.crs          :', lst$native.crs, '\n')
+      cat('watch               :', lst$watch, '\n')
 
       ## raster
       cat("\n raster data related options: \n\n")

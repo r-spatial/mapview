@@ -38,11 +38,15 @@ leaflet_sf <- function(x,
   }
   if (!is.null(zcol)) {
     if (inherits(x[[zcol]], "logical")) x[[zcol]] = as.character(x[[zcol]])
+    if (inherits(x[[zcol]], "character")) x[[zcol]] = as.factor(x[[zcol]])
+    ## colors ---
     if (length(unique(x[[zcol]])) == 1) {
       color = ifelse(is.function(color), standardColor(x), color)
       col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
     }
   }
+
+  ## legend ----
   if (legend) {
     # if (is.null(zcol)) zcol = 1
     if (is.null(zcol)) vals = layer.name else vals = x[[zcol]]
@@ -57,20 +61,6 @@ leaflet_sf <- function(x,
                             na.color = col2Hex(na.color),
                             layer.name = layer.name)
   }
-
-  #   # layer.name <- paste(layer.name, zcol)
-  #   if (length(unique(x[[zcol]])) <= 1) {
-  #     warning(
-  #       sprintf(
-  #         "column %s has only one unique value/level, ignoring color and legend",
-  #         zcol
-  #       )
-  #     )
-  #     # zcol <- NULL
-  #   }
-  # }
-
-  # if (!native.crs) x <- checkAdjustProjection(x)
 
   clrs <- vectorColors(x = x,
                        zcol = zcol,
@@ -147,6 +137,13 @@ mapdeck_sf = function(x,
                       viewer.suppress,
                       ...) {
 
+  ## if x is polygon and elevation is provided -> set color and lwd to NULL to
+  ## enable extrusion
+  if ("elevation" %in% names(list(...)) & getGeometryType(x) == "pl") {
+    color = NULL
+    lwd = NULL
+  }
+
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
   cex <- circleRadius(x, cex, ...)
   if (is.null(zcol) & ncol(sf2DataFrame(x, drop_sf_column = TRUE)) == 1) {
@@ -170,22 +167,26 @@ mapdeck_sf = function(x,
   if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
 
   if (is.null(map.types)) {
-    if (getGeometryType(x) %in% c("pl")) {
+    if (getGeometryType(x) %in% c("pl", "pt")) {
       if (is.function(col.regions)) col.regions <- standardColRegions(x)
-      map.types <- basemaps(col.regions)
+      map.types <- as.vector(stats::na.omit(basemaps(col.regions)))
     } else {
       if (is.function(color)) color <- standardColor(x)
-      map.types <- basemaps(color)
+      map.types <- as.vector(stats::na.omit(basemaps(color)))
     }
   }
 
   # if (is.function(color)) color = color(nrow(x))
   # if (is.function(col.regions)) col.regions = col.regions(nrow(x))
   if (!is.null(zcol)) {
-    color = ifelse(getGeometryType(x) %in% c("pl", "pt"), standardColor(x), zcol)
+    if (!is.null(color)) {
+      color = ifelse(getGeometryType(x) %in% c("pl", "pt"), standardColor(x), zcol)
+    }
     col.regions = ifelse(getGeometryType(x) %in% c("pl", "pt"), zcol, standardColor(x))
   } else {
-    color = ifelse(is.function(color), standardColor(x), color)
+    if (!is.null(color)) {
+      color = ifelse(is.function(color), standardColor(x), color)
+    }
     col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
   }
 
@@ -201,13 +202,19 @@ mapdeck_sf = function(x,
     ...
   )
 
+  if (!is.null(lwd)) {
+    lwd = ifelse(getGeometryType(x) == "pl", lwd * 100, lwd)
+  }
+
   m <- leafem::addFeatures(
     m
     , data = x
     , radius = cex
-    , stroke_width = lwd * 100
-    , stroke_opacity = alpha * 255
-    , fill_opacity = alpha.regions * 255
+    , radius_min_pixels = cex
+    , radius_max_pixels = cex
+    , stroke_width = lwd # * 100
+    , stroke_opacity = alpha  * 255
+    , fill_opacity = alpha.regions  * 255
     , stroke_colour = color
     , fill_colour = col.regions
     , tooltip = "label"

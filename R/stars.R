@@ -49,20 +49,7 @@ addStarsImage <- function(map,
                           project = FALSE,
                           method = c("bilinear", "ngb"),
                           maxBytes = 4 * 1024 * 1024) {
-  .Deprecated(new = "leafem::addStarsImage", package = "mapview",
-              old = "mapview::addStarsImage")
-
-  leafem::addStarsImage(map = map,
-                        x = x,
-                        band = band,
-                        colors = colors,
-                        opacity = opacity,
-                        attribution = attribution,
-                        layerId = layerId,
-                        group = group,
-                        project = project,
-                        method = method,
-                        maxBytes = maxBytes)
+  .Defunct(new = "leafem::addStarsImage", package = "mapview")
 }
 
 leaflet_stars = function(x,
@@ -168,8 +155,13 @@ leaflet_stars = function(x,
                               group = grp,
                               layerId = grp,
                               ...)
+    m = removeLayersControl(m)
+    m = mapViewLayersControl(map = m,
+                             map.types = map.types,
+                             names = grp)
     if (label)
       m = leafem::addImageQuery(m, x, band = band, group = grp, layerId = grp,
+                                project = TRUE,
                                 type = query.type, digits = query.digits,
                                 position = query.position, prefix = query.prefix)
     if (legend) {
@@ -180,17 +172,23 @@ leaflet_stars = function(x,
       #                         opacity = legend.opacity,
       #                         values = at,
       #                         title = grp)
-      m = addRasterLegend(x = x,
-                          map = m,
-                          title = grp,
-                          group = grp,
-                          at = at,
-                          col.regions = col.regions,
-                          na.color = na.color)
+      legend = mapviewLegend(values = as.vector(x[[1]]),
+                             colors = col.regions,
+                             at = at,
+                             na.color = col2Hex(na.color),
+                             layer.name = layer.name)
+
+      m = legend(m)
+
+      # m = addRasterLegend(x = x,
+      #                     map = m,
+      #                     title = grp,
+      #                     group = grp,
+      #                     at = at,
+      #                     col.regions = col.regions,
+      #                     na.color = na.color)
     }
-    m = mapViewLayersControl(map = m,
-                             map.types = map.types,
-                             names = grp)
+
     m = leaflet::addScaleBar(map = m, position = "bottomleft")
     m = leafem::addMouseCoordinates(m)
     if (homebutton) m = leafem::addHomeButton(m, ext, group = layer.name)

@@ -193,7 +193,7 @@ getProjection <- function(x) {
   if (inherits(x, c("Raster", "Spatial"))) {
     prj <- raster::projection(x)
   } else {
-    prj <- sf::st_crs(x)[["proj4string"]]
+    prj <- sf::st_crs(x)$proj4string
   }
 
   return(prj)
@@ -247,9 +247,9 @@ makeLayerName = function(x, zcol = NULL, up = 3) {
 
 
 makeListLayerNames = function(x, layer.name) {
-  if (length(layer.name) == length(x)) {
+  if (length(layer.name) == length(x) & !(is.list(x))) {
     lnms = layer.name
-  } else if (!is.null(names(x))) {
+  } else if (is.list(x) & !(is.null(names(x)))) {
     lnms = names(x)
   } else {
     chr = gsub(utils::glob2rx("*list(*"), "", layer.name)

@@ -278,9 +278,11 @@ initMap <- function(map = NULL,
 
   } else if (platform == "mapdeck") {
 
+    map.types = map.types[1]
+
     if (is.null(map)) {
       if (is.null(map.types)) {
-        map.types <- mapviewGetOption("basemaps")
+        map.types <- mapviewGetOption("basemaps")[1]
       }
 
       md_args = try(
@@ -296,7 +298,7 @@ initMap <- function(map = NULL,
         md_args$style = map.types
         m = do.call(mapdeck::mapdeck, Filter(Negate(is.null), md_args))
       } else {
-        m = mapdeck::mapdeck()
+        m = mapdeck::mapdeck(style = map.types)
       }
     } else {
       m = map
