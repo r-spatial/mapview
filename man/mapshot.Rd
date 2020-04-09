@@ -9,7 +9,8 @@ mapshot(
   url = NULL,
   file = NULL,
   remove_url = TRUE,
-  remove_controls = c("zoomControl", "layersControl", "homeButton", "scaleBar"),
+  remove_controls = c("zoomControl", "layersControl", "homeButton", "scaleBar",
+    "drawToolbar", "easyButton"),
   ...
 )
 }
@@ -27,8 +28,8 @@ specified.}
 
 \item{remove_controls}{\code{character} vector of control buttons to be removed
 from the map when saving to file. Any combination of
-"zoomControl", "layersControl", "homeButton", "scaleBar". If set to \code{NULL}
-nothing will be removed.}
+"zoomControl", "layersControl", "homeButton", "scaleBar", "drawToolbar",
+"easyButton". If set to \code{NULL} nothing will be removed.}
 
 \item{...}{Further arguments passed on to \code{\link{webshot}}.}
 }

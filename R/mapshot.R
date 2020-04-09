@@ -29,8 +29,8 @@
 #' specified.
 #' @param remove_controls \code{character} vector of control buttons to be removed
 #' from the map when saving to file. Any combination of
-#' "zoomControl", "layersControl", "homeButton", "scaleBar". If set to \code{NULL}
-#' nothing will be removed.
+#' "zoomControl", "layersControl", "homeButton", "scaleBar", "drawToolbar",
+#' "easyButton". If set to \code{NULL} nothing will be removed.
 #' @param ... Further arguments passed on to \code{\link{webshot}}.
 #'
 #' @seealso
@@ -63,7 +63,9 @@ mapshot <- function(x,
                     remove_controls = c("zoomControl",
                                         "layersControl",
                                         "homeButton",
-                                        "scaleBar"),
+                                        "scaleBar",
+                                        "drawToolbar",
+                                        "easyButton"),
                     ...) {
 
   ## if both 'url' and 'file' are missing, throw an error
@@ -159,6 +161,8 @@ removeMapJunk = function(map, junk) {
     "layersControl" = leaflet::removeLayersControl(map),
     "homeButton" = removeHomeButtons(map),
     "scaleBar" = removeScalebar(map),
+    "drawToolbar" = removeDrawToolbar(map),
+    "easyButton" = removeEasyButton(map),
     NULL = map
   )
 }
@@ -179,5 +183,20 @@ removeScalebar = function(map) {
   map$x$calls[sb_ind] = NULL
   return(map)
 }
+
+removeDrawToolbar = function(map) {
+  sb_ind = getCallEntryFromMap(map, "addDrawToolbar")
+  map$x$calls[sb_ind] = NULL
+  return(map)
+}
+
+removeEasyButton = function(map) {
+  sb_ind = getCallEntryFromMap(map, "addEasyButton")
+  map$x$calls[sb_ind] = NULL
+  return(map)
+}
+
+
+
 
 
