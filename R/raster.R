@@ -97,6 +97,9 @@ leafletRL = function(x,
                                  na.color = na.color)
       # pal2 = pal
     } else {
+      if (!is.function(col.regions)) {
+        col.regions = grDevices::colorRampPalette(col.regions)
+      }
       pal = rasterColors(col.regions,
                          at = at,
                          na.color = na.color)
@@ -139,11 +142,6 @@ leafletRL = function(x,
       if (!is.fact) {
         vals = x[]
         clrs = col.regions
-        # if (is.function(col.regions)) {
-        #   clrs = col.regions
-        # } else {
-        #   clrs = colorRampPalette(col.regions)
-        # }
       } else {
         if (ncol(x@data@attributes[[1]]) >= 2) {
           vals = factor(
