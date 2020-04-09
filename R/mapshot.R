@@ -89,6 +89,13 @@ mapshot <- function(x,
   if (!inherits(x, "leaflet"))
     remove_controls = NULL
 
+  ## if leaflet & saved to file remove map junk
+  if (avl_file & !avl_url) {
+    for (i in remove_controls) {
+      x = removeMapJunk(x, i)
+    }
+  }
+
   ## if url is missing, create temporary .html file
   if (!avl_url) {
     url <- gsub(tools::file_ext(file), "html", file)
@@ -112,9 +119,12 @@ mapshot <- function(x,
                        names(as.list(args(htmlwidgets::saveWidget))),
                        several.ok = TRUE)
 
+  do.call(htmlwidgets::saveWidget, append(list(x), sw_ls[sw_args]))
+
   ## save to file
   if (avl_file) {
     url_tmp = ifelse(avl_url, gsub(".html", tmp_ptrn, url), url)
+    url_tmp_files = paste0(tools::file_path_sans_ext(url_tmp), "_files")
     sw_ls[which(names(sw_ls) == "file")] = url_tmp
     args$url = url_tmp
     # names(sw_ls)[which(names(sw_ls) == "url")] <- "file"
@@ -130,8 +140,7 @@ mapshot <- function(x,
 
     ## finally, delete the temporary url used to remove the map junk
     if (file.exists(url_tmp)) unlink(url_tmp, recursive = TRUE)
-  } else {
-    do.call(htmlwidgets::saveWidget, append(list(x), sw_ls[sw_args]))
+    if (file.exists(url_tmp_files)) unlink(url_tmp_files, recursive = TRUE)
   }
 
   ## if url was missing, remove temporary .html file
