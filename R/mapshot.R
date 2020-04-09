@@ -29,8 +29,8 @@
 #' specified.
 #' @param remove_controls \code{character} vector of control buttons to be removed
 #' from the map when saving to file. Any combination of
-#' "zoomControl", "layersControl", "homeButton", "scaleBar". If set to \code{NULL}
-#' nothing will be removed.
+#' "zoomControl", "layersControl", "homeButton", "scaleBar", "drawToolbar",
+#' "easyButton". If set to \code{NULL} nothing will be removed.
 #' @param ... Further arguments passed on to \code{\link{webshot}}.
 #'
 #' @seealso
@@ -63,7 +63,9 @@ mapshot <- function(x,
                     remove_controls = c("zoomControl",
                                         "layersControl",
                                         "homeButton",
-                                        "scaleBar"),
+                                        "scaleBar",
+                                        "drawToolbar",
+                                        "easyButton"),
                     ...) {
 
   ## if both 'url' and 'file' are missing, throw an error
@@ -86,13 +88,6 @@ mapshot <- function(x,
 
   if (!inherits(x, "leaflet"))
     remove_controls = NULL
-
-  ## if leaflet & saved to file remove map junk
-  if (avl_file & !avl_url) {
-    for (i in remove_controls) {
-      x = removeMapJunk(x, i)
-    }
-  }
 
   ## if url is missing, create temporary .html file
   if (!avl_url) {
@@ -117,12 +112,9 @@ mapshot <- function(x,
                        names(as.list(args(htmlwidgets::saveWidget))),
                        several.ok = TRUE)
 
-  do.call(htmlwidgets::saveWidget, append(list(x), sw_ls[sw_args]))
-
   ## save to file
   if (avl_file) {
     url_tmp = ifelse(avl_url, gsub(".html", tmp_ptrn, url), url)
-    url_tmp_files = paste0(tools::file_path_sans_ext(url_tmp), "_files")
     sw_ls[which(names(sw_ls) == "file")] = url_tmp
     args$url = url_tmp
     # names(sw_ls)[which(names(sw_ls) == "url")] <- "file"
@@ -138,7 +130,8 @@ mapshot <- function(x,
 
     ## finally, delete the temporary url used to remove the map junk
     if (file.exists(url_tmp)) unlink(url_tmp, recursive = TRUE)
-    if (file.exists(url_tmp_files)) unlink(url_tmp_files, recursive = TRUE)
+  } else {
+    do.call(htmlwidgets::saveWidget, append(list(x), sw_ls[sw_args]))
   }
 
   ## if url was missing, remove temporary .html file
@@ -159,6 +152,8 @@ removeMapJunk = function(map, junk) {
     "layersControl" = leaflet::removeLayersControl(map),
     "homeButton" = removeHomeButtons(map),
     "scaleBar" = removeScalebar(map),
+    "drawToolbar" = removeDrawToolbar(map),
+    "easyButton" = removeEasyButton(map),
     NULL = map
   )
 }
@@ -179,5 +174,20 @@ removeScalebar = function(map) {
   map$x$calls[sb_ind] = NULL
   return(map)
 }
+
+removeDrawToolbar = function(map) {
+  sb_ind = getCallEntryFromMap(map, "addDrawToolbar")
+  map$x$calls[sb_ind] = NULL
+  return(map)
+}
+
+removeEasyButton = function(map) {
+  sb_ind = getCallEntryFromMap(map, "addEasyButton")
+  map$x$calls[sb_ind] = NULL
+  return(map)
+}
+
+
+
 
 
