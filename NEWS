@@ -1,4 +1,8 @@
-mapview 2.7.9
+mapview 2.8.0
+
+new features:
+
+  * new function removeMapJunk to remove control elements from a map (e.g. the zoom control).
 
 miscellaneous:
 
