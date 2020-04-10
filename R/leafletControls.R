@@ -10,7 +10,13 @@ getLayerControlEntriesFromMap <- function(map) {
 
 
 getCallEntryFromMap <- function(map, call) {
-  grep(call, getCallMethods(map), fixed = TRUE, useBytes = TRUE)
+  if (length(call) > 1) {
+    call = paste(call, collapse = "|")
+    fixed = FALSE
+  } else {
+    fixed = TRUE
+  }
+  grep(call, getCallMethods(map), fixed = fixed, useBytes = TRUE)
 }
 
 
