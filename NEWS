@@ -1,8 +1,9 @@
-mapview 2.8.0
+mapview 2.8.1
 
 new features:
 
   * new function removeMapJunk to remove control elements from a map (e.g. the zoom control).
+  * added tentative support for platform 'leafgl'.
 
 miscellaneous:
 
