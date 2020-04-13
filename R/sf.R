@@ -111,6 +111,192 @@ leaflet_sf <- function(x,
 }
 
 
+leafgl_sf = function(x,
+                     map,
+                     zcol,
+                     color,
+                     col.regions,
+                     at,
+                     na.color,
+                     cex,
+                     lwd,
+                     alpha,
+                     alpha.regions,
+                     na.alpha,
+                     map.types,
+                     verbose,
+                     popup,
+                     layer.name,
+                     label,
+                     legend,
+                     legend.opacity,
+                     homebutton,
+                     native.crs,
+                     highlight,
+                     maxpoints,
+                     viewer.suppress,
+                     ...) {
+
+  if (inherits(sf::st_geometry(x), "sfc_MULTIPOLYGON")) {
+    x = suppressWarnings(sf::st_cast(x, "POLYGON"))
+  }
+  if (inherits(sf::st_geometry(x), "sfc_MULTILINESTRING")) {
+    x = suppressWarnings(sf::st_cast(x, "LINESTRING"))
+  }
+  if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT")) {
+    x = suppressWarnings(sf::st_cast(x, "POINT"))
+  }
+
+  if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
+    popup = TRUE
+  }
+
+  if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
+  cex <- circleRadius(x, cex, ...)
+  if (is.null(zcol) & ncol(sf2DataFrame(x, drop_sf_column = TRUE)) == 1) {
+    zcol = colnames(sf2DataFrame(x, drop_sf_column = TRUE))[1]
+    label = makeLabels(x, zcol)
+  }
+  if (!is.null(zcol)) {
+    if (inherits(x[[zcol]], "logical")) x[[zcol]] = as.character(x[[zcol]])
+    if (inherits(x[[zcol]], "character")) x[[zcol]] = as.factor(x[[zcol]])
+    ## colors ---
+    if (length(unique(x[[zcol]])) == 1) {
+      color = ifelse(is.function(color), standardColor(x), color)
+      col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
+    }
+  }
+
+  ## legend ----
+  if (legend) {
+    # if (is.null(zcol)) zcol = 1
+    if (is.null(zcol)) vals = layer.name else vals = x[[zcol]]
+    if (length(unique(vals)) == 1) {
+      color = ifelse(is.function(color), standardColor(x), color)
+      col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
+    }
+    if (getGeometryType(x) == "ln") leg_clrs <- color else leg_clrs <- col.regions
+    legend <- mapviewLegend(values = vals,
+                            colors = leg_clrs,
+                            at = at,
+                            na.color = col2Hex(na.color),
+                            layer.name = layer.name)
+  }
+
+  if (!native.crs) x <- checkAdjustProjection(x)
+  if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
+
+  if (is.null(map.types)) {
+    if (getGeometryType(x) %in% c("pl", "pt")) {
+      if (is.function(col.regions)) col.regions <- standardColRegions(x)
+      map.types <- basemaps(col.regions)
+    } else {
+      if (is.function(color)) color <- standardColor(x)
+      map.types <- basemaps(color)
+    }
+  }
+
+  if (!is.null(zcol)) {
+    if (!is.null(color)) {
+      color = ifelse(getGeometryType(x) %in% c("pl", "pt"), standardColor(x), zcol)
+    }
+    col.regions = ifelse(getGeometryType(x) %in% c("pl", "pt"), zcol, standardColor(x))
+  } else {
+    if (!is.null(color)) {
+      color = ifelse(is.function(color), standardColor(x), color)
+    }
+    col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
+  }
+
+  label = makeLabels(x, zcol)
+  x$label = label
+
+  m <- initMap(
+    map,
+    map.types,
+    sf::st_crs(x),
+    native.crs,
+    viewer.suppress = viewer.suppress,
+    ...
+  )
+
+  m <- leafem::addFeatures(
+    m
+    , data = x
+    , radius = cex
+    , weight = lwd / 2
+    , opacity = alpha
+    , fillOpacity = alpha.regions
+    , color = color
+    , fillColor = col.regions
+    , legend = legend
+    , popup = popup
+    , group = layer.name
+    , gl = TRUE
+    , ...
+  )
+
+  ## if polygons, also plot polygon borders
+  if (inherits(sf::st_geometry(x), "sfc_POLYGON")) {
+    m = leafem::addFeatures(
+      m
+      , data = suppressWarnings(sf::st_cast(x, "LINESTRING"))
+      , radius = cex
+      , weight = 0.2
+      , opacity = alpha
+      , fillOpacity = alpha.regions
+      , color = color
+      , fillColor = col.regions
+      , legend = FALSE
+      , popup = NULL
+      , group = layer.name
+      , gl = TRUE
+      , ...
+    )
+  }
+
+  if (!is.null(map)) m = updateOverlayGroups(m, layer.name)
+  sclbrpos = getCallEntryFromMap(m, "addScaleBar")
+  if (length(sclbrpos) > 0 | native.crs) scalebar = FALSE else scalebar = TRUE
+
+  funs <- list(if (scalebar) leaflet::addScaleBar,
+               if (homebutton) leafem::addHomeButton,
+               if (is.null(map)) mapViewLayersControl,
+               leafem::addMouseCoordinates)
+  funs <- funs[!sapply(funs, is.null)]
+
+  args <- list(if (scalebar) list(position = "bottomleft"),
+               if (homebutton) list(ext = createExtent(x),
+                                    group = layer.name),
+               if (is.null(map)) list(map.types = map.types,
+                                      names = layer.name,
+                                      native.crs = native.crs),
+               list(style = "detailed",
+                    epsg = sf::st_crs(x)$epsg,
+                    proj4string = sf::st_crs(x)$proj4string,
+                    native.crs = native.crs))
+  args <- args[!sapply(args, is.null)]
+
+  m <- decorateMap(map = m,
+                   funs = funs,
+                   args = args)
+
+  try(
+    if (attributes(popup)$popup == "leafpop") {
+      m$dependencies <- c(m$dependencies, popupLayoutDependencies())
+    }
+    , silent = TRUE
+  )
+
+  if (is.function(legend)) m <- legend(m)
+  m = removeDuplicatedMapDependencies(m)
+  out <- new("mapview", object = list(x), map = m)
+
+  return(out)
+
+}
+
+
 mapdeck_sf = function(x,
                       map,
                       zcol,

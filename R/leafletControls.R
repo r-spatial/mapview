@@ -250,7 +250,7 @@ initMap <- function(map = NULL,
   ls = list(...)
   nms = names(ls)
 
-  if (platform == "leaflet") {
+  if (platform %in% c("leaflet", "leafgl")) {
 
     if (is.null(map) & is.null(map.types)) {
       map.types <- mapviewGetOption("basemaps")

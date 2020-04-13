@@ -158,11 +158,15 @@ mapviewOptions <- function(platform,
 
   ## platform
   setPlatform <- function(platform) {
-    if (!platform %in% c("leaflet", "mapdeck")) {
+    if (!platform %in% c("leaflet", "leafgl", "mapdeck")) {
       warning(
         sprintf(
-          "currently only platforms %s & %s are allowed!
-          \nUsing default platform %s", "'leaflet'", "'mapdeck'", "'leaflet'"
+          "currently only platforms %s & %s & %s are allowed!
+          \nUsing default platform %s"
+          , "'leaflet'"
+          , "'leafgl'"
+          , "'mapdeck'"
+          , "'leaflet'"
         )
         , call. = FALSE
       )
@@ -188,7 +192,7 @@ mapviewOptions <- function(platform,
 
   .basemaps <- function() {
     pf <- getOption('mapviewPlatform')
-    if (is.null(pf) || pf == "leaflet") {
+    if (is.null(pf) || pf %in% c("leaflet", "leafgl")) {
       default <- c(
         "CartoDB.Positron"
         , "CartoDB.DarkMatter"

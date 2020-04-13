@@ -33,7 +33,7 @@ setMethod("+",
                     e2 = "mapview"),
           function (e1, e2) {
 
-            if (mapviewGetOption("platform") == "leaflet") {
+            if (mapviewGetOption("platform") %in% c("leaflet", "leafgl")) {
               m <- appendMapCallEntries_lf(e1@map, e2@map)
               out_obj <- append(e1@object, e2@object)
               # avoids error if calling, for example, mapview() + viewExtent(in)
@@ -57,7 +57,7 @@ setMethod("+",
               m = appendMapCallEntries_md(e1@map, e2@map)
               out_obj <- append(e1@object, e2@object)
             }
-            
+
             out <- methods::new('mapview', object = out_obj, map = m)
             return(out)
           }

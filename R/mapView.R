@@ -639,6 +639,34 @@ setMethod('mapView', signature(x = 'sf'),
 
               }
 
+            } else if (mapviewGetOption("platform") == "leafgl") {
+
+              leafgl_sf(x,
+                        map = map,
+                        zcol = zcol,
+                        color = color,
+                        col.regions = col.regions,
+                        at = at,
+                        na.color = na.color,
+                        cex = cex,
+                        lwd = lwd,
+                        alpha = alpha,
+                        alpha.regions = alpha.regions,
+                        na.alpha = na.alpha,
+                        map.types = map.types,
+                        verbose = verbose,
+                        popup = popup,
+                        layer.name = layer.name,
+                        label = label,
+                        legend = legend,
+                        legend.opacity = legend.opacity,
+                        homebutton = homebutton,
+                        native.crs = native.crs,
+                        highlight = highlight,
+                        maxpoints = maxpoints,
+                        viewer.suppress = viewer.suppress,
+                        ...)
+
             } else if (mapviewGetOption("platform") == "mapdeck") {
 
               mapdeck_sf(x,
