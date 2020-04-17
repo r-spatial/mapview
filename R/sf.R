@@ -196,17 +196,17 @@ leafgl_sf = function(x,
     }
   }
 
-  if (!is.null(zcol)) {
-    if (!is.null(color)) {
-      color = ifelse(getGeometryType(x) %in% c("pl", "pt"), standardColor(x), zcol)
-    }
-    col.regions = ifelse(getGeometryType(x) %in% c("pl", "pt"), zcol, standardColor(x))
-  } else {
-    if (!is.null(color)) {
-      color = ifelse(is.function(color), standardColor(x), color)
-    }
-    col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
-  }
+  # if (!is.null(zcol)) {
+  #   if (!is.null(color)) {
+  #     color = ifelse(getGeometryType(x) %in% c("pl", "pt"), standardColor(x), zcol)
+  #   }
+  #   col.regions = ifelse(getGeometryType(x) %in% c("pl", "pt"), zcol, standardColor(x))
+  # } else {
+  #   if (!is.null(color)) {
+  #     color = ifelse(is.function(color), standardColor(x), color)
+  #   }
+  #   col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
+  # }
 
   label = makeLabels(x, zcol)
   x$label = label
@@ -223,7 +223,7 @@ leafgl_sf = function(x,
   m <- leafem::addFeatures(
     m
     , data = x
-    , radius = cex
+    , radius = cex * 2
     , weight = lwd / 2
     , opacity = alpha
     , fillOpacity = alpha.regions
@@ -241,12 +241,9 @@ leafgl_sf = function(x,
     m = leafem::addFeatures(
       m
       , data = suppressWarnings(sf::st_cast(x, "LINESTRING"))
-      , radius = cex
       , weight = 0.2
       , opacity = alpha
-      , fillOpacity = alpha.regions
       , color = color
-      , fillColor = col.regions
       , legend = FALSE
       , popup = NULL
       , group = layer.name
@@ -538,6 +535,72 @@ leaflet_sfc <- function(x,
   return(out)
 
 }
+
+
+leafgl_sfc = function(x,
+                      map,
+                      zcol,
+                      color,
+                      col.regions,
+                      at,
+                      na.color,
+                      cex,
+                      lwd,
+                      alpha,
+                      alpha.regions,
+                      na.alpha,
+                      map.types,
+                      verbose,
+                      popup,
+                      layer.name,
+                      label,
+                      legend,
+                      legend.opacity,
+                      homebutton,
+                      native.crs,
+                      highlight,
+                      maxpoints,
+                      viewer.suppress,
+                      ...) {
+
+  if (inherits(x, "XY")) x = sf::st_sfc(x)
+
+  x = sf::st_sf(id = 1:length(x),
+                jnk = 1L,
+                geometry = sf::st_zm(x))
+
+  if (!native.crs) x <- checkAdjustProjection(x)
+
+  leafgl_sf(
+    x = x
+    , map = map
+    , zcol = NULL
+    , color = color
+    , col.regions = col.regions
+    , at = at
+    , na.color = na.color
+    , cex = cex
+    , lwd = lwd
+    , alpha = alpha
+    , alpha.regions = alpha.regions
+    , na.alpha = na.alpha
+    , map.types = map.types
+    , verbose = verbose
+    , popup = popup
+    , layer.name = layer.name
+    , label = label
+    , legend = legend
+    , legend.opacity = legend.opacity
+    , homebutton = homebutton
+    , native.crs = native.crs
+    , hightlight = highlight
+    , maxpoints = maxpoints
+    , viewer.suppress = viewer.suppress
+    , ...
+  )
+
+}
+
 
 
 mapdeck_sfc = function(x,
