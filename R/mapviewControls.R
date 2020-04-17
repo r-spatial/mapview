@@ -166,10 +166,10 @@ lineWidth <- function(x) {
 
 regionOpacity <- function(x) {
   switch(getGeometryType(x),
-         "pt" = 0.6,
+         "pt" = ifelse(mapviewGetOption("platform") == "leafgl", 0.8, 0.6),
          "ln" = 1,
-         "pl" = 0.6,
-         "gc" = 0.6)
+         "pl" = ifelse(mapviewGetOption("platform") == "leafgl", 0.8, 0.6),
+         "gc" = ifelse(mapviewGetOption("platform") == "leafgl", 0.8, 0.6))
 }
 
 
