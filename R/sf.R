@@ -139,16 +139,21 @@ leafgl_sf = function(x,
 
   if (inherits(sf::st_geometry(x), "sfc_MULTIPOLYGON")) {
     x = suppressWarnings(sf::st_cast(x, "POLYGON"))
+    if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
+      popup = leafpop::popupTable(x)
+    }
   }
   if (inherits(sf::st_geometry(x), "sfc_MULTILINESTRING")) {
     x = suppressWarnings(sf::st_cast(x, "LINESTRING"))
+    if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
+      popup = leafpop::popupTable(x)
+    }
   }
   if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT")) {
     x = suppressWarnings(sf::st_cast(x, "POINT"))
-  }
-
-  if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
-    popup = TRUE
+    if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
+      popup = leafpop::popupTable(x)
+    }
   }
 
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
@@ -182,6 +187,33 @@ leafgl_sf = function(x,
                             na.color = col2Hex(na.color),
                             layer.name = layer.name)
   }
+
+  clrs <- vectorColors(x = x,
+                       zcol = zcol,
+                       colors = color,
+                       at = at,
+                       na.color = na.color)
+  clrs.regions <- vectorColRegions(x = x,
+                                   zcol = zcol,
+                                   col.regions = col.regions,
+                                   at = at,
+                                   na.color = na.color)
+
+  # ## legend ----
+  # if (legend) {
+  #   # if (is.null(zcol)) zcol = 1
+  #   if (is.null(zcol)) vals = layer.name else vals = x[[zcol]]
+  #   if (length(unique(vals)) == 1) {
+  #     color = ifelse(is.function(color), standardColor(x), color)
+  #     col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
+  #   }
+  #   if (getGeometryType(x) == "ln") leg_clrs <- color else leg_clrs <- col.regions
+  #   legend <- mapviewLegend(values = vals,
+  #                           colors = leg_clrs,
+  #                           at = at,
+  #                           na.color = col2Hex(na.color),
+  #                           layer.name = layer.name)
+  # }
 
   if (!native.crs) x <- checkAdjustProjection(x)
   if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
@@ -227,8 +259,8 @@ leafgl_sf = function(x,
     , weight = lwd / 2
     , opacity = alpha
     , fillOpacity = alpha.regions
-    , color = color
-    , fillColor = col.regions
+    , color = clrs
+    , fillColor = clrs.regions
     , legend = legend
     , popup = popup
     , group = layer.name
@@ -243,7 +275,7 @@ leafgl_sf = function(x,
       , data = suppressWarnings(sf::st_cast(x, "LINESTRING"))
       , weight = 0.2
       , opacity = alpha
-      , color = color
+      , color = clrs
       , legend = FALSE
       , popup = NULL
       , group = layer.name
@@ -448,12 +480,18 @@ leaflet_sfc <- function(x,
   if (!native.crs) x <- checkAdjustProjection(x)
   if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
 
+  if (getGeometryType(x) %in% c("pl", "pt")) {
+    if (is.function(col.regions)) col.regions <- standardColRegions(x)
+  } else {
+    if (is.function(color)) color <- standardColor(x)
+  }
+
   if (is.null(map.types)) {
     if (getGeometryType(x) %in% c("pl", "pt")) {
-      if (is.function(col.regions)) col.regions <- standardColRegions(x)
+      # if (is.function(col.regions)) col.regions <- standardColRegions(x)
       map.types <- basemaps(col.regions)
     } else {
-      if (is.function(color)) color <- standardColor(x)
+      # if (is.function(color)) color <- standardColor(x)
       map.types <- basemaps(color)
     }
   }
@@ -479,6 +517,28 @@ leaflet_sfc <- function(x,
     pane = NULL
   }
 
+  ## if gl we need to cast MULTI* and redo the popup if it's a popupTable
+  if ("gl" %in% names(list(...)) && isTRUE(list(...)$gl)) {
+    if (inherits(sf::st_geometry(x), "sfc_MULTIPOLYGON")) {
+      x = suppressWarnings(sf::st_cast(x, "POLYGON"))
+      if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
+        popup = leafpop::popupTable(x)
+      }
+    }
+    if (inherits(sf::st_geometry(x), "sfc_MULTILINESTRING")) {
+      x = suppressWarnings(sf::st_cast(x, "LINESTRING"))
+      if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
+        popup = leafpop::popupTable(x)
+      }
+    }
+    if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT")) {
+      x = suppressWarnings(sf::st_cast(x, "POINT"))
+      if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
+        popup = leafpop::popupTable(x)
+      }
+    }
+  }
+
   m <- leafem::addFeatures(m,
                            data = x,
                            pane = pane,
@@ -494,6 +554,23 @@ leaflet_sfc <- function(x,
                            highlightOptions = highlight,
                            native.crs = native.crs,
                            ...)
+
+  if ("gl" %in% names(list(...)) &&
+      isTRUE(list(...)$gl) &&
+      inherits(sf::st_geometry(x), "sfc_POLYGON")) {
+    m = leafem::addFeatures(
+      m
+      , data = suppressWarnings(sf::st_cast(x, "LINESTRING"))
+      , weight = 0.2
+      , opacity = alpha
+      , color = color
+      , legend = FALSE
+      , popup = NULL
+      , group = layer.name
+      , gl = TRUE
+      , ...
+    )
+  }
 
   if (!is.null(map)) m = updateOverlayGroups(m, layer.name)
   sclbrpos = getCallEntryFromMap(m, "addScaleBar")
