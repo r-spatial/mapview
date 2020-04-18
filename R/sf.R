@@ -80,6 +80,28 @@ leaflet_sf <- function(x,
     alpha.regions[is.na(x[[zcol]])] = na.alpha #[is.na(x[[zcol]])]
   }
 
+  ## if gl we need to cast MULTI* and redo the popup if it's a popupTable
+  if ("gl" %in% names(list(...)) && isTRUE(list(...)$gl)) {
+    if (inherits(sf::st_geometry(x), "sfc_MULTIPOLYGON")) {
+      x = suppressWarnings(sf::st_cast(x, "POLYGON"))
+      if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
+        popup = leafpop::popupTable(x)
+      }
+    }
+    if (inherits(sf::st_geometry(x), "sfc_MULTILINESTRING")) {
+      x = suppressWarnings(sf::st_cast(x, "LINESTRING"))
+      if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
+        popup = leafpop::popupTable(x)
+      }
+    }
+    if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT")) {
+      x = suppressWarnings(sf::st_cast(x, "POINT"))
+      if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
+        popup = leafpop::popupTable(x)
+      }
+    }
+  }
+
   leaflet_sfc(sf::st_geometry(x),
               map = map,
               pane = pane,
@@ -269,7 +291,7 @@ leafgl_sf = function(x,
   )
 
   ## if polygons, also plot polygon borders
-  if (inherits(sf::st_geometry(x), "sfc_POLYGON")) {
+  if (inherits(sf::st_geometry(x), "sfc_POLYGON") & lwd > 0) {
     m = leafem::addFeatures(
       m
       , data = suppressWarnings(sf::st_cast(x, "LINESTRING"))
@@ -517,28 +539,6 @@ leaflet_sfc <- function(x,
     pane = NULL
   }
 
-  ## if gl we need to cast MULTI* and redo the popup if it's a popupTable
-  if ("gl" %in% names(list(...)) && isTRUE(list(...)$gl)) {
-    if (inherits(sf::st_geometry(x), "sfc_MULTIPOLYGON")) {
-      x = suppressWarnings(sf::st_cast(x, "POLYGON"))
-      if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
-        popup = leafpop::popupTable(x)
-      }
-    }
-    if (inherits(sf::st_geometry(x), "sfc_MULTILINESTRING")) {
-      x = suppressWarnings(sf::st_cast(x, "LINESTRING"))
-      if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
-        popup = leafpop::popupTable(x)
-      }
-    }
-    if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT")) {
-      x = suppressWarnings(sf::st_cast(x, "POINT"))
-      if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
-        popup = leafpop::popupTable(x)
-      }
-    }
-  }
-
   m <- leafem::addFeatures(m,
                            data = x,
                            pane = pane,
@@ -555,9 +555,10 @@ leaflet_sfc <- function(x,
                            native.crs = native.crs,
                            ...)
 
-  if ("gl" %in% names(list(...)) &&
-      isTRUE(list(...)$gl) &&
-      inherits(sf::st_geometry(x), "sfc_POLYGON")) {
+  if ("gl" %in% names(list(...)) &
+      isTRUE(list(...)$gl) &
+      inherits(sf::st_geometry(x), "sfc_POLYGON") &
+      lwd > 0) {
     m = leafem::addFeatures(
       m
       , data = suppressWarnings(sf::st_cast(x, "LINESTRING"))
