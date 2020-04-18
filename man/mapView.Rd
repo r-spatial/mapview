@@ -107,7 +107,7 @@
   query.digits,
   query.position = mapviewGetOption("query.position"),
   query.prefix = "Layer",
-  viewer.suppress = FALSE,
+  viewer.suppress = mapviewGetOption("viewer.suppress"),
   ...
 )
 
@@ -134,7 +134,7 @@
   map = NULL,
   pane = "auto",
   canvas = useCanvas(x),
-  viewer.suppress = canvas,
+  viewer.suppress = mapviewGetOption("viewer.suppress"),
   zcol = NULL,
   burst = FALSE,
   color = mapviewGetOption("vector.palette"),
@@ -165,7 +165,7 @@
   map = NULL,
   pane = "auto",
   canvas = useCanvas(x),
-  viewer.suppress = canvas,
+  viewer.suppress = mapviewGetOption("viewer.suppress"),
   color = standardColor(x),
   col.regions = standardColRegions(x),
   at = NULL,
@@ -207,7 +207,7 @@
   homebutton = TRUE,
   native.crs = FALSE,
   canvas = FALSE,
-  viewer.suppress = FALSE,
+  viewer.suppress = mapviewGetOption("viewer.suppress"),
   ...
 )
 
@@ -230,7 +230,7 @@
   map = NULL,
   pane = "auto",
   canvas = useCanvas(x),
-  viewer.suppress = canvas,
+  viewer.suppress = mapviewGetOption("viewer.suppress"),
   color = standardColor(x),
   col.regions = standardColRegions(x),
   at = NULL,
@@ -303,7 +303,7 @@
   query.digits,
   query.position = "topright",
   query.prefix = "Layer",
-  viewer.suppress = FALSE,
+  viewer.suppress = mapviewGetOption("viewer.suppress"),
   ...
 )
 
@@ -331,7 +331,7 @@
   query.digits,
   query.position = "topright",
   query.prefix = "Layer",
-  viewer.suppress = FALSE,
+  viewer.suppress = mapviewGetOption("viewer.suppress"),
   ...
 )
 

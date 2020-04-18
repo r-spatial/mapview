@@ -413,7 +413,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                    query.digits,
                    query.position = mapviewGetOption("query.position"),
                    query.prefix = "Layer",
-                   viewer.suppress = FALSE,
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -503,7 +503,7 @@ setMethod('mapView', signature(x = 'sf'),
                    map = NULL,
                    pane = "auto",
                    canvas = useCanvas(x),
-                   viewer.suppress = canvas,
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                    zcol = NULL,
                    burst = FALSE,
                    color = mapviewGetOption("vector.palette"),
@@ -710,7 +710,7 @@ setMethod('mapView', signature(x = 'sfc'),
                    map = NULL,
                    pane = "auto",
                    canvas = useCanvas(x),
-                   viewer.suppress = canvas,
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                    color = standardColor(x), #mapviewGetOption("vector.palette"),
                    col.regions = standardColRegions(x), #mapviewGetOption("vector.palette"),
                    at = NULL,
@@ -849,7 +849,7 @@ setMethod('mapView', signature(x = 'character'),
                   homebutton = TRUE,
                   native.crs = FALSE,
                   canvas = FALSE,
-                  viewer.suppress = FALSE,
+                  viewer.suppress = mapviewGetOption("viewer.suppress"),
                   ...) {
            if (mapviewGetOption("platform") == "leaflet") {
              if (utils::file_test("-d", x)) {
@@ -986,7 +986,7 @@ setMethod('mapView', signature(x = 'XY'),
                    map = NULL,
                    pane = "auto",
                    canvas = useCanvas(x),
-                   viewer.suppress = canvas,
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                    color = standardColor(x), #mapviewGetOption("vector.palette"),
                    col.regions = standardColRegions(x), #mapviewGetOption("vector.palette"),
                    at = NULL,
@@ -1201,7 +1201,7 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                    query.digits,
                    query.position = "topright",
                    query.prefix = "Layer",
-                   viewer.suppress = FALSE,
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -1265,7 +1265,7 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                    query.digits,
                    query.position = "topright",
                    query.prefix = "Layer",
-                   viewer.suppress = FALSE,
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
