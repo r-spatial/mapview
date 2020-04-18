@@ -273,7 +273,7 @@ leafgl_sf = function(x,
     m = leafem::addFeatures(
       m
       , data = suppressWarnings(sf::st_cast(x, "LINESTRING"))
-      , weight = 0.2
+      , weight = lwd / 2
       , opacity = alpha
       , color = clrs
       , legend = FALSE
@@ -561,7 +561,7 @@ leaflet_sfc <- function(x,
     m = leafem::addFeatures(
       m
       , data = suppressWarnings(sf::st_cast(x, "LINESTRING"))
-      , weight = 0.2
+      , weight = lwd / 2
       , opacity = alpha
       , color = color
       , legend = FALSE
