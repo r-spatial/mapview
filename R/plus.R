@@ -34,7 +34,24 @@ setMethod("+",
           function (e1, e2) {
 
             if (mapviewGetOption("platform") %in% c("leaflet", "leafgl")) {
+
+              # if (length(
+              #   mapview:::getCallEntryFromMap(e1@map, "addProviderTiles")
+              # ) == 0) {
+                idx = mapview:::getCallEntryFromMap(e2@map, "addProviderTiles")
+                if (length(idx) > 0) {
+                  e2@map$x$calls[idx] = NULL
+                }
+                idx = mapview:::getCallEntryFromMap(e2@map, "addLayersControl")
+                if (length(idx) > 0) {
+                  e2@map$x$calls[idx][[1]]$args[[1]] = character(0)
+                }
+              # }
+
+
+
               m <- appendMapCallEntries_lf(e1@map, e2@map)
+              # m = removeDuplicatedMapCalls(m)
               out_obj <- append(e1@object, e2@object)
               # avoids error if calling, for example, mapview() + viewExtent(in)
               out_obj <- out_obj[lengths(out_obj) != 0]

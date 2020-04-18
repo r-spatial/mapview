@@ -221,46 +221,14 @@ leafgl_sf = function(x,
                                    at = at,
                                    na.color = na.color)
 
-  # ## legend ----
-  # if (legend) {
-  #   # if (is.null(zcol)) zcol = 1
-  #   if (is.null(zcol)) vals = layer.name else vals = x[[zcol]]
-  #   if (length(unique(vals)) == 1) {
-  #     color = ifelse(is.function(color), standardColor(x), color)
-  #     col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
-  #   }
-  #   if (getGeometryType(x) == "ln") leg_clrs <- color else leg_clrs <- col.regions
-  #   legend <- mapviewLegend(values = vals,
-  #                           colors = leg_clrs,
-  #                           at = at,
-  #                           na.color = col2Hex(na.color),
-  #                           layer.name = layer.name)
-  # }
-
   if (!native.crs) x <- checkAdjustProjection(x)
   if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
 
-  if (is.null(map.types)) {
-    if (getGeometryType(x) %in% c("pl", "pt")) {
-      if (is.function(col.regions)) col.regions <- standardColRegions(x)
-      map.types <- basemaps(col.regions)
-    } else {
-      if (is.function(color)) color <- standardColor(x)
-      map.types <- basemaps(color)
-    }
+  if (getGeometryType(x) %in% c("pl", "pt")) {
+    if (is.function(col.regions)) col.regions <- standardColRegions(x)
+  } else {
+    if (is.function(color)) color <- standardColor(x)
   }
-
-  # if (!is.null(zcol)) {
-  #   if (!is.null(color)) {
-  #     color = ifelse(getGeometryType(x) %in% c("pl", "pt"), standardColor(x), zcol)
-  #   }
-  #   col.regions = ifelse(getGeometryType(x) %in% c("pl", "pt"), zcol, standardColor(x))
-  # } else {
-  #   if (!is.null(color)) {
-  #     color = ifelse(is.function(color), standardColor(x), color)
-  #   }
-  #   col.regions = ifelse(is.function(col.regions), standardColRegions(x), col.regions)
-  # }
 
   label = makeLabels(x, zcol)
   x$label = label
@@ -403,15 +371,15 @@ mapdeck_sf = function(x,
   if (!native.crs) x <- checkAdjustProjection(x)
   if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
 
-  if (is.null(map.types)) {
+  # if (is.null(map.types)) {
     if (getGeometryType(x) %in% c("pl", "pt")) {
       if (is.function(col.regions)) col.regions <- standardColRegions(x)
-      map.types <- as.vector(stats::na.omit(basemaps(col.regions)))
+      # map.types <- as.vector(stats::na.omit(basemaps(col.regions)))
     } else {
       if (is.function(color)) color <- standardColor(x)
-      map.types <- as.vector(stats::na.omit(basemaps(color)))
+      # map.types <- as.vector(stats::na.omit(basemaps(color)))
     }
-  }
+  # }
 
   # if (is.function(color)) color = color(nrow(x))
   # if (is.function(col.regions)) col.regions = col.regions(nrow(x))
@@ -506,16 +474,6 @@ leaflet_sfc <- function(x,
     if (is.function(col.regions)) col.regions <- standardColRegions(x)
   } else {
     if (is.function(color)) color <- standardColor(x)
-  }
-
-  if (is.null(map.types)) {
-    if (getGeometryType(x) %in% c("pl", "pt")) {
-      # if (is.function(col.regions)) col.regions <- standardColRegions(x)
-      map.types <- basemaps(col.regions)
-    } else {
-      # if (is.function(color)) color <- standardColor(x)
-      map.types <- basemaps(color)
-    }
   }
 
   m <- initMap(

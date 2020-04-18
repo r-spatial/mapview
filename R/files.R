@@ -21,7 +21,7 @@ leaflet_tiles = function(x,
     )
   }
 
-  if (is.null(map.types)) map.types = basemaps("#000000")
+  # if (is.null(map.types)) map.types = basemaps("#000000")
 
   m = initMap(map,
               map.types,
@@ -133,9 +133,9 @@ leaflet_file = function(x,
                         viewer.suppress,
                         ...) {
 
-  if (is.null(map.types)) {
-    map.types = basemaps(standardColor())
-  }
+  # if (is.null(map.types)) {
+  #   map.types = basemaps(standardColor())
+  # }
 
   m <- initMap(
     map,
