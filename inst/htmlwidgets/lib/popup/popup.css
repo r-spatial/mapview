@@ -28,6 +28,7 @@ background-color: #A8E6A8;
 #popup .coord td {
 color: #000000;
 background-color: #A8E6A8;
+text-align: right;
 }
 
 .scrollableContainer {
