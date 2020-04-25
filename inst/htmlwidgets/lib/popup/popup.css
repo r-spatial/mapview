@@ -6,27 +6,36 @@ border-collapse: collapse;
 
 #popup td {
 font-size: 1em;
-border: 0px solid #85ADFF;
-background-color: 	#ebf1ff; /*#F0F5FF;
+border: 0 solid #85ADFF;
+/*background-color: 	#ebf1ff;*/
+text-align: right;
 /*padding: 3px 3px 3px 3px;*/
 }
 
-#popup tr.alt td {
-color: #000000;
-background-color: #D1E0FF; /*#D1E0FF;*/
-}
+tr:nth-child(even) {background: #D1E0FF}
+tr:nth-child(odd) {background: #ebf1ff}
 
-#popup tr.coord td {
+/*#popup .alt td {
+color: #000000;
+background-color: #D1E0FF; /*#D1E0FF;
+}*/
+
+#popup .coord th {
 color: #000000;
 background-color: #A8E6A8;
 }
 
-div.scrollableContainer {
+#popup .coord td {
+color: #000000;
+background-color: #A8E6A8;
+}
+
+.scrollableContainer {
 max-height: 300px;
 max-width: 2000px;
 overflow-y: auto;
 overflow-x: auto;
-margin: 0px;
+margin: 0;
 background: transparent;
 }
 
@@ -36,13 +45,13 @@ div::-webkit-scrollbar {
   height: 5px;
 }
 div::-webkit-scrollbar-button {
-  width: 0px;
-  height: 0px;
+  width: 0;
+  height: 0;
 }
 div::-webkit-scrollbar-thumb {
   background: #666666;
-  border: 0px none #ffffff;
-  border-radius: 0px;
+  border: 0 none #ffffff;
+  border-radius: 0;
 }
 div::-webkit-scrollbar-thumb:hover {
   background: #333333;
@@ -52,7 +61,7 @@ div::-webkit-scrollbar-thumb:active {
 }
 div::-webkit-scrollbar-track {
   background: #e1e1e1;
-  border: 0px none #ffffff;
+  border: 0 none #ffffff;
   border-radius: 50px;
 }
 div::-webkit-scrollbar-track:hover {
@@ -82,8 +91,8 @@ div::-webkit-scrollbar-corner {
 	line-height: 1.5;
 	overflow-y: auto;
 	overflow-x: visible;
-	width: <%=width%>px;
-	height: <%=height%>px;
+	/*width: <%=width%>px;
+	height: <%=height%>px;*/
 }
 
 .leaflet-popup-content p {
@@ -146,7 +155,7 @@ div::-webkit-scrollbar-corner {
 	position: absolute;
 	top: 0;
 	right: -20px;
-	padding: 3px 0px 0 0;
+	padding: 3px 0 0 0;
 	text-align: center;
 	width: 18px;
 	height: 14px;
