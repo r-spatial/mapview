@@ -533,6 +533,10 @@ setMethod('mapView', signature(x = 'sf'),
                    " does not contain data \n", call. = FALSE)
             }
 
+            if (length(unique(sf::st_dimension(x))) > 1) {
+              x = sf::st_cast(x)
+            }
+
             if (is.null(zcol) & is.null(legend)) legend = FALSE
             if (!is.null(zcol) && !all(zcol %in% colnames(x))) {
               stop("\n", "at least one of the following columns: \n",
@@ -586,7 +590,7 @@ setMethod('mapView', signature(x = 'sf'),
 
               if (!inherits(x, "list")) {
 
-                leaflet_sf(sf::st_cast(x),
+                leaflet_sf(x,
                            map = map,
                            pane = pane,
                            zcol = zcol,
@@ -738,9 +742,13 @@ setMethod('mapView', signature(x = 'sfc'),
                    " does not contain data \n", call. = FALSE)
             }
 
+            if (length(unique(sf::st_dimension(x))) > 1) {
+              x = sf::st_cast(x)
+            }
+
             if (mapviewGetOption("platform") == "leaflet") {
 
-              leaflet_sfc(sf::st_cast(x),
+              leaflet_sfc(x,
                           map = map,
                           pane = pane,
                           canvas = canvas,
@@ -767,7 +775,7 @@ setMethod('mapView', signature(x = 'sfc'),
 
             } else if (mapviewGetOption("platform") == "leafgl") {
 
-              leafgl_sfc(sf::st_cast(x),
+              leafgl_sfc(x,
                          map = map,
                          pane = pane,
                          canvas = canvas,
@@ -794,7 +802,7 @@ setMethod('mapView', signature(x = 'sfc'),
 
             } else if (mapviewGetOption("platform") == "mapdeck") {
 
-              mapdeck_sfc(sf::st_cast(x),
+              mapdeck_sfc(x,
                           map = map,
                           pane = pane,
                           canvas = canvas,

@@ -255,6 +255,7 @@ leafgl_sf = function(x,
     , popup = popup
     , group = layer.name
     , gl = TRUE
+    , src = TRUE
     , ...
   )
 
@@ -270,6 +271,7 @@ leafgl_sf = function(x,
       , popup = NULL
       , group = layer.name
       , gl = TRUE
+      , src = TRUE
       , ...
     )
   }
@@ -603,7 +605,7 @@ leafgl_sfc = function(x,
 
   x = sf::st_sf(id = 1:length(x),
                 jnk = 1L,
-                geometry = sf::st_zm(x))
+                geometry = x)
 
   if (!native.crs) x <- checkAdjustProjection(x)
 
