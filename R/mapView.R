@@ -271,6 +271,18 @@ setMethod('mapView', signature(x = 'RasterLayer'),
             if (is.null(at)) at <- lattice::do.breaks(
               extendLimits(range(x[], na.rm = TRUE)), 256)
 
+            if (mapviewGetOption("platform") != "leaflet") {
+              warning(
+                sprintf(
+                  "platform '%s' currently doesn't support raster data."
+                  , mapviewGetOption("platform")
+                )
+                , " switching to platform 'leaflet'"
+                , call. = FALSE
+              )
+              mapviewOptions(platform = "leaflet")
+            }
+
             if (mapviewGetOption("platform") == "leaflet") {
               # if (maxpixels < raster::ncell(x)) {
               #   plainview(x,
@@ -355,6 +367,18 @@ setMethod('mapView', signature(x = 'stars'),
                         lattice::do.breaks(extendLimits(range(layer, na.rm = TRUE)), 256)
             }
 
+            if (mapviewGetOption("platform") != "leaflet") {
+              warning(
+                sprintf(
+                  "platform '%s' currently doesn't support stars data."
+                  , mapviewGetOption("platform")
+                )
+                , " switching to platform 'leaflet'"
+                , call. = FALSE
+              )
+              mapviewOptions(platform = "leaflet")
+            }
+
             if (mapviewGetOption("platform") == "leaflet") {
               leaflet_stars(x,
                             band = band,
@@ -416,6 +440,18 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                    viewer.suppress = mapviewGetOption("viewer.suppress"),
                    ...) {
 
+            if (mapviewGetOption("platform") != "leaflet") {
+              warning(
+                sprintf(
+                  "platform '%s' currently doesn't support raster data."
+                  , mapviewGetOption("platform")
+                )
+                , " switching to platform 'leaflet'"
+                , call. = FALSE
+              )
+              mapviewOptions(platform = "leaflet")
+            }
+
             if (mapviewGetOption("platform") == "leaflet") {
               leafletRSB(x,
                          map = map,
@@ -466,6 +502,18 @@ setMethod('mapView', signature(x = 'Satellite'),
                    method = c("bilinear", "ngb"),
                    label = TRUE,
                    ...) {
+
+            if (mapviewGetOption("platform") != "leaflet") {
+              warning(
+                sprintf(
+                  "platform '%s' currently doesn't support Satellite data."
+                  , mapviewGetOption("platform")
+                )
+                , " switching to platform 'leaflet'"
+                , call. = FALSE
+              )
+              mapviewOptions(platform = "leaflet")
+            }
 
             if (mapviewGetOption("platform") == "leaflet") {
               leafletSatellite(x,
