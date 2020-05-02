@@ -156,7 +156,7 @@ getMaxFeatures <- function(x) {
 
 lineWidth <- function(x) {
   lw = switch(getGeometryType(x),
-              "pt" = 2,
+              "pt" = 1,
               "ln" = 2,
               "pl" = 1,
               "gc" = 2)
@@ -309,5 +309,47 @@ is_literally_false = function(x) {
     isFALSE(x)
   } else {
     is.logical(x) && length(x) == 1L && !is.na(x) && !x
+  }
+}
+
+listifyer = function(x, by_row = FALSE) {
+  if (by_row) {
+    strct = sapply(x, function(i) {
+      if (inherits(i, "sfc")) {
+        length(i)
+      }
+      if (inherits(i, "sf")) {
+        nrow(i)
+      }
+    })
+    idx = rep(1:length(x), times = strct)
+    function(arg) {
+      arg_nm = deparse(substitute(arg))
+      arg = unlist(arg)
+      if (length(arg) == 1) {
+        return(rep(arg, length(idx)))
+      }
+      if (length(arg) > 1 && length(arg) <= length(idx)) {
+        splt = split(arg, idx)
+        if (arg_nm == "popup") {
+          splt = sapply(splt, function(i) {
+            attr(i, "popup") = "leafpop"
+            return(i)
+          })
+        }
+        return(splt)
+      }
+    }
+  } else {
+    idx = length(x)
+    function(arg) {
+      if (is.function(arg)) {
+        return(replicate(idx, arg))
+      }
+      if (is.list(arg) && length(arg) == idx) {
+        return(arg)
+      }
+      return(rep(list(arg), idx))
+    }
   }
 }

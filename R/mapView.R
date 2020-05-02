@@ -588,55 +588,81 @@ setMethod('mapView', signature(x = 'sf'),
             if (is.null(zcol) & is.null(legend)) legend = FALSE
             if (!is.null(zcol) && !all(zcol %in% colnames(x))) {
               stop("\n", "at least one of the following columns: \n",
-                   paste(zcol, collapse = ", "), "\nnot found in ",
+                   "'", paste(zcol, collapse = "', '"), "' \nnot found in ",
                    deparse(substitute(x, env = parent.frame())),
                    call. = FALSE)
             }
 
-            if (mapviewGetOption("platform") == "leaflet") {
-              if (is.character(burst)) {
-                zcol = burst
-                burst = TRUE
+            ## do we burst?
+            # zcol = unique(unlist(zcol))
+
+            if (is.character(burst)) {
+              zcol = burst
+              burst = TRUE
+            }
+
+            if (length(zcol) > 1) {
+              x = x[, zcol]
+              burst = TRUE
+            }
+
+            if (burst) {
+              by_row = FALSE
+              # special treatment for row based bursting
+              if (!is.null(zcol) && burst && length(zcol) == 1) {
+                color = vectorColors(x = x,
+                                     zcol = zcol,
+                                     colors = color,
+                                     at = at,
+                                     na.color = na.color)
+                if (length(color) > 1)
+                  color = color[order(x[[zcol]])]
+                col.regions = vectorColRegions(x = x,
+                                               zcol = zcol,
+                                               col.regions = col.regions,
+                                               at = at,
+                                               na.color = na.color)
+                if (length(col.regions) > 1)
+                  col.regions = col.regions[order(x[[zcol]])]
+
+                popup = leafpop::popupTable(x)[order(x[[zcol]])]
+                label = makeLabels(x, zcol)[order(x[[zcol]])]
+                by_row = TRUE
               }
 
-              if (length(zcol) > 1) {
-                x = x[, zcol]
-                burst = TRUE
-              }
+              # for whatever reason we need to evaluate a few things here...??
+              popup = popup
+              lwd = lineWidth(x)
+              alpha.regions = regionOpacity(x)
+              x <- burst(x = x,
+                         zcol = zcol,
+                         burst = burst)
+            }
 
-              # if (inherits(sf::st_geometry(x), "sfc_GEOMETRY")) {
-              #   x = split(x, f = sf::st_dimension(sf::st_geometry(x)))
-              # }
-              if (burst) {
-                tmp <- burst(x = x,
-                             zcol = zcol,
-                             burst = burst,
-                             color = color,
-                             col.regions = col.regions,
-                             at = at,
-                             na.color = na.color,
-                             popup = popup,
-                             alpha = alpha,
-                             alpha.regions = alpha.regions,
-                             na.alpha = na.alpha,
-                             legend = legend)
-
-                lwd = lwd
-
-                if (is.function(tmp)) {
-                  tmp = tmp()
-                  x <- tmp$obj
-                  color <- tmp$color
-                  col.regions <- tmp$col.regions
-                  popup <- tmp$popup
-                  label <- tmp$labs
-                  # alpha = tmp$alpha
-                  # alpha.regions = tmp$alpha.regions
-                  zcol = tmp$zcol #as.list(names(x))
-                }
-              }
-
-              if (!inherits(x, "list")) {
+            if (inherits(x, "list")) {
+              mapView(x,
+                      map = map,
+                      zcol = zcol,
+                      burst = FALSE,
+                      color = color,
+                      col.regions = col.regions,
+                      popup = popup,
+                      label = label,
+                      homebutton = homebutton,
+                      legend = legend,
+                      map.types = map.types,
+                      layer.name = layer.name,
+                      alpha = alpha,
+                      alpha.regions = alpha.regions,
+                      na.alpha = na.alpha,
+                      canvas = canvas,
+                      viewer.suppress = viewer.suppress,
+                      pane = pane,
+                      cex = cex,
+                      lwd = lwd,
+                      by_row = by_row,
+                      ...)
+            } else if (mapviewGetOption("platform") == "leaflet") {
 
                 leaflet_sf(x,
                            map = map,
@@ -665,31 +691,6 @@ setMethod('mapView', signature(x = 'sf'),
                            canvas = canvas,
                            viewer.suppress = viewer.suppress,
                            ...)
-
-              } else {
-
-                mapView(x,
-                        zcol = zcol,
-                        burst = FALSE,
-                        color = color,
-                        col.regions = col.regions,
-                        popup = popup,
-                        label = label,
-                        homebutton = homebutton,
-                        legend = legend,
-                        map.types = map.types,
-                        layer.name = layer.name,
-                        alpha = alpha,
-                        alpha.regions = alpha.regions,
-                        na.alpha = na.alpha,
-                        canvas = canvas,
-                        viewer.suppress = viewer.suppress,
-                        pane = pane,
-                        cex = cex,
-                        lwd = lwd,
-                        ...)
-
-              }
 
             } else if (mapviewGetOption("platform") == "leafgl") {
 
@@ -1194,15 +1195,55 @@ setMethod('mapView', signature(x = 'NULL'),
 setMethod('mapView', signature(x = 'list'),
           function(x,
                    map = NULL,
+                   zcol = NULL,
+                   burst = FALSE,
+                   color = mapviewGetOption("vector.palette"),
+                   col.regions = mapviewGetOption("vector.palette"),
+                   at = NULL,
+                   na.color = mapviewGetOption("na.color"),
+                   cex = 6,
+                   lwd = lapply(x, lineWidth),
+                   alpha = 0.9,
+                   alpha.regions = lapply(x, regionOpacity),
+                   na.alpha = lapply(x, regionOpacity),
+                   map.types = mapviewGetOption("basemaps"),
+                   verbose = mapviewGetOption("verbose"),
+                   popup = lapply(x, leafpop::popupTable),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
+                   label = lapply(x, makeLabels),
+                   legend = mapviewGetOption("legend"),
+                   homebutton = TRUE,
+                   native.crs = FALSE,
                    ...) {
+
+            if ("by_row" %in% names(list(...))) {
+              listify = listifyer(x, by_row = list(...)$by_row)
+            } else {
+              listify = listifyer(x)
+            }
 
             lyrnms = makeListLayerNames(x, layer.name)
 
             m <- Reduce("+", lapply(seq(x), function(i) {
               mapView(x = x[[i]],
+                      map = map,
+                      color = listify(color)[[i]],
+                      col.regions = listify(col.regions)[[i]],
+                      at = listify(at)[[i]],
+                      na.color = listify(na.color)[[i]],
+                      cex = listify(cex)[[i]],
+                      lwd = listify(lwd)[[i]],
+                      alpha = listify(alpha)[[i]],
+                      alpha.regions = listify(alpha.regions)[[i]],
+                      map.types = map.types,
+                      verbose = verbose,
+                      popup = listify(popup)[[i]],
                       layer.name = lyrnms[[i]],
+                      label = listify(label)[[i]],
+                      legend = listify(legend)[[i]],
+                      homebutton = listify(homebutton)[[i]],
+                      native.crs = native.crs,
                       ...)
             }))@map
 

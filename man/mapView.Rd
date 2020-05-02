@@ -273,7 +273,25 @@
 \S4method{mapView}{list}(
   x,
   map = NULL,
+  zcol = NULL,
+  burst = FALSE,
+  color = mapviewGetOption("vector.palette"),
+  col.regions = mapviewGetOption("vector.palette"),
+  at = NULL,
+  na.color = mapviewGetOption("na.color"),
+  cex = 6,
+  lwd = lapply(x, lineWidth),
+  alpha = 0.9,
+  alpha.regions = lapply(x, regionOpacity),
+  na.alpha = lapply(x, regionOpacity),
+  map.types = mapviewGetOption("basemaps"),
+  verbose = mapviewGetOption("verbose"),
+  popup = lapply(x, leafpop::popupTable),
   layer.name = deparse(substitute(x, env = parent.frame())),
+  label = lapply(x, makeLabels),
+  legend = mapviewGetOption("legend"),
+  homebutton = TRUE,
+  native.crs = FALSE,
   ...
 )
 
