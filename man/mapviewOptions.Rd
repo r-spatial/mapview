@@ -39,7 +39,8 @@ mapviewOptions(
   alpha,
   default = FALSE,
   console = TRUE,
-  watch = FALSE
+  watch = FALSE,
+  fgb
 )
 
 mapviewGetOption(param)

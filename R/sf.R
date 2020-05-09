@@ -84,21 +84,15 @@ leaflet_sf <- function(x,
   if ("gl" %in% names(list(...)) && isTRUE(list(...)$gl)) {
     if (inherits(sf::st_geometry(x), "sfc_MULTIPOLYGON")) {
       x = suppressWarnings(sf::st_cast(x, "POLYGON"))
-      if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
-        popup = leafpop::popupTable(x)
-      }
     }
     if (inherits(sf::st_geometry(x), "sfc_MULTILINESTRING")) {
       x = suppressWarnings(sf::st_cast(x, "LINESTRING"))
-      if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
-        popup = leafpop::popupTable(x)
-      }
     }
     if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT")) {
       x = suppressWarnings(sf::st_cast(x, "POINT"))
-      if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
-        popup = leafpop::popupTable(x)
-      }
+    }
+    if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
+      popup = leafpop::popupTable(x)
     }
   }
 
@@ -499,38 +493,64 @@ leaflet_sfc <- function(x,
     pane = NULL
   }
 
-  m <- leafem::addFeatures(m,
-                           data = x,
-                           pane = pane,
-                           radius = cex,
-                           weight = lwd,
-                           opacity = alpha,
-                           fillOpacity = alpha.regions,
-                           color = color,
-                           fillColor = col.regions,
-                           popup = popup,
-                           label = label,
-                           group = layer.name,
-                           highlightOptions = highlight,
-                           native.crs = native.crs,
-                           ...)
-
-  if ("gl" %in% names(list(...)) &
-      isTRUE(list(...)$gl) &
-      inherits(sf::st_geometry(x), "sfc_POLYGON") &
-      lwd > 0) {
-    m = leafem::addFeatures(
-      m
-      , data = suppressWarnings(sf::st_cast(x, "LINESTRING"))
-      , weight = lwd / 2
+  if (mapviewGetOption("fgb")) {
+    fl = tempfile(fileext = ".fgb")
+    sf::st_write(
+      obj = x
+      , dsn = fl
+      , driver = "FlatGeobuf"
+      , append = FALSE
+      , quiet = TRUE
+    )
+    m = leafem::addFgb(
+      map = m
+      , file = fl
+      , radius = cex
+      , weight = lwd
       , opacity = alpha
+      , fillOpacity = alpha.regions
       , color = color
-      , legend = FALSE
+      , fillColor = col.regions
       , popup = NULL
+      , label = NULL
       , group = layer.name
-      , gl = TRUE
+      , fill = ifelse(getGeometryType(x) == "ln", FALSE, TRUE)
       , ...
     )
+  } else {
+    m <- leafem::addFeatures(m,
+                             data = x,
+                             pane = pane,
+                             radius = cex,
+                             weight = lwd,
+                             opacity = alpha,
+                             fillOpacity = alpha.regions,
+                             color = color,
+                             fillColor = col.regions,
+                             popup = popup,
+                             label = label,
+                             group = layer.name,
+                             highlightOptions = highlight,
+                             native.crs = native.crs,
+                             ...)
+
+    if ("gl" %in% names(list(...)) &
+        isTRUE(list(...)$gl) &
+        inherits(sf::st_geometry(x), "sfc_POLYGON") &
+        lwd > 0) {
+      m = leafem::addFeatures(
+        m
+        , data = suppressWarnings(sf::st_cast(x, "LINESTRING"))
+        , weight = lwd / 2
+        , opacity = alpha
+        , color = color
+        , legend = FALSE
+        , popup = NULL
+        , group = layer.name
+        , gl = TRUE
+        , ...
+      )
+    }
   }
 
   if (!is.null(map)) m = updateOverlayGroups(m, layer.name)
