@@ -352,8 +352,12 @@ luminence <- function(color) {
 mapviewPalette <- function(name = "mapviewVectorColors") {
 
   switch(name,
-         mapviewRasterColors = viridisLite::inferno,
-         mapviewVectorColors = viridisLite::viridis,
+         mapviewRasterColors = function(n) {
+           grDevices::hcl.colors(n, palette = "Inferno")
+         },
+         mapviewVectorColors = function(n) {
+           grDevices::hcl.colors(n, palette = "viridis")
+         },
          mapviewSpectralColors =
            grDevices::colorRampPalette(c("#ebeaf7", "#92b9db",
                                          "#7db7c4", "#7dbbaa",

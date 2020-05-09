@@ -36,8 +36,8 @@ In detail, these are:
 * `maxpolygons` - the maximum number of polygons to allow for polygon rendering using standard **leaflet** (package) implementation. If an object has more features than this threshold, special canvas shader rendering is used. Note that this will result in less flexible rendering as many of the standard arguments will not be available (e.g. color mapping). -> default 30k
 * `maxpoints` - as for `maxpolygons` but for point features -> default 20k
 * `maxlines` - as for `maxpolygons` but for line features -> default 30k
-* `raster.palette` - the default palette used for rendering raster images -> default `viridisLite::inferno`
-* `vector.palette` - the default palette used for rendering vector features -> default `viridisLite::viridis`
+* `raster.palette` - the default palette used for rendering raster images -> default `hcl.colors(n, palette = "Inferno")`
+* `vector.palette` - the default palette used for rendering vector features -> default `hcl.colors(n, palette = "viridis")`
 * `verbose` - whether to print more verbose information to the console during the rendering -> default `FALSE`
 * `na.color` - the color to be used for rendering NA values -> default `#BEBEBE80`
 * `legend` - whether to plot a legend -> default `FALSE`

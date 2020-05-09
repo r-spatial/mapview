@@ -63,7 +63,7 @@ URL: https://github.com/r-spatial/mapview
 BugReports: https://github.com/r-spatial/mapview/issues
 Depends:
     methods,
-    R (>= 2.10)
+    R (>= 3.6.0)
 Imports:
     base64enc,
     htmltools,
@@ -78,7 +78,6 @@ Imports:
     scales (>= 0.2.5),
     sf,
     sp,
-    viridisLite,
     webshot
 Suggests:
     covr,
