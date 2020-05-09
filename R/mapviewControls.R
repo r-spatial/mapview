@@ -158,7 +158,7 @@ lineWidth <- function(x) {
   lw = switch(getGeometryType(x),
               "pt" = 1,
               "ln" = 2,
-              "pl" = 1,
+              "pl" = 0.5,
               "gc" = 2)
   return(lw)
 }
