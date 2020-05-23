@@ -96,33 +96,67 @@ leaflet_sf <- function(x,
     }
   }
 
-  leaflet_sfc(sf::st_geometry(x),
-              map = map,
-              pane = pane,
-              zcol = zcol,
-              color = clrs,
-              col.regions = clrs.regions,
-              at = at,
-              na.color = na.color,
-              cex = cex,
-              lwd = lwd,
-              alpha = alpha,
-              alpha.regions = alpha.regions,
-              map.types = map.types,
-              verbose = verbose,
-              popup = popup,
-              layer.name = layer.name,
-              label = label,
-              legend = legend,
-              legend.opacity = legend.opacity,
-              homebutton = homebutton,
-              native.crs = native.crs,
-              highlight = highlight,
-              maxpoints = maxpoints,
-              attributes = sf2DataFrame(x, drop_sf_column = TRUE),
-              canvas = canvas,
-              viewer.suppress = viewer.suppress,
-              ...)
+  if (mapviewGetOption("fgb")) {
+    sfFgb(
+      x = x
+      , map = map
+      , pane = pane
+      , zcol = zcol
+      , color = clrs
+      , col.regions = clrs.regions
+      , at = at
+      , na.color = na.color
+      , cex = cex
+      , lwd = lwd
+      , alpha = alpha
+      , alpha.regions = alpha.regions
+      , map.types = map.types
+      , verbose = verbose
+      , popup = popup
+      , layer.name = layer.name
+      , label = label
+      , legend = legend
+      , legend.opacity = legend.opacity
+      , homebutton = homebutton
+      , native.crs = native.crs
+      , highlight = highlight
+      , maxpoints = maxpoints
+      , attributes = sf2DataFrame(x, drop_sf_column = TRUE)
+      , canvas = canvas
+      , viewer.suppress = viewer.suppress
+      , ...
+    )
+  } else {
+    leaflet_sfc(
+      sf::st_geometry(x)
+      , map = map
+      , pane = pane
+      , zcol = zcol
+      , color = clrs
+      , col.regions = clrs.regions
+      , at = at
+      , na.color = na.color
+      , cex = cex
+      , lwd = lwd
+      , alpha = alpha
+      , alpha.regions = alpha.regions
+      , map.types = map.types
+      , verbose = verbose
+      , popup = popup
+      , layer.name = layer.name
+      , label = label
+      , legend = legend
+      , legend.opacity = legend.opacity
+      , homebutton = homebutton
+      , native.crs = native.crs
+      , highlight = highlight
+      , maxpoints = maxpoints
+      , attributes = sf2DataFrame(x, drop_sf_column = TRUE)
+      , canvas = canvas
+      , viewer.suppress = viewer.suppress
+      , ...
+    )
+  }
 
 }
 
