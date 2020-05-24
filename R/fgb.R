@@ -56,7 +56,7 @@ sfFgb = function(x,
   if (length(cex) > 1 &&
       length(cex) == nrow(x) &&
       !(length(unique(cex)) == 1)) {
-    x$cex = cex
+    x$radius = cex
     cex = NULL
   } else {
     cex = unique(cex)
@@ -66,7 +66,7 @@ sfFgb = function(x,
   if (length(lwd) > 1 &&
       length(lwd) == nrow(x) &&
       !(length(unique(lwd)) == 1)) {
-    x$lwd = lwd
+    x$weight = lwd
     lwd = NULL
   } else {
     lwd = unique(lwd)
