@@ -93,6 +93,24 @@ sfFgb = function(x,
     alpha.regions = unique(alpha.regions)
   }
 
+  ## label
+  if (is.null(label)) {
+    if (is.null(zcol)) {
+      x$featureId = 1:nrow(x)
+      label = "featureId"
+    } else {
+      label = zcol
+    }
+  } else {
+    if (length(label) > 1 &&
+        length(label) == nrow(x) &&
+        !(length(unique(label)) == 1)) {
+      x$label = label
+      label = NULL
+    }
+    label = "label"
+  }
+
   fl = tempfile(fileext = ".fgb")
   sf::st_write(
     obj = x
@@ -121,7 +139,7 @@ sfFgb = function(x,
     , color = color
     , fillColor = col.regions
     , popup = popup_columns
-    , label = NULL
+    , label = label
     , group = layer.name
     , fill = ifelse(getGeometryType(x) == "ln", FALSE, TRUE)
     , className = "mapview-popup"
