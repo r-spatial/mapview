@@ -27,11 +27,7 @@ leaflet_sf <- function(x,
                        maxpoints,
                        ...) {
 
-  if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT"))
-    x = suppressWarnings(sf::st_cast(x, "POINT"))
-
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
-  cex <- circleRadius(x, cex, ...)
   if (is.null(zcol) & ncol(sf2DataFrame(x, drop_sf_column = TRUE)) == 1) {
     zcol = colnames(sf2DataFrame(x, drop_sf_column = TRUE))[1]
     label = makeLabels(x, zcol)
@@ -62,48 +58,14 @@ leaflet_sf <- function(x,
                             layer.name = layer.name)
   }
 
-  clrs <- vectorColors(x = x,
-                       zcol = zcol,
-                       colors = color,
-                       at = at,
-                       na.color = na.color)
-  clrs.regions <- vectorColRegions(x = x,
-                                   zcol = zcol,
-                                   col.regions = col.regions,
-                                   at = at,
-                                   na.color = na.color)
-  if (!is.null(zcol) & !is.null(na.alpha)) {
-    na.alpha = ifelse(na.alpha == 0, 0.001, na.alpha)
-    if (length(alpha) != nrow(x)) alpha = rep(alpha, nrow(x))
-    alpha[is.na(x[[zcol]])] = na.alpha #[is.na(x[[zcol]])]
-    if (length(alpha.regions) != nrow(x)) alpha.regions = rep(alpha.regions, nrow(x))
-    alpha.regions[is.na(x[[zcol]])] = na.alpha #[is.na(x[[zcol]])]
-  }
-
-  ## if gl we need to cast MULTI* and redo the popup if it's a popupTable
-  if ("gl" %in% names(list(...)) && isTRUE(list(...)$gl)) {
-    if (inherits(sf::st_geometry(x), "sfc_MULTIPOLYGON")) {
-      x = suppressWarnings(sf::st_cast(x, "POLYGON"))
-    }
-    if (inherits(sf::st_geometry(x), "sfc_MULTILINESTRING")) {
-      x = suppressWarnings(sf::st_cast(x, "LINESTRING"))
-    }
-    if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT")) {
-      x = suppressWarnings(sf::st_cast(x, "POINT"))
-    }
-    if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
-      popup = leafpop::popupTable(x)
-    }
-  }
-
   if (mapviewGetOption("fgb")) {
     sfFgb(
       x = x
       , map = map
       , pane = pane
       , zcol = zcol
-      , color = clrs
-      , col.regions = clrs.regions
+      , color = color
+      , col.regions = col.regions
       , at = at
       , na.color = na.color
       , cex = cex
@@ -127,6 +89,58 @@ leaflet_sf <- function(x,
       , ...
     )
   } else {
+
+    if (isTRUE(popup)) popup = leafpop::popupTable(x)
+    if (inherits(popup, "character") &&
+        popup %in% colnames(x)) {
+      popup = leafpop::popupTable(x, zcol = popup)
+    }
+
+    if (is.null(label)) label = makeLabels(x)
+    if (inherits(label, "character") &&
+        label %in% colnames(x)) {
+      label = makeLabels(x, label)
+    }
+
+    if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT"))
+      x = suppressWarnings(sf::st_cast(x, "POINT"))
+
+    cex <- circleRadius(x, cex, ...)
+
+    clrs <- vectorColors(x = x,
+                         zcol = zcol,
+                         colors = color,
+                         at = at,
+                         na.color = na.color)
+    clrs.regions <- vectorColRegions(x = x,
+                                     zcol = zcol,
+                                     col.regions = col.regions,
+                                     at = at,
+                                     na.color = na.color)
+    if (!is.null(zcol) & !is.null(na.alpha)) {
+      na.alpha = ifelse(na.alpha == 0, 0.001, na.alpha)
+      if (length(alpha) != nrow(x)) alpha = rep(alpha, nrow(x))
+      alpha[is.na(x[[zcol]])] = na.alpha #[is.na(x[[zcol]])]
+      if (length(alpha.regions) != nrow(x)) alpha.regions = rep(alpha.regions, nrow(x))
+      alpha.regions[is.na(x[[zcol]])] = na.alpha #[is.na(x[[zcol]])]
+    }
+
+    ## if gl we need to cast MULTI* and redo the popup if it's a popupTable
+    if ("gl" %in% names(list(...)) && isTRUE(list(...)$gl)) {
+      if (inherits(sf::st_geometry(x), "sfc_MULTIPOLYGON")) {
+        x = suppressWarnings(sf::st_cast(x, "POLYGON"))
+      }
+      if (inherits(sf::st_geometry(x), "sfc_MULTILINESTRING")) {
+        x = suppressWarnings(sf::st_cast(x, "LINESTRING"))
+      }
+      if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT")) {
+        x = suppressWarnings(sf::st_cast(x, "POINT"))
+      }
+      if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
+        popup = leafpop::popupTable(x)
+      }
+    }
+
     leaflet_sfc(
       sf::st_geometry(x)
       , map = map
@@ -533,6 +547,7 @@ leaflet_sfc <- function(x,
       obj = x
       , dsn = fl
       , driver = "FlatGeobuf"
+      , layer_options = c("SPATIAL_INDEX=NO")
       , append = FALSE
       , quiet = TRUE
     )
@@ -552,6 +567,9 @@ leaflet_sfc <- function(x,
       , ...
     )
   } else {
+    if (is_literally_false(label)) {
+      label = NULL
+    }
     m <- leafem::addFeatures(m,
                              data = x,
                              pane = pane,
@@ -622,6 +640,17 @@ leaflet_sfc <- function(x,
 
   if (is.function(legend)) m <- legend(m)
   m = removeDuplicatedMapDependencies(m)
+
+  bb = unname(sf::st_bbox(x))
+
+  m = leaflet::fitBounds(
+    m
+    , bb[1]
+    , bb[2]
+    , bb[3]
+    , bb[4]
+  )
+
   out <- new("mapview", object = list(x), map = m)
 
   return(out)

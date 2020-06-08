@@ -26,10 +26,26 @@ sfFgb = function(x,
                  viewer.suppress,
                  ...) {
 
-  popup_columns = colnames(sf::st_drop_geometry(x))
+  if (is_literally_false(popup)) popup = NULL
+  if (!(is.null(attr(popup, "popup"))) &&
+      attr(popup, "popup") == "leafpop") {
+    popup = TRUE
+  }
 
   if (!native.crs) x <- checkAdjustProjection(x)
   if (is.na(sf::st_crs(x)$proj4string)) native.crs <- TRUE
+
+  ### color needs work when we have chromajs working in leafem::addFgb
+  color <- vectorColors(x = x,
+                        zcol = zcol,
+                        colors = color,
+                        at = at,
+                        na.color = na.color)
+  col.regions <- vectorColRegions(x = x,
+                                  zcol = zcol,
+                                  col.regions = col.regions,
+                                  at = at,
+                                  na.color = na.color)
 
   ## fillColor
   if (length(col.regions) > 1 &&
@@ -52,63 +68,76 @@ sfFgb = function(x,
     color = unique(color)
   }
 
+  scaleList = list()
+
   ## size
-  if (length(cex) > 1 &&
-      length(cex) == nrow(x) &&
-      !(length(unique(cex)) == 1)) {
-    x$radius = cex
-    cex = NULL
-  } else {
-    cex = unique(cex)
+  if (inherits(cex, "character") &&
+      cex %in% colnames(x) &&
+      is.numeric(x[[cex]])) {
+    scaleList = utils::modifyList(
+      scaleList
+      , list(
+        radius = list(
+          to = c(3, 15)
+          , from = range(x[[cex]], na.rm = TRUE)
+        )
+      )
+    )
   }
 
   ## width
-  if (length(lwd) > 1 &&
-      length(lwd) == nrow(x) &&
-      !(length(unique(lwd)) == 1)) {
-    x$weight = lwd
-    lwd = NULL
-  } else {
-    lwd = unique(lwd)
+  if (inherits(lwd, "character") &&
+      lwd %in% colnames(x) &&
+      is.numeric(x[[lwd]])) {
+    scaleList = utils::modifyList(
+      scaleList
+      , list(
+        weight = list(
+          to = c(1, 10)
+          , from = range(x[[lwd]], na.rm = TRUE)
+        )
+      )
+    )
   }
 
   ## opacity
-
-  if (length(alpha) > 1 &&
-      length(alpha) == nrow(x) &&
-      !(length(unique(alpha)) == 1)) {
-    x$opacity = alpha
-    alpha = NULL
-  } else {
-    alpha = unique(alpha)
+  if (inherits(alpha, "character") &&
+      alpha %in% colnames(x) &&
+      is.numeric(x[[alpha]])) {
+    scaleList = utils::modifyList(
+      scaleList
+      , list(
+        opacity = list(
+          to = c(0.1, 1)
+          , from = range(x[[alpha]], na.rm = TRUE)
+        )
+      )
+    )
   }
 
   ## fillOpacity
-  if (length(alpha.regions) > 1 &&
-      length(alpha.regions) == nrow(x) &&
-    !(length(unique(alpha.regions)) == 1)) {
-    x$fillOpacity = alpha.regions
-    alpha.regions = NULL
-  } else {
-    alpha.regions = unique(alpha.regions)
+  if (inherits(alpha.regions, "character") &&
+      alpha.regions %in% colnames(x) &&
+      is.numeric(x[[alpha.regions]])) {
+    scaleList = utils::modifyList(
+      scaleList
+      , list(
+        fillOpacity = list(
+          to = c(0.1, 1)
+          , from = range(x[[alpha.regions]], na.rm = TRUE)
+        )
+      )
+    )
   }
 
   ## label
   if (is.null(label)) {
     if (is.null(zcol)) {
-      x$featureId = 1:nrow(x)
-      label = "featureId"
+      x$mvFeatureId = 1:nrow(x)
+      label = "mvFeatureId"
     } else {
       label = zcol
     }
-  } else {
-    if (length(label) > 1 &&
-        length(label) == nrow(x) &&
-        !(length(unique(label)) == 1)) {
-      x$label = label
-      label = NULL
-    }
-    label = "label"
   }
 
   fl = tempfile(fileext = ".fgb")
@@ -116,6 +145,7 @@ sfFgb = function(x,
     obj = x
     , dsn = fl
     , driver = "FlatGeobuf"
+    , layer_options = c("SPATIAL_INDEX=NO")
     , append = FALSE
     , quiet = TRUE
   )
@@ -138,11 +168,13 @@ sfFgb = function(x,
     , fillOpacity = alpha.regions
     , color = color
     , fillColor = col.regions
-    , popup = popup_columns
+    , popup = popup
     , label = label
     , group = layer.name
     , fill = ifelse(getGeometryType(x) == "ln", FALSE, TRUE)
     , className = "mapview-popup"
+    , scale = scaleList
+    , ...
   )
 
   if (!is.null(map)) m = updateOverlayGroups(m, layer.name)

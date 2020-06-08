@@ -76,9 +76,13 @@ if ( !isGeneric('mapView') ) {
 #'   later on, this is what you should refer to in \code{group}.
 #' @param homebutton logical, whether to add a zoom-to-layer button to the map.
 #'   Defaults to TRUE
-#' @param popup a \code{list} of HTML strings with the popup contents, usually
-#'   created from \code{\link[leafpop]{popupTable}}. See \code{\link{addControl}} for
-#'   details.
+#' @param popup either \code{logical}, \code{character vector} or a \code{list}
+#'   of HTML strings with the popup contents, usually created from
+#'   \code{\link[leafpop]{popupTable}}. See \code{\link{addControl}} for details.
+#'   If \code{FALSE} or \code{NULL} no popups will be created, if \code{TRUE}
+#'   a table with all feature attributes/columns will be created.
+#'   If a \code{character vector} of column names, the table will only show the
+#'   respective column entries.
 #' @param label For vector data (sf/sp) a character vector of labels to be
 #'   shown on mouseover. See \code{\link{addControl}} for details. For raster
 #'   data (Raster*/stars) a logical indicating whether to add image query.
@@ -565,9 +569,9 @@ setMethod('mapView', signature(x = 'sf'),
                    na.alpha = regionOpacity(x),
                    map.types = mapviewGetOption("basemaps"),
                    verbose = mapviewGetOption("verbose"),
-                   popup = leafpop::popupTable(x),
+                   popup = TRUE,
                    layer.name = NULL,
-                   label = makeLabels(x, zcol),
+                   label = zcol,
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
                    homebutton = TRUE,

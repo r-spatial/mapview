@@ -148,9 +148,9 @@
   na.alpha = regionOpacity(x),
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"),
-  popup = leafpop::popupTable(x),
+  popup = TRUE,
   layer.name = NULL,
-  label = makeLabels(x, zcol),
+  label = zcol,
   legend = mapviewGetOption("legend"),
   legend.opacity = 1,
   homebutton = TRUE,
@@ -483,9 +483,13 @@ of the column(s) to be used for defining the size of circles}
 
 \item{na.alpha}{opacity of missing values}
 
-\item{popup}{a \code{list} of HTML strings with the popup contents, usually
-created from \code{\link[leafpop]{popupTable}}. See \code{\link{addControl}} for
-details.}
+\item{popup}{either \code{logical}, \code{character vector} or a \code{list}
+of HTML strings with the popup contents, usually created from
+\code{\link[leafpop]{popupTable}}. See \code{\link{addControl}} for details.
+If \code{FALSE} or \code{NULL} no popups will be created, if \code{TRUE}
+a table with all feature attributes/columns will be created.
+If a \code{character vector} of column names, the table will only show the
+respective column entries.}
 
 \item{highlight}{either \code{FALSE}, \code{NULL} or a list of styling
 options for feature highlighting on mouse hover.
