@@ -75,7 +75,7 @@ mapviewWatcher = function(env = .GlobalEnv, ...) {
     spatdat_lst = getSpatialData(env = env)
     if (length(spatdat_lst) > 0 && !identical(spatdat_lst, last_value)) {
       m = mapview::mapView(spatdat_lst)
-      mapview::mapshot(m, htmlFile)
+      mapview::mapshot(m, htmlFile, selfcontained = FALSE)
 
       viewer <- getOption("viewer")
       if (!is.null(viewer)) {
