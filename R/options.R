@@ -92,6 +92,14 @@
 #' @param watch whether to watch a certain environment and automatically
 #' render cahnges to the list of spatial data in that environment. See
 #' \link{mapviewWatcher} for details.
+#' @param fgb if set to \code{TRUE} mapview will not use 'clasical' leaflet/htmlwidgets
+#' rendering (which embeds data directly in the html) but leverage the speed of
+#' a file format called flatgeobuf (hence, fgb). This has the added benefit that
+#' data is being streamed onto the map, which makes for a pleasant user experience.
+#' It should also help to visualise larger data sets due to a reduced memeory footprint.
+#' A note of warning, data will be attached to the html
+#' via a <src=...> call which means that the html is not selfcontained anymore
+#' (so it cannot be used without an accompanying folder).
 #'
 #' @author
 #' Tim Appelhans

@@ -38,11 +38,11 @@ setMethod("+",
               # if (length(
               #   mapview:::getCallEntryFromMap(e1@map, "addProviderTiles")
               # ) == 0) {
-                idx = mapview:::getCallEntryFromMap(e2@map, "addProviderTiles")
+                idx = getCallEntryFromMap(e2@map, "addProviderTiles")
                 if (length(idx) > 0) {
                   e2@map$x$calls[idx] = NULL
                 }
-                idx = mapview:::getCallEntryFromMap(e2@map, "addLayersControl")
+                idx = getCallEntryFromMap(e2@map, "addLayersControl")
                 if (length(idx) > 0) {
                   e2@map$x$calls[idx][[1]]$args[[1]] = character(0)
                 }
