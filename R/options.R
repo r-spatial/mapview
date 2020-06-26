@@ -90,7 +90,7 @@
 #' of the column(s) to be used for defining the size of circles.
 #' @param alpha opacity of lines.
 #' @param watch whether to watch a certain environment and automatically
-#' render cahnges to the list of spatial data in that environment. See
+#' render changes to the list of spatial data in that environment. See
 #' \link{mapviewWatcher} for details.
 #' @param fgb if set to \code{TRUE} mapview will not use 'clasical' leaflet/htmlwidgets
 #' rendering (which embeds data directly in the html) but leverage the speed of

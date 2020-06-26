@@ -159,7 +159,7 @@ of the column(s) to be used for defining the size of circles.}
 \item{console}{logical. Should the options be printed to the console}
 
 \item{watch}{whether to watch a certain environment and automatically
-render cahnges to the list of spatial data in that environment. See
+render changes to the list of spatial data in that environment. See
 \link{mapviewWatcher} for details.}
 
 \item{fgb}{if set to \code{TRUE} mapview will not use 'clasical' leaflet/htmlwidgets
