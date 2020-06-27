@@ -167,7 +167,7 @@ mapviewLegend <- function(values,
 
     if (inherits(values, "factor")) {
       if (length(values) == length(colors)) {
-        values = unique(droplevels(values))
+        values = factor(unique(droplevels(values)), levels = unique(droplevels(values)))
         colors = unique(colors)[as.numeric(values)]
       } else if (length(levels(values)) >= length(unique(colors))) {
         values = unique(values)
@@ -180,7 +180,9 @@ mapviewLegend <- function(values,
 
       if (length(colors) > length(values)) {
         colors = colors[1:length(values)]
-      } else if (length(colors) < length(values)) {
+      }
+
+      if (length(colors) < length(values)) {
         colors = rep_len(colors, length(values))
       }
 
