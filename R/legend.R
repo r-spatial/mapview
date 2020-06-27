@@ -5,8 +5,7 @@ factorPalette <- function(palette,
                           ...) {
   leaflet::colorFactor(palette = palette,
                        domain = domain,
-                       na.color = na.color,
-                       ...)
+                       na.color = na.color)
 }
 
 factorLegend <- function(map,
@@ -14,7 +13,8 @@ factorLegend <- function(map,
                          values,
                          colors,
                          na.color,
-                         layer.name) {
+                         layer.name,
+                         ...) {
   pal <- factorPalette(palette = zcolColors(x = values,
                                             colors = colors,
                                             na.color = na.color,
@@ -28,7 +28,8 @@ factorLegend <- function(map,
               pal = pal,
               values = values,
               opacity = 1,
-              title = ifelse(length(values) > 1, layer.name, ""))
+              title = ifelse(length(values) > 1, layer.name, ""),
+              ...)
 
 }
 
@@ -68,8 +69,7 @@ numericPalette <- function(palette,
                            ...) {
   leaflet::colorNumeric(palette = palette,
                         domain = domain,
-                        na.color = na.color,
-                        ...)
+                        na.color = na.color)
 }
 
 binPalette <- function(palette,
@@ -80,8 +80,7 @@ binPalette <- function(palette,
   leaflet::colorBin(palette = palette,
                     domain = domain,
                     bins = bins,
-                    na.color = na.color,
-                    ...)
+                    na.color = na.color)
 }
 
 numericLegend <- function(map,
@@ -90,7 +89,8 @@ numericLegend <- function(map,
                           colors,
                           at,
                           na.color,
-                          layer.name) {
+                          layer.name,
+                          ...) {
   n_unique <- ifelse(is.null(at), length(unique(values)), length(at))
   if (is.null(at)) {
     atc <- lattice::do.breaks(range(values, na.rm = TRUE),
@@ -109,7 +109,8 @@ numericLegend <- function(map,
     pal <- binPalette(palette = colors(n_unique),
                       domain = atc,
                       bins = atc,
-                      na.color = na.color)
+                      na.color = na.color,
+                      ...)
     mvAddLegend(isAvailableInLeaflet()$leggrp,
                 layer.name,
                 map = map,
@@ -117,12 +118,14 @@ numericLegend <- function(map,
                 pal = pal,
                 values = values,
                 opacity = 1,
-                title = ifelse(length(values) > 1, layer.name, ""))
+                title = ifelse(length(values) > 1, layer.name, ""),
+                ...)
 
   } else {
     pal <- numericPalette(palette = colors(n_unique),
                           domain = values,
-                          na.color = na.color)
+                          na.color = na.color,
+                          ...)
     mvAddLegend(isAvailableInLeaflet()$leggrp,
                 layer.name,
                 map = map,
@@ -130,7 +133,8 @@ numericLegend <- function(map,
                 pal = pal,
                 values = values,
                 opacity = 1,
-                title = ifelse(length(values) > 1, layer.name, ""))
+                title = ifelse(length(values) > 1, layer.name, ""),
+                ...)
 
   }
 }
@@ -149,7 +153,8 @@ mapviewLegend <- function(values,
                           at,
                           na.color,
                           layer.name,
-                          position = mapviewGetOption("legend.pos")) {
+                          position = mapviewGetOption("legend.pos"),
+                          ...) {
 
   ## factor
   ## if character convert to factor
@@ -217,34 +222,39 @@ mapviewLegend <- function(values,
                                  values = levels(values),
                                  colors = colors,
                                  na.color = na.color,
-                                 layer.name = layer.name),
+                                 layer.name = layer.name,
+                                 ...),
            character = characterLegend(map,
                                        position = position,
                                        values = values,
                                        colors = colors,
                                        na.color = na.color,
-                                       layer.name = layer.name),
+                                       layer.name = layer.name,
+                                       ...),
            numeric = numericLegend(map,
                                    position = position,
                                    values = values,
                                    colors = colors,
                                    at = at,
                                    na.color = na.color,
-                                   layer.name = layer.name),
+                                   layer.name = layer.name,
+                                   ...),
            units = numericLegend(map,
                                  position = position,
                                  values = as.numeric(values),
                                  colors = colors,
                                  at = at,
                                  na.color = na.color,
-                                 layer.name = layer.name),
+                                 layer.name = layer.name,
+                                 ...),
            integer = numericLegend(map,
                                    position = position,
                                    values = values,
                                    colors = colors,
                                    at = at,
                                    na.color = na.color,
-                                   layer.name = layer.name))
+                                   layer.name = layer.name,
+                                   ...))
   }
 }
 

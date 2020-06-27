@@ -55,7 +55,8 @@ leaflet_sf <- function(x,
                             colors = leg_clrs,
                             at = at,
                             na.color = col2Hex(na.color),
-                            layer.name = layer.name)
+                            layer.name = layer.name,
+                            ...)
   }
 
   if (mapviewGetOption("fgb")) {
@@ -249,7 +250,8 @@ leafgl_sf = function(x,
                             colors = leg_clrs,
                             at = at,
                             na.color = col2Hex(na.color),
-                            layer.name = layer.name)
+                            layer.name = layer.name,
+                            ...)
   }
 
   clrs <- vectorColors(x = x,
