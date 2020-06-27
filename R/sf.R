@@ -90,6 +90,9 @@ leaflet_sf <- function(x,
     )
   } else {
 
+    if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT"))
+      x = suppressWarnings(sf::st_cast(x, "POINT"))
+
     if (isTRUE(popup)) popup = leafpop::popupTable(x)
     if (inherits(popup, "character") &&
         popup %in% colnames(x)) {
@@ -101,9 +104,6 @@ leaflet_sf <- function(x,
         label %in% colnames(x)) {
       label = makeLabels(x, label)
     }
-
-    if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT"))
-      x = suppressWarnings(sf::st_cast(x, "POINT"))
 
     cex <- circleRadius(x, cex, ...)
 
@@ -567,6 +567,10 @@ leaflet_sfc <- function(x,
       , ...
     )
   } else {
+
+    if (inherits(x, "sfc_MULTIPOINT"))
+      x = suppressWarnings(sf::st_cast(x, "POINT"))
+
     if (is_literally_false(label)) {
       label = NULL
     }
