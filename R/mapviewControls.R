@@ -340,16 +340,17 @@ listifyer = function(x, by_row = FALSE) {
         return(splt)
       }
     }
-  } else {
-    idx = length(x)
-    function(arg) {
-      if (is.function(arg)) {
-        return(replicate(idx, arg))
-      }
-      if (is.list(arg) && length(arg) == idx) {
-        return(arg)
-      }
-      return(rep(list(arg), idx))
-    }
   }
+
+  idx = length(x)
+  function(arg) {
+    if (is.function(arg)) {
+      return(replicate(idx, arg))
+    }
+    if (is.list(arg) && length(arg) == idx) {
+      return(arg)
+    }
+    return(rep(list(arg), idx))
+  }
+
 }

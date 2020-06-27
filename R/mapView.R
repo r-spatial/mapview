@@ -1232,6 +1232,7 @@ setMethod('mapView', signature(x = 'list'),
             m <- Reduce("+", lapply(seq(x), function(i) {
               mapView(x = x[[i]],
                       map = map,
+                      zcol = listify(zcol)[[i]],
                       color = listify(color)[[i]],
                       col.regions = listify(col.regions)[[i]],
                       at = listify(at)[[i]],
