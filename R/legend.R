@@ -123,7 +123,7 @@ numericLegend <- function(map,
 
   } else {
     pal <- numericPalette(palette = colors(n_unique),
-                          domain = values,
+                          domain = atc,
                           na.color = na.color,
                           ...)
     mvAddLegend(isAvailableInLeaflet()$leggrp,
