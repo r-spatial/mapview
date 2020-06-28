@@ -390,7 +390,7 @@ mapviewOptions <- function(platform,
   }
 
   .homebuttonPos = function() {
-    default = TRUE
+    default = "bottomright"
     hbtn = getOption("mapviewHomebuttonPos")
     if (is.null(hbtn)) {
       return(default)
@@ -445,7 +445,7 @@ mapviewOptions <- function(platform,
     if (unname(v[names(v) == "GDAL"] <= "3.0.4")) {
       warning(
         sprintf(
-          "option 'fgb' requires GDAL >= 3.1.0! Your version is %s. Seting fgb = FALSE"
+          "option 'fgb' requires GDAL >= 3.1.0! Your version is %s. Setting fgb = FALSE"
           , v[names(v) == "GDAL"]
         )
         , call. = FALSE

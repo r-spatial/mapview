@@ -434,7 +434,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                    legend.opacity = 1,
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
-                   homebutton = TRUE,
+                   homebutton = mapviewGetOption("homebutton"),
                    method = mapviewGetOption("method"),
                    label = TRUE,
                    query.type = c("mousemove", "click"),
@@ -502,7 +502,7 @@ setMethod('mapView', signature(x = 'Satellite'),
                    legend.opacity = 1,
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
-                   homebutton = TRUE,
+                   homebutton = mapviewGetOption("homebutton"),
                    method = c("bilinear", "ngb"),
                    label = TRUE,
                    ...) {
@@ -574,7 +574,7 @@ setMethod('mapView', signature(x = 'sf'),
                    label = zcol,
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
-                   homebutton = TRUE,
+                   homebutton = mapviewGetOption("homebutton"),
                    native.crs = FALSE,
                    highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
@@ -784,7 +784,7 @@ setMethod('mapView', signature(x = 'sfc'),
                    label = makeLabels(x),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
-                   homebutton = TRUE,
+                   homebutton = mapviewGetOption("homebutton"),
                    native.crs = FALSE,
                    highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
@@ -907,7 +907,7 @@ setMethod('mapView', signature(x = 'character'),
                   map.types = mapviewGetOption("basemaps"),
                   verbose = FALSE,
                   layer.name = x,
-                  homebutton = TRUE,
+                  homebutton = mapviewGetOption("homebutton"),
                   native.crs = FALSE,
                   canvas = FALSE,
                   viewer.suppress = mapviewGetOption("viewer.suppress"),
@@ -1064,7 +1064,7 @@ setMethod('mapView', signature(x = 'XY'),
                    label = makeLabels(x),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
-                   homebutton = TRUE,
+                   homebutton = mapviewGetOption("homebutton"),
                    native.crs = FALSE,
                    highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
@@ -1217,7 +1217,7 @@ setMethod('mapView', signature(x = 'list'),
                                                    env = parent.frame())),
                    label = lapply(x, makeLabels),
                    legend = mapviewGetOption("legend"),
-                   homebutton = TRUE,
+                   homebutton = mapviewGetOption("homebutton"),
                    native.crs = FALSE,
                    ...) {
 
@@ -1295,7 +1295,7 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
                    layer.name = NULL,
-                   homebutton = TRUE,
+                   homebutton = mapviewGetOption("homebutton"),
                    native.crs = FALSE,
                    method = mapviewGetOption("method"),
                    label = TRUE,
@@ -1359,7 +1359,7 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
                    layer.name = NULL,
-                   homebutton = TRUE,
+                   homebutton = mapviewGetOption("homebutton"),
                    native.crs = FALSE,
                    method = mapviewGetOption("method"),
                    label = TRUE,
@@ -1491,76 +1491,3 @@ setMethod('mapView', signature(x = 'SpatialLines'),
             mapView(st_as_sfc(x), layer.name = layer.name, zcol = zcol, ...)
           }
 )
-
-
-
-
-# legacy -----
-# ## sfc_POINT
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_POINT'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_MULTIPOINT
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_MULTIPOINT'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_LINESTRING
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_LINESTRING'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_MULTILINESTRING
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_MULTILINESTRING'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_POLYGON
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_POLYGON'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_MULTIPOLYGON
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_MULTIPOLYGON'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_GEOMETRY
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_GEOMETRY'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
