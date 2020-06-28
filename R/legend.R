@@ -142,8 +142,18 @@ numericLegend <- function(map,
 
 mvAddLegend = function(grp_avail = isAvailableInLeaflet()$leggrp,
                        layer.name, ...) {
-  if (grp_avail) leaflet::addLegend(..., group = layer.name) else
-    leaflet::addLegend(...)
+  args = list(...)
+  leg_args = match.arg(
+    names(args)
+    , names(as.list(args(leaflet::addLegend)))
+    , several.ok = TRUE
+  )
+
+  if (grp_avail) {
+    do.call(leaflet::addLegend, c(args[leg_args], list(group = layer.name)))
+  } else {
+    do.call(leaflet::addLegend, c(args[leg_args]))
+  }
 }
 
 #' @importFrom stats na.omit
