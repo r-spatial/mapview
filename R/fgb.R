@@ -181,23 +181,35 @@ sfFgb = function(x,
   sclbrpos = getCallEntryFromMap(m, "addScaleBar")
   if (length(sclbrpos) > 0 | native.crs) scalebar = FALSE else scalebar = TRUE
 
-  funs <- list(if (scalebar) leaflet::addScaleBar,
-               if (homebutton) leafem::addHomeButton,
-               if (is.null(map)) mapViewLayersControl,
-               leafem::addMouseCoordinates)
+  funs <- list(
+    if (scalebar) leaflet::addScaleBar
+    , if (homebutton) leafem::addHomeButton
+    , if (is.null(map)) mapViewLayersControl
+    , leafem::addMouseCoordinates
+  )
   funs <- funs[!sapply(funs, is.null)]
 
-  args <- list(if (scalebar) list(position = "bottomleft"),
-               if (homebutton) list(ext = createExtent(x),
-                                    group = layer.name),
-               if (is.null(map)) list(map.types = map.types,
-                                      names = layer.name,
-                                      native.crs = native.crs),
-               list(style = "detailed",
-                    epsg = sf::st_crs(x)$epsg,
-                    proj4string = sf::st_crs(x)$proj4string,
-                    native.crs = native.crs))
+  args <- list(
+    if (scalebar) list(position = "bottomleft")
+    , if (homebutton) list(
+      ext = createExtent(x)
+      , group = layer.name
+      , position = mapviewGetOption("homebutton.pos")
+    )
+    , if (is.null(map)) list(
+      map.types = map.types
+      , names = layer.name
+      , native.crs = native.crs
+    )
+    , list(
+      style = "detailed"
+      , epsg = sf::st_crs(x)$epsg
+      , proj4string = sf::st_crs(x)$proj4string
+      , native.crs = native.crs
+    )
+  )
   args <- args[!sapply(args, is.null)]
+
 
   m <- decorateMap(map = m,
                    funs = funs,

@@ -35,6 +35,8 @@
 #' @param viewer.suppress whether to render the map in the browser (\code{TRUE})
 #' or the RStudio viewer (\code{FALSE}).
 #' @param homebutton logical, whether to add a zoom-to-layer button to the map.
+#' @param homebutton.pos character. Where should the homebutton(s) be
+#' placed? One of "topleft", "topright", "bottomleft", "bottomright".
 #' @param native.crs logical whether to reproject to web map coordinate
 #' reference system (web mercator - epsg:3857) or render using native CRS of
 #' the supplied data (can also be NA). Default is FALSE which will render in
@@ -140,6 +142,7 @@ mapviewOptions <- function(platform,
                            leafletHeight,
                            viewer.suppress,
                            homebutton,
+                           homebutton.pos,
                            native.crs,
                            raster.size,
                            mapview.maxpixels,
@@ -374,6 +377,21 @@ mapviewOptions <- function(platform,
   .homebutton = function() {
     default = TRUE
     hbtn = getOption("mapviewHomebutton")
+    if (is.null(hbtn)) {
+      return(default)
+    } else {
+      return(hbtn)
+    }
+  }
+
+  ## homebutton.pos ----
+  setHomebuttonPos = function(homebutton.pos) {
+    options(mapviewHomebuttonPos = homebutton.pos)
+  }
+
+  .homebuttonPos = function() {
+    default = TRUE
+    hbtn = getOption("mapviewHomebuttonPos")
     if (is.null(hbtn)) {
       return(default)
     } else {
@@ -783,6 +801,7 @@ mapviewOptions <- function(platform,
     options(mapviewleafletHeight = NULL)
     options(mapviewViewerSuppress = FALSE)
     options(mapviewHomebutton = TRUE)
+    options(mapviewHomebuttonPos = "bottomright")
     options(mapviewNativeCRS = FALSE)
     options(mapviewWatcher = FALSE)
     options(mapviewFgb = FALSE)
@@ -833,6 +852,7 @@ mapviewOptions <- function(platform,
     setViewerSuppress(viewer.suppress); cnt <- cnt + 1
   }
   if (!missing(homebutton)) { setHomebutton(homebutton); cnt <- cnt + 1 }
+  if (!missing(homebutton.pos)) { setHomebuttonPos(homebutton.pos); cnt <- cnt + 1 }
   if (!missing(native.crs)) { setNativeCRS(native.crs); cnt <- cnt + 1 }
   if (!missing(watch)) { setWatcher(watch); cnt <- cnt + 1 }
   if (!missing(fgb)) { setFgb(fgb); cnt <- cnt + 1 }
@@ -881,6 +901,7 @@ mapviewOptions <- function(platform,
     , leafletHeight = .leafletHeight()
     , viewer.suppress = .viewerSuppress()
     , homebutton = .homebutton()
+    , homebutton.pos = .homebuttonPos()
     , native.crs = .nativeCRS()
     , watch = .watch()
     , fgb = .fgb()
@@ -928,6 +949,7 @@ mapviewOptions <- function(platform,
       cat('leafletHeight       :', lst$leafletHeight, '\n')
       cat('viewer.suppress     :', lst$viewer.suppress, '\n')
       cat('homebutton          :', lst$homebutton, '\n')
+      cat('homebutton.pos      :', lst$homebutton.pos, '\n')
       cat('native.crs          :', lst$native.crs, '\n')
       cat('watch               :', lst$watch, '\n')
       cat('fgb                 :', lst$fgb, '\n')

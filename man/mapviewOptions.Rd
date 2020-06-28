@@ -20,6 +20,7 @@ mapviewOptions(
   leafletHeight,
   viewer.suppress,
   homebutton,
+  homebutton.pos,
   native.crs,
   raster.size,
   mapview.maxpixels,
@@ -82,6 +83,9 @@ placed? One of "topleft", "topright", "bottomleft", "bottomright".}
 or the RStudio viewer (\code{FALSE}).}
 
 \item{homebutton}{logical, whether to add a zoom-to-layer button to the map.}
+
+\item{homebutton.pos}{character. Where should the homebutton(s) be
+placed? One of "topleft", "topright", "bottomleft", "bottomright".}
 
 \item{native.crs}{logical whether to reproject to web map coordinate
 reference system (web mercator - epsg:3857) or render using native CRS of
