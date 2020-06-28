@@ -60,7 +60,7 @@ leafletRL = function(x,
   } else {
 
     is.fact = raster::is.factor(x)
-    # ext = raster::extent(raster::projectExtent(x, crs = llcrs))
+
     if (use.layer.names) {
       grp = names(x)
       layer.name = names(x)
@@ -73,47 +73,21 @@ leafletRL = function(x,
 
     if (!is.na(raster::projection(x)) & trim) x = trim(x)
 
-    # if (is.fact) x = raster::as.factor(x)
-
     m = initMap(map, map.types, sp::proj4string(x), viewer.suppress = viewer.suppress)
-    # if (is.null(values)) {
-    #   if (is.fact) {
-    #     at = x@data@attributes[[1]]$ID
-    #   } else {
-    #     offset = diff(range(x[], na.rm = TRUE)) * 0.05
-    #     top = max(x[], na.rm = TRUE) + offset
-    #     bot = min(x[], na.rm = TRUE) - offset
-    #     values = seq(bot, top, length.out = 10)
-    #     values = round(values, 5)
-    #   }
-    # } else {
-    #   values = round(values, 5)
-    # }
+
+    if (!is.function(col.regions)) {
+      col.regions = grDevices::colorRampPalette(col.regions)
+    }
 
     if (is.fact) {
       vals = as.factor(x@data@attributes[[1]]$ID)
       pal = leaflet::colorFactor(palette = col.regions(length(vals)),
                                  domain = vals,
                                  na.color = na.color)
-      # pal2 = pal
     } else {
-      if (!is.function(col.regions)) {
-        col.regions = grDevices::colorRampPalette(col.regions)
-      }
       pal = rasterColors(col.regions,
                          at = at,
                          na.color = na.color)
-
-      # if (length(at) > 11) {
-      #   pal2 = leaflet::colorNumeric(palette = col.regions,
-      #                                 domain = at,
-      #                                 na.color = na.color)
-      # } else {
-      #   pal2 = leaflet::colorBin(palette = col.regions,
-      #                             bins = length(at),
-      #                             domain = at,
-      #                             na.color = na.color)
-      # }
 
     }
 
@@ -140,34 +114,29 @@ leafletRL = function(x,
                                 position = query.position, prefix = query.prefix)
     if (legend) {
       if (!is.fact) {
-        vals = x[]
-        clrs = col.regions
+        leg_vals = x[]
+        leg_clrs = col.regions
       } else {
         if (ncol(x@data@attributes[[1]]) >= 2) {
-          vals = factor(
-            x@data@attributes[[1]][[2]]
-            , levels = x@data@attributes[[1]][[2]]
+          args = list(...)
+          if ("att" %in% names(args)) att = args$att else att = 2
+          leg_vals = factor(
+            x@data@attributes[[1]][[att]]
+            , levels = x@data@attributes[[1]][[att]]
           )
         } else {
-          vals = as.factor(x[])
+          leg_vals = as.factor(x[])
         }
-        clrs = col.regions(length(levels(vals)))
+        leg_clrs = col.regions(length(levels(vals)))
       }
-      legend = mapviewLegend(values = vals,
-                             colors = clrs,
+      legend = mapviewLegend(values = leg_vals,
+                             colors = leg_clrs,
                              at = at,
                              na.color = col2Hex(na.color),
                              layer.name = layer.name)
 
       m = legend(m)
 
-      # m = addRasterLegend(x = x,
-      #                     map = m,
-      #                     title = grp,
-      #                     group = grp,
-      #                     at = at,
-      #                     col.regions = col.regions,
-      #                     na.color = na.color)
     }
 
     sclbrpos = getCallEntryFromMap(m, "addScaleBar")
