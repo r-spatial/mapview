@@ -104,7 +104,7 @@ numericLegend <- function(map,
                  position = position,
                  layer.name = layer.name,
                  na.color = na.color)
-  } else if (n_unique <= 11) {
+  } else if (!(is.null(at))) {
     if (anyNA(values)) values <- c(atc, NA) else values <- atc
     pal <- binPalette(palette = colors(n_unique),
                       domain = atc,
@@ -120,10 +120,9 @@ numericLegend <- function(map,
                 opacity = 1,
                 title = ifelse(length(values) > 1, layer.name, ""),
                 ...)
-
-  } else {
+  } else if (is.null(at)) {
     pal <- numericPalette(palette = colors(n_unique),
-                          domain = atc,
+                          domain = values,
                           na.color = na.color,
                           ...)
     mvAddLegend(isAvailableInLeaflet()$leggrp,
@@ -135,8 +134,8 @@ numericLegend <- function(map,
                 opacity = 1,
                 title = ifelse(length(values) > 1, layer.name, ""),
                 ...)
-
   }
+
 }
 
 
