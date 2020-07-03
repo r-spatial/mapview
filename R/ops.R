@@ -180,3 +180,78 @@ setMethod("+",
           }
 )
 
+
+if ( !isGeneric('|') ) {
+  setGeneric('|', function(x, y, ...)
+    standardGeneric('|'))
+}
+
+setMethod("|",
+          signature(e1 = "mapview",
+                    e2 = "mapview"),
+          function (e1, e2) {
+
+            if (mapviewGetOption("platform") %in% c("leaflet", "leafgl")) {
+
+              if (!requireNamespace("leaflet.extras2")) {
+                stop(
+                  "\nPackage 'leaflet.extras2' is needed for the '|' operator to work.\n"
+                  , "Install with install.packages('leaflet.extras2')"
+                  , call. = FALSE
+                )
+              }
+
+              m1_pt_idx = getCallEntryFromMap(e1@map, "addProviderTiles")[1]
+              m1_pt = e1@map$x$calls[[m1_pt_idx]]$args[[1]]
+              m2_pt_idx = getCallEntryFromMap(e2@map, "addProviderTiles")[1]
+              m2_pt = e2@map$x$calls[[m2_pt_idx]]$args[[1]]
+
+              m = leaflet() %>%
+                leaflet::addMapPane("left", zIndex = 0) %>%
+                leaflet::addMapPane("right", zIndex = 10) %>%
+                leaflet::addProviderTiles(
+                  m1_pt
+                  , group = "light"
+                  , options = pathOptions(pane = "left")
+                  , layerId = "left"
+                ) %>%
+                leaflet::addProviderTiles(
+                  m2_pt
+                  , group = "light"
+                  , options = pathOptions(pane = "right")
+                  , layerId = "right"
+                ) %>%
+                leafem::addFeatures(
+                  data = e1@object[[1]]
+                  , group = "franconia"
+                  , pane = "left"
+                ) %>%
+                leafem::addFeatures(
+                  data = e2@object[[1]]
+                  , group = "breweries"
+                  , pane = "right"
+                ) %>%
+                leaflet.extras2::addSidebyside(
+                  layerId = "mvSideBySide"
+                  , rightId = "right"
+                  , leftId = "left"
+                ) %>%
+                addLayersControl(overlayGroups = c("franconia", "breweries"))
+
+              out_obj = append(e1@object, e2@object)
+              # avoids error if calling, for example, mapview() + viewExtent(in)
+              out_obj = out_obj[lengths(out_obj) != 0]
+
+            }
+
+            if (mapviewGetOption("platform") == "mapdeck") {
+              stop(
+                "'|' currently only implemented for leaflet maps"
+                , call. = FALSE
+              )
+            }
+
+            out = methods::new('mapview', object = out_obj, map = m)
+            return(out)
+          }
+)
