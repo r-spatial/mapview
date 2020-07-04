@@ -666,6 +666,11 @@ leaflet_sfc <- function(x,
     , silent = TRUE
   )
 
+  # m$dependencies = c(
+  #   m$dependencies
+  #   , mapviewCSSDependencies()
+  # )
+
   if (is.function(legend)) m <- legend(m)
   m = removeDuplicatedMapDependencies(m)
 
