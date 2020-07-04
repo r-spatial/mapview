@@ -272,9 +272,6 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    viewer.suppress = mapviewGetOption("viewer.suppress"),
                    ...) {
 
-            if (is.null(at)) at <- lattice::do.breaks(
-              extendLimits(range(x[], na.rm = TRUE)), 256)
-
             if (mapviewGetOption("platform") != "leaflet") {
               warning(
                 sprintf(

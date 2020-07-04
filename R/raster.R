@@ -79,6 +79,15 @@ leafletRL = function(x,
       col.regions = grDevices::colorRampPalette(col.regions)
     }
 
+    if (is.null(at)) {
+      atv = lattice::do.breaks(
+        extendLimits(range(x[], na.rm = TRUE))
+        , 256
+      )
+    } else {
+      atv = at
+    }
+
     if (is.fact) {
       vals = as.factor(x@data@attributes[[1]]$ID)
       pal = leaflet::colorFactor(palette = col.regions(length(vals)),
@@ -86,7 +95,7 @@ leafletRL = function(x,
                                  na.color = na.color)
     } else {
       pal = rasterColors(col.regions,
-                         at = at,
+                         at = atv,
                          na.color = na.color)
 
     }
@@ -144,6 +153,11 @@ leafletRL = function(x,
     if (scalebar) m = leaflet::addScaleBar(m, position = "bottomleft")
     m = leafem::addMouseCoordinates(m)
     if (homebutton) m = leafem::addHomeButton(m, ext, group = layer.name)
+
+    m$dependencies = c(
+      m$dependencies
+      , mapviewCSSDependencies()
+    )
 
     out = new('mapview', object = list(x), map = m)
 
