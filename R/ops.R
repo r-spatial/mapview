@@ -191,7 +191,7 @@ setMethod("|",
                     e2 = "mapview"),
           function (e1, e2) {
 
-            if (mapviewGetOption("platform") %in% c("leaflet", "leafgl")) {
+            if (mapviewGetOption("platform") %in% c("leaflet")) {
 
               if (!requireNamespace("leaflet.extras2")) {
                 stop(
@@ -201,46 +201,105 @@ setMethod("|",
                 )
               }
 
-              m1_pt_idx = getCallEntryFromMap(e1@map, "addProviderTiles")[1]
-              m1_pt = e1@map$x$calls[[m1_pt_idx]]$args[[1]]
-              m2_pt_idx = getCallEntryFromMap(e2@map, "addProviderTiles")[1]
-              m2_pt = e2@map$x$calls[[m2_pt_idx]]$args[[1]]
+              e1_tile_idx = mapview:::getCallEntryFromMap(e1@map, "addProviderTiles")
+              e1@map$x$calls[2:length(e1_tile_idx)] = NULL
+              e1_tile_idx = e1_tile_idx[1]
+              e1_tile_pane_idx = grep("pane", e1@map$x$calls[[e1_tile_idx]]$args)
+              e1@map$x$calls[[e1_tile_idx]]$args[[2]] = "left"
+              e1@map$x$calls[[e1_tile_idx]]$args[[e1_tile_pane_idx]][[4]] = "left"
 
-              m = leaflet() %>%
-                leaflet::addMapPane("left", zIndex = 0) %>%
-                leaflet::addMapPane("right", zIndex = 10) %>%
-                leaflet::addProviderTiles(
-                  m1_pt
-                  , group = "light"
-                  , options = pathOptions(pane = "left")
-                  , layerId = "left"
-                ) %>%
-                leaflet::addProviderTiles(
-                  m2_pt
-                  , group = "light"
-                  , options = pathOptions(pane = "right")
-                  , layerId = "right"
-                ) %>%
-                leafem::addFeatures(
-                  data = e1@object[[1]]
-                  , group = "franconia"
-                  , pane = "left"
-                ) %>%
-                leafem::addFeatures(
-                  data = e2@object[[1]]
-                  , group = "breweries"
-                  , pane = "right"
-                ) %>%
-                leaflet.extras2::addSidebyside(
-                  layerId = "mvSideBySide"
-                  , rightId = "right"
-                  , leftId = "left"
-                ) %>%
-                addLayersControl(overlayGroups = c("franconia", "breweries"))
+              # for (i in seq(e1_tile_pane_idx)) {
+              #   # e1@map$x$calls[[e1_tile_idx[i]]]$args[[2]] = "left"
+              #   e1@map$x$calls[[e1_tile_idx[i]]]$args[[e1_tile_pane_idx[i]]][[4]] = "left"
+              # }
 
-              out_obj = append(e1@object, e2@object)
-              # avoids error if calling, for example, mapview() + viewExtent(in)
-              out_obj = out_obj[lengths(out_obj) != 0]
+              e1_pane_idx = mapview:::getCallEntryFromMap(e1@map, "createMapPane")
+              e1_feat_idx = mapview:::getCallEntryFromMap(e1@map, "addPolygons")
+              e1_feat_pane_idx = grep(
+                "pane"
+                , e1@map$x$calls[[e1_feat_idx]]$args
+              )
+
+              for (i in e1_pane_idx) {
+                e1@map$x$calls[[i]]$args[[1]] = "left"
+                e1@map$x$calls[[i]]$args[[2]] = 420
+              }
+
+              e1@map$x$calls[[e1_feat_idx]]$args[[e1_feat_pane_idx]]$pane = "left"
+
+              e1_pane_tmp = e1@map$x$calls[e1_pane_idx]
+
+              e1@map$x$calls = append(
+                e1_pane_tmp
+                , e1@map$x$calls
+              )
+
+
+              ## e2 - right
+              e2_tile_idx = mapview:::getCallEntryFromMap(e2@map, "addProviderTiles")
+              e2@map$x$calls[2:length(e2_tile_idx)] = NULL
+              e2_tile_idx = e2_tile_idx[1]
+              e2_tile_pane_idx = grep("pane", e2@map$x$calls[[e2_tile_idx]]$args)
+              e2@map$x$calls[[e2_tile_idx]]$args[[2]] = "right"
+              e2@map$x$calls[[e2_tile_idx]]$args[[e2_tile_pane_idx]][[4]] = "right"
+
+              # for (i in seq(e2_tile_pane_idx)) {
+              #   # e2@map$x$calls[[e2_tile_idx[i]]]$args[[2]] = "right"
+              #   e2@map$x$calls[[e2_tile_idx[i]]]$args[[e2_tile_pane_idx[i]]][[4]] = "right"
+              # }
+
+              e2_pane_idx = mapview:::getCallEntryFromMap(e2@map, "createMapPane")
+              e2_feat_idx = mapview:::getCallEntryFromMap(e2@map, "addCircleMarkers")
+              e2_feat_pane_idx = grep(
+                "pane"
+                , e2@map$x$calls[[e2_feat_idx]]$args
+              )
+
+              for (i in e2_pane_idx) {
+                e2@map$x$calls[[i]]$args[[1]] = "right"
+                e2@map$x$calls[[i]]$args[[2]] = 430
+              }
+
+              e2@map$x$calls[[e2_feat_idx]]$args[[e2_feat_pane_idx]]$pane = "right"
+
+              e2_pane_tmp = e2@map$x$calls[e2_pane_idx]
+
+              e2@map$x$calls = append(
+                e2_pane_tmp
+                , e2@map$x$calls
+              )
+
+
+              ## TODO: figure out why e1@map$x$call -> addLegend is garbage
+
+              # map - left + right
+              m = e1
+
+              m@map$x$calls = append(
+                m@map$x$calls
+                , e2@map$x$calls
+              )
+
+              m_pane_idx = mapview:::getCallEntryFromMap(m@map, "createMapPane")
+              m_pane_tmp = m@map$x$calls[m_pane_idx]
+              m@map$x$calls[m_pane_idx] = NULL
+
+              m@map$x$calls = append(
+                m_pane_tmp
+                , m@map$x$calls
+              )
+
+              m = addSidebyside(
+                m@map
+                , layerId = "mvSideBySide"
+                , rightId = "right"
+                , leftId = "left"
+              )
+
+              out_obj = append(
+                e1@object
+                , e2@object
+              )
 
             }
 

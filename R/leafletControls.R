@@ -225,14 +225,14 @@ initBaseMaps <- function(map.types, canvas = FALSE, viewer.suppress = FALSE) {
   )
   if (!(is.null(map.types))) {
     m <- leaflet::addProviderTiles(m, provider = map.types[1],
-                                   layerId = lid[1], group = map.types[1],
+                                   layerId = map.types[1], group = map.types[1],
                                    options = providerTileOptions(
                                      pane = "tilePane"
                                    ))
     if (length(map.types) > 1) {
       for (i in 2:length(map.types)) {
         m <- leaflet::addProviderTiles(m, provider = map.types[i],
-                                       layerId = lid[i], group = map.types[i],
+                                       layerId = map.types[i], group = map.types[i],
                                        options = providerTileOptions(
                                          pane = "tilePane"
                                        ))
