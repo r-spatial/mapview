@@ -202,30 +202,38 @@ setMethod("|",
               }
 
               e1_tile_idx = mapview:::getCallEntryFromMap(e1@map, "addProviderTiles")
-              e1@map$x$calls[2:length(e1_tile_idx)] = NULL
+              if (length(e1_tile_idx) > 1) {
+                e1@map$x$calls[2:length(e1_tile_idx)] = NULL
+              }
               e1_tile_idx = e1_tile_idx[1]
               e1_tile_pane_idx = grep("pane", e1@map$x$calls[[e1_tile_idx]]$args)
               e1@map$x$calls[[e1_tile_idx]]$args[[2]] = "left"
               e1@map$x$calls[[e1_tile_idx]]$args[[e1_tile_pane_idx]][[4]] = "left"
 
-              # for (i in seq(e1_tile_pane_idx)) {
-              #   # e1@map$x$calls[[e1_tile_idx[i]]]$args[[2]] = "left"
-              #   e1@map$x$calls[[e1_tile_idx[i]]]$args[[e1_tile_pane_idx[i]]][[4]] = "left"
-              # }
+              e1_lyrctrl_idx = mapview:::getCallEntryFromMap(e1@map, "addLayersControl")
+              # bsgrps = e1@map$x$calls[[e1_lyrctrl_idx]]$args[[1]][1]
+              # e1@map$x$calls[[e1_lyrctrl_idx]]$args[[1]] = bsgrps
+              e1_ovrlygrps = e1@map$x$calls[[e1_lyrctrl_idx]]$args[[2]]
+              e1@map$x$calls[[e1_lyrctrl_idx]] = NULL
 
               e1_pane_idx = mapview:::getCallEntryFromMap(e1@map, "createMapPane")
-              e1_feat_idx = mapview:::getCallEntryFromMap(e1@map, "addPolygons")
-              e1_feat_pane_idx = grep(
-                "pane"
-                , e1@map$x$calls[[e1_feat_idx]]$args
+              e1_feat_idx = mapview:::getCallEntryFromMap(
+                e1@map
+                , c(
+                  "addPolygons"
+                  , "addPolylines"
+                  , "addCircleMarkers"
+                  , "addFlatGeoBuf"
+                )
               )
+              for (i in seq_along(e1_feat_idx)) {
+                idx = grep("pane", e1@map$x$calls[[e1_feat_idx[i]]]$args)
+                e1@map$x$calls[[e1_feat_idx[i]]]$args[[idx]]$pane = "left"
+              }
 
               for (i in e1_pane_idx) {
                 e1@map$x$calls[[i]]$args[[1]] = "left"
-                e1@map$x$calls[[i]]$args[[2]] = 420
               }
-
-              e1@map$x$calls[[e1_feat_idx]]$args[[e1_feat_pane_idx]]$pane = "left"
 
               e1_pane_tmp = e1@map$x$calls[e1_pane_idx]
 
@@ -237,30 +245,38 @@ setMethod("|",
 
               ## e2 - right
               e2_tile_idx = mapview:::getCallEntryFromMap(e2@map, "addProviderTiles")
-              e2@map$x$calls[2:length(e2_tile_idx)] = NULL
+              if (length(e2_tile_idx) > 1) {
+                e2@map$x$calls[2:length(e2_tile_idx)] = NULL
+              }
               e2_tile_idx = e2_tile_idx[1]
               e2_tile_pane_idx = grep("pane", e2@map$x$calls[[e2_tile_idx]]$args)
               e2@map$x$calls[[e2_tile_idx]]$args[[2]] = "right"
               e2@map$x$calls[[e2_tile_idx]]$args[[e2_tile_pane_idx]][[4]] = "right"
 
-              # for (i in seq(e2_tile_pane_idx)) {
-              #   # e2@map$x$calls[[e2_tile_idx[i]]]$args[[2]] = "right"
-              #   e2@map$x$calls[[e2_tile_idx[i]]]$args[[e2_tile_pane_idx[i]]][[4]] = "right"
-              # }
+              e2_lyrctrl_idx = mapview:::getCallEntryFromMap(e2@map, "addLayersControl")
+              # bsgrps = e2@map$x$calls[[e2_lyrctrl_idx]]$args[[1]][1]
+              # e2@map$x$calls[[e2_lyrctrl_idx]]$args[[1]] = bsgrps
+              e2_ovrlygrps = e2@map$x$calls[[e2_lyrctrl_idx]]$args[[2]]
+              e2@map$x$calls[[e2_lyrctrl_idx]] = NULL
 
               e2_pane_idx = mapview:::getCallEntryFromMap(e2@map, "createMapPane")
-              e2_feat_idx = mapview:::getCallEntryFromMap(e2@map, "addCircleMarkers")
-              e2_feat_pane_idx = grep(
-                "pane"
-                , e2@map$x$calls[[e2_feat_idx]]$args
+              e2_feat_idx = mapview:::getCallEntryFromMap(
+                e2@map
+                , c(
+                  "addPolygons"
+                  , "addPolylines"
+                  , "addCircleMarkers"
+                  , "addFlatGeoBuf"
+                )
               )
+              for (i in seq_along(e2_feat_idx)) {
+                idx = grep("pane", e2@map$x$calls[[e2_feat_idx[i]]]$args)
+                e2@map$x$calls[[e2_feat_idx[i]]]$args[[idx]]$pane = "right"
+              }
 
               for (i in e2_pane_idx) {
                 e2@map$x$calls[[i]]$args[[1]] = "right"
-                e2@map$x$calls[[i]]$args[[2]] = 430
               }
-
-              e2@map$x$calls[[e2_feat_idx]]$args[[e2_feat_pane_idx]]$pane = "right"
 
               e2_pane_tmp = e2@map$x$calls[e2_pane_idx]
 
@@ -269,9 +285,6 @@ setMethod("|",
                 , e2@map$x$calls
               )
 
-
-              ## TODO: figure out why e1@map$x$call -> addLegend is garbage
-
               # map - left + right
               m = e1
 
@@ -279,6 +292,8 @@ setMethod("|",
                 m@map$x$calls
                 , e2@map$x$calls
               )
+
+              # m@map = removeDuplicatedMapCalls(m@map)
 
               m_pane_idx = mapview:::getCallEntryFromMap(m@map, "createMapPane")
               m_pane_tmp = m@map$x$calls[m_pane_idx]
@@ -289,7 +304,16 @@ setMethod("|",
                 , m@map$x$calls
               )
 
-              m = addSidebyside(
+              m@map = leaflet::addLayersControl(
+                m@map
+                , overlayGroups = c(
+                  e1_ovrlygrps
+                  , e2_ovrlygrps
+                )
+                , position = "topleft"
+              )
+
+              m = leaflet.extras2::addSidebyside(
                 m@map
                 , layerId = "mvSideBySide"
                 , rightId = "right"
@@ -303,7 +327,7 @@ setMethod("|",
 
             }
 
-            if (mapviewGetOption("platform") == "mapdeck") {
+            if (mapviewGetOption("platform") %in% c("mapdeck", "leafgl")) {
               stop(
                 "'|' currently only implemented for leaflet maps"
                 , call. = FALSE
