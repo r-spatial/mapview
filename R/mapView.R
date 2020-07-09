@@ -359,14 +359,6 @@ setMethod('mapView', signature(x = 'stars'),
                    ...) {
 
             # method = match.arg(method)
-            if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
-			# EJP: handle factors first
-            if (is.null(at)) {
-                at = if (is.factor(x[[1]]))
-                        as.vector(layer)
-                     else
-                        lattice::do.breaks(extendLimits(range(layer, na.rm = TRUE)), 256)
-            }
 
             if (mapviewGetOption("platform") != "leaflet") {
               warning(

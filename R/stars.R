@@ -116,6 +116,17 @@ leaflet_stars = function(x,
     # } else {
     #   values = round(values, 5)
     # }
+    # if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
+    # EJP: handle factors first
+    if (is.null(at)) {
+      atv = if (is.factor(x[[1]]))
+        as.vector(layer)
+      else
+        lattice::do.breaks(extendLimits(range(layer, na.rm = TRUE)), 256)
+    } else {
+      atv = at
+    }
+
     if (is.fact) {
       ### delete at some stage!!! ###
       pal = leaflet::colorFactor(palette = col.regions,
@@ -124,18 +135,18 @@ leaflet_stars = function(x,
       # pal2 = pal
     } else {
       pal = rasterColors(col.regions,
-                         at = at,
+                         at = atv,
                          na.color = na.color)
-      if (length(at) > 11) {
-        pal2 = leaflet::colorNumeric(palette = col.regions,
-                                     domain = at,
-                                     na.color = na.color)
-      } else {
-        pal2 = leaflet::colorBin(palette = col.regions,
-                                 bins = length(at),
-                                 domain = at,
-                                 na.color = na.color)
-      }
+      # if (length(at) > 11) {
+      #   pal2 = leaflet::colorNumeric(palette = col.regions,
+      #                                domain = at,
+      #                                na.color = na.color)
+      # } else {
+      #   pal2 = leaflet::colorBin(palette = col.regions,
+      #                            bins = length(at),
+      #                            domain = at,
+      #                            na.color = na.color)
+      # }
     }
 
     if (use.layer.names) {
