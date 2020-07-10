@@ -331,34 +331,67 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 
 ## Stars layer ==================================================================
 #' @describeIn mapView \code{\link{stars}}
-setMethod('mapView', signature(x = 'stars'),
-          function(x,
-                   band = 1,
-                   map = NULL,
-                   maxpixels = mapviewGetOption("mapview.maxpixels"),
-                   col.regions = mapviewGetOption("raster.palette"),
-                   at = NULL,
-                   na.color = mapviewGetOption("na.color"),
-                   use.layer.names = mapviewGetOption("use.layer.names"),
-                   map.types = mapviewGetOption("basemaps"),
-                   alpha.regions = 0.8,
-                   legend = mapviewGetOption("legend"),
-                   legend.opacity = 1,
-                   trim = mapviewGetOption("trim"),
-                   verbose = mapviewGetOption("verbose"),
-                   layer.name = NULL,
-                   homebutton = mapviewGetOption("homebutton"),
-                   native.crs = mapviewGetOption("native.crs"),
-                   method = mapviewGetOption("method"),
-                   label = TRUE,
-                   query.type = mapviewGetOption("query.type"),
-                   query.digits = mapviewGetOption("query.digits"),
-                   query.position = mapviewGetOption("query.position"),
-                   query.prefix = mapviewGetOption("query.prefix"),
-                   viewer.suppress = mapviewGetOption("viewer.suppress"),
-                   ...) {
+.stars_method <- function(x,
+                          band = 1,
+                          map = NULL,
+                          maxpixels = mapviewGetOption("mapview.maxpixels"),
+                          col.regions = mapviewGetOption("raster.palette"),
+                          at = NULL,
+                          na.color = mapviewGetOption("na.color"),
+                          use.layer.names = mapviewGetOption("use.layer.names"),
+                          map.types = mapviewGetOption("basemaps"),
+                          alpha.regions = 0.8,
+                          legend = mapviewGetOption("legend"),
+                          legend.opacity = 1,
+                          trim = mapviewGetOption("trim"),
+                          verbose = mapviewGetOption("verbose"),
+                          layer.name = NULL,
+                          homebutton = mapviewGetOption("homebutton"),
+                          native.crs = mapviewGetOption("native.crs"),
+                          method = mapviewGetOption("method"),
+                          label = TRUE,
+                          query.type = mapviewGetOption("query.type"),
+                          query.digits = mapviewGetOption("query.digits"),
+                          query.position = mapviewGetOption("query.position"),
+                          query.prefix = mapviewGetOption("query.prefix"),
+                          viewer.suppress = mapviewGetOption("viewer.suppress"),
+                          ...) {
 
-            # method = match.arg(method)
+  # method = match.arg(method)
+
+  # check if downsampling is needed
+  dims <- dim(x)
+  n_pixels <- dims[1] * dims[2]
+  do.downscale <- if (n_pixels > maxpixels) {
+    TRUE
+  } else {
+    FALSE
+  }
+
+  # convert to proper "stars" if proxy, and downscale if needed
+  if (inherits(x, "stars_proxy")) {
+    if (!do.downscale) {
+      x <-  stars::st_as_stars(x)
+    } else {
+      # compute the resampling factor
+      asp   <- dims[1] / dims[2]
+      y_new <- sqrt(maxpixels / asp)
+      x_new <- y_new * asp
+      downsample <- dims[1] / x_new
+      x <- stars::st_as_stars(x, downsample = downsample - 1)
+      message("Number of pixels is above ", maxpixels, ".",
+              "Only about ", maxpixels, " pixels will be shown.\n",
+              "You can increase the value of `maxpixels` to ", prod(dims), " to avoid this.")
+    }
+  } else {
+    if (do.downscale) {
+      message("Number of pixels is above ", maxpixels, ". ",
+              "Automatic downsampling of `stars` object is not yet implemented, so rendering may be slow.\n",
+              "You can pass a `stars` proxy object to mapview to get automatic downsampling.")
+    }
+  }
+
+
 
             if (mapviewGetOption("platform") != "leaflet") {
               warning(
@@ -402,8 +435,10 @@ setMethod('mapView', signature(x = 'stars'),
               NULL
             }
 
-          }
-)
+}
+
+setMethod('mapView', signature(x = 'stars'), .stars_method)
+setMethod('mapView', signature(x = 'stars_proxy'), .stars_method)
 
 
 
