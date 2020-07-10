@@ -295,30 +295,30 @@ setMethod('mapView', signature(x = 'RasterLayer'),
               #             layer.name = layer.name,
               #             ...)
               # } else {
-                leafletRL(x,
-                          map = map,
-                          maxpixels = maxpixels,
-                          col.regions = col.regions,
-                          at = at,
-                          na.color = na.color,
-                          use.layer.names = use.layer.names,
-                          map.types = map.types,
-                          alpha.regions = alpha.regions,
-                          legend = legend,
-                          legend.opacity = legend.opacity,
-                          trim = trim,
-                          verbose = verbose,
-                          layer.name = layer.name,
-                          homebutton = homebutton,
-                          native.crs = native.crs,
-                          method = method,
-                          label = label,
-                          query.type = query.type,
-                          query.digits = query.digits,
-                          query.position = query.position,
-                          query.prefix = query.prefix,
-                          viewer.suppress = viewer.suppress,
-                          ...)
+              leafletRL(x,
+                        map = map,
+                        maxpixels = maxpixels,
+                        col.regions = col.regions,
+                        at = at,
+                        na.color = na.color,
+                        use.layer.names = use.layer.names,
+                        map.types = map.types,
+                        alpha.regions = alpha.regions,
+                        legend = legend,
+                        legend.opacity = legend.opacity,
+                        trim = trim,
+                        verbose = verbose,
+                        layer.name = layer.name,
+                        homebutton = homebutton,
+                        native.crs = native.crs,
+                        method = method,
+                        label = label,
+                        query.type = query.type,
+                        query.digits = query.digits,
+                        query.position = query.position,
+                        query.prefix = query.prefix,
+                        viewer.suppress = viewer.suppress,
+                        ...)
             } else {
               NULL
             }
@@ -438,7 +438,6 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 
 setMethod('mapView', signature(x = 'stars'), .stars_method)
 setMethod('mapView', signature(x = 'stars_proxy'), .stars_method)
-
 
 
 ## Raster Stack/Brick ===========================================================
@@ -691,33 +690,33 @@ setMethod('mapView', signature(x = 'sf'),
                       ...)
             } else if (mapviewGetOption("platform") == "leaflet") {
 
-                leaflet_sf(x,
-                           map = map,
-                           pane = pane,
-                           zcol = zcol,
-                           color = color,
-                           col.regions = col.regions,
-                           at = at,
-                           na.color = na.color,
-                           cex = cex,
-                           lwd = lwd,
-                           alpha = alpha,
-                           alpha.regions = alpha.regions,
-                           na.alpha = na.alpha,
-                           map.types = map.types,
-                           verbose = verbose,
-                           popup = popup,
-                           layer.name = layer.name,
-                           label = label,
-                           legend = legend,
-                           legend.opacity = legend.opacity,
-                           homebutton = homebutton,
-                           native.crs = native.crs,
-                           highlight = highlight,
-                           maxpoints = maxpoints,
-                           canvas = canvas,
-                           viewer.suppress = viewer.suppress,
-                           ...)
+              leaflet_sf(x,
+                         map = map,
+                         pane = pane,
+                         zcol = zcol,
+                         color = color,
+                         col.regions = col.regions,
+                         at = at,
+                         na.color = na.color,
+                         cex = cex,
+                         lwd = lwd,
+                         alpha = alpha,
+                         alpha.regions = alpha.regions,
+                         na.alpha = na.alpha,
+                         map.types = map.types,
+                         verbose = verbose,
+                         popup = popup,
+                         layer.name = layer.name,
+                         label = label,
+                         legend = legend,
+                         legend.opacity = legend.opacity,
+                         homebutton = homebutton,
+                         native.crs = native.crs,
+                         highlight = highlight,
+                         maxpoints = maxpoints,
+                         canvas = canvas,
+                         viewer.suppress = viewer.suppress,
+                         ...)
 
             } else if (mapviewGetOption("platform") == "leafgl") {
 
@@ -915,65 +914,65 @@ setMethod('mapView', signature(x = 'sfc'),
 #'
 #' @describeIn mapView \code{\link{character}}
 setMethod('mapView', signature(x = 'character'),
-         function(x,
-                  map = NULL,
-                  tms = TRUE,
-                  color = standardColor(),
-                  col.regions = standardColRegions(),
-                  at = NULL,
-                  na.color = mapviewGetOption("na.color"),
-                  cex = 6,
-                  lwd = 2,
-                  alpha = 0.9,
-                  alpha.regions = 0.6,
-                  na.alpha = 0.6,
-                  map.types = mapviewGetOption("basemaps"),
-                  verbose = FALSE,
-                  layer.name = x,
-                  homebutton = mapviewGetOption("homebutton"),
-                  native.crs = FALSE,
-                  canvas = FALSE,
-                  viewer.suppress = mapviewGetOption("viewer.suppress"),
-                  ...) {
-           if (mapviewGetOption("platform") == "leaflet") {
-             if (utils::file_test("-d", x)) {
-               leaflet_tiles(x = x,
+          function(x,
+                   map = NULL,
+                   tms = TRUE,
+                   color = standardColor(),
+                   col.regions = standardColRegions(),
+                   at = NULL,
+                   na.color = mapviewGetOption("na.color"),
+                   cex = 6,
+                   lwd = 2,
+                   alpha = 0.9,
+                   alpha.regions = 0.6,
+                   na.alpha = 0.6,
+                   map.types = mapviewGetOption("basemaps"),
+                   verbose = FALSE,
+                   layer.name = x,
+                   homebutton = mapviewGetOption("homebutton"),
+                   native.crs = FALSE,
+                   canvas = FALSE,
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
+                   ...) {
+            if (mapviewGetOption("platform") == "leaflet") {
+              if (utils::file_test("-d", x)) {
+                leaflet_tiles(x = x,
+                              map = map,
+                              tms = tms,
+                              map.types = map.types,
+                              verbose = verbose,
+                              layer.name = layer.name,
+                              homebutton = homebutton,
+                              native.crs = native.crs,
+                              viewer.suppress = viewer.suppress,
+                              ...)
+              } else if (utils::file_test("-f", x)) {
+                layer.name = basename(tools::file_path_sans_ext(layer.name))
+                leaflet_file(x = x,
                              map = map,
-                             tms = tms,
+                             color = color,
+                             col.regions = col.regions,
+                             at = at,
+                             na.color = na.color,
+                             cex = cex,
+                             lwd = lwd,
+                             alpha = alpha,
+                             alpha.regions = alpha.regions,
+                             na.alpha = na.alpha,
                              map.types = map.types,
                              verbose = verbose,
                              layer.name = layer.name,
                              homebutton = homebutton,
                              native.crs = native.crs,
+                             canvas = canvas,
                              viewer.suppress = viewer.suppress,
                              ...)
-             } else if (utils::file_test("-f", x)) {
-               layer.name = basename(tools::file_path_sans_ext(layer.name))
-               leaflet_file(x = x,
-                            map = map,
-                            color = color,
-                            col.regions = col.regions,
-                            at = at,
-                            na.color = na.color,
-                            cex = cex,
-                            lwd = lwd,
-                            alpha = alpha,
-                            alpha.regions = alpha.regions,
-                            na.alpha = na.alpha,
-                            map.types = map.types,
-                            verbose = verbose,
-                            layer.name = layer.name,
-                            homebutton = homebutton,
-                            native.crs = native.crs,
-                            canvas = canvas,
-                            viewer.suppress = viewer.suppress,
-                            ...)
-             } else {
-               stop(sprintf("%s is not a directory!", layer.name),
-                    call. = FALSE)
-             }
-           }
-         }
+              } else {
+                stop(sprintf("%s is not a directory!", layer.name),
+                     call. = FALSE)
+              }
+            }
+          }
 )
 
 ## numeric ================================================================
@@ -1210,7 +1209,7 @@ setMethod('mapView', signature(x = 'missing'),
 #'
 setMethod('mapView', signature(x = 'NULL'),
           function(x, ...) {
-              NULL
+            NULL
           }
 )
 
