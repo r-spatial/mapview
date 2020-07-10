@@ -242,6 +242,9 @@ setMethod("|",
                 , e1@map$x$calls
               )
 
+              e1_deps = e1@map$dependencies
+
+
 
               ## e2 - right
               e2_tile_idx = mapview:::getCallEntryFromMap(e2@map, "addProviderTiles")
@@ -285,6 +288,10 @@ setMethod("|",
                 , e2@map$x$calls
               )
 
+              e2_deps = e2@map$dependencies
+
+
+
               # map - left + right
               m = e1
 
@@ -292,8 +299,6 @@ setMethod("|",
                 m@map$x$calls
                 , e2@map$x$calls
               )
-
-              # m@map = removeDuplicatedMapCalls(m@map)
 
               m_pane_idx = mapview:::getCallEntryFromMap(m@map, "createMapPane")
               m_pane_tmp = m@map$x$calls[m_pane_idx]
@@ -303,6 +308,11 @@ setMethod("|",
                 m_pane_tmp
                 , m@map$x$calls
               )
+
+              ### make sure all dependencies are present
+              m_deps = append(e1_deps, e2_deps)
+              m_deps = m_deps[!duplicated(m_deps)]
+              m@map$dependencies = m_deps
 
               m@map = leaflet::addLayersControl(
                 m@map
