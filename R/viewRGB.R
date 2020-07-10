@@ -1,7 +1,7 @@
 #' Red-Green-Blue map view of a multi-layered Raster object
 #'
 #' @description
-#' Make a Red-Green-Blue plot based on three layers (in a RasterBrick or RasterStack).
+#' Make a Red-Green-Blue plot based on three layers (in a RasterBrick, RasterStack or stars).
 #' Three layers (sometimes referred to as "bands" because they may represent
 #' different bandwidths in the electromagnetic spectrum) are combined such
 #' that they represent the red, green and blue channel. This function can
@@ -9,7 +9,7 @@
 #' multi-band satellite images. Note, this text is plagirized, i.e. copied
 #' from \code{\link{plotRGB}}.
 #'
-#' @param x a RasterBrick or RasterStack
+#' @param x a RasterBrick, RasterStack or stars
 #' @param r integer. Index of the Red channel/band, between 1 and nlayers(x)
 #' @param g integer. Index of the Green channel/band, between 1 and nlayers(x)
 #' @param b integer. Index of the Blue channel/band, between 1 and nlayers(x)
