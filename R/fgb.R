@@ -159,6 +159,18 @@ sfFgb = function(x,
     viewer.suppress = viewer.suppress
   )
 
+  if (!canvas) {
+    if (!is.null(pane)) {
+      if (pane == "auto") {
+        pane = paneName(x)
+        zindex = zIndex(x)
+        m = leaflet::addMapPane(m, pane, zindex)
+      }
+    }
+  } else {
+    pane = NULL
+  }
+
   m = leafem::addFgb(
     map = m
     , file = fl
@@ -174,6 +186,9 @@ sfFgb = function(x,
     , fill = ifelse(getGeometryType(x) == "ln", FALSE, TRUE)
     , className = "mapview-popup"
     , scale = scaleList
+    , options = leaflet::pathOptions(
+      pane = pane
+    )
     , ...
   )
 
