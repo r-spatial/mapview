@@ -224,6 +224,7 @@ setMethod("|",
                   , "addPolylines"
                   , "addCircleMarkers"
                   , "addFlatGeoBuf"
+                  , "addGeotiff"
                 )
               )
               for (i in seq_along(e1_feat_idx)) {
@@ -270,6 +271,7 @@ setMethod("|",
                   , "addPolylines"
                   , "addCircleMarkers"
                   , "addFlatGeoBuf"
+                  , "addGeotiff"
                 )
               )
               for (i in seq_along(e2_feat_idx)) {

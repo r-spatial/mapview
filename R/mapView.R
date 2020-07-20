@@ -356,6 +356,7 @@ setMethod('mapView', signature(x = 'stars'),
                    query.position = mapviewGetOption("query.position"),
                    query.prefix = mapviewGetOption("query.prefix"),
                    viewer.suppress = mapviewGetOption("viewer.suppress"),
+                   pane = "auto",
                    ...) {
 
             # method = match.arg(method)
@@ -397,6 +398,7 @@ setMethod('mapView', signature(x = 'stars'),
                             query.position = query.position,
                             query.prefix = query.prefix,
                             viewer.suppress = viewer.suppress,
+                            pane = pane,
                             ...)
             } else {
               NULL

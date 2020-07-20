@@ -4,7 +4,9 @@
 \name{breweries}
 \alias{breweries}
 \title{Selected breweries in Franconia}
-\format{\code{sf feature collection POINT}}
+\format{
+\code{sf feature collection POINT}
+}
 \description{
 Selected breweries in Franconia
 }

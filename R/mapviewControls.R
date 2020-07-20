@@ -273,6 +273,9 @@ makeListLayerNames = function(x, layer.name) {
 
 
 paneName = function(x) {
+  if (inherits(x, "stars")) {
+    return("stars")
+  }
   switch(getGeometryType(x),
          "pt" = "point",
          "ln" = "line",
@@ -281,6 +284,9 @@ paneName = function(x) {
 }
 
 zIndex = function(x) {
+  if (inherits(x, "stars")) {
+    return(400)
+  }
   switch(getGeometryType(x),
          "pt" = 440,
          "ln" = 430,

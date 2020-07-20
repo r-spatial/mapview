@@ -84,6 +84,7 @@
   query.position = mapviewGetOption("query.position"),
   query.prefix = mapviewGetOption("query.prefix"),
   viewer.suppress = mapviewGetOption("viewer.suppress"),
+  pane = "auto",
   ...
 )
 

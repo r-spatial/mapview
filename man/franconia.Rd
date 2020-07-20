@@ -4,7 +4,9 @@
 \name{franconia}
 \alias{franconia}
 \title{Administrative district borders of Franconia}
-\format{\code{sf feature collection MULTIPOLYGON}}
+\format{
+\code{sf feature collection MULTIPOLYGON}
+}
 \source{
 \url{http://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts}
 }

@@ -76,6 +76,7 @@ leaflet_stars = function(x,
                          query.position,
                          query.prefix,
                          viewer.suppress,
+                         pane,
                          ...) {
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol = band)
@@ -157,15 +158,44 @@ leaflet_stars = function(x,
     }
     # x <- sf::st_transform(x, crs = 3857)
     ## add layers to base map
-    m = leafem::addStarsImage(map = m,
-                              x = x,
-                              band = band,
-                              colors = pal,
-                              project = TRUE,
-                              opacity = alpha.regions,
-                              group = grp,
-                              layerId = grp,
-                              ...)
+    if (utils::packageVersion("leafem") < "0.1.3") {
+      m = leafem::addStarsImage(map = m,
+                                x = x,
+                                band = band,
+                                colors = pal,
+                                project = TRUE,
+                                opacity = alpha.regions,
+                                group = grp,
+                                layerId = grp,
+                                ...)
+    } else {
+      label = FALSE
+
+      if (!is.null(pane)) {
+        if (pane == "auto") {
+          pane = paneName(x)
+          zindex = zIndex(x)
+          m = leaflet::addMapPane(m, pane, zindex)
+        }
+      }
+
+      m = leafem::addGeoRaster(
+        map = m
+        , x = x[, , , band]
+        , group = grp
+        , layrId = grp
+        , opacity = alpha.regions
+        , colorOptions = leafem::colorOptions(
+          palette = col.regions
+          , breaks = at
+          , na.color = na.color
+        )
+        , options = leaflet::tileOptions(
+          pane = pane
+        )
+      )
+    }
+
     m = removeLayersControl(m)
     m = mapViewLayersControl(map = m,
                              map.types = map.types,
