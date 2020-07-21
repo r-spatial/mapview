@@ -577,6 +577,9 @@ leaflet_sfc <- function(x,
       , label = NULL
       , group = layer.name
       , fill = ifelse(getGeometryType(x) == "ln", FALSE, TRUE)
+      , options = list(
+        pane = pane
+      )
       , ...
     )
   } else {

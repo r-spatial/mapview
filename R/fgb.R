@@ -58,6 +58,9 @@ sfFgb = function(x,
     col.regions = unique(col.regions)
   }
 
+  if (getGeometryType(x) == "ln")
+    col.regions = NULL
+
   ## color
   if (length(color) > 1 &&
       length(color) == nrow(x) &&
