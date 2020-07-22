@@ -23,9 +23,9 @@ if ( !isGeneric('+') ) {
 #'   m1 + breweries + plainview::poppendorf[[4]]
 #' }
 #'
-#' @name +
+#' @name ops
 #' @docType methods
-#' @rdname plus
+#' @rdname ops
 #' @aliases +,mapview,mapview-method
 
 setMethod("+",
@@ -36,7 +36,7 @@ setMethod("+",
             if (mapviewGetOption("platform") %in% c("leaflet", "leafgl")) {
 
               # if (length(
-              #   mapview:::getCallEntryFromMap(e1@map, "addProviderTiles")
+              #   getCallEntryFromMap(e1@map, "addProviderTiles")
               # ) == 0) {
                 idx = getCallEntryFromMap(e2@map, "addProviderTiles")
                 if (length(idx) > 0) {
@@ -81,9 +81,10 @@ setMethod("+",
 )
 
 #' mapview + data adds spatial data (raster*, sf*, sp*) to a mapview map
-#' @name +
+#'
+#' @name ops
 #' @docType methods
-#' @rdname plus
+#' @rdname ops
 #' @aliases +,mapview,ANY-method
 #'
 setMethod("+",
@@ -114,9 +115,10 @@ setMethod("+",
 
 
 #' mapview + NULL returns the LHS map
-#' @name +
+#'
+#' @name ops
 #' @docType methods
-#' @rdname plus
+#' @rdname ops
 #' @aliases +,mapview,NULL-method
 #'
 setMethod("+",
@@ -155,9 +157,9 @@ setMethod("+",
 # )
 
 #' [...]
-#' @name +
+#' @name ops
 #' @docType methods
-#' @rdname plus
+#' @rdname ops
 #' @aliases +,mapview,character-method
 #'
 setMethod("+",
@@ -181,6 +183,23 @@ setMethod("+",
 )
 
 
+#' mapview | mapview provides a slider in the middle to compare two maps.
+#'
+#' @param e1 a leaflet or mapview map, or NULL.
+#' @param e2 a leaflet or mapview map, or NULL.
+#'
+#' @examples
+#' m1 <- mapView(franconia, col.regions = "red")
+#' m2 <- mapView(breweries)
+#'
+#' ### add two mapview objects
+#' m1 | m2
+#'
+#' @name ops
+#' @docType methods
+#' @rdname ops
+#' @aliases |,mapview,mapview-method
+
 if ( !isGeneric('|') ) {
   setGeneric('|', function(x, y, ...)
     standardGeneric('|'))
@@ -201,7 +220,7 @@ setMethod("|",
                 )
               }
 
-              e1_tile_idx = mapview:::getCallEntryFromMap(e1@map, "addProviderTiles")
+              e1_tile_idx = getCallEntryFromMap(e1@map, "addProviderTiles")
               if (length(e1_tile_idx) > 1) {
                 e1@map$x$calls[2:length(e1_tile_idx)] = NULL
               }
@@ -210,14 +229,14 @@ setMethod("|",
               e1@map$x$calls[[e1_tile_idx]]$args[[2]] = "left"
               e1@map$x$calls[[e1_tile_idx]]$args[[e1_tile_pane_idx]][[4]] = "left"
 
-              e1_lyrctrl_idx = mapview:::getCallEntryFromMap(e1@map, "addLayersControl")
+              e1_lyrctrl_idx = getCallEntryFromMap(e1@map, "addLayersControl")
               # bsgrps = e1@map$x$calls[[e1_lyrctrl_idx]]$args[[1]][1]
               # e1@map$x$calls[[e1_lyrctrl_idx]]$args[[1]] = bsgrps
               e1_ovrlygrps = e1@map$x$calls[[e1_lyrctrl_idx]]$args[[2]]
               e1@map$x$calls[[e1_lyrctrl_idx]] = NULL
 
-              e1_pane_idx = mapview:::getCallEntryFromMap(e1@map, "createMapPane")
-              e1_feat_idx = mapview:::getCallEntryFromMap(
+              e1_pane_idx = getCallEntryFromMap(e1@map, "createMapPane")
+              e1_feat_idx = getCallEntryFromMap(
                 e1@map
                 , c(
                   "addPolygons"
@@ -248,7 +267,7 @@ setMethod("|",
 
 
               ## e2 - right
-              e2_tile_idx = mapview:::getCallEntryFromMap(e2@map, "addProviderTiles")
+              e2_tile_idx = getCallEntryFromMap(e2@map, "addProviderTiles")
               if (length(e2_tile_idx) > 1) {
                 e2@map$x$calls[2:length(e2_tile_idx)] = NULL
               }
@@ -257,14 +276,14 @@ setMethod("|",
               e2@map$x$calls[[e2_tile_idx]]$args[[2]] = "right"
               e2@map$x$calls[[e2_tile_idx]]$args[[e2_tile_pane_idx]][[4]] = "right"
 
-              e2_lyrctrl_idx = mapview:::getCallEntryFromMap(e2@map, "addLayersControl")
+              e2_lyrctrl_idx = getCallEntryFromMap(e2@map, "addLayersControl")
               # bsgrps = e2@map$x$calls[[e2_lyrctrl_idx]]$args[[1]][1]
               # e2@map$x$calls[[e2_lyrctrl_idx]]$args[[1]] = bsgrps
               e2_ovrlygrps = e2@map$x$calls[[e2_lyrctrl_idx]]$args[[2]]
               e2@map$x$calls[[e2_lyrctrl_idx]] = NULL
 
-              e2_pane_idx = mapview:::getCallEntryFromMap(e2@map, "createMapPane")
-              e2_feat_idx = mapview:::getCallEntryFromMap(
+              e2_pane_idx = getCallEntryFromMap(e2@map, "createMapPane")
+              e2_feat_idx = getCallEntryFromMap(
                 e2@map
                 , c(
                   "addPolygons"
@@ -302,7 +321,7 @@ setMethod("|",
                 , e2@map$x$calls
               )
 
-              m_pane_idx = mapview:::getCallEntryFromMap(m@map, "createMapPane")
+              m_pane_idx = getCallEntryFromMap(m@map, "createMapPane")
               m_pane_tmp = m@map$x$calls[m_pane_idx]
               m@map$x$calls[m_pane_idx] = NULL
 
@@ -348,5 +367,35 @@ setMethod("|",
 
             out = methods::new('mapview', object = out_obj, map = m)
             return(out)
+          }
+)
+
+#' mapview | NULL returns the LHS map
+#'
+#' @name ops
+#' @docType methods
+#' @rdname ops
+#' @aliases |,mapview,NULL-method
+#'
+setMethod("|",
+          signature(e1 = "mapview",
+                    e2 = "NULL"),
+          function (e1, e2) {
+            return(e1)
+          }
+)
+
+#' NULL | mapview returns the RHS map
+#'
+#' @name ops
+#' @docType methods
+#' @rdname ops
+#' @aliases |,NULL,mapview-method
+#'
+setMethod("|",
+          signature(e1 = "NULL",
+                    e2 = "mapview"),
+          function (e1, e2) {
+            return(e2)
           }
 )
