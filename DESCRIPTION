@@ -84,6 +84,7 @@ Suggests:
     dplyr,
     knitr,
     later,
+    leaflet.extras2,
     lwgeom,
     mapdeck,
     plainview,
