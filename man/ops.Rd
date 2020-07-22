@@ -50,7 +50,6 @@ m2 <- mapView(breweries)
 
 ### add two mapview objects
 m1 + m2
-'+'(m2, m1)
 
 ### add layers to a mapview object
 if (interactive()) {
