@@ -555,6 +555,7 @@ leaflet_sfc <- function(x,
   }
 
   if (mapviewGetOption("fgb")) {
+    # if (getGeometryType(x) == "ln") col.regions = NULL
     fl = tempfile(fileext = ".fgb")
     sf::st_write(
       obj = x

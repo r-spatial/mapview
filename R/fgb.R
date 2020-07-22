@@ -174,6 +174,8 @@ sfFgb = function(x,
     pane = NULL
   }
 
+  if (getGeometryType(x) == "ln") col.regions = NULL
+
   m = leafem::addFgb(
     map = m
     , file = fl
@@ -251,7 +253,7 @@ sfFgb = function(x,
     , mapviewCSSDependencies()
   )
 
-  out <- new("mapview", object = list(x), map = m)
+  out <- new("mapview", object = list(sf::st_geometry(x)), map = m)
 
   return(out)
 

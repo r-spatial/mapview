@@ -86,7 +86,7 @@ test_that("getGeometryType() runs without issues", {
 test_that("lineWidth() runs without issues", {
   expect_type(lineWidth(franconia), "double")
   expect_equal(lineWidth(trails), 2)
-  expect_equal(lineWidth(franconia), 1)
+  expect_equal(lineWidth(franconia), 0.5)
 })
 
 ### regionOpacity -----
