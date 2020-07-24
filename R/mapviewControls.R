@@ -349,12 +349,18 @@ listifyer = function(x, by_row = FALSE) {
   }
 
   idx = length(x)
-  function(arg) {
+  function(arg, as_list = FALSE) {
+    if (as_list) {
+      return(as.list(arg))
+    }
     if (is.function(arg)) {
       return(replicate(idx, arg))
     }
     if (is.list(arg) && length(arg) == idx) {
       return(arg)
+    }
+    if (!is.list(arg) && length(arg) == idx) {
+      return(as.list(arg))
     }
     return(rep(list(arg), idx))
   }
