@@ -329,23 +329,25 @@ listifyer = function(x, by_row = FALSE) {
       }
     })
     idx = rep(1:length(x), times = strct)
-    function(arg) {
-      arg_nm = deparse(substitute(arg))
-      arg = unlist(arg)
-      if (length(arg) == 1) {
-        return(rep(arg, length(idx)))
-      }
-      if (length(arg) > 1 && length(arg) <= length(idx)) {
-        splt = split(arg, idx)
-        if (arg_nm == "popup") {
-          splt = sapply(splt, function(i) {
-            attr(i, "popup") = "leafpop"
-            return(i)
-          })
+    return(
+      function(arg) {
+        arg_nm = deparse(substitute(arg))
+        arg = unlist(arg)
+        if (length(arg) == 1) {
+          return(rep(arg, length(idx)))
         }
-        return(splt)
+        if (length(arg) > 1 && length(arg) <= length(idx)) {
+          splt = split(arg, idx)
+          if (arg_nm == "popup") {
+            splt = sapply(splt, function(i) {
+              attr(i, "popup") = "leafpop"
+              return(i)
+            })
+          }
+          return(splt)
+        }
       }
-    }
+    )
   }
 
   idx = length(x)
