@@ -96,13 +96,13 @@ leaflet_sf <- function(x,
 
     if (isTRUE(popup)) popup = leafpop::popupTable(x)
     if (inherits(popup, "character") &&
-        popup %in% colnames(x)) {
+        all(popup %in% colnames(x))) {
       popup = leafpop::popupTable(x, zcol = popup)
     }
 
     if (is.null(label)) label = makeLabels(x)
     if (inherits(label, "character") &&
-        label %in% colnames(x)) {
+        all(label %in% colnames(x))) {
       label = makeLabels(x, label)
     }
 
@@ -531,6 +531,14 @@ leaflet_sfc <- function(x,
     if (is.function(col.regions)) col.regions <- standardColRegions(x)
   } else {
     if (is.function(color)) color <- standardColor(x)
+  }
+
+  if (is.null(map.types)) {
+    if (getGeometryType(x) %in% c("pl", "pt")) {
+      map.types <- as.vector(stats::na.omit(basemaps(col.regions)))
+    } else {
+      map.types <- as.vector(stats::na.omit(basemaps(color)))
+    }
   }
 
   m <- initMap(

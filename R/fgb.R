@@ -47,6 +47,14 @@ sfFgb = function(x,
                                   at = at,
                                   na.color = na.color)
 
+  if (is.null(map.types)) {
+    if (getGeometryType(x) %in% c("pl", "pt")) {
+      map.types <- as.vector(stats::na.omit(basemaps(col.regions)))
+    } else {
+      map.types <- as.vector(stats::na.omit(basemaps(color)))
+    }
+  }
+
   ## fillColor
   if (length(col.regions) > 1 &&
       length(col.regions) == nrow(x) &&
