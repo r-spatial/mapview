@@ -2,7 +2,6 @@
 % Please edit documentation in R/extent.R
 \name{viewExtent}
 \alias{viewExtent}
-\alias{addExtent}
 \title{View extent/bbox of spatial objects interactively}
 \usage{
 viewExtent(
@@ -14,8 +13,6 @@ viewExtent(
   label = NULL,
   ...
 )
-
-addExtent(map, data, ...)
 }
 \arguments{
 \item{x}{either a Raster*, sf* or Spatial* object}
@@ -35,20 +32,11 @@ details.}
 \code{\link{addControl}} for details.}
 
 \item{...}{additional arguments passed on to \code{\link{addRectangles}}}
-
-\item{data}{either a Raster*, sf* or Spatial* object}
 }
 \description{
 This function produces an interactive view of the extent/bbox
 of the supplied spatial object
 }
-\section{Functions}{
-\itemize{
-\item \code{addExtent}: add extent/bbox of spatial/sf objects to a leaflet map -
-This function is deprecated.
-Please use leafem::\code{\link[leafem]{addExtent}} instead.
-}}
-
 \examples{
 library(leaflet)
 

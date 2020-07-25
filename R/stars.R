@@ -1,56 +1,56 @@
-#' Add stars layer to a leaflet map
-#'
-#' @param map a mapview or leaflet object.
-#' @param x a stars layer.
-#' @param band the band number to be plotted.
-#' @param colors the color palette (see colorNumeric) or function to use to
-#' color the raster values (hint: if providing a function, set na.color
-#' to "#00000000" to make NA areas transparent)
-#' @param opacity the base opacity of the raster, expressed from 0 to 1
-#' @param attribution the HTML string to show as the attribution for this layer
-#' @param layerId the layer id
-#' @param group the name of the group this raster image should belong to
-#' (see the same parameter under addTiles)
-#' @param project if TRUE, automatically project x to the map projection
-#' expected by Leaflet (EPSG:3857); if FALSE, it's the caller's responsibility
-#' to ensure that x is already projected, and that extent(x) is
-#' expressed in WGS84 latitude/longitude coordinates
-#' @param method the method used for computing values of the new,
-#' projected raster image. "bilinear" (the default) is appropriate for
-#' continuous data, "ngb" - nearest neighbor - is appropriate for categorical data.
-#' Ignored if project = FALSE. See projectRaster for details.
-#' @param maxBytes the maximum number of bytes to allow for the projected image
-#' (before base64 encoding); defaults to 4MB.
-#'
-#' @details
-#' This is an adaption of \code{\link{addRasterImage}}. See that documentation
-#' for details.
-#'
-#' @examples
-#' \dontrun{
-#' library(stars)
-#' library(leaflet)
-#' tif = system.file("tif/L7_ETMs.tif", package = "stars")
-#' x = read_stars(tif)
-#' leaflet() %>%
-#'   addProviderTiles("OpenStreetMap") %>%
-#'   addStarsImage(x, project = TRUE)
-#' }
-#'
-#' @export addStarsImage
-addStarsImage <- function(map,
-                          x,
-                          band = 1,
-                          colors = "Spectral",
-                          opacity = 1,
-                          attribution = NULL,
-                          layerId = NULL,
-                          group = NULL,
-                          project = FALSE,
-                          method = c("bilinear", "ngb"),
-                          maxBytes = 4 * 1024 * 1024) {
-  .Defunct(new = "leafem::addStarsImage", package = "mapview")
-}
+# #' Add stars layer to a leaflet map
+# #'
+# #' @param map a mapview or leaflet object.
+# #' @param x a stars layer.
+# #' @param band the band number to be plotted.
+# #' @param colors the color palette (see colorNumeric) or function to use to
+# #' color the raster values (hint: if providing a function, set na.color
+# #' to "#00000000" to make NA areas transparent)
+# #' @param opacity the base opacity of the raster, expressed from 0 to 1
+# #' @param attribution the HTML string to show as the attribution for this layer
+# #' @param layerId the layer id
+# #' @param group the name of the group this raster image should belong to
+# #' (see the same parameter under addTiles)
+# #' @param project if TRUE, automatically project x to the map projection
+# #' expected by Leaflet (EPSG:3857); if FALSE, it's the caller's responsibility
+# #' to ensure that x is already projected, and that extent(x) is
+# #' expressed in WGS84 latitude/longitude coordinates
+# #' @param method the method used for computing values of the new,
+# #' projected raster image. "bilinear" (the default) is appropriate for
+# #' continuous data, "ngb" - nearest neighbor - is appropriate for categorical data.
+# #' Ignored if project = FALSE. See projectRaster for details.
+# #' @param maxBytes the maximum number of bytes to allow for the projected image
+# #' (before base64 encoding); defaults to 4MB.
+# #'
+# #' @details
+# #' This is an adaption of \code{\link{addRasterImage}}. See that documentation
+# #' for details.
+# #'
+# #' @examples
+# #' \dontrun{
+# #' library(stars)
+# #' library(leaflet)
+# #' tif = system.file("tif/L7_ETMs.tif", package = "stars")
+# #' x = read_stars(tif)
+# #' leaflet() %>%
+# #'   addProviderTiles("OpenStreetMap") %>%
+# #'   addStarsImage(x, project = TRUE)
+# #' }
+# #'
+# #' @export addStarsImage
+# addStarsImage <- function(map,
+#                           x,
+#                           band = 1,
+#                           colors = "Spectral",
+#                           opacity = 1,
+#                           attribution = NULL,
+#                           layerId = NULL,
+#                           group = NULL,
+#                           project = FALSE,
+#                           method = c("bilinear", "ngb"),
+#                           maxBytes = 4 * 1024 * 1024) {
+#   .Defunct(new = "leafem::addStarsImage", package = "mapview")
+# }
 
 leaflet_stars = function(x,
                          band,

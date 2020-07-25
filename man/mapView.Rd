@@ -398,7 +398,7 @@
 }
 \arguments{
 \item{x}{a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
-\code{sf} object or a list of any combination of those. Furthermore,
+\code{sf} or \code{stars} object or a list of any combination of those. Furthermore,
   this can also be a \code{data.frame}, a \code{numeric vector} or a
 \code{character string} pointing to a tile image folder or file on disk.
   If missing, a blank map will be drawn. A value of NULL will return NULL.}
@@ -586,9 +586,9 @@ the popup will potentially still say something like "POLYGON Z".
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{stars}: \code{\link{stars}}
+\item \code{stars}: \code{stars}
 
-\item \code{stars_proxy}: \code{\link{stars_proxy}}
+\item \code{stars_proxy}: \code{stars_proxy}
 
 \item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{brick}}
 

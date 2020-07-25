@@ -4,14 +4,13 @@
 #' of the supplied spatial object
 #'
 #' @param x either a Raster*, sf* or Spatial* object
-#' @param data either a Raster*, sf* or Spatial* object
 #' @param map a leaflet or mapview map the extent should be added to. If NULL
 #' standard background layers are created.
-#' @param alpha.regions opacity of the fills or the raster layer(s).
-#' @param layer.name the name of the layer to be shown on the map.
 #' @param popup a \code{list} of HTML strings with the popup contents, usually
 #' created from \code{\link{popupTable}}. See \code{\link{addControl}} for
 #' details.
+#' @param layer.name the name of the layer to be shown on the map.
+#' @param alpha.regions opacity of the fills or the raster layer(s).
 #' @param label a character vector of labels to be shown on mouseover. See
 #' \code{\link{addControl}} for details.
 #' @param ... additional arguments passed on to \code{\link{addRectangles}}
@@ -71,18 +70,18 @@ viewExtent <- function(x,
 
 }
 
-## Add Extent =============================================================
-#' @describeIn viewExtent add extent/bbox of spatial/sf objects to a leaflet map -
-#' This function is deprecated.
-#' Please use leafem::\code{\link[leafem]{addExtent}} instead.
-#'
-#' @export addExtent
-
-addExtent <- function(map, data, ...) {
-
-  .Defunct(new = "leafem::addExtent", package = "mapview")
-
-}
+# ## Add Extent =============================================================
+# #' @describeIn viewExtent add extent/bbox of spatial/sf objects to a leaflet map -
+# #' This function is deprecated.
+# #' Please use leafem::\code{\link[leafem]{addExtent}} instead.
+# #'
+# #' @export addExtent
+#
+# addExtent <- function(map, data, ...) {
+#
+#   .Defunct(new = "leafem::addExtent", package = "mapview")
+#
+# }
 
 
 

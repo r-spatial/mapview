@@ -22,7 +22,7 @@ if ( !isGeneric('mapView') ) {
 #' the popup will potentially still say something like "POLYGON Z".
 #'
 #' @param x a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
-#' \code{sf} object or a list of any combination of those. Furthermore,
+#' \code{sf} or \code{stars} object or a list of any combination of those. Furthermore,
 #'   this can also be a \code{data.frame}, a \code{numeric vector} or a
 #' \code{character string} pointing to a tile image folder or file on disk.
 #'   If missing, a blank map will be drawn. A value of NULL will return NULL.
@@ -436,10 +436,10 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 
 }
 
-#' @describeIn mapView \code{\link{stars}}
+#' @describeIn mapView \code{stars}
 setMethod('mapView', signature(x = 'stars'), .stars_method)
 
-#' @describeIn mapView \code{\link{stars_proxy}}
+#' @describeIn mapView \code{stars_proxy}
 setMethod('mapView', signature(x = 'stars_proxy'), .stars_method)
 
 

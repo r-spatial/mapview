@@ -10,17 +10,17 @@ if ( !isGeneric('+') ) {
 #' the objects should be added to e1.
 #'
 #' @examples
-#' m1 <- mapView(franconia, col.regions = "red")
-#' m2 <- mapView(breweries)
+#'   m1 <- mapView(franconia, col.regions = "red")
+#'   m2 <- mapView(breweries)
 #'
-#' ### add two mapview objects
-#' m1 + m2
+#'   ### add two mapview objects
+#'   m1 + m2
 #'
-#' ### add layers to a mapview object
-#' if (interactive()) {
-#'   library(plainview)
-#'   m1 + breweries + plainview::poppendorf[[4]]
-#' }
+#'   ### add layers to a mapview object
+#'   if (interactive()) {
+#'     library(plainview)
+#'     m1 + breweries + plainview::poppendorf[[4]]
+#'   }
 #'
 #' @name ops
 #' @docType methods
@@ -188,11 +188,11 @@ setMethod("+",
 #' @param e2 a leaflet or mapview map, or NULL.
 #'
 #' @examples
-#' m1 <- mapView(franconia, col.regions = "red")
-#' m2 <- mapView(breweries)
+#'   m1 <- mapView(franconia, col.regions = "red")
+#'   m2 <- mapView(breweries)
 #'
-#' ### add two mapview objects
-#' m1 | m2
+#'   ### add two mapview objects
+#'   m1 | m2
 #'
 #' @name ops
 #' @docType methods

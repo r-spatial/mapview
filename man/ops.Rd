@@ -45,22 +45,22 @@ mapview | NULL returns the LHS map
 NULL | mapview returns the RHS map
 }
 \examples{
-m1 <- mapView(franconia, col.regions = "red")
-m2 <- mapView(breweries)
+  m1 <- mapView(franconia, col.regions = "red")
+  m2 <- mapView(breweries)
 
-### add two mapview objects
-m1 + m2
+  ### add two mapview objects
+  m1 + m2
 
-### add layers to a mapview object
-if (interactive()) {
-  library(plainview)
-  m1 + breweries + plainview::poppendorf[[4]]
-}
+  ### add layers to a mapview object
+  if (interactive()) {
+    library(plainview)
+    m1 + breweries + plainview::poppendorf[[4]]
+  }
 
-m1 <- mapView(franconia, col.regions = "red")
-m2 <- mapView(breweries)
+  m1 <- mapView(franconia, col.regions = "red")
+  m2 <- mapView(breweries)
 
-### add two mapview objects
-m1 | m2
+  ### add two mapview objects
+  m1 | m2
 
 }
