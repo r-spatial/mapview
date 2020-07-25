@@ -5,6 +5,7 @@
 \alias{mapView}
 \alias{mapView,RasterLayer-method}
 \alias{mapView,stars-method}
+\alias{mapView,stars_proxy-method}
 \alias{mapView,RasterStackBrick-method}
 \alias{mapView,Satellite-method}
 \alias{mapView,sf-method}
@@ -60,6 +61,35 @@
 )
 
 \S4method{mapView}{stars}(
+  x,
+  band = 1,
+  map = NULL,
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
+  col.regions = mapviewGetOption("raster.palette"),
+  at = NULL,
+  na.color = mapviewGetOption("na.color"),
+  use.layer.names = mapviewGetOption("use.layer.names"),
+  map.types = mapviewGetOption("basemaps"),
+  alpha.regions = 0.8,
+  legend = mapviewGetOption("legend"),
+  legend.opacity = 1,
+  trim = mapviewGetOption("trim"),
+  verbose = mapviewGetOption("verbose"),
+  layer.name = NULL,
+  homebutton = mapviewGetOption("homebutton"),
+  native.crs = mapviewGetOption("native.crs"),
+  method = mapviewGetOption("method"),
+  label = TRUE,
+  query.type = mapviewGetOption("query.type"),
+  query.digits = mapviewGetOption("query.digits"),
+  query.position = mapviewGetOption("query.position"),
+  query.prefix = mapviewGetOption("query.prefix"),
+  viewer.suppress = mapviewGetOption("viewer.suppress"),
+  pane = "auto",
+  ...
+)
+
+\S4method{mapView}{stars_proxy}(
   x,
   band = 1,
   map = NULL,
@@ -557,6 +587,8 @@ the popup will potentially still say something like "POLYGON Z".
 \section{Methods (by class)}{
 \itemize{
 \item \code{stars}: \code{\link{stars}}
+
+\item \code{stars_proxy}: \code{\link{stars_proxy}}
 
 \item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{brick}}
 

@@ -25,3 +25,4 @@ setOldClass("XYZM")
 setOldClass("bbox")
 
 setOldClass("stars")
+setOldClass("stars_proxy")
