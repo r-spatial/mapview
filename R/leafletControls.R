@@ -276,6 +276,7 @@ initMap <- function(map = NULL,
           width = leafletWidth,
           options = leaflet::leafletOptions(
             minZoom = -1000,
+            maxZoom = 52,
             crs = leafletCRS(crsClass = "L.CRS.Simple"),
             preferCanvas = canvas),
           sizingPolicy = leafletSizingPolicy(
