@@ -47,7 +47,8 @@ sfFgb = function(x,
                                   at = at,
                                   na.color = na.color)
 
-  if (is.null(map.types)) {
+  if (is.null(map.types) |
+      identical(mapviewGetOption("basemaps"), map.types)) {
     if (getGeometryType(x) %in% c("pl", "pt")) {
       map.types <- as.vector(stats::na.omit(basemaps(col.regions)))
     } else {
@@ -248,13 +249,23 @@ sfFgb = function(x,
 
   bb = unname(sf::st_bbox(x))
 
-  m = leaflet::fitBounds(
-    m
-    , bb[1]
-    , bb[2]
-    , bb[3]
-    , bb[4]
-  )
+  # if bbox too small, restrict zoom to 18
+  if (identical(bb[1], bb[3])) {
+    m = leaflet::setView(
+      m
+      , lng = mean(bb[1], bb[3], na.rm = TRUE)
+      , lat = mean(bb[2], bb[4], na.rm = TRUE)
+      , zoom = 18
+    )
+  } else {
+    m = leaflet::fitBounds(
+      m
+      , bb[1]
+      , bb[2]
+      , bb[3]
+      , bb[4]
+    )
+  }
 
   m$dependencies = c(
     m$dependencies
