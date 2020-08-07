@@ -317,7 +317,7 @@
   na.alpha = lapply(x, regionOpacity),
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"),
-  popup = lapply(x, leafpop::popupTable),
+  popup = ifelse(isTRUE(mapviewGetOption("fgb")), TRUE, lapply(x, leafpop::popupTable)),
   layer.name = deparse(substitute(x, env = parent.frame())),
   label = lapply(x, makeLabels),
   legend = mapviewGetOption("legend"),
