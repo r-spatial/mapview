@@ -41,6 +41,8 @@ makeLabels <- function(x, zcol = NULL) {
     lab <- as.character(seq(length(x)))
   } else if (inherits(x, "sf") & is.null(zcol)) {
     lab <- rownames(x)
+  } else if (inherits(x, "Raster")) {
+    lab = TRUE
   } else lab <- as.character(as.data.frame(x)[, zcol])
   return(lab)
 }
@@ -124,6 +126,11 @@ getSFClass <- function(x) {
 
 
 getGeometryType <- function(x) {
+  # raster / stars
+  if (inherits(x, c("Raster", "stars"))) {
+    return("rs")
+  }
+
   # sf
   if (inherits(x, "Spatial")) x = sf::st_as_sfc(x)
   g <- sf::st_geometry(x)
@@ -165,11 +172,14 @@ lineWidth <- function(x) {
 
 
 regionOpacity <- function(x) {
-  switch(getGeometryType(x),
-         "pt" = ifelse(mapviewGetOption("platform") == "leafgl", 0.8, 0.6),
-         "ln" = 1,
-         "pl" = ifelse(mapviewGetOption("platform") == "leafgl", 0.8, 0.6),
-         "gc" = ifelse(mapviewGetOption("platform") == "leafgl", 0.8, 0.6))
+  switch(
+    getGeometryType(x)
+    , "pt" = ifelse(mapviewGetOption("platform") == "leafgl", 0.8, 0.6)
+    , "ln" = 1
+    , "pl" = ifelse(mapviewGetOption("platform") == "leafgl", 0.8, 0.6)
+    , "gc" = ifelse(mapviewGetOption("platform") == "leafgl", 0.8, 0.6)
+    , "rs" = 0.8
+  )
 }
 
 
@@ -352,6 +362,11 @@ listifyer = function(x, by_row = FALSE) {
 
   idx = length(x)
   function(arg, as_list = FALSE) {
+    arg_nm = deparse(substitute(arg))
+    if (inherits(x[[1]], c("Raster", "stars")) &&
+        arg_nm %in% c("popup")) {
+      return(NULL)
+    }
     if (as_list) {
       return(as.list(arg))
     }

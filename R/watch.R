@@ -127,13 +127,13 @@ getSpatialData = function(env = .GlobalEnv) {
   st_dat = as.list(dat[st_idx])
   names(st_dat) = dat[st_idx]
 
-  ## raster
-  rs_idx = grep("Raster", cls)
-  rs_dat = as.list(dat[rs_idx])
-  names(rs_dat) = dat[rs_idx]
+  ## raster - doesn't work currently! fix by converting to stars internally
+  # rs_idx = grep("Raster", cls)
+  # rs_dat = as.list(dat[rs_idx])
+  # names(rs_dat) = dat[rs_idx]
 
   ## combine and get
-  spatdat = Filter(Negate(is.null), c(sf_dat, sp_dat, st_dat, rs_dat))
+  spatdat = Filter(Negate(is.null), c(sf_dat, sp_dat, st_dat)) #, rs_dat))
 
   lapply(spatdat, get)
 }
