@@ -189,6 +189,7 @@ mapviewOptions <- function(platform,
           "option 'fgb' cannot (yet) be used with platform '%s'. Ignoring 'fgb'."
          , platform
         )
+        , call. = FALSE
       )
     }
     options(mapviewPlatform = platform)
@@ -431,7 +432,8 @@ mapviewOptions <- function(platform,
 
   ## fgb ----
   setFgb <- function(fgb) {
-    if (mapviewGetOption("platform") %in% c("leafgl", "mapdeck")) {
+    if (mapviewGetOption("platform") %in% c("leafgl", "mapdeck") &&
+        isTRUE(fgb)) {
       warning(
         sprintf(
           "option 'fgb' currently only works on platform %s. Setting fgb = FALSE"

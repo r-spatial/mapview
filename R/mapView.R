@@ -938,6 +938,19 @@ setMethod('mapView', signature(x = 'character'),
                   canvas = FALSE,
                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                   ...) {
+
+           pf = mapviewGetOption("platform")
+           if (pf != "leaflet") {
+             warning(
+               "platform "
+               , "'", pf, "'"
+               , " currently does not support tile rendering"
+               , " switching to platform 'leaflet'."
+               , call. = FALSE
+             )
+             mapviewOptions(platform = "leaflet")
+           }
+
            if (mapviewGetOption("platform") == "leaflet") {
              if (utils::file_test("-d", x)) {
                leaflet_tiles(x = x,
