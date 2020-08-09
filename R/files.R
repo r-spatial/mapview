@@ -92,6 +92,7 @@ leaflet_tiles = function(x,
   if (length(sclbrpos) > 0 | native.crs) scalebar = FALSE else scalebar = TRUE
   if (scalebar) m = leaflet::addScaleBar(m, position = "bottomleft")
   m = leafem::addMouseCoordinates(m)
+  m = leafem::addCopyExtent(m)
 
   if (homebutton) {
     m = leafem::addHomeButton(
@@ -169,7 +170,8 @@ leaflet_file = function(x,
   funs <- list(if (scalebar) leaflet::addScaleBar,
                if (homebutton) leafem::addHomeButton,
                if (is.null(map)) mapViewLayersControl,
-               leafem::addMouseCoordinates)
+               leafem::addMouseCoordinates,
+               leafem::addCopyExtent)
   funs <- funs[!sapply(funs, is.null)]
 
   args <- list(if (scalebar) list(position = "bottomleft"),
@@ -179,7 +181,8 @@ leaflet_file = function(x,
                                       native.crs = native.crs),
                list(epsg = 4326,
                     proj4string = "longlat",
-                    native.crs = FALSE))
+                    native.crs = FALSE),
+               list(event.code = "KeyE"))
   args <- args[!sapply(args, is.null)]
 
   m <- decorateMap(map = m,

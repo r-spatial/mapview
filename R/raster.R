@@ -152,6 +152,7 @@ leafletRL = function(x,
     if (length(sclbrpos) > 0 | native.crs) scalebar = FALSE else scalebar = TRUE
     if (scalebar) m = leaflet::addScaleBar(m, position = "bottomleft")
     m = leafem::addMouseCoordinates(m)
+    m = leafem::addCopyExtent(m)
     if (homebutton) m = leafem::addHomeButton(m, ext, group = layer.name)
 
     m$dependencies = c(

@@ -215,6 +215,7 @@ sfFgb = function(x,
     , if (homebutton) leafem::addHomeButton
     , if (is.null(map)) mapViewLayersControl
     , leafem::addMouseCoordinates
+    , leafem::addCopyExtent
   )
   funs <- funs[!sapply(funs, is.null)]
 
@@ -235,6 +236,9 @@ sfFgb = function(x,
       , epsg = sf::st_crs(x)$epsg
       , proj4string = sf::st_crs(x)$proj4string
       , native.crs = native.crs
+    )
+    , list(
+      event.code = "KeyE"
     )
   )
   args <- args[!sapply(args, is.null)]

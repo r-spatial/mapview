@@ -94,6 +94,7 @@ viewRGB = function(x, r = 3, g = 2, b = 1,
 
   m = leaflet::addScaleBar(map = m, position = "bottomleft")
   m = leafem::addMouseCoordinates(m)
+  m = leafem::addCopyExtent(m)
   m = leafem::addHomeButton(m, ext, group = grp)
 
   out = methods::new('mapview', object = list(x), map = m)

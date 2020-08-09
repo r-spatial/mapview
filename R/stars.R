@@ -179,9 +179,12 @@ leaflet_stars = function(x,
         }
       }
 
+      dm_lngth = length(dim(x))
+      if (dm_lngth > 2) x = x[, , , band] else x = x
+
       m = leafem::addGeoRaster(
         map = m
-        , x = x[, , , band]
+        , x = x
         , group = grp
         , layrId = grp
         , opacity = alpha.regions
@@ -232,6 +235,7 @@ leaflet_stars = function(x,
 
     m = leaflet::addScaleBar(map = m, position = "bottomleft")
     m = leafem::addMouseCoordinates(m)
+    m = leafem::addCopyExtent(m)
     if (homebutton) m = leafem::addHomeButton(m, ext, group = layer.name)
     out = new('mapview', object = list(x), map = m)
     return(out)
