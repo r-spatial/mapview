@@ -1,13 +1,18 @@
-## mapview 2.8.1
+## mapview 2.9.0
 
 new features:
 
   * new function removeMapJunk to remove control elements from a map (e.g. the zoom control).
   * added tentative support for platform 'leafgl'.
+  * stars method now uses leafem::addGeoRaster. https://github.com/r-spatial/leafem/issues/25
+  * leafem::addCopyExtent now included in all methods.
+  * sf(c) methods now use leafem::addFgb if GDAL >= 3.1.
+  * new | operator to compare two maps side-by-side.
 
 miscellaneous:
 
   * all deprecated functions are now defunct. See ?`mapview-defunct`.
+  * drop viridisLite dependency and use base::hcl.colors instead. We now depend on R >= 3.6.
 
 ## mapview 2.7.8
 
@@ -17,7 +22,7 @@ new features:
   * new method file path (currently vector only) without loading into R.
   * initial support for 'mapdeck' as a rendering platform.
   * mapshot now works for all and any htmlwidget.
-  * new functions startWatching/stopWatching to automatically mapview all spatial objects in a given environment (default .GlaobalEnv).
+  * new functions startWatching/stopWatching to automatically mapview all spatial objects in a given environment (default .GlobalEnv).
   
 miscellaneous:
 
