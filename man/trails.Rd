@@ -9,7 +9,7 @@
 }
 \source{
 Datenquelle: Bayerische Vermessungsverwaltung - www.geodaten.bayern.de
-\url{http://www.ldbv.bayern.de/produkte/weitere/opendata.html}
+\url{https://www.ldbv.bayern.de/produkte/weitere/opendata.html}
 }
 \description{
 Selected hiking trails in Franconia
