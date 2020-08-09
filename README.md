@@ -35,30 +35,30 @@ The main user relevant functions are:
 Functions that have been deprecated/deleted recently:
 
   - `addHomeButton` - deprecated, use package
-    [leafem](https://CRAN.R-project.org/package=leafem) instead
+    [leafem](https://CRAN.R-project.org/package=leafem) instead.
   - `addLogo` - deprecated, use package
-    [leafem](https://CRAN.R-project.org/package=leafem) instead
+    [leafem](https://CRAN.R-project.org/package=leafem) instead.
   - `addFeatures` - deprecated, use package
-    [leafem](https://CRAN.R-project.org/package=leafem) instead
+    [leafem](https://CRAN.R-project.org/package=leafem) instead.
   - `addMouseCoordinates` - deprecated, use package
-    [leafem](https://CRAN.R-project.org/package=leafem) instead
+    [leafem](https://CRAN.R-project.org/package=leafem) instead.
   - `addExtent` - deprecated, use package
-    [leafem](https://CRAN.R-project.org/package=leafem) instead
+    [leafem](https://CRAN.R-project.org/package=leafem) instead.
   - `addImageQuery` - deprecated, use package
-    [leafem](https://CRAN.R-project.org/package=leafem) instead
+    [leafem](https://CRAN.R-project.org/package=leafem) instead.
   - `latticeView` & `sync` - deprecated, use package
-    [leafsync](https://CRAN.R-project.org/package=leafsync) instead
+    [leafsync](https://CRAN.R-project.org/package=leafsync) instead.
   - `slideView` - deprecated, use package
-    [slideview](https://CRAN.R-project.org/package=slideview) instead
+    [slideview](https://CRAN.R-project.org/package=slideview) instead.
   - `cubeView` - deprecated, use package
-    [cubeview](https://CRAN.R-project.org/package=cubeview) instead
+    [cubeview](https://CRAN.R-project.org/package=cubeview) instead.
   - `plainview` - deprecated, use package
-    [plainview](https://CRAN.R-project.org/package=plainview) instead
+    [plainview](https://CRAN.R-project.org/package=plainview) instead.
   - `popupTable`, `popupGraph` & `popupImage` - deprecated, use package
-    [leafpop](https://CRAN.R-project.org/package=leafpop) instead
+    [leafpop](https://CRAN.R-project.org/package=leafpop) instead.
   - `addLargeFeatures` - use
-    [leafgl](https://github.com/r-spatial/leafgl)`::addGL*` functions
-    instead - **currently not on CRAN\!**
+    [leafgl](https://CRAN.R-project.org/package=leafgl)`::addGL*`
+    functions instead.
 
 Objects of the following spatial classes are supported:
 
