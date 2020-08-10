@@ -40,7 +40,7 @@ leafletMissing = function(map.types, ...) {
                    attribution = attr,
                    options = tileOptions(minZoom = 1, maxZoom = 18))
 
-        fl = 'http://cdn.makeagif.com/media/8-11-2015/n2JwUG.gif'
+        fl = 'https://cdn.makeagif.com/media/8-11-2015/n2JwUG.gif'
 
         cit = unclass(utils::citation("mapview", auto = NULL))[[1]]
         cit = attr(cit, "textVersion")
@@ -65,7 +65,7 @@ leafletMissing = function(map.types, ...) {
                     "<b>", "mapview", "</b>", "is for quick visualisation of spatial data",
                     "<br>", "<br>",
                     paste('<img src =', fl, 'width="95%">'),
-                    '<a target="_blank" href="http://makeagif.com/n2JwUG">Source: MakeAGIF.com</a>',
+                    '<a target="_blank" href="https://makeagif.com/n2JwUG">Source: MakeAGIF.com</a>',
                     "</center>")
         m = leaflet::addCircleMarkers(data = envinMR, map = m,
                                       fillColor = "cyan",

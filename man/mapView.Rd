@@ -419,7 +419,7 @@ See \code{\link{levelplot}} for details.}
 \item{use.layer.names}{should layer names of the Raster* object be used?}
 
 \item{map.types}{character spcifications for the base maps.
-see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
+see \url{https://leaflet-extras.github.io/leaflet-providers/preview/}
 for available options.}
 
 \item{alpha.regions}{opacity of the fills of points, polygons or raster layer(s)}

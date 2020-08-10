@@ -12,7 +12,7 @@
 #' @param platform character. The rendering platform to be used.
 #' Current options are "leaflet" and "mapdeck".
 #' @param basemaps character. The basemaps to be used for rendering data. See
-#' \url{http://leaflet-extras.github.io/leaflet-providers/preview/} for possible
+#' \url{https://leaflet-extras.github.io/leaflet-providers/preview/} for possible
 #' values
 #' @param raster.palette a color palette function for raster visualisation.
 #' Should be a function that takes an integer as input and returns a vector of colors.

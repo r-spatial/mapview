@@ -51,7 +51,7 @@ mapviewGetOption(param)
 Current options are "leaflet" and "mapdeck".}
 
 \item{basemaps}{character. The basemaps to be used for rendering data. See
-\url{http://leaflet-extras.github.io/leaflet-providers/preview/} for possible
+\url{https://leaflet-extras.github.io/leaflet-providers/preview/} for possible
 values}
 
 \item{raster.palette}{a color palette function for raster visualisation.

@@ -38,7 +38,7 @@ viewRGB(
 If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
 \item{map.types}{character spcifications for the base maps.
-see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
+see \url{https://leaflet-extras.github.io/leaflet-providers/preview/}
 for available options.}
 
 \item{na.color}{the color to be used for NA pixels}

@@ -18,7 +18,7 @@
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param map.types character spcifications for the base maps.
-#' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
+#' see \url{https://leaflet-extras.github.io/leaflet-providers/preview/}
 #' for available options.
 #' @param na.color the color to be used for NA pixels
 #' @param layer.name the name of the layer to be shown on the map

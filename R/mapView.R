@@ -53,7 +53,7 @@ if ( !isGeneric('mapView') ) {
 #' @param na.color color for missing values
 #' @param use.layer.names should layer names of the Raster* object be used?
 #' @param map.types character spcifications for the base maps.
-#'   see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
+#'   see \url{https://leaflet-extras.github.io/leaflet-providers/preview/}
 #'   for available options.
 #' @param burst whether to show all (TRUE) or only one (FALSE) layer(s).
 #'   See also Details.
