@@ -63,7 +63,7 @@ popupLayoutDependencies <- function() {
     htmltools::htmlDependency(
       "PopupTable",
       '0.0.1',
-      system.file("htmlwidgets/lib/popup", package = "mapview"),
-      stylesheet = 'popup.css'
+      system.file("htmlwidgets/lib/css", package = "mapview"),
+      stylesheet = 'mapview-popup.css'
     ))
 }

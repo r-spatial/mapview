@@ -361,12 +361,17 @@ leafgl_sf = function(x,
                    funs = funs,
                    args = args)
 
-  try(
-    if (attributes(popup)$popup == "leafpop") {
-      m$dependencies <- c(m$dependencies, popupLayoutDependencies())
-    }
-    , silent = TRUE
+  m$dependencies = c(
+    m$dependencies
+    , mapviewCSSDependencies()
   )
+
+  # try(
+  #   if (attributes(popup)$popup == "leafpop") {
+  #     m$dependencies <- c(m$dependencies, popupLayoutDependencies())
+  #   }
+  #   , silent = TRUE
+  # )
 
   if (is.function(legend)) m <- legend(m)
   m = removeDuplicatedMapDependencies(m)
@@ -680,12 +685,17 @@ leaflet_sfc <- function(x,
                    funs = funs,
                    args = args)
 
-  try(
-    if (attributes(popup)$popup == "leafpop") {
-      m$dependencies <- c(m$dependencies, popupLayoutDependencies())
-    }
-    , silent = TRUE
+  m$dependencies = c(
+    m$dependencies
+    , mapviewCSSDependencies()
   )
+
+  # try(
+  #   if (attributes(popup)$popup == "leafpop") {
+  #     m$dependencies <- c(m$dependencies, popupLayoutDependencies())
+  #   }
+  #   , silent = TRUE
+  # )
 
   # m$dependencies = c(
   #   m$dependencies
