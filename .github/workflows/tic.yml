@@ -22,7 +22,7 @@ jobs:
       matrix:
         config:
           # use a different tic template type if you do not want to build on all listed platforms
-          - { os: ubuntu-latest, r: "release", pkgdown: "true" }
+          - { os: ubuntu-latest, r: "release", pkgdown: "true", latex: true }
           # [Custom matrix env var]
           - { os: ubuntu-latest, r: "devel", pkgdown: "false" }
 
@@ -85,6 +85,10 @@ jobs:
       - name: "[Stage] [Linux] Install curl"
         if: runner.os == 'Linux'
         run: sudo apt install libcurl4-openssl-dev
+
+      - name: "[Custom block] Install spatial libraries"
+        if: runner.os == 'Linux'
+        run: sudo apt install libgdal-dev libproj-dev libgeos-dev
 
       - name: "[Stage] Install"
         if: matrix.config.os != 'macOS-latest' || matrix.config.r != 'devel'
