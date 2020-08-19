@@ -11,31 +11,30 @@ wrong_proj_warning <-
 
 # Check and potentially adjust projection of objects to be rendered =======
 checkAdjustProjection <- function(x, method = "bilinear") {
-
-  x <- switch(class(x)[1],
-              "RasterLayer" = rasterCheckAdjustProjection(x, method),
-              "RasterStack" = rasterCheckAdjustProjection(x, method),
-              "RasterBrick" = rasterCheckAdjustProjection(x, method),
-              "SpatialPointsDataFrame" = spCheckAdjustProjection(x),
-              "SpatialPolygonsDataFrame" = spCheckAdjustProjection(x),
-              "SpatialLinesDataFrame" = spCheckAdjustProjection(x),
-              "SpatialPoints" = spCheckAdjustProjection(x),
-              "SpatialPolygons" = spCheckAdjustProjection(x),
-              "SpatialLines" = spCheckAdjustProjection(x),
-              "sf" = sfCheckAdjustProjection(x),
-              "XY" = sfCheckAdjustProjection(x),
-              "sfc_POINT" = sfCheckAdjustProjection(x),
-              "sfc_MULTIPOINT" = sfCheckAdjustProjection(x),
-              "sfc_LINESTRING" = sfCheckAdjustProjection(x),
-              "sfc_MULTILINESTRING" = sfCheckAdjustProjection(x),
-              "sfc_POLYGON" = sfCheckAdjustProjection(x),
-              "sfc_MULTIPOLYGON" = sfCheckAdjustProjection(x),
-              "sfc_GEOMETRY" = sfCheckAdjustProjection(x),
-              "sfc_GEOMETRYCOLLECTION" = sfCheckAdjustProjection(x))
-
-  return(x)
-
+  UseMethod("checkAdjustProjection")
 }
+
+checkAdjustProjection.RasterLayer <-
+  checkAdjustProjection.RasterStack <-
+  checkAdjustProjection.RasterBrick <- function(x, method) {
+    rasterCheckAdjustProjection(x, method)
+  }
+
+checkAdjustProjection.SpatialPointsDataFrame <-
+  checkAdjustProjection.SpatialPolygonsDataFrame <-
+  checkAdjustProjection.SpatialLinesDataFrame <-
+  checkAdjustProjection.SpatialPoints <-
+  checkAdjustProjection.SpatialPolygons <-
+  checkAdjustProjection.SpatialLines <- function(x, method) {
+    spCheckAdjustProjection(x)
+  }
+
+checkAdjustProjection.sf <-
+  checkAdjustProjection.sfc <-
+  checkAdjustProjection.sfg <- function(x, method) {
+    sfCheckAdjustProjection(x)
+  }
+
 #
 #   if (class(x)[1] %in% c("RasterLayer", "RasterStack", "RasterBrick")) {
 #     x <- rasterCheckAdjustProjection(x)
