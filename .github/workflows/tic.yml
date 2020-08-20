@@ -1,5 +1,6 @@
-## tic GitHub Actions template: linux-deploy
+## tic GitHub Actions template: custom-deploy
 ## revision date: 2020-08-06
+# [Custom header]
 on:
   workflow_dispatch:
   push:
@@ -25,7 +26,6 @@ jobs:
           - { os: ubuntu-latest, r: "release", pkgdown: "true", latex: "true" }
           # [Custom matrix env var]
           - { os: ubuntu-latest, r: "devel", pkgdown: "false" }
-
 
     env:
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
@@ -73,8 +73,8 @@ jobs:
         uses: pat-s/always-upload-cache@v2.1.0
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}1
-          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}1
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
+          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
 
       # for some strange Windows reason this step and the next one need to be decoupled
       - name: "[Stage] Prepare"
