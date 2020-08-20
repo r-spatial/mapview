@@ -64,7 +64,7 @@ franconia %>%
 franconia %>%
   group_by(district) %>%
   summarize %>%
-  mutate(area = st_area(.) / 1e6) %>%
+  mutate(area = as.numeric(st_area(.) / 1e6)) %>%
   mapview(zcol = "area")
 ```
 
@@ -74,7 +74,7 @@ franconia %>%
 
 ```{r pipe4}
 franconia %>%
-  mutate(area = sf::st_area(.)) %>%
+  mutate(area = as.numeric(st_area(.))) %>%
   mapview(zcol = "area", legend = TRUE)
 ```
 
@@ -105,7 +105,7 @@ franconia %>%
 ```{r pipe7}
 franconia %>%
   mutate(count = lengths(st_contains(., breweries)),
-         density = count / st_area(.)) %>%
+         density = count / as.numeric(st_area(.))) %>%
   mapview(zcol = "density")
 ```
 
