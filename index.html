@@ -112,7 +112,7 @@
 <h3 class="hasAnchor">
 <a href="#interactive-viewing-of-spatial-data-in-r" class="anchor"></a>Interactive viewing of spatial data in R</h3>
 <p><a href="https://github.com/tim-salabim/mvl"><img align="right" src="https://github.com/tim-salabim/mvl/blob/cstriestohelp/imagery/animated/box_anim.gif?raw=true"></a></p>
-<p><strong>mapview</strong> provides functions to very quickly and conveniently create interactive visualisations of spatial data. It was created to fill the gap of quick (not presentation grade) interactive plotting to examine and visually investigate both aspects of spatial data, the geometries and their attributes.</p>
+<p><strong>mapview</strong> provides functions to very quickly and conveniently create interactive visualisations of spatial data. It’s main goal is to fill the gap of quick (not presentation grade) interactive plotting to examine and visually investigate both aspects of spatial data, the geometries and their attributes. It can also be considered a data-driven API for the <a href="https://cran.r-project.org/package=leaflet"><strong>leaflet</strong></a> package as it will automatically render correct map types, depending on the type of the data (points, lines, polygons, raster). In addition, it makes use of some advanced rendering functionality that will enable viewing of much larger data than is possible with <strong>leaflet</strong>. Furthermore, if you’re a fan of <a href="https://cran.r-project.org/package=mapdeck"><strong>mapdeck</strong></a> (which you should!), you can choose to use it as the rendering platform instead of <strong>leaflet</strong> by setting <code><a href="reference/mapviewOptions.html">mapviewOptions(platform = "mapdeck")</a></code>.</p>
 <p>The main user relevant functions are:</p>
 <ul>
 <li>
@@ -166,15 +166,16 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>For CRAN release version of <strong>mapview</strong> use</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">"mapview"</span>)</span></code></pre></div>
-<p>To install the development version install the <a href="https://cran.r-project.org/package=devtools">devtools</a> package.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"r-spatial/mapview@develop"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"mapview"</span>)</pre></div>
+<p>To install the development version you can install the <a href="https://cran.r-project.org/package=remotes">remotes</a> package.</p>
+<p><strong>NOTE:</strong> As of version 2.9.1 development will happen on the <code>master</code> branch. Please consider the <code>develop</code> branch obsolete.</p>
+<div class="sourceCode" id="cb2"><pre class="r"><span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"r-spatial/mapview"</span>)</pre></div>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
 <p>The most basic call</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">mapview</span>(breweries)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="reference/mapView.html">mapview</a></span>(<span class="no">breweries</span>)</pre></div>
 <p>will produce a web map visualisation of the breweries data with the following components:</p>
 <p><img src="reference/figures/basic_small.png"></p>
 </div>
@@ -182,7 +183,6 @@
 <h2 class="hasAnchor">
 <a href="#contact" class="anchor"></a>Contact</h2>
 <p>Please file bug reports and feature requests at <a href="https://github.com/r-spatial/mapview/issues" class="uri">https://github.com/r-spatial/mapview/issues</a></p>
-<p>In case of Pull Requests, please make sure to submit them to the <code>develop</code> branch of this repository.</p>
 </div>
 </div>
   </div>
