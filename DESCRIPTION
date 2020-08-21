@@ -85,6 +85,7 @@ Suggests:
     knitr,
     later,
     leaflet.extras2,
+    leafsync,
     lwgeom,
     mapdeck,
     plainview,
@@ -92,7 +93,7 @@ Suggests:
     stars,
     testthat
 ByteCompile: yes
-LazyData: TRUE
 Encoding: UTF-8
+LazyData: TRUE
 RoxygenNote: 7.1.1
 SystemRequirements: GNU make

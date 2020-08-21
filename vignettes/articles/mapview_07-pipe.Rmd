@@ -13,6 +13,7 @@ vignette: >
 
 ```{r setup, echo=FALSE, message=FALSE}
 knitr::opts_chunk$set(fig.width = 8.83, message = FALSE, warning = FALSE)
+remotes::install_github("hrbrmstr/albersusa")
 ```
 
 **mapview** can be used in piped expressions using `%>%`, most likely at the very end of it...
@@ -26,6 +27,7 @@ library(mapview)
 library(leaflet)
 library(dplyr)
 library(sf)
+# GitHub: hrbrmstr/albersusa
 library(albersusa)
 
 franconia %>%
@@ -62,7 +64,7 @@ franconia %>%
 franconia %>%
   group_by(district) %>%
   summarize %>%
-  mutate(area = st_area(.) / 1e6) %>%
+  mutate(area = as.numeric(st_area(.) / 1e6)) %>%
   mapview(zcol = "area")
 ```
 
@@ -72,7 +74,7 @@ franconia %>%
 
 ```{r pipe4}
 franconia %>%
-  mutate(area = sf::st_area(.)) %>%
+  mutate(area = as.numeric(st_area(.))) %>%
   mapview(zcol = "area", legend = TRUE)
 ```
 
@@ -103,7 +105,7 @@ franconia %>%
 ```{r pipe7}
 franconia %>%
   mutate(count = lengths(st_contains(., breweries)),
-         density = count / st_area(.)) %>%
+         density = count / as.numeric(st_area(.))) %>%
   mapview(zcol = "density")
 ```
 
