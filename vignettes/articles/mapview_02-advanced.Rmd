@@ -20,7 +20,7 @@ Despite the possibility to quickly plot spatial data, `mapview` has a set of arg
 **All types**
 
 * `map` - the **leaflet** or **mapview** map to use -> default NULL
-* `col.regions` - the color palette for colouring raster, polygon and point areas (points are essentially circles) -> default `viridisLite::inferno` for raster data and `viridisLite::viridis` for vector data
+* `col.regions` - the color palette for colouring raster, polygon and point areas (points are essentially circles) -> default `hcl.colors` with palette `"Inferno"` for raster data and palette `"viridis"` for vector data
 * `at` - breakpoints used for the colouring -> default NULL meaning they are calculated automatically for the range of data
 * `na.color` - the color for NA values -> default `#BEBEBE80`
 * `map.types` - the types of the background maps -> default ```r mapview::mapviewGetOption("basemaps")``` see [here](http://leaflet-extras.github.io/leaflet-providers/preview/) for available map types
@@ -41,7 +41,7 @@ Despite the possibility to quickly plot spatial data, `mapview` has a set of arg
 
 * `zcol` - attribute name(s) or column number(s) in attribute table of the column(s) to be rendered -> default `NULL` 
 * `burst` - whether to show all (TRUE) or only one (FALSE) layer(s) -> default `FALSE`
-* `color` - color (palette) for lines -> default `viridisLite::viridis`
+* `color` - color (palette) for lines -> default `hcl.colors(n, palette = "viridis")`
 * `alpha` - opacity of the lines -> default `0.9`
 * `cex` - circle size for point data -> default `6`. This can also be used to map circle size to an attribute from the object's attribute table by supplying either column name or number
 * `lwd` - line width -> default `2` for lines and points, `1` for polygons
@@ -163,6 +163,8 @@ mapview(franconia, alpha.regions = 0.2, aplha = 1)
 In addition to easily style maps, **mapview** also makes it easy to add multiple layers to a (possibly laready existing) map. This can be done either by using `+` or by supplying a list of objects (or both).
 
 ```{r layers obj}
+library(plainview)
+
 # mapview + object
 mapview(list(franconia, breweries)) + poppendorf[[5]]
 ```
@@ -177,6 +179,8 @@ mapview(franconia, zcol = "district") + mapview(breweries, zcol = "founded")
 <br>
 
 ```{r layers list}
+library(plainview)
+
 # mapview w list of objects
 mapview(list(breweries, franconia),
         zcol = list(NULL, "district"),

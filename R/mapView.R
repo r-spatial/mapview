@@ -18,198 +18,222 @@ if ( !isGeneric('mapView') ) {
 #' the attribute table). \cr
 #' \cr
 #' NOTE: if XYZ or XYM or XYZM data from package sf is passed to mapview,
-#' domensions Z and M will be stripped to ensure smooth rendering even though
+#' dimensions Z and M will be stripped to ensure smooth rendering even though
 #' the popup will potentially still say something like "POLYGON Z".
 #'
 #' @param x a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
-#' \code{sf} object or a list of any combination of those. Furthermore,
-#' this can also be a \code{data.frame} or a \code{numeric vector}. If missing,
-#' a blank map will be drawn.
+#' \code{sf} or \code{stars} object or a list of any combination of those. Furthermore,
+#'   this can also be a \code{data.frame}, a \code{numeric vector} or a
+#' \code{character string} pointing to a tile image folder or file on disk.
+#'   If missing, a blank map will be drawn. A value of NULL will return NULL.
 #' @param map an optional existing map to be updated/added to.
 #' @param band for stars layers, the band number to be plotted.
 #' @param pane name of the map pane in which to render features. See
 #' \code{\link{addMapPane}} for details. Currently only supported for vector layers.
-#' Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
-#' for points, lines and polygons such that points overlay lines overlay polygons.
-#' Set to \code{NULL} to get default leaflet behaviour where allfeatures
-#' are rendered in the same pane and layer order is determined by automatically/sequencially.
+#'   Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
+#'   for points, lines and polygons such that points overlay lines overlay polygons.
+#'   Set to \code{NULL} to get default leaflet behaviour where allfeatures
+#'   are rendered in the same pane and layer order is determined automatically/sequentially.
 #' @param canvas whether to use canvas rendering rather than svg. May help
-#' performance with larger data. See \url{http://leafletjs.com/reference-1.3.0.html#canvas}
-#' for more information.
+#'   performance with larger data. See \url{https://leafletjs.com/reference-1.6.0.html#canvas}
+#'   for more information. Only applicable for vector data. The default setting will
+#'   decide automatically, based on feature complexity.
+#' @param viewer.suppress whether to render the map in the browser (\code{TRUE})
+#'   or the RStudio viewer (\code{FALSE}). When not using RStudio, maps will open
+#'   in the browser by default. This is passed to \link[htmlwidgets]{sizingPolicy}
+#'   via \link[leaflet]{leafletSizingPolicy}. For raster data the default is \code{FALSE}.
+#'   For vector data it depends on argument \code{canvas}.
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
-#' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
+#'   If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color color (palette) for points/polygons/lines
 #' @param col.regions color (palette) pixels.
-#' See \code{\link{levelplot}} for details.
+#'   See \code{\link{levelplot}} for details.
 #' @param at the breakpoints used for the visualisation.
-#' See \code{\link{levelplot}} for details.
+#'   See \code{\link{levelplot}} for details.
 #' @param na.color color for missing values
 #' @param use.layer.names should layer names of the Raster* object be used?
-#' @param values a vector of values for the visualisation of the layers.
-#' Per default these are calculated based on the supplied raster* object.
 #' @param map.types character spcifications for the base maps.
-#' see \url{http://leaflet-extras.github.io/leaflet-providers/preview/}
-#' for available options.
+#'   see \url{https://leaflet-extras.github.io/leaflet-providers/preview/}
+#'   for available options.
+#' @param burst whether to show all (TRUE) or only one (FALSE) layer(s).
+#'   See also Details.
+#' @param zcol attribute name(s) or column number(s) in attribute table
+#'   of the column(s) to be rendered. See also Details.
+#' @param cex attribute name(s) or column number(s) in attribute table
+#'   of the column(s) to be used for defining the size of circles
+#' @param lwd line width
 #' @param alpha opacity of lines
 #' @param alpha.regions opacity of the fills of points, polygons or raster layer(s)
 #' @param na.alpha opacity of missing values
 #' @param legend should a legend be plotted
 #' @param legend.opacity opacity of the legend
-#' @param trim should the raster be trimmed in case there are NAs on the egdes
+#' @param trim should the raster be trimmed in case there are NAs on the edges
 #' @param verbose should some details be printed during the process
-#' @param layer.name the name of the layer to be shown on the map
+#' @param layer.name the name of the layer to be shown on the map.
+#'   By default this is the character version of whatever is passed to \code{x}.
+#'   NOTE: This is being passed to underlying leaflet functions as the group argument.
+#'   So if you use mapview to set up a map and want to refer to a certain layer
+#'   later on, this is what you should refer to in \code{group}.
 #' @param homebutton logical, whether to add a zoom-to-layer button to the map.
-#' Defaults to TRUE
-#' @param popup a \code{list} of HTML strings with the popup contents, usually
-#' created from \code{\link{popupTable}}. See \code{\link{addControl}} for
-#' details.
+#'   Defaults to TRUE
+#' @param popup either \code{logical}, \code{character vector} or a \code{list}
+#'   of HTML strings with the popup contents, usually created from
+#'   \code{\link[leafpop]{popupTable}}. See \code{\link{addControl}} for details.
+#'   If \code{FALSE} or \code{NULL} no popups will be created, if \code{TRUE}
+#'   a table with all feature attributes/columns will be created.
+#'   If a \code{character vector} of column names, the table will only show the
+#'   respective column entries.
 #' @param label For vector data (sf/sp) a character vector of labels to be
-#' shown on mouseover. See \code{\link{addControl}} for details. For raster
-#' data (Raster*/stars) a logical indicating whether to add image query.
+#'   shown on mouseover. See \code{\link{addControl}} for details. For raster
+#'   data (Raster*/stars) a logical indicating whether to add image query.
 #' @param native.crs logical whether to reproject to web map coordinate
-#' reference system (web mercator - epsg:3857) or render using native CRS of
-#' the supplied data (can also be NA). Default is FALSE which will render in
-#' web mercator. If set to TRUE now background maps will be drawn (but rendering
-#' may be much quicker as no reprojecting is necessary). Currently only works
-#' for simple features.
+#'   reference system (web mercator - epsg:3857) or render using native CRS of
+#'   the supplied data (can also be NA). Default is FALSE which will render in
+#'   web mercator. If set to TRUE now background maps will be drawn (but rendering
+#'   may be much quicker as no reprojecting is necessary). Currently only works
+#'   for simple features.
 #' @param method for raster data only (raster/stars). Method used to compute
-#' values for the resampled layer that is passed on to leaflet. mapview does
-#' projection on-the-fly to ensure correct display and therefore needs to know
-#' how to do this projection. The default is 'bilinear' (bilinear interpolation),
-#' which is appropriate for continuous variables. The other option, 'ngb'
-#' (nearest neighbor), is useful for categorical variables. Ignored if the raster
-#' layer is of class \code{factor} in which case "ngb" is used.
+#'   values for the resampled layer that is passed on to leaflet. mapview does
+#'   projection on-the-fly to ensure correct display and therefore needs to know
+#'   how to do this projection. The default is 'bilinear' (bilinear interpolation),
+#'   which is appropriate for continuous variables. The other option, 'ngb'
+#'   (nearest neighbor), is useful for categorical variables. Ignored if the raster
+#'   layer is of class \code{factor} in which case "ngb" is used.
 #' @param highlight either \code{FALSE}, \code{NULL} or a list of styling
-#' options for feature highlighting on mouse hover.
-#' See \code{\link{highlightOptions}} for details.
+#'   options for feature highlighting on mouse hover.
+#'   See \code{\link{highlightOptions}} for details.
 #' @param maxpoints the maximum number of points making up the geometry.
-#' In case of lines and polygons this refers to the number of vertices. See
-#' Details for more information.
+#'   In case of lines and polygons this refers to the number of vertices. See
+#'   Details for more information.
 #' @param query.type for raster methods only. Whether to show raster value query
-#' on \code{'mousemove'} or \code{'click'}. Ignored if \code{label = FALSE}.
+#'   on \code{'mousemove'} or \code{'click'}. Ignored if \code{label = FALSE}.
 #' @param query.digits for raster methods only. The amount of digits to be shown
-#' by raster value query. Ignored if \code{label = FALSE}.
+#'   by raster value query. Ignored if \code{label = FALSE}.
 #' @param query.position for raster methods only. The position of the raster
-#' value query info box. See \code{position} argument of \code{\link{addLegend}}
-#' for possible values. Ignored if \code{label = FALSE}.
+#'   value query info box. See \code{position} argument of \code{\link{addLegend}}
+#'   for possible values. Ignored if \code{label = FALSE}.
 #' @param query.prefix for raster methods only. a character string to be shown
-#' as prefix for the layerId. Ignored if \code{label = FALSE}.
-#' @param ... additional arguments passed on to repective functions.
-#' See \code{\link{addRasterImage}}, \code{\link{addCircles}},
+#'   as prefix for the layerId. Ignored if \code{label = FALSE}.
+#' @param ... additional arguments passed on to respective functions.
+#'   See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #' \code{\link{addPolygons}}, \code{\link{addPolylines}} for details
 #'
 #' @details
 #' \code{maxpoints} is taken to determine when to switch rendering from svg
-#' to canvas overlay for perfomance. The threshold calculation is done as follows: \cr
-#' if the number of points (in case of point data) or vertices (in case of
-#' polygon or line data) > \code{maxpoints} then render using special render
-#' function. Within this render function we approximate the complexity of
-#' fetures by \cr
+#'   to canvas overlay for perfomance. The threshold calculation is done as follows: \cr
+#'   if the number of points (in case of point data) or vertices (in case of
+#'   polygon or line data) > \code{maxpoints} then render using special render
+#'   function. Within this render function we approximate the complexity of
+#'   features by \cr
 #' \cr
 #' \code{maxFeatures <- maxfeatures / (npts(data) / length(data))} \cr
 #' \cr
-#' where \code{npts} determines the umber of points/vertices and \code{length}
-#' the number of features (points, lines or polygons). When the number of
-#' fetures in the current view window is larger than \code{maxFeatures} then
-#' features are rendered on the canvas, otherwise they are rendered as svg objects
-#' and fully queriable.
+#'   where \code{npts} determines the number of points/vertices and \code{length}
+#'   the number of features (points, lines or polygons). When the number of
+#'   features in the current view window is larger than \code{maxFeatures} then
+#'   features are rendered on the canvas, otherwise they are rendered as svg objects
+#'   and fully queriable.
 #'
 #' @author
 #' Tim Appelhans
 #'
 #' @examples
 #' \dontrun{
-#' mapview()
-#'
-#' ## simple features ====================================================
-#' library(sf)
-#'
-#' # sf
-#' mapview(breweries)
-#' mapview(franconia)
-#'
-#' # sfc
-#' mapview(st_geometry(breweries)) # no popup
-#'
-#' # sfg / XY - taken from ?sf::st_point
-#' outer = matrix(c(0,0,10,0,10,10,0,10,0,0),ncol=2, byrow=TRUE)
-#' hole1 = matrix(c(1,1,1,2,2,2,2,1,1,1),ncol=2, byrow=TRUE)
-#' hole2 = matrix(c(5,5,5,6,6,6,6,5,5,5),ncol=2, byrow=TRUE)
-#' pts = list(outer, hole1, hole2)
-#' (pl1 = st_polygon(pts))
-#' mapview(pl1)
-#'
-#' ## raster ==============================================================
-#' mapview(poppendorf[[5]])
-#'
-#' ## spatial objects =====================================================
-#' mapview(leaflet::gadmCHE)
-#' mapview(leaflet::atlStorms2005)
-#'
-#'
-#' ## styling options & legends ===========================================
-#' mapview(franconia, color = "white", col.regions = "red")
-#' mapview(franconia, color = "magenta", col.regions = "white")
-#'
-#' mapview(breweries, zcol = "founded")
-#' mapview(breweries, zcol = "founded", at = seq(1400, 2200, 200), legend = TRUE)
-#' mapview(franconia, zcol = "district", legend = TRUE)
-#'
-#' clrs <- sf.colors
-#' mapview(franconia, zcol = "district", col.regions = clrs, legend = TRUE)
-#'
-#' ### multiple layers ====================================================
-#' mapview(franconia) + breweries
-#' mapview(list(breweries, franconia))
-#' mapview(franconia) + mapview(breweries) + trails
-#'
-#' mapview(franconia, zcol = "district") + mapview(breweries, zcol = "village")
-#' mapview(list(franconia, breweries),
-#'         zcol = list("district", NULL),
-#'         legend = list(TRUE, FALSE))
-#'
-#'
-#' ### burst ==============================================================
-#' mapview(franconia, burst = TRUE)
-#' mapview(franconia, burst = TRUE, hide = TRUE)
-#' mapview(franconia, zcol = "district", burst = TRUE)
-#'
-#'
-#' ### ceci constitue la fin du pipe ======================================
-#' library(dplyr)
-#' library(sf)
-#'
-#' franconia %>%
-#'   sf::st_union() %>%
 #'   mapview()
 #'
-#' franconia %>%
-#'   group_by(district) %>%
-#'   summarize() %>%
-#'   mapview(zcol = "district")
+#'   ## simple features ====================================================
+#'   library(sf)
 #'
-#' franconia %>%
-#'   group_by(district) %>%
-#'   summarize() %>%
-#'   mutate(area = st_area(.) / 1e6) %>%
-#'   mapview(zcol = "area")
+#'   # sf
+#'   mapview(breweries)
+#'   mapview(franconia)
 #'
-#' franconia %>%
-#'   mutate(area = sf::st_area(.)) %>%
-#'   mapview(zcol = "area", legend = TRUE)
+#'   # sfc
+#'   mapview(st_geometry(breweries)) # no popup
 #'
-#' breweries %>%
-#'   st_intersection(franconia) %>%
-#'   mapview(zcol = "district")
+#'   # sfg / XY - taken from ?sf::st_point
+#'   outer = matrix(c(0,0,10,0,10,10,0,10,0,0),ncol=2, byrow=TRUE)
+#'   hole1 = matrix(c(1,1,1,2,2,2,2,1,1,1),ncol=2, byrow=TRUE)
+#'   hole2 = matrix(c(5,5,5,6,6,6,6,5,5,5),ncol=2, byrow=TRUE)
+#'   pts = list(outer, hole1, hole2)
+#'   (pl1 = st_polygon(pts))
+#'   mapview(pl1)
 #'
-#' franconia %>%
-#'   mutate(count = lengths(st_contains(., breweries))) %>%
-#'   mapview(zcol = "count")
+#'   ## raster ==============================================================
+#'   if (interactive()) {
+#'     library(plainview)
 #'
-#' franconia %>%
-#'   mutate(count = lengths(st_contains(., breweries)),
-#'          density = count / st_area(.)) %>%
-#'   mapview(zcol = "density")
+#'     mapview(plainview::poppendorf[[5]])
+#'   }
+#'
+#'   ## spatial objects =====================================================
+#'   mapview(leaflet::gadmCHE)
+#'   mapview(leaflet::atlStorms2005)
+#'
+#'
+#'   ## styling options & legends ===========================================
+#'   mapview(franconia, color = "white", col.regions = "red")
+#'   mapview(franconia, color = "magenta", col.regions = "white")
+#'
+#'   mapview(breweries, zcol = "founded")
+#'   mapview(breweries, zcol = "founded", at = seq(1400, 2200, 200), legend = TRUE)
+#'   mapview(franconia, zcol = "district", legend = TRUE)
+#'
+#'   clrs <- sf.colors
+#'   mapview(franconia, zcol = "district", col.regions = clrs, legend = TRUE)
+#'
+#'   ### multiple layers ====================================================
+#'   mapview(franconia) + breweries
+#'   mapview(list(breweries, franconia))
+#'   mapview(franconia) + mapview(breweries) + trails
+#'
+#'   mapview(franconia, zcol = "district") + mapview(breweries, zcol = "village")
+#'   mapview(list(franconia, breweries),
+#'           zcol = list("district", NULL),
+#'           legend = list(TRUE, FALSE))
+#'
+#'
+#'   ### burst ==============================================================
+#'   mapview(franconia, burst = TRUE)
+#'   mapview(franconia, burst = TRUE, hide = TRUE)
+#'   mapview(franconia, zcol = "district", burst = TRUE)
+#'
+#'
+#'   ### ceci constitue la fin du pipe ======================================
+#'   library(dplyr)
+#'   library(sf)
+#'
+#'   franconia %>%
+#'     sf::st_union() %>%
+#'     mapview()
+#'
+#'   franconia %>%
+#'     group_by(district) %>%
+#'     summarize() %>%
+#'     mapview(zcol = "district")
+#'
+#'   franconia %>%
+#'     group_by(district) %>%
+#'     summarize() %>%
+#'     mutate(area = st_area(.) / 1e6) %>%
+#'     mapview(zcol = "area")
+#'
+#'   franconia %>%
+#'     mutate(area = sf::st_area(.)) %>%
+#'     mapview(zcol = "area", legend = TRUE)
+#'
+#'   breweries %>%
+#'     st_intersection(franconia) %>%
+#'     mapview(zcol = "district")
+#'
+#'   franconia %>%
+#'     mutate(count = lengths(st_contains(., breweries))) %>%
+#'     mapview(zcol = "count")
+#'
+#'   franconia %>%
+#'     mutate(count = lengths(st_contains(., breweries)),
+#'            density = count / st_area(.)) %>%
+#'     mapview(zcol = "density")
 #' }
 #'
 #' @export
@@ -226,32 +250,39 @@ setMethod('mapView', signature(x = 'RasterLayer'),
           function(x,
                    map = NULL,
                    maxpixels = mapviewGetOption("mapview.maxpixels"),
-                   col.regions = mapviewGetOption("raster.palette")(256),
+                   col.regions = mapviewGetOption("raster.palette"),
                    at = NULL,
                    na.color = mapviewGetOption("na.color"),
-                   use.layer.names = FALSE,
-                   values = NULL,
+                   use.layer.names = mapviewGetOption("use.layer.names"),
                    map.types = mapviewGetOption("basemaps"),
                    alpha.regions = 0.8,
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
-                   trim = TRUE,
+                   trim = mapviewGetOption("trim"),
                    verbose = mapviewGetOption("verbose"),
                    layer.name = NULL,
-                   homebutton = TRUE,
-                   native.crs = FALSE,
-                   method = c("bilinear", "ngb"),
+                   homebutton = mapviewGetOption("homebutton"),
+                   native.crs = mapviewGetOption("native.crs"),
+                   method = mapviewGetOption("method"),
                    label = TRUE,
-                   query.type = c("mousemove", "click"),
-                   query.digits,
-                   query.position = "topright",
-                   query.prefix = "Layer",
+                   query.type = mapviewGetOption("query.type"),
+                   query.digits = mapviewGetOption("query.digits"),
+                   query.position = mapviewGetOption("query.position"),
+                   query.prefix = mapviewGetOption("query.prefix"),
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                    ...) {
 
-            method = match.arg(method)
-
-            if (is.null(at)) at <- lattice::do.breaks(
-              extendLimits(range(x[], na.rm = TRUE)), 256)
+            if (mapviewGetOption("platform") != "leaflet") {
+              warning(
+                sprintf(
+                  "platform '%s' currently doesn't support raster data."
+                  , mapviewGetOption("platform")
+                )
+                , " switching to platform 'leaflet'"
+                , call. = FALSE
+              )
+              mapviewOptions(platform = "leaflet")
+            }
 
             if (mapviewGetOption("platform") == "leaflet") {
               # if (maxpixels < raster::ncell(x)) {
@@ -271,7 +302,6 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                           at = at,
                           na.color = na.color,
                           use.layer.names = use.layer.names,
-                          values = values,
                           map.types = map.types,
                           alpha.regions = alpha.regions,
                           legend = legend,
@@ -287,6 +317,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                           query.digits = query.digits,
                           query.position = query.position,
                           query.prefix = query.prefix,
+                          viewer.suppress = viewer.suppress,
                           ...)
             } else {
               NULL
@@ -299,73 +330,117 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 
 
 ## Stars layer ==================================================================
-#' @describeIn mapView \code{\link{stars}}
-setMethod('mapView', signature(x = 'stars'),
-          function(x,
-                   band = 1,
-                   map = NULL,
-                   maxpixels = mapviewGetOption("mapview.maxpixels"),
-                   col.regions = mapviewGetOption("raster.palette")(256),
-                   at = NULL,
-                   na.color = mapviewGetOption("na.color"),
-                   use.layer.names = FALSE,
-                   values = NULL,
-                   map.types = mapviewGetOption("basemaps"),
-                   alpha.regions = 0.8,
-                   legend = mapviewGetOption("legend"),
-                   legend.opacity = 1,
-                   trim = TRUE,
-                   verbose = mapviewGetOption("verbose"),
-                   layer.name = NULL,
-                   homebutton = TRUE,
-                   native.crs = FALSE,
-                   method = c("bilinear", "ngb"),
-                   label = TRUE,
-                   query.type = c("mousemove", "click"),
-                   query.digits,
-                   query.position = "topright",
-                   query.prefix = "Layer",
-                   ...) {
+.stars_method = function(x,
+                         band = 1,
+                         map = NULL,
+                         maxpixels = mapviewGetOption("mapview.maxpixels"),
+                         col.regions = mapviewGetOption("raster.palette"),
+                         at = NULL,
+                         na.color = mapviewGetOption("na.color"),
+                         use.layer.names = mapviewGetOption("use.layer.names"),
+                         map.types = mapviewGetOption("basemaps"),
+                         alpha.regions = 0.8,
+                         legend = mapviewGetOption("legend"),
+                         legend.opacity = 1,
+                         trim = mapviewGetOption("trim"),
+                         verbose = mapviewGetOption("verbose"),
+                         layer.name = NULL,
+                         homebutton = mapviewGetOption("homebutton"),
+                         native.crs = mapviewGetOption("native.crs"),
+                         method = mapviewGetOption("method"),
+                         label = TRUE,
+                         query.type = mapviewGetOption("query.type"),
+                         query.digits = mapviewGetOption("query.digits"),
+                         query.position = mapviewGetOption("query.position"),
+                         query.prefix = mapviewGetOption("query.prefix"),
+                         viewer.suppress = mapviewGetOption("viewer.suppress"),
+                         pane = "auto",
+                         ...) {
 
-            method = match.arg(method)
-            if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
-            if (is.null(at)) at <- lattice::do.breaks(
-              extendLimits(range(layer, na.rm = TRUE)),
-              256
-            )
+  # method = match.arg(method)
 
-            if (mapviewGetOption("platform") == "leaflet") {
-              leaflet_stars(x,
-                            band = band,
-                            map = map,
-                            maxpixels = maxpixels,
-                            col.regions = col.regions,
-                            at = at,
-                            na.color = na.color,
-                            use.layer.names = use.layer.names,
-                            values = values,
-                            map.types = map.types,
-                            alpha.regions = alpha.regions,
-                            legend = legend,
-                            legend.opacity = legend.opacity,
-                            trim = trim,
-                            verbose = verbose,
-                            layer.name = layer.name,
-                            homebutton = homebutton,
-                            native.crs = native.crs,
-                            method = method,
-                            label = label,
-                            query.type = query.type,
-                            query.digits = query.digits,
-                            query.position = query.position,
-                            query.prefix = query.prefix,
-                            ...)
-            } else {
-              NULL
-            }
+  # check if downsampling is needed
+  dims <- dim(x)
+  n_pixels <- dims[1] * dims[2]
+  do.downscale <- if (n_pixels > maxpixels) {
+    TRUE
+  } else {
+    FALSE
+  }
 
-          }
-)
+  # convert to proper "stars" if proxy, and downscale if needed
+  if (inherits(x, "stars_proxy")) {
+    if (!do.downscale) {
+      x <-  stars::st_as_stars(x)
+    } else {
+      # compute the resampling factor
+      asp   <- dims[1] / dims[2]
+      y_new <- sqrt(maxpixels / asp)
+      x_new <- y_new * asp
+      downsample <- dims[1] / x_new
+      x <- stars::st_as_stars(x, downsample = downsample - 1)
+      message("Number of pixels is above ", maxpixels, ".",
+              "Only about ", maxpixels, " pixels will be shown.\n",
+              "You can increase the value of `maxpixels` to ", prod(dims), " to avoid this.")
+    }
+  } else {
+    if (do.downscale) {
+      message("Number of pixels is above ", maxpixels, ". ",
+              "Automatic downsampling of `stars` object is not yet implemented, so rendering may be slow.\n",
+              "You can pass a `stars` proxy object to mapview to get automatic downsampling.")
+    }
+  }
+
+  if (mapviewGetOption("platform") != "leaflet") {
+    warning(
+      sprintf(
+        "platform '%s' currently doesn't support stars data."
+        , mapviewGetOption("platform")
+      )
+      , " switching to platform 'leaflet'"
+      , call. = FALSE
+    )
+    mapviewOptions(platform = "leaflet")
+  }
+
+  if (mapviewGetOption("platform") == "leaflet") {
+    leaflet_stars(x,
+                  band = band,
+                  map = map,
+                  maxpixels = maxpixels,
+                  col.regions = col.regions,
+                  at = at,
+                  na.color = na.color,
+                  use.layer.names = use.layer.names,
+                  map.types = map.types,
+                  alpha.regions = alpha.regions,
+                  legend = legend,
+                  legend.opacity = legend.opacity,
+                  trim = trim,
+                  verbose = verbose,
+                  layer.name = layer.name,
+                  homebutton = homebutton,
+                  native.crs = native.crs,
+                  method = method,
+                  label = label,
+                  query.type = query.type,
+                  query.digits = query.digits,
+                  query.position = query.position,
+                  query.prefix = query.prefix,
+                  viewer.suppress = viewer.suppress,
+                  pane = pane,
+                  ...)
+  } else {
+    NULL
+  }
+
+}
+
+#' @describeIn mapView \code{stars}
+setMethod('mapView', signature(x = 'stars'), .stars_method)
+
+#' @describeIn mapView \code{stars_proxy}
+setMethod('mapView', signature(x = 'stars_proxy'), .stars_method)
 
 
 
@@ -376,24 +451,36 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
           function(x,
                    map = NULL,
                    maxpixels = mapviewGetOption("mapview.maxpixels"),
-                   col.regions = mapviewGetOption("raster.palette")(256),
+                   col.regions = mapviewGetOption("raster.palette"),
                    at = NULL,
                    na.color = mapviewGetOption("na.color"),
                    use.layer.names = TRUE,
-                   values = NULL,
                    map.types = mapviewGetOption("basemaps"),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
-                   homebutton = TRUE,
-                   method = c("bilinear", "ngb"),
+                   homebutton = mapviewGetOption("homebutton"),
+                   method = mapviewGetOption("method"),
                    label = TRUE,
                    query.type = c("mousemove", "click"),
                    query.digits,
-                   query.position = "topright",
+                   query.position = mapviewGetOption("query.position"),
                    query.prefix = "Layer",
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                    ...) {
+
+            if (mapviewGetOption("platform") != "leaflet") {
+              warning(
+                sprintf(
+                  "platform '%s' currently doesn't support raster data."
+                  , mapviewGetOption("platform")
+                )
+                , " switching to platform 'leaflet'"
+                , call. = FALSE
+              )
+              mapviewOptions(platform = "leaflet")
+            }
 
             if (mapviewGetOption("platform") == "leaflet") {
               leafletRSB(x,
@@ -403,7 +490,6 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                          at = at,
                          na.color = na.color,
                          use.layer.names = use.layer.names,
-                         values = values,
                          map.types = map.types,
                          legend = legend,
                          legend.opacity = legend.opacity,
@@ -416,6 +502,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                          query.digits = query.digits,
                          query.position = query.position,
                          query.prefix = query.prefix,
+                         viewer.suppress = viewer.suppress,
                          ...)
             } else {
               NULL
@@ -433,19 +520,30 @@ setMethod('mapView', signature(x = 'Satellite'),
           function(x,
                    map = NULL,
                    maxpixels = mapviewGetOption("mapview.maxpixels"),
-                   col.regions = mapviewGetOption("raster.palette")(256),
+                   col.regions = mapviewGetOption("raster.palette"),
                    at = NULL,
                    na.color = mapviewGetOption("na.color"),
-                   values = NULL,
                    map.types = mapviewGetOption("basemaps"),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
-                   homebutton = TRUE,
+                   homebutton = mapviewGetOption("homebutton"),
                    method = c("bilinear", "ngb"),
                    label = TRUE,
                    ...) {
+
+            if (mapviewGetOption("platform") != "leaflet") {
+              warning(
+                sprintf(
+                  "platform '%s' currently doesn't support Satellite data."
+                  , mapviewGetOption("platform")
+                )
+                , " switching to platform 'leaflet'"
+                , call. = FALSE
+              )
+              mapviewOptions(platform = "leaflet")
+            }
 
             if (mapviewGetOption("platform") == "leaflet") {
               leafletSatellite(x,
@@ -454,7 +552,6 @@ setMethod('mapView', signature(x = 'Satellite'),
                                col.regions = col.regions,
                                at = at,
                                na.color = na.color,
-                               values = values,
                                map.types = map.types,
                                legend = legend,
                                legend.opacity = legend.opacity,
@@ -484,6 +581,7 @@ setMethod('mapView', signature(x = 'sf'),
                    map = NULL,
                    pane = "auto",
                    canvas = useCanvas(x),
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                    zcol = NULL,
                    burst = FALSE,
                    color = mapviewGetOption("vector.palette"),
@@ -495,14 +593,14 @@ setMethod('mapView', signature(x = 'sf'),
                    alpha = 0.9,
                    alpha.regions = regionOpacity(x),
                    na.alpha = regionOpacity(x),
-                   map.types = NULL,
+                   map.types = mapviewGetOption("basemaps"),
                    verbose = mapviewGetOption("verbose"),
-                   popup = popupTable(x),
+                   popup = TRUE,
                    layer.name = NULL,
-                   label = makeLabels(x, zcol),
+                   label = zcol,
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
-                   homebutton = TRUE,
+                   homebutton = mapviewGetOption("homebutton"),
                    native.crs = FALSE,
                    highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
@@ -513,60 +611,90 @@ setMethod('mapView', signature(x = 'sf'),
                    " does not contain data \n", call. = FALSE)
             }
 
-            if (is.null(zcol)) legend = FALSE
+            if (length(unique(sf::st_dimension(x))) > 1) {
+              x = sf::st_cast(x)
+            }
+
+            if (is.null(zcol) & is.null(legend)) legend = FALSE
             if (!is.null(zcol) && !all(zcol %in% colnames(x))) {
               stop("\n", "at least one of the following columns: \n",
-                   paste(zcol, collapse = ", "), "\nnot found in ",
+                   "'", paste(zcol, collapse = "', '"), "' \nnot found in ",
                    deparse(substitute(x, env = parent.frame())),
                    call. = FALSE)
             }
 
-            if (mapviewGetOption("platform") == "leaflet") {
-              if (is.character(burst)) {
-                zcol = burst
-                burst = TRUE
+            ## do we burst?
+            # zcol = unique(unlist(zcol))
+
+            if (is.character(burst)) {
+              zcol = burst
+              burst = TRUE
+            }
+
+            if (length(zcol) > 1) {
+              x = x[, zcol]
+              burst = TRUE
+            }
+
+            if (burst) {
+              by_row = FALSE
+              # special treatment for row based bursting
+              if (!is.null(zcol) && burst && length(zcol) == 1) {
+                color = vectorColors(x = x,
+                                     zcol = zcol,
+                                     colors = color,
+                                     at = at,
+                                     na.color = na.color)
+                if (length(color) > 1)
+                  color = color[order(x[[zcol]])]
+                col.regions = vectorColRegions(x = x,
+                                               zcol = zcol,
+                                               col.regions = col.regions,
+                                               at = at,
+                                               na.color = na.color)
+                if (length(col.regions) > 1)
+                  col.regions = col.regions[order(x[[zcol]])]
+
+                popup = leafpop::popupTable(x)[order(x[[zcol]])]
+                label = makeLabels(x, zcol)[order(x[[zcol]])]
+                by_row = TRUE
               }
 
-              if (length(zcol) > 1) {
-                x = x[, zcol]
-                burst = TRUE
-              }
+              # for whatever reason we need to evaluate a few things here...??
+              popup = popup
+              lwd = lineWidth(x)
+              alpha.regions = regionOpacity(x)
+              x <- burst(x = x,
+                         zcol = zcol,
+                         burst = burst)
+            }
 
-              # if (inherits(sf::st_geometry(x), "sfc_GEOMETRY")) {
-              #   x = split(x, f = sf::st_dimension(sf::st_geometry(x)))
-              # }
-              if (burst) {
-                tmp <- burst(x = x,
-                             zcol = zcol,
-                             burst = burst,
-                             color = color,
-                             col.regions = col.regions,
-                             at = at,
-                             na.color = na.color,
-                             popup = popup,
-                             alpha = alpha,
-                             alpha.regions = alpha.regions,
-                             na.alpha = na.alpha,
-                             legend = legend)
+            if (inherits(x, "list")) {
+              mapView(x,
+                      map = map,
+                      zcol = zcol,
+                      burst = FALSE,
+                      color = color,
+                      col.regions = col.regions,
+                      popup = popup,
+                      label = label,
+                      homebutton = homebutton,
+                      legend = legend,
+                      map.types = map.types,
+                      layer.name = layer.name,
+                      alpha = alpha,
+                      alpha.regions = alpha.regions,
+                      na.alpha = na.alpha,
+                      canvas = canvas,
+                      viewer.suppress = viewer.suppress,
+                      pane = pane,
+                      cex = cex,
+                      lwd = lwd,
+                      by_row = by_row,
+                      ...)
+            } else if (mapviewGetOption("platform") == "leaflet") {
 
-                lwd = lwd
-
-                if (is.function(tmp)) {
-                  tmp = tmp()
-                  x <- tmp$obj
-                  color <- tmp$color
-                  col.regions <- tmp$col.regions
-                  popup <- tmp$popup
-                  label <- tmp$labs
-                  # alpha = tmp$alpha
-                  # alpha.regions = tmp$alpha.regions
-                  zcol = tmp$zcol #as.list(names(x))
-                }
-              }
-
-              if (!inherits(x, "list")) {
-
-                leaflet_sf(sf::st_cast(x),
+                leaflet_sf(x,
                            map = map,
                            pane = pane,
                            zcol = zcol,
@@ -591,31 +719,64 @@ setMethod('mapView', signature(x = 'sf'),
                            highlight = highlight,
                            maxpoints = maxpoints,
                            canvas = canvas,
+                           viewer.suppress = viewer.suppress,
                            ...)
 
-              } else {
+            } else if (mapviewGetOption("platform") == "leafgl") {
 
-                mapView(x,
+              leafgl_sf(x,
+                        map = map,
                         zcol = zcol,
-                        burst = FALSE,
                         color = color,
                         col.regions = col.regions,
-                        popup = popup,
-                        label = label,
-                        homebutton = homebutton,
-                        legend = legend,
-                        map.types = map.types,
-                        layer.name = layer.name,
+                        at = at,
+                        na.color = na.color,
+                        cex = cex,
+                        lwd = lwd,
                         alpha = alpha,
                         alpha.regions = alpha.regions,
                         na.alpha = na.alpha,
-                        canvas = canvas,
-                        pane = pane,
-                        cex = cex,
-                        lwd = lwd,
+                        map.types = map.types,
+                        verbose = verbose,
+                        popup = popup,
+                        layer.name = layer.name,
+                        label = label,
+                        legend = legend,
+                        legend.opacity = legend.opacity,
+                        homebutton = homebutton,
+                        native.crs = native.crs,
+                        highlight = highlight,
+                        maxpoints = maxpoints,
+                        viewer.suppress = viewer.suppress,
                         ...)
 
-              }
+            } else if (mapviewGetOption("platform") == "mapdeck") {
+
+              mapdeck_sf(x,
+                         map = map,
+                         zcol = zcol,
+                         color = color,
+                         col.regions = col.regions,
+                         at = at,
+                         na.color = na.color,
+                         cex = cex,
+                         lwd = lwd,
+                         alpha = alpha,
+                         alpha.regions = alpha.regions,
+                         na.alpha = na.alpha,
+                         map.types = map.types,
+                         verbose = verbose,
+                         popup = popup,
+                         layer.name = layer.name,
+                         label = label,
+                         legend = legend,
+                         legend.opacity = legend.opacity,
+                         homebutton = homebutton,
+                         native.crs = native.crs,
+                         highlight = highlight,
+                         maxpoints = maxpoints,
+                         viewer.suppress = viewer.suppress,
+                         ...)
 
             } else {
               NULL
@@ -632,6 +793,7 @@ setMethod('mapView', signature(x = 'sfc'),
                    map = NULL,
                    pane = "auto",
                    canvas = useCanvas(x),
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                    color = standardColor(x), #mapviewGetOption("vector.palette"),
                    col.regions = standardColRegions(x), #mapviewGetOption("vector.palette"),
                    at = NULL,
@@ -640,7 +802,7 @@ setMethod('mapView', signature(x = 'sfc'),
                    lwd = lineWidth(x),
                    alpha = 0.9,
                    alpha.regions = regionOpacity(x),
-                   map.types = NULL,
+                   map.types = mapviewGetOption("basemaps"),
                    verbose = mapviewGetOption("verbose"),
                    popup = NULL,
                    layer.name = deparse(substitute(x,
@@ -648,7 +810,7 @@ setMethod('mapView', signature(x = 'sfc'),
                    label = makeLabels(x),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
-                   homebutton = TRUE,
+                   homebutton = mapviewGetOption("homebutton"),
                    native.crs = FALSE,
                    highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
@@ -659,12 +821,71 @@ setMethod('mapView', signature(x = 'sfc'),
                    " does not contain data \n", call. = FALSE)
             }
 
+            if (length(unique(sf::st_dimension(x))) > 1) {
+              x = sf::st_cast(x)
+            }
+
             if (mapviewGetOption("platform") == "leaflet") {
 
-              leaflet_sfc(sf::st_cast(x),
+              leaflet_sfc(x,
                           map = map,
                           pane = pane,
                           canvas = canvas,
+                          viewer.suppress = viewer.suppress,
+                          color = color,
+                          col.regions = col.regions,
+                          na.color = na.color,
+                          cex = cex,
+                          lwd = lwd,
+                          alpha = alpha,
+                          alpha.regions = alpha.regions,
+                          map.types = map.types,
+                          verbose = verbose,
+                          popup = popup,
+                          layer.name = layer.name,
+                          label = label,
+                          legend = legend,
+                          legend.opacity = legend.opacity,
+                          homebutton = homebutton,
+                          native.crs = native.crs,
+                          highlight = highlight,
+                          maxpoints = maxpoints,
+                          ...)
+
+            } else if (mapviewGetOption("platform") == "leafgl") {
+
+              leafgl_sfc(x,
+                         map = map,
+                         pane = pane,
+                         canvas = canvas,
+                         viewer.suppress = viewer.suppress,
+                         color = color,
+                         col.regions = col.regions,
+                         na.color = na.color,
+                         cex = cex,
+                         lwd = lwd,
+                         alpha = alpha,
+                         alpha.regions = alpha.regions,
+                         map.types = map.types,
+                         verbose = verbose,
+                         popup = popup,
+                         layer.name = layer.name,
+                         label = label,
+                         legend = legend,
+                         legend.opacity = legend.opacity,
+                         homebutton = homebutton,
+                         native.crs = native.crs,
+                         highlight = highlight,
+                         maxpoints = maxpoints,
+                         ...)
+
+            } else if (mapviewGetOption("platform") == "mapdeck") {
+
+              mapdeck_sfc(x,
+                          map = map,
+                          pane = pane,
+                          canvas = canvas,
+                          viewer.suppress = viewer.suppress,
                           color = color,
                           col.regions = col.regions,
                           na.color = na.color,
@@ -691,6 +912,85 @@ setMethod('mapView', signature(x = 'sfc'),
           }
 )
 
+
+## character ==============================================================
+#' @param tms whether the tiles are served as TMS tiles.
+#'
+#' @describeIn mapView \code{\link{character}}
+setMethod('mapView', signature(x = 'character'),
+         function(x,
+                  map = NULL,
+                  tms = TRUE,
+                  color = standardColor(),
+                  col.regions = standardColRegions(),
+                  at = NULL,
+                  na.color = mapviewGetOption("na.color"),
+                  cex = 6,
+                  lwd = 2,
+                  alpha = 0.9,
+                  alpha.regions = 0.6,
+                  na.alpha = 0.6,
+                  map.types = mapviewGetOption("basemaps"),
+                  verbose = FALSE,
+                  layer.name = x,
+                  homebutton = mapviewGetOption("homebutton"),
+                  native.crs = FALSE,
+                  canvas = FALSE,
+                  viewer.suppress = mapviewGetOption("viewer.suppress"),
+                  ...) {
+
+           pf = mapviewGetOption("platform")
+           if (pf != "leaflet") {
+             warning(
+               "platform "
+               , "'", pf, "'"
+               , " currently does not support tile rendering"
+               , " switching to platform 'leaflet'."
+               , call. = FALSE
+             )
+             mapviewOptions(platform = "leaflet")
+           }
+
+           if (mapviewGetOption("platform") == "leaflet") {
+             if (utils::file_test("-d", x)) {
+               leaflet_tiles(x = x,
+                             map = map,
+                             tms = tms,
+                             map.types = map.types,
+                             verbose = verbose,
+                             layer.name = layer.name,
+                             homebutton = homebutton,
+                             native.crs = native.crs,
+                             viewer.suppress = viewer.suppress,
+                             ...)
+             } else if (utils::file_test("-f", x)) {
+               layer.name = basename(tools::file_path_sans_ext(layer.name))
+               leaflet_file(x = x,
+                            map = map,
+                            color = color,
+                            col.regions = col.regions,
+                            at = at,
+                            na.color = na.color,
+                            cex = cex,
+                            lwd = lwd,
+                            alpha = alpha,
+                            alpha.regions = alpha.regions,
+                            na.alpha = na.alpha,
+                            map.types = map.types,
+                            verbose = verbose,
+                            layer.name = layer.name,
+                            homebutton = homebutton,
+                            native.crs = native.crs,
+                            canvas = canvas,
+                            viewer.suppress = viewer.suppress,
+                            ...)
+             } else {
+               stop(sprintf("%s is not a directory!", layer.name),
+                    call. = FALSE)
+             }
+           }
+         }
+)
 
 ## numeric ================================================================
 #' @describeIn mapView \code{\link{numeric}}
@@ -744,7 +1044,7 @@ setMethod('mapView', signature(x = 'data.frame'),
                    ycol,
                    grid = TRUE,
                    aspect = 1,
-                   popup = popupTable(x),
+                   popup = leafpop::popupTable(x),
                    label,
                    crs = NA,
                    ...) {
@@ -786,6 +1086,7 @@ setMethod('mapView', signature(x = 'XY'),
                    map = NULL,
                    pane = "auto",
                    canvas = useCanvas(x),
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                    color = standardColor(x), #mapviewGetOption("vector.palette"),
                    col.regions = standardColRegions(x), #mapviewGetOption("vector.palette"),
                    at = NULL,
@@ -794,7 +1095,7 @@ setMethod('mapView', signature(x = 'XY'),
                    lwd = lineWidth(x),
                    alpha = 0.9,
                    alpha.regions = regionOpacity(x),
-                   map.types = NULL,
+                   map.types = mapviewGetOption("basemaps"),
                    verbose = mapviewGetOption("verbose"),
                    popup = NULL,
                    layer.name = deparse(substitute(x,
@@ -802,7 +1103,7 @@ setMethod('mapView', signature(x = 'XY'),
                    label = makeLabels(x),
                    legend = mapviewGetOption("legend"),
                    legend.opacity = 1,
-                   homebutton = TRUE,
+                   homebutton = mapviewGetOption("homebutton"),
                    native.crs = FALSE,
                    highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
@@ -815,6 +1116,7 @@ setMethod('mapView', signature(x = 'XY'),
                           map = map,
                           pane = pane,
                           canvas = canvas,
+                          viewer.suppress = viewer.suppress,
                           color = color,
                           col.regions = col.regions,
                           na.color = na.color,
@@ -884,76 +1186,6 @@ setMethod('mapView', signature(x = 'XYZM'),
 
 
 
-# ## sfc_POINT ==============================================================
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_POINT'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_MULTIPOINT =========================================================
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_MULTIPOINT'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_LINESTRING =========================================================
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_LINESTRING'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_MULTILINESTRING ====================================================
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_MULTILINESTRING'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_POLYGON =======================================================
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_POLYGON'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_MULTIPOLYGON =======================================================
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_MULTIPOLYGON'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-#
-#
-# ## sfc_GEOMETRY =======================================================
-# #' @describeIn mapView \code{\link{st_sfc}}
-#
-# setMethod('mapView', signature(x = 'sfc_GEOMETRY'),
-#           function(x, ...) {
-#             callNextMethod()
-#           }
-# )
-
-
 ## bbox =======================================================
 #' @describeIn mapView \code{\link{st_bbox}}
 
@@ -989,6 +1221,15 @@ setMethod('mapView', signature(x = 'missing'),
           }
 )
 
+## NULL ===================================================================
+#' @describeIn mapView initiate a map without an object
+#'
+setMethod('mapView', signature(x = 'NULL'),
+          function(x, ...) {
+              NULL
+          }
+)
+
 
 
 ## list ===================================================================
@@ -1005,93 +1246,53 @@ setMethod('mapView', signature(x = 'list'),
                    na.color = mapviewGetOption("na.color"),
                    cex = 6,
                    lwd = lapply(x, lineWidth),
-                   alpha = lapply(seq(x), function(i) 0.9),
-                   alpha.regions = lapply(seq(x), function(i) 0.6),
+                   alpha = 0.9,
+                   alpha.regions = lapply(x, regionOpacity),
+                   na.alpha = lapply(x, regionOpacity),
                    map.types = mapviewGetOption("basemaps"),
                    verbose = mapviewGetOption("verbose"),
-                   popup = lapply(seq(x), function(i) {
-                     popupTable(x[[i]])
-                   }),
+                   popup = ifelse(isTRUE(mapviewGetOption("fgb")), TRUE, lapply(x, leafpop::popupTable)),
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
-                   label = lapply(seq(x), function(i) {
-                     makeLabels(x[[i]], zcol = zcol[[i]])
-                   }),
+                   label = lapply(x, makeLabels),
                    legend = mapviewGetOption("legend"),
-                   legend.opacity = 1,
-                   homebutton = TRUE,
+                   homebutton = mapviewGetOption("homebutton"),
                    native.crs = FALSE,
-                   maxpoints = NULL, #lapply(x, getMaxFeatures),
                    ...) {
+
+            if ("by_row" %in% names(list(...))) {
+              listify = listifyer(x, by_row = list(...)$by_row)
+            } else {
+              listify = listifyer(x)
+            }
 
             lyrnms = makeListLayerNames(x, layer.name)
 
-            if (!is.list(color))
-              color <- rep(list(color), length(x))
-            if (!is.list(col.regions))
-              col.regions <- rep(list(col.regions), length(x))
-            if (!is.list(legend))
-              legend <- rep(list(legend), length(x))
-            if (!is.list(homebutton))
-              homebutton <- rep(list(homebutton), length(x))
-            if (!is.list(cex))
-              cex <- rep(list(cex), length(x))
-            if (!is.list(lwd))
-              lwd <- rep(list(lwd), length(x))
-            # if (!is.list(highlight))
-            #   highlight <- rep(list(highlight), length(x))
-            # if (!is.list(label))
-            #   label <- rep(list(label), length(x))
-            if (length(popup) != length(x))
-              popup <- rep(list(popup), length(x))
-            if (length(alpha) != length(x))
-              alpha <- rep(list(alpha), length(x))
-            if (length(alpha.regions) != length(x))
-              alpha.regions <- rep(list(alpha.regions), length(x))
+            m <- Reduce("+", lapply(seq(x), function(i) {
+              mapView(x = x[[i]],
+                      map = map,
+                      zcol = listify(zcol)[[i]],
+                      color = listify(color)[[i]],
+                      col.regions = listify(col.regions)[[i]],
+                      at = listify(at)[[i]],
+                      na.color = listify(na.color)[[i]],
+                      cex = listify(cex)[[i]],
+                      lwd = listify(lwd)[[i]],
+                      alpha = listify(alpha)[[i]],
+                      alpha.regions = listify(alpha.regions)[[i]],
+                      map.types = map.types,
+                      verbose = verbose,
+                      popup = listify(popup)[[i]],
+                      layer.name = lyrnms[[i]],
+                      label = listify(label)[[i]],
+                      legend = listify(legend)[[i]],
+                      homebutton = listify(homebutton)[[i]],
+                      native.crs = native.crs,
+                      ...)
+            }))@map
 
-
-            if (mapviewGetOption("platform") == "leaflet") {
-              m <- Reduce("+", lapply(seq(x), function(i) {
-                if (is.null(popup)) popup <- popupTable(x[[i]])
-                if (inherits(x[[i]], "sf")) {
-                  mapView(x = sf::st_cast(x[[i]]),
-                          layer.name = lyrnms[[i]],
-                          zcol = zcol[[i]],
-                          color = color[[i]],
-                          col.regions = col.regions[[i]],
-                          legend = legend[[i]],
-                          label = label[[i]],
-                          popup = popup[[i]],
-                          homebutton = homebutton[[i]],
-                          native.crs = native.crs,
-                          cex = cex[[i]],
-                          lwd = lwd[[i]],
-                          map.types = map.types,
-                          alpha = alpha[[i]],
-                          alpha.regions = alpha.regions[[i]],
-                          burst = FALSE,
-                          ...)
-                  } else {
-                    mapView(x = sf::st_cast(x[[i]]),
-                            layer.name = lyrnms[[i]],
-                            homebutton = homebutton[[i]],
-                            native.crs = native.crs,
-                            cex = cex[[i]],
-                            lwd = lwd[[i]],
-                            map.types = map.types,
-                            burst = FALSE,
-                            ...)
-                  }
-                }))@map
-              m <- leaflet::hideGroup(map = m,
-                                      group = layers2bHidden(m, ...))
-              out <- new("mapview", object = x, map = m)
-              # print(str(out@map), 4)
-              # stop("hallo")
-              return(out)
-            } else {
-              NULL
-            }
+            out <- new("mapview", object = x, map = m)
+            return(out)
           }
 )
 
@@ -1122,11 +1323,10 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                    map = NULL,
                    zcol = NULL,
                    maxpixels = mapviewGetOption("mapview.maxpixels"),
-                   col.regions = mapviewGetOption("raster.palette")(256),
+                   col.regions = mapviewGetOption("raster.palette"),
                    at = NULL,
                    na.color = mapviewGetOption("na.color"),
                    use.layer.names = FALSE,
-                   values = NULL,
                    map.types = mapviewGetOption("basemaps"),
                    alpha.regions = 0.8,
                    legend = mapviewGetOption("legend"),
@@ -1134,14 +1334,15 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
                    layer.name = NULL,
-                   homebutton = TRUE,
+                   homebutton = mapviewGetOption("homebutton"),
                    native.crs = FALSE,
-                   method = c("bilinear", "ngb"),
+                   method = mapviewGetOption("method"),
                    label = TRUE,
                    query.type = c("mousemove", "click"),
                    query.digits,
                    query.position = "topright",
                    query.prefix = "Layer",
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -1153,7 +1354,6 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                               at = at,
                               na.color = na.color,
                               use.layer.names = use.layer.names,
-                              values = values,
                               map.types = map.types,
                               alpha.regions = alpha.regions,
                               legend = legend,
@@ -1169,6 +1369,7 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                               query.digits = query.digits,
                               query.position = query.position,
                               query.prefix = query.prefix,
+                              viewer.suppress = viewer.suppress,
                               ...)
             } else {
               NULL
@@ -1186,11 +1387,10 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                    map = NULL,
                    zcol = NULL,
                    maxpixels = mapviewGetOption("mapview.maxpixels"),
-                   col.regions = mapviewGetOption("raster.palette")(256),
+                   col.regions = mapviewGetOption("raster.palette"),
                    at = NULL,
                    na.color = mapviewGetOption("na.color"),
                    use.layer.names = FALSE,
-                   values = NULL,
                    map.types = mapviewGetOption("basemaps"),
                    alpha.regions = 0.8,
                    legend = mapviewGetOption("legend"),
@@ -1198,14 +1398,15 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                    trim = TRUE,
                    verbose = mapviewGetOption("verbose"),
                    layer.name = NULL,
-                   homebutton = TRUE,
+                   homebutton = mapviewGetOption("homebutton"),
                    native.crs = FALSE,
-                   method = c("bilinear", "ngb"),
+                   method = mapviewGetOption("method"),
                    label = TRUE,
                    query.type = c("mousemove", "click"),
                    query.digits,
                    query.position = "topright",
                    query.prefix = "Layer",
+                   viewer.suppress = mapviewGetOption("viewer.suppress"),
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -1217,7 +1418,6 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                               at = at,
                               na.color = na.color,
                               use.layer.names = use.layer.names,
-                              values = values,
                               map.types = map.types,
                               alpha.regions = alpha.regions,
                               legend = legend,
@@ -1233,6 +1433,7 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                               query.digits = query.digits,
                               query.position = query.position,
                               query.prefix = query.prefix,
+                              viewer.suppress = viewer.suppress,
                               ...)
             } else {
               NULL
@@ -1244,14 +1445,6 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
 
 ## SpatialPointsDataFrame =================================================
 #' @describeIn mapView \code{\link{SpatialPointsDataFrame}}
-#' @param burst whether to show all (TRUE) or only one (FALSE) layer(s).
-#' See also Details.
-#' @param zcol attribute name(s) or column number(s) in attribute table
-#' of the column(s) to be rendered. See also Details.
-#' @param cex attribute name(s) or column number(s) in attribute table
-#' of the column(s) to be used for defining the size of circles
-#' @param lwd line width
-
 setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
           function(x,
                    zcol = NULL,
@@ -1274,7 +1467,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
                    ...) {
             if (is.null(layer.name))
               layer.name = makeLayerName(x, zcol, up = 2)
-            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
+            mapView(st_as_sfc(x), layer.name = layer.name, zcol = zcol, ...)
           }
 )
 
@@ -1304,7 +1497,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
                    ...) {
             if (is.null(layer.name))
               layer.name = makeLayerName(x, zcol, up = 2)
-            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
+            mapView(st_as_sfc(x), layer.name = layer.name, zcol = zcol, ...)
           }
 )
 
@@ -1334,7 +1527,6 @@ setMethod('mapView', signature(x = 'SpatialLines'),
                    ...) {
             if (is.null(layer.name))
               layer.name = makeLayerName(x, zcol, up = 2)
-            mapView(st_as_sf(x), layer.name = layer.name, zcol = zcol, ...)
+            mapView(st_as_sfc(x), layer.name = layer.name, zcol = zcol, ...)
           }
 )
-

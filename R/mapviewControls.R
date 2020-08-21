@@ -41,6 +41,8 @@ makeLabels <- function(x, zcol = NULL) {
     lab <- as.character(seq(length(x)))
   } else if (inherits(x, "sf") & is.null(zcol)) {
     lab <- rownames(x)
+  } else if (inherits(x, "Raster")) {
+    lab = TRUE
   } else lab <- as.character(as.data.frame(x)[, zcol])
   return(lab)
 }
@@ -71,13 +73,14 @@ createExtent <- function(x, offset = NULL) {
   } else {
     if (inherits(x, "Raster")) {
       ext <- raster::extent(
-        raster::projectExtent(x, crs = llcrs))
+        raster::projectExtent(x, crs = sp::CRS("+init=epsg:4326")))
     } else if (inherits(x, "Spatial")) {
       ext <- raster::extent(raster::xmin(x),
                             raster::xmax(x),
                             raster::ymin(x),
                             raster::ymax(x))
-    } else if (inherits(x, "sfc") | inherits(x, "sf") | inherits(x, "XY")) {
+    } else if (inherits(x, "sfc") | inherits(x, "sf") |
+               inherits(x, "XY") | inherits(x, "stars")) {
       bb <- sf::st_bbox(x)
       ext <- raster::extent(bb[1], bb[3], bb[2], bb[4])
     }
@@ -123,6 +126,11 @@ getSFClass <- function(x) {
 
 
 getGeometryType <- function(x) {
+  # raster / stars
+  if (inherits(x, c("Raster", "stars"))) {
+    return("rs")
+  }
+
   # sf
   if (inherits(x, "Spatial")) x = sf::st_as_sfc(x)
   g <- sf::st_geometry(x)
@@ -155,20 +163,23 @@ getMaxFeatures <- function(x) {
 
 lineWidth <- function(x) {
   lw = switch(getGeometryType(x),
-              "pt" = 2,
+              "pt" = 1,
               "ln" = 2,
-              "pl" = 1,
+              "pl" = 0.5,
               "gc" = 2)
   return(lw)
 }
 
 
 regionOpacity <- function(x) {
-  switch(getGeometryType(x),
-         "pt" = 0.6,
-         "ln" = 1,
-         "pl" = 0.6,
-         "gc" = 0.6)
+  switch(
+    getGeometryType(x)
+    , "pt" = ifelse(mapviewGetOption("platform") == "leafgl", 0.8, 0.6)
+    , "ln" = 1
+    , "pl" = ifelse(mapviewGetOption("platform") == "leafgl", 0.8, 0.6)
+    , "gc" = ifelse(mapviewGetOption("platform") == "leafgl", 0.8, 0.6)
+    , "rs" = 0.8
+  )
 }
 
 
@@ -192,7 +203,7 @@ getProjection <- function(x) {
   if (inherits(x, c("Raster", "Spatial"))) {
     prj <- raster::projection(x)
   } else {
-    prj <- sf::st_crs(x)[["proj4string"]]
+    prj <- sf::st_crs(x)$proj4string
   }
 
   return(prj)
@@ -221,12 +232,12 @@ extendLimits <- function(lim, length = 1, prop = 0.07) {
 }
 
 
-circleRadius <- function(x, radius = 6, min.rad = 3, max.rad = 15) {
+circleRadius <- function(x, radius = 6, min.rad = 3, max.rad = 15, na.rad = 2, ...) {
 
   if (is.character(radius)) {
     rad <- scales::rescale(as.numeric(x[[radius]]),
                            to = c(min.rad, max.rad))
-    rad[is.na(rad)] = 1
+    rad[is.na(rad)] = na.rad
   } else rad <- radius
   return(rad)
 }
@@ -237,7 +248,7 @@ extentOverlap <- function(x, y) {
 }
 
 
-makeLayerName = function(x, zcol, up = 3) {
+makeLayerName = function(x, zcol = NULL, up = 3) {
   lnm = deparse(substitute(x, env = parent.frame(up)), width.cutoff = 500)
   lnm = toString(lnm[1], width = 50)
   if (is.null(zcol)) lnm else paste(lnm, zcol, sep = " - ")
@@ -246,9 +257,9 @@ makeLayerName = function(x, zcol, up = 3) {
 
 
 makeListLayerNames = function(x, layer.name) {
-  if (length(layer.name) == length(x)) {
+  if (length(layer.name) == length(x) & !(is.list(x))) {
     lnms = layer.name
-  } else if (!is.null(names(x))) {
+  } else if (is.list(x) & !(is.null(names(x)))) {
     lnms = names(x)
   } else {
     chr = gsub(utils::glob2rx("*list(*"), "", layer.name)
@@ -272,6 +283,9 @@ makeListLayerNames = function(x, layer.name) {
 
 
 paneName = function(x) {
+  if (inherits(x, "stars")) {
+    return("stars")
+  }
   switch(getGeometryType(x),
          "pt" = "point",
          "ln" = "line",
@@ -280,6 +294,9 @@ paneName = function(x) {
 }
 
 zIndex = function(x) {
+  if (inherits(x, "stars")) {
+    return(400)
+  }
   switch(getGeometryType(x),
          "pt" = 440,
          "ln" = 430,
@@ -295,10 +312,74 @@ useCanvas = function(x) {
   } else {
     switch(
       getGeometryType(x),
-      "pt" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE),
+      "pt" = ifelse(featureComplexity(x) > 500, TRUE, FALSE),
       "ln" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE),
-      "pl" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE),
-      "gc" = ifelse(featureComplexity(x) > 5000, TRUE, FALSE)
+      "pl" = ifelse(featureComplexity(x) > 2000, TRUE, FALSE),
+      "gc" = ifelse(featureComplexity(x) > 500, TRUE, FALSE)
     )
   }
+}
+
+is_literally_false = function(x) {
+  if (getRversion() >= 3.5) {
+    isFALSE(x)
+  } else {
+    is.logical(x) && length(x) == 1L && !is.na(x) && !x
+  }
+}
+
+listifyer = function(x, by_row = FALSE) {
+  if (by_row) {
+    strct = sapply(x, function(i) {
+      if (inherits(i, "sfc")) {
+        length(i)
+      }
+      if (inherits(i, "sf")) {
+        nrow(i)
+      }
+    })
+    idx = rep(1:length(x), times = strct)
+    return(
+      function(arg) {
+        arg_nm = deparse(substitute(arg))
+        arg = unlist(arg)
+        if (length(arg) == 1) {
+          return(rep(arg, length(idx)))
+        }
+        if (length(arg) > 1 && length(arg) <= length(idx)) {
+          splt = split(arg, idx)
+          if (arg_nm == "popup") {
+            splt = sapply(splt, function(i) {
+              attr(i, "popup") = "leafpop"
+              return(i)
+            })
+          }
+          return(splt)
+        }
+      }
+    )
+  }
+
+  idx = length(x)
+  function(arg, as_list = FALSE) {
+    arg_nm = deparse(substitute(arg))
+    if (inherits(x[[1]], c("Raster", "stars")) &&
+        arg_nm %in% c("popup")) {
+      return(NULL)
+    }
+    if (as_list) {
+      return(as.list(arg))
+    }
+    if (is.function(arg)) {
+      return(replicate(idx, arg))
+    }
+    if (is.list(arg) && length(arg) == idx) {
+      return(arg)
+    }
+    if (!is.list(arg) && length(arg) == idx) {
+      return(as.list(arg))
+    }
+    return(rep(list(arg), idx))
+  }
+
 }

@@ -41,6 +41,8 @@ This can be handy to check whether features overlap or to just check where thing
 ```{r extent1}
 library(mapview)
 library(leaflet)
+library(plainview)
+library(leafsync)
 
 viewExtent(poppendorf, color = "red") + viewExtent(breweries)
 ```
@@ -99,6 +101,8 @@ latticeView(m1, m3)
 `viewRB` can be used to view true- or false-color raster images. It expects a `RasterStack` or `RasterBrick` and the default setting will render layer combination 3-2-1
 
 ```{r true rgb}
+library(plainview)
+
 viewRGB(poppendorf, r = 4, g = 3, b = 2)
 ```
 

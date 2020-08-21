@@ -1,3 +1,76 @@
+## mapview 2.9.0
+
+new features:
+
+  * new function removeMapJunk to remove control elements from a map (e.g. the zoom control).
+  * added tentative support for platform 'leafgl'.
+  * stars method now uses leafem::addGeoRaster. https://github.com/r-spatial/leafem/issues/25
+  * leafem::addCopyExtent now included in all methods.
+  * sf(c) methods now use leafem::addFgb if GDAL >= 3.1.
+  * new | operator to compare two maps side-by-side.
+
+miscellaneous:
+
+  * all deprecated functions are now defunct. See ?`mapview-defunct`.
+  * drop viridisLite dependency and use base::hcl.colors instead. We now depend on R >= 3.6.
+
+## mapview 2.7.8
+
+new features:
+
+  * new method for tiled image collections (created with e.g. gdal2tiles). #222
+  * new method file path (currently vector only) without loading into R.
+  * initial support for 'mapdeck' as a rendering platform.
+  * mapshot now works for all and any htmlwidget.
+  * new functions startWatching/stopWatching to automatically mapview all spatial objects in a given environment (default .GlobalEnv).
+  
+miscellaneous:
+
+  * deprecated addStarsImage - now in package leafem. Thanks to Luigi Ranghetti #230
+  * deprecated addExtent - now in package leafem. Thanks to Lorenzo Busetto #233
+  * dropped Rcpp dependency.
+  
+bugfixes:
+
+  * factor legends should now work as expected. #240
+
+## mapview 2.7.0
+
+miscellaneous:
+
+  * addMouseCoordinates now also displays native coordinates for leaflet maps. #205 - now moved to package leafem.
+  * deprecated slideview, cubeview, latticeview & sync, plainview, popup* functions.
+  * deprecated addFeatures, garnishMap, addHomeButton, addImageQuery, addLogo, addMouseCoordinates.
+
+bugfixes:
+
+  * mapview would return NULL if zcol was of type logic. #200
+
+
+## mapview 2.6.3
+
+miscellaneous:
+  
+  * argument popup now also accepts FALSE in addition to NULL to suppress popups.
+  * plainview argument legend now accepts a list describing the colorkey (see ?lattice::levelplot for details). #187
+  * mapview popup css now has white background (for better leaflet integration).
+  * NAMESPACE now registers S3method (knitr::knit_print) conditionally as requested by KH.
+
+
+## mapview 2.6.0
+
+new features:
+
+  * mapview has gained argument viewer.suppress to enable rendering in the browser.
+  * popupTable has gained argument feature.id to choose whether to show or hide 'Feature ID' column. #182
+
+bugfixes:
+
+  * isFALSE (caused errors on R < 3.5) is now handled properly.
+  * mapshot does not unintentionally delete url anymore if saving to png with same name.
+  * mapshot now properly deletes temporary url when saving to png (or png and html).
+  * internal function mapview:::nrings now calculates number of polygon rings correctly. #181
+
 ## mapview 2.5.0
 
 new features:

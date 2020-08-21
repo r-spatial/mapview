@@ -40,7 +40,7 @@ leafletMissing = function(map.types, ...) {
                    attribution = attr,
                    options = tileOptions(minZoom = 1, maxZoom = 18))
 
-        fl = 'http://cdn.makeagif.com/media/8-11-2015/n2JwUG.gif'
+        fl = 'https://cdn.makeagif.com/media/8-11-2015/n2JwUG.gif'
 
         cit = unclass(utils::citation("mapview", auto = NULL))[[1]]
         cit = attr(cit, "textVersion")
@@ -65,7 +65,7 @@ leafletMissing = function(map.types, ...) {
                     "<b>", "mapview", "</b>", "is for quick visualisation of spatial data",
                     "<br>", "<br>",
                     paste('<img src =', fl, 'width="95%">'),
-                    '<a target="_blank" href="http://makeagif.com/n2JwUG">Source: MakeAGIF.com</a>',
+                    '<a target="_blank" href="https://makeagif.com/n2JwUG">Source: MakeAGIF.com</a>',
                     "</center>")
         m = leaflet::addCircleMarkers(data = envinMR, map = m,
                                       fillColor = "cyan",
@@ -86,8 +86,9 @@ leafletMissing = function(map.types, ...) {
                                       overlayGroups = "envinMR")
         m = leaflet::setView(map = m, 8.771676, 50.814891, zoom = 4)
         if (isAvailableInLeaflet()$scl) m = leaflet::addScaleBar(map = m, position = "bottomleft")
-        m = addMouseCoordinates(m) %>% addHomeButton(extent(envinMR),
-                                                     "mapview home")
+        m = leafem::addMouseCoordinates(m)
+        m = leafem::addCopyExtent(m)
+        m = leafem::addHomeButton(m, extent(envinMR), "mapview home")
         out = new('mapview', object = list(NULL), map = m)
       } else {
         m = initBaseMaps(map.types)
@@ -97,7 +98,8 @@ leafletMissing = function(map.types, ...) {
                                       position = mapviewGetOption(
                                         "layers.control.pos"))
         if (isAvailableInLeaflet()$scl) m = leaflet::addScaleBar(map = m, position = "bottomleft")
-        m = addMouseCoordinates(m)
+        m = leafem::addMouseCoordinates(m)
+        m = leafem::addCopyExtent(m)
         out = new('mapview', object = list(NULL), map = m)
       }
       return(out)

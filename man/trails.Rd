@@ -4,10 +4,12 @@
 \name{trails}
 \alias{trails}
 \title{Selected hiking trails in Franconia}
-\format{\code{sf feature collection MULTILINESTRING}}
+\format{
+\code{sf feature collection MULTILINESTRING}
+}
 \source{
 Datenquelle: Bayerische Vermessungsverwaltung - www.geodaten.bayern.de
-\url{http://www.ldbv.bayern.de/produkte/weitere/opendata.html}
+\url{https://www.ldbv.bayern.de/produkte/weitere/opendata.html}
 }
 \description{
 Selected hiking trails in Franconia

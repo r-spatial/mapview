@@ -6,3 +6,7 @@
 ^docs$
 ^vignettes$
 ^tic.R
+^README.Rmd
+^\.ccache$
+^\.github$
+^tic\.R$

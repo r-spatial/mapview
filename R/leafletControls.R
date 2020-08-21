@@ -10,7 +10,13 @@ getLayerControlEntriesFromMap <- function(map) {
 
 
 getCallEntryFromMap <- function(map, call) {
-  grep(call, getCallMethods(map), fixed = TRUE, useBytes = TRUE)
+  if (length(call) > 1) {
+    call = paste(call, collapse = "|")
+    fixed = FALSE
+  } else {
+    fixed = TRUE
+  }
+  grep(call, getCallMethods(map), fixed = fixed, useBytes = TRUE)
 }
 
 
@@ -84,7 +90,7 @@ getLayerNamesFromMap <- function(map) {
 
 # Append calls to a map ---------------------------------------------------
 
-appendMapCallEntries <- function(map1, map2) {
+appendMapCallEntries_lf <- function(map1, map2) {
   ## calls
   m1_calls = map1$x$calls
   m2_calls = map2$x$calls
@@ -143,6 +149,22 @@ appendMapCallEntries <- function(map1, map2) {
 }
 
 
+appendMapCallEntries_md = function(map1, map2) {
+
+  m1_calls = map1$x$calls
+  m2_calls = map2$x$calls
+  mpcalls = append(m1_calls, m2_calls)
+
+  m1_deps = map1$dependencies
+  m2_deps = map2$dependencies
+  mp_deps = append(m1_deps, m2_deps)
+
+  map1$x$calls = mpcalls
+  map1$dependencies = mp_deps
+
+  map1 = removeDuplicatedMapDependencies(map1)
+  return(map1)
+}
 
 # Remove duuplicated map calls --------------------------------------------
 
@@ -179,26 +201,42 @@ rasterCheckSize <- function(x, maxpixels) {
 
 # Initialise mapView base maps --------------------------------------------
 
-initBaseMaps <- function(map.types, canvas = FALSE) {
+initBaseMaps <- function(map.types, canvas = FALSE, viewer.suppress = FALSE) {
   ## create base map using specified map types
   if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
   leafletHeight <- mapviewGetOption("leafletHeight")
   leafletWidth <- mapviewGetOption("leafletWidth")
   lid <- 1:length(map.types)
-  m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth,
-                        options = leaflet::leafletOptions(
-                          minZoom = 1,
-                          maxZoom = 100,
-                          bounceAtZoomLimits = FALSE,
-                          maxBounds = list(list(c(-90, -370)),
-                                           list(c(90, 370))),
-                          preferCanvas = canvas))
-  m <- leaflet::addProviderTiles(m, provider = map.types[1],
-                                 layerId = lid[1], group = map.types[1])
-  if (length(map.types) > 1) {
-    for (i in 2:length(map.types)) {
-      m <- leaflet::addProviderTiles(m, provider = map.types[i],
-                                     layerId = lid[i], group = map.types[i])
+  m <- leaflet::leaflet(
+    height = leafletHeight,
+    width = leafletWidth,
+    options = leaflet::leafletOptions(
+      minZoom = 1,
+      maxZoom = 52,
+      bounceAtZoomLimits = FALSE,
+      maxBounds = list(
+        list(c(-90, -370)),
+        list(c(90, 370))),
+      preferCanvas = canvas),
+    sizingPolicy = leafletSizingPolicy(
+      viewer.suppress = viewer.suppress,
+      browser.external = viewer.suppress
+    )
+  )
+  if (!(is.null(map.types))) {
+    m <- leaflet::addProviderTiles(m, provider = map.types[1],
+                                   layerId = map.types[1], group = map.types[1],
+                                   options = providerTileOptions(
+                                     pane = "tilePane"
+                                   ))
+    if (length(map.types) > 1) {
+      for (i in 2:length(map.types)) {
+        m <- leaflet::addProviderTiles(m, provider = map.types[i],
+                                       layerId = map.types[i], group = map.types[i],
+                                       options = providerTileOptions(
+                                         pane = "tilePane"
+                                       ))
+      }
     }
   }
   return(m)
@@ -211,32 +249,77 @@ initMap <- function(map = NULL,
                     map.types = NULL,
                     proj4str,
                     native.crs = FALSE,
-                    canvas = FALSE) {
+                    canvas = FALSE,
+                    viewer.suppress = FALSE,
+                    platform = mapviewGetOption("platform"),
+                    ...) {
 
   # if (missing(map.types)) map.types <- mapviewGetOption("basemaps")
+  ls = list(...)
+  nms = names(ls)
 
-  if (is.null(map) & is.null(map.types)) {
-    map.types <- mapviewGetOption("basemaps")
-  }
+  if (platform %in% c("leaflet", "leafgl")) {
 
-  leafletHeight <- mapviewGetOption("leafletHeight")
-  leafletWidth <- mapviewGetOption("leafletWidth")
+    # if (is.null(map) & is.null(map.types)) {
+    #   map.types <- mapviewGetOption("basemaps")
+    # }
 
-  if (missing(proj4str)) proj4str <- NA
-  ## create base map using specified map types
-  if (is.null(map)) {
-    if (is.na(proj4str) | native.crs) {
-      m <- leaflet::leaflet(height = leafletHeight, width = leafletWidth,
-                            options = leaflet::leafletOptions(
-                              minZoom = -1000,
-                              crs = leafletCRS(crsClass = "L.CRS.Simple"),
-                              preferCanvas = canvas))
+    leafletHeight <- mapviewGetOption("leafletHeight")
+    leafletWidth <- mapviewGetOption("leafletWidth")
+
+    if (missing(proj4str)) proj4str <- NA
+    ## create base map using specified map types
+    if (is.null(map)) {
+      if (is.na(proj4str) | native.crs) {
+        m <- leaflet::leaflet(
+          height = leafletHeight,
+          width = leafletWidth,
+          options = leaflet::leafletOptions(
+            minZoom = -1000,
+            maxZoom = 52,
+            crs = leafletCRS(crsClass = "L.CRS.Simple"),
+            preferCanvas = canvas),
+          sizingPolicy = leafletSizingPolicy(
+            viewer.suppress = viewer.suppress,
+            browser.external = viewer.suppress
+          )
+        )
+      } else {
+        m <- initBaseMaps(map.types, canvas = canvas, viewer.suppress = viewer.suppress)
+      }
     } else {
-      m <- initBaseMaps(map.types, canvas = canvas)
+      m <- map
     }
-  } else {
-    m <- map
+
+  } else if (platform == "mapdeck") {
+
+    map.types = map.types[1]
+
+    if (is.null(map)) {
+      if (is.null(map.types)) {
+        map.types <- mapviewGetOption("basemaps")[1]
+      }
+
+      md_args = try(
+        match.arg(
+          nms,
+          names(as.list(args(mapdeck::mapdeck))),
+          several.ok = TRUE
+        )
+        , silent = TRUE
+      )
+      if (!inherits(md_args, "try-error")) {
+        md_args = ls[md_args]
+        md_args$style = map.types
+        m = do.call(mapdeck::mapdeck, Filter(Negate(is.null), md_args))
+      } else {
+        m = mapdeck::mapdeck(style = map.types)
+      }
+    } else {
+      m = map
+    }
   }
+
   return(m)
 }
 
@@ -409,7 +492,7 @@ mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
   ind = getCallEntryFromMap(map, call = "addLayersControl")
 
   if (!length(ind)) {
-    bgm <- map.types
+    if (!(is.null(map.types))) bgm = map.types else bgm = character(0)
   } else {
     bgm <- map$x$calls[[ind[1]]]$args[[1]]
   }

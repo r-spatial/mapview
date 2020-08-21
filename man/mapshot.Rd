@@ -4,28 +4,31 @@
 \alias{mapshot}
 \title{Save mapview or leaflet map as HTML and/or image}
 \usage{
-mapshot(x, url = NULL, file = NULL, remove_url = TRUE,
-  remove_controls = c("zoomControl", "layersControl", "homeButton",
-  "scaleBar"), ...)
+mapshot(
+  x,
+  url = NULL,
+  file = NULL,
+  remove_controls = c("zoomControl", "layersControl", "homeButton", "scaleBar",
+    "drawToolbar", "easyButton"),
+  ...
+)
 }
 \arguments{
-\item{x}{\code{mapview} or \code{leaflet} object.}
+\item{x}{\code{mapview} or \code{leaflet} object (or any other hmtlwidget).}
 
 \item{url}{Output \code{.html} file. If not supplied and 'file' is specified,
 a temporary index file will be created.}
 
 \item{file}{Output \code{.png}, \code{.pdf}, or \code{.jpeg} file.}
 
-\item{remove_url}{\code{logical}. If \code{TRUE} (default), the \code{.html}
-file is removed once processing is completed. Only applies if 'url' is not
-specified.}
-
 \item{remove_controls}{\code{character} vector of control buttons to be removed
 from the map when saving to file. Any combination of
-"zoomControl", "layersControl", "homeButton", "scaleBar". If set to \code{NULL}
-nothing will be removed.}
+"zoomControl", "layersControl", "homeButton", "scaleBar", "drawToolbar",
+"easyButton". If set to \code{NULL} nothing will be removed. Ignord if \code{x}
+is not a mapview or leaflet map.}
 
-\item{...}{Further arguments passed on to \code{\link{webshot}}.}
+\item{...}{Further arguments passed on to \code{\link[htmlwidgets]{saveWidget}}
+and/or \code{\link[webshot]{webshot}}.}
 }
 \description{
 Save a mapview or leaflet map as \code{.html} index file or \code{.png},
@@ -33,36 +36,29 @@ Save a mapview or leaflet map as \code{.html} index file or \code{.png},
 }
 \details{
 mapshot can be used to save both leaflet and mapview maps as html or png
-files or both.
+files or both. In theory, it should also work for any and all other htmlwidgets
+but has not been tested extensively for other htmlwidgets.
 
-NOTE 1: In case you want to save larger maps produced with mapview
-(i.e. if you see the following warning: "the supplied feature layer has more
-points/vertices than the set threshold. using special rendering function,
-hence things may not behave as expected from a standard leaflet map") mapshot
-is likely to fail. Try setting \code{selfcontained = FALSE} to avoid errors
-and create a valid local html file.
-
-NOTE 2: In case you want to save a map with popupGraphs or popupImages
-the respective graph/image files will be located one level above the
-specified target location. In case you want to move the html file, make
-sure to also move the respective *-graphs folder one level above.
+In case you want to save larger maps mapshot is likely to fail. You can try
+setting \code{selfcontained = FALSE} to avoid errors and create a valid
+local html file.
 }
 \examples{
 \dontrun{
-m <- mapview(breweries)
+  m = mapview(breweries)
 
-## create standalone .html
-mapshot(m, url = paste0(getwd(), "/map.html"))
+  ## create standalone .html
+  mapshot(m, url = paste0(getwd(), "/map.html"))
 
-## create standalone .png; temporary .html is removed automatically unless
-## 'remove_url = FALSE' is specified
-mapshot(m, file = paste0(getwd(), "/map.png"))
-mapshot(m, file = paste0(getwd(), "/map.png"),
-        remove_controls = c("homeButton", "layersControl"))
+  ## create standalone .png; temporary .html is removed automatically unless
+  ## 'remove_url = FALSE' is specified
+  mapshot(m, file = paste0(getwd(), "/map.png"))
+  mapshot(m, file = paste0(getwd(), "/map.png"),
+          remove_controls = c("homeButton", "layersControl"))
 
-## create .html and .png
-mapshot(m, url = paste0(getwd(), "/map.html"),
-        file = paste0(getwd(), "/map.png"))
+  ## create .html and .png
+  mapshot(m, url = paste0(getwd(), "/map.html"),
+          file = paste0(getwd(), "/map.png"))
 }
 
 }

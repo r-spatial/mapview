@@ -26,21 +26,14 @@ Here are some examples:
 
 ## addMouseCoordinates
 
-let's us add mouse position information along with detailed information about the layer's projection and zoom level information
+let's us add mouse position information along with detailed information about the layer's projection and zoom level information. By default, only `lon`, `lat` and `zoom` are shown. To also show info on the `epsg code` and the `proj4string` press and hold Ctrl and move the mouse. `addMouseCoordinates` also allows us to copy the info about the current mouse position to the clipboard by holding the Ctrl and left-clicking on the map.
 
 ```{r addmc default}
 library(mapview)
 library(leaflet)
+library(leafem)
 
-leaflet() %>% addTiles() %>% addMouseCoordinates()
-```
-
-<br>
-
-or a basic version only showing information about mouse cursor position (long/lat) and zoom level
-
-```{r addmc basic}
-leaflet() %>% addTiles() %>% addMouseCoordinates(style = "basic")
+leaflet() %>% addTiles() %>% leafem::addMouseCoordinates()
 ```
 
 ------
@@ -77,11 +70,12 @@ can be used to add 'zoom-to-layer' buttons to a map. By default located in the b
 
 ```{r home}
 library(raster)
+library(leafem)
 
 leaflet() %>% 
   addTiles() %>% 
   addCircleMarkers(data = breweries91) %>% 
-  addHomeButton(ext = extent(breweries91), layer.name = "Breweries")
+  leafem::addHomeButton(ext = extent(breweries91), group = "Breweries")
 ```
 
 ------
@@ -91,6 +85,8 @@ leaflet() %>%
 is a type agnostic `add*` function which will call the approprate `leaflet::add*` function based on the provided feature type (points, lines, polygons). It is currently defined for handling objects from packages `sf` and `sp`. For `sf` objects, in addition to the standard feature types `POINT`, `MULTIPOINT`, `LINESTRING`, `MULTILINESTRING`, `POLYGON` and `MULTIPOLYGON` it can also handle features of type `sfc_GEOMETRY` which are a collection of mixed types.
 
 ```{r addpols}
+library(leafem)
+
 leaflet() %>% addTiles() %>% addFeatures(breweries)
 ```
 
@@ -99,6 +95,8 @@ leaflet() %>% addTiles() %>% addFeatures(breweries)
 The standard styling arguments for `leaflet::add*` functions can be used just like in the original `add*` function
 
 ```{r addpols style}
+library(leafem)
+
 leaflet() %>% 
   addTiles() %>% 
   addFeatures(franconia, weight = 1, fillColor = "grey", color = "black",
