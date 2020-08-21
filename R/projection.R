@@ -10,28 +10,26 @@ wrong_proj_warning <-
          "  projecting to '", llcrs, "'")
 
 # Check and potentially adjust projection of objects to be rendered =======
-checkAdjustProjection <- function(x, method = "bilinear") {
+checkAdjustProjection <- function(x, ...) {
   UseMethod("checkAdjustProjection")
 }
 
-checkAdjustProjection.RasterLayer <-
-  checkAdjustProjection.RasterStack <-
-  checkAdjustProjection.RasterBrick <- function(x, method) {
-    rasterCheckAdjustProjection(x, method)
-  }
+checkAdjustProjection.Raster <- function(x, ...) {
+  rasterCheckAdjustProjection(x, ...)
+}
 
 checkAdjustProjection.SpatialPointsDataFrame <-
   checkAdjustProjection.SpatialPolygonsDataFrame <-
   checkAdjustProjection.SpatialLinesDataFrame <-
   checkAdjustProjection.SpatialPoints <-
   checkAdjustProjection.SpatialPolygons <-
-  checkAdjustProjection.SpatialLines <- function(x, method) {
+  checkAdjustProjection.SpatialLines <- function(x, ...) {
     spCheckAdjustProjection(x)
   }
 
 checkAdjustProjection.sf <-
   checkAdjustProjection.sfc <-
-  checkAdjustProjection.sfg <- function(x, method) {
+  checkAdjustProjection.sfg <- function(x, ...) {
     sfCheckAdjustProjection(x)
   }
 
@@ -52,7 +50,7 @@ checkAdjustProjection.sf <-
 
 
 # Project Raster* objects for mapView =====================================
-rasterCheckAdjustProjection <- function(x, method) {
+rasterCheckAdjustProjection <- function(x, method = "bilinear") {
 
   is.fact <- raster::is.factor(x)[1]
 
