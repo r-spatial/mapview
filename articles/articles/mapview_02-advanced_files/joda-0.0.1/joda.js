@@ -28,58 +28,44 @@ rasterPicker.old = function(e, x, data) {
     }
 };
 
-rasterPicker.pick = function(event, leafletConfig, digits, prefix) {
-  var rasterLayers = this.getRasterLayers(leafletConfig);
+rasterPicker.pick = function(event, layerId, bounds, digits, prefix, visible) {
+  var outputWidget = this.getInfoLegend(layerId);
+  if (!visible) {
+    $(outputWidget).hide();
+    return;
+  }
+
+  var rasterLayers = this.getRasterLayers(layerId, bounds);
   var pickedLayerData = {};
   // collect values of clicked raster layers
   var rasterHitInfos = this.getLayerIdHits(rasterLayers, event.latlng);
+  // Return if nothing was found.
+  if (rasterHitInfos.length === 0) {
+    $(outputWidget).hide();
+    return;
+  }
   for (var rasterHitInfo_key in rasterHitInfos) {
     var rasterHitInfo = rasterHitInfos[rasterHitInfo_key];
     pickedLayerData[rasterHitInfo.layerId] = this.getLayerData(rasterHitInfo, event.latlng /*, event.zoom?*/);
   }
   // render collected hit values
-  var outputWidget = this.getInfoLegend(leafletConfig);
   outputWidget.innerHTML = this.renderInfo(pickedLayerData, digits, prefix);
 };
 
-rasterPicker.getInfoLegend = function(leafletConfig) {
-  var elementId = null;
-  for (var call_key in leafletConfig.calls) {
-    var call = leafletConfig.calls[call_key];
-    if (call.method == "addControl" && call.args.length>2 && call.args[2] === "imageValues") {
-      elementId = call.args[2];
-    }
-  }
-  var element = null;
-  if (elementId!==null) {
-    element = window.document.getElementById(elementId);
-  }
-  if (element===null) {
+rasterPicker.getInfoLegend = function(layerId) {
+  var element = window.document.getElementById("imageValues" + "-" + layerId);
+  if (element === null) {
   // LOG ERROR or WARNING?
     console.log("leafem: No control widget found in Leaflet setup. Can't show layer info.");
   }
   return element;
 };
 
-rasterPicker.getRasterLayers = function(leafletConfig) {
-  var rasterLayers = [];
-  for (var call_key in leafletConfig.calls) {
-    var call = leafletConfig.calls[call_key];
-    if (call.method == "addRasterImage" && call.args.length>=5) {
-      /* Parameters:
-         0. image data
-         1. latlng bounds
-         2. number?
-         3. ?
-         4. layerId
-         5. groupId
-       */
-      rasterLayers.push({
-        layerId: call.args[4],
-        bounds: call.args[1]
-      });
-    }
-  }
+rasterPicker.getRasterLayers = function(layerId, bounds) {
+  var rasterLayers = [{
+        layerId: layerId,
+        bounds: bounds
+      }];
   // TODO check if layer is hidden?
   return rasterLayers;
 };
@@ -134,18 +120,16 @@ rasterPicker.renderInfo = function(pickedLayerData, digits, prefix) {
   var text = "";
   for (var layer_key in pickedLayerData) {
     var layer = pickedLayerData[layer_key];
-    if (layer.value === undefined) {
+    if (layer.value === undefined || layer.value === null) {
       continue;
-    }
-    if(digits === null) {
-      text += prefix+ "<strong>"+ layer.layerId + ": </strong>"+ layer.value+ "</br>";
     } else {
-      text += prefix+ "<strong>"+ layer.layerId + ": </strong>"+ layer.value.toFixed(digits)+ "</br>";
+      $(document.getElementById("imageValues" + "-" + layer_key)).show();
     }
-    /*text += "<br/> (lat,lng=" + layer.lat + "," + layer.lng + ")";
-    text += "<br/> (x,y=" + layer.index.x + "," + layer.index.y + ")";
-    text += "</li>\n";*/
+    if(digits === "null" || digits === null) {
+      text += "<small>"+ prefix+ " <strong>"+ layer.layerId + ": </strong>"+ layer.value+ "</small>";
+    } else {
+      text += "<small>"+ prefix+ " <strong>"+ layer.layerId + ": </strong>"+ layer.value.toFixed(digits)+ "</small>";
+    }
   }
-  /*return "<ul>"+text+"</ul>";*/
   return text;
 };

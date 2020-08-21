@@ -8,21 +8,29 @@
 
 <title>Global options for the mapview package — mapviewOptions • mapview</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,13 +38,13 @@
 
 
 
-<meta property="og:title" content="Global options for the mapview package — mapviewOptions" />
 
+<meta property="og:title" content="Global options for the mapview package — mapviewOptions" />
 <meta property="og:description" content="To permanently set any of these options, you can add them to
 &amp;lt;your R installation&amp;gt;/etc/Rprofile.site&amp;gt;. For example,
 to change the default number of pixels to be visualised for Raster* objects,
 add a line like this: options(mapviewMaxPixels = 700000) to that file." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -50,9 +58,10 @@ add a line like this: options(mapviewMaxPixels = 700000) to that file." />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -66,7 +75,7 @@ add a line like this: options(mapviewMaxPixels = 700000) to that file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mapview</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.6.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.0</span>
       </span>
     </div>
 
@@ -74,7 +83,7 @@ add a line like this: options(mapviewMaxPixels = 700000) to that file." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -115,11 +124,10 @@ add a line like this: options(mapviewMaxPixels = 700000) to that file." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-spatial/mapview">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/r-spatial/mapview/">
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -130,46 +138,143 @@ add a line like this: options(mapviewMaxPixels = 700000) to that file." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Global options for the mapview package</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-spatial/mapview/blob/master/R/mapviewOptions.R'><code>R/mapviewOptions.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-spatial/mapview/blob/master/R/options.R'><code>R/options.R</code></a></small>
     <div class="hidden name"><code>mapviewOptions.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>To permanently set any of these options, you can add them to
 &lt;your R installation&gt;/etc/Rprofile.site&gt;. For example,
 to change the default number of pixels to be visualised for Raster* objects,
 add a line like this: options(mapviewMaxPixels = 700000) to that file.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>mapviewOptions</span>(<span class='no'>platform</span>, <span class='no'>basemaps</span>, <span class='no'>raster.size</span>, <span class='no'>mapview.maxpixels</span>,
-  <span class='no'>plainview.maxpixels</span>, <span class='no'>maxpoints</span>, <span class='no'>maxpolygons</span>, <span class='no'>maxlines</span>, <span class='no'>raster.palette</span>,
-  <span class='no'>vector.palette</span>, <span class='no'>verbose</span>, <span class='no'>na.color</span>, <span class='no'>legend</span>, <span class='no'>legend.pos</span>,
-  <span class='no'>layers.control.pos</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>console</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>leafletWidth</span>,
-  <span class='no'>leafletHeight</span>)
+    <pre class="usage"><span class='fu'>mapviewOptions</span>(
+  <span class='no'>platform</span>,
+  <span class='no'>basemaps</span>,
+  <span class='no'>raster.palette</span>,
+  <span class='no'>vector.palette</span>,
+  <span class='no'>verbose</span>,
+  <span class='no'>na.color</span>,
+  <span class='no'>legend</span>,
+  <span class='no'>legend.opacity</span>,
+  <span class='no'>legend.pos</span>,
+  <span class='no'>layers.control.pos</span>,
+  <span class='no'>leafletWidth</span>,
+  <span class='no'>leafletHeight</span>,
+  <span class='no'>viewer.suppress</span>,
+  <span class='no'>homebutton</span>,
+  <span class='no'>homebutton.pos</span>,
+  <span class='no'>native.crs</span>,
+  <span class='no'>raster.size</span>,
+  <span class='no'>mapview.maxpixels</span>,
+  <span class='no'>plainview.maxpixels</span>,
+  <span class='no'>use.layer.names</span>,
+  <span class='no'>trim</span>,
+  <span class='no'>method</span>,
+  <span class='no'>query.type</span>,
+  <span class='no'>query.digits</span>,
+  <span class='no'>query.position</span>,
+  <span class='no'>query.prefix</span>,
+  <span class='no'>maxpoints</span>,
+  <span class='no'>maxpolygons</span>,
+  <span class='no'>maxlines</span>,
+  <span class='no'>pane</span>,
+  <span class='no'>cex</span>,
+  <span class='no'>alpha</span>,
+  <span class='kw'>default</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>console</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>watch</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>fgb</span>
+)
 
 <span class='fu'>mapviewGetOption</span>(<span class='no'>param</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>platform</th>
-      <td><p>character. The platform to be used.
-Current options are "leaflet" and "quickmapr".</p></td>
+      <td><p>character. The rendering platform to be used.
+Current options are "leaflet" and "mapdeck".</p></td>
     </tr>
     <tr>
       <th>basemaps</th>
       <td><p>character. The basemaps to be used for rendering data. See
-<a href='http://leaflet-extras.github.io/leaflet-providers/preview/'>http://leaflet-extras.github.io/leaflet-providers/preview/</a> for possible
+<a href='https://leaflet-extras.github.io/leaflet-providers/preview/'>https://leaflet-extras.github.io/leaflet-providers/preview/</a> for possible
 values</p></td>
+    </tr>
+    <tr>
+      <th>raster.palette</th>
+      <td><p>a color palette function for raster visualisation.
+Should be a function that takes an integer as input and returns a vector of colors.
+See <code><a href='https://rdrr.io/r/grDevices/colorRamp.html'>colorRampPalette</a></code> for details.</p></td>
+    </tr>
+    <tr>
+      <th>vector.palette</th>
+      <td><p>a color palette function for vector visualisation.
+Should be a function that takes an integer as input and returns a vector of colors.
+See <code><a href='https://rdrr.io/r/grDevices/colorRamp.html'>colorRampPalette</a></code> for details.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>logical. Many functions in mapview provide details about their
+behaviour. Set this to TRUE if you want to see these printed to the console.</p></td>
+    </tr>
+    <tr>
+      <th>na.color</th>
+      <td><p>character. The default color to be used for NA values.</p></td>
+    </tr>
+    <tr>
+      <th>legend</th>
+      <td><p>logical. Whether or not to show a legend for the layer(s).</p></td>
+    </tr>
+    <tr>
+      <th>legend.opacity</th>
+      <td><p>opacity of the legend.</p></td>
+    </tr>
+    <tr>
+      <th>legend.pos</th>
+      <td><p>Where should the legend be placed?
+One of "topleft", "topright", "bottomleft", "bottomright".</p></td>
+    </tr>
+    <tr>
+      <th>layers.control.pos</th>
+      <td><p>character. Where should the layer control be
+placed? One of "topleft", "topright", "bottomleft", "bottomright".</p></td>
+    </tr>
+    <tr>
+      <th>leafletWidth, leafletHeight</th>
+      <td><p>height and width of the htmlwidget in px.</p></td>
+    </tr>
+    <tr>
+      <th>viewer.suppress</th>
+      <td><p>whether to render the map in the browser (<code>TRUE</code>)
+or the RStudio viewer (<code>FALSE</code>).</p></td>
+    </tr>
+    <tr>
+      <th>homebutton</th>
+      <td><p>logical, whether to add a zoom-to-layer button to the map.</p></td>
+    </tr>
+    <tr>
+      <th>homebutton.pos</th>
+      <td><p>character. Where should the homebutton(s) be
+placed? One of "topleft", "topright", "bottomleft", "bottomright".</p></td>
+    </tr>
+    <tr>
+      <th>native.crs</th>
+      <td><p>logical whether to reproject to web map coordinate
+reference system (web mercator - epsg:3857) or render using native CRS of
+the supplied data (can also be NA). Default is FALSE which will render in
+web mercator. If set to TRUE now background maps will be drawn (but rendering
+may be much quicker as no reprojecting is necessary).</p></td>
     </tr>
     <tr>
       <th>raster.size</th>
@@ -186,6 +291,45 @@ Set this higher if you have a potent machine or are patient enough to wait a lit
       <td><p>numeric. The maximum amount of pixels allowed for Raster*
 objects to be rendered with <code>plainview</code>. Defaults to 10000000.
 Set this higher if you have a potent machine or are patient enough to wait a little.</p></td>
+    </tr>
+    <tr>
+      <th>use.layer.names</th>
+      <td><p>whether to use layer names when plotting raster layers.</p></td>
+    </tr>
+    <tr>
+      <th>trim</th>
+      <td><p>should the raster be trimmed in case there are NAs on the edges.</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>for raster data only (raster/stars). Method used to compute
+values for the resampled layer that is passed on to leaflet. mapview does
+projection on-the-fly to ensure correct display and therefore needs to know
+how to do this projection. The default is 'bilinear' (bilinear interpolation),
+which is appropriate for continuous variables. The other option, 'ngb'
+(nearest neighbor), is useful for categorical variables. Ignored if the raster
+layer is of class <code>factor</code> in which case "ngb" is used.</p></td>
+    </tr>
+    <tr>
+      <th>query.type</th>
+      <td><p>for raster methods only. Whether to show raster value query
+on <code>'mousemove'</code> or <code>'click'</code>. Ignored if <code>label = FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>query.digits</th>
+      <td><p>for raster methods only. The amount of digits to be shown
+by raster value query. Ignored if <code>label = FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>query.position</th>
+      <td><p>for raster methods only. The position of the raster
+value query info box. See <code>position</code> argument of <code>addLegend</code>
+for possible values. Ignored if <code>label = FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>query.prefix</th>
+      <td><p>for raster methods only. a character string to be shown
+as prefix for the layerId. Ignored if <code>label = FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>maxpoints</th>
@@ -212,39 +356,22 @@ This means that standard functionality is reduced.
 For example adding layers via "+" is not possible anymore.</p></td>
     </tr>
     <tr>
-      <th>raster.palette</th>
-      <td><p>a color palette function for raster visualisation.
-Should be a function that takes an integer as input and returns a vector of colors.
-See <code><a href='https://www.rdocumentation.org/packages/grDevices/topics/colorRamp'>colorRampPalette</a></code> for details.</p></td>
+      <th>pane</th>
+      <td><p>name of the map pane in which to render features. See
+<code>addMapPane</code> for details. Currently only supported for vector layers.
+Ignored if <code>canvas = TRUE</code>. The default <code>"auto"</code> will create different panes
+for points, lines and polygons such that points overlay lines overlay polygons.
+Set to <code>NULL</code> to get default leaflet behaviour where allfeatures
+are rendered in the same pane and layer order is determined automatically/sequentially.</p></td>
     </tr>
     <tr>
-      <th>vector.palette</th>
-      <td><p>a color palette function for vector visualisation.
-Should be a function that takes an integer as input and returns a vector of colors.
-See <code><a href='https://www.rdocumentation.org/packages/grDevices/topics/colorRamp'>colorRampPalette</a></code> for details.</p></td>
+      <th>cex</th>
+      <td><p>numeric or attribute name(s) or column number(s) in attribute table
+of the column(s) to be used for defining the size of circles.</p></td>
     </tr>
     <tr>
-      <th>verbose</th>
-      <td><p>logical. Many functions in mapview provide details about their
-behaviour. Set this to TRUE if you want to see these printed to the console.</p></td>
-    </tr>
-    <tr>
-      <th>na.color</th>
-      <td><p>character. The default color to be used for NA values.</p></td>
-    </tr>
-    <tr>
-      <th>legend</th>
-      <td><p>logical. Whether or not to show a legend for the layer(s).</p></td>
-    </tr>
-    <tr>
-      <th>legend.pos</th>
-      <td><p>Where should the legend be placed?
-One of "topleft", "topright", "bottomleft", "bottomright".</p></td>
-    </tr>
-    <tr>
-      <th>layers.control.pos</th>
-      <td><p>character. Where should the layer control be
-placed? One of "topleft", "topright", "bottomleft", "bottomright".</p></td>
+      <th>alpha</th>
+      <td><p>opacity of lines.</p></td>
     </tr>
     <tr>
       <th>default</th>
@@ -255,106 +382,184 @@ placed? One of "topleft", "topright", "bottomleft", "bottomright".</p></td>
       <td><p>logical. Should the options be printed to the console</p></td>
     </tr>
     <tr>
-      <th>leafletWidth, leafletHeight</th>
-      <td><p>height and width of the htmlwidget in px.</p></td>
+      <th>watch</th>
+      <td><p>whether to watch a certain environment and automatically
+render changes to the list of spatial data in that environment. See
+<a href='mapviewWatcher.html'>mapviewWatcher</a> for details.</p></td>
+    </tr>
+    <tr>
+      <th>fgb</th>
+      <td><p>if set to <code>TRUE</code> mapview will not use 'clasical' leaflet/htmlwidgets
+rendering (which embeds data directly in the html) but leverage the speed of
+a file format called flatgeobuf (hence, fgb). This has the added benefit that
+data is being streamed onto the map, which makes for a pleasant user experience.
+It should also help to visualise larger data sets due to a reduced memeory footprint.
+A note of warning, data will be attached to the html
+via a &lt;src=...&gt; call which means that the html is not selfcontained anymore
+(so it cannot be used without an accompanying folder).</p></td>
     </tr>
     <tr>
       <th>param</th>
       <td><p>character. parameter to be queried.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>list of the current options (invisibly).
 If no arguments are provided the options are printed.</p>
-    
     <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
-    <ul>
+    
+<ul>
 <li><p><code>mapviewGetOption</code>: query single mapviewOption parameters</p></li>
 </ul>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>rasterOptions</code>, <code><a href='https://www.rdocumentation.org/packages/base/topics/options'>options</a></code></p></div>
-    
+    <div class='dont-index'><p><code>rasterOptions</code>, <code><a href='https://rdrr.io/r/base/options.html'>options</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>mapviewOptions</span>()</div><div class='output co'>#&gt; platform            : leaflet 
+    <pre class="examples"><div class='input'><span class='fu'>mapviewOptions</span>()</div><div class='output co'>#&gt; 
+#&gt;  global options: 
+#&gt; 
+#&gt; platform            : leaflet 
 #&gt; basemaps            : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap 
-#&gt; raster.size         : 8388608 
-#&gt; mapview.maxpixels   : 5e+05 
-#&gt; plainview.maxpixels : 1e+07 
-#&gt; maxpolygons         : 30000 
-#&gt; maxpoints           : 20000 
-#&gt; maxlines            : 30000 
-#&gt; raster.palette      : function (n, alpha = 1, begin = 0, end = 1, direction = 1)  
-#&gt; vector.palette      : function (n, alpha = 1, begin = 0, end = 1, direction = 1, option = "D")  
+#&gt; raster.palette      : function (n)  
+#&gt; vector.palette      : function (n)  
 #&gt; verbose             : FALSE 
 #&gt; na.color            : #BEBEBE80 
 #&gt; legend              : TRUE 
+#&gt; legend.opacity      : 1 
 #&gt; legend.pos          : topright 
 #&gt; layers.control.pos  : topleft 
 #&gt; leafletWidth        : 
-#&gt; leafletHeight       : </div><div class='input'><span class='fu'>mapviewOptions</span>(<span class='kw'>na.color</span> <span class='kw'>=</span> <span class='st'>"pink"</span>)
-<span class='fu'>mapviewOptions</span>()</div><div class='output co'>#&gt; platform            : leaflet 
-#&gt; basemaps            : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap 
+#&gt; leafletHeight       : 
+#&gt; viewer.suppress     : FALSE 
+#&gt; homebutton          : TRUE 
+#&gt; homebutton.pos      : bottomright 
+#&gt; native.crs          : FALSE 
+#&gt; watch               : FALSE 
+#&gt; fgb                 : FALSE 
+#&gt; 
+#&gt;  raster data related options: 
+#&gt; 
 #&gt; raster.size         : 8388608 
 #&gt; mapview.maxpixels   : 5e+05 
 #&gt; plainview.maxpixels : 1e+07 
+#&gt; use.layer.names     : FALSE 
+#&gt; trim                : TRUE 
+#&gt; method              : bilinear 
+#&gt; query.type          : mousemove 
+#&gt; query.digits        : 7 
+#&gt; query.position      : topright 
+#&gt; query.prefix        : Layer 
+#&gt; 
+#&gt;  vector data realted options: 
+#&gt; 
 #&gt; maxpolygons         : 30000 
 #&gt; maxpoints           : 20000 
 #&gt; maxlines            : 30000 
-#&gt; raster.palette      : function (n, alpha = 1, begin = 0, end = 1, direction = 1)  
-#&gt; vector.palette      : function (n, alpha = 1, begin = 0, end = 1, direction = 1, option = "D")  
+#&gt; pane                : auto 
+#&gt; cex                 : 6 
+#&gt; alpha               : 0.9 </div><div class='input'><span class='fu'>mapviewOptions</span>(<span class='kw'>na.color</span> <span class='kw'>=</span> <span class='st'>"pink"</span>)
+<span class='fu'>mapviewOptions</span>()</div><div class='output co'>#&gt; 
+#&gt;  global options: 
+#&gt; 
+#&gt; platform            : leaflet 
+#&gt; basemaps            : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap 
+#&gt; raster.palette      : function (n)  
+#&gt; vector.palette      : function (n)  
 #&gt; verbose             : FALSE 
 #&gt; na.color            : pink 
 #&gt; legend              : TRUE 
+#&gt; legend.opacity      : 1 
 #&gt; legend.pos          : topright 
 #&gt; layers.control.pos  : topleft 
 #&gt; leafletWidth        : 
-#&gt; leafletHeight       : </div><div class='input'>
-<span class='fu'>mapviewGetOption</span>(<span class='st'>"platform"</span>)</div><div class='output co'>#&gt; [1] "leaflet"</div><div class='input'>
-<span class='fu'>mapviewOptions</span>(<span class='kw'>default</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>mapviewOptions</span>()</div><div class='output co'>#&gt; platform            : leaflet 
-#&gt; basemaps            : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap 
+#&gt; leafletHeight       : 
+#&gt; viewer.suppress     : FALSE 
+#&gt; homebutton          : TRUE 
+#&gt; homebutton.pos      : bottomright 
+#&gt; native.crs          : FALSE 
+#&gt; watch               : FALSE 
+#&gt; fgb                 : FALSE 
+#&gt; 
+#&gt;  raster data related options: 
+#&gt; 
 #&gt; raster.size         : 8388608 
 #&gt; mapview.maxpixels   : 5e+05 
 #&gt; plainview.maxpixels : 1e+07 
+#&gt; use.layer.names     : FALSE 
+#&gt; trim                : TRUE 
+#&gt; method              : bilinear 
+#&gt; query.type          : mousemove 
+#&gt; query.digits        : 7 
+#&gt; query.position      : topright 
+#&gt; query.prefix        : Layer 
+#&gt; 
+#&gt;  vector data realted options: 
+#&gt; 
 #&gt; maxpolygons         : 30000 
 #&gt; maxpoints           : 20000 
 #&gt; maxlines            : 30000 
-#&gt; raster.palette      : function (n, alpha = 1, begin = 0, end = 1, direction = 1)  
-#&gt; vector.palette      : function (n, alpha = 1, begin = 0, end = 1, direction = 1, option = "D")  
+#&gt; pane                : auto 
+#&gt; cex                 : 6 
+#&gt; alpha               : 0.9 </div><div class='input'>
+<span class='fu'>mapviewGetOption</span>(<span class='st'>"platform"</span>)</div><div class='output co'>#&gt; [1] "leaflet"</div><div class='input'>
+<span class='fu'>mapviewOptions</span>(<span class='kw'>default</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>mapviewOptions</span>()</div><div class='output co'>#&gt; 
+#&gt;  global options: 
+#&gt; 
+#&gt; platform            : leaflet 
+#&gt; basemaps            : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap 
+#&gt; raster.palette      : function (n)  
+#&gt; vector.palette      : function (n)  
 #&gt; verbose             : FALSE 
 #&gt; na.color            : #BEBEBE80 
 #&gt; legend              : TRUE 
+#&gt; legend.opacity      : 1 
 #&gt; legend.pos          : topright 
 #&gt; layers.control.pos  : topleft 
 #&gt; leafletWidth        : 
-#&gt; leafletHeight       : </div><div class='input'>
+#&gt; leafletHeight       : 
+#&gt; viewer.suppress     : FALSE 
+#&gt; homebutton          : TRUE 
+#&gt; homebutton.pos      : bottomright 
+#&gt; native.crs          : FALSE 
+#&gt; watch               : FALSE 
+#&gt; fgb                 : FALSE 
+#&gt; 
+#&gt;  raster data related options: 
+#&gt; 
+#&gt; raster.size         : 8388608 
+#&gt; mapview.maxpixels   : 5e+05 
+#&gt; plainview.maxpixels : 1e+07 
+#&gt; use.layer.names     : FALSE 
+#&gt; trim                : TRUE 
+#&gt; method              : bilinear 
+#&gt; query.type          : mousemove 
+#&gt; query.digits        : 7 
+#&gt; query.position      : topright 
+#&gt; query.prefix        : Layer 
+#&gt; 
+#&gt;  vector data realted options: 
+#&gt; 
+#&gt; maxpolygons         : 30000 
+#&gt; maxpoints           : 20000 
+#&gt; maxlines            : 30000 
+#&gt; pane                : auto 
+#&gt; cex                 : 0.6 
+#&gt; alpha               : 0.9 </div><div class='input'>
 
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#functions">Functions</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Tim Appelhans</p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -362,13 +567,16 @@ If no arguments are provided the options are printed.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

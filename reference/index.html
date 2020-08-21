@@ -8,21 +8,29 @@
 
 <title>Function reference • mapview</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,7 +38,9 @@
 
 
 
+
 <meta property="og:title" content="Function reference" />
+
 
 
 
@@ -44,9 +54,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-index">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -60,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mapview</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.6.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.0</span>
       </span>
     </div>
 
@@ -68,7 +79,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -109,11 +120,10 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-spatial/mapview">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/r-spatial/mapview/">
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -124,6 +134,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -147,84 +158,17 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
-        
-        <td>
-          <p><code><a href="addFeatures.html">addFeatures()</a></code> </p>
-        </td>
-        <td><p>Type agnositc version of <code>leaflet::add*</code> functions.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="addHomeButton.html">addHomeButton()</a></code> <code><a href="addHomeButton.html">removeHomeButton()</a></code> </p>
-        </td>
-        <td><p>Add a home button / zoom-to-layer button to a map.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="addImageQuery.html">addImageQuery()</a></code> </p>
-        </td>
-        <td><p>Add image query functionality to leaflet/mapview map.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="addLogo.html">addLogo()</a></code> </p>
-        </td>
-        <td><p>add a local or remote image (png, jpg, gif, bmp, ...) to a leaflet map</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="addMouseCoordinates.html">addMouseCoordinates()</a></code> <code><a href="addMouseCoordinates.html">removeMouseCoordinates()</a></code> </p>
-        </td>
-        <td><p>Add mouse coordinate information at top of map.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="addStarsImage.html">addStarsImage()</a></code> </p>
-        </td>
-        <td><p>Add stars layer to a leaflet map</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="addStaticLabels.html">addStaticLabels()</a></code> </p>
-        </td>
-        <td><p>Add static labels to <code>leaflet</code> or <code>mapview</code> objects</p></td>
-      </tr><tr>
         
         <td>
           <p><code><a href="breweries.html">breweries</a></code> </p>
         </td>
         <td><p>Selected breweries in Franconia</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="coords2JSON.html">coords2JSON(<i>&lt;numeric&gt;</i>)</a></code> <code><a href="coords2JSON.html">coords2JSON(<i>&lt;character&gt;</i>)</a></code> <code><a href="coords2JSON.html">coords2JSON(<i>&lt;matrix&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Convert a vector/matrix of coordinates to JSON format</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="coords2Lines.html">coords2Lines(<i>&lt;matrix&gt;</i>)</a></code> <code><a href="coords2Lines.html">coords2Lines(<i>&lt;Line&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Convert points to SpatialLines*</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="coords2Polygons.html">coords2Polygons(<i>&lt;matrix&gt;</i>)</a></code> <code><a href="coords2Polygons.html">coords2Polygons(<i>&lt;Polygon&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Convert points to SpatialPolygons*</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cubeView.html">cubeView()</a></code> <code><a href="cubeView.html">cubeview()</a></code> </p>
-        </td>
-        <td><p>View a RasterStack or RasterBrick as 3-dimensional data cube.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cubeViewOutput.html">cubeViewOutput()</a></code> </p>
-        </td>
-        <td><p>Widget output function for use in Shiny</p></td>
       </tr><tr>
         
         <td>
@@ -234,25 +178,13 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="garnishMap.html">garnishMap()</a></code> </p>
-        </td>
-        <td><p>Garnish/decorate leaflet or mapview maps.</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="knit_print.mapview.html">knit_print.mapview()</a></code> </p>
         </td>
         <td><p>Print functions for mapview objects used in knitr</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="latticeView.html">latticeView()</a></code> <code><a href="latticeView.html">latticeview()</a></code> <code><a href="latticeView.html">sync()</a></code> </p>
-        </td>
-        <td><p>View two or more (possibly synchronised) mapview or leaflet maps</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="mapView.html">mapView(<i>&lt;RasterLayer&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;stars&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;RasterStackBrick&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;Satellite&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;sf&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;sfc&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;character&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;numeric&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;data.frame&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;XY&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;XYZ&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;XYM&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;XYZM&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;bbox&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;missing&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;list&gt;</i>)</a></code> <code><a href="mapView.html">mapview(<i>&lt;ANY&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialPixelsDataFrame&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialGridDataFrame&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialPointsDataFrame&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialPoints&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialPolygonsDataFrame&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialPolygons&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialLinesDataFrame&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialLines&gt;</i>)</a></code> </p>
+          <p><code><a href="mapView.html">mapView(<i>&lt;RasterLayer&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;stars&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;stars_proxy&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;RasterStackBrick&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;Satellite&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;sf&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;sfc&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;character&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;numeric&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;data.frame&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;XY&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;XYZ&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;XYM&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;XYZM&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;bbox&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;missing&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;NULL&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;list&gt;</i>)</a></code> <code><a href="mapView.html">mapview(<i>&lt;ANY&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialPixelsDataFrame&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialGridDataFrame&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialPointsDataFrame&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialPoints&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialPolygonsDataFrame&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialPolygons&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialLinesDataFrame&gt;</i>)</a></code> <code><a href="mapView.html">mapView(<i>&lt;SpatialLines&gt;</i>)</a></code> </p>
         </td>
         <td><p>View spatial objects interactively</p></td>
       </tr><tr>
@@ -270,9 +202,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="mapview-deprecated.html">mapview-deprecated</a></code> </p>
+          <p><code><a href="mapview-defunct.html">mapview-defunct</a></code> </p>
         </td>
-        <td><p>Deprecated functions in mapview</p></td>
+        <td><p>Defunct functions in mapview</p></td>
       </tr><tr>
         
         <td>
@@ -300,33 +232,21 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="mapviewWatcher.html">mapviewWatcher()</a></code> <code><a href="mapviewWatcher.html">startWatching()</a></code> <code><a href="mapviewWatcher.html">stopWatching()</a></code> </p>
+        </td>
+        <td><p>Start and/or stop automagic mapviewing of spatial objects in your workspace.</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="npts.html">npts()</a></code> </p>
         </td>
         <td><p>count the number of points/vertices/nodes of sf objects</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="plainView.html">plainView(<i>&lt;RasterLayer&gt;</i>)</a></code> <code><a href="plainView.html">plainView(<i>&lt;RasterStackBrick&gt;</i>)</a></code> <code><a href="plainView.html">plainView(<i>&lt;SpatialPixelsDataFrame&gt;</i>)</a></code> <code><a href="plainView.html">plainview(<i>&lt;ANY&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>View raster objects interactively without background map but in any CRS</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plus.html">`+`(<i>&lt;mapview&gt;</i>,<i>&lt;mapview&gt;</i>)</a></code> <code><a href="plus.html">`+`(<i>&lt;mapview&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="plus.html">`+`(<i>&lt;mapview&gt;</i>,<i>&lt;NULL&gt;</i>)</a></code> <code><a href="plus.html">`+`(<i>&lt;mapview&gt;</i>,<i>&lt;character&gt;</i>)</a></code> </p>
+          <p><code><a href="ops.html">`+`(<i>&lt;mapview&gt;</i>,<i>&lt;mapview&gt;</i>)</a></code> <code><a href="ops.html">`+`(<i>&lt;mapview&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="ops.html">`+`(<i>&lt;mapview&gt;</i>,<i>&lt;`NULL`&gt;</i>)</a></code> <code><a href="ops.html">`+`(<i>&lt;mapview&gt;</i>,<i>&lt;character&gt;</i>)</a></code> <code><a href="ops.html">`|`(<i>&lt;mapview&gt;</i>,<i>&lt;`NULL`&gt;</i>)</a></code> <code><a href="ops.html">`|`(<i>&lt;NULL&gt;</i>,<i>&lt;mapview&gt;</i>)</a></code> </p>
         </td>
         <td><p>mapview + mapview adds data from the second map to the first</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="poppendorf.html">poppendorf</a></code> </p>
-        </td>
-        <td><p>Landsat 8 detail of Franconian Switzerland centered on Poppendorf</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="popup.html">popupTable()</a></code> <code><a href="popup.html">popupImage()</a></code> <code><a href="popup.html">popupGraph()</a></code> </p>
-        </td>
-        <td><p>Create HTML strings for popups</p></td>
       </tr><tr>
         
         <td>
@@ -336,9 +256,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="renderCubeView.html">renderCubeView()</a></code> </p>
+          <p><code><a href="removeMapJunk.html">removeMapJunk()</a></code> </p>
         </td>
-        <td><p>Widget render function for use in Shiny</p></td>
+        <td><p>Delete elements from a map.</p></td>
       </tr><tr>
         
         <td>
@@ -348,27 +268,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="renderslideView.html">renderslideView()</a></code> </p>
-        </td>
-        <td><p>Widget render function for use in Shiny</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="show-mapview-method.html">show(<i>&lt;mapview&gt;</i>)</a></code> </p>
         </td>
         <td><p>Method for printing mapview objects (show)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="slideView.html">slideView(<i>&lt;RasterStackBrick&gt;</i>,<i>&lt;RasterStackBrick&gt;</i>)</a></code> <code><a href="slideView.html">slideView(<i>&lt;RasterLayer&gt;</i>,<i>&lt;RasterLayer&gt;</i>)</a></code> <code><a href="slideView.html">slideView(<i>&lt;RasterStackBrick&gt;</i>,<i>&lt;RasterLayer&gt;</i>)</a></code> <code><a href="slideView.html">slideView(<i>&lt;RasterLayer&gt;</i>,<i>&lt;RasterStackBrick&gt;</i>)</a></code> <code><a href="slideView.html">slideView(<i>&lt;character&gt;</i>,<i>&lt;character&gt;</i>)</a></code> <code><a href="slideView.html">slideview(<i>&lt;ANY&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>slideView</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="slideViewOutput.html">slideViewOutput()</a></code> </p>
-        </td>
-        <td><p>Widget output function for use in Shiny</p></td>
       </tr><tr>
         
         <td>
@@ -378,13 +280,13 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="viewExtent.html">viewExtent()</a></code> <code><a href="viewExtent.html">addExtent()</a></code> </p>
+          <p><code><a href="viewExtent.html">viewExtent()</a></code> </p>
         </td>
         <td><p>View extent/bbox of spatial objects interactively</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="viewRGB.html">viewRGB(<i>&lt;RasterStackBrick&gt;</i>)</a></code> <code><a href="viewRGB.html">viewRGB(<i>&lt;stars&gt;</i>)</a></code> </p>
+          <p><code><a href="viewRGB.html">viewRGB()</a></code> </p>
         </td>
         <td><p>Red-Green-Blue map view of a multi-layered Raster object</p></td>
       </tr>
@@ -392,13 +294,13 @@
     </table>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -406,13 +308,16 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

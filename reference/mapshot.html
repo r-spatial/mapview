@@ -8,21 +8,29 @@
 
 <title>Save mapview or leaflet map as HTML and/or image — mapshot • mapview</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,11 +38,11 @@
 
 
 
-<meta property="og:title" content="Save mapview or leaflet map as HTML and/or image — mapshot" />
 
+<meta property="og:title" content="Save mapview or leaflet map as HTML and/or image — mapshot" />
 <meta property="og:description" content="Save a mapview or leaflet map as .html index file or .png,
 .pdf, or .jpeg image." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -48,9 +56,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -64,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mapview</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.6.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.0</span>
       </span>
     </div>
 
@@ -72,7 +81,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -113,11 +122,10 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-spatial/mapview">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/r-spatial/mapview/">
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -128,6 +136,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -139,22 +148,25 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Save a mapview or leaflet map as <code>.html</code> index file or <code>.png</code>,
 <code>.pdf</code>, or <code>.jpeg</code> image.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>mapshot</span>(<span class='no'>x</span>, <span class='kw'>url</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>remove_controls</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"zoomControl"</span>, <span class='st'>"layersControl"</span>, <span class='st'>"homeButton"</span>,
-  <span class='st'>"scaleBar"</span>), <span class='no'>...</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>mapshot</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>url</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>remove_controls</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"zoomControl"</span>, <span class='st'>"layersControl"</span>, <span class='st'>"homeButton"</span>, <span class='st'>"scaleBar"</span>,
+    <span class='st'>"drawToolbar"</span>, <span class='st'>"easyButton"</span>),
+  <span class='no'>...</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>mapview</code> or <code>leaflet</code> object.</p></td>
+      <td><p><code>mapview</code> or <code>leaflet</code> object (or any other hmtlwidget).</p></td>
     </tr>
     <tr>
       <th>url</th>
@@ -166,77 +178,57 @@ a temporary index file will be created.</p></td>
       <td><p>Output <code>.png</code>, <code>.pdf</code>, or <code>.jpeg</code> file.</p></td>
     </tr>
     <tr>
-      <th>remove_url</th>
-      <td><p><code>logical</code>. If <code>TRUE</code> (default), the <code>.html</code>
-file is removed once processing is completed. Only applies if 'url' is not
-specified.</p></td>
-    </tr>
-    <tr>
       <th>remove_controls</th>
       <td><p><code>character</code> vector of control buttons to be removed
 from the map when saving to file. Any combination of
-"zoomControl", "layersControl", "homeButton", "scaleBar". If set to <code>NULL</code>
-nothing will be removed.</p></td>
+"zoomControl", "layersControl", "homeButton", "scaleBar", "drawToolbar",
+"easyButton". If set to <code>NULL</code> nothing will be removed. Ignord if <code>x</code>
+is not a mapview or leaflet map.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Further arguments passed on to <code>webshot</code>.</p></td>
+      <td><p>Further arguments passed on to <code><a href='https://rdrr.io/pkg/htmlwidgets/man/saveWidget.html'>saveWidget</a></code>
+and/or <code><a href='https://rdrr.io/pkg/webshot/man/webshot.html'>webshot</a></code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>mapshot can be used to save both leaflet and mapview maps as html or png
-files or both.</p>
-<p>NOTE 1: In case you want to save larger maps produced with mapview
-(i.e. if you see the following warning: "the supplied feature layer has more
-points/vertices than the set threshold. using special rendering function,
-hence things may not behave as expected from a standard leaflet map") mapshot
-is likely to fail. Try setting <code>selfcontained = FALSE</code> to avoid errors
-and create a valid local html file.</p>
-<p>NOTE 2: In case you want to save a map with popupGraphs or popupImages
-the respective graph/image files will be located one level above the
-specified target location. In case you want to move the html file, make
-sure to also move the respective *-graphs folder one level above.</p>
-    
+files or both. In theory, it should also work for any and all other htmlwidgets
+but has not been tested extensively for other htmlwidgets.</p>
+<p>In case you want to save larger maps mapshot is likely to fail. You can try
+setting <code>selfcontained = FALSE</code> to avoid errors and create a valid
+local html file.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code>webshot</code>, <code>saveWidget</code>.</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mapView.html'>mapview</a></span>(<span class='no'>breweries</span>)
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+  <span class='no'>m</span> <span class='kw'>=</span> <span class='fu'><a href='mapView.html'>mapview</a></span>(<span class='no'>breweries</span>)
 
-<span class='co'>## create standalone .html</span>
-<span class='fu'>mapshot</span>(<span class='no'>m</span>, <span class='kw'>url</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(), <span class='st'>"/map.html"</span>))
+  <span class='co'>## create standalone .html</span>
+  <span class='fu'>mapshot</span>(<span class='no'>m</span>, <span class='kw'>url</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/map.html"</span>))
 
-<span class='co'>## create standalone .png; temporary .html is removed automatically unless</span>
-<span class='co'>## 'remove_url = FALSE' is specified</span>
-<span class='fu'>mapshot</span>(<span class='no'>m</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(), <span class='st'>"/map.png"</span>))
-<span class='fu'>mapshot</span>(<span class='no'>m</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(), <span class='st'>"/map.png"</span>),
-        <span class='kw'>remove_controls</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"homeButton"</span>, <span class='st'>"layersControl"</span>))
+  <span class='co'>## create standalone .png; temporary .html is removed automatically unless</span>
+  <span class='co'>## 'remove_url = FALSE' is specified</span>
+  <span class='fu'>mapshot</span>(<span class='no'>m</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/map.png"</span>))
+  <span class='fu'>mapshot</span>(<span class='no'>m</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/map.png"</span>),
+          <span class='kw'>remove_controls</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"homeButton"</span>, <span class='st'>"layersControl"</span>))
 
-<span class='co'>## create .html and .png</span>
-<span class='fu'>mapshot</span>(<span class='no'>m</span>, <span class='kw'>url</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(), <span class='st'>"/map.html"</span>),
-        <span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(), <span class='st'>"/map.png"</span>))
-<span class='co'># }</span><div class='input'>
-</div></pre>
+  <span class='co'>## create .html and .png</span>
+  <span class='fu'>mapshot</span>(<span class='no'>m</span>, <span class='kw'>url</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/map.html"</span>),
+          <span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/map.png"</span>))
+}</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -244,13 +236,16 @@ sure to also move the respective *-graphs folder one level above.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

@@ -1,5 +1,5 @@
-pandoc: '2.2'
-pkgdown: 1.3.0
+pandoc: 2.7.3
+pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
   mapview_01-basics: articles/mapview_01-basics.html
@@ -9,4 +9,5 @@ articles:
   mapview_05-extras: articles/mapview_05-extras.html
   mapview_06-add: articles/mapview_06-add.html
   mapview_07-pipe: articles/mapview_07-pipe.html
+last_built: 2020-08-21T14:40Z
 

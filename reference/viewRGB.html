@@ -8,21 +8,29 @@
 
 <title>Red-Green-Blue map view of a multi-layered Raster object — viewRGB • mapview</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,16 +38,16 @@
 
 
 
-<meta property="og:title" content="Red-Green-Blue map view of a multi-layered Raster object — viewRGB" />
 
-<meta property="og:description" content="Make a Red-Green-Blue plot based on three layers (in a RasterBrick or RasterStack).
+<meta property="og:title" content="Red-Green-Blue map view of a multi-layered Raster object — viewRGB" />
+<meta property="og:description" content="Make a Red-Green-Blue plot based on three layers (in a RasterBrick, RasterStack or stars).
 Three layers (sometimes referred to as &quot;bands&quot; because they may represent
 different bandwidths in the electromagnetic spectrum) are combined such
 that they represent the red, green and blue channel. This function can
 be used to make 'true (or false) color images' from Landsat and other
 multi-band satellite images. Note, this text is plagirized, i.e. copied
 from plotRGB." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -53,9 +61,10 @@ from plotRGB." />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -69,7 +78,7 @@ from plotRGB." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mapview</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.6.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.0</span>
       </span>
     </div>
 
@@ -77,7 +86,7 @@ from plotRGB." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -118,11 +127,10 @@ from plotRGB." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-spatial/mapview">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/r-spatial/mapview/">
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -133,6 +141,7 @@ from plotRGB." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -144,41 +153,36 @@ from plotRGB." />
     </div>
 
     <div class="ref-description">
-    
-    <p>Make a Red-Green-Blue plot based on three layers (in a RasterBrick or RasterStack).
+    <p>Make a Red-Green-Blue plot based on three layers (in a RasterBrick, RasterStack or stars).
 Three layers (sometimes referred to as "bands" because they may represent
 different bandwidths in the electromagnetic spectrum) are combined such
 that they represent the red, green and blue channel. This function can
 be used to make 'true (or false) color images' from Landsat and other
 multi-band satellite images. Note, this text is plagirized, i.e. copied
 from <code>plotRGB</code>.</p>
-    
     </div>
 
-    <pre class="usage"><span class='co'># S4 method for RasterStackBrick</span>
-<span class='fu'>viewRGB</span>(<span class='no'>x</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>g</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>quantiles</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.02</span>, <span class='fl'>0.98</span>), <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>viewRGB</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>g</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>quantiles</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.02</span>, <span class='fl'>0.98</span>),
+  <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>maxpixels</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"mapview.maxpixels"</span>),
   <span class='kw'>map.types</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>),
   <span class='kw'>na.color</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>),
-  <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/deparse'>deparse</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>substitute</a></span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>parent.frame</a></span>())),
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"bilinear"</span>, <span class='st'>"ngb"</span>), <span class='no'>...</span>)
+  <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bilinear"</span>, <span class='st'>"ngb"</span>),
+  <span class='no'>...</span>
+)</pre>
 
-<span class='co'># S4 method for stars</span>
-<span class='fu'>viewRGB</span>(<span class='no'>x</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>g</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>quantiles</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.02</span>, <span class='fl'>0.98</span>), <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>maxpixels</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"mapview.maxpixels"</span>),
-  <span class='kw'>map.types</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>),
-  <span class='kw'>na.color</span> <span class='kw'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>),
-  <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/deparse'>deparse</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>substitute</a></span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>parent.frame</a></span>())),
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"bilinear"</span>, <span class='st'>"ngb"</span>), <span class='no'>...</span>)</pre>
-    
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a RasterBrick or RasterStack</p></td>
+      <td><p>a RasterBrick, RasterStack or stars</p></td>
     </tr>
     <tr>
       <th>r</th>
@@ -208,7 +212,7 @@ If maxpixels &lt; <code>ncell(x)</code>, sampleRegular is used before plotting.<
     <tr>
       <th>map.types</th>
       <td><p>character spcifications for the base maps.
-see <a href='http://leaflet-extras.github.io/leaflet-providers/preview/'>http://leaflet-extras.github.io/leaflet-providers/preview/</a>
+see <a href='https://leaflet-extras.github.io/leaflet-providers/preview/'>https://leaflet-extras.github.io/leaflet-providers/preview/</a>
 for available options.</p></td>
     </tr>
     <tr>
@@ -233,37 +237,24 @@ which is appropriate for continuous variables. The other option, 'ngb'
       <td><p>additional arguments passed on to <code><a href='mapView.html'>mapView</a></code></p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="methods-by-class-"><a class="anchor" href="#methods-by-class-"></a>Methods (by class)</h2>
 
-    <ul>
-<li><p><code>stars</code>: <code><a href='https://www.rdocumentation.org/packages/graphics/topics/stars'>stars</a></code></p></li>
-</ul>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/interactive'>interactive</a></span>()) {
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>raster</span>)
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>plainview</span>)
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()) {
+  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>raster</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>plainview</span>)
 
-  <span class='fu'>viewRGB</span>(<span class='kw pkg'>plainview</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/plainview/topics/poppendorf'>poppendorf</a></span>, <span class='fl'>4</span>, <span class='fl'>3</span>, <span class='fl'>2</span>) <span class='co'># true-color</span>
-  <span class='fu'>viewRGB</span>(<span class='kw pkg'>plainview</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/plainview/topics/poppendorf'>poppendorf</a></span>, <span class='fl'>5</span>, <span class='fl'>4</span>, <span class='fl'>3</span>) <span class='co'># false-color</span>
+  <span class='fu'>viewRGB</span>(<span class='kw pkg'>plainview</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/plainview/man/poppendorf.html'>poppendorf</a></span>, <span class='fl'>4</span>, <span class='fl'>3</span>, <span class='fl'>2</span>) <span class='co'># true-color</span>
+  <span class='fu'>viewRGB</span>(<span class='kw pkg'>plainview</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/plainview/man/poppendorf.html'>poppendorf</a></span>, <span class='fl'>5</span>, <span class='fl'>4</span>, <span class='fl'>3</span>) <span class='co'># false-color</span>
 }</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#methods-by-class-">Methods (by class)</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Tim Appelhans</p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -271,13 +262,16 @@ which is appropriate for continuous variables. The other option, 'ngb'
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
