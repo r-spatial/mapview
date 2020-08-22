@@ -91,7 +91,7 @@ Suggests:
     plainview,
     rmarkdown,
     stars,
-    testthat
+    tinytest
 ByteCompile: yes
 Encoding: UTF-8
 LazyData: TRUE
