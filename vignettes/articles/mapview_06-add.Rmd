@@ -15,7 +15,7 @@ vignette: >
 knitr::opts_chunk$set(fig.width = 8.83, message = FALSE, warning = FALSE)
 ```
 
-**mapview** provides a few extra `add*` functions for use with leaflet (and mapview).
+Package **leafem** provides a few extra `add*` functions for use with leaflet (and mapview).
 
 - `addMouseCoordinates` - add a box with mouse position, projection information and zoom level information
 - `addLogo` - add images to maps
@@ -43,8 +43,9 @@ leaflet() %>% addTiles() %>% leafem::addMouseCoordinates()
 can be used to add logos (or any type of image really) to a map
 
 ```{r logo r}
+library(leafem)
 img <- "https://www.r-project.org/logo/Rlogo.svg"
-leaflet() %>% addTiles() %>% addLogo(img, url = "https://www.r-project.org/logo/")
+leaflet() %>% addTiles() %>% leafem::addLogo(img, url = "https://www.r-project.org/logo/")
 ```
 
 <br>
@@ -53,13 +54,14 @@ arguments `offset.x`, `offset.y` together with `position` give control about ima
 
 ```{r logo banana}
 m <- mapview(breweries)
+library(leafem)
 
-addLogo(m, "https://jeroenooms.github.io/images/banana.gif",
-        position = "bottomleft",
-        offset.x = 5,
-        offset.y = 40,
-        width = 100,
-        height = 100)
+leafem::addLogo(m, "https://jeroenooms.github.io/images/banana.gif",
+                position = "bottomleft",
+                offset.x = 5,
+                offset.y = 40,
+                width = 100,
+                height = 100)
 ```
 
 ------
@@ -87,7 +89,7 @@ is a type agnostic `add*` function which will call the approprate `leaflet::add*
 ```{r addpols}
 library(leafem)
 
-leaflet() %>% addTiles() %>% addFeatures(breweries)
+leaflet() %>% addTiles() %>% leafem::addFeatures(breweries)
 ```
 
 <br>
@@ -99,7 +101,7 @@ library(leafem)
 
 leaflet() %>% 
   addTiles() %>% 
-  addFeatures(franconia, weight = 1, fillColor = "grey", color = "black",
+  leafem::addFeatures(franconia, weight = 1, fillColor = "grey", color = "black",
               opacity = 1, fillOpacity = 0.6)
 ```
 
