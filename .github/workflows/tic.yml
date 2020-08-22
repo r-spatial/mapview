@@ -25,7 +25,7 @@ jobs:
           # use a different tic template type if you do not want to build on all listed platforms
           - { os: ubuntu-latest, r: "release", pkgdown: "true", latex: "true" }
           # [Custom matrix env var]
-          - { os: ubuntu-latest, r: "devel", pkgdown: "false" }
+          - { os: ubuntu-latest, r: "devel" }
 
     env:
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
