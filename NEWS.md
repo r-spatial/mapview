@@ -1,4 +1,8 @@
-## mapview 2.9.1
+## mapview 2.9.2
+
+miscellaneous:
+
+  * use tinytest for testing
 
 bugfixes:
 
