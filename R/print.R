@@ -1,9 +1,32 @@
 #' Method for printing mapview objects
 #' @param x a mapview object
 setMethod('print', signature(x = "mapview"),
-          function(x) {
-            #print.mapview(x)
-            print(mapview2leaflet(x))
+          function (x, ..., view = interactive())
+          {
+            x = x@map
+            viewer <- getOption("viewer")
+            if (!is.null(viewer)) {
+              viewerFunc <- function(url) {
+                paneHeight <- x$sizingPolicy$viewer$paneHeight
+                if (identical(paneHeight, "maximize"))
+                  paneHeight <- -1
+                viewer(url, height = paneHeight)
+              }
+            } else {
+              viewerFunc = function(url) {
+                dir <- gsub("file://|/index.html", "", url)
+                suppressMessages(
+                  servr::httd(
+                    dir = dir
+                  )
+                )
+              }
+            }
+            htmltools::html_print(
+              htmltools::as.tags(x, standalone = TRUE)
+              , viewer = if (view) viewerFunc
+            )
+            invisible(x)
           }
 )
 

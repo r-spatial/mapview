@@ -4,7 +4,7 @@
 \alias{print,mapview-method}
 \title{Method for printing mapview objects}
 \usage{
-\S4method{print}{mapview}(x)
+\S4method{print}{mapview}(x, ..., view = interactive())
 }
 \arguments{
 \item{x}{a mapview object}

@@ -1,4 +1,8 @@
-## mapview 2.9.2
+## mapview 2.9.3
+
+new features:
+
+  * new implementation of print method to make mapview with flatgeobuf work outside RStudio.
 
 miscellaneous:
 
