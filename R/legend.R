@@ -15,12 +15,18 @@ factorLegend <- function(map,
                          na.color,
                          layer.name,
                          ...) {
-  pal <- factorPalette(palette = zcolColors(x = values,
-                                            colors = colors,
-                                            na.color = na.color,
-                                            return.sorted = TRUE),
-                       domain = values,
-                       na.color = na.color)
+  pal <- factorPalette(
+    palette = unique(
+      zcolColors(
+        x = values
+        , colors = colors
+        , na.color = na.color
+        , return.sorted = TRUE
+      )
+    )
+    , domain = values
+    , na.color = na.color
+  )
   mvAddLegend(isAvailableInLeaflet()$leggrp,
               layer.name,
               map = map,
@@ -228,7 +234,7 @@ mapviewLegend <- function(values,
     switch(value.class,
            factor = factorLegend(map,
                                  position = position,
-                                 values = levels(values),
+                                 values = values, #levels(values),
                                  colors = colors,
                                  na.color = na.color,
                                  layer.name = layer.name,
