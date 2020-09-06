@@ -1,7 +1,7 @@
 #' Method for printing mapview objects
 #' @param x a mapview object
 setMethod('print', signature(x = "mapview"),
-          function (x, ..., view = interactive())
+          function (x)
           {
             x = x@map
             viewer = getOption("viewer")
@@ -40,7 +40,7 @@ setMethod('print', signature(x = "mapview"),
             }
             htmltools::html_print(
               htmltools::as.tags(x, standalone = TRUE)
-              , viewer = if (view) viewerFunc
+              , viewer = if (interactive()) viewerFunc
             )
             invisible(x)
           }
