@@ -4,24 +4,38 @@ setMethod('print', signature(x = "mapview"),
           function (x, ..., view = interactive())
           {
             x = x@map
-            viewer <- getOption("viewer")
+            viewer = getOption("viewer")
             if (mapviewGetOption("viewer.suppress")) {
               viewer = NULL
             }
             if (!is.null(viewer)) {
-              viewerFunc <- function(url) {
-                paneHeight <- x$sizingPolicy$viewer$paneHeight
+              viewerFunc = function(url) {
+                paneHeight = x$sizingPolicy$viewer$paneHeight
                 if (identical(paneHeight, "maximize"))
-                  paneHeight <- -1
+                  paneHeight = -1
                 viewer(url, height = paneHeight)
               }
             } else {
               viewerFunc = function(url) {
-                dir <- gsub("file://|/index.html", "", url)
-                servr::httd(
-                  dir = dir
-                  , verbose = FALSE
-                )
+                dir = gsub("file://|/index.html", "", url)
+                rs = requireNamespace("rstudioapi", quietly = TRUE)
+                if (rs) {
+                  if (mapviewGetOption("viewer.suppress") &
+                      rstudioapi::isAvailable()) {
+                    fl = file.path(dir, "index.html")
+                    utils::browseURL(fl)
+                  } else {
+                    servr::httd(
+                      dir = dir
+                      , verbose = FALSE
+                    )
+                  }
+                } else {
+                  servr::httd(
+                    dir = dir
+                    , verbose = FALSE
+                  )
+                }
               }
             }
             htmltools::html_print(
@@ -54,6 +68,6 @@ setMethod("show", signature(object = "mapview"),
 #'   export(knit_print.mapview)
 #' }
 #'
-knit_print.mapview <- function(x, ...) {
+knit_print.mapview = function(x, ...) {
   knitr::knit_print(mapview2leaflet(x), ...)
 }
