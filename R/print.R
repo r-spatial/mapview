@@ -5,6 +5,9 @@ setMethod('print', signature(x = "mapview"),
           {
             x = x@map
             viewer <- getOption("viewer")
+            if (mapviewGetOption("viewer.suppress")) {
+              viewer = NULL
+            }
             if (!is.null(viewer)) {
               viewerFunc <- function(url) {
                 paneHeight <- x$sizingPolicy$viewer$paneHeight
@@ -15,10 +18,9 @@ setMethod('print', signature(x = "mapview"),
             } else {
               viewerFunc = function(url) {
                 dir <- gsub("file://|/index.html", "", url)
-                suppressMessages(
-                  servr::httd(
-                    dir = dir
-                  )
+                servr::httd(
+                  dir = dir
+                  , verbose = FALSE
                 )
               }
             }
