@@ -77,12 +77,12 @@ mapviewWatcher = function(env = .GlobalEnv, ...) {
       m = mapview::mapView(spatdat_lst)
       mapview::mapshot(m, htmlFile, selfcontained = FALSE)
 
-      viewer <- getOption("viewer")
-      if (!is.null(viewer)) {
-        viewer(htmlFile)
-      } else {
-        utils::browseURL(htmlFile)
-      }
+      # viewer <- getOption("viewer")
+      # if (!is.null(viewer)) {
+      #   viewer(htmlFile)
+      # } else {
+      #   utils::browseURL(htmlFile)
+      # }
       last_value <<- spatdat_lst
     }
 
@@ -91,13 +91,23 @@ mapviewWatcher = function(env = .GlobalEnv, ...) {
 
   ## initiate the watcher
   mv_watch()
+  return(htmlFile)
 }
 
 #' @export
 #' @describeIn mapviewWatcher start watching
 startWatching = function(env = .GlobalEnv, ...) {
   mapviewOptions(watch = TRUE)
-  mapviewWatcher(env = env)
+  fl = mapviewWatcher(env = env)
+  if (!file.exists(fl)) {
+    mapshot(mapview() + "egg", url = fl)
+  }
+  towatch = dirname(fl)
+  servr::httw(
+    dir = towatch
+    , pattern = ".html"
+    , verbose = FALSE
+  )
 }
 
 #' @export
