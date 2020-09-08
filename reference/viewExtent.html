@@ -153,13 +153,13 @@ of the supplied spatial object</p>
     </div>
 
     <pre class="usage"><span class='fu'>viewExtent</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>popup</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>layer.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>alpha.regions</span> <span class='kw'>=</span> <span class='fl'>0.2</span>,
-  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
+  <span class='kw'>x</span>,
+  map = <span class='kw'>NULL</span>,
+  popup = <span class='kw'>NULL</span>,
+  layer.name = <span class='kw'>NULL</span>,
+  alpha.regions = <span class='fl'>0.2</span>,
+  label = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -199,15 +199,20 @@ details.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Tim Appelhans</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>leaflet</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://rstudio.github.io/leaflet'>leaflet</a></span>)
 
-<span class='fu'>viewExtent</span>(<span class='no'>breweries</span>)
-<span class='fu'>viewExtent</span>(<span class='no'>franconia</span>) + <span class='no'>breweries</span>
-<span class='fu'><a href='mapView.html'>mapview</a></span>(<span class='no'>franconia</span>) <span class='kw'>%&gt;%</span> <span class='kw pkg'>leafem</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/leafem/man/addExtent.html'>addExtent</a></span>(<span class='no'>franconia</span>, <span class='kw'>fillColor</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/leaflet/man/leaflet.html'>leaflet</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/leaflet/man/addProviderTiles.html'>addProviderTiles</a></span>(<span class='st'>"OpenStreetMap"</span>) <span class='kw'>%&gt;%</span> <span class='kw pkg'>leafem</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/leafem/man/addExtent.html'>addExtent</a></span>(<span class='no'>breweries</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/leaflet/man/leaflet.html'>leaflet</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/leaflet/man/addProviderTiles.html'>addProviderTiles</a></span>(<span class='st'>"OpenStreetMap"</span>) <span class='kw'>%&gt;%</span> <span class='kw pkg'>leafem</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/leafem/man/addExtent.html'>addExtent</a></span>(<span class='no'>breweries</span>)</div></pre>
+<span class='fu'>viewExtent</span>(<span class='kw'>breweries</span>)
+<span class='fu'>viewExtent</span>(<span class='kw'>franconia</span>) <span class='op'>+</span> <span class='kw'>breweries</span>
+<span class='fu'><a href='mapView.html'>mapview</a></span>(<span class='kw'>franconia</span>) <span class='op'>%&gt;%</span> <span class='kw'>leafem</span>::<span class='fu'><a href='https://rdrr.io/pkg/leafem/man/addExtent.html'>addExtent</a></span>(<span class='kw'>franconia</span>, fillColor = <span class='st'>"yellow"</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/leaflet/man/leaflet.html'>leaflet</a></span>() <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/leaflet/man/addProviderTiles.html'>addProviderTiles</a></span>(<span class='st'>"OpenStreetMap"</span>) <span class='op'>%&gt;%</span> <span class='kw'>leafem</span>::<span class='fu'><a href='https://rdrr.io/pkg/leafem/man/addExtent.html'>addExtent</a></span>(<span class='kw'>breweries</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/leaflet/man/leaflet.html'>leaflet</a></span>() <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/leaflet/man/addProviderTiles.html'>addProviderTiles</a></span>(<span class='st'>"OpenStreetMap"</span>) <span class='op'>%&gt;%</span> <span class='kw'>leafem</span>::<span class='fu'><a href='https://rdrr.io/pkg/leafem/man/addExtent.html'>addExtent</a></span>(<span class='kw'>breweries</span>)
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -223,7 +228,7 @@ details.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

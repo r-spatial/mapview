@@ -150,7 +150,7 @@
     <p>count the number of points/vertices/nodes of sf objects</p>
     </div>
 
-    <pre class="usage"><span class='fu'>npts</span>(<span class='no'>x</span>, <span class='kw'>by_feature</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>npts</span>(<span class='kw'>x</span>, by_feature = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,9 +170,14 @@
     <p>currently only works for *POINTS, *LINES and *POLYGONS (not GEOMETRYCOLLECTION).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>npts</span>(<span class='no'>franconia</span>)</div><div class='output co'>#&gt; [1] 5858</div><div class='input'><span class='fu'>npts</span>(<span class='no'>franconia</span>, <span class='kw'>by_feature</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;  [1]  27  61  47  43 288 331 238 146 232 159 164 153 125  53  39  36 109  33 341
-#&gt; [20] 244  98 220 220 232 174  40  33  52 191 212 208 202 153 186 240 245 283</div><div class='input'><span class='fu'>npts</span>(<span class='kw pkg'>sf</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_geometry.html'>st_geometry</a></span>(<span class='no'>franconia</span>[<span class='fl'>1</span>, ])) <span class='co'># first polygon</span></div><div class='output co'>#&gt; [1] 27</div><div class='input'>
-<span class='fu'>npts</span>(<span class='no'>breweries</span>) <span class='co'># is the same as</span></div><div class='output co'>#&gt; [1] 224</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>breweries</span>)</div><div class='output co'>#&gt; [1] 224</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>npts</span>(<span class='kw'>franconia</span>)
+</div><div class='output co'>#&gt; [1] 5858</div><div class='input'><span class='fu'>npts</span>(<span class='kw'>franconia</span>, by_feature = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt;  [1]  27  61  47  43 288 331 238 146 232 159 164 153 125  53  39  36 109  33 341
+#&gt; [20] 244  98 220 220 232 174  40  33  52 191 212 208 202 153 186 240 245 283</div><div class='input'><span class='fu'>npts</span>(<span class='kw'>sf</span>::<span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_geometry.html'>st_geometry</a></span>(<span class='kw'>franconia</span>[<span class='fl'>1</span>, ])) <span class='co'># first polygon</span>
+</div><div class='output co'>#&gt; [1] 27</div><div class='input'>
+<span class='fu'>npts</span>(<span class='kw'>breweries</span>) <span class='co'># is the same as</span>
+</div><div class='output co'>#&gt; [1] 224</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='kw'>breweries</span>)
+</div><div class='output co'>#&gt; [1] 224</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -189,7 +194,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

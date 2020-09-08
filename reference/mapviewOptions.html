@@ -157,45 +157,45 @@ add a line like this: options(mapviewMaxPixels = 700000) to that file.</p>
     </div>
 
     <pre class="usage"><span class='fu'>mapviewOptions</span>(
-  <span class='no'>platform</span>,
-  <span class='no'>basemaps</span>,
-  <span class='no'>raster.palette</span>,
-  <span class='no'>vector.palette</span>,
-  <span class='no'>verbose</span>,
-  <span class='no'>na.color</span>,
-  <span class='no'>legend</span>,
-  <span class='no'>legend.opacity</span>,
-  <span class='no'>legend.pos</span>,
-  <span class='no'>layers.control.pos</span>,
-  <span class='no'>leafletWidth</span>,
-  <span class='no'>leafletHeight</span>,
-  <span class='no'>viewer.suppress</span>,
-  <span class='no'>homebutton</span>,
-  <span class='no'>homebutton.pos</span>,
-  <span class='no'>native.crs</span>,
-  <span class='no'>raster.size</span>,
-  <span class='no'>mapview.maxpixels</span>,
-  <span class='no'>plainview.maxpixels</span>,
-  <span class='no'>use.layer.names</span>,
-  <span class='no'>trim</span>,
-  <span class='no'>method</span>,
-  <span class='no'>query.type</span>,
-  <span class='no'>query.digits</span>,
-  <span class='no'>query.position</span>,
-  <span class='no'>query.prefix</span>,
-  <span class='no'>maxpoints</span>,
-  <span class='no'>maxpolygons</span>,
-  <span class='no'>maxlines</span>,
-  <span class='no'>pane</span>,
-  <span class='no'>cex</span>,
-  <span class='no'>alpha</span>,
-  <span class='kw'>default</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>console</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>watch</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>fgb</span>
+  <span class='kw'>platform</span>,
+  <span class='kw'>basemaps</span>,
+  <span class='kw'>raster.palette</span>,
+  <span class='kw'>vector.palette</span>,
+  <span class='kw'>verbose</span>,
+  <span class='kw'>na.color</span>,
+  <span class='kw'>legend</span>,
+  <span class='kw'>legend.opacity</span>,
+  <span class='kw'>legend.pos</span>,
+  <span class='kw'>layers.control.pos</span>,
+  <span class='kw'>leafletWidth</span>,
+  <span class='kw'>leafletHeight</span>,
+  <span class='kw'>viewer.suppress</span>,
+  <span class='kw'>homebutton</span>,
+  <span class='kw'>homebutton.pos</span>,
+  <span class='kw'>native.crs</span>,
+  <span class='kw'>raster.size</span>,
+  <span class='kw'>mapview.maxpixels</span>,
+  <span class='kw'>plainview.maxpixels</span>,
+  <span class='kw'>use.layer.names</span>,
+  <span class='kw'>trim</span>,
+  <span class='kw'>method</span>,
+  <span class='kw'>query.type</span>,
+  <span class='kw'>query.digits</span>,
+  <span class='kw'>query.position</span>,
+  <span class='kw'>query.prefix</span>,
+  <span class='kw'>maxpoints</span>,
+  <span class='kw'>maxpolygons</span>,
+  <span class='kw'>maxlines</span>,
+  <span class='kw'>pane</span>,
+  <span class='kw'>cex</span>,
+  <span class='kw'>alpha</span>,
+  default = <span class='fl'>FALSE</span>,
+  console = <span class='fl'>TRUE</span>,
+  watch = <span class='fl'>FALSE</span>,
+  <span class='kw'>fgb</span>
 )
 
-<span class='fu'>mapviewGetOption</span>(<span class='no'>param</span>)</pre>
+<span class='fu'>mapviewGetOption</span>(<span class='kw'>param</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -417,9 +417,13 @@ If no arguments are provided the options are printed.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code>rasterOptions</code>, <code><a href='https://rdrr.io/r/base/options.html'>options</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Tim Appelhans</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>mapviewOptions</span>()</div><div class='output co'>#&gt; 
+    <pre class="examples"><div class='input'><span class='fu'>mapviewOptions</span>()
+</div><div class='output co'>#&gt; 
 #&gt;  global options: 
 #&gt; 
 #&gt; platform            : leaflet 
@@ -461,8 +465,9 @@ If no arguments are provided the options are printed.</p>
 #&gt; maxlines            : 30000 
 #&gt; pane                : auto 
 #&gt; cex                 : 6 
-#&gt; alpha               : 0.9 </div><div class='input'><span class='fu'>mapviewOptions</span>(<span class='kw'>na.color</span> <span class='kw'>=</span> <span class='st'>"pink"</span>)
-<span class='fu'>mapviewOptions</span>()</div><div class='output co'>#&gt; 
+#&gt; alpha               : 0.9 </div><div class='input'><span class='fu'>mapviewOptions</span>(na.color = <span class='st'>"pink"</span>)
+<span class='fu'>mapviewOptions</span>()
+</div><div class='output co'>#&gt; 
 #&gt;  global options: 
 #&gt; 
 #&gt; platform            : leaflet 
@@ -505,9 +510,11 @@ If no arguments are provided the options are printed.</p>
 #&gt; pane                : auto 
 #&gt; cex                 : 6 
 #&gt; alpha               : 0.9 </div><div class='input'>
-<span class='fu'>mapviewGetOption</span>(<span class='st'>"platform"</span>)</div><div class='output co'>#&gt; [1] "leaflet"</div><div class='input'>
-<span class='fu'>mapviewOptions</span>(<span class='kw'>default</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>mapviewOptions</span>()</div><div class='output co'>#&gt; 
+<span class='fu'>mapviewGetOption</span>(<span class='st'>"platform"</span>)
+</div><div class='output co'>#&gt; [1] "leaflet"</div><div class='input'>
+<span class='fu'>mapviewOptions</span>(default = <span class='fl'>TRUE</span>)
+<span class='fu'>mapviewOptions</span>()
+</div><div class='output co'>#&gt; 
 #&gt;  global options: 
 #&gt; 
 #&gt; platform            : leaflet 
@@ -567,7 +574,7 @@ If no arguments are provided the options are printed.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

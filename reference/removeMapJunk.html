@@ -150,7 +150,7 @@
     <p>Delete elements from a map.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>removeMapJunk</span>(<span class='no'>map</span>, <span class='kw'>junk</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>removeMapJunk</span>(<span class='kw'>map</span>, junk = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,13 +182,15 @@ of currently supported elements.</p></td>
 <p>This is mainly useful when taking a static screenshot of a map.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()) {
-  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mapview</span>)
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()) {
+  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/r-spatial/mapview'>mapview</a></span>)
 
-  <span class='no'>map</span> <span class='kw'>=</span> <span class='fu'><a href='mapView.html'>mapview</a></span>(<span class='no'>franconia</span>)
+  <span class='kw'>map</span> <span class='op'>=</span> <span class='fu'><a href='mapView.html'>mapview</a></span>(<span class='kw'>franconia</span>)
 
-  <span class='fu'>removeMapJunk</span>(<span class='no'>map</span>, <span class='st'>"zoomControl"</span>)
-}</div></pre>
+  <span class='fu'>removeMapJunk</span>(<span class='kw'>map</span>, <span class='st'>"zoomControl"</span>)
+}
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -204,7 +206,7 @@ of currently supported elements.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>
