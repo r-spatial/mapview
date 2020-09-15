@@ -57,7 +57,10 @@ viewExtent <- function(x,
   )
 
   if (is.null(popup)) {
-    pop = leafpop::popupTable(as.data.frame(t(attributes(x)$bbox[1:4])))
+    pop = leafpop::popupTable(
+      as.data.frame(t(attributes(x)$bbox[1:4]))
+      , className = "mapview-popup"
+    )
   }
 
   mapView(x,

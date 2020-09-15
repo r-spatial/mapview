@@ -250,7 +250,7 @@
   ycol,
   grid = TRUE,
   aspect = 1,
-  popup = leafpop::popupTable(x),
+  popup = leafpop::popupTable(x, className = "mapview-popup"),
   label,
   crs = NA,
   ...
@@ -317,7 +317,7 @@
   na.alpha = lapply(x, regionOpacity),
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"),
-  popup = ifelse(isTRUE(mapviewGetOption("fgb")), TRUE, lapply(x, leafpop::popupTable)),
+  popup = TRUE,
   layer.name = deparse(substitute(x, env = parent.frame())),
   label = lapply(x, makeLabels),
   legend = mapviewGetOption("legend"),

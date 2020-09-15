@@ -655,7 +655,7 @@ setMethod('mapView', signature(x = 'sf'),
                 if (length(col.regions) > 1)
                   col.regions = col.regions[order(x[[zcol]])]
 
-                popup = leafpop::popupTable(x)[order(x[[zcol]])]
+                popup = leafpop::popupTable(x, className = "mapview-popup")[order(x[[zcol]])]
                 label = makeLabels(x, zcol)[order(x[[zcol]])]
                 by_row = TRUE
               }
@@ -1044,7 +1044,7 @@ setMethod('mapView', signature(x = 'data.frame'),
                    ycol,
                    grid = TRUE,
                    aspect = 1,
-                   popup = leafpop::popupTable(x),
+                   popup = leafpop::popupTable(x, className = "mapview-popup"),
                    label,
                    crs = NA,
                    ...) {
@@ -1251,7 +1251,7 @@ setMethod('mapView', signature(x = 'list'),
                    na.alpha = lapply(x, regionOpacity),
                    map.types = mapviewGetOption("basemaps"),
                    verbose = mapviewGetOption("verbose"),
-                   popup = ifelse(isTRUE(mapviewGetOption("fgb")), TRUE, lapply(x, leafpop::popupTable)),
+                   popup = TRUE,
                    layer.name = deparse(substitute(x,
                                                    env = parent.frame())),
                    label = lapply(x, makeLabels),
@@ -1265,6 +1265,15 @@ setMethod('mapView', signature(x = 'list'),
             } else {
               listify = listifyer(x)
             }
+
+            if (is.null(popup)) popup = FALSE
+            # if (isTRUE(popup)) {
+            #   popup = ifelse(
+            #     isTRUE(mapviewGetOption("fgb"))
+            #     , TRUE
+            #     , lapply(x, leafpop::popupTable, className = "mapview-popup")
+            #   )
+            # }
 
             lyrnms = makeListLayerNames(x, layer.name)
 
@@ -1282,7 +1291,7 @@ setMethod('mapView', signature(x = 'list'),
                       alpha.regions = listify(alpha.regions)[[i]],
                       map.types = map.types,
                       verbose = verbose,
-                      popup = listify(popup)[[i]],
+                      popup = ifelse(isTRUE(popup), TRUE, listify(popup)[[i]]),
                       layer.name = lyrnms[[i]],
                       label = listify(label)[[i]],
                       legend = listify(legend)[[i]],

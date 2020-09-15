@@ -94,10 +94,16 @@ leaflet_sf <- function(x,
     if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT"))
       x = suppressWarnings(sf::st_cast(x, "POINT"))
 
-    if (isTRUE(popup)) popup = leafpop::popupTable(x)
+    if (isTRUE(popup)) {
+      popup = leafpop::popupTable(x, className = "mapview-popup")
+    }
     if (inherits(popup, "character") &&
         all(popup %in% colnames(x))) {
-      popup = leafpop::popupTable(x, zcol = popup)
+      popup = leafpop::popupTable(
+        x
+        , zcol = popup
+        , className = "mapview-popup"
+      )
     }
 
     if (is.null(label)) label = makeLabels(x)
@@ -138,7 +144,7 @@ leaflet_sf <- function(x,
         x = suppressWarnings(sf::st_cast(x, "POINT"))
       }
       if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
-        popup = leafpop::popupTable(x)
+        popup = leafpop::popupTable(x, className = "mapview-popup")
       }
     }
 
@@ -205,19 +211,19 @@ leafgl_sf = function(x,
   if (inherits(sf::st_geometry(x), "sfc_MULTIPOLYGON")) {
     x = suppressWarnings(sf::st_cast(x, "POLYGON"))
     if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
-      popup = leafpop::popupTable(x)
+      popup = leafpop::popupTable(x, className = "mapview-popup")
     }
   }
   if (inherits(sf::st_geometry(x), "sfc_MULTILINESTRING")) {
     x = suppressWarnings(sf::st_cast(x, "LINESTRING"))
     if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
-      popup = leafpop::popupTable(x)
+      popup = leafpop::popupTable(x, className = "mapview-popup")
     }
   }
   if (inherits(sf::st_geometry(x), "sfc_MULTIPOINT")) {
     x = suppressWarnings(sf::st_cast(x, "POINT"))
     if (!(is.null(attributes(popup))) && names(attributes(popup)) == "popup") {
-      popup = leafpop::popupTable(x)
+      popup = leafpop::popupTable(x, className = "mapview-popup")
     }
   }
 
