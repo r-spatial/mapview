@@ -135,7 +135,7 @@
   method = mapviewGetOption("method"),
   label = TRUE,
   query.type = c("mousemove", "click"),
-  query.digits,
+  query.digits = mapviewGetOption("query.digits"),
   query.position = mapviewGetOption("query.position"),
   query.prefix = "Layer",
   viewer.suppress = mapviewGetOption("viewer.suppress"),
