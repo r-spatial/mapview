@@ -1,4 +1,4 @@
-## mapview 2.9.3
+## mapview 2.9.4
 
 new features:
 
@@ -11,6 +11,7 @@ miscellaneous:
 bugfixes:
 
   * rmd files did not compile due to missing popup.css #312
+  * method for RasterStackBrick now respects query.digits option. #334
 
 ## mapview 2.9.0
 
