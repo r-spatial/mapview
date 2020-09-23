@@ -21,7 +21,7 @@ factorLegend <- function(map,
         x = values
         , colors = colors
         , na.color = na.color
-        , return.sorted = TRUE
+        , return.sorted = ifelse(is.function(colors), TRUE, FALSE)
       )
     )
     , domain = values
@@ -51,12 +51,16 @@ characterLegend <- function(map,
   } else {
     vals = values
   }
-  pal <- factorPalette(palette = zcolColors(x = vals,
-                                            colors = colors,
-                                            na.color = na.color,
-                                            return.sorted = TRUE),
-                       domain = values,
-                       na.color = na.color)
+  pal <- factorPalette(
+    palette = zcolColors(
+      x = vals
+      , colors = colors
+      , na.color = na.color
+      , return.sorted = ifelse(is.function(colors), TRUE, FALSE)
+    )
+    , domain = values
+    , na.color = na.color
+  )
   mvAddLegend(isAvailableInLeaflet()$leggrp,
               layer.name,
               map = map,
