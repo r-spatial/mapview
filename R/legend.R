@@ -222,7 +222,7 @@ mapviewLegend <- function(values,
         colors = grDevices::colorRampPalette(colors)
       }
       if (length(colors) == length(values)) {
-        colors = colors[order(values)]
+        colors = colors #colors[order(values)]
         values = as.factor(values)
       }
     }

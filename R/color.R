@@ -209,12 +209,24 @@ zcolColors <- function(x, # a vector, not a sp or sf object
     }
 
     if (inherits(x, "numeric")) {
-      if (length(colors) < length(x)) {
+      if (is.null(at) & length(colors) < length(unique(x))) {
         warning(
           sprintf(
             "Found less unique colors (%s) than unique zcol values (%s)! \nInterpolating color vector to match number of zcol values."
             , length(colors)
             , length(unique(x))
+          )
+          , call. = FALSE
+        )
+        colors = grDevices::colorRampPalette(colors)
+      }
+
+      if (!is.null(at) & length(colors) < length(at)) {
+        warning(
+          sprintf(
+            "Found less unique colors (%s) than unique zcol values (%s)! \nInterpolating color vector to match number of zcol values."
+            , length(colors)
+            , length(at)
           )
           , call. = FALSE
         )
@@ -235,13 +247,13 @@ zcolColors <- function(x, # a vector, not a sp or sf object
     }
 
     if (inherits(x, "factor")) {
-      if (length(colors) < length(x)) {
+      if (length(colors) < length(unique(x))) {
         if (length(unique(colors)) < length(unique(x))) {
           warning(
             sprintf(
               "Found less unique colors (%s) than unique zcol values (%s)! \nRecycling color vector."
               , length(colors)
-              , length(x)
+              , length(unique(x))
             )
             , call. = FALSE
           )
