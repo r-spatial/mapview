@@ -12,6 +12,7 @@ bugfixes:
 
   * rmd files did not compile due to missing popup.css #312
   * method for RasterStackBrick now respects query.digits option. #334
+  * don't emit warning when length(at) == length(color). #327 
 
 ## mapview 2.9.0
 
