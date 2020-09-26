@@ -93,15 +93,14 @@ combineExtent = function(lst, sf = FALSE, crs = 4326) {
   # lst = list(breweries, st_as_sf(atlStorms2005), st_as_sf(gadmCHE))
   # bb = do.call(rbind, lapply(lst, sf::st_bbox))
   bb = do.call(rbind, lapply(seq(lst), function(i) {
-
-  if (!is.null(lst[[i]])) {
-    if (!is.na(getProjection(lst[[i]]))) {
-      sf::st_bbox(sf::st_transform(sf::st_as_sfc(sf::st_bbox(lst[[i]])),
-                                   crs = crs))
-    } else {
-      sf::st_bbox(sf::st_as_sfc(sf::st_bbox(lst[[i]])))
+    if (!is.null(lst[[i]])) {
+      if (!is.na(getProjection(lst[[i]]))) {
+        sf::st_bbox(sf::st_transform(sf::st_as_sfc(sf::st_bbox(lst[[i]])),
+                                     crs = crs))
+      } else {
+        sf::st_bbox(sf::st_as_sfc(sf::st_bbox(lst[[i]])))
+      }
     }
-  }
   }))
 
   bbmin = apply(bb, 2, min)

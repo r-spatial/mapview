@@ -54,7 +54,17 @@ setMethod("+",
               out_obj <- append(e1@object, e2@object)
               # avoids error if calling, for example, mapview() + viewExtent(in)
               out_obj <- out_obj[lengths(out_obj) != 0]
-              bb = combineExtent(out_obj, sf = FALSE, getProjection(e1@object[[1]]))
+
+              crs_e1 = e1@map$x$options$crs$crsClass
+              crs_e2 = e2@map$x$options$crs$crsClass
+
+              crs = ifelse(
+                !any(sapply(c(crs_e1, crs_e2), "==", "L.CRS.Simple"))
+                , 4326
+                , getProjection(e1@object[[1]])
+              )
+
+              bb = combineExtent(out_obj, sf = FALSE, crs)
               names(bb) = NULL
               m <- leaflet::fitBounds(map = m,
                                       lng1 = bb[1],
