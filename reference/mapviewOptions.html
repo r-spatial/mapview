@@ -156,46 +156,46 @@ to change the default number of pixels to be visualised for Raster* objects,
 add a line like this: options(mapviewMaxPixels = 700000) to that file.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mapviewOptions</span>(
-  <span class='kw'>platform</span>,
-  <span class='kw'>basemaps</span>,
-  <span class='kw'>raster.palette</span>,
-  <span class='kw'>vector.palette</span>,
-  <span class='kw'>verbose</span>,
-  <span class='kw'>na.color</span>,
-  <span class='kw'>legend</span>,
-  <span class='kw'>legend.opacity</span>,
-  <span class='kw'>legend.pos</span>,
-  <span class='kw'>layers.control.pos</span>,
-  <span class='kw'>leafletWidth</span>,
-  <span class='kw'>leafletHeight</span>,
-  <span class='kw'>viewer.suppress</span>,
-  <span class='kw'>homebutton</span>,
-  <span class='kw'>homebutton.pos</span>,
-  <span class='kw'>native.crs</span>,
-  <span class='kw'>raster.size</span>,
-  <span class='kw'>mapview.maxpixels</span>,
-  <span class='kw'>plainview.maxpixels</span>,
-  <span class='kw'>use.layer.names</span>,
-  <span class='kw'>trim</span>,
-  <span class='kw'>method</span>,
-  <span class='kw'>query.type</span>,
-  <span class='kw'>query.digits</span>,
-  <span class='kw'>query.position</span>,
-  <span class='kw'>query.prefix</span>,
-  <span class='kw'>maxpoints</span>,
-  <span class='kw'>maxpolygons</span>,
-  <span class='kw'>maxlines</span>,
-  <span class='kw'>pane</span>,
-  <span class='kw'>cex</span>,
-  <span class='kw'>alpha</span>,
-  default = <span class='fl'>FALSE</span>,
-  console = <span class='fl'>TRUE</span>,
-  watch = <span class='fl'>FALSE</span>,
-  <span class='kw'>fgb</span>
-)
+    <pre class="usage"><span class='fu'>mapviewOptions</span><span class='op'>(</span>
+  <span class='va'>platform</span>,
+  <span class='va'>basemaps</span>,
+  <span class='va'>raster.palette</span>,
+  <span class='va'>vector.palette</span>,
+  <span class='va'>verbose</span>,
+  <span class='va'>na.color</span>,
+  <span class='va'>legend</span>,
+  <span class='va'>legend.opacity</span>,
+  <span class='va'>legend.pos</span>,
+  <span class='va'>layers.control.pos</span>,
+  <span class='va'>leafletWidth</span>,
+  <span class='va'>leafletHeight</span>,
+  <span class='va'>viewer.suppress</span>,
+  <span class='va'>homebutton</span>,
+  <span class='va'>homebutton.pos</span>,
+  <span class='va'>native.crs</span>,
+  <span class='va'>raster.size</span>,
+  <span class='va'>mapview.maxpixels</span>,
+  <span class='va'>plainview.maxpixels</span>,
+  <span class='va'>use.layer.names</span>,
+  <span class='va'>trim</span>,
+  <span class='va'>method</span>,
+  <span class='va'>query.type</span>,
+  <span class='va'>query.digits</span>,
+  <span class='va'>query.position</span>,
+  <span class='va'>query.prefix</span>,
+  <span class='va'>maxpoints</span>,
+  <span class='va'>maxpolygons</span>,
+  <span class='va'>maxlines</span>,
+  <span class='va'>pane</span>,
+  <span class='va'>cex</span>,
+  <span class='va'>alpha</span>,
+  default <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  console <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  watch <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>fgb</span>
+<span class='op'>)</span>
 
-<span class='fu'>mapviewGetOption</span>(<span class='kw'>param</span>)</pre>
+<span class='fu'>mapviewGetOption</span><span class='op'>(</span><span class='va'>param</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -422,7 +422,7 @@ If no arguments are provided the options are printed.</p>
     <p>Tim Appelhans</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>mapviewOptions</span>()
+    <pre class="examples"><div class='input'><span class='fu'>mapviewOptions</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt;  global options: 
 #&gt; 
@@ -465,8 +465,8 @@ If no arguments are provided the options are printed.</p>
 #&gt; maxlines            : 30000 
 #&gt; pane                : auto 
 #&gt; cex                 : 6 
-#&gt; alpha               : 0.9 </div><div class='input'><span class='fu'>mapviewOptions</span>(na.color = <span class='st'>"pink"</span>)
-<span class='fu'>mapviewOptions</span>()
+#&gt; alpha               : 0.9 </div><div class='input'><span class='fu'>mapviewOptions</span><span class='op'>(</span>na.color <span class='op'>=</span> <span class='st'>"pink"</span><span class='op'>)</span>
+<span class='fu'>mapviewOptions</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt;  global options: 
 #&gt; 
@@ -510,10 +510,10 @@ If no arguments are provided the options are printed.</p>
 #&gt; pane                : auto 
 #&gt; cex                 : 6 
 #&gt; alpha               : 0.9 </div><div class='input'>
-<span class='fu'>mapviewGetOption</span>(<span class='st'>"platform"</span>)
+<span class='fu'>mapviewGetOption</span><span class='op'>(</span><span class='st'>"platform"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "leaflet"</div><div class='input'>
-<span class='fu'>mapviewOptions</span>(default = <span class='fl'>TRUE</span>)
-<span class='fu'>mapviewOptions</span>()
+<span class='fu'>mapviewOptions</span><span class='op'>(</span>default <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'>mapviewOptions</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt;  global options: 
 #&gt; 

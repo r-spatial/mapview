@@ -153,394 +153,394 @@ spatial object(s) on top of the specified base maps.</p>
     </div>
 
     <pre class="usage"><span class='co'># S4 method for RasterLayer</span>
-<span class='fu'>mapView</span>(
-  <span class='kw'>x</span>,
-  map = <span class='kw'>NULL</span>,
-  maxpixels = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"mapview.maxpixels"</span>),
-  col.regions = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"raster.palette"</span>),
-  at = <span class='kw'>NULL</span>,
-  na.color = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>),
-  use.layer.names = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"use.layer.names"</span>),
-  map.types = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>),
-  alpha.regions = <span class='fl'>0.8</span>,
-  legend = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>),
-  legend.opacity = <span class='fl'>1</span>,
-  trim = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"trim"</span>),
-  verbose = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>),
-  layer.name = <span class='kw'>NULL</span>,
-  homebutton = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"homebutton"</span>),
-  native.crs = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"native.crs"</span>),
-  method = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"method"</span>),
-  label = <span class='fl'>TRUE</span>,
-  query.type = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"query.type"</span>),
-  query.digits = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"query.digits"</span>),
-  query.position = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"query.position"</span>),
-  query.prefix = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"query.prefix"</span>),
-  viewer.suppress = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"viewer.suppress"</span>),
-  <span class='kw'>...</span>
-)
+<span class='fu'>mapView</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  map <span class='op'>=</span> <span class='cn'>NULL</span>,
+  maxpixels <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"mapview.maxpixels"</span><span class='op'>)</span>,
+  col.regions <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"raster.palette"</span><span class='op'>)</span>,
+  at <span class='op'>=</span> <span class='cn'>NULL</span>,
+  na.color <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"na.color"</span><span class='op'>)</span>,
+  use.layer.names <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"use.layer.names"</span><span class='op'>)</span>,
+  map.types <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"basemaps"</span><span class='op'>)</span>,
+  alpha.regions <span class='op'>=</span> <span class='fl'>0.8</span>,
+  legend <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"legend"</span><span class='op'>)</span>,
+  legend.opacity <span class='op'>=</span> <span class='fl'>1</span>,
+  trim <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"trim"</span><span class='op'>)</span>,
+  verbose <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"verbose"</span><span class='op'>)</span>,
+  layer.name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  homebutton <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"homebutton"</span><span class='op'>)</span>,
+  native.crs <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"native.crs"</span><span class='op'>)</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"method"</span><span class='op'>)</span>,
+  label <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  query.type <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"query.type"</span><span class='op'>)</span>,
+  query.digits <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"query.digits"</span><span class='op'>)</span>,
+  query.position <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"query.position"</span><span class='op'>)</span>,
+  query.prefix <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"query.prefix"</span><span class='op'>)</span>,
+  viewer.suppress <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"viewer.suppress"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for stars</span>
-<span class='fu'>mapView</span>(
-  <span class='kw'>x</span>,
-  band = <span class='fl'>1</span>,
-  map = <span class='kw'>NULL</span>,
-  maxpixels = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"mapview.maxpixels"</span>),
-  col.regions = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"raster.palette"</span>),
-  at = <span class='kw'>NULL</span>,
-  na.color = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>),
-  use.layer.names = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"use.layer.names"</span>),
-  map.types = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>),
-  alpha.regions = <span class='fl'>0.8</span>,
-  legend = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>),
-  legend.opacity = <span class='fl'>1</span>,
-  trim = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"trim"</span>),
-  verbose = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>),
-  layer.name = <span class='kw'>NULL</span>,
-  homebutton = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"homebutton"</span>),
-  native.crs = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"native.crs"</span>),
-  method = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"method"</span>),
-  label = <span class='fl'>TRUE</span>,
-  query.type = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"query.type"</span>),
-  query.digits = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"query.digits"</span>),
-  query.position = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"query.position"</span>),
-  query.prefix = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"query.prefix"</span>),
-  viewer.suppress = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"viewer.suppress"</span>),
-  pane = <span class='st'>"auto"</span>,
-  <span class='kw'>...</span>
-)
+<span class='fu'>mapView</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  band <span class='op'>=</span> <span class='fl'>1</span>,
+  map <span class='op'>=</span> <span class='cn'>NULL</span>,
+  maxpixels <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"mapview.maxpixels"</span><span class='op'>)</span>,
+  col.regions <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"raster.palette"</span><span class='op'>)</span>,
+  at <span class='op'>=</span> <span class='cn'>NULL</span>,
+  na.color <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"na.color"</span><span class='op'>)</span>,
+  use.layer.names <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"use.layer.names"</span><span class='op'>)</span>,
+  map.types <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"basemaps"</span><span class='op'>)</span>,
+  alpha.regions <span class='op'>=</span> <span class='fl'>0.8</span>,
+  legend <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"legend"</span><span class='op'>)</span>,
+  legend.opacity <span class='op'>=</span> <span class='fl'>1</span>,
+  trim <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"trim"</span><span class='op'>)</span>,
+  verbose <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"verbose"</span><span class='op'>)</span>,
+  layer.name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  homebutton <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"homebutton"</span><span class='op'>)</span>,
+  native.crs <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"native.crs"</span><span class='op'>)</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"method"</span><span class='op'>)</span>,
+  label <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  query.type <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"query.type"</span><span class='op'>)</span>,
+  query.digits <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"query.digits"</span><span class='op'>)</span>,
+  query.position <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"query.position"</span><span class='op'>)</span>,
+  query.prefix <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"query.prefix"</span><span class='op'>)</span>,
+  viewer.suppress <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"viewer.suppress"</span><span class='op'>)</span>,
+  pane <span class='op'>=</span> <span class='st'>"auto"</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for stars_proxy</span>
-<span class='fu'>mapView</span>(
-  <span class='kw'>x</span>,
-  band = <span class='fl'>1</span>,
-  map = <span class='kw'>NULL</span>,
-  maxpixels = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"mapview.maxpixels"</span>),
-  col.regions = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"raster.palette"</span>),
-  at = <span class='kw'>NULL</span>,
-  na.color = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>),
-  use.layer.names = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"use.layer.names"</span>),
-  map.types = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>),
-  alpha.regions = <span class='fl'>0.8</span>,
-  legend = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>),
-  legend.opacity = <span class='fl'>1</span>,
-  trim = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"trim"</span>),
-  verbose = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>),
-  layer.name = <span class='kw'>NULL</span>,
-  homebutton = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"homebutton"</span>),
-  native.crs = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"native.crs"</span>),
-  method = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"method"</span>),
-  label = <span class='fl'>TRUE</span>,
-  query.type = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"query.type"</span>),
-  query.digits = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"query.digits"</span>),
-  query.position = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"query.position"</span>),
-  query.prefix = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"query.prefix"</span>),
-  viewer.suppress = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"viewer.suppress"</span>),
-  pane = <span class='st'>"auto"</span>,
-  <span class='kw'>...</span>
-)
+<span class='fu'>mapView</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  band <span class='op'>=</span> <span class='fl'>1</span>,
+  map <span class='op'>=</span> <span class='cn'>NULL</span>,
+  maxpixels <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"mapview.maxpixels"</span><span class='op'>)</span>,
+  col.regions <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"raster.palette"</span><span class='op'>)</span>,
+  at <span class='op'>=</span> <span class='cn'>NULL</span>,
+  na.color <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"na.color"</span><span class='op'>)</span>,
+  use.layer.names <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"use.layer.names"</span><span class='op'>)</span>,
+  map.types <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"basemaps"</span><span class='op'>)</span>,
+  alpha.regions <span class='op'>=</span> <span class='fl'>0.8</span>,
+  legend <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"legend"</span><span class='op'>)</span>,
+  legend.opacity <span class='op'>=</span> <span class='fl'>1</span>,
+  trim <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"trim"</span><span class='op'>)</span>,
+  verbose <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"verbose"</span><span class='op'>)</span>,
+  layer.name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  homebutton <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"homebutton"</span><span class='op'>)</span>,
+  native.crs <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"native.crs"</span><span class='op'>)</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"method"</span><span class='op'>)</span>,
+  label <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  query.type <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"query.type"</span><span class='op'>)</span>,
+  query.digits <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"query.digits"</span><span class='op'>)</span>,
+  query.position <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"query.position"</span><span class='op'>)</span>,
+  query.prefix <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"query.prefix"</span><span class='op'>)</span>,
+  viewer.suppress <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"viewer.suppress"</span><span class='op'>)</span>,
+  pane <span class='op'>=</span> <span class='st'>"auto"</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for RasterStackBrick</span>
-<span class='fu'>mapView</span>(
-  <span class='kw'>x</span>,
-  map = <span class='kw'>NULL</span>,
-  maxpixels = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"mapview.maxpixels"</span>),
-  col.regions = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"raster.palette"</span>),
-  at = <span class='kw'>NULL</span>,
-  na.color = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>),
-  use.layer.names = <span class='fl'>TRUE</span>,
-  map.types = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>),
-  legend = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>),
-  legend.opacity = <span class='fl'>1</span>,
-  trim = <span class='fl'>TRUE</span>,
-  verbose = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>),
-  homebutton = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"homebutton"</span>),
-  method = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"method"</span>),
-  label = <span class='fl'>TRUE</span>,
-  query.type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mousemove"</span>, <span class='st'>"click"</span>),
-  query.digits = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"query.digits"</span>),
-  query.position = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"query.position"</span>),
-  query.prefix = <span class='st'>"Layer"</span>,
-  viewer.suppress = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"viewer.suppress"</span>),
-  <span class='kw'>...</span>
-)
+<span class='fu'>mapView</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  map <span class='op'>=</span> <span class='cn'>NULL</span>,
+  maxpixels <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"mapview.maxpixels"</span><span class='op'>)</span>,
+  col.regions <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"raster.palette"</span><span class='op'>)</span>,
+  at <span class='op'>=</span> <span class='cn'>NULL</span>,
+  na.color <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"na.color"</span><span class='op'>)</span>,
+  use.layer.names <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  map.types <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"basemaps"</span><span class='op'>)</span>,
+  legend <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"legend"</span><span class='op'>)</span>,
+  legend.opacity <span class='op'>=</span> <span class='fl'>1</span>,
+  trim <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  verbose <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"verbose"</span><span class='op'>)</span>,
+  homebutton <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"homebutton"</span><span class='op'>)</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"method"</span><span class='op'>)</span>,
+  label <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  query.type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mousemove"</span>, <span class='st'>"click"</span><span class='op'>)</span>,
+  query.digits <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"query.digits"</span><span class='op'>)</span>,
+  query.position <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"query.position"</span><span class='op'>)</span>,
+  query.prefix <span class='op'>=</span> <span class='st'>"Layer"</span>,
+  viewer.suppress <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"viewer.suppress"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for Satellite</span>
-<span class='fu'>mapView</span>(
-  <span class='kw'>x</span>,
-  map = <span class='kw'>NULL</span>,
-  maxpixels = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"mapview.maxpixels"</span>),
-  col.regions = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"raster.palette"</span>),
-  at = <span class='kw'>NULL</span>,
-  na.color = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>),
-  map.types = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>),
-  legend = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>),
-  legend.opacity = <span class='fl'>1</span>,
-  trim = <span class='fl'>TRUE</span>,
-  verbose = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>),
-  homebutton = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"homebutton"</span>),
-  method = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bilinear"</span>, <span class='st'>"ngb"</span>),
-  label = <span class='fl'>TRUE</span>,
-  <span class='kw'>...</span>
-)
+<span class='fu'>mapView</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  map <span class='op'>=</span> <span class='cn'>NULL</span>,
+  maxpixels <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"mapview.maxpixels"</span><span class='op'>)</span>,
+  col.regions <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"raster.palette"</span><span class='op'>)</span>,
+  at <span class='op'>=</span> <span class='cn'>NULL</span>,
+  na.color <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"na.color"</span><span class='op'>)</span>,
+  map.types <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"basemaps"</span><span class='op'>)</span>,
+  legend <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"legend"</span><span class='op'>)</span>,
+  legend.opacity <span class='op'>=</span> <span class='fl'>1</span>,
+  trim <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  verbose <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"verbose"</span><span class='op'>)</span>,
+  homebutton <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"homebutton"</span><span class='op'>)</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bilinear"</span>, <span class='st'>"ngb"</span><span class='op'>)</span>,
+  label <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for sf</span>
-<span class='fu'>mapView</span>(
-  <span class='kw'>x</span>,
-  map = <span class='kw'>NULL</span>,
-  pane = <span class='st'>"auto"</span>,
-  canvas = <span class='fu'>useCanvas</span>(<span class='kw'>x</span>),
-  viewer.suppress = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"viewer.suppress"</span>),
-  zcol = <span class='kw'>NULL</span>,
-  burst = <span class='fl'>FALSE</span>,
-  color = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"vector.palette"</span>),
-  col.regions = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"vector.palette"</span>),
-  at = <span class='kw'>NULL</span>,
-  na.color = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>),
-  cex = <span class='fl'>6</span>,
-  lwd = <span class='fu'>lineWidth</span>(<span class='kw'>x</span>),
-  alpha = <span class='fl'>0.9</span>,
-  alpha.regions = <span class='fu'>regionOpacity</span>(<span class='kw'>x</span>),
-  na.alpha = <span class='fu'>regionOpacity</span>(<span class='kw'>x</span>),
-  map.types = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>),
-  verbose = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>),
-  popup = <span class='fl'>TRUE</span>,
-  layer.name = <span class='kw'>NULL</span>,
-  label = <span class='kw'>zcol</span>,
-  legend = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>),
-  legend.opacity = <span class='fl'>1</span>,
-  homebutton = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"homebutton"</span>),
-  native.crs = <span class='fl'>FALSE</span>,
-  highlight = <span class='fu'>mapviewHighlightOptions</span>(<span class='kw'>x</span>, <span class='kw'>alpha.regions</span>, <span class='kw'>alpha</span>, <span class='kw'>lwd</span>),
-  maxpoints = <span class='fu'>getMaxFeatures</span>(<span class='kw'>x</span>),
-  <span class='kw'>...</span>
-)
+<span class='fu'>mapView</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  map <span class='op'>=</span> <span class='cn'>NULL</span>,
+  pane <span class='op'>=</span> <span class='st'>"auto"</span>,
+  canvas <span class='op'>=</span> <span class='fu'>useCanvas</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  viewer.suppress <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"viewer.suppress"</span><span class='op'>)</span>,
+  zcol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  burst <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  color <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"vector.palette"</span><span class='op'>)</span>,
+  col.regions <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"vector.palette"</span><span class='op'>)</span>,
+  at <span class='op'>=</span> <span class='cn'>NULL</span>,
+  na.color <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"na.color"</span><span class='op'>)</span>,
+  cex <span class='op'>=</span> <span class='fl'>6</span>,
+  lwd <span class='op'>=</span> <span class='fu'>lineWidth</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  alpha <span class='op'>=</span> <span class='fl'>0.9</span>,
+  alpha.regions <span class='op'>=</span> <span class='fu'>regionOpacity</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  na.alpha <span class='op'>=</span> <span class='fu'>regionOpacity</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  map.types <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"basemaps"</span><span class='op'>)</span>,
+  verbose <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"verbose"</span><span class='op'>)</span>,
+  popup <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  layer.name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  label <span class='op'>=</span> <span class='va'>zcol</span>,
+  legend <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"legend"</span><span class='op'>)</span>,
+  legend.opacity <span class='op'>=</span> <span class='fl'>1</span>,
+  homebutton <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"homebutton"</span><span class='op'>)</span>,
+  native.crs <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  highlight <span class='op'>=</span> <span class='fu'>mapviewHighlightOptions</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>alpha.regions</span>, <span class='va'>alpha</span>, <span class='va'>lwd</span><span class='op'>)</span>,
+  maxpoints <span class='op'>=</span> <span class='fu'>getMaxFeatures</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for sfc</span>
-<span class='fu'>mapView</span>(
-  <span class='kw'>x</span>,
-  map = <span class='kw'>NULL</span>,
-  pane = <span class='st'>"auto"</span>,
-  canvas = <span class='fu'>useCanvas</span>(<span class='kw'>x</span>),
-  viewer.suppress = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"viewer.suppress"</span>),
-  color = <span class='fu'>standardColor</span>(<span class='kw'>x</span>),
-  col.regions = <span class='fu'>standardColRegions</span>(<span class='kw'>x</span>),
-  at = <span class='kw'>NULL</span>,
-  na.color = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>),
-  cex = <span class='fl'>6</span>,
-  lwd = <span class='fu'>lineWidth</span>(<span class='kw'>x</span>),
-  alpha = <span class='fl'>0.9</span>,
-  alpha.regions = <span class='fu'>regionOpacity</span>(<span class='kw'>x</span>),
-  map.types = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>),
-  verbose = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>),
-  popup = <span class='kw'>NULL</span>,
-  layer.name = <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>(<span class='kw'>x</span>, env = <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())),
-  label = <span class='fu'>makeLabels</span>(<span class='kw'>x</span>),
-  legend = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>),
-  legend.opacity = <span class='fl'>1</span>,
-  homebutton = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"homebutton"</span>),
-  native.crs = <span class='fl'>FALSE</span>,
-  highlight = <span class='fu'>mapviewHighlightOptions</span>(<span class='kw'>x</span>, <span class='kw'>alpha.regions</span>, <span class='kw'>alpha</span>, <span class='kw'>lwd</span>),
-  maxpoints = <span class='fu'>getMaxFeatures</span>(<span class='kw'>x</span>),
-  <span class='kw'>...</span>
-)
+<span class='fu'>mapView</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  map <span class='op'>=</span> <span class='cn'>NULL</span>,
+  pane <span class='op'>=</span> <span class='st'>"auto"</span>,
+  canvas <span class='op'>=</span> <span class='fu'>useCanvas</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  viewer.suppress <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"viewer.suppress"</span><span class='op'>)</span>,
+  color <span class='op'>=</span> <span class='fu'>standardColor</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  col.regions <span class='op'>=</span> <span class='fu'>standardColRegions</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  at <span class='op'>=</span> <span class='cn'>NULL</span>,
+  na.color <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"na.color"</span><span class='op'>)</span>,
+  cex <span class='op'>=</span> <span class='fl'>6</span>,
+  lwd <span class='op'>=</span> <span class='fu'>lineWidth</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  alpha <span class='op'>=</span> <span class='fl'>0.9</span>,
+  alpha.regions <span class='op'>=</span> <span class='fu'>regionOpacity</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  map.types <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"basemaps"</span><span class='op'>)</span>,
+  verbose <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"verbose"</span><span class='op'>)</span>,
+  popup <span class='op'>=</span> <span class='cn'>NULL</span>,
+  layer.name <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span><span class='op'>(</span><span class='va'>x</span>, env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
+  label <span class='op'>=</span> <span class='fu'>makeLabels</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  legend <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"legend"</span><span class='op'>)</span>,
+  legend.opacity <span class='op'>=</span> <span class='fl'>1</span>,
+  homebutton <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"homebutton"</span><span class='op'>)</span>,
+  native.crs <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  highlight <span class='op'>=</span> <span class='fu'>mapviewHighlightOptions</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>alpha.regions</span>, <span class='va'>alpha</span>, <span class='va'>lwd</span><span class='op'>)</span>,
+  maxpoints <span class='op'>=</span> <span class='fu'>getMaxFeatures</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for character</span>
-<span class='fu'>mapView</span>(
-  <span class='kw'>x</span>,
-  map = <span class='kw'>NULL</span>,
-  tms = <span class='fl'>TRUE</span>,
-  color = <span class='fu'>standardColor</span>(),
-  col.regions = <span class='fu'>standardColRegions</span>(),
-  at = <span class='kw'>NULL</span>,
-  na.color = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>),
-  cex = <span class='fl'>6</span>,
-  lwd = <span class='fl'>2</span>,
-  alpha = <span class='fl'>0.9</span>,
-  alpha.regions = <span class='fl'>0.6</span>,
-  na.alpha = <span class='fl'>0.6</span>,
-  map.types = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>),
-  verbose = <span class='fl'>FALSE</span>,
-  layer.name = <span class='kw'>x</span>,
-  homebutton = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"homebutton"</span>),
-  native.crs = <span class='fl'>FALSE</span>,
-  canvas = <span class='fl'>FALSE</span>,
-  viewer.suppress = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"viewer.suppress"</span>),
-  <span class='kw'>...</span>
-)
+<span class='fu'>mapView</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  map <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tms <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  color <span class='op'>=</span> <span class='fu'>standardColor</span><span class='op'>(</span><span class='op'>)</span>,
+  col.regions <span class='op'>=</span> <span class='fu'>standardColRegions</span><span class='op'>(</span><span class='op'>)</span>,
+  at <span class='op'>=</span> <span class='cn'>NULL</span>,
+  na.color <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"na.color"</span><span class='op'>)</span>,
+  cex <span class='op'>=</span> <span class='fl'>6</span>,
+  lwd <span class='op'>=</span> <span class='fl'>2</span>,
+  alpha <span class='op'>=</span> <span class='fl'>0.9</span>,
+  alpha.regions <span class='op'>=</span> <span class='fl'>0.6</span>,
+  na.alpha <span class='op'>=</span> <span class='fl'>0.6</span>,
+  map.types <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"basemaps"</span><span class='op'>)</span>,
+  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  layer.name <span class='op'>=</span> <span class='va'>x</span>,
+  homebutton <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"homebutton"</span><span class='op'>)</span>,
+  native.crs <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  canvas <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  viewer.suppress <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"viewer.suppress"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for numeric</span>
-<span class='fu'>mapView</span>(<span class='kw'>x</span>, <span class='kw'>y</span>, type = <span class='st'>"p"</span>, grid = <span class='fl'>TRUE</span>, <span class='kw'>label</span>, <span class='kw'>...</span>)
+<span class='fu'>mapView</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, type <span class='op'>=</span> <span class='st'>"p"</span>, grid <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>label</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for data.frame</span>
-<span class='fu'>mapView</span>(
-  <span class='kw'>x</span>,
-  <span class='kw'>xcol</span>,
-  <span class='kw'>ycol</span>,
-  grid = <span class='fl'>TRUE</span>,
-  aspect = <span class='fl'>1</span>,
-  popup = <span class='kw'>leafpop</span>::<span class='fu'><a href='https://rdrr.io/pkg/leafpop/man/popup.html'>popupTable</a></span>(<span class='kw'>x</span>, className = <span class='st'>"mapview-popup"</span>),
-  <span class='kw'>label</span>,
-  crs = <span class='fl'>NA</span>,
-  <span class='kw'>...</span>
-)
+<span class='fu'>mapView</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>xcol</span>,
+  <span class='va'>ycol</span>,
+  grid <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  aspect <span class='op'>=</span> <span class='fl'>1</span>,
+  popup <span class='op'>=</span> <span class='fu'>leafpop</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/leafpop/man/popup.html'>popupTable</a></span><span class='op'>(</span><span class='va'>x</span>, className <span class='op'>=</span> <span class='st'>"mapview-popup"</span><span class='op'>)</span>,
+  <span class='va'>label</span>,
+  crs <span class='op'>=</span> <span class='cn'>NA</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for XY</span>
-<span class='fu'>mapView</span>(
-  <span class='kw'>x</span>,
-  map = <span class='kw'>NULL</span>,
-  pane = <span class='st'>"auto"</span>,
-  canvas = <span class='fu'>useCanvas</span>(<span class='kw'>x</span>),
-  viewer.suppress = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"viewer.suppress"</span>),
-  color = <span class='fu'>standardColor</span>(<span class='kw'>x</span>),
-  col.regions = <span class='fu'>standardColRegions</span>(<span class='kw'>x</span>),
-  at = <span class='kw'>NULL</span>,
-  na.color = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>),
-  cex = <span class='fl'>6</span>,
-  lwd = <span class='fu'>lineWidth</span>(<span class='kw'>x</span>),
-  alpha = <span class='fl'>0.9</span>,
-  alpha.regions = <span class='fu'>regionOpacity</span>(<span class='kw'>x</span>),
-  map.types = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>),
-  verbose = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>),
-  popup = <span class='kw'>NULL</span>,
-  layer.name = <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>(<span class='kw'>x</span>, env = <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>(<span class='fl'>1</span>))),
-  label = <span class='fu'>makeLabels</span>(<span class='kw'>x</span>),
-  legend = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>),
-  legend.opacity = <span class='fl'>1</span>,
-  homebutton = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"homebutton"</span>),
-  native.crs = <span class='fl'>FALSE</span>,
-  highlight = <span class='fu'>mapviewHighlightOptions</span>(<span class='kw'>x</span>, <span class='kw'>alpha.regions</span>, <span class='kw'>alpha</span>, <span class='kw'>lwd</span>),
-  maxpoints = <span class='fu'>getMaxFeatures</span>(<span class='kw'>x</span>),
-  <span class='kw'>...</span>
-)
+<span class='fu'>mapView</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  map <span class='op'>=</span> <span class='cn'>NULL</span>,
+  pane <span class='op'>=</span> <span class='st'>"auto"</span>,
+  canvas <span class='op'>=</span> <span class='fu'>useCanvas</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  viewer.suppress <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"viewer.suppress"</span><span class='op'>)</span>,
+  color <span class='op'>=</span> <span class='fu'>standardColor</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  col.regions <span class='op'>=</span> <span class='fu'>standardColRegions</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  at <span class='op'>=</span> <span class='cn'>NULL</span>,
+  na.color <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"na.color"</span><span class='op'>)</span>,
+  cex <span class='op'>=</span> <span class='fl'>6</span>,
+  lwd <span class='op'>=</span> <span class='fu'>lineWidth</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  alpha <span class='op'>=</span> <span class='fl'>0.9</span>,
+  alpha.regions <span class='op'>=</span> <span class='fu'>regionOpacity</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  map.types <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"basemaps"</span><span class='op'>)</span>,
+  verbose <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"verbose"</span><span class='op'>)</span>,
+  popup <span class='op'>=</span> <span class='cn'>NULL</span>,
+  layer.name <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span><span class='op'>(</span><span class='va'>x</span>, env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
+  label <span class='op'>=</span> <span class='fu'>makeLabels</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  legend <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"legend"</span><span class='op'>)</span>,
+  legend.opacity <span class='op'>=</span> <span class='fl'>1</span>,
+  homebutton <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"homebutton"</span><span class='op'>)</span>,
+  native.crs <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  highlight <span class='op'>=</span> <span class='fu'>mapviewHighlightOptions</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>alpha.regions</span>, <span class='va'>alpha</span>, <span class='va'>lwd</span><span class='op'>)</span>,
+  maxpoints <span class='op'>=</span> <span class='fu'>getMaxFeatures</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for XYZ</span>
-<span class='fu'>mapView</span>(<span class='kw'>x</span>, layer.name = <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>(<span class='kw'>x</span>, env = <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>(<span class='fl'>1</span>))), <span class='kw'>...</span>)
+<span class='fu'>mapView</span><span class='op'>(</span><span class='va'>x</span>, layer.name <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span><span class='op'>(</span><span class='va'>x</span>, env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for XYM</span>
-<span class='fu'>mapView</span>(<span class='kw'>x</span>, layer.name = <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>(<span class='kw'>x</span>, env = <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>(<span class='fl'>1</span>))), <span class='kw'>...</span>)
+<span class='fu'>mapView</span><span class='op'>(</span><span class='va'>x</span>, layer.name <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span><span class='op'>(</span><span class='va'>x</span>, env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for XYZM</span>
-<span class='fu'>mapView</span>(<span class='kw'>x</span>, layer.name = <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>(<span class='kw'>x</span>, env = <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>(<span class='fl'>1</span>))), <span class='kw'>...</span>)
+<span class='fu'>mapView</span><span class='op'>(</span><span class='va'>x</span>, layer.name <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span><span class='op'>(</span><span class='va'>x</span>, env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for bbox</span>
-<span class='fu'>mapView</span>(
-  <span class='kw'>x</span>,
-  layer.name = <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>(<span class='kw'>x</span>, env = <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>(<span class='fl'>1</span>))),
-  alpha.regions = <span class='fl'>0.2</span>,
-  <span class='kw'>...</span>
-)
+<span class='fu'>mapView</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  layer.name <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span><span class='op'>(</span><span class='va'>x</span>, env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
+  alpha.regions <span class='op'>=</span> <span class='fl'>0.2</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for missing</span>
-<span class='fu'>mapView</span>(map.types = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>), <span class='kw'>...</span>)
+<span class='fu'>mapView</span><span class='op'>(</span>map.types <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"basemaps"</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for `NULL`</span>
-<span class='fu'>mapView</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
+<span class='fu'>mapView</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for list</span>
-<span class='fu'>mapView</span>(
-  <span class='kw'>x</span>,
-  map = <span class='kw'>NULL</span>,
-  zcol = <span class='kw'>NULL</span>,
-  burst = <span class='fl'>FALSE</span>,
-  color = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"vector.palette"</span>),
-  col.regions = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"vector.palette"</span>),
-  at = <span class='kw'>NULL</span>,
-  na.color = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>),
-  cex = <span class='fl'>6</span>,
-  lwd = <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='kw'>x</span>, <span class='kw'>lineWidth</span>),
-  alpha = <span class='fl'>0.9</span>,
-  alpha.regions = <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='kw'>x</span>, <span class='kw'>regionOpacity</span>),
-  na.alpha = <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='kw'>x</span>, <span class='kw'>regionOpacity</span>),
-  map.types = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>),
-  verbose = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>),
-  popup = <span class='fl'>TRUE</span>,
-  layer.name = <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>(<span class='kw'>x</span>, env = <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())),
-  label = <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='kw'>x</span>, <span class='kw'>makeLabels</span>),
-  legend = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>),
-  homebutton = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"homebutton"</span>),
-  native.crs = <span class='fl'>FALSE</span>,
-  <span class='kw'>...</span>
-)
+<span class='fu'>mapView</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  map <span class='op'>=</span> <span class='cn'>NULL</span>,
+  zcol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  burst <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  color <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"vector.palette"</span><span class='op'>)</span>,
+  col.regions <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"vector.palette"</span><span class='op'>)</span>,
+  at <span class='op'>=</span> <span class='cn'>NULL</span>,
+  na.color <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"na.color"</span><span class='op'>)</span>,
+  cex <span class='op'>=</span> <span class='fl'>6</span>,
+  lwd <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>lineWidth</span><span class='op'>)</span>,
+  alpha <span class='op'>=</span> <span class='fl'>0.9</span>,
+  alpha.regions <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>regionOpacity</span><span class='op'>)</span>,
+  na.alpha <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>regionOpacity</span><span class='op'>)</span>,
+  map.types <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"basemaps"</span><span class='op'>)</span>,
+  verbose <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"verbose"</span><span class='op'>)</span>,
+  popup <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  layer.name <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span><span class='op'>(</span><span class='va'>x</span>, env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
+  label <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>makeLabels</span><span class='op'>)</span>,
+  legend <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"legend"</span><span class='op'>)</span>,
+  homebutton <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"homebutton"</span><span class='op'>)</span>,
+  native.crs <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for ANY</span>
-<span class='fu'>mapview</span>(<span class='kw'>...</span>)
+<span class='fu'>mapview</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for SpatialPixelsDataFrame</span>
-<span class='fu'>mapView</span>(
-  <span class='kw'>x</span>,
-  map = <span class='kw'>NULL</span>,
-  zcol = <span class='kw'>NULL</span>,
-  maxpixels = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"mapview.maxpixels"</span>),
-  col.regions = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"raster.palette"</span>),
-  at = <span class='kw'>NULL</span>,
-  na.color = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>),
-  use.layer.names = <span class='fl'>FALSE</span>,
-  map.types = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>),
-  alpha.regions = <span class='fl'>0.8</span>,
-  legend = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>),
-  legend.opacity = <span class='fl'>1</span>,
-  trim = <span class='fl'>TRUE</span>,
-  verbose = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>),
-  layer.name = <span class='kw'>NULL</span>,
-  homebutton = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"homebutton"</span>),
-  native.crs = <span class='fl'>FALSE</span>,
-  method = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"method"</span>),
-  label = <span class='fl'>TRUE</span>,
-  query.type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mousemove"</span>, <span class='st'>"click"</span>),
-  <span class='kw'>query.digits</span>,
-  query.position = <span class='st'>"topright"</span>,
-  query.prefix = <span class='st'>"Layer"</span>,
-  viewer.suppress = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"viewer.suppress"</span>),
-  <span class='kw'>...</span>
-)
+<span class='fu'>mapView</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  map <span class='op'>=</span> <span class='cn'>NULL</span>,
+  zcol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  maxpixels <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"mapview.maxpixels"</span><span class='op'>)</span>,
+  col.regions <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"raster.palette"</span><span class='op'>)</span>,
+  at <span class='op'>=</span> <span class='cn'>NULL</span>,
+  na.color <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"na.color"</span><span class='op'>)</span>,
+  use.layer.names <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  map.types <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"basemaps"</span><span class='op'>)</span>,
+  alpha.regions <span class='op'>=</span> <span class='fl'>0.8</span>,
+  legend <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"legend"</span><span class='op'>)</span>,
+  legend.opacity <span class='op'>=</span> <span class='fl'>1</span>,
+  trim <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  verbose <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"verbose"</span><span class='op'>)</span>,
+  layer.name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  homebutton <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"homebutton"</span><span class='op'>)</span>,
+  native.crs <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"method"</span><span class='op'>)</span>,
+  label <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  query.type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mousemove"</span>, <span class='st'>"click"</span><span class='op'>)</span>,
+  <span class='va'>query.digits</span>,
+  query.position <span class='op'>=</span> <span class='st'>"topright"</span>,
+  query.prefix <span class='op'>=</span> <span class='st'>"Layer"</span>,
+  viewer.suppress <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"viewer.suppress"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for SpatialGridDataFrame</span>
-<span class='fu'>mapView</span>(
-  <span class='kw'>x</span>,
-  map = <span class='kw'>NULL</span>,
-  zcol = <span class='kw'>NULL</span>,
-  maxpixels = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"mapview.maxpixels"</span>),
-  col.regions = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"raster.palette"</span>),
-  at = <span class='kw'>NULL</span>,
-  na.color = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"na.color"</span>),
-  use.layer.names = <span class='fl'>FALSE</span>,
-  map.types = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"basemaps"</span>),
-  alpha.regions = <span class='fl'>0.8</span>,
-  legend = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"legend"</span>),
-  legend.opacity = <span class='fl'>1</span>,
-  trim = <span class='fl'>TRUE</span>,
-  verbose = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"verbose"</span>),
-  layer.name = <span class='kw'>NULL</span>,
-  homebutton = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"homebutton"</span>),
-  native.crs = <span class='fl'>FALSE</span>,
-  method = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"method"</span>),
-  label = <span class='fl'>TRUE</span>,
-  query.type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mousemove"</span>, <span class='st'>"click"</span>),
-  <span class='kw'>query.digits</span>,
-  query.position = <span class='st'>"topright"</span>,
-  query.prefix = <span class='st'>"Layer"</span>,
-  viewer.suppress = <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span>(<span class='st'>"viewer.suppress"</span>),
-  <span class='kw'>...</span>
-)
+<span class='fu'>mapView</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  map <span class='op'>=</span> <span class='cn'>NULL</span>,
+  zcol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  maxpixels <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"mapview.maxpixels"</span><span class='op'>)</span>,
+  col.regions <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"raster.palette"</span><span class='op'>)</span>,
+  at <span class='op'>=</span> <span class='cn'>NULL</span>,
+  na.color <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"na.color"</span><span class='op'>)</span>,
+  use.layer.names <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  map.types <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"basemaps"</span><span class='op'>)</span>,
+  alpha.regions <span class='op'>=</span> <span class='fl'>0.8</span>,
+  legend <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"legend"</span><span class='op'>)</span>,
+  legend.opacity <span class='op'>=</span> <span class='fl'>1</span>,
+  trim <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  verbose <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"verbose"</span><span class='op'>)</span>,
+  layer.name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  homebutton <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"homebutton"</span><span class='op'>)</span>,
+  native.crs <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"method"</span><span class='op'>)</span>,
+  label <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  query.type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mousemove"</span>, <span class='st'>"click"</span><span class='op'>)</span>,
+  <span class='va'>query.digits</span>,
+  query.position <span class='op'>=</span> <span class='st'>"topright"</span>,
+  query.prefix <span class='op'>=</span> <span class='st'>"Layer"</span>,
+  viewer.suppress <span class='op'>=</span> <span class='fu'><a href='mapviewOptions.html'>mapviewGetOption</a></span><span class='op'>(</span><span class='st'>"viewer.suppress"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for SpatialPointsDataFrame</span>
-<span class='fu'>mapView</span>(<span class='kw'>x</span>, zcol = <span class='kw'>NULL</span>, layer.name = <span class='kw'>NULL</span>, <span class='kw'>...</span>)
+<span class='fu'>mapView</span><span class='op'>(</span><span class='va'>x</span>, zcol <span class='op'>=</span> <span class='cn'>NULL</span>, layer.name <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for SpatialPoints</span>
-<span class='fu'>mapView</span>(<span class='kw'>x</span>, zcol = <span class='kw'>NULL</span>, layer.name = <span class='kw'>NULL</span>, <span class='kw'>...</span>)
+<span class='fu'>mapView</span><span class='op'>(</span><span class='va'>x</span>, zcol <span class='op'>=</span> <span class='cn'>NULL</span>, layer.name <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for SpatialPolygonsDataFrame</span>
-<span class='fu'>mapView</span>(<span class='kw'>x</span>, zcol = <span class='kw'>NULL</span>, layer.name = <span class='kw'>NULL</span>, <span class='kw'>...</span>)
+<span class='fu'>mapView</span><span class='op'>(</span><span class='va'>x</span>, zcol <span class='op'>=</span> <span class='cn'>NULL</span>, layer.name <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for SpatialPolygons</span>
-<span class='fu'>mapView</span>(<span class='kw'>x</span>, zcol = <span class='kw'>NULL</span>, layer.name = <span class='kw'>NULL</span>, <span class='kw'>...</span>)
+<span class='fu'>mapView</span><span class='op'>(</span><span class='va'>x</span>, zcol <span class='op'>=</span> <span class='cn'>NULL</span>, layer.name <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for SpatialLinesDataFrame</span>
-<span class='fu'>mapView</span>(<span class='kw'>x</span>, zcol = <span class='kw'>NULL</span>, layer.name = <span class='kw'>NULL</span>, <span class='kw'>...</span>)
+<span class='fu'>mapView</span><span class='op'>(</span><span class='va'>x</span>, zcol <span class='op'>=</span> <span class='cn'>NULL</span>, layer.name <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for SpatialLines</span>
-<span class='fu'>mapView</span>(<span class='kw'>x</span>, zcol = <span class='kw'>NULL</span>, layer.name = <span class='kw'>NULL</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>mapView</span><span class='op'>(</span><span class='va'>x</span>, zcol <span class='op'>=</span> <span class='cn'>NULL</span>, layer.name <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -827,16 +827,16 @@ the popup will potentially still say something like "POLYGON Z".</p>
 <li><p><code>stars_proxy</code>: <code>stars_proxy</code></p></li>
 <li><p><code>RasterStackBrick</code>: <code><a href='https://rdrr.io/r/utils/stack.html'>stack</a></code> / <code>brick</code></p></li>
 <li><p><code>Satellite</code>: <code>satellite</code></p></li>
-<li><p><code>sf</code>: <code><a href='https://rdrr.io/pkg/sf/man/sf.html'>st_sf</a></code></p></li>
-<li><p><code>sfc</code>: <code><a href='https://rdrr.io/pkg/sf/man/sfc.html'>st_sfc</a></code></p></li>
+<li><p><code>sf</code>: <code><a href='https://r-spatial.github.io/sf/reference/sf.html'>st_sf</a></code></p></li>
+<li><p><code>sfc</code>: <code><a href='https://r-spatial.github.io/sf/reference/sfc.html'>st_sfc</a></code></p></li>
 <li><p><code>character</code>: <code><a href='https://rdrr.io/r/base/character.html'>character</a></code></p></li>
 <li><p><code>numeric</code>: <code><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></code></p></li>
 <li><p><code>data.frame</code>: <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code></p></li>
-<li><p><code>XY</code>: <code><a href='https://rdrr.io/pkg/sf/man/sfc.html'>st_sfc</a></code></p></li>
-<li><p><code>XYZ</code>: <code><a href='https://rdrr.io/pkg/sf/man/sfc.html'>st_sfc</a></code></p></li>
-<li><p><code>XYM</code>: <code><a href='https://rdrr.io/pkg/sf/man/sfc.html'>st_sfc</a></code></p></li>
-<li><p><code>XYZM</code>: <code><a href='https://rdrr.io/pkg/sf/man/sfc.html'>st_sfc</a></code></p></li>
-<li><p><code>bbox</code>: <code><a href='https://rdrr.io/pkg/sf/man/st_bbox.html'>st_bbox</a></code></p></li>
+<li><p><code>XY</code>: <code><a href='https://r-spatial.github.io/sf/reference/sfc.html'>st_sfc</a></code></p></li>
+<li><p><code>XYZ</code>: <code><a href='https://r-spatial.github.io/sf/reference/sfc.html'>st_sfc</a></code></p></li>
+<li><p><code>XYM</code>: <code><a href='https://r-spatial.github.io/sf/reference/sfc.html'>st_sfc</a></code></p></li>
+<li><p><code>XYZM</code>: <code><a href='https://r-spatial.github.io/sf/reference/sfc.html'>st_sfc</a></code></p></li>
+<li><p><code>bbox</code>: <code><a href='https://r-spatial.github.io/sf/reference/st_bbox.html'>st_bbox</a></code></p></li>
 <li><p><code>missing</code>: initiate a map without an object</p></li>
 <li><p><code>NULL</code>: initiate a map without an object</p></li>
 <li><p><code>list</code>: <code><a href='https://rdrr.io/r/base/list.html'>list</a></code></p></li>
@@ -855,103 +855,103 @@ the popup will potentially still say something like "POLYGON Z".</p>
     <p>Tim Appelhans</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='fu'>mapview</span>()
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='op'>)</span>
 
   <span class='co'>## simple features ====================================================</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://r-spatial.github.io/sf'>sf</a></span>)
+  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span>
 
   <span class='co'># sf</span>
-  <span class='fu'>mapview</span>(<span class='kw'>breweries</span>)
-  <span class='fu'>mapview</span>(<span class='kw'>franconia</span>)
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span>
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>)</span>
 
   <span class='co'># sfc</span>
-  <span class='fu'>mapview</span>(<span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_geometry.html'>st_geometry</a></span>(<span class='kw'>breweries</span>)) <span class='co'># no popup</span>
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_geometry.html'>st_geometry</a></span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># no popup</span>
 
   <span class='co'># sfg / XY - taken from ?sf::st_point</span>
-  <span class='kw'>outer</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>10</span>,<span class='fl'>0</span>,<span class='fl'>10</span>,<span class='fl'>10</span>,<span class='fl'>0</span>,<span class='fl'>10</span>,<span class='fl'>0</span>,<span class='fl'>0</span>),ncol=<span class='fl'>2</span>, byrow=<span class='fl'>TRUE</span>)
-  <span class='kw'>hole1</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>),ncol=<span class='fl'>2</span>, byrow=<span class='fl'>TRUE</span>)
-  <span class='kw'>hole2</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>5</span>),ncol=<span class='fl'>2</span>, byrow=<span class='fl'>TRUE</span>)
-  <span class='kw'>pts</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>outer</span>, <span class='kw'>hole1</span>, <span class='kw'>hole2</span>)
-  (<span class='kw'>pl1</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st.html'>st_polygon</a></span>(<span class='kw'>pts</span>))
-  <span class='fu'>mapview</span>(<span class='kw'>pl1</span>)
+  <span class='va'>outer</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>10</span>,<span class='fl'>0</span>,<span class='fl'>10</span>,<span class='fl'>10</span>,<span class='fl'>0</span>,<span class='fl'>10</span>,<span class='fl'>0</span>,<span class='fl'>0</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>2</span>, byrow<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+  <span class='va'>hole1</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>2</span>, byrow<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+  <span class='va'>hole2</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>5</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>2</span>, byrow<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+  <span class='va'>pts</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>outer</span>, <span class='va'>hole1</span>, <span class='va'>hole2</span><span class='op'>)</span>
+  <span class='op'>(</span><span class='va'>pl1</span> <span class='op'>=</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st.html'>st_polygon</a></span><span class='op'>(</span><span class='va'>pts</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>pl1</span><span class='op'>)</span>
 
   <span class='co'>## raster ==============================================================</span>
-  <span class='co'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()) {
-    <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>plainview</span>)
+  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>plainview</span><span class='op'>)</span>
 
-    <span class='fu'>mapview</span>(<span class='kw'>plainview</span>::<span class='kw'><a href='https://rdrr.io/pkg/plainview/man/poppendorf.html'>poppendorf</a></span>[[<span class='fl'>5</span>]])
-  }
+    <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'>plainview</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/plainview/man/poppendorf.html'>poppendorf</a></span><span class='op'>[[</span><span class='fl'>5</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+  <span class='op'>}</span>
 
   <span class='co'>## spatial objects =====================================================</span>
-  <span class='fu'>mapview</span>(<span class='kw'>leaflet</span>::<span class='kw'><a href='https://rdrr.io/pkg/leaflet/man/gadmCHE.html'>gadmCHE</a></span>)
-  <span class='fu'>mapview</span>(<span class='kw'>leaflet</span>::<span class='kw'><a href='https://rdrr.io/pkg/leaflet/man/atlStorms2005.html'>atlStorms2005</a></span>)
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'>leaflet</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/leaflet/man/gadmCHE.html'>gadmCHE</a></span><span class='op'>)</span>
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'>leaflet</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/leaflet/man/atlStorms2005.html'>atlStorms2005</a></span><span class='op'>)</span>
 
 
   <span class='co'>## styling options &amp; legends ===========================================</span>
-  <span class='fu'>mapview</span>(<span class='kw'>franconia</span>, color = <span class='st'>"white"</span>, col.regions = <span class='st'>"red"</span>)
-  <span class='fu'>mapview</span>(<span class='kw'>franconia</span>, color = <span class='st'>"magenta"</span>, col.regions = <span class='st'>"white"</span>)
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, color <span class='op'>=</span> <span class='st'>"white"</span>, col.regions <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, color <span class='op'>=</span> <span class='st'>"magenta"</span>, col.regions <span class='op'>=</span> <span class='st'>"white"</span><span class='op'>)</span>
 
-  <span class='fu'>mapview</span>(<span class='kw'>breweries</span>, zcol = <span class='st'>"founded"</span>)
-  <span class='fu'>mapview</span>(<span class='kw'>breweries</span>, zcol = <span class='st'>"founded"</span>, at = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>1400</span>, <span class='fl'>2200</span>, <span class='fl'>200</span>), legend = <span class='fl'>TRUE</span>)
-  <span class='fu'>mapview</span>(<span class='kw'>franconia</span>, zcol = <span class='st'>"district"</span>, legend = <span class='fl'>TRUE</span>)
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>breweries</span>, zcol <span class='op'>=</span> <span class='st'>"founded"</span><span class='op'>)</span>
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>breweries</span>, zcol <span class='op'>=</span> <span class='st'>"founded"</span>, at <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1400</span>, <span class='fl'>2200</span>, <span class='fl'>200</span><span class='op'>)</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, zcol <span class='op'>=</span> <span class='st'>"district"</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-  <span class='kw'>clrs</span> <span class='op'>&lt;-</span> <span class='kw'>sf.colors</span>
-  <span class='fu'>mapview</span>(<span class='kw'>franconia</span>, zcol = <span class='st'>"district"</span>, col.regions = <span class='kw'>clrs</span>, legend = <span class='fl'>TRUE</span>)
+  <span class='va'>clrs</span> <span class='op'>&lt;-</span> <span class='va'>sf.colors</span>
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, zcol <span class='op'>=</span> <span class='st'>"district"</span>, col.regions <span class='op'>=</span> <span class='va'>clrs</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
   <span class='co'>### multiple layers ====================================================</span>
-  <span class='fu'>mapview</span>(<span class='kw'>franconia</span>) <span class='op'>+</span> <span class='kw'>breweries</span>
-  <span class='fu'>mapview</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>breweries</span>, <span class='kw'>franconia</span>))
-  <span class='fu'>mapview</span>(<span class='kw'>franconia</span>) <span class='op'>+</span> <span class='fu'>mapview</span>(<span class='kw'>breweries</span>) <span class='op'>+</span> <span class='kw'>trails</span>
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>)</span> <span class='op'>+</span> <span class='va'>breweries</span>
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>breweries</span>, <span class='va'>franconia</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span> <span class='op'>+</span> <span class='va'>trails</span>
 
-  <span class='fu'>mapview</span>(<span class='kw'>franconia</span>, zcol = <span class='st'>"district"</span>) <span class='op'>+</span> <span class='fu'>mapview</span>(<span class='kw'>breweries</span>, zcol = <span class='st'>"village"</span>)
-  <span class='fu'>mapview</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>franconia</span>, <span class='kw'>breweries</span>),
-          zcol = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"district"</span>, <span class='kw'>NULL</span>),
-          legend = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>))
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, zcol <span class='op'>=</span> <span class='st'>"district"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>breweries</span>, zcol <span class='op'>=</span> <span class='st'>"village"</span><span class='op'>)</span>
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>franconia</span>, <span class='va'>breweries</span><span class='op'>)</span>,
+          zcol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"district"</span>, <span class='cn'>NULL</span><span class='op'>)</span>,
+          legend <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
 
 
   <span class='co'>### burst ==============================================================</span>
-  <span class='fu'>mapview</span>(<span class='kw'>franconia</span>, burst = <span class='fl'>TRUE</span>)
-  <span class='fu'>mapview</span>(<span class='kw'>franconia</span>, burst = <span class='fl'>TRUE</span>, hide = <span class='fl'>TRUE</span>)
-  <span class='fu'>mapview</span>(<span class='kw'>franconia</span>, zcol = <span class='st'>"district"</span>, burst = <span class='fl'>TRUE</span>)
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, burst <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, burst <span class='op'>=</span> <span class='cn'>TRUE</span>, hide <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, zcol <span class='op'>=</span> <span class='st'>"district"</span>, burst <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 
   <span class='co'>### ceci constitue la fin du pipe ======================================</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://r-spatial.github.io/sf'>sf</a></span>)
+  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span>
 
-  <span class='kw'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='kw'>sf</span>::<span class='fu'><a href='https://rdrr.io/pkg/sf/man/geos_combine.html'>st_union</a></span>() <span class='op'>%&gt;%</span>
-    <span class='fu'>mapview</span>()
+  <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_combine.html'>st_union</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>mapview</span><span class='op'>(</span><span class='op'>)</span>
 
-  <span class='kw'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='kw'>district</span>) <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span>() <span class='op'>%&gt;%</span>
-    <span class='fu'>mapview</span>(zcol = <span class='st'>"district"</span>)
+  <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>district</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"district"</span><span class='op'>)</span>
 
-  <span class='kw'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='kw'>district</span>) <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span>() <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(area = <span class='fu'><a href='https://rdrr.io/pkg/sf/man/geos_measures.html'>st_area</a></span>(<span class='kw'>.</span>) <span class='op'>/</span> <span class='fl'>1e6</span>) <span class='op'>%&gt;%</span>
-    <span class='fu'>mapview</span>(zcol = <span class='st'>"area"</span>)
+  <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>district</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>area <span class='op'>=</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span> <span class='op'>/</span> <span class='fl'>1e6</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"area"</span><span class='op'>)</span>
 
-  <span class='kw'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(area = <span class='kw'>sf</span>::<span class='fu'><a href='https://rdrr.io/pkg/sf/man/geos_measures.html'>st_area</a></span>(<span class='kw'>.</span>)) <span class='op'>%&gt;%</span>
-    <span class='fu'>mapview</span>(zcol = <span class='st'>"area"</span>, legend = <span class='fl'>TRUE</span>)
+  <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>area <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"area"</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-  <span class='kw'>breweries</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/sf/man/geos_binary_ops.html'>st_intersection</a></span>(<span class='kw'>franconia</span>) <span class='op'>%&gt;%</span>
-    <span class='fu'>mapview</span>(zcol = <span class='st'>"district"</span>)
+  <span class='va'>breweries</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_binary_ops.html'>st_intersection</a></span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"district"</span><span class='op'>)</span>
 
-  <span class='kw'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(count = <span class='fu'><a href='https://rdrr.io/r/base/lengths.html'>lengths</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/sf/man/geos_binary_pred.html'>st_contains</a></span>(<span class='kw'>.</span>, <span class='kw'>breweries</span>))) <span class='op'>%&gt;%</span>
-    <span class='fu'>mapview</span>(zcol = <span class='st'>"count"</span>)
+  <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lengths.html'>lengths</a></span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_contains</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='va'>breweries</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"count"</span><span class='op'>)</span>
 
-  <span class='kw'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(count = <span class='fu'><a href='https://rdrr.io/r/base/lengths.html'>lengths</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/sf/man/geos_binary_pred.html'>st_contains</a></span>(<span class='kw'>.</span>, <span class='kw'>breweries</span>)),
-           density = <span class='kw'>count</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/geos_measures.html'>st_area</a></span>(<span class='kw'>.</span>)) <span class='op'>%&gt;%</span>
-    <span class='fu'>mapview</span>(zcol = <span class='st'>"density"</span>)
-}
+  <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lengths.html'>lengths</a></span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_contains</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='va'>breweries</span><span class='op'>)</span><span class='op'>)</span>,
+           density <span class='op'>=</span> <span class='va'>count</span> <span class='op'>/</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"density"</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 </div></pre>
   </div>

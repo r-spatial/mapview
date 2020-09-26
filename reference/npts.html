@@ -150,7 +150,7 @@
     <p>count the number of points/vertices/nodes of sf objects</p>
     </div>
 
-    <pre class="usage"><span class='fu'>npts</span>(<span class='kw'>x</span>, by_feature = <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>npts</span><span class='op'>(</span><span class='va'>x</span>, by_feature <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,13 +170,13 @@
     <p>currently only works for *POINTS, *LINES and *POLYGONS (not GEOMETRYCOLLECTION).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>npts</span>(<span class='kw'>franconia</span>)
-</div><div class='output co'>#&gt; [1] 5858</div><div class='input'><span class='fu'>npts</span>(<span class='kw'>franconia</span>, by_feature = <span class='fl'>TRUE</span>)
+    <pre class="examples"><div class='input'><span class='fu'>npts</span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 5858</div><div class='input'><span class='fu'>npts</span><span class='op'>(</span><span class='va'>franconia</span>, by_feature <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1]  27  61  47  43 288 331 238 146 232 159 164 153 125  53  39  36 109  33 341
-#&gt; [20] 244  98 220 220 232 174  40  33  52 191 212 208 202 153 186 240 245 283</div><div class='input'><span class='fu'>npts</span>(<span class='kw'>sf</span>::<span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_geometry.html'>st_geometry</a></span>(<span class='kw'>franconia</span>[<span class='fl'>1</span>, ])) <span class='co'># first polygon</span>
+#&gt; [20] 244  98 220 220 232 174  40  33  52 191 212 208 202 153 186 240 245 283</div><div class='input'><span class='fu'>npts</span><span class='op'>(</span><span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_geometry.html'>st_geometry</a></span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>[</span><span class='fl'>1</span>, <span class='op'>]</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># first polygon</span>
 </div><div class='output co'>#&gt; [1] 27</div><div class='input'>
-<span class='fu'>npts</span>(<span class='kw'>breweries</span>) <span class='co'># is the same as</span>
-</div><div class='output co'>#&gt; [1] 224</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='kw'>breweries</span>)
+<span class='fu'>npts</span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span> <span class='co'># is the same as</span>
+</div><div class='output co'>#&gt; [1] 224</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 224</div><div class='input'>
 </div></pre>
   </div>

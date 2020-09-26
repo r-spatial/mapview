@@ -152,14 +152,14 @@
 <code>.pdf</code>, or <code>.jpeg</code> image.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mapshot</span>(
-  <span class='kw'>x</span>,
-  url = <span class='kw'>NULL</span>,
-  file = <span class='kw'>NULL</span>,
-  remove_controls = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"zoomControl"</span>, <span class='st'>"layersControl"</span>, <span class='st'>"homeButton"</span>, <span class='st'>"scaleBar"</span>,
-    <span class='st'>"drawToolbar"</span>, <span class='st'>"easyButton"</span>),
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>mapshot</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  url <span class='op'>=</span> <span class='cn'>NULL</span>,
+  file <span class='op'>=</span> <span class='cn'>NULL</span>,
+  remove_controls <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"zoomControl"</span>, <span class='st'>"layersControl"</span>, <span class='st'>"homeButton"</span>, <span class='st'>"scaleBar"</span>,
+    <span class='st'>"drawToolbar"</span>, <span class='st'>"easyButton"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -205,22 +205,22 @@ local html file.</p>
     <div class='dont-index'><p><code>webshot</code>, <code>saveWidget</code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='kw'>m</span> <span class='op'>=</span> <span class='fu'><a href='mapView.html'>mapview</a></span>(<span class='kw'>breweries</span>)
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>m</span> <span class='op'>=</span> <span class='fu'><a href='mapView.html'>mapview</a></span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span>
 
   <span class='co'>## create standalone .html</span>
-  <span class='fu'>mapshot</span>(<span class='kw'>m</span>, url = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/map.html"</span>))
+  <span class='fu'>mapshot</span><span class='op'>(</span><span class='va'>m</span>, url <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/map.html"</span><span class='op'>)</span><span class='op'>)</span>
 
   <span class='co'>## create standalone .png; temporary .html is removed automatically unless</span>
   <span class='co'>## 'remove_url = FALSE' is specified</span>
-  <span class='fu'>mapshot</span>(<span class='kw'>m</span>, file = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/map.png"</span>))
-  <span class='fu'>mapshot</span>(<span class='kw'>m</span>, file = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/map.png"</span>),
-          remove_controls = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"homeButton"</span>, <span class='st'>"layersControl"</span>))
+  <span class='fu'>mapshot</span><span class='op'>(</span><span class='va'>m</span>, file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/map.png"</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'>mapshot</span><span class='op'>(</span><span class='va'>m</span>, file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/map.png"</span><span class='op'>)</span>,
+          remove_controls <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"homeButton"</span>, <span class='st'>"layersControl"</span><span class='op'>)</span><span class='op'>)</span>
 
   <span class='co'>## create .html and .png</span>
-  <span class='fu'>mapshot</span>(<span class='kw'>m</span>, url = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/map.html"</span>),
-          file = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/map.png"</span>))
-}
+  <span class='fu'>mapshot</span><span class='op'>(</span><span class='va'>m</span>, url <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/map.html"</span><span class='op'>)</span>,
+          file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/map.png"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 </div></pre>
   </div>
