@@ -119,11 +119,21 @@ leaflet_stars = function(x,
     # }
     # if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
     # EJP: handle factors first
+
+
+    ## FIXME HERE!!
+    if (inherits(layer, "units")) {
+      layer.name = paste0(
+        layer.name
+        , " [", paste(attributes(layer)$units$numerator, collapse = ""), "]"
+      )
+    }
+
     if (is.null(at)) {
       atv = if (is.factor(x[[1]]))
         as.vector(layer)
       else
-        lattice::do.breaks(extendLimits(range(layer, na.rm = TRUE)), 256)
+        lattice::do.breaks(extendLimits(unclass(range(layer, na.rm = TRUE))), 256)
     } else {
       atv = at
     }
@@ -158,7 +168,7 @@ leaflet_stars = function(x,
     }
     # x <- sf::st_transform(x, crs = 3857)
     ## add layers to base map
-    if (utils::packageVersion("leafem") < "0.1.3") {
+    if (!mapviewGetOption("georaster")) {
       m = leafem::addStarsImage(map = m,
                                 x = x,
                                 band = band,
@@ -168,7 +178,9 @@ leaflet_stars = function(x,
                                 group = grp,
                                 layerId = grp,
                                 ...)
-    } else {
+    }
+
+    if (mapviewGetOption("georaster")) {
       label = FALSE
 
       if (!is.null(pane)) {

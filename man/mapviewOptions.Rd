@@ -41,7 +41,8 @@ mapviewOptions(
   default = FALSE,
   console = TRUE,
   watch = FALSE,
-  fgb
+  fgb,
+  georaster
 )
 
 mapviewGetOption(param)
@@ -174,6 +175,11 @@ It should also help to visualise larger data sets due to a reduced memeory footp
 A note of warning, data will be attached to the html
 via a <src=...> call which means that the html is not selfcontained anymore
 (so it cannot be used without an accompanying folder).}
+
+\item{georaster}{whether to use \code{\link[leafem]{addGeoRaster}} instead of
+\code{\link[leaflet]{addRasterImage}}. If set to \code{TRUE} raster image visualisation
+ will be more performant for large raster data, but given the nearest neighbor
+ resampling results may be slightly distorted.}
 
 \item{param}{character. parameter to be queried.}
 }
