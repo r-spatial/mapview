@@ -611,8 +611,15 @@ setMethod('mapView', signature(x = 'sf'),
                    " does not contain data \n", call. = FALSE)
             }
 
-            if (length(unique(sf::st_dimension(x))) > 1) {
+            dims = try(sf::st_dimension(x), silent = TRUE)
+            if (inherits(dims, "try-error")) {
               x = sf::st_cast(x)
+            }
+            if (!inherits(dims, "try-error")) {
+              if (length(unique(dims)) > 1 |
+                  inherits(sf::st_geometry(x), "sfc_GEOMETRY")) {
+                x = sf::st_cast(x)
+              }
             }
 
             if (is.null(zcol) & is.null(legend)) legend = FALSE
