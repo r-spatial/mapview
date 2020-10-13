@@ -219,14 +219,13 @@ createFileId = function(ndigits = 6) {
 extendLimits = function(lim, length = 1, prop = 0.07) {
   if (length(lim) != 2) stop("lim should be of length 2")
   if (lim[1] > lim[2]) lim = rev(lim)
-  if (all.equal(lim[1], lim[2])) lim = lim * c(0.999, 1.001)
   if (!missing(length)) {
     prop = (as.numeric(length) -
               as.numeric(diff(lim))) / (2 * as.numeric(diff(lim)))
   }
-  if (lim[1] == lim[2])
+  if (isTRUE(all.equal(lim[1], lim[2]))) {
     lim + 0.005 * c(-length, length)
-  else {
+  } else {
     d = diff(as.numeric(lim))
     lim + prop * d * c(-1, 1)
   }
