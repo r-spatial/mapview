@@ -175,6 +175,7 @@ mapviewLegend <- function(values,
                           position = mapviewGetOption("legend.pos"),
                           ...) {
 
+  values = as.vector(values)
   ## factor
   ## if character convert to factor
   if (inherits(values, "character")) {
