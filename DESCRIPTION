@@ -1,8 +1,8 @@
 Type: Package
 Package: mapview
 Title: Interactive Viewing of Spatial Data in R
-Version: 2.9.4
-Date: 2020-09-19
+Version: 2.9.6
+Date: 2020-11-21
 Authors@R: 
     c(person(given = "Tim",
              family = "Appelhans",

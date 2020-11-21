@@ -1,4 +1,4 @@
-## mapview 2.9.4
+## mapview 2.9.6
 
 new features:
 
@@ -13,6 +13,8 @@ bugfixes:
   * rmd files did not compile due to missing popup.css #312
   * method for RasterStackBrick now respects query.digits option. #334
   * don't emit warning when length(at) == length(color). #327 
+  * alpha.regions now respected if burst = TRUE. #352
+  * printing in rmarkdown notebooks works now if fgb & georaster options are FALSE. #351
 
 ## mapview 2.9.0
 
