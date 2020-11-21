@@ -669,8 +669,8 @@ setMethod('mapView', signature(x = 'sf'),
 
               # for whatever reason we need to evaluate a few things here...??
               popup = popup
-              lwd = lineWidth(x)
-              alpha.regions = regionOpacity(x)
+              lwd = lwd
+              alpha.regions = alpha.regions
               x <- burst(x = x,
                          zcol = zcol,
                          burst = burst)
