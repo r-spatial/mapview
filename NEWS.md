@@ -1,4 +1,4 @@
-## mapview 2.9.6
+## mapview 2.9.7
 
 new features:
 
@@ -15,6 +15,7 @@ bugfixes:
   * don't emit warning when length(at) == length(color). #327 
   * alpha.regions now respected if burst = TRUE. #352
   * printing in rmarkdown notebooks works now if fgb & georaster options are FALSE. #351
+  * setting options("OutDec" = ",") does not cause an error anymore. #353
 
 ## mapview 2.9.0
 
