@@ -1,8 +1,8 @@
 Type: Package
 Package: mapview
 Title: Interactive Viewing of Spatial Data in R
-Version: 2.9.7
-Date: 2020-11-29
+Version: 2.9.8
+Date: 2020-12-21
 Authors@R: 
     c(person(given = "Tim",
              family = "Appelhans",
@@ -91,6 +91,7 @@ Suggests:
     mapdeck,
     plainview,
     rmarkdown,
+    rstudioapi,
     stars,
     tinytest
 ByteCompile: yes

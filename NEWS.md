@@ -1,8 +1,9 @@
-## mapview 2.9.7
+## mapview 2.9.8
 
 new features:
 
   * new implementation of print method to make mapview with flatgeobuf work outside RStudio.
+  * auto setting of mapviewOptions(fgb = TRUE) at load only if not in knitr, notebook. https://twitter.com/TimSalabim3/status/1337714868925980674
 
 miscellaneous:
 
