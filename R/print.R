@@ -4,10 +4,12 @@ printMapview = function (x) {
   ## set options fgb & georaster to FALSE!!
   if (!isTRUE(mapviewGetOption("fgb")) & !isTRUE(mapviewGetOption("georaster"))) {
     print(mapview2leaflet(x))
-    return(invisible(x))
+    # invisible(x)
+    return(invisible())
   }
 
-  x = x@map
+  ## convert to leaflet object
+  x = mapview2leaflet(x)
   viewer = getOption("viewer")
   if (mapviewGetOption("viewer.suppress")) {
     viewer = NULL
@@ -58,8 +60,7 @@ setMethod('print', signature(x = "mapview"), printMapview)
 #' Method for printing mapview objects (show)
 #' @param object a mapview object
 setMethod("show", signature(object = "mapview"),
-          function(object)
-          {
+          function(object) {
             print(object)
           }
 )

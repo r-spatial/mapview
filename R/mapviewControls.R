@@ -383,3 +383,11 @@ listifyer = function(x, by_row = FALSE) {
   }
 
 }
+
+
+useFgb = function() {
+  sf::sf_extSoftVersion()[["GDAL"]] >= "3.1.0" &&
+    interactive() && # an interactive session
+    !isTRUE(getOption("rstudio.notebook.executing")) && # Not running in an RStudio notebook chunk
+    !isTRUE(getOption("knitr.in.progress")) # Not actively knitting a document
+}

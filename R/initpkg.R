@@ -1,5 +1,5 @@
 .onLoad = function(libname, pkgname) {
-  if (sf::sf_extSoftVersion()[["GDAL"]] >= "3.1.0") {
+  if (useFgb()) {
     mapviewOptions(fgb = TRUE)
   }
 }
@@ -12,7 +12,7 @@
   msg = sprintf(
     "GDAL version >= 3.1.0 | setting mapviewOptions(fgb = TRUE)"
   )
-  if (sf::sf_extSoftVersion()[["GDAL"]] >= "3.1.0") {
+  if (useFgb()) {
     packageStartupMessage(msg)
     mapviewOptions(fgb = TRUE)
   }
