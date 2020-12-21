@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mapview</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.8</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -123,7 +123,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-spatial/mapview/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -144,12 +144,14 @@
       <small>Source: <a href='https://github.com/r-spatial/mapview/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="mapview-294" class="section level2">
+    <div id="mapview-298" class="section level2">
 <h2 class="hasAnchor">
-<a href="#mapview-294" class="anchor"></a>mapview 2.9.4</h2>
+<a href="#mapview-298" class="anchor"></a>mapview 2.9.8</h2>
 <p>new features:</p>
 <ul>
 <li>new implementation of print method to make mapview with flatgeobuf work outside RStudio.</li>
+<li>auto setting of mapviewOptions(fgb = TRUE) at load only if not in knitr, notebook. <a href="https://twitter.com/TimSalabim3/status/1337714868925980674" class="uri">https://twitter.com/TimSalabim3/status/1337714868925980674</a>
+</li>
 </ul>
 <p>miscellaneous:</p>
 <ul>
@@ -160,6 +162,9 @@
 <li>rmd files did not compile due to missing popup.css <a href='https://github.com/r-spatial/mapview/issues/312'>#312</a></li>
 <li>method for RasterStackBrick now respects query.digits option. <a href='https://github.com/r-spatial/mapview/issues/334'>#334</a></li>
 <li>don’t emit warning when length(at) == length(color). <a href='https://github.com/r-spatial/mapview/issues/327'>#327</a></li>
+<li>alpha.regions now respected if burst = TRUE. <a href='https://github.com/r-spatial/mapview/issues/352'>#352</a></li>
+<li>printing in rmarkdown notebooks works now if fgb &amp; georaster options are FALSE. <a href='https://github.com/r-spatial/mapview/issues/351'>#351</a></li>
+<li>setting options(“OutDec” = “,”) does not cause an error anymore. <a href='https://github.com/r-spatial/mapview/issues/353'>#353</a></li>
 </ul>
 </div>
     <div id="mapview-290" class="section level2">
