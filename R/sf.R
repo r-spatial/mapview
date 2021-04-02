@@ -1006,4 +1006,5 @@ rm_sfg_names = function(x) {
     attributes(geom_noname) = attributes(x)
     return(geom_noname)
   }
+  return(x)
 }
