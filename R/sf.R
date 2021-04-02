@@ -535,7 +535,10 @@ leaflet_sfc <- function(x,
                         maxpoints,
                         attributes = NULL,
                         ...) {
+  ## remove geometry names (sfc-level)
   if (!is.null(names(x))) names(x) = NULL
+  ## remove geomerty names(sfg-level)
+  x = rm_sfg_names(x)
   if (is_literally_false(highlight)) highlight = NULL
   if (is_literally_false(popup)) popup = NULL
   if (inherits(x, "XY")) x = sf::st_sfc(x)
@@ -983,5 +986,24 @@ featureComplexity = function(x) {
       "pl" = nNodes(x) / 1e6 * nrings(x),
       "gc" = nNodes(x) / 1e6 * length(x)
     )
+  }
+}
+
+rm_sfg_names = function(x) {
+  if (!is.null(attr(x[[1]][[1]], "names"))) {
+    geom_noname = st_sfc(
+      lapply(
+        x
+        , function(i) {
+          for (j in seq(i)) {
+            attr(i[[j]], "names") = NULL
+          }
+          return(i)
+        }
+      )
+    )
+
+    attributes(geom_noname) = attributes(x)
+    return(geom_noname)
   }
 }
