@@ -15,18 +15,31 @@ factorLegend <- function(map,
                          na.color,
                          layer.name,
                          ...) {
-  pal <- factorPalette(
-    palette = unique(
-      zcolColors(
-        x = values
-        , colors = colors
-        , na.color = na.color
-        , return.sorted = ifelse(is.function(colors), TRUE, FALSE)
-      )
+
+  pltt = unique(
+    zcolColors(
+      x = values
+      , colors = colors
+      , na.color = na.color
+      , return.sorted = ifelse(is.function(colors), TRUE, FALSE)
     )
+  )
+
+  if (length(levels(values)) == length(colors)) {
+    pltt = zcolColors(
+      x = values
+      , colors = colors
+      , na.color = na.color
+      , return.sorted = ifelse(is.function(colors), TRUE, FALSE)
+    )
+  }
+
+  pal <- factorPalette(
+    palette = pltt
     , domain = values
     , na.color = na.color
   )
+
   mvAddLegend(isAvailableInLeaflet()$leggrp,
               layer.name,
               map = map,
@@ -175,7 +188,7 @@ mapviewLegend <- function(values,
                           position = mapviewGetOption("legend.pos"),
                           ...) {
 
-  values = as.vector(values)
+  # values = as.vector(values)
   ## factor
   ## if character convert to factor
   if (inherits(values, "character")) {
@@ -184,7 +197,7 @@ mapviewLegend <- function(values,
 
   ## numeric
   ## if interger convert to numeric
-  if (inherits (values, "integer")) {
+  if (inherits(values, "integer")) {
     values = as.numeric(values)
   }
 
