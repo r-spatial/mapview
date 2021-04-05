@@ -1,4 +1,4 @@
-mapview 2.9.8
+mapview 2.9.9
 
 new features:
 
@@ -17,6 +17,7 @@ bugfixes:
   * alpha.regions now respected if burst = TRUE. #352
   * printing in rmarkdown notebooks works now if fgb & georaster options are FALSE. #351
   * setting options("OutDec" = ",") does not cause an error anymore. #353
+  * factor legens now displayed correctly (hopefully). #362 #356
 
 mapview 2.9.0
 
