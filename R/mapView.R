@@ -38,11 +38,8 @@ if ( !isGeneric('mapView') ) {
 #'   performance with larger data. See \url{https://leafletjs.com/reference-1.6.0.html#canvas}
 #'   for more information. Only applicable for vector data. The default setting will
 #'   decide automatically, based on feature complexity.
-#' @param viewer.suppress whether to render the map in the browser (\code{TRUE})
-#'   or the RStudio viewer (\code{FALSE}). When not using RStudio, maps will open
-#'   in the browser by default. This is passed to \link[htmlwidgets]{sizingPolicy}
-#'   via \link[leaflet]{leafletSizingPolicy}. For raster data the default is \code{FALSE}.
-#'   For vector data it depends on argument \code{canvas}.
+#' @param viewer.suppress deprecated.
+#'   Use \code{mapviewOptions(viewer.suppress = TRUE/FALSE)} instead.
 #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 #'   If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color color (palette) for points/polygons/lines
