@@ -667,11 +667,8 @@ as prefix for the layerId. Ignored if <code>label = FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>viewer.suppress</th>
-      <td><p>whether to render the map in the browser (<code>TRUE</code>)
-or the RStudio viewer (<code>FALSE</code>). When not using RStudio, maps will open
-in the browser by default. This is passed to <a href='https://rdrr.io/pkg/htmlwidgets/man/sizingPolicy.html'>sizingPolicy</a>
-via <a href='https://rdrr.io/pkg/leaflet/man/leafletSizingPolicy.html'>leafletSizingPolicy</a>. For raster data the default is <code>FALSE</code>.
-For vector data it depends on argument <code>canvas</code>.</p></td>
+      <td><p>deprecated.
+Use <code><a href='mapviewOptions.html'>mapviewOptions(viewer.suppress = TRUE/FALSE)</a></code> instead.</p></td>
     </tr>
     <tr>
       <th>...</th>
