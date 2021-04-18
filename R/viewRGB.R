@@ -82,12 +82,16 @@ viewRGB = function(x, r = 3, g = 2, b = 1,
 
   ext = createExtent(x)
 
+  maxbytes = mapviewGetOption("raster.size")
+
   m = leafem::addRasterRGB(map = m, x = x, r = r, g = g, b = b,
-                            quantiles = quantiles,
-                            # maxpixels = maxpixels,
-                            na.color = na.color,
-                            method = method,
-                            group = grp)
+                           quantiles = quantiles,
+                           # maxpixels = maxpixels,
+                           na.color = na.color,
+                           method = method,
+                           group = grp,
+                           maxBytes = maxbytes,
+                           ...)
   m = mapViewLayersControl(map = m,
                             map.types = map.types,
                             names = grp)

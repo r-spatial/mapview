@@ -100,6 +100,8 @@ leafletRL = function(x,
 
     }
 
+    maxbytes = mapviewGetOption("raster.size")
+
     m = leafem::garnishMap(
       map = m
       , leaflet::addRasterImage
@@ -109,6 +111,7 @@ leafletRL = function(x,
       , opacity = alpha.regions
       , group = grp
       , layerId = grp
+      , maxBytes = maxbytes
       , ...
     )
 
