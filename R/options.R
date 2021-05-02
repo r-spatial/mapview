@@ -286,7 +286,7 @@ mapviewOptions = function(platform,
   }
 
   ## legend.opacity ----
-  etLegendOpacity = function(legend.opacity) {
+  setLegendOpacity = function(legend.opacity) {
     options(mapviewLegendOpacity = legend.opacity)
   }
 
@@ -865,7 +865,7 @@ mapviewOptions = function(platform,
   if (!missing(verbose)) { setVerbose(verbose); cnt = cnt + 1 }
   if (!missing(na.color)) { setNAColor(na.color); cnt = cnt + 1 }
   if (!missing(legend)) { setLegend(legend); cnt = cnt + 1 }
-  if (!missing(legend.opacity)) { setLegend(legend.opacity); cnt = cnt + 1 }
+  if (!missing(legend.opacity)) { setLegendOpacity(legend.opacity); cnt = cnt + 1 }
   if (!missing(legend.pos)) { setLegendPos(legend.pos); cnt = cnt + 1 }
   if (!missing(layers.control.pos)) {
     setLayersControlPos(layers.control.pos); cnt = cnt + 1

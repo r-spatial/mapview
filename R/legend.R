@@ -46,7 +46,7 @@ factorLegend <- function(map,
               position = position,
               pal = pal,
               values = values,
-              opacity = 1,
+              opacity = mapviewGetOption("legend.opacity"),
               title = ifelse(length(values) > 1, layer.name, ""),
               ...)
 
@@ -80,7 +80,7 @@ characterLegend <- function(map,
               position = position,
               pal = pal,
               values = values,
-              opacity = 1,
+              opacity = mapviewGetOption("legend.opacity"),
               title = ifelse(length(values) > 1, layer.name, ""))
 }
 
@@ -140,7 +140,7 @@ numericLegend <- function(map,
                 position = position,
                 pal = pal,
                 values = values,
-                opacity = 1,
+                opacity = mapviewGetOption("legend.opacity"),
                 title = ifelse(length(values) > 1, layer.name, ""),
                 ...)
   } else if (is.null(at)) {
@@ -154,7 +154,7 @@ numericLegend <- function(map,
                 position = position,
                 pal = pal,
                 values = values,
-                opacity = 1,
+                opacity = mapviewGetOption("legend.opacity"),
                 title = ifelse(length(values) > 1, layer.name, ""),
                 ...)
   }
@@ -347,7 +347,7 @@ addVectorLegend <- function(x,
                           position = mapviewGetOption("legend.pos"),
                           values = leg_vals,
                           pal = pal2,
-                          opacity = 1,
+                          opacity = mapviewGetOption("legend.opacity"),
                           labFormat = labelFormat(big.mark = ""),
                           title = zcol)
 
@@ -424,7 +424,7 @@ addRasterLegend <- function(x,
                             values = leg_vals,
                             group = group,
                             pal = pal2,
-                            opacity = 1,
+                            opacity = mapviewGetOption("legend.opacity"),
                             labFormat = labelFormat(big.mark = ""),
                             title = title)
   } else {
@@ -432,7 +432,7 @@ addRasterLegend <- function(x,
                             position = mapviewGetOption("legend.pos"),
                             values = leg_vals,
                             pal = pal2,
-                            opacity = 1,
+                            opacity = mapviewGetOption("legend.opacity"),
                             labFormat = labelFormat(big.mark = ""),
                             title = title)
   }
