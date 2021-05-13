@@ -145,12 +145,14 @@ sfFgb = function(x,
   ## label
   if (is.null(label)) {
     if (is.null(zcol)) {
-      x$mvFeatureId = 1:nrow(x)
       label = "mvFeatureId"
     } else {
       label = zcol
     }
   }
+
+  # add mapview feature id to x (needed in several JS steps)
+  x$mvFeatureId = 1:nrow(x)
 
   fl = tempfile(fileext = ".fgb")
   sf::st_write(
