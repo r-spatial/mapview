@@ -1,4 +1,4 @@
-LeafletWidget.methods.addHomeButton = function (xmin, ymin, xmax, ymax,
+LeafletWidget.methods.addHomeButton = function (xmin, ymin, xmax, ymax, useext,
                                                 group, label, icon, position) {
 
   if (this.easyButton) {
@@ -6,7 +6,7 @@ LeafletWidget.methods.addHomeButton = function (xmin, ymin, xmax, ymax,
 	}
 
   var bx = [];
-  if (xmin) {
+  if (useext) {
     bx = [[ymin, xmin], [ymax, xmax]];
   } else {
     bx = this.layerManager._groupContainers[group].getBounds();
