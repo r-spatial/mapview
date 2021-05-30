@@ -79,25 +79,36 @@ mapviewColors <- function(x,
 
 
 ## raster colors
-rasterColors <- function(col.regions,
+rasterColors = function(col.regions,
                          at,
                          na.color) {
 
-  f <- function(x) {
+  f = function(x) {
 
-    cols <- lattice::level.colors(x,
-                                  at = at,
-                                  col.regions = col.regions)
-    #cols <- col2Hex(cols)
-    cols[is.na(cols)] <- na.color
+    if (!is.null(attr(x, "color"))) {
+      cols = attributes(x)$colors
+      cols = cols[as.numeric(x)]
+    } else {
+      cols = lattice::level.colors(
+        x
+        , at = at
+        , col.regions = col.regions
+      )
+    }
+
+    cols[is.na(cols)] = na.color
 
     return(col2Hex(cols, alpha = TRUE))
 
   }
 
-  attributes(f) <- list(colorType = "bin",
-                        colorArgs = list(bins = at,
-                                         na.color = na.color))
+  attributes(f) = list(
+    colorType = "bin"
+    , colorArgs = list(
+      bins = at
+      , na.color = na.color
+    )
+  )
 
   return(f)
 

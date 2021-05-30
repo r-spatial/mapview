@@ -91,10 +91,17 @@ starsCheckAdjustProjection <- function(x, method) {
   #     method = "ngb")
   #   x <- raster::as.factor(x)
   # } else {
-  x <- sf::st_transform(
-    x,
-    crs = llcrs
-  )
+
+  if (utils::packageVersion("stars") >= "0.4-1") {
+    x = stars::st_warp(x, crs = 3857)
+  } else {
+    x = sf::st_transform(x, crs = 3857)
+  }
+
+  # x <- sf::st_transform(
+  #   x,
+  #   crs = llcrs
+  # )
   # }
 
   return(x)

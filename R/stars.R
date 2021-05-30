@@ -78,8 +78,7 @@ leaflet_stars = function(x,
                          viewer.suppress,
                          pane,
                          ...) {
-  if (inherits(map, "mapview")) map = mapview2leaflet(map)
-  if (is.null(layer.name)) layer.name = makeLayerName(x, zcol = band)
+
   if (native.crs) {
     stop("native.crs display of stars layers is not (yet) supported",
          call. = FALSE)
@@ -93,166 +92,207 @@ leaflet_stars = function(x,
     #           layer.name = layer.name,
     #           gdal = TRUE,
     #           ...)
-  } else {
-    is.fact = is.factor(x[[1]]) # raster::is.factor(x)
-    # ext = raster::extent(raster::projectExtent(x, crs = llcrs))
-    m = initMap(map, map.types, sf::st_crs(x)$proj4string, viewer.suppress = viewer.suppress)
-    # x = rasterCheckSize(x, maxpixels = maxpixels)
-    # x = starsCheckAdjustProjection(x, method)
-    ext = createExtent(sf::st_transform(sf::st_as_sfc(sf::st_bbox(x)), crs = 4326))
-    # if (!is.na(raster::projection(x)) & trim) x = trim(x)
-    # if (is.fact) x = raster::as.factor(x)
-	# EJP FIXME: to be corrected for dim(x)>3:
-    if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
-    # if (is.null(values)) {
-    #   # if (is.fact) {
-    #   #   at = x@data@attributes[[1]]$ID
-    #   # } else {
-    #   offset = diff(range(as.numeric(layer), na.rm = TRUE)) * 0.05
-    #   top = max(as.numeric(layer), na.rm = TRUE) + offset
-    #   bot = min(as.numeric(layer), na.rm = TRUE) - offset
-    #   values = seq(bot, top, length.out = 10)
-    #   values = round(values, 5)
-    #   # }
-    # } else {
-    #   values = round(values, 5)
-    # }
-    # if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
-    # EJP: handle factors first
-
-
-    ## FIXME HERE!!
-    if (inherits(layer, "units")) {
-      layer.name = paste0(
-        layer.name
-        , " [", paste(attributes(layer)$units$numerator, collapse = ""), "]"
-      )
-    }
-
-    if (is.null(at)) {
-      atv = if (is.factor(x[[1]]))
-        as.vector(layer)
-      else
-        lattice::do.breaks(extendLimits(unclass(range(layer, na.rm = TRUE))), 256)
-    } else {
-      atv = at
-    }
-
-    if (is.fact) {
-      ### delete at some stage!!! ###
-      pal = leaflet::colorFactor(palette = col.regions,
-                                 domain = seq(1, length.out = length(levels(x[[1]]))),
-                                 na.color = na.color)
-      # pal2 = pal
-    } else {
-      pal = rasterColors(col.regions,
-                         at = atv,
-                         na.color = na.color)
-      # if (length(at) > 11) {
-      #   pal2 = leaflet::colorNumeric(palette = col.regions,
-      #                                domain = at,
-      #                                na.color = na.color)
-      # } else {
-      #   pal2 = leaflet::colorBin(palette = col.regions,
-      #                            bins = length(at),
-      #                            domain = at,
-      #                            na.color = na.color)
-      # }
-    }
-
-    if (use.layer.names) {
-      grp = names(x)
-      layer.name = names(x)
-    } else {
-      grp = layer.name
-    }
-    # x <- sf::st_transform(x, crs = 3857)
-    ## add layers to base map
-    if (!mapviewGetOption("georaster")) {
-      m = leafem::addStarsImage(map = m,
-                                x = x,
-                                band = band,
-                                colors = pal,
-                                project = TRUE,
-                                opacity = alpha.regions,
-                                group = grp,
-                                layerId = grp,
-                                ...)
-    }
-
-    if (mapviewGetOption("georaster")) {
-      label = FALSE
-
-      if (!is.null(pane)) {
-        if (pane == "auto") {
-          pane = paneName(x)
-          zindex = zIndex(x)
-          m = leaflet::addMapPane(m, pane, zindex)
-        }
-      }
-
-      dm_lngth = length(dim(x))
-      if (dm_lngth > 2) x = x[, , , band] else x = x
-
-      m = leafem::addGeoRaster(
-        map = m
-        , x = x
-        , group = grp
-        , layrId = grp
-        , opacity = alpha.regions
-        , colorOptions = leafem::colorOptions(
-          palette = col.regions
-          , breaks = at
-          , na.color = na.color
-        )
-        , options = leaflet::tileOptions(
-          pane = pane
-        )
-      )
-    }
-
-    m = removeLayersControl(m)
-    m = mapViewLayersControl(map = m,
-                             map.types = map.types,
-                             names = grp)
-    if (label)
-      m = leafem::addImageQuery(m, x, band = band, group = grp, layerId = grp,
-                                project = TRUE,
-                                type = query.type, digits = query.digits,
-                                position = query.position, prefix = query.prefix)
-    if (legend) {
-      # stop("legend currently not supported for stars layers", call. = FALSE)
-      ## add legend
-      # m = leaflet::addLegend(map = m,
-      #                         pal = pal2,
-      #                         opacity = legend.opacity,
-      #                         values = at,
-      #                         title = grp)
-      legend = mapviewLegend(values = as.vector(x[[1]]),
-                             colors = col.regions,
-                             at = at,
-                             na.color = col2Hex(na.color),
-                             layer.name = layer.name)
-
-      m = legend(m)
-
-      # m = addRasterLegend(x = x,
-      #                     map = m,
-      #                     title = grp,
-      #                     group = grp,
-      #                     at = at,
-      #                     col.regions = col.regions,
-      #                     na.color = na.color)
-    }
-
-    m = leaflet::addScaleBar(map = m, position = "bottomleft")
-    m = leafem::addMouseCoordinates(m)
-    m = leafem::addCopyExtent(m)
-    if (homebutton) m = leafem::addHomeButton(m, ext, group = layer.name)
-    out = new('mapview', object = list(x), map = m)
-    return(out)
   }
+
+  if (inherits(map, "mapview")) map = mapview2leaflet(map)
+  if (is.null(layer.name)) layer.name = makeLayerName(x, zcol = band)
+
+  is.fact = is.factor(x[[1]]) # raster::is.factor(x)
+  if (is.fact) {
+    method = "near"
+  }
+
+  ext = createExtent(
+    sf::st_transform(
+      sf::st_as_sfc(
+        sf::st_bbox(x)
+      )
+      , crs = 4326
+    )
+  )
+
+  x = starsCheckAdjustProjection(x, method)
+  # ext = raster::extent(raster::projectExtent(x, crs = llcrs))
+  m = initMap(map, map.types, sf::st_crs(x)$proj4string, viewer.suppress = viewer.suppress)
+  # x = rasterCheckSize(x, maxpixels = maxpixels)
+
+  # if (!is.na(raster::projection(x)) & trim) x = trim(x)
+  # if (is.fact) x = raster::as.factor(x)
+  # EJP FIXME: to be corrected for dim(x)>3:
+  if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
+  # if (is.null(values)) {
+  #   # if (is.fact) {
+  #   #   at = x@data@attributes[[1]]$ID
+  #   # } else {
+  #   offset = diff(range(as.numeric(layer), na.rm = TRUE)) * 0.05
+  #   top = max(as.numeric(layer), na.rm = TRUE) + offset
+  #   bot = min(as.numeric(layer), na.rm = TRUE) - offset
+  #   values = seq(bot, top, length.out = 10)
+  #   values = round(values, 5)
+  #   # }
+  # } else {
+  #   values = round(values, 5)
+  # }
+  # if(length(dim(x)) == 2) layer = x[[1]] else layer = x[[1]][, , band]
+  # EJP: handle factors first
+
+
+  ## FIXME HERE!!
+  if (inherits(layer, "units")) {
+    layer.name = paste0(
+      layer.name
+      , " [", paste(attributes(layer)$units$numerator, collapse = ""), "]"
+    )
+  }
+
+  if (is.null(at)) {
+    if (is.factor(layer)) {
+      # atv = as.vector(layer)
+      atv = lattice::do.breaks(
+        extendLimits(
+          range(
+            unique(
+              as.numeric(
+                layer
+              )
+            )
+            , na.rm = TRUE
+          )
+        )
+        , 256
+      )
+    } else {
+      atv = lattice::do.breaks(
+        extendLimits(
+          unclass(
+            range(
+              layer
+              , na.rm = TRUE
+            )
+          )
+        )
+        , 256
+      )
+    }
+  } else {
+    atv = at
+  }
+
+  # if (is.fact) {
+  #   ### delete at some stage!!! ###
+  #   pal = leaflet::colorFactor(palette = col.regions,
+  #                              domain = seq(1, length.out = length(levels(x[[1]]))),
+  #                              na.color = na.color)
+  #   # pal2 = pal
+  # } else {
+  pal = rasterColors(col.regions,
+                     at = atv,
+                     na.color = na.color)
+  # if (length(at) > 11) {
+  #   pal2 = leaflet::colorNumeric(palette = col.regions,
+  #                                domain = at,
+  #                                na.color = na.color)
+  # } else {
+  #   pal2 = leaflet::colorBin(palette = col.regions,
+  #                            bins = length(at),
+  #                            domain = at,
+  #                            na.color = na.color)
+  # }
+  # }
+
+  if (use.layer.names) {
+    grp = names(x)
+    layer.name = names(x)
+  } else {
+    grp = layer.name
+  }
+  # x <- sf::st_transform(x, crs = 3857)
+  ## add layers to base map
+  if (!mapviewGetOption("georaster")) {
+    m = leafem::addStarsImage(map = m,
+                              x = x,
+                              band = band,
+                              colors = pal,
+                              project = FALSE,
+                              opacity = alpha.regions,
+                              group = grp,
+                              layerId = grp,
+                              ...)
+  }
+
+  if (mapviewGetOption("georaster")) {
+    label = FALSE
+
+    if (!is.null(pane)) {
+      if (pane == "auto") {
+        pane = paneName(x)
+        zindex = zIndex(x)
+        m = leaflet::addMapPane(m, pane, zindex)
+      }
+    }
+
+    dm_lngth = length(dim(x))
+    if (dm_lngth > 2) x = x[, , , band] else x = x
+
+    m = leafem::addGeoRaster(
+      map = m
+      , x = x
+      , group = grp
+      , layrId = grp
+      , opacity = alpha.regions
+      , colorOptions = leafem::colorOptions(
+        palette = col.regions
+        , breaks = at
+        , na.color = na.color
+      )
+      , options = leaflet::tileOptions(
+        pane = pane
+      )
+    )
+  }
+
+  m = removeLayersControl(m)
+  m = mapViewLayersControl(map = m,
+                           map.types = map.types,
+                           names = grp)
+  if (label)
+    m = leafem::addImageQuery(m, x, band = band, group = grp, layerId = grp,
+                              project = TRUE,
+                              type = query.type, digits = query.digits,
+                              position = query.position, prefix = query.prefix)
+  if (legend) {
+    # stop("legend currently not supported for stars layers", call. = FALSE)
+    ## add legend
+    # m = leaflet::addLegend(map = m,
+    #                         pal = pal2,
+    #                         opacity = legend.opacity,
+    #                         values = at,
+    #                         title = grp)
+    legend = mapviewLegend(values = as.vector(layer),
+                           colors = col.regions,
+                           at = at,
+                           na.color = col2Hex(na.color),
+                           layer.name = layer.name)
+
+    m = legend(m)
+
+    # m = addRasterLegend(x = x,
+    #                     map = m,
+    #                     title = grp,
+    #                     group = grp,
+    #                     at = at,
+    #                     col.regions = col.regions,
+    #                     na.color = na.color)
+  }
+
+  m = leaflet::addScaleBar(map = m, position = "bottomleft")
+  m = leafem::addMouseCoordinates(m)
+  m = leafem::addCopyExtent(m)
+  if (homebutton) m = leafem::addHomeButton(m, ext, group = layer.name)
+  out = new('mapview', object = list(x), map = m)
+  return(out)
 }
+
 
 
 stars2Array = function(x, band = 1) {
