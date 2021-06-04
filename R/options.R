@@ -1040,11 +1040,21 @@ mapviewOptions = function(platform,
 #' @param param character. parameter(s) to be queried.
 #' @export mapviewGetOption
 mapviewGetOption = function(param) {
-  Map(
-    function(p) {
-      mapviewOptions(console = FALSE)[[p]]
-    }
-    , p = param
-  )
+  if (length(param) == 1) {
+    return(
+      mapviewOptions(console = FALSE)[[param]]
+    )
+  }
+
+  if (length(param) > 1) {
+    return(
+      Map(
+        function(p) {
+          mapviewOptions(console = FALSE)[[p]]
+        }
+        , p = param
+      )
+    )
+  }
 }
 
