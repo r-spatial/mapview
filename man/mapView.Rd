@@ -477,8 +477,10 @@ as prefix for the layerId. Ignored if \code{label = FALSE}.}
 Use \code{mapviewOptions(viewer.suppress = TRUE/FALSE)} instead.}
 
 \item{...}{additional arguments passed on to respective functions.
-  See \code{\link{addRasterImage}}, \code{\link{addCircles}},
-\code{\link{addPolygons}}, \code{\link{addPolylines}} for details}
+See \code{\link{addRasterImage}}, \code{\link{addCircles}},
+\code{\link{addPolygons}}, \code{\link{addPolylines}} for details.
+Furthermore, you can pass hidden arguments to some methods. See Details for
+a list of supported hidden arguments.}
 
 \item{band}{for stars layers, the band number to be plotted.}
 
@@ -579,7 +581,11 @@ the popup will potentially still say something like "POLYGON Z".
   the number of features (points, lines or polygons). When the number of
   features in the current view window is larger than \code{maxFeatures} then
   features are rendered on the canvas, otherwise they are rendered as svg objects
-  and fully queriable.
+  and fully queriable.\cr
+  \cr
+  Hidden arguments that can be set via \code{...}:\cr
+  \cr
+  * \code{hide}: hide all but the first layer when rendering a RasterStackBrick.
 }
 \section{Methods (by class)}{
 \itemize{

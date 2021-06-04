@@ -266,7 +266,7 @@ leafletRSB = function(x,
 
     if (length(getLayerNamesFromMap(m@map)) > 1) {
       m = leaflet::hideGroup(map = m@map,
-                             group = layers2bHidden(m@map))
+                             group = layers2bHidden(m@map, ...))
     }
     out = new('mapview', object = list(x), map = m)
   }
