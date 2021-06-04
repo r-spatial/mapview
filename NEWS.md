@@ -1,4 +1,4 @@
-## mapview 2.9.11
+## mapview 2.9.12
 
 new features:
 
@@ -21,6 +21,7 @@ bugfixes:
   * setting options("OutDec" = ",") does not cause an error anymore. #353
   * factor legends now displayed correctly (hopefully). #362 #356
   * re-enabled hidden argument `hide` to hide all but the first layer of a RasterStackBrick. #374
+  * custom layer names now respected when rendering lists (if same length). #383
 
 ## mapview 2.9.0
 
