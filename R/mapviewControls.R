@@ -183,7 +183,11 @@ regionOpacity = function(x) {
 }
 
 
-basemaps = function(colors) {
+basemaps = function(colors, shuffle = mapviewGetOption("basemaps.color.shuffle")) {
+  if (!shuffle) {
+    return(mapviewGetOption("basemaps"))
+  }
+
   ml = mean(as.numeric(sapply(colors, luminence)))
   if (length(unique(colors)) == 1) {
     unique_cyan = ifelse(unique(colors) %in% c("cyan", "#00ffff", "#00FFFF"), TRUE, FALSE)

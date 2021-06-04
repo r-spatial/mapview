@@ -14,6 +14,9 @@
 #' @param basemaps character. The basemaps to be used for rendering data. See
 #' \url{https://leaflet-extras.github.io/leaflet-providers/preview/} for possible
 #' values
+#' @param basemaps.color.shuffle logical. Should basemaps order be changed to
+#' enhance contrast based on layer coloring. Set to FALSE if you supply custom
+#' basemaps or want to ensure that "CartoDB.Positron" is always the default.
 #' @param raster.palette a color palette function for raster visualisation.
 #' Should be a function that takes an integer as input and returns a vector of colors.
 #' See \code{\link{colorRampPalette}} for details.
@@ -134,6 +137,7 @@
 #' @aliases mapviewOptions
 mapviewOptions = function(platform,
                           basemaps,
+                          basemaps.color.shuffle,
                           raster.palette,
                           vector.palette,
                           verbose,
@@ -237,6 +241,21 @@ mapviewOptions = function(platform,
       return(default)
     } else {
       return(bm)
+    }
+  }
+
+  ## basemaps color shuffling
+  setBasemapsShuffle = function(shuffle) {
+    options(mapviewBasemapsColorShuffle = shuffle)
+  }
+
+  .basemapsShuffle = function() {
+    default = TRUE
+    shffl = getOption('mapviewBasemapsColorShuffle')
+    if (is.null(shffl)) {
+      return(default)
+    } else {
+      return(shffl)
     }
   }
 
@@ -812,6 +831,7 @@ mapviewOptions = function(platform,
                                 "OpenStreetMap",
                                 "Esri.WorldImagery",
                                 "OpenTopoMap"))
+    options(mapviewBasemapsColorShuffle = TRUE)
     options(mapviewRasterPalette = mapviewPalette(name = "mapviewRasterColors"))
     options(mapviewVectorPalette = mapviewPalette(name = "mapviewVectorColors"))
     options(mapviewVerbose = FALSE)
@@ -856,6 +876,9 @@ mapviewOptions = function(platform,
   ## global
   if (!missing(platform)) { setPlatform(platform); cnt = cnt + 1 }
   if (!missing(basemaps)) { setBasemaps(basemaps); cnt = cnt + 1 }
+  if (!missing(basemaps.color.shuffle)) {
+    setBasemapsShuffle(basemaps.color.shuffle); cnt = cnt + 1
+  }
   if (!missing(raster.palette)) {
     setRasterPalette(raster.palette); cnt = cnt + 1
   }
@@ -914,6 +937,7 @@ mapviewOptions = function(platform,
     ## global
     platform = .platform()
     , basemaps = .basemaps()
+    , basemaps.color.shuffle = .basemapsShuffle()
     , raster.palette = .rasterPalette()
     , vector.palette = .vectorPalette()
     , verbose = .verbose()
@@ -961,47 +985,48 @@ mapviewOptions = function(platform,
 
       ## global
       cat("\n global options: \n\n")
-      cat('platform            :', lst$platform, '\n' )
-      cat('basemaps            :', lst$basemaps, '\n')
-      cat('raster.palette      :', format(.rasterPalette())[1], '\n')
-      cat('vector.palette      :', format(.vectorPalette())[1], '\n')
-      cat('verbose             :', lst$verbose, '\n')
-      cat('na.color            :', lst$na.color, '\n')
-      cat('legend              :', lst$legend, '\n')
-      cat('legend.opacity      :', lst$legend.opacity, '\n')
-      cat('legend.pos          :', lst$legend.pos, '\n')
-      cat('layers.control.pos  :', lst$layers.control.pos, '\n')
-      cat('leafletWidth        :', lst$leafletWidth, '\n')
-      cat('leafletHeight       :', lst$leafletHeight, '\n')
-      cat('viewer.suppress     :', lst$viewer.suppress, '\n')
-      cat('homebutton          :', lst$homebutton, '\n')
-      cat('homebutton.pos      :', lst$homebutton.pos, '\n')
-      cat('native.crs          :', lst$native.crs, '\n')
-      cat('watch               :', lst$watch, '\n')
+      cat('platform                :', lst$platform, '\n' )
+      cat('basemaps                :', lst$basemaps, '\n')
+      cat('basemaps.color.shuffle  :', lst$basemaps.color.shuffle, '\n')
+      cat('raster.palette          :', format(.rasterPalette())[1], '\n')
+      cat('vector.palette          :', format(.vectorPalette())[1], '\n')
+      cat('verbose                 :', lst$verbose, '\n')
+      cat('na.color                :', lst$na.color, '\n')
+      cat('legend                  :', lst$legend, '\n')
+      cat('legend.opacity          :', lst$legend.opacity, '\n')
+      cat('legend.pos              :', lst$legend.pos, '\n')
+      cat('layers.control.pos      :', lst$layers.control.pos, '\n')
+      cat('leafletWidth            :', lst$leafletWidth, '\n')
+      cat('leafletHeight           :', lst$leafletHeight, '\n')
+      cat('viewer.suppress         :', lst$viewer.suppress, '\n')
+      cat('homebutton              :', lst$homebutton, '\n')
+      cat('homebutton.pos          :', lst$homebutton.pos, '\n')
+      cat('native.crs              :', lst$native.crs, '\n')
+      cat('watch                   :', lst$watch, '\n')
 
       ## raster
       cat("\n raster data related options: \n\n")
-      cat('raster.size         :', lst$raster.size, '\n')
-      cat('mapview.maxpixels   :', lst$mapview.maxpixels, '\n')
-      cat('plainview.maxpixels :', lst$plainview.maxpixels, '\n')
-      cat('use.layer.names     :', lst$use.layer.names, '\n')
-      cat('trim                :', lst$trim, '\n')
-      cat('method              :', lst$method, '\n')
-      cat('query.type          :', lst$query.type, '\n')
-      cat('query.digits        :', lst$query.digits, '\n')
-      cat('query.position      :', lst$query.position, '\n')
-      cat('query.prefix        :', lst$query.prefix, '\n')
-      cat('georaster           :', lst$georaster, '\n')
+      cat('raster.size             :', lst$raster.size, '\n')
+      cat('mapview.maxpixels       :', lst$mapview.maxpixels, '\n')
+      cat('plainview.maxpixels     :', lst$plainview.maxpixels, '\n')
+      cat('use.layer.names         :', lst$use.layer.names, '\n')
+      cat('trim                    :', lst$trim, '\n')
+      cat('method                  :', lst$method, '\n')
+      cat('query.type              :', lst$query.type, '\n')
+      cat('query.digits            :', lst$query.digits, '\n')
+      cat('query.position          :', lst$query.position, '\n')
+      cat('query.prefix            :', lst$query.prefix, '\n')
+      cat('georaster               :', lst$georaster, '\n')
 
       ## vector
       cat("\n vector data related options: \n\n")
-      cat('maxpolygons         :', lst$maxpolygons, '\n')
-      cat('maxpoints           :', lst$maxpoints, '\n')
-      cat('maxlines            :', lst$maxlines, '\n')
-      cat('pane                :', lst$pane, '\n')
-      cat('cex                 :', lst$cex, '\n')
-      cat('alpha               :', lst$alpha, '\n')
-      cat('fgb                 :', lst$fgb, '\n')
+      cat('maxpolygons             :', lst$maxpolygons, '\n')
+      cat('maxpoints               :', lst$maxpoints, '\n')
+      cat('maxlines                :', lst$maxlines, '\n')
+      cat('pane                    :', lst$pane, '\n')
+      cat('cex                     :', lst$cex, '\n')
+      cat('alpha                   :', lst$alpha, '\n')
+      cat('fgb                     :', lst$fgb, '\n')
 
     }
   }
@@ -1010,11 +1035,16 @@ mapviewOptions = function(platform,
 
 }
 
-#' query single mapviewOption parameters
-#' @describeIn mapviewOptions query single mapviewOption parameters
-#' @param param character. parameter to be queried.
+#' query mapviewOptions parameters
+#' @describeIn mapviewOptions query mapviewOptions parameters.
+#' @param param character. parameter(s) to be queried.
 #' @export mapviewGetOption
 mapviewGetOption = function(param) {
-  mapviewOptions(console = FALSE)[[param]]
+  Map(
+    function(p) {
+      mapviewOptions(console = FALSE)[[p]]
+    }
+    , p = param
+  )
 }
 

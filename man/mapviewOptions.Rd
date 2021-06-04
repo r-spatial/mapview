@@ -8,6 +8,7 @@
 mapviewOptions(
   platform,
   basemaps,
+  basemaps.color.shuffle,
   raster.palette,
   vector.palette,
   verbose,
@@ -54,6 +55,10 @@ Current options are "leaflet" and "mapdeck".}
 \item{basemaps}{character. The basemaps to be used for rendering data. See
 \url{https://leaflet-extras.github.io/leaflet-providers/preview/} for possible
 values}
+
+\item{basemaps.color.shuffle}{logical. Should basemaps order be changed to
+enhance contrast based on layer coloring. Set to FALSE if you supply custom
+basemaps or want to ensure that "CartoDB.Positron" is always the default.}
 
 \item{raster.palette}{a color palette function for raster visualisation.
 Should be a function that takes an integer as input and returns a vector of colors.
@@ -181,7 +186,7 @@ via a <src=...> call which means that the html is not selfcontained anymore
  will be more performant for large raster data, but given the nearest neighbor
  resampling results may be slightly distorted.}
 
-\item{param}{character. parameter to be queried.}
+\item{param}{character. parameter(s) to be queried.}
 }
 \value{
 list of the current options (invisibly).
@@ -195,7 +200,7 @@ add a line like this: options(mapviewMaxPixels = 700000) to that file.
 }
 \section{Functions}{
 \itemize{
-\item \code{mapviewGetOption}: query single mapviewOption parameters
+\item \code{mapviewGetOption}: query mapviewOptions parameters.
 }}
 
 \examples{
