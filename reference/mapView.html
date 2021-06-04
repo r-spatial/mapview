@@ -73,7 +73,7 @@ spatial object(s) on top of the specified base maps." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mapview</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.10</span>
       </span>
     </div>
 
@@ -673,8 +673,10 @@ Use <code><a href='mapviewOptions.html'>mapviewOptions(viewer.suppress = TRUE/FA
     <tr>
       <th>...</th>
       <td><p>additional arguments passed on to respective functions.
-  See <code>addRasterImage</code>, <code>addCircles</code>,
-<code>addPolygons</code>, <code>addPolylines</code> for details</p></td>
+See <code>addRasterImage</code>, <code>addCircles</code>,
+<code>addPolygons</code>, <code>addPolylines</code> for details.
+Furthermore, you can pass hidden arguments to some methods. See Details for
+a list of supported hidden arguments.</p></td>
     </tr>
     <tr>
       <th>band</th>
@@ -815,7 +817,11 @@ the popup will potentially still say something like "POLYGON Z".</p>
   the number of features (points, lines or polygons). When the number of
   features in the current view window is larger than <code>maxFeatures</code> then
   features are rendered on the canvas, otherwise they are rendered as svg objects
-  and fully queriable.</p>
+  and fully queriable.<br />
+  <br />
+  Hidden arguments that can be set via <code>...</code>:<br />
+  <br />
+  * <code>hide</code>: hide all but the first layer when rendering a RasterStackBrick.</p>
     <h2 class="hasAnchor" id="methods-by-class-"><a class="anchor" href="#methods-by-class-"></a>Methods (by class)</h2>
 
     
