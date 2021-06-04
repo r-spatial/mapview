@@ -75,7 +75,7 @@ add a line like this: options(mapviewMaxPixels = 700000) to that file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mapview</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.11</span>
       </span>
     </div>
 
@@ -159,6 +159,7 @@ add a line like this: options(mapviewMaxPixels = 700000) to that file.</p>
     <pre class="usage"><span class='fu'>mapviewOptions</span><span class='op'>(</span>
   <span class='va'>platform</span>,
   <span class='va'>basemaps</span>,
+  <span class='va'>basemaps.color.shuffle</span>,
   <span class='va'>raster.palette</span>,
   <span class='va'>vector.palette</span>,
   <span class='va'>verbose</span>,
@@ -211,6 +212,12 @@ Current options are "leaflet" and "mapdeck".</p></td>
       <td><p>character. The basemaps to be used for rendering data. See
 <a href='https://leaflet-extras.github.io/leaflet-providers/preview/'>https://leaflet-extras.github.io/leaflet-providers/preview/</a> for possible
 values</p></td>
+    </tr>
+    <tr>
+      <th>basemaps.color.shuffle</th>
+      <td><p>logical. Should basemaps order be changed to
+enhance contrast based on layer coloring. Set to FALSE if you supply custom
+basemaps or want to ensure that "CartoDB.Positron" is always the default.</p></td>
     </tr>
     <tr>
       <th>raster.palette</th>
@@ -408,7 +415,7 @@ via a &lt;src=...&gt; call which means that the html is not selfcontained anymor
     </tr>
     <tr>
       <th>param</th>
-      <td><p>character. parameter to be queried.</p></td>
+      <td><p>character. parameter(s) to be queried.</p></td>
     </tr>
     </table>
 
@@ -420,7 +427,7 @@ If no arguments are provided the options are printed.</p>
 
     
 <ul>
-<li><p><code>mapviewGetOption</code>: query single mapviewOption parameters</p></li>
+<li><p><code>mapviewGetOption</code>: query mapviewOptions parameters.</p></li>
 </ul>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -434,92 +441,94 @@ If no arguments are provided the options are printed.</p>
 </div><div class='output co'>#&gt; 
 #&gt;  global options: 
 #&gt; 
-#&gt; platform            : leaflet 
-#&gt; basemaps            : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap 
-#&gt; raster.palette      : function (n)  
-#&gt; vector.palette      : function (n)  
-#&gt; verbose             : FALSE 
-#&gt; na.color            : #BEBEBE80 
-#&gt; legend              : TRUE 
-#&gt; legend.opacity      : 1 
-#&gt; legend.pos          : topright 
-#&gt; layers.control.pos  : topleft 
-#&gt; leafletWidth        : 
-#&gt; leafletHeight       : 
-#&gt; viewer.suppress     : FALSE 
-#&gt; homebutton          : TRUE 
-#&gt; homebutton.pos      : bottomright 
-#&gt; native.crs          : FALSE 
-#&gt; watch               : FALSE 
+#&gt; platform                : leaflet 
+#&gt; basemaps                : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap 
+#&gt; basemaps.color.shuffle  : TRUE 
+#&gt; raster.palette          : function (n)  
+#&gt; vector.palette          : function (n)  
+#&gt; verbose                 : FALSE 
+#&gt; na.color                : #BEBEBE80 
+#&gt; legend                  : TRUE 
+#&gt; legend.opacity          : 1 
+#&gt; legend.pos              : topright 
+#&gt; layers.control.pos      : topleft 
+#&gt; leafletWidth            : 
+#&gt; leafletHeight           : 
+#&gt; viewer.suppress         : FALSE 
+#&gt; homebutton              : TRUE 
+#&gt; homebutton.pos          : bottomright 
+#&gt; native.crs              : FALSE 
+#&gt; watch                   : FALSE 
 #&gt; 
 #&gt;  raster data related options: 
 #&gt; 
-#&gt; raster.size         : 8388608 
-#&gt; mapview.maxpixels   : 5e+05 
-#&gt; plainview.maxpixels : 1e+07 
-#&gt; use.layer.names     : FALSE 
-#&gt; trim                : TRUE 
-#&gt; method              : bilinear 
-#&gt; query.type          : mousemove 
-#&gt; query.digits        : 7 
-#&gt; query.position      : topright 
-#&gt; query.prefix        : Layer 
-#&gt; georaster           : FALSE 
+#&gt; raster.size             : 8388608 
+#&gt; mapview.maxpixels       : 5e+05 
+#&gt; plainview.maxpixels     : 1e+07 
+#&gt; use.layer.names         : FALSE 
+#&gt; trim                    : TRUE 
+#&gt; method                  : bilinear 
+#&gt; query.type              : mousemove 
+#&gt; query.digits            : 7 
+#&gt; query.position          : topright 
+#&gt; query.prefix            : Layer 
+#&gt; georaster               : FALSE 
 #&gt; 
 #&gt;  vector data related options: 
 #&gt; 
-#&gt; maxpolygons         : 30000 
-#&gt; maxpoints           : 20000 
-#&gt; maxlines            : 30000 
-#&gt; pane                : auto 
-#&gt; cex                 : 6 
-#&gt; alpha               : 0.9 
-#&gt; fgb                 : FALSE </div><div class='input'><span class='fu'>mapviewOptions</span><span class='op'>(</span>na.color <span class='op'>=</span> <span class='st'>"pink"</span><span class='op'>)</span>
+#&gt; maxpolygons             : 30000 
+#&gt; maxpoints               : 20000 
+#&gt; maxlines                : 30000 
+#&gt; pane                    : auto 
+#&gt; cex                     : 6 
+#&gt; alpha                   : 0.9 
+#&gt; fgb                     : FALSE </div><div class='input'><span class='fu'>mapviewOptions</span><span class='op'>(</span>na.color <span class='op'>=</span> <span class='st'>"pink"</span><span class='op'>)</span>
 <span class='fu'>mapviewOptions</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt;  global options: 
 #&gt; 
-#&gt; platform            : leaflet 
-#&gt; basemaps            : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap 
-#&gt; raster.palette      : function (n)  
-#&gt; vector.palette      : function (n)  
-#&gt; verbose             : FALSE 
-#&gt; na.color            : pink 
-#&gt; legend              : TRUE 
-#&gt; legend.opacity      : 1 
-#&gt; legend.pos          : topright 
-#&gt; layers.control.pos  : topleft 
-#&gt; leafletWidth        : 
-#&gt; leafletHeight       : 
-#&gt; viewer.suppress     : FALSE 
-#&gt; homebutton          : TRUE 
-#&gt; homebutton.pos      : bottomright 
-#&gt; native.crs          : FALSE 
-#&gt; watch               : FALSE 
+#&gt; platform                : leaflet 
+#&gt; basemaps                : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap 
+#&gt; basemaps.color.shuffle  : TRUE 
+#&gt; raster.palette          : function (n)  
+#&gt; vector.palette          : function (n)  
+#&gt; verbose                 : FALSE 
+#&gt; na.color                : pink 
+#&gt; legend                  : TRUE 
+#&gt; legend.opacity          : 1 
+#&gt; legend.pos              : topright 
+#&gt; layers.control.pos      : topleft 
+#&gt; leafletWidth            : 
+#&gt; leafletHeight           : 
+#&gt; viewer.suppress         : FALSE 
+#&gt; homebutton              : TRUE 
+#&gt; homebutton.pos          : bottomright 
+#&gt; native.crs              : FALSE 
+#&gt; watch                   : FALSE 
 #&gt; 
 #&gt;  raster data related options: 
 #&gt; 
-#&gt; raster.size         : 8388608 
-#&gt; mapview.maxpixels   : 5e+05 
-#&gt; plainview.maxpixels : 1e+07 
-#&gt; use.layer.names     : FALSE 
-#&gt; trim                : TRUE 
-#&gt; method              : bilinear 
-#&gt; query.type          : mousemove 
-#&gt; query.digits        : 7 
-#&gt; query.position      : topright 
-#&gt; query.prefix        : Layer 
-#&gt; georaster           : FALSE 
+#&gt; raster.size             : 8388608 
+#&gt; mapview.maxpixels       : 5e+05 
+#&gt; plainview.maxpixels     : 1e+07 
+#&gt; use.layer.names         : FALSE 
+#&gt; trim                    : TRUE 
+#&gt; method                  : bilinear 
+#&gt; query.type              : mousemove 
+#&gt; query.digits            : 7 
+#&gt; query.position          : topright 
+#&gt; query.prefix            : Layer 
+#&gt; georaster               : FALSE 
 #&gt; 
 #&gt;  vector data related options: 
 #&gt; 
-#&gt; maxpolygons         : 30000 
-#&gt; maxpoints           : 20000 
-#&gt; maxlines            : 30000 
-#&gt; pane                : auto 
-#&gt; cex                 : 6 
-#&gt; alpha               : 0.9 
-#&gt; fgb                 : FALSE </div><div class='input'>
+#&gt; maxpolygons             : 30000 
+#&gt; maxpoints               : 20000 
+#&gt; maxlines                : 30000 
+#&gt; pane                    : auto 
+#&gt; cex                     : 6 
+#&gt; alpha                   : 0.9 
+#&gt; fgb                     : FALSE </div><div class='input'>
 <span class='fu'>mapviewGetOption</span><span class='op'>(</span><span class='st'>"platform"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "leaflet"</div><div class='input'>
 <span class='fu'>mapviewOptions</span><span class='op'>(</span>default <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
@@ -527,47 +536,48 @@ If no arguments are provided the options are printed.</p>
 </div><div class='output co'>#&gt; 
 #&gt;  global options: 
 #&gt; 
-#&gt; platform            : leaflet 
-#&gt; basemaps            : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap 
-#&gt; raster.palette      : function (n)  
-#&gt; vector.palette      : function (n)  
-#&gt; verbose             : FALSE 
-#&gt; na.color            : #BEBEBE80 
-#&gt; legend              : TRUE 
-#&gt; legend.opacity      : 1 
-#&gt; legend.pos          : topright 
-#&gt; layers.control.pos  : topleft 
-#&gt; leafletWidth        : 
-#&gt; leafletHeight       : 
-#&gt; viewer.suppress     : FALSE 
-#&gt; homebutton          : TRUE 
-#&gt; homebutton.pos      : bottomright 
-#&gt; native.crs          : FALSE 
-#&gt; watch               : FALSE 
+#&gt; platform                : leaflet 
+#&gt; basemaps                : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap 
+#&gt; basemaps.color.shuffle  : TRUE 
+#&gt; raster.palette          : function (n)  
+#&gt; vector.palette          : function (n)  
+#&gt; verbose                 : FALSE 
+#&gt; na.color                : #BEBEBE80 
+#&gt; legend                  : TRUE 
+#&gt; legend.opacity          : 1 
+#&gt; legend.pos              : topright 
+#&gt; layers.control.pos      : topleft 
+#&gt; leafletWidth            : 
+#&gt; leafletHeight           : 
+#&gt; viewer.suppress         : FALSE 
+#&gt; homebutton              : TRUE 
+#&gt; homebutton.pos          : bottomright 
+#&gt; native.crs              : FALSE 
+#&gt; watch                   : FALSE 
 #&gt; 
 #&gt;  raster data related options: 
 #&gt; 
-#&gt; raster.size         : 8388608 
-#&gt; mapview.maxpixels   : 5e+05 
-#&gt; plainview.maxpixels : 1e+07 
-#&gt; use.layer.names     : FALSE 
-#&gt; trim                : TRUE 
-#&gt; method              : bilinear 
-#&gt; query.type          : mousemove 
-#&gt; query.digits        : 7 
-#&gt; query.position      : topright 
-#&gt; query.prefix        : Layer 
-#&gt; georaster           : FALSE 
+#&gt; raster.size             : 8388608 
+#&gt; mapview.maxpixels       : 5e+05 
+#&gt; plainview.maxpixels     : 1e+07 
+#&gt; use.layer.names         : FALSE 
+#&gt; trim                    : TRUE 
+#&gt; method                  : bilinear 
+#&gt; query.type              : mousemove 
+#&gt; query.digits            : 7 
+#&gt; query.position          : topright 
+#&gt; query.prefix            : Layer 
+#&gt; georaster               : FALSE 
 #&gt; 
 #&gt;  vector data related options: 
 #&gt; 
-#&gt; maxpolygons         : 30000 
-#&gt; maxpoints           : 20000 
-#&gt; maxlines            : 30000 
-#&gt; pane                : auto 
-#&gt; cex                 : 0.6 
-#&gt; alpha               : 0.9 
-#&gt; fgb                 : FALSE </div><div class='input'>
+#&gt; maxpolygons             : 30000 
+#&gt; maxpoints               : 20000 
+#&gt; maxlines                : 30000 
+#&gt; pane                    : auto 
+#&gt; cex                     : 0.6 
+#&gt; alpha                   : 0.9 
+#&gt; fgb                     : FALSE </div><div class='input'>
 
 </div></pre>
   </div>

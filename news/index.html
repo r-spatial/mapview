@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mapview</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.11</span>
       </span>
     </div>
 
@@ -144,18 +144,21 @@
       <small>Source: <a href='https://github.com/r-spatial/mapview/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="mapview-2910" class="section level2">
+    <div id="mapview-2911" class="section level2">
 <h2 class="hasAnchor">
-<a href="#mapview-2910" class="anchor"></a>mapview 2.9.10</h2>
+<a href="#mapview-2911" class="anchor"></a>mapview 2.9.11</h2>
 <p>new features:</p>
 <ul>
 <li>new implementation of print method to make mapview with flatgeobuf work outside RStudio.</li>
 <li>auto setting of mapviewOptions(fgb = TRUE) at load only if not in knitr, notebook. <a href="https://twitter.com/TimSalabim3/status/1337714868925980674" class="uri">https://twitter.com/TimSalabim3/status/1337714868925980674</a>
 </li>
+<li>new option <code>basemaps.color.shuffle</code> to control if basemaps should automatically adjust to colors of overlays (i.e. use black basemap as default for very light colors). <a href='https://github.com/r-spatial/mapview/issues/377'>#377</a></li>
 </ul>
 <p>miscellaneous:</p>
 <ul>
 <li>use tinytest for testing</li>
+<li>
+<code><a href="../reference/mapviewOptions.html">mapviewGetOption()</a></code> is now vectorised.</li>
 </ul>
 <p>bugfixes:</p>
 <ul>
