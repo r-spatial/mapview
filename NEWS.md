@@ -1,4 +1,4 @@
-## mapview 2.9.9
+## mapview 2.9.10
 
 new features:
 
@@ -17,7 +17,8 @@ bugfixes:
   * alpha.regions now respected if burst = TRUE. #352
   * printing in rmarkdown notebooks works now if fgb & georaster options are FALSE. #351
   * setting options("OutDec" = ",") does not cause an error anymore. #353
-  * factor legens now displayed correctly (hopefully). #362 #356
+  * factor legends now displayed correctly (hopefully). #362 #356
+  * re-enabled hidden argument `hide` to hide all but the first layer of a RasterStackBrick. #374
 
 ## mapview 2.9.0
 
