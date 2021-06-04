@@ -678,6 +678,9 @@ setMethod('mapView', signature(x = 'sf'),
               x <- burst(x = x,
                          zcol = zcol,
                          burst = burst)
+              if (length(layer.name) == length(x)) {
+                names(x) = layer.name
+              }
             }
 
             if (inherits(x, "list")) {
