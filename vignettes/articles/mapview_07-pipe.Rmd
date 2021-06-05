@@ -24,8 +24,8 @@ Here are just a few examples of piped workflows:
 
 ```{r pipe1a}
 library(mapview)
-library(leaflet)
 library(poorman)
+library(leaflet)
 library(sf)
 # GitHub: hrbrmstr/albersusa
 library(albersusa)
@@ -49,7 +49,7 @@ franconia %>%
 
 ## union by district
 
-```{r pipe2}
+```{r pipe2, echo=FALSE, eval=FALSE}
 franconia %>%
   group_by(district) %>%
   summarize %>%
@@ -60,7 +60,7 @@ franconia %>%
 
 ## districts by area
 
-```{r pipe3}
+```{r pipe3, echo=FALSE, eval=FALSE}
 franconia %>%
   group_by(district) %>%
   summarize %>%
