@@ -91,6 +91,7 @@ Suggests:
     poorman,
     rmarkdown,
     rstudioapi,
+    s2,
     stars,
     tinytest
 ByteCompile: yes
