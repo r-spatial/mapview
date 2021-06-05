@@ -18,7 +18,7 @@ factorLegend <- function(map,
 
   pltt = unique(
     zcolColors(
-      x = values
+      x = values[!is.na(values)]
       , colors = colors
       , na.color = na.color
       , return.sorted = ifelse(is.function(colors), TRUE, FALSE)
@@ -116,8 +116,12 @@ numericLegend <- function(map,
                           ...) {
   n_unique <- ifelse(is.null(at), length(unique(values)), length(at))
   if (is.null(at)) {
-    atc <- lattice::do.breaks(range(values, na.rm = TRUE),
-                              length(unique(values)))
+    atc <- lattice::do.breaks(
+      extendLimits(
+        range(values, na.rm = TRUE)
+      )
+      , length(unique(values))
+    )
   } else atc <- at
 
   if (is.null(at) & n_unique <= 11 & all(unique(values) %% 1 == 0, na.rm = TRUE)) {
@@ -205,7 +209,9 @@ mapviewLegend <- function(values,
 
     if (inherits(values, "factor")) {
       if (length(values) == length(colors)) {
-        values = factor(unique(droplevels(values)), levels = unique(droplevels(values)))
+        values = droplevels(values)
+        values = unique(values)
+        # values = factor(unique(droplevels(values)), levels = unique(droplevels(values)))
         colors = unique(colors)[as.numeric(values)]
       } else if (length(levels(values)) >= length(unique(colors))) {
         values = unique(values)

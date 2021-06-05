@@ -209,6 +209,9 @@ zcolColors <- function(x, # a vector, not a sp or sf object
     x = as.factor(x)
   }
 
+  unx = unique(x)
+  unx = unx[!is.na(unx)]
+
   if (!(is.function(colors))) {
     # if (length(colors) == length(x)) {
     #   return(col2Hex(colors))
@@ -220,12 +223,12 @@ zcolColors <- function(x, # a vector, not a sp or sf object
     }
 
     if (inherits(x, "numeric")) {
-      if (is.null(at) & length(colors) < length(unique(x))) {
+      if (is.null(at) & length(colors) < length(unx)) {
         warning(
           sprintf(
             "Found less unique colors (%s) than unique zcol values (%s)! \nInterpolating color vector to match number of zcol values."
             , length(colors)
-            , length(unique(x))
+            , length(unx)
           )
           , call. = FALSE
         )
@@ -244,37 +247,37 @@ zcolColors <- function(x, # a vector, not a sp or sf object
         colors = grDevices::colorRampPalette(colors)
       }
 
-      if (length(colors) > length(unique(x))) {
+      if (length(colors) > length(unx)) {
         warning(
           sprintf(
             "Found more unique colors (%s) than unique zcol values (%s)! \nTrimming color vector to match number of zcol values."
             , length(colors)
-            , length(unique(x))
+            , length(unx)
           )
           , call. = FALSE
         )
-        colors = grDevices::colorRampPalette(colors[1:length(x)])
+        colors = grDevices::colorRampPalette(colors[1:length(unx)])
       }
     }
 
     if (inherits(x, "factor")) {
-      if (length(colors) < length(unique(x))) {
-        if (length(unique(colors)) < length(unique(x))) {
+      if (length(colors) < length(unx)) {
+        if (length(unique(colors)) < length(unx)) {
           warning(
             sprintf(
               "Found less unique colors (%s) than unique zcol values (%s)! \nRecycling color vector."
               , length(colors)
-              , length(unique(x))
+              , length(unx)
             )
             , call. = FALSE
           )
         }
-        if (length(unique(colors)) > length(unique(x))) {
+        if (length(unique(colors)) > length(unx)) {
           warning(
             sprintf(
               "Found more unique colors (%s) than unique zcol values (%s)! \nTrimming colors to match number of unique zcol values."
               , length(unique(colors))
-              , length(unique(x))
+              , length(unx)
             )
             , call. = FALSE
           )
@@ -300,13 +303,13 @@ zcolColors <- function(x, # a vector, not a sp or sf object
     nint = length(levels(x))
     rng = range(seq_along(levels(x)), na.rm = TRUE)
   } else {
-    nint = length(unique(x))
+    nint = length(unx)
     rng = range(x, na.rm = TRUE)
   }
 
   x <- as.numeric(x)
 
-  if (length(unique(x)) == 1) {
+  if (length(unx) == 1) {
     cols <- colors(1) #"#ffffff" #"#6666ff"
   } else {
     if (is.null(at)) {
