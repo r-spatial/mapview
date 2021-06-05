@@ -920,7 +920,7 @@ the popup will potentially still say something like "POLYGON Z".</p>
 
 
   <span class='co'>### ceci constitue la fin du pipe ======================================</span>
-  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://nathaneastwood.github.io/poorman/'>poorman</a></span><span class='op'>)</span>
   <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span>
 
   <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
@@ -928,18 +928,18 @@ the popup will potentially still say something like "POLYGON Z".</p>
     <span class='fu'>mapview</span><span class='op'>(</span><span class='op'>)</span>
 
   <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>district</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>district</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/summarise.html'>summarize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"district"</span><span class='op'>)</span>
 
   <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>district</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>area <span class='op'>=</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span> <span class='op'>/</span> <span class='fl'>1e6</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>district</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/summarise.html'>summarize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/mutate.html'>mutate</a></span><span class='op'>(</span>area <span class='op'>=</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span> <span class='op'>/</span> <span class='fl'>1e6</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"area"</span><span class='op'>)</span>
 
   <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>area <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/mutate.html'>mutate</a></span><span class='op'>(</span>area <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"area"</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
   <span class='va'>breweries</span> <span class='op'>%&gt;%</span>
@@ -947,11 +947,11 @@ the popup will potentially still say something like "POLYGON Z".</p>
     <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"district"</span><span class='op'>)</span>
 
   <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lengths.html'>lengths</a></span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_contains</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='va'>breweries</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/mutate.html'>mutate</a></span><span class='op'>(</span>count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lengths.html'>lengths</a></span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_contains</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='va'>breweries</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"count"</span><span class='op'>)</span>
 
   <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lengths.html'>lengths</a></span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_contains</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='va'>breweries</span><span class='op'>)</span><span class='op'>)</span>,
+    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/mutate.html'>mutate</a></span><span class='op'>(</span>count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lengths.html'>lengths</a></span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_contains</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='va'>breweries</span><span class='op'>)</span><span class='op'>)</span>,
            density <span class='op'>=</span> <span class='va'>count</span> <span class='op'>/</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"density"</span><span class='op'>)</span>
 <span class='op'>}</span>
