@@ -118,7 +118,7 @@ mapview(breweries, burst = TRUE, hide = TRUE)
 When `burst` used together with `zcol`, it will produce one layer for all unique values of `zcol`. 
 
 ```{r brew district burst}
-library(dplyr)
+library(poorman)
 library(sf)
 
 breweries %>%

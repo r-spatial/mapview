@@ -705,7 +705,7 @@ the popup will potentially still say something like "POLYGON Z".
 
 
   ### ceci constitue la fin du pipe ======================================
-  library(dplyr)
+  library(poorman)
   library(sf)
 
   franconia \%>\%

@@ -204,7 +204,7 @@ if ( !isGeneric('mapView') ) {
 #'
 #'
 #'   ### ceci constitue la fin du pipe ======================================
-#'   library(dplyr)
+#'   library(poorman)
 #'   library(sf)
 #'
 #'   franconia %>%
@@ -1313,6 +1313,11 @@ setMethod('mapView', signature(x = 'list'),
                       native.crs = native.crs,
                       ...)
             }))@map
+
+            if (length(getLayerNamesFromMap(m)) > 1) {
+              m = leaflet::hideGroup(map = m,
+                                     group = layers2bHidden(m, ...))
+            }
 
             out <- new("mapview", object = x, map = m)
             return(out)

@@ -25,7 +25,7 @@ Here are just a few examples of piped workflows:
 ```{r pipe1a}
 library(mapview)
 library(leaflet)
-library(dplyr)
+library(poorman)
 library(sf)
 # GitHub: hrbrmstr/albersusa
 library(albersusa)
