@@ -221,6 +221,7 @@ createFileId = function(ndigits = 6) {
 
 
 extendLimits = function(lim, length = 1, prop = 0.07) {
+  lim = as.vector(lim) # units!
   if (length(lim) != 2) stop("lim should be of length 2")
   if (lim[1] > lim[2]) lim = rev(lim)
   if (!missing(length)) {
