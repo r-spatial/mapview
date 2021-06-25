@@ -268,11 +268,25 @@ leaflet_stars = function(x,
     #                         opacity = legend.opacity,
     #                         values = at,
     #                         title = grp)
-    legend = mapviewLegend(values = as.vector(layer),
-                           colors = col.regions,
-                           at = at,
-                           na.color = col2Hex(na.color),
-                           layer.name = layer.name)
+    clrs = attr(layer, "colors")
+    if (!is.null(clrs)) {
+      clrs_levs = unique(cbind(attr(layer, "colors"), levels(layer)))
+      clrs_levs = clrs_levs[nchar(clrs_levs[, 2]) > 0, ]
+      legend = mapviewLegend(
+        values = factor(clrs_levs[, 2], levels = clrs_levs[, 2])
+        , colors = clrs_levs[, 1]
+        , at = at
+        , na.color = col2Hex(na.color)
+        , layer.name = layer.name
+      )
+    }
+    if (is.null(clrs)) {
+      legend = mapviewLegend(values = as.vector(layer),
+                             colors = col.regions,
+                             at = at,
+                             na.color = col2Hex(na.color),
+                             layer.name = layer.name)
+    }
 
     m = legend(m)
 
