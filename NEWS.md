@@ -1,5 +1,7 @@
 ## mapview 2.10.1
 
+## mapview 2.10.0
+
 new features:
 
   * new implementation of print method to make mapview with flatgeobuf work outside RStudio.
