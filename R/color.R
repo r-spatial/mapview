@@ -83,6 +83,10 @@ rasterColors = function(col.regions,
                          at,
                          na.color) {
 
+  if (!is.function(col.regions)) {
+    col.regions = grDevices::colorRampPalette(col.regions)
+  }
+
   f = function(x) {
 
     if (!is.null(attr(x, "color"))) {

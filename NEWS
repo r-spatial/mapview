@@ -1,5 +1,9 @@
 mapview 2.10.1
 
+bugfixes:
+
+  * stars image now renders correctly if supplying only a few colors. #388
+
 mapview 2.10.0
 
 new features:

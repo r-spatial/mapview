@@ -303,6 +303,12 @@ leaflet_stars = function(x,
   m = leafem::addMouseCoordinates(m)
   m = leafem::addCopyExtent(m)
   if (homebutton) m = leafem::addHomeButton(m, ext, group = layer.name)
+
+  m$dependencies = c(
+    m$dependencies
+    , mapviewCSSDependencies()
+  )
+
   out = new('mapview', object = list(x), map = m)
   return(out)
 }
