@@ -1,4 +1,8 @@
-## mapview 2.10.1
+## mapview 2.10.2
+
+new features:
+
+  * use interpolated numeric legend also if number of unique values <= 11. #389
 
 bugfixes:
 
