@@ -124,7 +124,8 @@ numericLegend <- function(map,
     )
   } else atc <- at
 
-  if (is.null(at) & n_unique <= 11 & all(unique(values) %% 1 == 0, na.rm = TRUE)) {
+  ## in case people complain, add the <= 1 part as an option!!
+  if (is.null(at) & n_unique <= 1 & all(unique(values) %% 1 == 0, na.rm = TRUE)) {
     factorLegend(map = map,
                  values = as.factor(unique(values)),
                  colors = colors,
@@ -336,16 +337,17 @@ addVectorLegend <- function(x,
                                  domain = at,
                                  na.color = col2Hex(na.color))
   } else {
-    if (length(at) > 11) {
-      pal2 <- leaflet::colorNumeric(palette = col.regions,
-                                    domain = at,
-                                    na.color = col2Hex(na.color))
-    } else {
-      pal2 <- leaflet::colorBin(palette = col.regions,
-                                bins = at, #length(at),
-                                domain = at,
-                                na.color = col2Hex(na.color))
-    }
+    ## in case people complain, add this as an option!!
+    # if (length(at) > 11) {
+    pal2 <- leaflet::colorNumeric(palette = col.regions,
+                                  domain = at,
+                                  na.color = col2Hex(na.color))
+    # } else {
+    #   pal2 <- leaflet::colorBin(palette = col.regions,
+    #                             bins = at, #length(at),
+    #                             domain = at,
+    #                             na.color = col2Hex(na.color))
+    # }
 
   }
 
@@ -411,16 +413,17 @@ addRasterLegend <- function(x,
                                  # levels = as.character(levels(x)[[1]][, 2]),
                                  na.color = col2Hex(na.color))
   } else {
-    if (length(at) > 11) {
-      pal2 <- leaflet::colorNumeric(palette = col.regions,
-                                    domain = at,
-                                    na.color = col2Hex(na.color))
-    } else {
-      pal2 <- leaflet::colorBin(palette = col.regions,
-                                bins = at, #length(at),
-                                domain = at,
-                                na.color = col2Hex(na.color))
-    }
+    ## in case people complain, add this as an option!!
+    # if (length(at) > 11) {
+    pal2 <- leaflet::colorNumeric(palette = col.regions,
+                                  domain = at,
+                                  na.color = col2Hex(na.color))
+    # } else {
+    #   pal2 <- leaflet::colorBin(palette = col.regions,
+    #                             bins = at, #length(at),
+    #                             domain = at,
+    #                             na.color = col2Hex(na.color))
+    # }
 
   }
 
