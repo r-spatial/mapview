@@ -665,8 +665,14 @@ setMethod('mapView', signature(x = 'sf'),
                                                na.color = na.color)
                 if (length(col.regions) > 1)
                   col.regions = col.regions[order(x[[zcol]])]
-
-                popup = leafpop::popupTable(x, className = "mapview-popup")[order(x[[zcol]])]
+# browser()
+                if (!isTRUE(popup) && popup %in% names(x) && length(popup) == 1) {
+                  popup = leafpop::popupTable(x[popup], className = "mapview-popup")[order(x[[zcol]])]
+                } else if (!is.null(attr(popup, "popup"))) {
+                  popup = popup
+                } else {
+                  popup = leafpop::popupTable(x, className = "mapview-popup")[order(x[[zcol]])]
+                }
                 label = makeLabels(x, zcol)[order(x[[zcol]])]
                 by_row = TRUE
               }
