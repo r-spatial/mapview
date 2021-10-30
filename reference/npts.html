@@ -170,15 +170,22 @@
     <p>currently only works for *POINTS, *LINES and *POLYGONS (not GEOMETRYCOLLECTION).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>npts</span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 5858</div><div class='input'><span class='fu'>npts</span><span class='op'>(</span><span class='va'>franconia</span>, by_feature <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1]  27  61  47  43 288 331 238 146 232 159 164 153 125  53  39  36 109  33 341
-#&gt; [20] 244  98 220 220 232 174  40  33  52 191 212 208 202 153 186 240 245 283</div><div class='input'><span class='fu'>npts</span><span class='op'>(</span><span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_geometry.html'>st_geometry</a></span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>[</span><span class='fl'>1</span>, <span class='op'>]</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># first polygon</span>
-</div><div class='output co'>#&gt; <span class='message'>old-style crs object detected; please recreate object with a recent sf::st_crs()</span></div><div class='output co'>#&gt; <span class='message'>old-style crs object detected; please recreate object with a recent sf::st_crs()</span></div><div class='output co'>#&gt; [1] 27</div><div class='input'>
-<span class='fu'>npts</span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span> <span class='co'># is the same as</span>
-</div><div class='output co'>#&gt; [1] 224</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 224</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>npts</span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 5858</span>
+<span class='r-in'><span class='fu'>npts</span><span class='op'>(</span><span class='va'>franconia</span>, by_feature <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1]  27  61  47  43 288 331 238 146 232 159 164 153 125  53  39  36 109  33 341</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [20] 244  98 220 220 232 174  40  33  52 191 212 208 202 153 186 240 245 283</span>
+<span class='r-in'><span class='fu'>npts</span><span class='op'>(</span><span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_geometry.html'>st_geometry</a></span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>[</span><span class='fl'>1</span>, <span class='op'>]</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># first polygon</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> old-style crs object detected; please recreate object with a recent sf::st_crs()</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> old-style crs object detected; please recreate object with a recent sf::st_crs()</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 27</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>npts</span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span> <span class='co'># is the same as</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 224</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 224</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -437,149 +437,153 @@ If no arguments are provided the options are printed.</p>
     <p>Tim Appelhans</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>mapviewOptions</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt;  global options: 
-#&gt; 
-#&gt; platform                : leaflet 
-#&gt; basemaps                : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap 
-#&gt; basemaps.color.shuffle  : TRUE 
-#&gt; raster.palette          : function (n)  
-#&gt; vector.palette          : function (n)  
-#&gt; verbose                 : FALSE 
-#&gt; na.color                : #BEBEBE80 
-#&gt; legend                  : TRUE 
-#&gt; legend.opacity          : 1 
-#&gt; legend.pos              : topright 
-#&gt; layers.control.pos      : topleft 
-#&gt; leafletWidth            : 
-#&gt; leafletHeight           : 
-#&gt; viewer.suppress         : FALSE 
-#&gt; homebutton              : TRUE 
-#&gt; homebutton.pos          : bottomright 
-#&gt; native.crs              : FALSE 
-#&gt; watch                   : FALSE 
-#&gt; 
-#&gt;  raster data related options: 
-#&gt; 
-#&gt; raster.size             : 8388608 
-#&gt; mapview.maxpixels       : 5e+05 
-#&gt; plainview.maxpixels     : 1e+07 
-#&gt; use.layer.names         : FALSE 
-#&gt; trim                    : TRUE 
-#&gt; method                  : bilinear 
-#&gt; query.type              : mousemove 
-#&gt; query.digits            : 7 
-#&gt; query.position          : topright 
-#&gt; query.prefix            : Layer 
-#&gt; georaster               : FALSE 
-#&gt; 
-#&gt;  vector data related options: 
-#&gt; 
-#&gt; maxpolygons             : 30000 
-#&gt; maxpoints               : 20000 
-#&gt; maxlines                : 30000 
-#&gt; pane                    : auto 
-#&gt; cex                     : 6 
-#&gt; alpha                   : 0.9 
-#&gt; fgb                     : FALSE </div><div class='input'><span class='fu'>mapviewOptions</span><span class='op'>(</span>na.color <span class='op'>=</span> <span class='st'>"pink"</span><span class='op'>)</span>
-<span class='fu'>mapviewOptions</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt;  global options: 
-#&gt; 
-#&gt; platform                : leaflet 
-#&gt; basemaps                : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap 
-#&gt; basemaps.color.shuffle  : TRUE 
-#&gt; raster.palette          : function (n)  
-#&gt; vector.palette          : function (n)  
-#&gt; verbose                 : FALSE 
-#&gt; na.color                : pink 
-#&gt; legend                  : TRUE 
-#&gt; legend.opacity          : 1 
-#&gt; legend.pos              : topright 
-#&gt; layers.control.pos      : topleft 
-#&gt; leafletWidth            : 
-#&gt; leafletHeight           : 
-#&gt; viewer.suppress         : FALSE 
-#&gt; homebutton              : TRUE 
-#&gt; homebutton.pos          : bottomright 
-#&gt; native.crs              : FALSE 
-#&gt; watch                   : FALSE 
-#&gt; 
-#&gt;  raster data related options: 
-#&gt; 
-#&gt; raster.size             : 8388608 
-#&gt; mapview.maxpixels       : 5e+05 
-#&gt; plainview.maxpixels     : 1e+07 
-#&gt; use.layer.names         : FALSE 
-#&gt; trim                    : TRUE 
-#&gt; method                  : bilinear 
-#&gt; query.type              : mousemove 
-#&gt; query.digits            : 7 
-#&gt; query.position          : topright 
-#&gt; query.prefix            : Layer 
-#&gt; georaster               : FALSE 
-#&gt; 
-#&gt;  vector data related options: 
-#&gt; 
-#&gt; maxpolygons             : 30000 
-#&gt; maxpoints               : 20000 
-#&gt; maxlines                : 30000 
-#&gt; pane                    : auto 
-#&gt; cex                     : 6 
-#&gt; alpha                   : 0.9 
-#&gt; fgb                     : FALSE </div><div class='input'>
-<span class='fu'>mapviewGetOption</span><span class='op'>(</span><span class='st'>"platform"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "leaflet"</div><div class='input'>
-<span class='fu'>mapviewOptions</span><span class='op'>(</span>default <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'>mapviewOptions</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt;  global options: 
-#&gt; 
-#&gt; platform                : leaflet 
-#&gt; basemaps                : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap 
-#&gt; basemaps.color.shuffle  : TRUE 
-#&gt; raster.palette          : function (n)  
-#&gt; vector.palette          : function (n)  
-#&gt; verbose                 : FALSE 
-#&gt; na.color                : #BEBEBE80 
-#&gt; legend                  : TRUE 
-#&gt; legend.opacity          : 1 
-#&gt; legend.pos              : topright 
-#&gt; layers.control.pos      : topleft 
-#&gt; leafletWidth            : 
-#&gt; leafletHeight           : 
-#&gt; viewer.suppress         : FALSE 
-#&gt; homebutton              : TRUE 
-#&gt; homebutton.pos          : bottomright 
-#&gt; native.crs              : FALSE 
-#&gt; watch                   : FALSE 
-#&gt; 
-#&gt;  raster data related options: 
-#&gt; 
-#&gt; raster.size             : 8388608 
-#&gt; mapview.maxpixels       : 5e+05 
-#&gt; plainview.maxpixels     : 1e+07 
-#&gt; use.layer.names         : FALSE 
-#&gt; trim                    : TRUE 
-#&gt; method                  : bilinear 
-#&gt; query.type              : mousemove 
-#&gt; query.digits            : 7 
-#&gt; query.position          : topright 
-#&gt; query.prefix            : Layer 
-#&gt; georaster               : FALSE 
-#&gt; 
-#&gt;  vector data related options: 
-#&gt; 
-#&gt; maxpolygons             : 30000 
-#&gt; maxpoints               : 20000 
-#&gt; maxlines                : 30000 
-#&gt; pane                    : auto 
-#&gt; cex                     : 0.6 
-#&gt; alpha                   : 0.9 
-#&gt; fgb                     : FALSE </div><div class='input'>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>mapviewOptions</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  global options: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> platform                : leaflet </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> basemaps                : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> basemaps.color.shuffle  : TRUE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> raster.palette          : function (n)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> vector.palette          : function (n)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> verbose                 : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> na.color                : #BEBEBE80 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> legend                  : TRUE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> legend.opacity          : 1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> legend.pos              : topright </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> layers.control.pos      : topleft </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> leafletWidth            : </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> leafletHeight           : </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> viewer.suppress         : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> homebutton              : TRUE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> homebutton.pos          : bottomright </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> native.crs              : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> watch                   : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  raster data related options: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> raster.size             : 8388608 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mapview.maxpixels       : 5e+05 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> plainview.maxpixels     : 1e+07 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> use.layer.names         : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> trim                    : TRUE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> method                  : bilinear </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> query.type              : mousemove </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> query.digits            : 7 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> query.position          : topright </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> query.prefix            : Layer </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> georaster               : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  vector data related options: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> maxpolygons             : 30000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> maxpoints               : 20000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> maxlines                : 30000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> pane                    : auto </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> cex                     : 6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> alpha                   : 0.9 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> fgb                     : FALSE </span>
+<span class='r-in'><span class='fu'>mapviewOptions</span><span class='op'>(</span>na.color <span class='op'>=</span> <span class='st'>"pink"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>mapviewOptions</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  global options: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> platform                : leaflet </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> basemaps                : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> basemaps.color.shuffle  : TRUE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> raster.palette          : function (n)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> vector.palette          : function (n)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> verbose                 : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> na.color                : pink </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> legend                  : TRUE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> legend.opacity          : 1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> legend.pos              : topright </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> layers.control.pos      : topleft </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> leafletWidth            : </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> leafletHeight           : </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> viewer.suppress         : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> homebutton              : TRUE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> homebutton.pos          : bottomright </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> native.crs              : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> watch                   : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  raster data related options: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> raster.size             : 8388608 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mapview.maxpixels       : 5e+05 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> plainview.maxpixels     : 1e+07 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> use.layer.names         : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> trim                    : TRUE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> method                  : bilinear </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> query.type              : mousemove </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> query.digits            : 7 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> query.position          : topright </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> query.prefix            : Layer </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> georaster               : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  vector data related options: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> maxpolygons             : 30000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> maxpoints               : 20000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> maxlines                : 30000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> pane                    : auto </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> cex                     : 6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> alpha                   : 0.9 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> fgb                     : FALSE </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>mapviewGetOption</span><span class='op'>(</span><span class='st'>"platform"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "leaflet"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>mapviewOptions</span><span class='op'>(</span>default <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>mapviewOptions</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  global options: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> platform                : leaflet </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> basemaps                : CartoDB.Positron CartoDB.DarkMatter OpenStreetMap Esri.WorldImagery OpenTopoMap </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> basemaps.color.shuffle  : TRUE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> raster.palette          : function (n)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> vector.palette          : function (n)  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> verbose                 : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> na.color                : #BEBEBE80 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> legend                  : TRUE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> legend.opacity          : 1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> legend.pos              : topright </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> layers.control.pos      : topleft </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> leafletWidth            : </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> leafletHeight           : </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> viewer.suppress         : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> homebutton              : TRUE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> homebutton.pos          : bottomright </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> native.crs              : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> watch                   : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  raster data related options: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> raster.size             : 8388608 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mapview.maxpixels       : 5e+05 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> plainview.maxpixels     : 1e+07 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> use.layer.names         : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> trim                    : TRUE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> method                  : bilinear </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> query.type              : mousemove </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> query.digits            : 7 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> query.position          : topright </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> query.prefix            : Layer </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> georaster               : FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  vector data related options: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> maxpolygons             : 30000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> maxpoints               : 20000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> maxlines                : 30000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> pane                    : auto </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> cex                     : 0.6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> alpha                   : 0.9 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> fgb                     : FALSE </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

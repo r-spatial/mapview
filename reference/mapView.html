@@ -668,7 +668,7 @@ as prefix for the layerId. Ignored if <code>label = FALSE</code>.</p></td>
     <tr>
       <th>viewer.suppress</th>
       <td><p>deprecated.
-Use <code><a href='mapviewOptions.html'>mapviewOptions(viewer.suppress = TRUE/FALSE)</a></code> instead.</p></td>
+Use <code>mapviewOptions(viewer.suppress = TRUE/FALSE)</code> instead.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -858,105 +858,105 @@ the popup will potentially still say something like "POLYGON Z".</p>
     <p>Tim Appelhans</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='op'>)</span>
-
-  <span class='co'>## simple features ====================================================</span>
-  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span>
-
-  <span class='co'># sf</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>)</span>
-
-  <span class='co'># sfc</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_geometry.html'>st_geometry</a></span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># no popup</span>
-
-  <span class='co'># sfg / XY - taken from ?sf::st_point</span>
-  <span class='va'>outer</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>10</span>,<span class='fl'>0</span>,<span class='fl'>10</span>,<span class='fl'>10</span>,<span class='fl'>0</span>,<span class='fl'>10</span>,<span class='fl'>0</span>,<span class='fl'>0</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>2</span>, byrow<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-  <span class='va'>hole1</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>2</span>, byrow<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-  <span class='va'>hole2</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>5</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>2</span>, byrow<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-  <span class='va'>pts</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>outer</span>, <span class='va'>hole1</span>, <span class='va'>hole2</span><span class='op'>)</span>
-  <span class='op'>(</span><span class='va'>pl1</span> <span class='op'>=</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st.html'>st_polygon</a></span><span class='op'>(</span><span class='va'>pts</span><span class='op'>)</span><span class='op'>)</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>pl1</span><span class='op'>)</span>
-
-  <span class='co'>## raster ==============================================================</span>
-  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>plainview</span><span class='op'>)</span>
-
-    <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'>plainview</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/plainview/man/poppendorf.html'>poppendorf</a></span><span class='op'>[[</span><span class='fl'>5</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-  <span class='op'>}</span>
-
-  <span class='co'>## spatial objects =====================================================</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'>leaflet</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/leaflet/man/gadmCHE.html'>gadmCHE</a></span><span class='op'>)</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'>leaflet</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/leaflet/man/atlStorms2005.html'>atlStorms2005</a></span><span class='op'>)</span>
-
-
-  <span class='co'>## styling options &amp; legends ===========================================</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, color <span class='op'>=</span> <span class='st'>"white"</span>, col.regions <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, color <span class='op'>=</span> <span class='st'>"magenta"</span>, col.regions <span class='op'>=</span> <span class='st'>"white"</span><span class='op'>)</span>
-
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>breweries</span>, zcol <span class='op'>=</span> <span class='st'>"founded"</span><span class='op'>)</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>breweries</span>, zcol <span class='op'>=</span> <span class='st'>"founded"</span>, at <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1400</span>, <span class='fl'>2200</span>, <span class='fl'>200</span><span class='op'>)</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, zcol <span class='op'>=</span> <span class='st'>"district"</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-
-  <span class='va'>clrs</span> <span class='op'>&lt;-</span> <span class='va'>sf.colors</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, zcol <span class='op'>=</span> <span class='st'>"district"</span>, col.regions <span class='op'>=</span> <span class='va'>clrs</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-
-  <span class='co'>### multiple layers ====================================================</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>)</span> <span class='op'>+</span> <span class='va'>breweries</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>breweries</span>, <span class='va'>franconia</span><span class='op'>)</span><span class='op'>)</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span> <span class='op'>+</span> <span class='va'>trails</span>
-
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, zcol <span class='op'>=</span> <span class='st'>"district"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>breweries</span>, zcol <span class='op'>=</span> <span class='st'>"village"</span><span class='op'>)</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>franconia</span>, <span class='va'>breweries</span><span class='op'>)</span>,
-          zcol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"district"</span>, <span class='cn'>NULL</span><span class='op'>)</span>,
-          legend <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
-
-
-  <span class='co'>### burst ==============================================================</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, burst <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, burst <span class='op'>=</span> <span class='cn'>TRUE</span>, hide <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, zcol <span class='op'>=</span> <span class='st'>"district"</span>, burst <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-
-
-  <span class='co'>### ceci constitue la fin du pipe ======================================</span>
-  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://nathaneastwood.github.io/poorman/'>poorman</a></span><span class='op'>)</span>
-  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span>
-
-  <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_combine.html'>st_union</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>mapview</span><span class='op'>(</span><span class='op'>)</span>
-
-  <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>district</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/summarise.html'>summarize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"district"</span><span class='op'>)</span>
-
-  <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>district</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/summarise.html'>summarize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/mutate.html'>mutate</a></span><span class='op'>(</span>area <span class='op'>=</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span> <span class='op'>/</span> <span class='fl'>1e6</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"area"</span><span class='op'>)</span>
-
-  <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/mutate.html'>mutate</a></span><span class='op'>(</span>area <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"area"</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-
-  <span class='va'>breweries</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_binary_ops.html'>st_intersection</a></span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"district"</span><span class='op'>)</span>
-
-  <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/mutate.html'>mutate</a></span><span class='op'>(</span>count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lengths.html'>lengths</a></span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_contains</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='va'>breweries</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"count"</span><span class='op'>)</span>
-
-  <span class='va'>franconia</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/mutate.html'>mutate</a></span><span class='op'>(</span>count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lengths.html'>lengths</a></span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_contains</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='va'>breweries</span><span class='op'>)</span><span class='op'>)</span>,
-           density <span class='op'>=</span> <span class='va'>count</span> <span class='op'>/</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"density"</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'>## simple features ====================================================</span></span>
+<span class='r-in'>  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'># sf</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'># sfc</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_geometry.html'>st_geometry</a></span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># no popup</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'># sfg / XY - taken from ?sf::st_point</span></span>
+<span class='r-in'>  <span class='va'>outer</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>10</span>,<span class='fl'>0</span>,<span class='fl'>10</span>,<span class='fl'>10</span>,<span class='fl'>0</span>,<span class='fl'>10</span>,<span class='fl'>0</span>,<span class='fl'>0</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>2</span>, byrow<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='va'>hole1</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>2</span>, byrow<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='va'>hole2</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>5</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>2</span>, byrow<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='va'>pts</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>outer</span>, <span class='va'>hole1</span>, <span class='va'>hole2</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>(</span><span class='va'>pl1</span> <span class='op'>=</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st.html'>st_polygon</a></span><span class='op'>(</span><span class='va'>pts</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>pl1</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'>## raster ==============================================================</span></span>
+<span class='r-in'>  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>    <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>plainview</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>    <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'>plainview</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/plainview/man/poppendorf.html'>poppendorf</a></span><span class='op'>[[</span><span class='fl'>5</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>}</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'>## spatial objects =====================================================</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'>leaflet</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/leaflet/man/gadmCHE.html'>gadmCHE</a></span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'>leaflet</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/leaflet/man/atlStorms2005.html'>atlStorms2005</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'>## styling options &amp; legends ===========================================</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, color <span class='op'>=</span> <span class='st'>"white"</span>, col.regions <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, color <span class='op'>=</span> <span class='st'>"magenta"</span>, col.regions <span class='op'>=</span> <span class='st'>"white"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>breweries</span>, zcol <span class='op'>=</span> <span class='st'>"founded"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>breweries</span>, zcol <span class='op'>=</span> <span class='st'>"founded"</span>, at <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1400</span>, <span class='fl'>2200</span>, <span class='fl'>200</span><span class='op'>)</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, zcol <span class='op'>=</span> <span class='st'>"district"</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='va'>clrs</span> <span class='op'>&lt;-</span> <span class='va'>sf.colors</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, zcol <span class='op'>=</span> <span class='st'>"district"</span>, col.regions <span class='op'>=</span> <span class='va'>clrs</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'>### multiple layers ====================================================</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>)</span> <span class='op'>+</span> <span class='va'>breweries</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>breweries</span>, <span class='va'>franconia</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span> <span class='op'>+</span> <span class='va'>trails</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, zcol <span class='op'>=</span> <span class='st'>"district"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>breweries</span>, zcol <span class='op'>=</span> <span class='st'>"village"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>franconia</span>, <span class='va'>breweries</span><span class='op'>)</span>,</span>
+<span class='r-in'>          zcol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"district"</span>, <span class='cn'>NULL</span><span class='op'>)</span>,</span>
+<span class='r-in'>          legend <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'>### burst ==============================================================</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, burst <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, burst <span class='op'>=</span> <span class='cn'>TRUE</span>, hide <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'>mapview</span><span class='op'>(</span><span class='va'>franconia</span>, zcol <span class='op'>=</span> <span class='st'>"district"</span>, burst <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'>### ceci constitue la fin du pipe ======================================</span></span>
+<span class='r-in'>  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://nathaneastwood.github.io/poorman/'>poorman</a></span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='va'>franconia</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_combine.html'>st_union</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'>mapview</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='va'>franconia</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>district</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/summarise.html'>summarize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"district"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='va'>franconia</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>district</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/summarise.html'>summarize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/mutate.html'>mutate</a></span><span class='op'>(</span>area <span class='op'>=</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span> <span class='op'>/</span> <span class='fl'>1e6</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"area"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='va'>franconia</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/mutate.html'>mutate</a></span><span class='op'>(</span>area <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"area"</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='va'>breweries</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_binary_ops.html'>st_intersection</a></span><span class='op'>(</span><span class='va'>franconia</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"district"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='va'>franconia</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/mutate.html'>mutate</a></span><span class='op'>(</span>count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lengths.html'>lengths</a></span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_contains</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='va'>breweries</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"count"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='va'>franconia</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'><a href='https://nathaneastwood.github.io/poorman/reference/mutate.html'>mutate</a></span><span class='op'>(</span>count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lengths.html'>lengths</a></span><span class='op'>(</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_contains</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='va'>breweries</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>           density <span class='op'>=</span> <span class='va'>count</span> <span class='op'>/</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/geos_measures.html'>st_area</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'>mapview</span><span class='op'>(</span>zcol <span class='op'>=</span> <span class='st'>"density"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -191,11 +191,11 @@
   will redraw even if e.g. the attributes of a spatial object are changed only
   slightly. By default <code>mapviewWatcher</code> watches the <code>.GlobalEnv</code> but
   this can be changed to another environment. Whether watching is turned on is
-  controlled by <code><a href='mapviewOptions.html'>mapviewGetOption("watch")</a></code>. In order to enable watching it
-  needs to be set to <code><a href='mapviewOptions.html'>mapviewOptions(watch = TRUE)</a></code>
+  controlled by <code>mapviewGetOption("watch")</code>. In order to enable watching it
+  needs to be set to <code>mapviewOptions(watch = TRUE)</code>
   (default is <code>FALSE</code>) and the watcher needs to be initiated by calling
   <code>mapviewWatcher()</code> once. To switch watching off it is sufficient to set
-  <code><a href='mapviewOptions.html'>mapviewOptions(watch = FALSE)</a></code>.</p>
+  <code>mapviewOptions(watch = FALSE)</code>.</p>
     <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
     
@@ -205,34 +205,34 @@
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/r-spatial/mapview'>mapview</a></span><span class='op'>)</span>
-
-    <span class='co'>## start the watcher</span>
-    <span class='fu'>mapview</span><span class='fu'>::</span><span class='fu'>startWatching</span><span class='op'>(</span><span class='op'>)</span>
-
-    <span class='co'>## load some data and watch the automatic visualisation</span>
-    <span class='va'>fran</span> <span class='op'>=</span> <span class='fu'>mapview</span><span class='fu'>::</span><span class='va'><a href='franconia.html'>franconia</a></span>
-    <span class='va'>brew</span> <span class='op'>=</span> <span class='fu'>mapview</span><span class='fu'>::</span><span class='va'><a href='breweries.html'>breweries</a></span>
-
-    <span class='co'>## stop the watcher</span>
-    <span class='fu'>mapview</span><span class='fu'>::</span><span class='fu'>stopWatching</span><span class='op'>(</span><span class='op'>)</span>
-
-    <span class='co'>## loading or removing things now will not trigger a view update</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span><span class='va'>brew</span><span class='op'>)</span>
-    <span class='va'>trls</span> <span class='op'>=</span> <span class='fu'>mapview</span><span class='fu'>::</span><span class='va'><a href='trails.html'>trails</a></span>
-
-    <span class='co'>## re-starting the viewer will re-draw whatever is currently available</span>
-    <span class='fu'>mapview</span><span class='fu'>::</span><span class='fu'>startWatching</span><span class='op'>(</span><span class='op'>)</span>
-
-    <span class='co'>## watcher can also be stopped via mapviewOptions</span>
-    <span class='fu'><a href='mapviewOptions.html'>mapviewOptions</a></span><span class='op'>(</span>watch <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-
-    <span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span><span class='va'>trls</span><span class='op'>)</span>
-
-  <span class='op'>}</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'>  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>    <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/r-spatial/mapview'>mapview</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>    <span class='co'>## start the watcher</span></span>
+<span class='r-in'>    <span class='fu'>mapview</span><span class='fu'>::</span><span class='fu'>startWatching</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>    <span class='co'>## load some data and watch the automatic visualisation</span></span>
+<span class='r-in'>    <span class='va'>fran</span> <span class='op'>=</span> <span class='fu'>mapview</span><span class='fu'>::</span><span class='va'><a href='franconia.html'>franconia</a></span></span>
+<span class='r-in'>    <span class='va'>brew</span> <span class='op'>=</span> <span class='fu'>mapview</span><span class='fu'>::</span><span class='va'><a href='breweries.html'>breweries</a></span></span>
+<span class='r-in'></span>
+<span class='r-in'>    <span class='co'>## stop the watcher</span></span>
+<span class='r-in'>    <span class='fu'>mapview</span><span class='fu'>::</span><span class='fu'>stopWatching</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>    <span class='co'>## loading or removing things now will not trigger a view update</span></span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span><span class='va'>brew</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='va'>trls</span> <span class='op'>=</span> <span class='fu'>mapview</span><span class='fu'>::</span><span class='va'><a href='trails.html'>trails</a></span></span>
+<span class='r-in'></span>
+<span class='r-in'>    <span class='co'>## re-starting the viewer will re-draw whatever is currently available</span></span>
+<span class='r-in'>    <span class='fu'>mapview</span><span class='fu'>::</span><span class='fu'>startWatching</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>    <span class='co'>## watcher can also be stopped via mapviewOptions</span></span>
+<span class='r-in'>    <span class='fu'><a href='mapviewOptions.html'>mapviewOptions</a></span><span class='op'>(</span>watch <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span><span class='va'>trls</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='op'>}</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -205,24 +205,24 @@ local html file.</p>
     <div class='dont-index'><p><code>webshot</code>, <code>saveWidget</code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>m</span> <span class='op'>=</span> <span class='fu'><a href='mapView.html'>mapview</a></span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span>
-
-  <span class='co'>## create standalone .html</span>
-  <span class='fu'>mapshot</span><span class='op'>(</span><span class='va'>m</span>, url <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/map.html"</span><span class='op'>)</span><span class='op'>)</span>
-
-  <span class='co'>## create standalone .png; temporary .html is removed automatically unless</span>
-  <span class='co'>## 'remove_url = FALSE' is specified</span>
-  <span class='fu'>mapshot</span><span class='op'>(</span><span class='va'>m</span>, file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/map.png"</span><span class='op'>)</span><span class='op'>)</span>
-  <span class='fu'>mapshot</span><span class='op'>(</span><span class='va'>m</span>, file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/map.png"</span><span class='op'>)</span>,
-          remove_controls <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"homeButton"</span>, <span class='st'>"layersControl"</span><span class='op'>)</span><span class='op'>)</span>
-
-  <span class='co'>## create .html and .png</span>
-  <span class='fu'>mapshot</span><span class='op'>(</span><span class='va'>m</span>, url <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/map.html"</span><span class='op'>)</span>,
-          file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/map.png"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='va'>m</span> <span class='op'>=</span> <span class='fu'><a href='mapView.html'>mapview</a></span><span class='op'>(</span><span class='va'>breweries</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'>## create standalone .html</span></span>
+<span class='r-in'>  <span class='fu'>mapshot</span><span class='op'>(</span><span class='va'>m</span>, url <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/map.html"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'>## create standalone .png; temporary .html is removed automatically unless</span></span>
+<span class='r-in'>  <span class='co'>## 'remove_url = FALSE' is specified</span></span>
+<span class='r-in'>  <span class='fu'>mapshot</span><span class='op'>(</span><span class='va'>m</span>, file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/map.png"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'>mapshot</span><span class='op'>(</span><span class='va'>m</span>, file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/map.png"</span><span class='op'>)</span>,</span>
+<span class='r-in'>          remove_controls <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"homeButton"</span>, <span class='st'>"layersControl"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'>## create .html and .png</span></span>
+<span class='r-in'>  <span class='fu'>mapshot</span><span class='op'>(</span><span class='va'>m</span>, url <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/map.html"</span><span class='op'>)</span>,</span>
+<span class='r-in'>          file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/map.png"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
