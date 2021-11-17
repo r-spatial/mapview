@@ -28,7 +28,7 @@ mapviewOptions()
 
 In detail, these are:
 
-* `platform` - the rendeing platform. At the moment, only `leaflet` is accepted but we are planning to implement more in the future
+* `platform` - the rendering platform: `leaflet` (default), `mapdeck`, or `leafgl`
 * `basemaps` - the default `map.types` used by **mapview**
 * `raster.size` - the maximum number of bytes to allow for the projected raster image rendering (before base64 encoding) -> default 8MB
 * `mapview.maxpixels` - the maximum number of pixels to allow for raster image rendering on the map background -> default 500k
