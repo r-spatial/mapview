@@ -25,24 +25,27 @@ printMapview = function (x) {
   } else {
     viewerFunc = function(url) {
       dir = gsub("file://|/index.html", "", url)
-      rs = requireNamespace("rstudioapi", quietly = TRUE)
-      if (rs) {
-        if (mapviewGetOption("viewer.suppress") &
-            rstudioapi::isAvailable()) {
+      ide = get_ide()
+      switch(ide,
+        "rstudio" = if (mapviewGetOption("viewer.suppress")) {
           fl = file.path(dir, "index.html")
-          utils::browseURL(fl)
-        } else {
+          utils::browseURL(fl) 
+          } else {
+            servr::httd(
+              dir = dir, 
+              verbose = FALSE
+            )
+          },
+          "vscode" = servr::httd(
+            dir = dir,
+            verbose = FALSE
+          ),
+          # default
           servr::httd(
-            dir = dir
-            , verbose = FALSE
+            dir = dir,
+            verbose = FALSE
           )
-        }
-      } else {
-        servr::httd(
-          dir = dir
-          , verbose = FALSE
-        )
-      }
+          )
     }
   }
   htmltools::html_print(
@@ -80,4 +83,27 @@ setMethod("show", signature(object = "mapview"),
 #'
 knit_print.mapview = function(x, ...) {
   knitr::knit_print(mapview2leaflet(x), ...)
+}
+
+get_ide = function() {
+  if (is_rstudio()) {
+    return("rstudio") 
+  } else if (is_vscode()) {
+    return("vscode")
+  } else {
+    "other"
+  }
+}
+
+is_rstudio = function() {
+  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+    rstudioapi::isAvailable() && rstudioapi::versionInfo()$mode != "vscode"
+  } else {
+    FALSE
+  }
+}
+
+is_vscode = function() {
+    # can we find .vsc$attach() ?
+    exists(".vsc") && exists("attach", envir = .vsc)
 }
