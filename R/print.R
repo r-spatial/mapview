@@ -11,6 +11,7 @@ printMapview = function (x) {
   ## convert to leaflet object
   x = mapview2leaflet(x)
   viewer = getOption("viewer")
+  ide = get_ide()
   if (mapviewGetOption("viewer.suppress")) {
     viewer = NULL
   }
@@ -20,12 +21,22 @@ printMapview = function (x) {
       if (identical(paneHeight, "maximize")) {
         paneHeight = -1
       }
+      if (ide == "vscode") {
+        # VSCode's viewer can't ignore cross-origin requests. Need to serve the
+        # map so assests can be read, e.g. .fgb files.
+        server <- servr::httd(
+            dir = get_url_dir(url),
+            verbose = FALSE,
+            browser = FALSE
+          )
+        url <- server$url
+        
+      }
       viewer(url, height = paneHeight)
     }
   } else {
     viewerFunc = function(url) {
-      dir = gsub("file://|/index.html", "", url)
-      ide = get_ide()
+      dir = get_url_dir(url)
       switch(ide,
         "rstudio" = if (mapviewGetOption("viewer.suppress")) {
           fl = file.path(dir, "index.html")
@@ -107,3 +118,5 @@ is_vscode = function() {
     # can we find .vsc$attach() ?
     exists(".vsc") && exists("attach", envir = .vsc)
 }
+
+get_url_dir <- function(url) gsub("file://|/index.html", "", url)
