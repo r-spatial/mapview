@@ -1,4 +1,10 @@
-mapview 2.10.2
+mapview 2.10.4
+
+new features:
+
+  * all methods now have a `hide` argument to hide layers at the first render.
+
+mapview 2.10.3
 
 new features:
 
