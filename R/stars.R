@@ -77,6 +77,7 @@ leaflet_stars = function(x,
                          query.prefix,
                          viewer.suppress,
                          pane,
+                         hide,
                          ...) {
 
   if (native.crs) {
@@ -303,6 +304,10 @@ leaflet_stars = function(x,
   m = leafem::addMouseCoordinates(m)
   m = leafem::addCopyExtent(m)
   if (homebutton) m = leafem::addHomeButton(m, ext, group = layer.name)
+
+  if (hide) {
+    m = leaflet::hideGroup(m, layer.name)
+  }
 
   m$dependencies = c(
     m$dependencies

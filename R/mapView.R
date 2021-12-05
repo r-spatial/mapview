@@ -274,6 +274,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                    query.position = mapviewGetOption("query.position"),
                    query.prefix = mapviewGetOption("query.prefix"),
                    viewer.suppress = mapviewGetOption("viewer.suppress"),
+                   hide = FALSE,
                    ...) {
 
             if (mapviewGetOption("platform") != "leaflet") {
@@ -322,6 +323,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                           query.position = query.position,
                           query.prefix = query.prefix,
                           viewer.suppress = viewer.suppress,
+                          hide = hide,
                           ...)
             } else {
               NULL
@@ -359,6 +361,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                          query.prefix = mapviewGetOption("query.prefix"),
                          viewer.suppress = mapviewGetOption("viewer.suppress"),
                          pane = "auto",
+                         hide = FALSE,
                          ...) {
 
   # method = match.arg(method)
@@ -433,6 +436,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
                   query.prefix = query.prefix,
                   viewer.suppress = viewer.suppress,
                   pane = pane,
+                  hide = hide,
                   ...)
   } else {
     NULL
@@ -472,6 +476,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                    query.position = mapviewGetOption("query.position"),
                    query.prefix = "Layer",
                    viewer.suppress = mapviewGetOption("viewer.suppress"),
+                   hide = FALSE,
                    ...) {
 
             if (mapviewGetOption("platform") != "leaflet") {
@@ -507,6 +512,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
                          query.position = query.position,
                          query.prefix = query.prefix,
                          viewer.suppress = viewer.suppress,
+                         hide = hide,
                          ...)
             } else {
               NULL
@@ -535,6 +541,7 @@ setMethod('mapView', signature(x = 'Satellite'),
                    homebutton = mapviewGetOption("homebutton"),
                    method = c("bilinear", "ngb"),
                    label = TRUE,
+                   hide = FALSE,
                    ...) {
 
             if (mapviewGetOption("platform") != "leaflet") {
@@ -564,6 +571,7 @@ setMethod('mapView', signature(x = 'Satellite'),
                                homebutton = homebutton,
                                method = method,
                                label = label,
+                               hide = hide,
                                ...)
             } else {
               NULL
@@ -608,6 +616,7 @@ setMethod('mapView', signature(x = 'sf'),
                    native.crs = FALSE,
                    highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
+                   hide = FALSE,
                    ...) {
 
             if (nrow(x) == 0) {
@@ -711,6 +720,7 @@ setMethod('mapView', signature(x = 'sf'),
                       cex = cex,
                       lwd = lwd,
                       by_row = by_row,
+                      hide = hide,
                       ...)
             } else if (mapviewGetOption("platform") == "leaflet") {
 
@@ -740,6 +750,7 @@ setMethod('mapView', signature(x = 'sf'),
                            maxpoints = maxpoints,
                            canvas = canvas,
                            viewer.suppress = viewer.suppress,
+                           hide = hide,
                            ...)
 
             } else if (mapviewGetOption("platform") == "leafgl") {
@@ -768,6 +779,7 @@ setMethod('mapView', signature(x = 'sf'),
                         highlight = highlight,
                         maxpoints = maxpoints,
                         viewer.suppress = viewer.suppress,
+                        hide = hide,
                         ...)
 
             } else if (mapviewGetOption("platform") == "mapdeck") {
@@ -834,6 +846,7 @@ setMethod('mapView', signature(x = 'sfc'),
                    native.crs = FALSE,
                    highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
+                   hide = FALSE,
                    ...) {
 
             if (length(x) == 0) {
@@ -870,6 +883,7 @@ setMethod('mapView', signature(x = 'sfc'),
                           native.crs = native.crs,
                           highlight = highlight,
                           maxpoints = maxpoints,
+                          hide = hide,
                           ...)
 
             } else if (mapviewGetOption("platform") == "leafgl") {
@@ -897,6 +911,7 @@ setMethod('mapView', signature(x = 'sfc'),
                          native.crs = native.crs,
                          highlight = highlight,
                          maxpoints = maxpoints,
+                         hide = hide,
                          ...)
 
             } else if (mapviewGetOption("platform") == "mapdeck") {
@@ -1127,6 +1142,7 @@ setMethod('mapView', signature(x = 'XY'),
                    native.crs = FALSE,
                    highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
                    maxpoints = getMaxFeatures(x),
+                   hide = FALSE,
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -1155,6 +1171,7 @@ setMethod('mapView', signature(x = 'XY'),
                           native.crs = native.crs,
                           highlight = highlight,
                           maxpoints = maxpoints,
+                          hide = hide,
                           ...)
 
             } else {
@@ -1278,6 +1295,7 @@ setMethod('mapView', signature(x = 'list'),
                    legend = mapviewGetOption("legend"),
                    homebutton = mapviewGetOption("homebutton"),
                    native.crs = FALSE,
+                   hide = FALSE,
                    ...) {
 
             if ("by_row" %in% names(list(...))) {
@@ -1317,13 +1335,14 @@ setMethod('mapView', signature(x = 'list'),
                       legend = listify(legend)[[i]],
                       homebutton = listify(homebutton)[[i]],
                       native.crs = native.crs,
+                      hide = listify(hide)[[i]],
                       ...)
             }))@map
 
-            if (length(getLayerNamesFromMap(m)) > 1) {
-              m = leaflet::hideGroup(map = m,
-                                     group = layers2bHidden(m, ...))
-            }
+            # if (length(getLayerNamesFromMap(m)) > 1) {
+            #   m = leaflet::hideGroup(map = m,
+            #                          group = layers2bHidden(m, ...))
+            # }
 
             out <- new("mapview", object = x, map = m)
             return(out)
@@ -1377,6 +1396,7 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                    query.position = "topright",
                    query.prefix = "Layer",
                    viewer.suppress = mapviewGetOption("viewer.suppress"),
+                   hide = FALSE,
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -1404,6 +1424,7 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
                               query.position = query.position,
                               query.prefix = query.prefix,
                               viewer.suppress = viewer.suppress,
+                              hide = hide,
                               ...)
             } else {
               NULL
@@ -1441,6 +1462,7 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                    query.position = "topright",
                    query.prefix = "Layer",
                    viewer.suppress = mapviewGetOption("viewer.suppress"),
+                   hide = FALSE,
                    ...) {
 
             if (mapviewGetOption("platform") == "leaflet") {
@@ -1468,6 +1490,7 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
                               query.position = query.position,
                               query.prefix = query.prefix,
                               viewer.suppress = viewer.suppress,
+                              hide = hide,
                               ...)
             } else {
               NULL

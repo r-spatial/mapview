@@ -24,6 +24,7 @@ sfFgb = function(x,
                  attributes,
                  canvas,
                  viewer.suppress,
+                 hide,
                  ...) {
 
   if (is_literally_false(popup)) popup = NULL
@@ -252,6 +253,10 @@ sfFgb = function(x,
 
   if (is.function(legend)) m <- legend(m)
   m = removeDuplicatedMapDependencies(m)
+
+  if (hide) {
+    m = leaflet::hideGroup(m, layer.name)
+  }
 
   bb = unname(sf::st_bbox(x))
 

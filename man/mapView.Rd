@@ -57,6 +57,7 @@
   query.position = mapviewGetOption("query.position"),
   query.prefix = mapviewGetOption("query.prefix"),
   viewer.suppress = mapviewGetOption("viewer.suppress"),
+  hide = FALSE,
   ...
 )
 
@@ -86,6 +87,7 @@
   query.prefix = mapviewGetOption("query.prefix"),
   viewer.suppress = mapviewGetOption("viewer.suppress"),
   pane = "auto",
+  hide = FALSE,
   ...
 )
 
@@ -115,6 +117,7 @@
   query.prefix = mapviewGetOption("query.prefix"),
   viewer.suppress = mapviewGetOption("viewer.suppress"),
   pane = "auto",
+  hide = FALSE,
   ...
 )
 
@@ -139,6 +142,7 @@
   query.position = mapviewGetOption("query.position"),
   query.prefix = "Layer",
   viewer.suppress = mapviewGetOption("viewer.suppress"),
+  hide = FALSE,
   ...
 )
 
@@ -157,6 +161,7 @@
   homebutton = mapviewGetOption("homebutton"),
   method = c("bilinear", "ngb"),
   label = TRUE,
+  hide = FALSE,
   ...
 )
 
@@ -188,6 +193,7 @@
   native.crs = FALSE,
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x),
+  hide = FALSE,
   ...
 )
 
@@ -216,6 +222,7 @@
   native.crs = FALSE,
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x),
+  hide = FALSE,
   ...
 )
 
@@ -281,6 +288,7 @@
   native.crs = FALSE,
   highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
   maxpoints = getMaxFeatures(x),
+  hide = FALSE,
   ...
 )
 
@@ -323,6 +331,7 @@
   legend = mapviewGetOption("legend"),
   homebutton = mapviewGetOption("homebutton"),
   native.crs = FALSE,
+  hide = FALSE,
   ...
 )
 
@@ -353,6 +362,7 @@
   query.position = "topright",
   query.prefix = "Layer",
   viewer.suppress = mapviewGetOption("viewer.suppress"),
+  hide = FALSE,
   ...
 )
 
@@ -381,6 +391,7 @@
   query.position = "topright",
   query.prefix = "Layer",
   viewer.suppress = mapviewGetOption("viewer.suppress"),
+  hide = FALSE,
   ...
 )
 

@@ -25,6 +25,7 @@ leaflet_sf <- function(x,
                        native.crs,
                        highlight,
                        maxpoints,
+                       hide,
                        ...) {
 
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol)
@@ -87,6 +88,7 @@ leaflet_sf <- function(x,
       , attributes = sf2DataFrame(x, drop_sf_column = TRUE)
       , canvas = canvas
       , viewer.suppress = viewer.suppress
+      , hide = hide
       , ...
     )
   } else {
@@ -175,6 +177,7 @@ leaflet_sf <- function(x,
       , attributes = sf2DataFrame(x, drop_sf_column = TRUE)
       , canvas = canvas
       , viewer.suppress = viewer.suppress
+      , hide = hide
       , ...
     )
   }
@@ -206,6 +209,7 @@ leafgl_sf = function(x,
                      highlight,
                      maxpoints,
                      viewer.suppress,
+                     hide,
                      ...) {
 
   if (inherits(sf::st_geometry(x), "sfc_MULTIPOLYGON")) {
@@ -381,6 +385,9 @@ leafgl_sf = function(x,
 
   if (is.function(legend)) m <- legend(m)
   m = removeDuplicatedMapDependencies(m)
+  if (hide) {
+    m = leaflet::hideGroup(m, layer.name)
+  }
   out <- new("mapview", object = list(x), map = m)
 
   return(out)
@@ -534,6 +541,7 @@ leaflet_sfc <- function(x,
                         highlight,
                         maxpoints,
                         attributes = NULL,
+                        hide,
                         ...) {
   ## remove geometry names (sfc-level)
   if (!is.null(names(x))) names(x) = NULL
@@ -711,6 +719,9 @@ leaflet_sfc <- function(x,
 
   if (is.function(legend)) m <- legend(m)
   m = removeDuplicatedMapDependencies(m)
+  if (hide) {
+    m = leaflet::hideGroup(m, layer.name)
+  }
 
   bb = unname(sf::st_bbox(x))
 
@@ -763,6 +774,7 @@ leafgl_sfc = function(x,
                       highlight,
                       maxpoints,
                       viewer.suppress,
+                      hide,
                       ...) {
 
   if (inherits(x, "XY")) x = sf::st_sfc(x)
@@ -798,6 +810,7 @@ leafgl_sfc = function(x,
     , hightlight = highlight
     , maxpoints = maxpoints
     , viewer.suppress = viewer.suppress
+    , hide = hide
     , ...
   )
 

@@ -28,6 +28,7 @@ leafletRL = function(x,
                      query.position,
                      query.prefix,
                      viewer.suppress,
+                     hide,
                      ...) {
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
@@ -158,6 +159,10 @@ leafletRL = function(x,
     m = leafem::addCopyExtent(m)
     if (homebutton) m = leafem::addHomeButton(m, ext, group = layer.name)
 
+    if (hide) {
+      m = leaflet::hideGroup(m, layer.name)
+    }
+
     m$dependencies = c(
       m$dependencies
       , mapviewCSSDependencies()
@@ -196,6 +201,7 @@ leafletRSB = function(x,
                       query.position,
                       query.prefix,
                       viewer.suppress,
+                      hide,
                       ...) {
 
   pkgs = c("leaflet", "raster", "magrittr")
@@ -264,10 +270,14 @@ leafletRSB = function(x,
                   ...)
     }
 
-    if (length(getLayerNamesFromMap(m@map)) > 1) {
-      m = leaflet::hideGroup(map = m@map,
-                             group = layers2bHidden(m@map, ...))
+    # if (length(getLayerNamesFromMap(m@map)) > 1) {
+    #   m = leaflet::hideGroup(map = m@map,
+    #                          group = layers2bHidden(m@map, ...))
+    # }
+    if (hide) {
+      m = leaflet::hideGroup(m@map, layer.name)
     }
+
     out = new('mapview', object = list(x), map = m)
   }
 
@@ -303,6 +313,7 @@ leafletPixelsDF = function(x,
                            query.position,
                            query.prefix,
                            viewer.suppress,
+                           hide,
                            ...) {
 
   pkgs = c("leaflet", "sp", "magrittr")
@@ -342,6 +353,7 @@ leafletPixelsDF = function(x,
               query.position = query.position,
               query.prefix = query.prefix,
               viewer.suppress = viewer.suppress,
+              hide = hide,
               ...)
 
   out = new('mapview', object = list(x), map = m@map)
