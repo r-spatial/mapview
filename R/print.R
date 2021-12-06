@@ -11,6 +11,7 @@ printMapview = function (x) {
   ## convert to leaflet object
   x = mapview2leaflet(x)
   viewer = getOption("viewer")
+  ide = get_ide()
   if (mapviewGetOption("viewer.suppress")) {
     viewer = NULL
   }
@@ -20,29 +21,42 @@ printMapview = function (x) {
       if (identical(paneHeight, "maximize")) {
         paneHeight = -1
       }
+      if (ide == "vscode") {
+        # VSCode's viewer can't ignore cross-origin requests. Need to serve the
+        # map so assests can be read, e.g. .fgb files.
+        server <- servr::httd(
+            dir = get_url_dir(url),
+            verbose = FALSE,
+            browser = FALSE
+          )
+        url <- server$url
+        
+      }
       viewer(url, height = paneHeight)
     }
   } else {
     viewerFunc = function(url) {
-      dir = gsub("file://|/index.html", "", url)
-      rs = requireNamespace("rstudioapi", quietly = TRUE)
-      if (rs) {
-        if (mapviewGetOption("viewer.suppress") &
-            rstudioapi::isAvailable()) {
+      dir = get_url_dir(url)
+      switch(ide,
+        "rstudio" = if (mapviewGetOption("viewer.suppress")) {
           fl = file.path(dir, "index.html")
-          utils::browseURL(fl)
-        } else {
+          utils::browseURL(fl) 
+          } else {
+            servr::httd(
+              dir = dir, 
+              verbose = FALSE
+            )
+          },
+          "vscode" = servr::httd(
+            dir = dir,
+            verbose = FALSE
+          ),
+          # default
           servr::httd(
-            dir = dir
-            , verbose = FALSE
+            dir = dir,
+            verbose = FALSE
           )
-        }
-      } else {
-        servr::httd(
-          dir = dir
-          , verbose = FALSE
-        )
-      }
+          )
     }
   }
   htmltools::html_print(
@@ -81,3 +95,28 @@ setMethod("show", signature(object = "mapview"),
 knit_print.mapview = function(x, ...) {
   knitr::knit_print(mapview2leaflet(x), ...)
 }
+
+get_ide = function() {
+  if (is_rstudio()) {
+    return("rstudio") 
+  } else if (is_vscode()) {
+    return("vscode")
+  } else {
+    "other"
+  }
+}
+
+is_rstudio = function() {
+  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+    rstudioapi::isAvailable() && rstudioapi::versionInfo()$mode != "vscode"
+  } else {
+    FALSE
+  }
+}
+
+is_vscode = function() {
+    # can we find .vsc$attach() ?
+    exists(".vsc") && exists("attach", envir = .vsc)
+}
+
+get_url_dir <- function(url) gsub("file://|/index.html", "", url)
