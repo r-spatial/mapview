@@ -1,8 +1,10 @@
-mapview 2.10.4.9001 (2021-12-11)
+mapview 2.10.4.9002 (2021-12-11)
 
 features and improvements
 
 bug fixes
+
+  * when burst = TRUE popups were not correct. #396 & #408
 
 documentation etc
 
