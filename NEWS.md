@@ -24,6 +24,7 @@ new features:
 bugfixes:
 
   * stars image now renders correctly if supplying only a few colors. #388
+  * data now appears in maps when using default settings with VSCode R extension.
 
 ## mapview 2.10.0
 
