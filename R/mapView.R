@@ -674,13 +674,17 @@ setMethod('mapView', signature(x = 'sf'),
                                                na.color = na.color)
                 if (length(col.regions) > 1)
                   col.regions = col.regions[order(x[[zcol]])]
-# browser()
+
                 if (!isTRUE(popup) && popup %in% names(x) && length(popup) == 1) {
                   popup = leafpop::popupTable(x[popup], className = "mapview-popup")[order(x[[zcol]])]
                 } else if (!is.null(attr(popup, "popup"))) {
                   popup = popup
                 } else {
-                  popup = leafpop::popupTable(x, className = "mapview-popup")[order(x[[zcol]])]
+                  popup = leafpop::popupTable(
+                      x
+                      , className = "mapview-popup"
+                    )[order(x[[zcol]])]
+
                 }
                 label = makeLabels(x, zcol)[order(x[[zcol]])]
                 by_row = TRUE
@@ -698,6 +702,10 @@ setMethod('mapView', signature(x = 'sf'),
               }
             }
 
+            if (inherits(x, "list") & length(x) == 1) {
+              x = x[[1]]
+            }
+# browser()
             if (inherits(x, "list")) {
               mapView(x,
                       map = map,
@@ -724,34 +732,34 @@ setMethod('mapView', signature(x = 'sf'),
                       ...)
             } else if (mapviewGetOption("platform") == "leaflet") {
 
-                leaflet_sf(x,
-                           map = map,
-                           pane = pane,
-                           zcol = zcol,
-                           color = color,
-                           col.regions = col.regions,
-                           at = at,
-                           na.color = na.color,
-                           cex = cex,
-                           lwd = lwd,
-                           alpha = alpha,
-                           alpha.regions = alpha.regions,
-                           na.alpha = na.alpha,
-                           map.types = map.types,
-                           verbose = verbose,
-                           popup = popup,
-                           layer.name = layer.name,
-                           label = label,
-                           legend = legend,
-                           legend.opacity = legend.opacity,
-                           homebutton = homebutton,
-                           native.crs = native.crs,
-                           highlight = highlight,
-                           maxpoints = maxpoints,
-                           canvas = canvas,
-                           viewer.suppress = viewer.suppress,
-                           hide = hide,
-                           ...)
+              leaflet_sf(x,
+                         map = map,
+                         pane = pane,
+                         zcol = zcol,
+                         color = color,
+                         col.regions = col.regions,
+                         at = at,
+                         na.color = na.color,
+                         cex = cex,
+                         lwd = lwd,
+                         alpha = alpha,
+                         alpha.regions = alpha.regions,
+                         na.alpha = na.alpha,
+                         map.types = map.types,
+                         verbose = verbose,
+                         popup = popup,
+                         layer.name = layer.name,
+                         label = label,
+                         legend = legend,
+                         legend.opacity = legend.opacity,
+                         homebutton = homebutton,
+                         native.crs = native.crs,
+                         highlight = highlight,
+                         maxpoints = maxpoints,
+                         canvas = canvas,
+                         viewer.suppress = viewer.suppress,
+                         hide = hide,
+                         ...)
 
             } else if (mapviewGetOption("platform") == "leafgl") {
 
@@ -1312,8 +1320,8 @@ setMethod('mapView', signature(x = 'list'),
             #     , lapply(x, leafpop::popupTable, className = "mapview-popup")
             #   )
             # }
-
             lyrnms = makeListLayerNames(x, layer.name)
+            # browser()
 
             m <- Reduce("+", lapply(seq(x), function(i) {
               mapView(x = x[[i]],
@@ -1329,9 +1337,9 @@ setMethod('mapView', signature(x = 'list'),
                       alpha.regions = listify(alpha.regions)[[i]],
                       map.types = map.types,
                       verbose = verbose,
-                      popup = ifelse(isTRUE(popup), TRUE, listify(popup)[[i]]),
+                      popup = if (isTRUE(popup)) TRUE else listify(popup)[[i]],
                       layer.name = lyrnms[[i]],
-                      label = ifelse(length(label[[i]]) == 0, FALSE, listify(label)[[i]]),
+                      label = if (length(label[[i]]) == 0) FALSE else listify(label)[[i]],
                       legend = listify(legend)[[i]],
                       homebutton = listify(homebutton)[[i]],
                       native.crs = native.crs,

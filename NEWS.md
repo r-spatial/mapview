@@ -4,6 +4,8 @@
 
 #### 🐛 bug fixes
 
+  * when `burst = TRUE` popups were not correct. #396 & #408
+
 #### 💬 documentation etc
 
 #### 🍬 miscellaneous
