@@ -1,58 +1,30 @@
+mapview 2.10.4.9000 (2021-12-11)
+
+features and improvements
+
+bug fixes
+
+documentation etc
+
+miscellaneous
+
+
 mapview 2.10.4
 
 new features:
 
-  * all methods now have a `hide` argument to hide layers at the first render.
+  * all methods now have a hide argument to hide layers at the first render.
 
 mapview 2.10.3
 
 new features:
 
-  * use interpolated numeric legend also if number of unique values <= 11. #389
-
-bugfixes:
-
-  * stars image now renders correctly if supplying only a few colors. #388
-
-mapview 2.10.0
-
-new features:
-
-  * new implementation of print method to make mapview with flatgeobuf work outside RStudio.
-  * auto setting of mapviewOptions(fgb = TRUE) at load only if not in knitr, notebook. https://twitter.com/TimSalabim3/status/1337714868925980674
-  * new option `basemaps.color.shuffle` to control if basemaps should automatically adjust to colors of overlays (i.e. use black basemap as default for very light colors). #377
-
-miscellaneous:
-
-  * use tinytest for testing
-  * `mapviewGetOption()` is now vectorised.
-
-bugfixes:
-
-  * rmd files did not compile due to missing popup.css #312
-  * method for RasterStackBrick now respects query.digits option. #334
-  * don't emit warning when length(at) == length(color). #327 
-  * alpha.regions now respected if burst = TRUE. #352
-  * printing in rmarkdown notebooks works now if fgb & georaster options are FALSE. #351
-  * setting options("OutDec" = ",") does not cause an error anymore. #353
-  * factor legends now displayed correctly (hopefully). #362 #356
-  * re-enabled hidden argument `hide` to hide all but the first layer of a RasterStackBrick. #374
-  * custom layer names now respected when rendering lists (if same length). #383
-
-mapview 2.9.0
-
-new features:
-
-  * new function removeMapJunk to remove control elements from a map (e.g. the zoom control).
-  * added tentative support for platform 'leafgl'.
-  * stars method now uses leafem::addGeoRaster. https://github.com/r-spatial/leafem/issues/25
-  * leafem::addCopyExtent now included in all methods.
-  * sf(c) methods now use leafem::addFgb if GDAL >= 3.1.
+  * use interpolated numeric legend also if number of unique values = 3.1.
   * new | operator to compare two maps side-by-side.
 
 miscellaneous:
 
-  * all deprecated functions are now defunct. See ?`mapview-defunct`.
+  * all deprecated functions are now defunct. See ?mapview-defunct.
   * drop viridisLite dependency and use base::hcl.colors instead. We now depend on R >= 3.6.
 
 mapview 2.7.8
@@ -64,13 +36,13 @@ new features:
   * initial support for 'mapdeck' as a rendering platform.
   * mapshot now works for all and any htmlwidget.
   * new functions startWatching/stopWatching to automatically mapview all spatial objects in a given environment (default .GlobalEnv).
-  
+
 miscellaneous:
 
   * deprecated addStarsImage - now in package leafem. Thanks to Luigi Ranghetti #230
   * deprecated addExtent - now in package leafem. Thanks to Lorenzo Busetto #233
   * dropped Rcpp dependency.
-  
+
 bugfixes:
 
   * factor legends should now work as expected. #240
@@ -91,7 +63,7 @@ bugfixes:
 mapview 2.6.3
 
 miscellaneous:
-  
+
   * argument popup now also accepts FALSE in addition to NULL to suppress popups.
   * plainview argument legend now accepts a list describing the colorkey (see ?lattice::levelplot for details). #187
   * mapview popup css now has white background (for better leaflet integration).
@@ -107,41 +79,7 @@ new features:
 
 bugfixes:
 
-  * isFALSE (caused errors on R < 3.5) is now handled properly.
-  * mapshot does not unintentionally delete url anymore if saving to png with same name.
-  * mapshot now properly deletes temporary url when saving to png (or png and html).
-  * internal function mapview:::nrings now calculates number of polygon rings correctly. #181
-
-mapview 2.5.0
-
-new features:
-
-  * addMouseCoordinates now displays basic info by default. Detailed info can be accessed by holding Ctrl keyboard button which also copies lon, lat and zoom info to the clipboard when Ctrl + clicking on the map. #113
-  * npts has gained argument by_feature to count the number of vertices for each feature individually. #155
-  * canvas now auto-detected based on feature complexity.
-  * layer.name is now cut at 50 characters which used to be especially problematic for dplyr chains inside a mapview call. Fixes #159
-  * added '+' method for RHS class NULL. https://twitter.com/TimSalabim3/status/1012213914262794240
-  * popupImage has gained argument embed to specify whether local images should be embeded as base64 in the popup html. #168
-  * stars methods re-enabled since now on CRAN.
-  * added viewRGB method for stars images.
-
-bugfixes:
-
-  * leaflet::addScalebar would prevent Raster* method from rendering correctly for multiple layers.
-  * cex was not respected when burst = TRUE. #149
-  * popupTable no longer causes a stack overflow with large point data. #154
-  * popupGraph no longer relies on png files on disk but embeds graphs via base64. #156 
-  * in mapshot, remove temporary url files only if remove_url = TRUE. #157
-  * removeMouseCoordinates should work properly now (also exported). #145
-  * home button for single point now zooms to maximum zoom 18.
-  
-miscellaneous:
-
-  * dropped gdalUtils from Imports. gdalinfo and gdal_translate now used via sf.
-  * addMapPane has been migrated to leaflet.
-  * legend now TRUE by default as all legends are now linked to layers.
-  * better error messages in some cases (e.g. missing zcol, empty objects).
-  * package now depends on leaflet >= 1.0.0
+  * isFALSE (caused errors on R = 1.0.0
   * highlight now also accepts FALSE in addition to NULL to stop highlighting.
 
 
@@ -159,7 +97,7 @@ new features:
   * new function addMapPane to enable control over layer order.
   * mapview has gained argument pane as it now uses addMapPane to ensure points overlay lines overlay polygons.
   * mapview has gained argument canvas to enable canvas rendering.
-  
+
 bugfixes:
 
   * viewRGB failed because of missing method argument. #125
@@ -173,20 +111,20 @@ new features:
   * popupTable has gained argument row.numbers to disable row numbers. #109
   * new function addStarsImage to visualise stars images.
   * new function addImageQuery to provide raster/stars value query on mouseover/click.
-  * mapview has gained new argument `method` to specify the method used for resampling of raster data. #123
-  
+  * mapview has gained new argument method to specify the method used for resampling of raster data. #123
+
 bugfixes:
 
   * raster method with native.crs = TRUE did throw an error on windows. #111
   * SpatialPixelsDataFrame and SpatialGridDataFrame failed because of missing map argument.
   * example for multiple popupImages was broken. #118
-  * SpatialPixelsDataFrame failed when `zcol` was supplied. #124
-  
+  * SpatialPixelsDataFrame failed when zcol was supplied. #124
+
 misc:
 
   * added more details in description field as per request of Uwe Ligges.
   * moved leaflet from Depends to Imports.
-  
+
 
 mapview 2.2.0
 
@@ -215,10 +153,10 @@ bugfixes:
 
 mapview 2.1.4
 
-new features: 
+new features:
 
   * popupImage now accepts more than one file name (list or vector) in argument img.
-  
+
 bugfixes:
 
   * na.alpha caused list/burst methods to fail.
@@ -226,7 +164,7 @@ bugfixes:
 
 mapview 2.1.0
 
-new features: 
+new features:
 
   * plainview/cubeview now respects/has gained argument na.color.
   * mapview now supports st_GEOMETRY with truely mixed feature types (e.g. LINESTRING and POLYGON) - fixes #85
@@ -259,11 +197,11 @@ new features:
   * mapview now provides subtle highlighting of polygons (changing opacity slightly) and lines (changing thickness).
   * plainView, slideView and cubeView have gained argument legend. default is TRUE. Legends only available for non-RGB methods!
   * new data sets:
-  
+
       - 'franconia' (administrative district boundaries of Franconia)
       - 'breweries' (extended version of the 'breweries91' data)
       - 'trails' (selected hiking trails in franconia to connect the breweries)
-      
+
   * data sets 'breweries91', 'gadmCHE' and 'atlStorms2005' have been deleted and moved to leaflet.
 
 bugfixes:
@@ -272,7 +210,7 @@ bugfixes:
 
 changes:
 
-  * MAJOR internal change: All vector data are now processed as sf objects internally. This also means that objects returned in slot `@object` will be of class sf (regardless of input class).
+  * MAJOR internal change: All vector data are now processed as sf objects internally. This also means that objects returned in slot @object will be of class sf (regardless of input class).
   * polygons and points now have a darkish gray line frame (unless add*LargeFeatures is used - where the overhead of passing two sets of colors would be too high).
   * updated examples (in line with new data).
   * github repository moved from https://github.com/environmentalinformatics-marburg/mapview to https://github.com/r-spatial/mapview
