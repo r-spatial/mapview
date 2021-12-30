@@ -1305,13 +1305,18 @@ setMethod('mapView', signature(x = 'list'),
                    native.crs = FALSE,
                    hide = FALSE,
                    ...) {
-
+# browser()
             if ("by_row" %in% names(list(...))) {
               listify = listifyer(x, by_row = list(...)$by_row)
+              if (unique(sapply(x, nrow)) == length(popup)) {
+                popup = rep(list(popup), length(x))
+              } else {
+                popup = listify(popup)
+              }
             } else {
               listify = listifyer(x)
             }
-
+            # browser()
             if (is.null(popup)) popup = FALSE
             # if (isTRUE(popup)) {
             #   popup = ifelse(
@@ -1337,7 +1342,7 @@ setMethod('mapView', signature(x = 'list'),
                       alpha.regions = listify(alpha.regions)[[i]],
                       map.types = map.types,
                       verbose = verbose,
-                      popup = if (isTRUE(popup)) TRUE else listify(popup)[[i]],
+                      popup = if (isTRUE(popup)) TRUE else popup[[i]],
                       layer.name = lyrnms[[i]],
                       label = if (length(label[[i]]) == 0) FALSE else listify(label)[[i]],
                       legend = listify(legend)[[i]],
