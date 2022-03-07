@@ -396,3 +396,10 @@ useFgb = function() {
     !isTRUE(getOption("rstudio.notebook.executing")) && # Not running in an RStudio notebook chunk
     !isTRUE(getOption("knitr.in.progress")) # Not actively knitting a document
 }
+
+isCog = function(x) {
+  all(
+    grepl("(^\\/vsicurl||^http||^https)\\://", x)
+    , grepl("\\.(tiff||tif)$", x)
+  )
+}

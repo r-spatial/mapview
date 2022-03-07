@@ -1027,6 +1027,22 @@ setMethod('mapView', signature(x = 'character'),
                             canvas = canvas,
                             viewer.suppress = viewer.suppress,
                             ...)
+             # } else if (isCog(x)) {
+             #   m = initMap(
+             #     map,
+             #     map.types = map.types,
+             #     sf::st_crs(4326),
+             #     native.crs = native.crs,
+             #     canvas = canvas,
+             #     viewer.suppress = viewer.suppress
+             #   )
+             #   leafem:::addCOG(
+             #     map = m
+             #     , url = x
+             #     , group = layer.name
+             #     , opacity = alpha.regions
+             #     , ...
+             #   )
              } else {
                stop(sprintf("%s is not a directory!", layer.name),
                     call. = FALSE)
