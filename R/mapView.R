@@ -35,7 +35,7 @@ if ( !isGeneric('mapView') ) {
 #'   Set to \code{NULL} to get default leaflet behaviour where allfeatures
 #'   are rendered in the same pane and layer order is determined automatically/sequentially.
 #' @param canvas whether to use canvas rendering rather than svg. May help
-#'   performance with larger data. See \url{https://leafletjs.com/reference-1.6.0.html#canvas}
+#'   performance with larger data. See \url{https://leafletjs.com/SlavaUkraini/reference.html#canvas}
 #'   for more information. Only applicable for vector data. The default setting will
 #'   decide automatically, based on feature complexity.
 #' @param viewer.suppress deprecated.
@@ -111,6 +111,7 @@ if ( !isGeneric('mapView') ) {
 #'   for possible values. Ignored if \code{label = FALSE}.
 #' @param query.prefix for raster methods only. a character string to be shown
 #'   as prefix for the layerId. Ignored if \code{label = FALSE}.
+#' @param hide if TRUE the layer will be hidden (i.e. unchecked) in the rendered map.
 #' @param ... additional arguments passed on to respective functions.
 #'   See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #'   \code{\link{addPolygons}}, \code{\link{addPolylines}} for details.

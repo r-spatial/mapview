@@ -487,6 +487,8 @@ as prefix for the layerId. Ignored if \code{label = FALSE}.}
 \item{viewer.suppress}{deprecated.
 Use \code{mapviewOptions(viewer.suppress = TRUE/FALSE)} instead.}
 
+\item{hide}{if TRUE the layer will be hidden (i.e. unchecked) in the rendered map.}
+
 \item{...}{additional arguments passed on to respective functions.
 See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 \code{\link{addPolygons}}, \code{\link{addPolylines}} for details.
@@ -503,7 +505,7 @@ a list of supported hidden arguments.}
   are rendered in the same pane and layer order is determined automatically/sequentially.}
 
 \item{canvas}{whether to use canvas rendering rather than svg. May help
-performance with larger data. See \url{https://leafletjs.com/reference-1.6.0.html#canvas}
+performance with larger data. See \url{https://leafletjs.com/SlavaUkraini/reference.html#canvas}
 for more information. Only applicable for vector data. The default setting will
 decide automatically, based on feature complexity.}
 
