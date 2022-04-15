@@ -88,6 +88,7 @@ Suggests:
     mapdeck,
     plainview,
     poorman,
+    rgdal,
     rmarkdown,
     rstudioapi,
     s2,
