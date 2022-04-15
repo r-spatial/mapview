@@ -278,7 +278,7 @@ leafletRSB = function(x,
       m = leaflet::hideGroup(m@map, layer.name)
     }
 
-    out = new('mapview', object = list(x), map = m)
+    out = new('mapview', object = list(x), map = m@map)
   }
 
   return(out)

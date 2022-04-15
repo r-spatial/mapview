@@ -5,7 +5,8 @@
 #### 🐛 bug fixes
 
   * when `burst = TRUE` popups were not correct. #396 & #408
-  * recreated data crs with `sf::st_crs()` to avoid warnings (old-style crs object detected; please recreate object with a recent sf::st_crs()). #411
+  * recreated data crs with `sf::st_crs()` to avoid warnings ('old-style crs object detected; please recreate object with a recent sf::st_crs()'). #411
+  * `RasterBrick` method now returns correct `@object` slot.
 
 #### 💬 documentation etc
 
