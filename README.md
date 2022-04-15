@@ -5,8 +5,8 @@
 [![tic](https://github.com/r-spatial/mapview/workflows/tic/badge.svg?branch=master)](https://github.com/r-spatial/mapview/actions)
 [![cran
 checks](https://cranchecks.info/badges/worst/mapview)](https://cran.r-project.org/web/checks/check_results_mapview.html)
-[![monthly](https://cranlogs.r-pkg.org/badges/mapview)](https://www.rpackages.io/package/mapview)
-[![total](https://cranlogs.r-pkg.org/badges/grand-total/mapview)](https://www.rpackages.io/package/mapview)
+![monthly](https://cranlogs.r-pkg.org/badges/mapview)
+![total](https://cranlogs.r-pkg.org/badges/grand-total/mapview)
 [![CRAN](https://www.r-pkg.org/badges/version/mapview?color=009999)](https://cran.r-project.org/package=mapview)
 [![License](https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![Coverage
@@ -30,55 +30,55 @@ makes use of some advanced rendering functionality that will enable
 viewing of much larger data than is possible with **leaflet**.
 Furthermore, if you’re a fan of
 [**mapdeck**](https://cran.r-project.org/package=mapdeck) (which you
-should\!), you can choose to use it as the rendering platform instead of
+should!), you can choose to use it as the rendering platform instead of
 **leaflet** by setting `mapviewOptions(platform = "mapdeck")`.
 
 The main user relevant functions are:
 
-  - `mapview` - view (multiple) spatial objects on a set of background
+-   `mapview` - view (multiple) spatial objects on a set of background
     maps
-  - `viewExtent` - view extent / bounding box of spatial objects
-  - `viewRGB` - view RGB true- or false-color images of raster objects
-  - `mapshot` - easily save maps (including leaflet maps) as `html`
+-   `viewExtent` - view extent / bounding box of spatial objects
+-   `viewRGB` - view RGB true- or false-color images of raster objects
+-   `mapshot` - easily save maps (including leaflet maps) as `html`
     and/or `png` (or other image formats)
 
 Functions that have been deprecated/deleted recently:
 
-  - `addHomeButton` - deprecated, use package
+-   `addHomeButton` - deprecated, use package
     [leafem](https://CRAN.R-project.org/package=leafem) instead.
-  - `addLogo` - deprecated, use package
+-   `addLogo` - deprecated, use package
     [leafem](https://CRAN.R-project.org/package=leafem) instead.
-  - `addFeatures` - deprecated, use package
+-   `addFeatures` - deprecated, use package
     [leafem](https://CRAN.R-project.org/package=leafem) instead.
-  - `addMouseCoordinates` - deprecated, use package
+-   `addMouseCoordinates` - deprecated, use package
     [leafem](https://CRAN.R-project.org/package=leafem) instead.
-  - `addExtent` - deprecated, use package
+-   `addExtent` - deprecated, use package
     [leafem](https://CRAN.R-project.org/package=leafem) instead.
-  - `addImageQuery` - deprecated, use package
+-   `addImageQuery` - deprecated, use package
     [leafem](https://CRAN.R-project.org/package=leafem) instead.
-  - `latticeView` & `sync` - deprecated, use package
+-   `latticeView` & `sync` - deprecated, use package
     [leafsync](https://CRAN.R-project.org/package=leafsync) instead.
-  - `slideView` - deprecated, use package
+-   `slideView` - deprecated, use package
     [slideview](https://CRAN.R-project.org/package=slideview) instead.
-  - `cubeView` - deprecated, use package
+-   `cubeView` - deprecated, use package
     [cubeview](https://CRAN.R-project.org/package=cubeview) instead.
-  - `plainview` - deprecated, use package
+-   `plainview` - deprecated, use package
     [plainview](https://CRAN.R-project.org/package=plainview) instead.
-  - `popupTable`, `popupGraph` & `popupImage` - deprecated, use package
+-   `popupTable`, `popupGraph` & `popupImage` - deprecated, use package
     [leafpop](https://CRAN.R-project.org/package=leafpop) instead.
-  - `addLargeFeatures` - use
+-   `addLargeFeatures` - use
     [leafgl](https://CRAN.R-project.org/package=leafgl)`::addGL*`
     functions instead.
 
 Objects of the following spatial classes are supported:
 
-  - [sf](https://cran.r-project.org/package=sf)
-  - [raster](https://cran.r-project.org/package=raster) (Layer, Stack,
+-   [sf](https://cran.r-project.org/package=sf)
+-   [raster](https://cran.r-project.org/package=raster) (Layer, Stack,
     Brick and SpatialPixels\* / SpatialGridDataFrame)
-  - [stars](https://cran.r-project.org/package=stars)
-  - [sp](https://cran.r-project.org/package=sp) (Points, Polygons, Lines
+-   [stars](https://cran.r-project.org/package=stars)
+-   [sp](https://cran.r-project.org/package=sp) (Points, Polygons, Lines
     and their DataFrame version)
-  - [satellite](https://cran.r-project.org/package=satellite)
+-   [satellite](https://cran.r-project.org/package=satellite)
 
 ## Installation
 
