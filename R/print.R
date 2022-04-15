@@ -30,7 +30,7 @@ printMapview = function (x) {
             browser = FALSE
           )
         url <- server$url
-        
+
       }
       viewer(url, height = paneHeight)
     }
@@ -40,10 +40,10 @@ printMapview = function (x) {
       switch(ide,
         "rstudio" = if (mapviewGetOption("viewer.suppress")) {
           fl = file.path(dir, "index.html")
-          utils::browseURL(fl) 
+          utils::browseURL(fl)
           } else {
             servr::httd(
-              dir = dir, 
+              dir = dir,
               verbose = FALSE
             )
           },
@@ -98,7 +98,7 @@ knit_print.mapview = function(x, ...) {
 
 get_ide = function() {
   if (is_rstudio()) {
-    return("rstudio") 
+    return("rstudio")
   } else if (is_vscode()) {
     return("vscode")
   } else {
@@ -113,6 +113,9 @@ is_rstudio = function() {
     FALSE
   }
 }
+
+## need to assign global variable .vsc
+if(getRversion() >= "2.15.1")  utils::globalVariables(c(".vsc"))
 
 is_vscode = function() {
     # can we find .vsc$attach() ?
