@@ -1322,10 +1322,10 @@ setMethod('mapView', signature(x = 'list'),
                    native.crs = FALSE,
                    hide = FALSE,
                    ...) {
-# browser()
+
             if ("by_row" %in% names(list(...))) {
               listify = listifyer(x, by_row = list(...)$by_row)
-              if (unique(sapply(x, nrow)) == length(popup)) {
+              if (all(unique(sapply(x, nrow)) == length(popup))) {
                 popup = rep(list(popup), length(x))
               } else {
                 popup = listify(popup)
