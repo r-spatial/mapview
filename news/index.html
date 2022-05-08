@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mapview</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.11.0.9000</span>
       </span>
     </div>
 
@@ -76,10 +76,15 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="2.11.0" id="mapview-2110-2022-04-16">mapview 2.11.0 (2022-04-16)<small>2022-04-16</small><a class="anchor" aria-label="anchor" href="#mapview-2110-2022-04-16"></a></h2>
-<div class="section level4">
-<h4 id="-features-and-improvements-2-11-0">✨ features and improvements<a class="anchor" aria-label="anchor" href="#-features-and-improvements-2-11-0"></a></h4>
+<h2 class="page-header" data-toc-text="2.11.0.9000" id="mapview-21109000-2022-05-08">mapview 2.11.0.9000 (2022-05-08)<a class="anchor" aria-label="anchor" href="#mapview-21109000-2022-05-08"></a></h2>
+<div class="section level4"><h4 id="-features-and-improvements-2-11-0-9000">✨ features and improvements<a class="anchor" aria-label="anchor" href="#-features-and-improvements-2-11-0-9000"></a></h4></div>
+<div class="section level4"><h4 id="-bug-fixes-2-11-0-9000">🐛 bug fixes<a class="anchor" aria-label="anchor" href="#-bug-fixes-2-11-0-9000"></a></h4></div>
+<div class="section level4"><h4 id="-documentation-etc-2-11-0-9000">💬 documentation etc<a class="anchor" aria-label="anchor" href="#-documentation-etc-2-11-0-9000"></a></h4></div>
+<div class="section level4"><h4 id="-miscellaneous-2-11-0-9000">🍬 miscellaneous<a class="anchor" aria-label="anchor" href="#-miscellaneous-2-11-0-9000"></a></h4></div>
 </div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.11.0" id="mapview-2110-2022-04-16">mapview 2.11.0 (2022-04-16)<small>2022-04-16</small><a class="anchor" aria-label="anchor" href="#mapview-2110-2022-04-16"></a></h2>
+<div class="section level4"><h4 id="-features-and-improvements-2-11-0">✨ features and improvements<a class="anchor" aria-label="anchor" href="#-features-and-improvements-2-11-0"></a></h4></div>
 <div class="section level4">
 <h4 id="-bug-fixes-2-11-0">🐛 bug fixes<a class="anchor" aria-label="anchor" href="#-bug-fixes-2-11-0"></a></h4>
 <ul><li>when <code>burst = TRUE</code> popups were not correct. <a href="https://github.com/r-spatial/mapview/issues/396" class="external-link">#396</a> &amp; <a href="https://github.com/r-spatial/mapview/issues/408" class="external-link">#408</a></li>
@@ -87,23 +92,17 @@
 <li>
 <code>RasterBrick</code> method now returns correct <code>@object</code> slot.</li>
 </ul></div>
-<div class="section level4">
-<h4 id="-documentation-etc-2-11-0">💬 documentation etc<a class="anchor" aria-label="anchor" href="#-documentation-etc-2-11-0"></a></h4>
-</div>
-<div class="section level4">
-<h4 id="-miscellaneous-2-11-0">🍬 miscellaneous<a class="anchor" aria-label="anchor" href="#-miscellaneous-2-11-0"></a></h4>
-</div>
+<div class="section level4"><h4 id="-documentation-etc-2-11-0">💬 documentation etc<a class="anchor" aria-label="anchor" href="#-documentation-etc-2-11-0"></a></h4></div>
+<div class="section level4"><h4 id="-miscellaneous-2-11-0">🍬 miscellaneous<a class="anchor" aria-label="anchor" href="#-miscellaneous-2-11-0"></a></h4></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.10.4" id="mapview-2104">mapview 2.10.4<a class="anchor" aria-label="anchor" href="#mapview-2104"></a></h2>
 <p>new features:</p>
-<ul><li>all methods now have a <code>hide</code> argument to hide layers at the first render.</li>
-</ul></div>
+<ul><li>all methods now have a <code>hide</code> argument to hide layers at the first render.</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.10.3" id="mapview-2103">mapview 2.10.3<a class="anchor" aria-label="anchor" href="#mapview-2103"></a></h2>
 <p>new features:</p>
-<ul><li>use interpolated numeric legend also if number of unique values &lt;= 11. <a href="https://github.com/r-spatial/mapview/issues/389" class="external-link">#389</a></li>
-</ul><p>bugfixes:</p>
+<ul><li>use interpolated numeric legend also if number of unique values &lt;= 11. <a href="https://github.com/r-spatial/mapview/issues/389" class="external-link">#389</a></li></ul><p>bugfixes:</p>
 <ul><li>stars image now renders correctly if supplying only a few colors. <a href="https://github.com/r-spatial/mapview/issues/388" class="external-link">#388</a></li>
 <li>data now appears in maps when using default settings with VSCode R extension.</li>
 </ul></div>
@@ -156,8 +155,7 @@
 <li>deprecated addExtent - now in package leafem. Thanks to Lorenzo Busetto <a href="https://github.com/r-spatial/mapview/issues/233" class="external-link">#233</a></li>
 <li>dropped Rcpp dependency.</li>
 </ul><p>bugfixes:</p>
-<ul><li>factor legends should now work as expected. <a href="https://github.com/r-spatial/mapview/issues/240" class="external-link">#240</a></li>
-</ul></div>
+<ul><li>factor legends should now work as expected. <a href="https://github.com/r-spatial/mapview/issues/240" class="external-link">#240</a></li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.7.0" id="mapview-270">mapview 2.7.0<small>2019-05-13</small><a class="anchor" aria-label="anchor" href="#mapview-270"></a></h2>
 <p>miscellaneous:</p>
@@ -165,8 +163,7 @@
 <li>deprecated slideview, cubeview, latticeview &amp; sync, plainview, popup* functions.</li>
 <li>deprecated addFeatures, garnishMap, addHomeButton, addImageQuery, addLogo, addMouseCoordinates.</li>
 </ul><p>bugfixes:</p>
-<ul><li>mapview would return NULL if zcol was of type logic. <a href="https://github.com/r-spatial/mapview/issues/200" class="external-link">#200</a></li>
-</ul></div>
+<ul><li>mapview would return NULL if zcol was of type logic. <a href="https://github.com/r-spatial/mapview/issues/200" class="external-link">#200</a></li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.6.3" id="mapview-263">mapview 2.6.3<small>2018-12-19</small><a class="anchor" aria-label="anchor" href="#mapview-263"></a></h2>
 <p>miscellaneous:</p>
@@ -266,13 +263,11 @@
 <ul><li>added testthat suite of functions.</li>
 <li>increased performance when using “+”-method (about 10x faster now).</li>
 </ul><p>bugfixes:</p>
-<ul><li>manifold bug fixes - addressing issues with list layers, alpha channel and many more.</li>
-</ul></div>
+<ul><li>manifold bug fixes - addressing issues with list layers, alpha channel and many more.</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.1.4" id="mapview-214">mapview 2.1.4<small>2017-07-29</small><a class="anchor" aria-label="anchor" href="#mapview-214"></a></h2>
 <p>new features:</p>
-<ul><li>popupImage now accepts more than one file name (list or vector) in argument img.</li>
-</ul><p>bugfixes:</p>
+<ul><li>popupImage now accepts more than one file name (list or vector) in argument img.</li></ul><p>bugfixes:</p>
 <ul><li>na.alpha caused list/burst methods to fail.</li>
 <li>legend did not work when zcol only had one unique value. This was actually a delibarate choice as for a single map it doesn’t really make sense to have a legend for only one color. However, for latticeView/sync this does actually make sense, hence re-enabled.</li>
 </ul></div>
@@ -314,8 +309,7 @@
 </ul></li>
 <li><p>data sets ‘breweries91’, ‘gadmCHE’ and ‘atlStorms2005’ have been deleted and moved to leaflet.</p></li>
 </ul><p>bugfixes:</p>
-<ul><li>sync, addMouseCoordinates and addLogo did not work anymore. Now fixed thanks to <a href="https://github.com/timelyportfolio" class="external-link">@timelyportfolio</a></li>
-</ul><p>changes:</p>
+<ul><li>sync, addMouseCoordinates and addLogo did not work anymore. Now fixed thanks to <a href="https://github.com/timelyportfolio" class="external-link">@timelyportfolio</a></li></ul><p>changes:</p>
 <ul><li>MAJOR internal change: All vector data are now processed as sf objects internally. This also means that objects returned in slot <code>@object</code> will be of class sf (regardless of input class).</li>
 <li>polygons and points now have a darkish gray line frame (unless add*LargeFeatures is used - where the overhead of passing two sets of colors would be too high).</li>
 <li>updated examples (in line with new data).</li>
@@ -362,8 +356,7 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.0" id="mapview-100">mapview 1.0.0<small>2015-12-15</small><a class="anchor" aria-label="anchor" href="#mapview-100"></a></h2>
-<ul><li>Initial release</li>
-</ul></div>
+<ul><li>Initial release</li></ul></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -378,7 +371,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>
