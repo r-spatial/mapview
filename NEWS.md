@@ -2,6 +2,8 @@
 
 #### ✨ features and improvements
 
+  * `mapshot()` now uses `webshot2` package for screenshots.
+
 #### 🐛 bug fixes
 
 #### 💬 documentation etc
