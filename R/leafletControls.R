@@ -236,6 +236,7 @@ initBaseMaps <- function(map.types, canvas = FALSE, viewer.suppress = FALSE) {
                                        options = providerTileOptions(
                                          pane = "tilePane"
                                        ))
+        m = removeDuplicatedMapDependencies(m)
       }
     }
   }
