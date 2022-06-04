@@ -9,7 +9,7 @@ mapshot(
   url = NULL,
   file = NULL,
   remove_controls = c("zoomControl", "layersControl", "homeButton", "scaleBar",
-    "drawToolbar", "easyButton"),
+    "drawToolbar", "easyButton", "control"),
   ...
 )
 }
@@ -28,16 +28,32 @@ from the map when saving to file. Any combination of
 is not a mapview or leaflet map.}
 
 \item{...}{Further arguments passed on to \code{\link[htmlwidgets]{saveWidget}}
-and/or \code{\link[webshot]{webshot}}.}
+and/or \code{\link[webshot2]{webshot}}.}
 }
 \description{
-Save a mapview or leaflet map as \code{.html} index file or \code{.png},
-\code{.pdf}, or \code{.jpeg} image.
+Save a mapview or leaflet map as \code{.html} index file or \code{.png}
+or \code{.jpeg} image.
 }
 \details{
 mapshot can be used to save both leaflet and mapview maps as html or png
 files or both. In theory, it should also work for any and all other htmlwidgets
 but has not been tested extensively for other htmlwidgets.
+
+mapshot uses \code{\link[htmlwidgets]{saveWidget}} and \code{\link[webshot2]{webshot}}
+to save maps as \code{.html} and/or \code{.png|.jpg} files, respectively.
+\code{\link[webshot2]{webshot}} assumes a findable installation of some Chrome
+browser variant on your system. If you see the the following error:
+
+\code{
+  `google-chrome` and `chromium-browser` were not found.
+  Try setting the CHROMOTE_CHROME environment variable or adding one of these
+  executables to your PATH.
+}
+
+it means that \code{\link[chromote]{find_chrome}} cannot find a Chrome based
+browser in your system. Please see
+\url{https://github.com/rstudio/chromote#specifying-which-browser-to-use}
+for more details.
 
 In case you want to save larger maps mapshot is likely to fail. You can try
 setting \code{selfcontained = FALSE} to avoid errors and create a valid
@@ -45,23 +61,31 @@ local html file.
 }
 \examples{
 \dontrun{
+  library(utils)
+
   m = mapview(breweries)
+  html_fl = tempfile(fileext = ".html")
+  png_fl = tempfile(fileext = ".png")
 
   ## create standalone .html
-  mapshot(m, url = paste0(getwd(), "/map.html"))
+  mapshot(m, url = html_fl)
+  browseURL(html_fl)
 
   ## create standalone .png; temporary .html is removed automatically unless
   ## 'remove_url = FALSE' is specified
-  mapshot(m, file = paste0(getwd(), "/map.png"))
-  mapshot(m, file = paste0(getwd(), "/map.png"),
+  mapshot(m, file = png_fl)
+  browseURL(png_fl)
+  mapshot(m, file = png_fl,
           remove_controls = c("homeButton", "layersControl"))
+  browseURL(png_fl)
 
   ## create .html and .png
-  mapshot(m, url = paste0(getwd(), "/map.html"),
-          file = paste0(getwd(), "/map.png"))
+  mapshot(m, url = html_fl, file = png_fl)
+  browseURL(png_fl)
+  browseURL(html_fl)
 }
 
 }
 \seealso{
-\code{\link{webshot}}, \code{\link{saveWidget}}.
+\code{\link[webshot2]{webshot}}, \code{\link[htmlwidgets]{saveWidget}}.
 }
