@@ -113,27 +113,47 @@ from <code>plotRGB</code>.</p>
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>a RasterBrick, RasterStack</p></dd>
+
+
 <dt>r</dt>
 <dd><p>integer. Index of the Red channel/band, between 1 and nlayers(x)</p></dd>
+
+
 <dt>g</dt>
 <dd><p>integer. Index of the Green channel/band, between 1 and nlayers(x)</p></dd>
+
+
 <dt>b</dt>
 <dd><p>integer. Index of the Blue channel/band, between 1 and nlayers(x)</p></dd>
+
+
 <dt>quantiles</dt>
 <dd><p>the upper and lower quantiles used for color stretching. If set to NULL, no stretching is applied.</p></dd>
+
+
 <dt>map</dt>
 <dd><p>the map to which the layer should be added</p></dd>
+
+
 <dt>maxpixels</dt>
 <dd><p>integer &gt; 0. Maximum number of cells to use for the plot.
 If maxpixels &lt; <code>ncell(x)</code>, sampleRegular is used before plotting.</p></dd>
+
+
 <dt>map.types</dt>
 <dd><p>character spcifications for the base maps.
 see <a href="https://leaflet-extras.github.io/leaflet-providers/preview/" class="external-link">https://leaflet-extras.github.io/leaflet-providers/preview/</a>
 for available options.</p></dd>
+
+
 <dt>na.color</dt>
 <dd><p>the color to be used for NA pixels</p></dd>
+
+
 <dt>layer.name</dt>
 <dd><p>the name of the layer to be shown on the map</p></dd>
+
+
 <dt>method</dt>
 <dd><p>Method used to compute
 values for the resampled layer that is passed on to leaflet. mapview does
@@ -141,8 +161,11 @@ projection on-the-fly to ensure correct display and therefore needs to know
 how to do this projection. The default is 'bilinear' (bilinear interpolation),
 which is appropriate for continuous variables. The other option, 'ngb'
 (nearest neighbor), is useful for categorical variables.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional arguments passed on to <code><a href="mapView.html">mapView</a></code></p></dd>
+
 </dl></div>
     <div id="author">
     <h2>Author</h2>
@@ -173,7 +196,7 @@ which is appropriate for continuous variables. The other option, 'ngb'
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

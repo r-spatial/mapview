@@ -136,67 +136,109 @@ add a line like this: options(mapviewMaxPixels = 700000) to that file.</p>
     <dl><dt>platform</dt>
 <dd><p>character. The rendering platform to be used.
 Current options are "leaflet", "mapdeck", and "leafgl".</p></dd>
+
+
 <dt>basemaps</dt>
 <dd><p>character. The basemaps to be used for rendering data. See
 <a href="https://leaflet-extras.github.io/leaflet-providers/preview/" class="external-link">https://leaflet-extras.github.io/leaflet-providers/preview/</a> for possible
 values</p></dd>
+
+
 <dt>basemaps.color.shuffle</dt>
 <dd><p>logical. Should basemaps order be changed to
 enhance contrast based on layer coloring. Set to FALSE if you supply custom
 basemaps or want to ensure that "CartoDB.Positron" is always the default.</p></dd>
+
+
 <dt>raster.palette</dt>
 <dd><p>a color palette function for raster visualisation.
 Should be a function that takes an integer as input and returns a vector of colors.
 See <code><a href="https://rdrr.io/r/grDevices/colorRamp.html" class="external-link">colorRampPalette</a></code> for details.</p></dd>
+
+
 <dt>vector.palette</dt>
 <dd><p>a color palette function for vector visualisation.
 Should be a function that takes an integer as input and returns a vector of colors.
 See <code><a href="https://rdrr.io/r/grDevices/colorRamp.html" class="external-link">colorRampPalette</a></code> for details.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>logical. Many functions in mapview provide details about their
 behaviour. Set this to TRUE if you want to see these printed to the console.</p></dd>
+
+
 <dt>na.color</dt>
 <dd><p>character. The default color to be used for NA values.</p></dd>
+
+
 <dt>legend</dt>
 <dd><p>logical. Whether or not to show a legend for the layer(s).</p></dd>
+
+
 <dt>legend.opacity</dt>
 <dd><p>opacity of the legend.</p></dd>
+
+
 <dt>legend.pos</dt>
 <dd><p>Where should the legend be placed?
 One of "topleft", "topright", "bottomleft", "bottomright".</p></dd>
+
+
 <dt>layers.control.pos</dt>
 <dd><p>character. Where should the layer control be
 placed? One of "topleft", "topright", "bottomleft", "bottomright".</p></dd>
+
+
 <dt>leafletWidth, leafletHeight</dt>
 <dd><p>height and width of the htmlwidget in px.</p></dd>
+
+
 <dt>viewer.suppress</dt>
 <dd><p>whether to render the map in the browser (<code>TRUE</code>)
 or the RStudio viewer (<code>FALSE</code>).</p></dd>
+
+
 <dt>homebutton</dt>
 <dd><p>logical, whether to add a zoom-to-layer button to the map.</p></dd>
+
+
 <dt>homebutton.pos</dt>
 <dd><p>character. Where should the homebutton(s) be
 placed? One of "topleft", "topright", "bottomleft", "bottomright".</p></dd>
+
+
 <dt>native.crs</dt>
 <dd><p>logical whether to reproject to web map coordinate
 reference system (web mercator - epsg:3857) or render using native CRS of
 the supplied data (can also be NA). Default is FALSE which will render in
 web mercator. If set to TRUE now background maps will be drawn (but rendering
 may be much quicker as no reprojecting is necessary).</p></dd>
+
+
 <dt>raster.size</dt>
 <dd><p>numeric. see the maxBytes argument in <code>addRasterImage</code></p></dd>
+
+
 <dt>mapview.maxpixels</dt>
 <dd><p>numeric. The maximum amount of pixels allowed for Raster*
 objects to be rendered with <code>mapview</code>. Defaults to 500000.
 Set this higher if you have a potent machine or are patient enough to wait a little.</p></dd>
+
+
 <dt>plainview.maxpixels</dt>
 <dd><p>numeric. The maximum amount of pixels allowed for Raster*
 objects to be rendered with <code>plainview</code>. Defaults to 10000000.
 Set this higher if you have a potent machine or are patient enough to wait a little.</p></dd>
+
+
 <dt>use.layer.names</dt>
 <dd><p>whether to use layer names when plotting raster layers.</p></dd>
+
+
 <dt>trim</dt>
 <dd><p>should the raster be trimmed in case there are NAs on the edges.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>for raster data only (raster/stars). Method used to compute
 values for the resampled layer that is passed on to leaflet. mapview does
@@ -205,37 +247,53 @@ how to do this projection. The default is 'bilinear' (bilinear interpolation),
 which is appropriate for continuous variables. The other option, 'ngb'
 (nearest neighbor), is useful for categorical variables. Ignored if the raster
 layer is of class <code>factor</code> in which case "ngb" is used.</p></dd>
+
+
 <dt>query.type</dt>
 <dd><p>for raster methods only. Whether to show raster value query
 on <code>'mousemove'</code> or <code>'click'</code>. Ignored if <code>label = FALSE</code>.</p></dd>
+
+
 <dt>query.digits</dt>
 <dd><p>for raster methods only. The amount of digits to be shown
 by raster value query. Ignored if <code>label = FALSE</code>.</p></dd>
+
+
 <dt>query.position</dt>
 <dd><p>for raster methods only. The position of the raster
 value query info box. See <code>position</code> argument of <code>addLegend</code>
 for possible values. Ignored if <code>label = FALSE</code>.</p></dd>
+
+
 <dt>query.prefix</dt>
 <dd><p>for raster methods only. a character string to be shown
 as prefix for the layerId. Ignored if <code>label = FALSE</code>.</p></dd>
+
+
 <dt>maxpoints</dt>
 <dd><p>numeric. Maximum number of points allowed for leaflet overlay
 rendering. If this number is exceeded rendering will be done
 using special functionality which will provide much more speed and better handling.
 This means that standard functionality is reduced.
 For example adding layers via "+" is not possible anymore.</p></dd>
+
+
 <dt>maxpolygons</dt>
 <dd><p>numeric. Maximum number of polygons allowed for leaflet overlay
 rendering. If this number is exceeded rendering will be done
 using special functionality which will provide much more speed and better handling.
 This means that standard functionality is reduced.
 For example adding layers via "+" is not possible anymore.</p></dd>
+
+
 <dt>maxlines</dt>
 <dd><p>numeric. Maximum number of lines allowed for leaflet overlay
 rendering. If this number is exceeded rendering will be done
 using special functionality which will provide much more speed and better handling.
 This means that standard functionality is reduced.
 For example adding layers via "+" is not possible anymore.</p></dd>
+
+
 <dt>pane</dt>
 <dd><p>name of the map pane in which to render features. See
 <code>addMapPane</code> for details. Currently only supported for vector layers.
@@ -243,19 +301,31 @@ Ignored if <code>canvas = TRUE</code>. The default <code>"auto"</code> will crea
 for points, lines and polygons such that points overlay lines overlay polygons.
 Set to <code>NULL</code> to get default leaflet behaviour where allfeatures
 are rendered in the same pane and layer order is determined automatically/sequentially.</p></dd>
+
+
 <dt>cex</dt>
 <dd><p>numeric or attribute name(s) or column number(s) in attribute table
 of the column(s) to be used for defining the size of circles.</p></dd>
+
+
 <dt>alpha</dt>
 <dd><p>opacity of lines.</p></dd>
+
+
 <dt>default</dt>
 <dd><p>logical. If TRUE all options are set to their default values</p></dd>
+
+
 <dt>console</dt>
 <dd><p>logical. Should the options be printed to the console</p></dd>
+
+
 <dt>watch</dt>
 <dd><p>whether to watch a certain environment and automatically
 render changes to the list of spatial data in that environment. See
 <a href="mapviewWatcher.html">mapviewWatcher</a> for details.</p></dd>
+
+
 <dt>fgb</dt>
 <dd><p>if set to <code>TRUE</code> mapview will not use 'clasical' leaflet/htmlwidgets
 rendering (which embeds data directly in the html) but leverage the speed of
@@ -265,17 +335,24 @@ It should also help to visualise larger data sets due to a reduced memeory footp
 A note of warning, data will be attached to the html
 via a &lt;src=...&gt; call which means that the html is not selfcontained anymore
 (so it cannot be used without an accompanying folder).</p></dd>
+
+
 <dt>georaster</dt>
 <dd><p>whether to use <code><a href="https://r-spatial.github.io/leafem/reference/addGeoRaster.html" class="external-link">addGeoRaster</a></code> instead of
 <code><a href="https://rdrr.io/pkg/leaflet/man/addRasterImage.html" class="external-link">addRasterImage</a></code>. If set to <code>TRUE</code> raster image visualisation
  will be more performant for large raster data, but given the nearest neighbor
  resampling results may be slightly distorted.</p></dd>
+
+
 <dt>param</dt>
 <dd><p>character. parameter(s) to be queried.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>list of the current options (invisibly).
+    
+
+<p>list of the current options (invisibly).
 If no arguments are provided the options are printed.</p>
     </div>
     <div id="functions">
@@ -454,7 +531,7 @@ If no arguments are provided the options are printed.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

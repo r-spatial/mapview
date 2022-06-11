@@ -90,7 +90,7 @@
 <ul><li>when <code>burst = TRUE</code> popups were not correct. <a href="https://github.com/r-spatial/mapview/issues/396" class="external-link">#396</a> &amp; <a href="https://github.com/r-spatial/mapview/issues/408" class="external-link">#408</a></li>
 <li>recreated data crs with <code><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">sf::st_crs()</a></code> to avoid warnings (‘old-style crs object detected; please recreate object with a recent sf::st_crs()’). <a href="https://github.com/r-spatial/mapview/issues/411" class="external-link">#411</a></li>
 <li>
-<code>RasterBrick</code> method now returns correct <code>@object</code> slot.</li>
+<code>RasterBrick</code> method now returns correct <code><a href="https://github.com/object" class="external-link">@object</a></code> slot.</li>
 </ul></div>
 <div class="section level4"><h4 id="-documentation-etc-2-11-0">💬 documentation etc<a class="anchor" aria-label="anchor" href="#-documentation-etc-2-11-0"></a></h4></div>
 <div class="section level4"><h4 id="-miscellaneous-2-11-0">🍬 miscellaneous<a class="anchor" aria-label="anchor" href="#-miscellaneous-2-11-0"></a></h4></div>
@@ -310,7 +310,7 @@
 <li><p>data sets ‘breweries91’, ‘gadmCHE’ and ‘atlStorms2005’ have been deleted and moved to leaflet.</p></li>
 </ul><p>bugfixes:</p>
 <ul><li>sync, addMouseCoordinates and addLogo did not work anymore. Now fixed thanks to <a href="https://github.com/timelyportfolio" class="external-link">@timelyportfolio</a></li></ul><p>changes:</p>
-<ul><li>MAJOR internal change: All vector data are now processed as sf objects internally. This also means that objects returned in slot <code>@object</code> will be of class sf (regardless of input class).</li>
+<ul><li>MAJOR internal change: All vector data are now processed as sf objects internally. This also means that objects returned in slot <code><a href="https://github.com/object" class="external-link">@object</a></code> will be of class sf (regardless of input class).</li>
 <li>polygons and points now have a darkish gray line frame (unless add*LargeFeatures is used - where the overhead of passing two sets of colors would be too high).</li>
 <li>updated examples (in line with new data).</li>
 <li>github repository moved from <a href="https://github.com/environmentalinformatics-marburg/mapview" class="external-link uri">https://github.com/environmentalinformatics-marburg/mapview</a> to <a href="https://github.com/r-spatial/mapview" class="external-link uri">https://github.com/r-spatial/mapview</a>
@@ -371,7 +371,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
