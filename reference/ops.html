@@ -125,29 +125,29 @@ NULL | mapview returns the RHS map"><!-- mathjax --><script src="https://cdnjs.c
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in">  <span class="va">m1</span> <span class="op">&lt;-</span> <span class="fu"><a href="mapView.html">mapView</a></span><span class="op">(</span><span class="va">franconia</span>, col.regions <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span>  <span class="va">m1</span> <span class="op">&lt;-</span> <span class="fu"><a href="mapView.html">mapView</a></span><span class="op">(</span><span class="va">franconia</span>, col.regions <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>GDAL Error 1: PROJ: proj_as_wkt: DatumEnsemble can only be exported to WKT2:2019</span>
-<span class="r-in">  <span class="va">m2</span> <span class="op">&lt;-</span> <span class="fu"><a href="mapView.html">mapView</a></span><span class="op">(</span><span class="va">breweries</span><span class="op">)</span></span>
+<span class="r-in"><span>  <span class="va">m2</span> <span class="op">&lt;-</span> <span class="fu"><a href="mapView.html">mapView</a></span><span class="op">(</span><span class="va">breweries</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>GDAL Error 1: PROJ: proj_as_wkt: DatumEnsemble can only be exported to WKT2:2019</span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="co">### add two mapview objects</span></span>
-<span class="r-in">  <span class="va">m1</span> <span class="op">+</span> <span class="va">m2</span></span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="co">### add layers to a mapview object</span></span>
-<span class="r-in">  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/plainview/" class="external-link">plainview</a></span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">m1</span> <span class="op">+</span> <span class="va">breweries</span> <span class="op">+</span> <span class="fu">plainview</span><span class="fu">::</span><span class="va"><a href="https://r-spatial.github.io/plainview/reference/poppendorf.html" class="external-link">poppendorf</a></span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-in">  <span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="va">m1</span> <span class="op">&lt;-</span> <span class="fu"><a href="mapView.html">mapView</a></span><span class="op">(</span><span class="va">franconia</span>, col.regions <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co">### add two mapview objects</span></span></span>
+<span class="r-in"><span>  <span class="va">m1</span> <span class="op">+</span> <span class="va">m2</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co">### add layers to a mapview object</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/plainview/" class="external-link">plainview</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">m1</span> <span class="op">+</span> <span class="va">breweries</span> <span class="op">+</span> <span class="fu">plainview</span><span class="fu">::</span><span class="va"><a href="https://r-spatial.github.io/plainview/reference/poppendorf.html" class="external-link">poppendorf</a></span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">m1</span> <span class="op">&lt;-</span> <span class="fu"><a href="mapView.html">mapView</a></span><span class="op">(</span><span class="va">franconia</span>, col.regions <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>GDAL Error 1: PROJ: proj_as_wkt: DatumEnsemble can only be exported to WKT2:2019</span>
-<span class="r-in">  <span class="va">m2</span> <span class="op">&lt;-</span> <span class="fu"><a href="mapView.html">mapView</a></span><span class="op">(</span><span class="va">breweries</span><span class="op">)</span></span>
+<span class="r-in"><span>  <span class="va">m2</span> <span class="op">&lt;-</span> <span class="fu"><a href="mapView.html">mapView</a></span><span class="op">(</span><span class="va">breweries</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>GDAL Error 1: PROJ: proj_as_wkt: DatumEnsemble can only be exported to WKT2:2019</span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="co">### add two mapview objects</span></span>
-<span class="r-in">  <span class="va">m1</span> <span class="op">|</span> <span class="va">m2</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co">### add two mapview objects</span></span></span>
+<span class="r-in"><span>  <span class="va">m1</span> <span class="op">|</span> <span class="va">m2</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required namespace: leaflet.extras2</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

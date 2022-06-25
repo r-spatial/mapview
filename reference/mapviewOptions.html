@@ -87,48 +87,48 @@ add a line like this: options(mapviewMaxPixels = 700000) to that file.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">mapviewOptions</span><span class="op">(</span>
-  <span class="va">platform</span>,
-  <span class="va">basemaps</span>,
-  <span class="va">basemaps.color.shuffle</span>,
-  <span class="va">raster.palette</span>,
-  <span class="va">vector.palette</span>,
-  <span class="va">verbose</span>,
-  <span class="va">na.color</span>,
-  <span class="va">legend</span>,
-  <span class="va">legend.opacity</span>,
-  <span class="va">legend.pos</span>,
-  <span class="va">layers.control.pos</span>,
-  <span class="va">leafletWidth</span>,
-  <span class="va">leafletHeight</span>,
-  <span class="va">viewer.suppress</span>,
-  <span class="va">homebutton</span>,
-  <span class="va">homebutton.pos</span>,
-  <span class="va">native.crs</span>,
-  <span class="va">raster.size</span>,
-  <span class="va">mapview.maxpixels</span>,
-  <span class="va">plainview.maxpixels</span>,
-  <span class="va">use.layer.names</span>,
-  <span class="va">trim</span>,
-  <span class="va">method</span>,
-  <span class="va">query.type</span>,
-  <span class="va">query.digits</span>,
-  <span class="va">query.position</span>,
-  <span class="va">query.prefix</span>,
-  <span class="va">maxpoints</span>,
-  <span class="va">maxpolygons</span>,
-  <span class="va">maxlines</span>,
-  <span class="va">pane</span>,
-  <span class="va">cex</span>,
-  <span class="va">alpha</span>,
-  default <span class="op">=</span> <span class="cn">FALSE</span>,
-  console <span class="op">=</span> <span class="cn">TRUE</span>,
-  watch <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">fgb</span>,
-  <span class="va">georaster</span>
-<span class="op">)</span>
-
-<span class="fu">mapviewGetOption</span><span class="op">(</span><span class="va">param</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mapviewOptions</span><span class="op">(</span></span>
+<span>  <span class="va">platform</span>,</span>
+<span>  <span class="va">basemaps</span>,</span>
+<span>  <span class="va">basemaps.color.shuffle</span>,</span>
+<span>  <span class="va">raster.palette</span>,</span>
+<span>  <span class="va">vector.palette</span>,</span>
+<span>  <span class="va">verbose</span>,</span>
+<span>  <span class="va">na.color</span>,</span>
+<span>  <span class="va">legend</span>,</span>
+<span>  <span class="va">legend.opacity</span>,</span>
+<span>  <span class="va">legend.pos</span>,</span>
+<span>  <span class="va">layers.control.pos</span>,</span>
+<span>  <span class="va">leafletWidth</span>,</span>
+<span>  <span class="va">leafletHeight</span>,</span>
+<span>  <span class="va">viewer.suppress</span>,</span>
+<span>  <span class="va">homebutton</span>,</span>
+<span>  <span class="va">homebutton.pos</span>,</span>
+<span>  <span class="va">native.crs</span>,</span>
+<span>  <span class="va">raster.size</span>,</span>
+<span>  <span class="va">mapview.maxpixels</span>,</span>
+<span>  <span class="va">plainview.maxpixels</span>,</span>
+<span>  <span class="va">use.layer.names</span>,</span>
+<span>  <span class="va">trim</span>,</span>
+<span>  <span class="va">method</span>,</span>
+<span>  <span class="va">query.type</span>,</span>
+<span>  <span class="va">query.digits</span>,</span>
+<span>  <span class="va">query.position</span>,</span>
+<span>  <span class="va">query.prefix</span>,</span>
+<span>  <span class="va">maxpoints</span>,</span>
+<span>  <span class="va">maxpolygons</span>,</span>
+<span>  <span class="va">maxlines</span>,</span>
+<span>  <span class="va">pane</span>,</span>
+<span>  <span class="va">cex</span>,</span>
+<span>  <span class="va">alpha</span>,</span>
+<span>  default <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  console <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  watch <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">fgb</span>,</span>
+<span>  <span class="va">georaster</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">mapviewGetOption</span><span class="op">(</span><span class="va">param</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -371,7 +371,7 @@ If no arguments are provided the options are printed.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">mapviewOptions</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">mapviewOptions</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  global options: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -417,8 +417,8 @@ If no arguments are provided the options are printed.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> cex                     : 6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> alpha                   : 0.9 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fgb                     : FALSE </span>
-<span class="r-in"><span class="fu">mapviewOptions</span><span class="op">(</span>na.color <span class="op">=</span> <span class="st">"pink"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">mapviewOptions</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">mapviewOptions</span><span class="op">(</span>na.color <span class="op">=</span> <span class="st">"pink"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">mapviewOptions</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  global options: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -464,12 +464,12 @@ If no arguments are provided the options are printed.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> cex                     : 6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> alpha                   : 0.9 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fgb                     : FALSE </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">mapviewGetOption</span><span class="op">(</span><span class="st">"platform"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">mapviewGetOption</span><span class="op">(</span><span class="st">"platform"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "leaflet"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">mapviewOptions</span><span class="op">(</span>default <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">mapviewOptions</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">mapviewOptions</span><span class="op">(</span>default <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">mapviewOptions</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  global options: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -515,8 +515,8 @@ If no arguments are provided the options are printed.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> cex                     : 0.6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> alpha                   : 0.9 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fgb                     : FALSE </span>
-<span class="r-in"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

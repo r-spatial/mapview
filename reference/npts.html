@@ -81,7 +81,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">npts</span><span class="op">(</span><span class="va">x</span>, by_feature <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">npts</span><span class="op">(</span><span class="va">x</span>, by_feature <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -101,19 +101,19 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">npts</span><span class="op">(</span><span class="va">franconia</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">npts</span><span class="op">(</span><span class="va">franconia</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5858</span>
-<span class="r-in"><span class="fu">npts</span><span class="op">(</span><span class="va">franconia</span>, by_feature <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">npts</span><span class="op">(</span><span class="va">franconia</span>, by_feature <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  27  61  47  43 288 331 238 146 232 159 164 153 125  53  39  36 109  33 341</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20] 244  98 220 220 232 174  40  33  52 191 212 208 202 153 186 240 245 283</span>
-<span class="r-in"><span class="fu">npts</span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">franconia</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="co"># first polygon</span></span>
+<span class="r-in"><span><span class="fu">npts</span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">franconia</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="co"># first polygon</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 27</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">npts</span><span class="op">(</span><span class="va">breweries</span><span class="op">)</span> <span class="co"># is the same as</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">npts</span><span class="op">(</span><span class="va">breweries</span><span class="op">)</span> <span class="co"># is the same as</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 224</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">breweries</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">breweries</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 224</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

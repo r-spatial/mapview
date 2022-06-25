@@ -93,20 +93,20 @@ from <code>plotRGB</code>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">viewRGB</span><span class="op">(</span>
-  <span class="va">x</span>,
-  r <span class="op">=</span> <span class="fl">3</span>,
-  g <span class="op">=</span> <span class="fl">2</span>,
-  b <span class="op">=</span> <span class="fl">1</span>,
-  quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.02</span>, <span class="fl">0.98</span><span class="op">)</span>,
-  map <span class="op">=</span> <span class="cn">NULL</span>,
-  maxpixels <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"mapview.maxpixels"</span><span class="op">)</span>,
-  map.types <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"basemaps"</span><span class="op">)</span>,
-  na.color <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"na.color"</span><span class="op">)</span>,
-  layer.name <span class="op">=</span> <span class="cn">NULL</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bilinear"</span>, <span class="st">"ngb"</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">viewRGB</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  r <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  g <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  b <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.02</span>, <span class="fl">0.98</span><span class="op">)</span>,</span>
+<span>  map <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  maxpixels <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"mapview.maxpixels"</span><span class="op">)</span>,</span>
+<span>  map.types <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"basemaps"</span><span class="op">)</span>,</span>
+<span>  na.color <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"na.color"</span><span class="op">)</span>,</span>
+<span>  layer.name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bilinear"</span>, <span class="st">"ngb"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -174,14 +174,14 @@ which is appropriate for continuous variables. The other option, 'ngb'
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster" class="external-link">raster</a></span><span class="op">)</span></span>
-<span class="r-in">  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/plainview/" class="external-link">plainview</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="fu">viewRGB</span><span class="op">(</span><span class="fu">plainview</span><span class="fu">::</span><span class="va"><a href="https://r-spatial.github.io/plainview/reference/poppendorf.html" class="external-link">poppendorf</a></span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span> <span class="co"># true-color</span></span>
-<span class="r-in">  <span class="fu">viewRGB</span><span class="op">(</span><span class="fu">plainview</span><span class="fu">::</span><span class="va"><a href="https://r-spatial.github.io/plainview/reference/poppendorf.html" class="external-link">poppendorf</a></span>, <span class="fl">5</span>, <span class="fl">4</span>, <span class="fl">3</span><span class="op">)</span> <span class="co"># false-color</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster" class="external-link">raster</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/plainview/" class="external-link">plainview</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="fu">viewRGB</span><span class="op">(</span><span class="fu">plainview</span><span class="fu">::</span><span class="va"><a href="https://r-spatial.github.io/plainview/reference/poppendorf.html" class="external-link">poppendorf</a></span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span> <span class="co"># true-color</span></span></span>
+<span class="r-in"><span>  <span class="fu">viewRGB</span><span class="op">(</span><span class="fu">plainview</span><span class="fu">::</span><span class="va"><a href="https://r-spatial.github.io/plainview/reference/poppendorf.html" class="external-link">poppendorf</a></span>, <span class="fl">5</span>, <span class="fl">4</span>, <span class="fl">3</span><span class="op">)</span> <span class="co"># false-color</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

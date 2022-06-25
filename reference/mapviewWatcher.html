@@ -95,11 +95,11 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">mapviewWatcher</span><span class="op">(</span>env <span class="op">=</span> <span class="va">.GlobalEnv</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">startWatching</span><span class="op">(</span>env <span class="op">=</span> <span class="va">.GlobalEnv</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">stopWatching</span><span class="op">(</span>env <span class="op">=</span> <span class="va">.GlobalEnv</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mapviewWatcher</span><span class="op">(</span>env <span class="op">=</span> <span class="va">.GlobalEnv</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">startWatching</span><span class="op">(</span>env <span class="op">=</span> <span class="va">.GlobalEnv</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">stopWatching</span><span class="op">(</span>env <span class="op">=</span> <span class="va">.GlobalEnv</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -133,33 +133,33 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in">  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/mapview" class="external-link">mapview</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">    <span class="co">## start the watcher</span></span>
-<span class="r-in">    <span class="fu">mapview</span><span class="fu">::</span><span class="fu">startWatching</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">    <span class="co">## load some data and watch the automatic visualisation</span></span>
-<span class="r-in">    <span class="va">fran</span> <span class="op">=</span> <span class="fu">mapview</span><span class="fu">::</span><span class="va"><a href="franconia.html">franconia</a></span></span>
-<span class="r-in">    <span class="va">brew</span> <span class="op">=</span> <span class="fu">mapview</span><span class="fu">::</span><span class="va"><a href="breweries.html">breweries</a></span></span>
-<span class="r-in"></span>
-<span class="r-in">    <span class="co">## stop the watcher</span></span>
-<span class="r-in">    <span class="fu">mapview</span><span class="fu">::</span><span class="fu">stopWatching</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">    <span class="co">## loading or removing things now will not trigger a view update</span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">brew</span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">trls</span> <span class="op">=</span> <span class="fu">mapview</span><span class="fu">::</span><span class="va"><a href="trails.html">trails</a></span></span>
-<span class="r-in"></span>
-<span class="r-in">    <span class="co">## re-starting the viewer will re-draw whatever is currently available</span></span>
-<span class="r-in">    <span class="fu">mapview</span><span class="fu">::</span><span class="fu">startWatching</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">    <span class="co">## watcher can also be stopped via mapviewOptions</span></span>
-<span class="r-in">    <span class="fu"><a href="mapviewOptions.html">mapviewOptions</a></span><span class="op">(</span>watch <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">trls</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/mapview" class="external-link">mapview</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## start the watcher</span></span></span>
+<span class="r-in"><span>    <span class="fu">mapview</span><span class="fu">::</span><span class="fu">startWatching</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## load some data and watch the automatic visualisation</span></span></span>
+<span class="r-in"><span>    <span class="va">fran</span> <span class="op">=</span> <span class="fu">mapview</span><span class="fu">::</span><span class="va"><a href="franconia.html">franconia</a></span></span></span>
+<span class="r-in"><span>    <span class="va">brew</span> <span class="op">=</span> <span class="fu">mapview</span><span class="fu">::</span><span class="va"><a href="breweries.html">breweries</a></span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## stop the watcher</span></span></span>
+<span class="r-in"><span>    <span class="fu">mapview</span><span class="fu">::</span><span class="fu">stopWatching</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## loading or removing things now will not trigger a view update</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">brew</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">trls</span> <span class="op">=</span> <span class="fu">mapview</span><span class="fu">::</span><span class="va"><a href="trails.html">trails</a></span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## re-starting the viewer will re-draw whatever is currently available</span></span></span>
+<span class="r-in"><span>    <span class="fu">mapview</span><span class="fu">::</span><span class="fu">startWatching</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## watcher can also be stopped via mapviewOptions</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="mapviewOptions.html">mapviewOptions</a></span><span class="op">(</span>watch <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">trls</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
