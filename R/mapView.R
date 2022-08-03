@@ -377,7 +377,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
   }
 
   # convert to proper "stars" if proxy, and downscale if needed
-  if (inherits(x, "stars_proxy")) {
+  if (inherits(x, c("SpatRaster", "stars_proxy"))) {
     if (!do.downscale) {
       x <-  stars::st_as_stars(x)
     } else {
@@ -450,6 +450,10 @@ setMethod('mapView', signature(x = 'stars'), .stars_method)
 
 #' @describeIn mapView \code{stars_proxy}
 setMethod('mapView', signature(x = 'stars_proxy'), .stars_method)
+
+
+#' @describeIn mapView \code{SpatRaster}
+setMethod('mapView', signature(x = 'SpatRaster'), .stars_method)
 
 
 
@@ -587,10 +591,8 @@ setMethod('mapView', signature(x = 'Satellite'),
 ######## SIMPLE FEATURES ##################################################
 
 ## sf =====================================================================
-#' @describeIn mapView \code{\link{st_sf}}
 
-setMethod('mapView', signature(x = 'sf'),
-          function(x,
+.sf_method <- function(x,
                    map = NULL,
                    pane = "auto",
                    canvas = useCanvas(x),
@@ -619,6 +621,8 @@ setMethod('mapView', signature(x = 'sf'),
                    maxpoints = getMaxFeatures(x),
                    hide = FALSE,
                    ...) {
+
+            if(inherits(x, 'SpatVector')){x <- sf::st_as_sf(x)}
 
             if (nrow(x) == 0) {
               stop("\n", deparse(substitute(x, env = parent.frame())),
@@ -823,7 +827,14 @@ setMethod('mapView', signature(x = 'sf'),
               NULL
             }
           }
-)
+
+
+#' @describeIn mapView \code{sf}
+setMethod('mapView', signature(x = 'sf'), .sf_method)
+
+#' @describeIn mapView \code{SpatVector}
+setMethod('mapView', signature(x = 'SpatVector'), .sf_method)
+
 
 
 ## sfc ====================================================================
@@ -955,7 +966,6 @@ setMethod('mapView', signature(x = 'sfc'),
             }
           }
 )
-
 
 ## character ==============================================================
 #' @param tms whether the tiles are served as TMS tiles.
