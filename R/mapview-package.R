@@ -17,7 +17,6 @@
 #' @import leaflet sp sf raster satellite scales methods png lattice base64enc
 #' @importFrom grDevices rgb dev.off png svg colorRampPalette grey.colors
 #' @importFrom utils find glob2rx
-#' @importFrom webshot2 webshot
 #' @importFrom utils modifyList
 #'
 #' @keywords package

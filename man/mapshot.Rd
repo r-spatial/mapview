@@ -2,9 +2,19 @@
 % Please edit documentation in R/mapshot.R
 \name{mapshot}
 \alias{mapshot}
-\title{Save mapview or leaflet map as HTML and/or image}
+\alias{mapshot2}
+\title{Save mapview or leaflet map as HTML and/or image using webshot}
 \usage{
 mapshot(
+  x,
+  url = NULL,
+  file = NULL,
+  remove_controls = c("zoomControl", "layersControl", "homeButton", "scaleBar",
+    "drawToolbar", "easyButton"),
+  ...
+)
+
+mapshot2(
   x,
   url = NULL,
   file = NULL,
@@ -31,15 +41,22 @@ is not a mapview or leaflet map.}
 and/or \code{\link[webshot2]{webshot}}.}
 }
 \description{
-Save a mapview or leaflet map as \code{.html} index file or \code{.png}
-or \code{.jpeg} image.
+Save a mapview or leaflet map as \code{.html} index file or \code{.png},
+\code{.pdf}, or \code{.jpeg} image.
 }
 \details{
+mapshot uses \code{\link[webshot]{webshot}} from the {webshot} package.
+mapshot2 uses \code{\link[webshot2]{webshot}} from the {webshot2} package.
+
 mapshot can be used to save both leaflet and mapview maps as html or png
 files or both. In theory, it should also work for any and all other htmlwidgets
 but has not been tested extensively for other htmlwidgets.
 
-mapshot uses \code{\link[htmlwidgets]{saveWidget}} and \code{\link[webshot2]{webshot}}
+In case you want to save larger maps mapshot is likely to fail. You can try
+setting \code{selfcontained = FALSE} to avoid errors and create a valid
+local html file.
+
+mapshot2 uses \code{\link[htmlwidgets]{saveWidget}} and \code{\link[webshot2]{webshot}}
 to save maps as \code{.html} and/or \code{.png|.jpg} files, respectively.
 \code{\link[webshot2]{webshot}} assumes a findable installation of some Chrome
 browser variant on your system. If you see the the following error:
@@ -54,11 +71,14 @@ it means that \code{\link[chromote]{find_chrome}} cannot find a Chrome based
 browser in your system. Please see
 \url{https://github.com/rstudio/chromote#specifying-which-browser-to-use}
 for more details.
-
-In case you want to save larger maps mapshot is likely to fail. You can try
-setting \code{selfcontained = FALSE} to avoid errors and create a valid
-local html file.
 }
+\section{Functions}{
+\itemize{
+\item \code{mapshot}: Save mapview or leaflet map as HTML and/or image using webshot
+
+\item \code{mapshot2}: Save mapview or leaflet map as HTML and/or image using webshot2
+}}
+
 \examples{
 \dontrun{
   library(utils)
@@ -85,7 +105,34 @@ local html file.
   browseURL(html_fl)
 }
 
+\dontrun{
+  library(utils)
+
+  m = mapview(breweries)
+  html_fl = tempfile(fileext = ".html")
+  png_fl = tempfile(fileext = ".png")
+
+  ## create standalone .html
+  mapshot2(m, url = html_fl)
+  browseURL(html_fl)
+
+  ## create standalone .png; temporary .html is removed automatically unless
+  ## 'remove_url = FALSE' is specified
+  mapshot2(m, file = png_fl)
+  browseURL(png_fl)
+  mapshot2(m, file = png_fl,
+           remove_controls = c("homeButton", "layersControl"))
+  browseURL(png_fl)
+
+  ## create .html and .png
+  mapshot2(m, url = html_fl, file = png_fl)
+  browseURL(png_fl)
+  browseURL(html_fl)
+}
+
 }
 \seealso{
-\code{\link[webshot2]{webshot}}, \code{\link[htmlwidgets]{saveWidget}}.
+\code{\link[webshot]{webshot}}, \code{\link[htmlwidgets]{saveWidget}}.
+
+\code{\link[webshot2]{webshot}}.
 }

@@ -76,8 +76,7 @@ Imports:
     scales (>= 0.2.5),
     servr,
     sf,
-    sp,
-    webshot2
+    sp
 Suggests:
     covr,
     knitr,
@@ -93,7 +92,9 @@ Suggests:
     rstudioapi,
     s2,
     stars,
-    tinytest
+    tinytest,
+    webshot,
+    webshot2
 ByteCompile: yes
 Encoding: UTF-8
 LazyData: TRUE
