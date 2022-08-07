@@ -1,6 +1,6 @@
 Package: mapview
 Title: Interactive Viewing of Spatial Data in R
-Version: 2.11.0.9000
+Version: 2.11.0.9001
 Authors@R: 
     c(person(given = "Tim",
              family = "Appelhans",
@@ -76,8 +76,7 @@ Imports:
     scales (>= 0.2.5),
     servr,
     sf,
-    sp,
-    webshot
+    sp
 Suggests:
     covr,
     knitr,
@@ -93,7 +92,9 @@ Suggests:
     rstudioapi,
     s2,
     stars,
-    tinytest
+    tinytest,
+    webshot,
+    webshot2
 ByteCompile: yes
 Encoding: UTF-8
 LazyData: TRUE

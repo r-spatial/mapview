@@ -35,7 +35,7 @@ if ( !isGeneric('mapView') ) {
 #'   Set to \code{NULL} to get default leaflet behaviour where allfeatures
 #'   are rendered in the same pane and layer order is determined automatically/sequentially.
 #' @param canvas whether to use canvas rendering rather than svg. May help
-#'   performance with larger data. See \url{https://leafletjs.com/SlavaUkraini/reference.html#canvas}
+#'   performance with larger data. See \url{https://leafletjs.com/index.html#canvas}
 #'   for more information. Only applicable for vector data. The default setting will
 #'   decide automatically, based on feature complexity.
 #' @param viewer.suppress deprecated.
