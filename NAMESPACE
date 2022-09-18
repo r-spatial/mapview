@@ -9,6 +9,7 @@ if(getRversion() >= "3.6.0") {
 
 export(mapViewPalette)
 export(mapshot)
+export(mapshot2)
 export(mapview)
 export(mapviewColors)
 export(mapviewGetOption)
@@ -48,4 +49,3 @@ importFrom(stats,na.omit)
 importFrom(utils,find)
 importFrom(utils,glob2rx)
 importFrom(utils,modifyList)
-importFrom(webshot,webshot)

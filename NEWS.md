@@ -1,6 +1,8 @@
-## mapview 2.11.0.9000 (2022-05-08)
+## mapview 2.11.0.9002 (2022-08-07)
 
 #### ✨ features and improvements
+
+  * added `mapshot2()` which uses `webshot2` package for screenshots.
 
 #### 🐛 bug fixes
 
