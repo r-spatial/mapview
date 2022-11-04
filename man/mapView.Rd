@@ -6,9 +6,11 @@
 \alias{mapView,RasterLayer-method}
 \alias{mapView,stars-method}
 \alias{mapView,stars_proxy-method}
+\alias{mapView,SpatRaster-method}
 \alias{mapView,RasterStackBrick-method}
 \alias{mapView,Satellite-method}
 \alias{mapView,sf-method}
+\alias{mapView,SpatVector-method}
 \alias{mapView,sfc-method}
 \alias{mapView,character-method}
 \alias{mapView,numeric-method}
@@ -121,6 +123,36 @@
   ...
 )
 
+\S4method{mapView}{SpatRaster}(
+  x,
+  band = 1,
+  map = NULL,
+  maxpixels = mapviewGetOption("mapview.maxpixels"),
+  col.regions = mapviewGetOption("raster.palette"),
+  at = NULL,
+  na.color = mapviewGetOption("na.color"),
+  use.layer.names = mapviewGetOption("use.layer.names"),
+  map.types = mapviewGetOption("basemaps"),
+  alpha.regions = 0.8,
+  legend = mapviewGetOption("legend"),
+  legend.opacity = 1,
+  trim = mapviewGetOption("trim"),
+  verbose = mapviewGetOption("verbose"),
+  layer.name = NULL,
+  homebutton = mapviewGetOption("homebutton"),
+  native.crs = mapviewGetOption("native.crs"),
+  method = mapviewGetOption("method"),
+  label = TRUE,
+  query.type = mapviewGetOption("query.type"),
+  query.digits = mapviewGetOption("query.digits"),
+  query.position = mapviewGetOption("query.position"),
+  query.prefix = mapviewGetOption("query.prefix"),
+  viewer.suppress = mapviewGetOption("viewer.suppress"),
+  pane = "auto",
+  hide = FALSE,
+  ...
+)
+
 \S4method{mapView}{RasterStackBrick}(
   x,
   map = NULL,
@@ -166,6 +198,38 @@
 )
 
 \S4method{mapView}{sf}(
+  x,
+  map = NULL,
+  pane = "auto",
+  canvas = useCanvas(x),
+  viewer.suppress = mapviewGetOption("viewer.suppress"),
+  zcol = NULL,
+  burst = FALSE,
+  color = mapviewGetOption("vector.palette"),
+  col.regions = mapviewGetOption("vector.palette"),
+  at = NULL,
+  na.color = mapviewGetOption("na.color"),
+  cex = 6,
+  lwd = lineWidth(x),
+  alpha = 0.9,
+  alpha.regions = regionOpacity(x),
+  na.alpha = regionOpacity(x),
+  map.types = mapviewGetOption("basemaps"),
+  verbose = mapviewGetOption("verbose"),
+  popup = TRUE,
+  layer.name = NULL,
+  label = zcol,
+  legend = mapviewGetOption("legend"),
+  legend.opacity = 1,
+  homebutton = mapviewGetOption("homebutton"),
+  native.crs = FALSE,
+  highlight = mapviewHighlightOptions(x, alpha.regions, alpha, lwd),
+  maxpoints = getMaxFeatures(x),
+  hide = FALSE,
+  ...
+)
+
+\S4method{mapView}{SpatVector}(
   x,
   map = NULL,
   pane = "auto",
@@ -606,11 +670,15 @@ the popup will potentially still say something like "POLYGON Z".
 
 \item \code{stars_proxy}: \code{stars_proxy}
 
+\item \code{SpatRaster}: \code{SpatRaster}
+
 \item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{brick}}
 
 \item \code{Satellite}: \code{\link{satellite}}
 
-\item \code{sf}: \code{\link{st_sf}}
+\item \code{sf}: \code{sf}
+
+\item \code{SpatVector}: \code{SpatVector}
 
 \item \code{sfc}: \code{\link{st_sfc}}
 
