@@ -18,7 +18,7 @@ spatial object(s) on top of the specified base maps."><!-- mathjax --><script sr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mapview</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.11.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.11.0.9003</span>
       </span>
     </div>
 
@@ -174,6 +174,37 @@ spatial object(s) on top of the specified base maps.</p>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># S4 method for SpatRaster</span></span>
+<span><span class="fu">mapView</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  band <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  map <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  maxpixels <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"mapview.maxpixels"</span><span class="op">)</span>,</span>
+<span>  col.regions <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"raster.palette"</span><span class="op">)</span>,</span>
+<span>  at <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  na.color <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"na.color"</span><span class="op">)</span>,</span>
+<span>  use.layer.names <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"use.layer.names"</span><span class="op">)</span>,</span>
+<span>  map.types <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"basemaps"</span><span class="op">)</span>,</span>
+<span>  alpha.regions <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  legend <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"legend"</span><span class="op">)</span>,</span>
+<span>  legend.opacity <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  trim <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"trim"</span><span class="op">)</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span>,</span>
+<span>  layer.name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  homebutton <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"homebutton"</span><span class="op">)</span>,</span>
+<span>  native.crs <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"native.crs"</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"method"</span><span class="op">)</span>,</span>
+<span>  label <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  query.type <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"query.type"</span><span class="op">)</span>,</span>
+<span>  query.digits <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"query.digits"</span><span class="op">)</span>,</span>
+<span>  query.position <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"query.position"</span><span class="op">)</span>,</span>
+<span>  query.prefix <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"query.prefix"</span><span class="op">)</span>,</span>
+<span>  viewer.suppress <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"viewer.suppress"</span><span class="op">)</span>,</span>
+<span>  pane <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  hide <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># S4 method for RasterStackBrick</span></span>
 <span><span class="fu">mapView</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
@@ -221,6 +252,39 @@ spatial object(s) on top of the specified base maps.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for sf</span></span>
+<span><span class="fu">mapView</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  map <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pane <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  canvas <span class="op">=</span> <span class="fu">useCanvas</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>  viewer.suppress <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"viewer.suppress"</span><span class="op">)</span>,</span>
+<span>  zcol <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  burst <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  color <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"vector.palette"</span><span class="op">)</span>,</span>
+<span>  col.regions <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"vector.palette"</span><span class="op">)</span>,</span>
+<span>  at <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  na.color <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"na.color"</span><span class="op">)</span>,</span>
+<span>  cex <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  lwd <span class="op">=</span> <span class="fu">lineWidth</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.9</span>,</span>
+<span>  alpha.regions <span class="op">=</span> <span class="fu">regionOpacity</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>  na.alpha <span class="op">=</span> <span class="fu">regionOpacity</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>  map.types <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"basemaps"</span><span class="op">)</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span>,</span>
+<span>  popup <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  layer.name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  label <span class="op">=</span> <span class="va">zcol</span>,</span>
+<span>  legend <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"legend"</span><span class="op">)</span>,</span>
+<span>  legend.opacity <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  homebutton <span class="op">=</span> <span class="fu"><a href="mapviewOptions.html">mapviewGetOption</a></span><span class="op">(</span><span class="st">"homebutton"</span><span class="op">)</span>,</span>
+<span>  native.crs <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  highlight <span class="op">=</span> <span class="fu">mapviewHighlightOptions</span><span class="op">(</span><span class="va">x</span>, <span class="va">alpha.regions</span>, <span class="va">alpha</span>, <span class="va">lwd</span><span class="op">)</span>,</span>
+<span>  maxpoints <span class="op">=</span> <span class="fu">getMaxFeatures</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>  hide <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SpatVector</span></span>
 <span><span class="fu">mapView</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  map <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -764,32 +828,34 @@ the popup will potentially still say something like "POLYGON Z".</p>
     <div id="methods-by-class-">
     <h2>Methods (by class)</h2>
     
-<ul><li><p><code>stars</code>: <code>stars</code></p></li>
-<li><p><code>stars_proxy</code>: <code>stars_proxy</code></p></li>
-<li><p><code>RasterStackBrick</code>: <code><a href="https://rdrr.io/r/utils/stack.html" class="external-link">stack</a></code> / <code>brick</code></p></li>
-<li><p><code>Satellite</code>: <code>satellite</code></p></li>
-<li><p><code>sf</code>: <code><a href="https://r-spatial.github.io/sf/reference/sf.html" class="external-link">st_sf</a></code></p></li>
-<li><p><code>sfc</code>: <code><a href="https://r-spatial.github.io/sf/reference/sfc.html" class="external-link">st_sfc</a></code></p></li>
-<li><p><code>character</code>: <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></code></p></li>
-<li><p><code>numeric</code>: <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></code></p></li>
-<li><p><code>data.frame</code>: <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></code></p></li>
-<li><p><code>XY</code>: <code><a href="https://r-spatial.github.io/sf/reference/sfc.html" class="external-link">st_sfc</a></code></p></li>
-<li><p><code>XYZ</code>: <code><a href="https://r-spatial.github.io/sf/reference/sfc.html" class="external-link">st_sfc</a></code></p></li>
-<li><p><code>XYM</code>: <code><a href="https://r-spatial.github.io/sf/reference/sfc.html" class="external-link">st_sfc</a></code></p></li>
-<li><p><code>XYZM</code>: <code><a href="https://r-spatial.github.io/sf/reference/sfc.html" class="external-link">st_sfc</a></code></p></li>
-<li><p><code>bbox</code>: <code><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></code></p></li>
-<li><p><code>missing</code>: initiate a map without an object</p></li>
-<li><p><code>NULL</code>: initiate a map without an object</p></li>
-<li><p><code>list</code>: <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></code></p></li>
-<li><p><code>ANY</code>: alias for ease of typing</p></li>
-<li><p><code>SpatialPixelsDataFrame</code>: <code>SpatialPixelsDataFrame</code></p></li>
-<li><p><code>SpatialGridDataFrame</code>: <code>SpatialGridDataFrame</code></p></li>
-<li><p><code>SpatialPointsDataFrame</code>: <code>SpatialPointsDataFrame</code></p></li>
-<li><p><code>SpatialPoints</code>: <code>SpatialPoints</code></p></li>
-<li><p><code>SpatialPolygonsDataFrame</code>: <code>SpatialPolygonsDataFrame</code></p></li>
-<li><p><code>SpatialPolygons</code>: <code>SpatialPolygons</code></p></li>
-<li><p><code>SpatialLinesDataFrame</code>: <code>SpatialLinesDataFrame</code></p></li>
-<li><p><code>SpatialLines</code>: <code>SpatialLines</code></p></li>
+<ul><li><p><code>mapView(stars)</code>: <code>stars</code></p></li>
+<li><p><code>mapView(stars_proxy)</code>: <code>stars_proxy</code></p></li>
+<li><p><code>mapView(SpatRaster)</code>: <code>SpatRaster</code></p></li>
+<li><p><code>mapView(RasterStackBrick)</code>: <code><a href="https://rdrr.io/r/utils/stack.html" class="external-link">stack</a></code> / <code>brick</code></p></li>
+<li><p><code>mapView(Satellite)</code>: <code>satellite</code></p></li>
+<li><p><code>mapView(sf)</code>: <code>sf</code></p></li>
+<li><p><code>mapView(SpatVector)</code>: <code>SpatVector</code></p></li>
+<li><p><code>mapView(sfc)</code>: <code><a href="https://r-spatial.github.io/sf/reference/sfc.html" class="external-link">st_sfc</a></code></p></li>
+<li><p><code>mapView(character)</code>: <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></code></p></li>
+<li><p><code>mapView(numeric)</code>: <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></code></p></li>
+<li><p><code>mapView(data.frame)</code>: <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></code></p></li>
+<li><p><code>mapView(XY)</code>: <code><a href="https://r-spatial.github.io/sf/reference/sfc.html" class="external-link">st_sfc</a></code></p></li>
+<li><p><code>mapView(XYZ)</code>: <code><a href="https://r-spatial.github.io/sf/reference/sfc.html" class="external-link">st_sfc</a></code></p></li>
+<li><p><code>mapView(XYM)</code>: <code><a href="https://r-spatial.github.io/sf/reference/sfc.html" class="external-link">st_sfc</a></code></p></li>
+<li><p><code>mapView(XYZM)</code>: <code><a href="https://r-spatial.github.io/sf/reference/sfc.html" class="external-link">st_sfc</a></code></p></li>
+<li><p><code>mapView(bbox)</code>: <code><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></code></p></li>
+<li><p><code>mapView(missing)</code>: initiate a map without an object</p></li>
+<li><p><code>mapView(`NULL`)</code>: initiate a map without an object</p></li>
+<li><p><code>mapView(list)</code>: <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></code></p></li>
+<li><p><code>mapview(ANY)</code>: alias for ease of typing</p></li>
+<li><p><code>mapView(SpatialPixelsDataFrame)</code>: <code>SpatialPixelsDataFrame</code></p></li>
+<li><p><code>mapView(SpatialGridDataFrame)</code>: <code>SpatialGridDataFrame</code></p></li>
+<li><p><code>mapView(SpatialPointsDataFrame)</code>: <code>SpatialPointsDataFrame</code></p></li>
+<li><p><code>mapView(SpatialPoints)</code>: <code>SpatialPoints</code></p></li>
+<li><p><code>mapView(SpatialPolygonsDataFrame)</code>: <code>SpatialPolygonsDataFrame</code></p></li>
+<li><p><code>mapView(SpatialPolygons)</code>: <code>SpatialPolygons</code></p></li>
+<li><p><code>mapView(SpatialLinesDataFrame)</code>: <code>SpatialLinesDataFrame</code></p></li>
+<li><p><code>mapView(SpatialLines)</code>: <code>SpatialLines</code></p></li>
 </ul></div>
     <div id="author">
     <h2>Author</h2>
