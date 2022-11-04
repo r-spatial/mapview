@@ -41,11 +41,11 @@ Use these functions to enable automatic vieweing of all spatial objects
 }
 \section{Functions}{
 \itemize{
-\item \code{startWatching}: start watching
+\item \code{startWatching()}: start watching
 
-\item \code{stopWatching}: stop watching
+\item \code{stopWatching()}: stop watching
+
 }}
-
 \examples{
   if (interactive()) {
     library(mapview)

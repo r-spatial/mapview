@@ -200,9 +200,9 @@ add a line like this: options(mapviewMaxPixels = 700000) to that file.
 }
 \section{Functions}{
 \itemize{
-\item \code{mapviewGetOption}: query mapviewOptions parameters.
-}}
+\item \code{mapviewGetOption()}: query mapviewOptions parameters.
 
+}}
 \examples{
 mapviewOptions()
 mapviewOptions(na.color = "pink")

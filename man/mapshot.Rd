@@ -74,11 +74,11 @@ for more details.
 }
 \section{Functions}{
 \itemize{
-\item \code{mapshot}: Save mapview or leaflet map as HTML and/or image using webshot
+\item \code{mapshot()}: Save mapview or leaflet map as HTML and/or image using webshot
 
-\item \code{mapshot2}: Save mapview or leaflet map as HTML and/or image using webshot2
+\item \code{mapshot2()}: Save mapview or leaflet map as HTML and/or image using webshot2
+
 }}
-
 \examples{
 \dontrun{
   library(utils)

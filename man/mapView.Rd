@@ -666,63 +666,63 @@ the popup will potentially still say something like "POLYGON Z".
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{stars}: \code{stars}
+\item \code{mapView(stars)}: \code{stars}
 
-\item \code{stars_proxy}: \code{stars_proxy}
+\item \code{mapView(stars_proxy)}: \code{stars_proxy}
 
-\item \code{SpatRaster}: \code{SpatRaster}
+\item \code{mapView(SpatRaster)}: \code{SpatRaster}
 
-\item \code{RasterStackBrick}: \code{\link{stack}} / \code{\link{brick}}
+\item \code{mapView(RasterStackBrick)}: \code{\link{stack}} / \code{\link{brick}}
 
-\item \code{Satellite}: \code{\link{satellite}}
+\item \code{mapView(Satellite)}: \code{\link{satellite}}
 
-\item \code{sf}: \code{sf}
+\item \code{mapView(sf)}: \code{sf}
 
-\item \code{SpatVector}: \code{SpatVector}
+\item \code{mapView(SpatVector)}: \code{SpatVector}
 
-\item \code{sfc}: \code{\link{st_sfc}}
+\item \code{mapView(sfc)}: \code{\link{st_sfc}}
 
-\item \code{character}: \code{\link{character}}
+\item \code{mapView(character)}: \code{\link{character}}
 
-\item \code{numeric}: \code{\link{numeric}}
+\item \code{mapView(numeric)}: \code{\link{numeric}}
 
-\item \code{data.frame}: \code{\link{data.frame}}
+\item \code{mapView(data.frame)}: \code{\link{data.frame}}
 
-\item \code{XY}: \code{\link{st_sfc}}
+\item \code{mapView(XY)}: \code{\link{st_sfc}}
 
-\item \code{XYZ}: \code{\link{st_sfc}}
+\item \code{mapView(XYZ)}: \code{\link{st_sfc}}
 
-\item \code{XYM}: \code{\link{st_sfc}}
+\item \code{mapView(XYM)}: \code{\link{st_sfc}}
 
-\item \code{XYZM}: \code{\link{st_sfc}}
+\item \code{mapView(XYZM)}: \code{\link{st_sfc}}
 
-\item \code{bbox}: \code{\link{st_bbox}}
+\item \code{mapView(bbox)}: \code{\link{st_bbox}}
 
-\item \code{missing}: initiate a map without an object
+\item \code{mapView(missing)}: initiate a map without an object
 
-\item \code{NULL}: initiate a map without an object
+\item \code{mapView(`NULL`)}: initiate a map without an object
 
-\item \code{list}: \code{\link{list}}
+\item \code{mapView(list)}: \code{\link{list}}
 
-\item \code{ANY}: alias for ease of typing
+\item \code{mapview(ANY)}: alias for ease of typing
 
-\item \code{SpatialPixelsDataFrame}: \code{\link{SpatialPixelsDataFrame}}
+\item \code{mapView(SpatialPixelsDataFrame)}: \code{\link{SpatialPixelsDataFrame}}
 
-\item \code{SpatialGridDataFrame}: \code{\link{SpatialGridDataFrame}}
+\item \code{mapView(SpatialGridDataFrame)}: \code{\link{SpatialGridDataFrame}}
 
-\item \code{SpatialPointsDataFrame}: \code{\link{SpatialPointsDataFrame}}
+\item \code{mapView(SpatialPointsDataFrame)}: \code{\link{SpatialPointsDataFrame}}
 
-\item \code{SpatialPoints}: \code{\link{SpatialPoints}}
+\item \code{mapView(SpatialPoints)}: \code{\link{SpatialPoints}}
 
-\item \code{SpatialPolygonsDataFrame}: \code{\link{SpatialPolygonsDataFrame}}
+\item \code{mapView(SpatialPolygonsDataFrame)}: \code{\link{SpatialPolygonsDataFrame}}
 
-\item \code{SpatialPolygons}: \code{\link{SpatialPolygons}}
+\item \code{mapView(SpatialPolygons)}: \code{\link{SpatialPolygons}}
 
-\item \code{SpatialLinesDataFrame}: \code{\link{SpatialLinesDataFrame}}
+\item \code{mapView(SpatialLinesDataFrame)}: \code{\link{SpatialLinesDataFrame}}
 
-\item \code{SpatialLines}: \code{\link{SpatialLines}}
+\item \code{mapView(SpatialLines)}: \code{\link{SpatialLines}}
+
 }}
-
 \examples{
 \dontrun{
   mapview()
