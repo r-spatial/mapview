@@ -71,7 +71,7 @@ Imports:
     leaflet (>= 2.0.0),
     leafpop,
     png,
-    raster,
+    raster (>= 3.6.3),
     satellite,
     scales (>= 0.2.5),
     servr,
@@ -87,7 +87,6 @@ Suggests:
     mapdeck,
     plainview,
     poorman,
-    rgdal,
     rmarkdown,
     rstudioapi,
     s2,
@@ -98,5 +97,5 @@ Suggests:
 ByteCompile: yes
 Encoding: UTF-8
 LazyData: TRUE
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 SystemRequirements: GNU make
