@@ -643,7 +643,7 @@ leaflet_sfc <- function(x,
     if ("gl" %in% names(list(...)) &
         isTRUE(list(...)$gl) &
         inherits(sf::st_geometry(x), "sfc_POLYGON") &
-        lwd > 0) {
+        all(lwd > 0)) {
       m = leafem::addFeatures(
         m
         , data = suppressWarnings(sf::st_cast(x, "LINESTRING"))
