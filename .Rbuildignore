@@ -10,3 +10,4 @@
 ^\.ccache$
 ^\.github$
 ^tic\.R$
+.vscode
