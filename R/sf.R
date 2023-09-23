@@ -575,16 +575,12 @@ leaflet_sfc <- function(x,
     viewer.suppress = viewer.suppress
   )
 
-  if (!canvas) {
-    if (!is.null(pane)) {
-      if (pane == "auto") {
-        pane = paneName(x)
-        zindex = zIndex(x)
-        m = leaflet::addMapPane(m, pane, zindex)
-      }
+  if (!is.null(pane)) {
+    if (pane == "auto") {
+      pane = paneName(x)
+      zindex = zIndex(x)
+      m = leaflet::addMapPane(m, pane, zindex)
     }
-  } else {
-    pane = NULL
   }
 
   if (mapviewGetOption("fgb")) {
