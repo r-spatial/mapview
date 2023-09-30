@@ -10,7 +10,7 @@ checks](https://badges.cranchecks.info/worst/mapview.svg)](https://cran.r-projec
 [![CRAN](https://www.r-pkg.org/badges/version/mapview?color=009999)](https://cran.r-project.org/package=mapview)
 [![License](https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![Coverage
-Status](https://img.shields.io/codecov/c/github/r-spatial/mapview/develop.svg)](https://codecov.io/github/r-spatial/mapview?branch=develop)
+Status](https://img.shields.io/codecov/c/github/r-spatial/mapview/develop.svg)](https://app.codecov.io/github/r-spatial/mapview)
 [![status](https://tinyverse.netlify.com/badge/mapview)](https://CRAN.R-project.org/package=mapview)
 <!-- badges: end -->
 
