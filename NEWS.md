@@ -1,4 +1,4 @@
-# mapview 2.11.0.9008 (2023-09-30)
+# mapview 2.11.1 (2023-10-12)
 
 #### ✨ features and improvements
 
@@ -6,25 +6,9 @@
 
 #### 🐛 bug fixes
 
-#### 💬 documentation etc
-
-#### 🍬 miscellaneous
-
-
-## mapview 2.11.0 (2022-04-16)
-
-#### ✨ features and improvements
-
-#### 🐛 bug fixes
-
   * when `burst = TRUE` popups were not correct. #396 & #408
   * recreated data crs with `sf::st_crs()` to avoid warnings ('old-style crs object detected; please recreate object with a recent sf::st_crs()'). #411
   * `RasterBrick` method now returns correct `@object` slot.
-
-#### 💬 documentation etc
-
-#### 🍬 miscellaneous
-
 
 ## mapview 2.10.4
 
@@ -60,7 +44,7 @@ bugfixes:
 
   * rmd files did not compile due to missing popup.css #312
   * method for RasterStackBrick now respects query.digits option. #334
-  * don't emit warning when length(at) == length(color). #327 
+  * don't emit warning when length(at) == length(color). #327
   * alpha.regions now respected if burst = TRUE. #352
   * printing in rmarkdown notebooks works now if fgb & georaster options are FALSE. #351
   * setting options("OutDec" = ",") does not cause an error anymore. #353
@@ -93,13 +77,13 @@ new features:
   * initial support for 'mapdeck' as a rendering platform.
   * mapshot now works for all and any htmlwidget.
   * new functions startWatching/stopWatching to automatically mapview all spatial objects in a given environment (default .GlobalEnv).
-  
+
 miscellaneous:
 
   * deprecated addStarsImage - now in package leafem. Thanks to Luigi Ranghetti #230
   * deprecated addExtent - now in package leafem. Thanks to Lorenzo Busetto #233
   * dropped Rcpp dependency.
-  
+
 bugfixes:
 
   * factor legends should now work as expected. #240
@@ -116,16 +100,14 @@ bugfixes:
 
   * mapview would return NULL if zcol was of type logic. #200
 
-
 ## mapview 2.6.3
 
 miscellaneous:
-  
+
   * argument popup now also accepts FALSE in addition to NULL to suppress popups.
   * plainview argument legend now accepts a list describing the colorkey (see ?lattice::levelplot for details). #187
   * mapview popup css now has white background (for better leaflet integration).
   * NAMESPACE now registers S3method (knitr::knit_print) conditionally as requested by KH.
-
 
 ## mapview 2.6.0
 
@@ -159,11 +141,11 @@ bugfixes:
   * leaflet::addScalebar would prevent Raster* method from rendering correctly for multiple layers.
   * cex was not respected when burst = TRUE. #149
   * popupTable no longer causes a stack overflow with large point data. #154
-  * popupGraph no longer relies on png files on disk but embeds graphs via base64. #156 
+  * popupGraph no longer relies on png files on disk but embeds graphs via base64. #156
   * in mapshot, remove temporary url files only if remove_url = TRUE. #157
   * removeMouseCoordinates should work properly now (also exported). #145
   * home button for single point now zooms to maximum zoom 18.
-  
+
 miscellaneous:
 
   * dropped gdalUtils from Imports. gdalinfo and gdal_translate now used via sf.
@@ -172,7 +154,6 @@ miscellaneous:
   * better error messages in some cases (e.g. missing zcol, empty objects).
   * package now depends on leaflet >= 1.0.0
   * highlight now also accepts FALSE in addition to NULL to stop highlighting.
-
 
 ## mapview 2.4.0
 
@@ -188,12 +169,11 @@ new features:
   * new function addMapPane to enable control over layer order.
   * mapview has gained argument pane as it now uses addMapPane to ensure points overlay lines overlay polygons.
   * mapview has gained argument canvas to enable canvas rendering.
-  
+
 bugfixes:
 
   * viewRGB failed because of missing method argument. #125
   * combineExtent didn't check properly for crs and failed for raster images.
-
 
 ## mapview 2.3.0
 
@@ -203,19 +183,18 @@ new features:
   * new function addStarsImage to visualise stars images.
   * new function addImageQuery to provide raster/stars value query on mouseover/click.
   * mapview has gained new argument `method` to specify the method used for resampling of raster data. #123
-  
+
 bugfixes:
 
   * raster method with native.crs = TRUE did throw an error on windows. #111
   * SpatialPixelsDataFrame and SpatialGridDataFrame failed because of missing map argument.
   * example for multiple popupImages was broken. #118
   * SpatialPixelsDataFrame failed when `zcol` was supplied. #124
-  
+
 misc:
 
   * added more details in description field as per request of Uwe Ligges.
   * moved leaflet from Depends to Imports.
-  
 
 ## mapview 2.2.0
 
@@ -244,10 +223,10 @@ bugfixes:
 
 ## mapview 2.1.4
 
-new features: 
+new features:
 
   * popupImage now accepts more than one file name (list or vector) in argument img.
-  
+
 bugfixes:
 
   * na.alpha caused list/burst methods to fail.
@@ -255,7 +234,7 @@ bugfixes:
 
 ## mapview 2.1.0
 
-new features: 
+new features:
 
   * plainview/cubeview now respects/has gained argument na.color.
   * mapview now supports st_GEOMETRY with truely mixed feature types (e.g. LINESTRING and POLYGON) - fixes #85
@@ -288,11 +267,11 @@ new features:
   * mapview now provides subtle highlighting of polygons (changing opacity slightly) and lines (changing thickness).
   * plainView, slideView and cubeView have gained argument legend. default is TRUE. Legends only available for non-RGB methods!
   * new data sets:
-  
+
       - 'franconia' (administrative district boundaries of Franconia)
       - 'breweries' (extended version of the 'breweries91' data)
       - 'trails' (selected hiking trails in franconia to connect the breweries)
-      
+
   * data sets 'breweries91', 'gadmCHE' and 'atlStorms2005' have been deleted and moved to leaflet.
 
 bugfixes:
@@ -351,7 +330,6 @@ bugfixes:
 
   * if attribute was of class "character" mapview did through an error if passed to zcol.
   * user provided layer names were not respected when zcol was set. See also note on changes in default layer names.
-
 
 ## mapview 1.0.0
 
