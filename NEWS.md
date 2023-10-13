@@ -1,10 +1,4 @@
-# mapview 2.11.1.9001 (2023-10-13)
-
-#### ✨ features and improvements
-
-#### 🐛 bug fixes
-
-#### 💬 documentation etc
+# mapview 2.11.2 (2023-10-13)
 
 #### 🍬 miscellaneous
 
