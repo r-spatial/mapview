@@ -5,8 +5,8 @@
 #' \code{.pdf}, or \code{.jpeg} image.
 #'
 #' @details
-#' mapshot uses \code{\link[webshot]{webshot}} from the {webshot} package.
-#' mapshot2 uses \code{\link[webshot2]{webshot}} from the {webshot2} package.
+#' mapshot uses \code{\link[webshot]{webshot}} from the webshot package.
+#' mapshot2 uses \code{\link[webshot2]{webshot}} from the webshot2 package.
 #'
 #' mapshot can be used to save both leaflet and mapview maps as html or png
 #' files or both. In theory, it should also work for any and all other htmlwidgets
@@ -269,7 +269,7 @@ mapshot2 = function(x,
   ## saveWidget (either to provided url or tempfile)
   do.call(htmlwidgets::saveWidget, append(list(x), sw_ls[sw_args]))
 
-  ## if file was rpovided
+  ## if file was provided
   if (avl_file) {
 
     ## if no junk to remove -> take webshot straight away & return

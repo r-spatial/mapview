@@ -45,8 +45,8 @@ Save a mapview or leaflet map as \code{.html} index file or \code{.png},
 \code{.pdf}, or \code{.jpeg} image.
 }
 \details{
-mapshot uses \code{\link[webshot]{webshot}} from the {webshot} package.
-mapshot2 uses \code{\link[webshot2]{webshot}} from the {webshot2} package.
+mapshot uses \code{\link[webshot]{webshot}} from the webshot package.
+mapshot2 uses \code{\link[webshot2]{webshot}} from the webshot2 package.
 
 mapshot can be used to save both leaflet and mapview maps as html or png
 files or both. In theory, it should also work for any and all other htmlwidgets
