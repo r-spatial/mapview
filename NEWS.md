@@ -8,6 +8,8 @@
 
 #### 🍬 miscellaneous
 
+  * removed retired package `rgdal`. #446
+
 
 # mapview 2.11.1 (2023-10-12)
 
