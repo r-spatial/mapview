@@ -57,7 +57,7 @@ Description: Quickly and conveniently create interactive
     windows. Additional functionality includes methods to visualise true-
     and false-color raster images and bounding boxes.
 License: GPL (>= 3) | file LICENSE
-URL: https://github.com/r-spatial/mapview
+URL: https://github.com/r-spatial/mapview, https://r-spatial.github.io/mapview/
 BugReports: https://github.com/r-spatial/mapview/issues
 Depends:
     methods,
