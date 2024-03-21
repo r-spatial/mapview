@@ -61,8 +61,12 @@ viewRGB = function(x, r = 3, g = 2, b = 1,
                     method = c("bilinear", "ngb"),
                     ...) {
 
-  if(!inherits(x, "Raster")) { # & !inherits(x, "stars")) {
-    stop("'x' must be a Raster* object.") # or stars object.")
+  if(!inherits(x, "Raster")) {
+    if (inherits(x, "SpatRaster")){
+      x = raster::stack(x)
+    } else {
+      stop("'x' must be a Raster* object, or SpatRaster object object.")
+    }
   }
 
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol = NULL, up = 1)
