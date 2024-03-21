@@ -111,7 +111,8 @@ if ( !isGeneric('mapView') ) {
 #'   for possible values. Ignored if \code{label = FALSE}.
 #' @param query.prefix for raster methods only. a character string to be shown
 #'   as prefix for the layerId. Ignored if \code{label = FALSE}.
-#' @param hide if TRUE the layer will be hidden (i.e. unchecked) in the rendered map.
+#' @param hide either a logical, a vector of layer names or a vector of layer indices.
+#'   See Details for more information on what exactly it does for different raster types.
 #' @param ... additional arguments passed on to respective functions.
 #'   See \code{\link{addRasterImage}}, \code{\link{addCircles}},
 #'   \code{\link{addPolygons}}, \code{\link{addPolylines}} for details.
@@ -133,10 +134,11 @@ if ( !isGeneric('mapView') ) {
 #'   features in the current view window is larger than \code{maxFeatures} then
 #'   features are rendered on the canvas, otherwise they are rendered as svg objects
 #'   and fully queriable.\cr
-#'   \cr
-#'   Hidden arguments that can be set via \code{...}:\cr
-#'   \cr
-#'   * \code{hide}: hide all but the first layer when rendering a RasterStackBrick.
+#'  \cr
+#'  \code{hide} if TRUE, will hide the layer in case of a single RasterLayer
+#'  and all but the first layer in case of a multilayer RasterStackBrick.
+#'  If a vector of layer names or indices is supplied, these will be hidden
+#'  (only applicable for multi-layer RasterStackBricks).
 #'
 #'
 #' @author

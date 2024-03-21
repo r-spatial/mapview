@@ -97,5 +97,5 @@ Suggests:
 ByteCompile: yes
 Encoding: UTF-8
 LazyData: TRUE
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 SystemRequirements: GNU make

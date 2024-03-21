@@ -61,8 +61,11 @@ getProviderTileNamesFromMap <- function(map) {
 layers2bHidden <- function(map, hide = FALSE, ...) {
 
   nms <- getLayerNamesFromMap(map)
+  if (length(nms) > 1) {
+    nms = tail(nms, -1)
+  }
 
-  if (hide) nms[-c(1)] else NULL
+  if (hide) nms else NULL
 
 }
 

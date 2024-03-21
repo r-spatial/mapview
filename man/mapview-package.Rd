@@ -13,6 +13,15 @@ The intention is to provide interactivity for easy and quick visualization
 during spatial data analysis. It is not intended for fine-tuned presentation
 quality map production.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/r-spatial/mapview}
+  \item \url{https://r-spatial.github.io/mapview/}
+  \item Report bugs at \url{https://github.com/r-spatial/mapview/issues}
+}
+
+}
 \author{
 Tim Appelhans, Florian Detsch, Chris Reudenbach,
 Stephan Woellauer, Spaska Forteva, Thomas Nauss,

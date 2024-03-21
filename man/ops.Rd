@@ -16,13 +16,13 @@
 
 \S4method{+}{mapview,ANY}(e1, e2)
 
-\S4method{+}{mapview,`NULL`}(e1, e2)
+\S4method{+}{mapview,NULL}(e1, e2)
 
 \S4method{+}{mapview,character}(e1, e2)
 
-\S4method{|}{mapview,`NULL`}(e1, e2)
+\S4method{|}{mapview,NULL}(e1, e2)
 
-\S4method{|}{`NULL`,mapview}(e1, e2)
+\S4method{|}{NULL,mapview}(e1, e2)
 }
 \arguments{
 \item{e1}{a leaflet or mapview map, or NULL.}
