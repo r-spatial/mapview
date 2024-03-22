@@ -59,11 +59,16 @@ characterLegend <- function(map,
                             colors,
                             na.color,
                             layer.name) {
-  if( is.function(colors)) {
+  vals = values
+
+  if ( is.function(colors)) {
     vals = unique(values[!is.na(values)])
-  } else {
-    vals = values
   }
+
+  if (inherits(values, "POSIXt")) {
+    vals = format(values)
+  }
+
   pal <- factorPalette(
     palette = zcolColors(
       x = vals
@@ -71,7 +76,7 @@ characterLegend <- function(map,
       , na.color = na.color
       , return.sorted = ifelse(is.function(colors), TRUE, FALSE)
     )
-    , domain = values
+    , domain = vals
     , na.color = na.color
   )
   mvAddLegend(isAvailableInLeaflet()$leggrp,
@@ -79,7 +84,7 @@ characterLegend <- function(map,
               map = map,
               position = position,
               pal = pal,
-              values = values,
+              values = vals,
               opacity = mapviewGetOption("legend.opacity"),
               title = ifelse(length(values) > 1, layer.name, ""))
 }
@@ -294,7 +299,15 @@ mapviewLegend <- function(values,
                                    at = at,
                                    na.color = na.color,
                                    layer.name = layer.name,
-                                   ...))
+                                   ...),
+           POSIXt = characterLegend(map,
+                                    position = position,
+                                    values = values,
+                                    colors = colors,
+                                    na.color = na.color,
+                                    layer.name = layer.name,
+                                    ...)
+           )
   }
 }
 
