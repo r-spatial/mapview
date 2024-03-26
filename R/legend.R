@@ -119,43 +119,17 @@ numericLegend <- function(map,
                           na.color,
                           layer.name,
                           ...) {
-  n_unique <- ifelse(is.null(at), length(unique(values)), length(at))
-  if (is.null(at)) {
-    atc <- lattice::do.breaks(
-      extendLimits(
-        range(values, na.rm = TRUE)
-      )
-      , length(unique(values))
-    )
-  } else atc <- at
 
-  ## in case people complain, add the <= 1 part as an option!!
-  if (is.null(at) & n_unique <= 1 & all(unique(values) %% 1 == 0, na.rm = TRUE)) {
-    factorLegend(map = map,
-                 values = as.factor(unique(values)),
-                 colors = colors,
-                 position = position,
-                 layer.name = layer.name,
-                 na.color = na.color)
-  } else if (!(is.null(at))) {
-    if (anyNA(values)) values <- c(atc, NA) else values <- atc
-    pal <- binPalette(palette = colors(n_unique),
-                      domain = atc,
-                      bins = atc,
-                      na.color = na.color,
-                      ...)
-    mvAddLegend(isAvailableInLeaflet()$leggrp,
-                layer.name,
-                map = map,
-                position = position,
-                pal = pal,
-                values = values,
-                opacity = mapviewGetOption("legend.opacity"),
-                title = ifelse(length(values) > 1, layer.name, ""),
-                ...)
-  } else if (is.null(at)) {
+  n_unique <- ifelse(is.null(at), length(unique(values)), length(at))
+
+  if (inherits(values, "POSIXt")) {
+    labForm = function(type, ...) {
+      switch(type, numeric = (function(cuts) {
+        format(as.POSIXct(cuts))
+      })(...))
+    }
     pal <- numericPalette(palette = colors(n_unique),
-                          domain = values,
+                          domain = as.numeric(values),
                           na.color = na.color,
                           ...)
     mvAddLegend(isAvailableInLeaflet()$leggrp,
@@ -163,10 +137,61 @@ numericLegend <- function(map,
                 map = map,
                 position = position,
                 pal = pal,
-                values = values,
+                values = as.numeric(values),
+                labFormat = labForm,
                 opacity = mapviewGetOption("legend.opacity"),
                 title = ifelse(length(values) > 1, layer.name, ""),
                 ...)
+  } else {
+
+    if (is.null(at)) {
+      atc <- lattice::do.breaks(
+        extendLimits(
+          range(values, na.rm = TRUE)
+        )
+        , length(unique(values))
+      )
+    } else atc <- at
+
+    ## in case people complain, add the <= 1 part as an option!!
+    if (is.null(at) & n_unique <= 1 & all(unique(values) %% 1 == 0, na.rm = TRUE)) {
+      factorLegend(map = map,
+                   values = as.factor(unique(values)),
+                   colors = colors,
+                   position = position,
+                   layer.name = layer.name,
+                   na.color = na.color)
+    } else if (!(is.null(at))) {
+      if (anyNA(values)) values <- c(atc, NA) else values <- atc
+      pal <- binPalette(palette = colors(n_unique),
+                        domain = atc,
+                        bins = atc,
+                        na.color = na.color,
+                        ...)
+      mvAddLegend(isAvailableInLeaflet()$leggrp,
+                  layer.name,
+                  map = map,
+                  position = position,
+                  pal = pal,
+                  values = values,
+                  opacity = mapviewGetOption("legend.opacity"),
+                  title = ifelse(length(values) > 1, layer.name, ""),
+                  ...)
+    } else if (is.null(at)) {
+      pal <- numericPalette(palette = colors(n_unique),
+                            domain = values,
+                            na.color = na.color,
+                            ...)
+      mvAddLegend(isAvailableInLeaflet()$leggrp,
+                  layer.name,
+                  map = map,
+                  position = position,
+                  pal = pal,
+                  values = values,
+                  opacity = mapviewGetOption("legend.opacity"),
+                  title = ifelse(length(values) > 1, layer.name, ""),
+                  ...)
+    }
   }
 
 }
@@ -300,13 +325,14 @@ mapviewLegend <- function(values,
                                    na.color = na.color,
                                    layer.name = layer.name,
                                    ...),
-           POSIXt = characterLegend(map,
-                                    position = position,
-                                    values = values,
-                                    colors = colors,
-                                    na.color = na.color,
-                                    layer.name = layer.name,
-                                    ...)
+           POSIXt = numericLegend(map,
+                                  position = position,
+                                  values = values,
+                                  colors = colors,
+                                  at = at,
+                                  na.color = na.color,
+                                  layer.name = layer.name,
+                                  ...)
            )
   }
 }
