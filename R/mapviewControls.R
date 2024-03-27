@@ -277,6 +277,8 @@ makeListLayerNames = function(x, layer.name) {
     }
   }
 
+  lnms = lnms[nzchar(lnms)]
+
   if (length(lnms) == 1 & length(x) > 1) {
     lnms = lapply(seq(x), function(i) {
       paste0(lnms, "[[", i , "]]")
