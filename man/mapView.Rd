@@ -390,7 +390,7 @@
   map.types = mapviewGetOption("basemaps"),
   verbose = mapviewGetOption("verbose"),
   popup = TRUE,
-  layer.name = deparse(substitute(x, env = parent.frame())),
+  layer.name = deparse(substitute(x, env = parent.frame()), width.cutoff = 500L),
   label = lapply(x, makeLabels),
   legend = mapviewGetOption("legend"),
   homebutton = mapviewGetOption("homebutton"),
