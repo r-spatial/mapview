@@ -77,6 +77,13 @@ setMethod("+",
               ind = hbcalls[zf]
               if (length(zf) > 0) m$x$calls[ind] = NULL
               m = leafem:::addZoomFullButton(m, out_obj)
+
+              hide_idx = getCallEntryFromMap(m, "hideGroup")
+              if (length(hide_idx) > 0) {
+                hide_lst = m$x$calls[hide_idx]
+                m$x$calls[hide_idx] = NULL
+                m$x$calls = append(m$x$calls, hide_lst)
+              }
             }
 
             if (mapviewGetOption("platform") == "mapdeck") {
