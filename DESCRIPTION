@@ -97,5 +97,5 @@ ByteCompile: yes
 Encoding: UTF-8
 LazyData: TRUE
 RoxygenNote: 7.3.2
-Config/Needs/Website: hrbrmstr/albersusa
 SystemRequirements: GNU make
+Roxygen: list(markdown = TRUE)

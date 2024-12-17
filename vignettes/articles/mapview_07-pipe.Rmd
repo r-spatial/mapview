@@ -13,7 +13,6 @@ vignette: >
 
 ```{r setup, echo=FALSE, message=FALSE}
 knitr::opts_chunk$set(fig.width = 8.83, message = FALSE, warning = FALSE)
-# remotes::install_github("hrbrmstr/albersusa")
 ```
 
 **mapview** can be used in piped expressions using `%>%`, most likely at the very end of it...
@@ -27,9 +26,10 @@ library(mapview)
 library(poorman)
 library(leaflet)
 library(sf)
-# GitHub: hrbrmstr/albersusa
-library(albersusa)
+```
 
+
+```{r pipe1a-3}
 franconia %>%
   st_union %>%
   plot
@@ -110,20 +110,3 @@ franconia %>%
 ```
 
 <br>
-
-## using `native.crs` for a USA composite map
-
-```{r pipe8a}
-albersusa::usa_composite("laea") %>%
-  mapview(native.crs = TRUE, zcol = "pop_2014", legend = TRUE)
-```
-
-<br>
-
-## without `native.crs`
-
-```{r pipe8b}
-albersusa::usa_composite("laea") %>%
-  mapview(zcol = "pop_2014", legend = TRUE)
-```
-
