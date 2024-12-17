@@ -7,6 +7,9 @@
 \format{
 \code{sf feature collection POINT}
 }
+\usage{
+breweries
+}
 \description{
 Selected breweries in Franconia
 }
@@ -20,3 +23,4 @@ and partly consists of breweries downloaded from
 of Rainer Kastl. Note that use of these data is restricted to  non-commercial use
 and that they are explixitly excluded from the GPL lincense that mapview is licensed under.
 }
+\keyword{datasets}

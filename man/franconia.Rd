@@ -10,6 +10,9 @@
 \source{
 \url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts}
 }
+\usage{
+franconia
+}
 \description{
 Administrative district borders of Franconia
 }
@@ -18,3 +21,4 @@ The NUTS_2013_01M_SH.zip archive was downloaded on 23/03/2017 from
 \url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts}.
 \url{https://gist.github.com/tim-salabim/2845fa90813fa25c18cf83f9b88cbde0}
 }
+\keyword{datasets}

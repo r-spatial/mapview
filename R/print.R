@@ -85,13 +85,7 @@ setMethod("show", signature(object = "mapview"),
 #' @param x A mapview object
 #' @param ... further arguments passed on to \code{\link[knitr]{knit_print}}
 #'
-#' @rawNamespace
-#' if(getRversion() >= "3.6.0") {
-#'   S3method(knitr::knit_print, mapview)
-#' } else {
-#'   export(knit_print.mapview)
-#' }
-#'
+#' @exportS3Method knitr::knit_print
 knit_print.mapview = function(x, ...) {
   knitr::knit_print(mapview2leaflet(x), ...)
 }
