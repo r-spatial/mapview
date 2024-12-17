@@ -78,7 +78,6 @@ Imports:
     sf,
     sp
 Suggests:
-    covr,
     knitr,
     later,
     leaflet.extras2,

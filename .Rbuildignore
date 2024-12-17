@@ -9,5 +9,4 @@
 ^README.Rmd
 ^\.ccache$
 ^\.github$
-^tic\.R$
 .vscode
