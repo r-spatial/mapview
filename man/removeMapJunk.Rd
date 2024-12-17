@@ -20,12 +20,12 @@ Delete elements from a map.
 Currently supports removal of
 
 \itemize{
-  \item "zoomControl"
-  \item "layersControl"
-  \item "homeButton"
-  \item "scaleBar"
-  \item "drawToolbar"
-  \item "easyButton"
+\item "zoomControl"
+\item "layersControl"
+\item "homeButton"
+\item "scaleBar"
+\item "drawToolbar"
+\item "easyButton"
 }
 
 This is mainly useful when taking a static screenshot of a map.

@@ -183,8 +183,8 @@ via a <src=...> call which means that the html is not selfcontained anymore
 
 \item{georaster}{whether to use \code{\link[leafem]{addGeoRaster}} instead of
 \code{\link[leaflet]{addRasterImage}}. If set to \code{TRUE} raster image visualisation
- will be more performant for large raster data, but given the nearest neighbor
- resampling results may be slightly distorted.}
+will be more performant for large raster data, but given the nearest neighbor
+resampling results may be slightly distorted.}
 
 \item{param}{character. parameter(s) to be queried.}
 }
@@ -194,7 +194,7 @@ If no arguments are provided the options are printed.
 }
 \description{
 To permanently set any of these options, you can add them to
-<your R installation>/etc/Rprofile.site>. For example,
+\if{html}{\out{<your R installation>}}/etc/Rprofile.site>. For example,
 to change the default number of pixels to be visualised for Raster* objects,
 add a line like this: options(mapviewMaxPixels = 700000) to that file.
 }

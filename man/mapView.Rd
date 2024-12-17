@@ -474,9 +474,9 @@
 \arguments{
 \item{x}{a \code{Raster*} or \code{Spatial*} or \code{Satellite} or
 \code{sf} or \code{stars} object or a list of any combination of those. Furthermore,
-  this can also be a \code{data.frame}, a \code{numeric vector} or a
+this can also be a \code{data.frame}, a \code{numeric vector} or a
 \code{character string} pointing to a tile image folder or file on disk.
-  If missing, a blank map will be drawn. A value of NULL will return NULL.}
+If missing, a blank map will be drawn. A value of NULL will return NULL.}
 
 \item{map}{an optional existing map to be updated/added to.}
 
@@ -564,10 +564,10 @@ a list of supported hidden arguments.}
 
 \item{pane}{name of the map pane in which to render features. See
 \code{\link{addMapPane}} for details. Currently only supported for vector layers.
-  Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
-  for points, lines and polygons such that points overlay lines overlay polygons.
-  Set to \code{NULL} to get default leaflet behaviour where allfeatures
-  are rendered in the same pane and layer order is determined automatically/sequentially.}
+Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
+for points, lines and polygons such that points overlay lines overlay polygons.
+Set to \code{NULL} to get default leaflet behaviour where allfeatures
+are rendered in the same pane and layer order is determined automatically/sequentially.}
 
 \item{canvas}{whether to use canvas rendering rather than svg. May help
 performance with larger data. See \url{https://leafletjs.com/index.html#canvas}
@@ -647,24 +647,24 @@ dimensions Z and M will be stripped to ensure smooth rendering even though
 the popup will potentially still say something like "POLYGON Z".
 
 \code{maxpoints} is taken to determine when to switch rendering from svg
-  to canvas overlay for perfomance. The threshold calculation is done as follows: \cr
-  if the number of points (in case of point data) or vertices (in case of
-  polygon or line data) > \code{maxpoints} then render using special render
-  function. Within this render function we approximate the complexity of
-  features by \cr
+to canvas overlay for perfomance. The threshold calculation is done as follows: \cr
+if the number of points (in case of point data) or vertices (in case of
+polygon or line data) > \code{maxpoints} then render using special render
+function. Within this render function we approximate the complexity of
+features by \cr
 \cr
 \code{maxFeatures <- maxfeatures / (npts(data) / length(data))} \cr
 \cr
-  where \code{npts} determines the number of points/vertices and \code{length}
-  the number of features (points, lines or polygons). When the number of
-  features in the current view window is larger than \code{maxFeatures} then
-  features are rendered on the canvas, otherwise they are rendered as svg objects
-  and fully queriable.\cr
- \cr
- \code{hide} if TRUE, will hide the layer in case of a single RasterLayer
- and all but the first layer in case of a multilayer RasterStackBrick.
- If a vector of layer names or indices is supplied, these will be hidden
- (only applicable for multi-layer RasterStackBricks).
+where \code{npts} determines the number of points/vertices and \code{length}
+the number of features (points, lines or polygons). When the number of
+features in the current view window is larger than \code{maxFeatures} then
+features are rendered on the canvas, otherwise they are rendered as svg objects
+and fully queriable.\cr
+\cr
+\code{hide} if TRUE, will hide the layer in case of a single RasterLayer
+and all but the first layer in case of a multilayer RasterStackBrick.
+If a vector of layer names or indices is supplied, these will be hidden
+(only applicable for multi-layer RasterStackBricks).
 }
 \section{Methods (by class)}{
 \itemize{
