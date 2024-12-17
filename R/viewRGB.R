@@ -7,7 +7,7 @@
 #' that they represent the red, green and blue channel. This function can
 #' be used to make 'true (or false) color images' from Landsat and other
 #' multi-band satellite images. Note, this text is plagiarized, i.e. copied
-#' from \code{\link{plotRGB}}.
+#' from [raster::plotRGB()].
 #'
 #' @param x a RasterBrick, RasterStack
 #' @param r integer. Index of the Red channel/band, between 1 and nlayers(x)

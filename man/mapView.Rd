@@ -484,16 +484,16 @@ If missing, a blank map will be drawn. A value of NULL will return NULL.}
 If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.}
 
 \item{col.regions}{color (palette) pixels.
-See \code{\link{levelplot}} for details.}
+See \code{\link[lattice]{levelplot}} for details.}
 
 \item{at}{the breakpoints used for the visualisation.
-See \code{\link{levelplot}} for details.}
+See \code{\link[lattice]{levelplot}} for details.}
 
 \item{na.color}{color for missing values}
 
 \item{use.layer.names}{should layer names of the Raster* object be used?}
 
-\item{map.types}{character spcifications for the base maps.
+\item{map.types}{character specifications for the base maps.
 see \url{https://leaflet-extras.github.io/leaflet-providers/preview/}
 for available options.}
 
@@ -532,7 +532,7 @@ which is appropriate for continuous variables. The other option, 'ngb'
 layer is of class \code{factor} in which case "ngb" is used.}
 
 \item{label}{For vector data (sf/sp) a character vector of labels to be
-shown on mouseover. See \code{\link{addControl}} for details. For raster
+shown on mouseover. See \code{\link[leaflet]{addControl}} for details. For raster
 data (Raster*/stars) a logical indicating whether to add image query.}
 
 \item{query.type}{for raster methods only. Whether to show raster value query
@@ -542,7 +542,7 @@ on \code{'mousemove'} or \code{'click'}. Ignored if \code{label = FALSE}.}
 by raster value query. Ignored if \code{label = FALSE}.}
 
 \item{query.position}{for raster methods only. The position of the raster
-value query info box. See \code{position} argument of \code{\link{addLegend}}
+value query info box. See \code{position} argument of \code{\link[leaflet]{addLegend}}
 for possible values. Ignored if \code{label = FALSE}.}
 
 \item{query.prefix}{for raster methods only. a character string to be shown
@@ -555,15 +555,15 @@ Use \code{mapviewOptions(viewer.suppress = TRUE/FALSE)} instead.}
 See Details for more information on what exactly it does for different raster types.}
 
 \item{...}{additional arguments passed on to respective functions.
-See \code{\link{addRasterImage}}, \code{\link{addCircles}},
-\code{\link{addPolygons}}, \code{\link{addPolylines}} for details.
+See \code{\link[leaflet]{addRasterImage}}, \code{\link[leaflet]{addCircles}},
+\code{\link[leaflet]{addPolygons}}, \code{\link[leaflet]{addPolylines}} for details.
 Furthermore, you can pass hidden arguments to some methods. See Details for
 a list of supported hidden arguments.}
 
 \item{band}{for stars layers, the band number to be plotted.}
 
 \item{pane}{name of the map pane in which to render features. See
-\code{\link{addMapPane}} for details. Currently only supported for vector layers.
+\code{\link[leaflet]{addMapPane}} for details. Currently only supported for vector layers.
 Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
 for points, lines and polygons such that points overlay lines overlay polygons.
 Set to \code{NULL} to get default leaflet behaviour where allfeatures
@@ -593,7 +593,7 @@ of the column(s) to be used for defining the size of circles}
 
 \item{popup}{either \code{logical}, \code{character vector} or a \code{list}
 of HTML strings with the popup contents, usually created from
-\code{\link[leafpop]{popupTable}}. See \code{\link{addControl}} for details.
+\code{\link[leafpop]{popupTable}}. See \code{\link[leaflet]{addControl}} for details.
 If \code{FALSE} or \code{NULL} no popups will be created, if \code{TRUE}
 a table with all feature attributes/columns will be created.
 If a \code{character vector} of column names, the table will only show the
@@ -601,7 +601,7 @@ respective column entries.}
 
 \item{highlight}{either \code{FALSE}, \code{NULL} or a list of styling
 options for feature highlighting on mouse hover.
-See \code{\link{highlightOptions}} for details.}
+See \code{\link[leaflet]{highlightOptions}} for details.}
 
 \item{maxpoints}{the maximum number of points making up the geometry.
 In case of lines and polygons this refers to the number of vertices. See
@@ -623,11 +623,11 @@ data.frame method.}
 \item{ycol}{the column to be mapped to the y-axis. Only relevant for the
 data.frame method.}
 
-\item{aspect}{the ratio of x/y axis corrdinates to adjust the plotting
+\item{aspect}{the ratio of x/y axis coordinates to adjust the plotting
 space to fit the screen. Only relevant for the data.frame method.}
 
 \item{crs}{an optional crs specification for the provided data to enable
-rendering on a basemap. See argument description in \code{\link{st_sf}}
+rendering on a basemap. See argument description in \code{\link[sf]{st_sf}}
 for details.}
 }
 \description{
@@ -647,7 +647,7 @@ dimensions Z and M will be stripped to ensure smooth rendering even though
 the popup will potentially still say something like "POLYGON Z".
 
 \code{maxpoints} is taken to determine when to switch rendering from svg
-to canvas overlay for perfomance. The threshold calculation is done as follows: \cr
+to canvas overlay for performance. The threshold calculation is done as follows: \cr
 if the number of points (in case of point data) or vertices (in case of
 polygon or line data) > \code{maxpoints} then render using special render
 function. Within this render function we approximate the complexity of
@@ -674,15 +674,15 @@ If a vector of layer names or indices is supplied, these will be hidden
 
 \item \code{mapView(SpatRaster)}: \code{SpatRaster}
 
-\item \code{mapView(RasterStackBrick)}: \code{\link{stack}} / \code{\link{brick}}
+\item \code{mapView(RasterStackBrick)}: \code{\link[raster]{stack}} / \code{\link[raster]{brick}}
 
-\item \code{mapView(Satellite)}: \code{\link{satellite}}
+\item \code{mapView(Satellite)}: \code{\link[satellite]{satellite}}
 
 \item \code{mapView(sf)}: \code{sf}
 
 \item \code{mapView(SpatVector)}: \code{SpatVector}
 
-\item \code{mapView(sfc)}: \code{\link{st_sfc}}
+\item \code{mapView(sfc)}: \code{\link[sf]{st_sfc}}
 
 \item \code{mapView(character)}: \code{\link{character}}
 
@@ -690,15 +690,15 @@ If a vector of layer names or indices is supplied, these will be hidden
 
 \item \code{mapView(data.frame)}: \code{\link{data.frame}}
 
-\item \code{mapView(XY)}: \code{\link{st_sfc}}
+\item \code{mapView(XY)}: \code{\link[sf]{st_sfc}}
 
-\item \code{mapView(XYZ)}: \code{\link{st_sfc}}
+\item \code{mapView(XYZ)}: \code{\link[sf]{st_sfc}}
 
-\item \code{mapView(XYM)}: \code{\link{st_sfc}}
+\item \code{mapView(XYM)}: \code{\link[sf]{st_sfc}}
 
-\item \code{mapView(XYZM)}: \code{\link{st_sfc}}
+\item \code{mapView(XYZM)}: \code{\link[sf]{st_sfc}}
 
-\item \code{mapView(bbox)}: \code{\link{st_bbox}}
+\item \code{mapView(bbox)}: \code{\link[sf]{st_bbox}}
 
 \item \code{mapView(missing)}: initiate a map without an object
 
@@ -708,21 +708,21 @@ If a vector of layer names or indices is supplied, these will be hidden
 
 \item \code{mapview(ANY)}: alias for ease of typing
 
-\item \code{mapView(SpatialPixelsDataFrame)}: \code{\link{SpatialPixelsDataFrame}}
+\item \code{mapView(SpatialPixelsDataFrame)}: \code{\link[sp]{SpatialPixelsDataFrame}}
 
-\item \code{mapView(SpatialGridDataFrame)}: \code{\link{SpatialGridDataFrame}}
+\item \code{mapView(SpatialGridDataFrame)}: \code{\link[sp]{SpatialGridDataFrame}}
 
-\item \code{mapView(SpatialPointsDataFrame)}: \code{\link{SpatialPointsDataFrame}}
+\item \code{mapView(SpatialPointsDataFrame)}: \code{\link[sp]{SpatialPointsDataFrame}}
 
-\item \code{mapView(SpatialPoints)}: \code{\link{SpatialPoints}}
+\item \code{mapView(SpatialPoints)}: \code{\link[sp]{SpatialPoints}}
 
-\item \code{mapView(SpatialPolygonsDataFrame)}: \code{\link{SpatialPolygonsDataFrame}}
+\item \code{mapView(SpatialPolygonsDataFrame)}: \code{\link[sp]{SpatialPolygonsDataFrame}}
 
-\item \code{mapView(SpatialPolygons)}: \code{\link{SpatialPolygons}}
+\item \code{mapView(SpatialPolygons)}: \code{\link[sp]{SpatialPolygons}}
 
-\item \code{mapView(SpatialLinesDataFrame)}: \code{\link{SpatialLinesDataFrame}}
+\item \code{mapView(SpatialLinesDataFrame)}: \code{\link[sp]{SpatialLinesDataFrame}}
 
-\item \code{mapView(SpatialLines)}: \code{\link{SpatialLines}}
+\item \code{mapView(SpatialLines)}: \code{\link[sp]{SpatialLines}}
 
 }}
 \examples{

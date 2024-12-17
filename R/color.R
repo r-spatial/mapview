@@ -6,13 +6,13 @@
 #' specified in at
 #' @param at numeric vector giving the breakpoints for the colors
 #' @param na.color the color for NA values.
-#' @param ... additional arguments passed on to \code{\link{level.colors}}
+#' @param ... additional arguments passed on to \code{\link[lattice]{level.colors}}
 #'
 #' @author
 #' Tim Appelhans
 #'
 #' @seealso
-#' \code{\link{level.colors}}
+#' \code{\link[lattice]{level.colors}}
 #'
 #' @name mapviewColors
 #' @export mapviewColors

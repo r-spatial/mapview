@@ -1,7 +1,7 @@
 #' Start and/or stop automagic mapviewing of spatial objects in your workspace.
 #'
 #' @description
-#'   Use these functions to enable automatic vieweing of all spatial objects
+#'   Use these functions to enable automatic viewing of all spatial objects
 #'   currently available in \code{env}. \code{mapviewWatcher} uses
 #'   \link[later]{later} to set up a watcher function that continuously monitors
 #'   \code{env} for spatial objects and refreshes the viewer/browser in case
@@ -22,7 +22,7 @@
 #'   \code{mapviewWatcher()} once. To switch watching off it is sufficient to set
 #'   \code{mapviewOptions(watch = FALSE)}.
 #'
-#' @param env the environemnt that is being watched (default is \code{.GlobalEnv}).
+#' @param env the environment that is being watched (default is \code{.GlobalEnv}).
 #' @param ... currently not used.
 #'
 #' @examples

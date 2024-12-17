@@ -20,7 +20,7 @@ Package **leafem** provides a few extra `add*` functions for use with leaflet (a
 - `addMouseCoordinates` - add a box with mouse position, projection information and zoom level information
 - `addLogo` - add images to maps
 - `addHomeButton` - add zoom-to button to a map
-- `addFeatures` - add features to a map, regardless of features type unresposnive
+- `addFeatures` - add features to a map, regardless of features type unresponsive
 
 Here are some examples:
 
@@ -84,7 +84,7 @@ leaflet() %>%
 
 ## addFeatures
 
-is a type agnostic `add*` function which will call the approprate `leaflet::add*` function based on the provided feature type (points, lines, polygons). It is currently defined for handling objects from packages `sf` and `sp`. For `sf` objects, in addition to the standard feature types `POINT`, `MULTIPOINT`, `LINESTRING`, `MULTILINESTRING`, `POLYGON` and `MULTIPOLYGON` it can also handle features of type `sfc_GEOMETRY` which are a collection of mixed types.
+is a type agnostic `add*` function which will call the appropriate `leaflet::add*` function based on the provided feature type (points, lines, polygons). It is currently defined for handling objects from packages `sf` and `sp`. For `sf` objects, in addition to the standard feature types `POINT`, `MULTIPOINT`, `LINESTRING`, `MULTILINESTRING`, `POLYGON` and `MULTIPOLYGON` it can also handle features of type `sfc_GEOMETRY` which are a collection of mixed types.
 
 ```{r addpols}
 library(leafem)

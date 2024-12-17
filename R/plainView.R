@@ -12,9 +12,9 @@
 # #' @param x a \code{\link{raster}}* object
 # #' @param maxpixels integer > 0. Maximum number of cells to use for the plot.
 # #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
-# #' @param col.regions color (palette).See \code{\link{levelplot}} for details.
+# #' @param col.regions color (palette).See \code{\link[lattice]{levelplot}} for details.
 # #' @param at the breakpoints used for the visualisation. See
-# #' \code{\link{levelplot}} for details.
+# #' \code{\link[lattice]{levelplot}} for details.
 # #' @param na.color color for missing values.
 # #' @param legend either logical or a list specifying any of the components
 # #' decribed in the \code{colorkey} section of \link[lattice]{levelplot}.

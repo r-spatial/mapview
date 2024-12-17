@@ -10,7 +10,7 @@ mapviewOutput(outputId, width = "100\%", height = 400)
 \item{outputId}{Output variable to read from}
 
 \item{width, height}{the width and height of the map
-(see \code{\link{shinyWidgetOutput}})}
+(see \code{\link[htmlwidgets]{shinyWidgetOutput}})}
 }
 \description{
 Create a mapview UI element for use with shiny

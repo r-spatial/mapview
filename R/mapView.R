@@ -29,7 +29,7 @@ if ( !isGeneric('mapView') ) {
 #' @param map an optional existing map to be updated/added to.
 #' @param band for stars layers, the band number to be plotted.
 #' @param pane name of the map pane in which to render features. See
-#' \code{\link{addMapPane}} for details. Currently only supported for vector layers.
+#' \code{\link[leaflet]{addMapPane}} for details. Currently only supported for vector layers.
 #'   Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
 #'   for points, lines and polygons such that points overlay lines overlay polygons.
 #'   Set to \code{NULL} to get default leaflet behaviour where allfeatures
@@ -44,12 +44,12 @@ if ( !isGeneric('mapView') ) {
 #'   If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 #' @param color color (palette) for points/polygons/lines
 #' @param col.regions color (palette) pixels.
-#'   See \code{\link{levelplot}} for details.
+#'   See \code{\link[lattice]{levelplot}} for details.
 #' @param at the breakpoints used for the visualisation.
-#'   See \code{\link{levelplot}} for details.
+#'   See \code{\link[lattice]{levelplot}} for details.
 #' @param na.color color for missing values
 #' @param use.layer.names should layer names of the Raster* object be used?
-#' @param map.types character spcifications for the base maps.
+#' @param map.types character specifications for the base maps.
 #'   see \url{https://leaflet-extras.github.io/leaflet-providers/preview/}
 #'   for available options.
 #' @param burst whether to show all (TRUE) or only one (FALSE) layer(s).
@@ -75,13 +75,13 @@ if ( !isGeneric('mapView') ) {
 #'   Defaults to TRUE
 #' @param popup either \code{logical}, \code{character vector} or a \code{list}
 #'   of HTML strings with the popup contents, usually created from
-#'   \code{\link[leafpop]{popupTable}}. See \code{\link{addControl}} for details.
+#'   \code{\link[leafpop]{popupTable}}. See \code{\link[leaflet]{addControl}} for details.
 #'   If \code{FALSE} or \code{NULL} no popups will be created, if \code{TRUE}
 #'   a table with all feature attributes/columns will be created.
 #'   If a \code{character vector} of column names, the table will only show the
 #'   respective column entries.
 #' @param label For vector data (sf/sp) a character vector of labels to be
-#'   shown on mouseover. See \code{\link{addControl}} for details. For raster
+#'   shown on mouseover. See \code{\link[leaflet]{addControl}} for details. For raster
 #'   data (Raster*/stars) a logical indicating whether to add image query.
 #' @param native.crs logical whether to reproject to web map coordinate
 #'   reference system (web mercator - epsg:3857) or render using native CRS of
@@ -98,7 +98,7 @@ if ( !isGeneric('mapView') ) {
 #'   layer is of class \code{factor} in which case "ngb" is used.
 #' @param highlight either \code{FALSE}, \code{NULL} or a list of styling
 #'   options for feature highlighting on mouse hover.
-#'   See \code{\link{highlightOptions}} for details.
+#'   See \code{\link[leaflet]{highlightOptions}} for details.
 #' @param maxpoints the maximum number of points making up the geometry.
 #'   In case of lines and polygons this refers to the number of vertices. See
 #'   Details for more information.
@@ -107,21 +107,21 @@ if ( !isGeneric('mapView') ) {
 #' @param query.digits for raster methods only. The amount of digits to be shown
 #'   by raster value query. Ignored if \code{label = FALSE}.
 #' @param query.position for raster methods only. The position of the raster
-#'   value query info box. See \code{position} argument of \code{\link{addLegend}}
+#'   value query info box. See \code{position} argument of \code{\link[leaflet]{addLegend}}
 #'   for possible values. Ignored if \code{label = FALSE}.
 #' @param query.prefix for raster methods only. a character string to be shown
 #'   as prefix for the layerId. Ignored if \code{label = FALSE}.
 #' @param hide either a logical, a vector of layer names or a vector of layer indices.
 #'   See Details for more information on what exactly it does for different raster types.
 #' @param ... additional arguments passed on to respective functions.
-#'   See \code{\link{addRasterImage}}, \code{\link{addCircles}},
-#'   \code{\link{addPolygons}}, \code{\link{addPolylines}} for details.
+#'   See \code{\link[leaflet]{addRasterImage}}, \code{\link[leaflet]{addCircles}},
+#'   \code{\link[leaflet]{addPolygons}}, \code{\link[leaflet]{addPolylines}} for details.
 #'   Furthermore, you can pass hidden arguments to some methods. See Details for
 #'   a list of supported hidden arguments.
 #'
 #' @details
 #' \code{maxpoints} is taken to determine when to switch rendering from svg
-#'   to canvas overlay for perfomance. The threshold calculation is done as follows: \cr
+#'   to canvas overlay for performance. The threshold calculation is done as follows: \cr
 #'   if the number of points (in case of point data) or vertices (in case of
 #'   polygon or line data) > \code{maxpoints} then render using special render
 #'   function. Within this render function we approximate the complexity of
@@ -460,7 +460,7 @@ setMethod('mapView', signature(x = 'SpatRaster'), .stars_method)
 
 
 ## Raster Stack/Brick ===========================================================
-#' @describeIn mapView \code{\link{stack}} / \code{\link{brick}}
+#' @describeIn mapView \code{\link[raster]{stack}} / \code{\link[raster]{brick}}
 
 setMethod('mapView', signature(x = 'RasterStackBrick'),
           function(x,
@@ -531,7 +531,7 @@ setMethod('mapView', signature(x = 'RasterStackBrick'),
 
 
 ## Satellite object =======================================================
-#' @describeIn mapView \code{\link{satellite}}
+#' @describeIn mapView \code{\link[satellite]{satellite}}
 
 setMethod('mapView', signature(x = 'Satellite'),
           function(x,
@@ -840,7 +840,7 @@ setMethod('mapView', signature(x = 'SpatVector'), .sf_method)
 
 
 ## sfc ====================================================================
-#' @describeIn mapView \code{\link{st_sfc}}
+#' @describeIn mapView \code{\link[sf]{st_sfc}}
 
 setMethod('mapView', signature(x = 'sfc'),
           function(x,
@@ -1105,10 +1105,10 @@ setMethod('mapView', signature(x = 'numeric'),
 #' data.frame method.
 #' @param grid whether to plot a (scatter plot) xy-grid to aid interpretation
 #' of the visualisation. Only relevant for the data.frame method.
-#' @param aspect the ratio of x/y axis corrdinates to adjust the plotting
+#' @param aspect the ratio of x/y axis coordinates to adjust the plotting
 #' space to fit the screen. Only relevant for the data.frame method.
 #' @param crs an optional crs specification for the provided data to enable
-#' rendering on a basemap. See argument description in \code{\link{st_sf}}
+#' rendering on a basemap. See argument description in \code{\link[sf]{st_sf}}
 #' for details.
 setMethod('mapView', signature(x = 'data.frame'),
           function(x,
@@ -1151,7 +1151,7 @@ setMethod('mapView', signature(x = 'data.frame'),
 
 
 ## XY =====================================================================
-#' @describeIn mapView \code{\link{st_sfc}}
+#' @describeIn mapView \code{\link[sf]{st_sfc}}
 
 setMethod('mapView', signature(x = 'XY'),
           function(x,
@@ -1219,7 +1219,7 @@ setMethod('mapView', signature(x = 'XY'),
 
 
 ## XYZ ====================================================================
-#' @describeIn mapView \code{\link{st_sfc}}
+#' @describeIn mapView \code{\link[sf]{st_sfc}}
 
 setMethod('mapView', signature(x = 'XYZ'),
           function(x,
@@ -1233,7 +1233,7 @@ setMethod('mapView', signature(x = 'XYZ'),
 
 
 ## XYM ====================================================================
-#' @describeIn mapView \code{\link{st_sfc}}
+#' @describeIn mapView \code{\link[sf]{st_sfc}}
 
 setMethod('mapView', signature(x = 'XYM'),
           function(x,
@@ -1247,7 +1247,7 @@ setMethod('mapView', signature(x = 'XYM'),
 
 
 ## XYZM ===================================================================
-#' @describeIn mapView \code{\link{st_sfc}}
+#' @describeIn mapView \code{\link[sf]{st_sfc}}
 
 setMethod('mapView', signature(x = 'XYZM'),
           function(x,
@@ -1261,7 +1261,7 @@ setMethod('mapView', signature(x = 'XYZM'),
 
 
 ## bbox =======================================================
-#' @describeIn mapView \code{\link{st_bbox}}
+#' @describeIn mapView \code{\link[sf]{st_bbox}}
 
 setMethod('mapView', signature(x = 'bbox'),
           function(x,
@@ -1416,7 +1416,7 @@ setMethod('mapview', signature('ANY'),
 ######## SP ###############################################################
 
 ## SpatialPixelsDataFrame =================================================
-#' @describeIn mapView \code{\link{SpatialPixelsDataFrame}}
+#' @describeIn mapView \code{\link[sp]{SpatialPixelsDataFrame}}
 #'
 setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
           function(x,
@@ -1482,7 +1482,7 @@ setMethod('mapView', signature(x = 'SpatialPixelsDataFrame'),
 
 
 ## SpatialGridDataFrame =================================================
-#' @describeIn mapView \code{\link{SpatialGridDataFrame}}
+#' @describeIn mapView \code{\link[sp]{SpatialGridDataFrame}}
 #'
 setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
           function(x,
@@ -1548,7 +1548,7 @@ setMethod('mapView', signature(x = 'SpatialGridDataFrame'),
 
 
 ## SpatialPointsDataFrame =================================================
-#' @describeIn mapView \code{\link{SpatialPointsDataFrame}}
+#' @describeIn mapView \code{\link[sp]{SpatialPointsDataFrame}}
 setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
           function(x,
                    zcol = NULL,
@@ -1562,7 +1562,7 @@ setMethod('mapView', signature(x = 'SpatialPointsDataFrame'),
 
 
 ## SpatialPoints ==========================================================
-#' @describeIn mapView \code{\link{SpatialPoints}}
+#' @describeIn mapView \code{\link[sp]{SpatialPoints}}
 
 setMethod('mapView', signature(x = 'SpatialPoints'),
           function(x,
@@ -1577,7 +1577,7 @@ setMethod('mapView', signature(x = 'SpatialPoints'),
 
 
 ## SpatialPolygonsDataFrame ===============================================
-#' @describeIn mapView \code{\link{SpatialPolygonsDataFrame}}
+#' @describeIn mapView \code{\link[sp]{SpatialPolygonsDataFrame}}
 
 setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
           function(x,
@@ -1592,7 +1592,7 @@ setMethod('mapView', signature(x = 'SpatialPolygonsDataFrame'),
 
 
 ## SpatialPolygons ========================================================
-#' @describeIn mapView \code{\link{SpatialPolygons}}
+#' @describeIn mapView \code{\link[sp]{SpatialPolygons}}
 
 setMethod('mapView', signature(x = 'SpatialPolygons'),
           function(x,
@@ -1607,7 +1607,7 @@ setMethod('mapView', signature(x = 'SpatialPolygons'),
 
 
 ## SpatialLinesDataFrame =================================================
-#' @describeIn mapView \code{\link{SpatialLinesDataFrame}}
+#' @describeIn mapView \code{\link[sp]{SpatialLinesDataFrame}}
 
 setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
           function(x,
@@ -1622,7 +1622,7 @@ setMethod('mapView', signature(x = 'SpatialLinesDataFrame'),
 
 
 ## SpatialLines ===========================================================
-#' @describeIn mapView \code{\link{SpatialLines}}
+#' @describeIn mapView \code{\link[sp]{SpatialLines}}
 
 setMethod('mapView', signature(x = 'SpatialLines'),
           function(x,

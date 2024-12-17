@@ -13,12 +13,12 @@ startWatching(env = .GlobalEnv, ...)
 stopWatching(env = .GlobalEnv, ...)
 }
 \arguments{
-\item{env}{the environemnt that is being watched (default is \code{.GlobalEnv}).}
+\item{env}{the environment that is being watched (default is \code{.GlobalEnv}).}
 
 \item{...}{currently not used.}
 }
 \description{
-Use these functions to enable automatic vieweing of all spatial objects
+Use these functions to enable automatic viewing of all spatial objects
 currently available in \code{env}. \code{mapviewWatcher} uses
 \link[later]{later} to set up a watcher function that continuously monitors
 \code{env} for spatial objects and refreshes the viewer/browser in case

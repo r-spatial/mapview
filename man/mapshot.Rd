@@ -33,8 +33,8 @@ a temporary index file will be created.}
 
 \item{remove_controls}{\code{character} vector of control buttons to be removed
 from the map when saving to file. Any combination of
-"zoomControl", "layersControl", "homeButton", "scaleBar", "drawToolbar",
-"easyButton". If set to \code{NULL} nothing will be removed. Ignored if \code{x}
+\code{"zoomControl"}, \code{"layersControl"}, \code{"homeButton"}, \code{"scaleBar"}, \code{"drawToolbar"},
+\code{"easyButton"}. If set to \code{NULL} nothing will be removed. Ignored if \code{x}
 is not a mapview or leaflet map.}
 
 \item{...}{Further arguments passed on to \code{\link[htmlwidgets]{saveWidget}}

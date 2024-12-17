@@ -22,7 +22,7 @@
 # #' If maxpixels < \code{ncell(x)}, sampleRegular is used before plotting.
 # #' @param color the color palette to be used for visualising RasterLayers
 # #' @param na.color the color to be used for NA pixels
-# #' @param col.regions color (palette).See \code{\link{levelplot}} for details.
+# #' @param col.regions color (palette).See \code{\link[lattice]{levelplot}} for details.
 # #' @param legend whether to plot legends for the two images (ignored for
 # #' RatserStacks/*Bricks).
 # #' @param ... additional arguments passed on to repective functions.

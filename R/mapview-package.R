@@ -19,7 +19,7 @@
 #' and partly consists of breweries downloaded from
 #' \url{https://www.bierwandern.de/inhalt/brauereiliste.html} with the kind permission
 #' of Rainer Kastl. Note that use of these data is restricted to  non-commercial use
-#' and that they are explixitly excluded from the GPL lincense that mapview is licensed under.
+#' and that they are explicitly excluded from the GPL license that mapview is licensed under.
 #' @format \code{sf feature collection POINT}
 "breweries"
 
@@ -41,7 +41,7 @@
 #' see \url{https://creativecommons.org/licenses/by/3.0/de/} for details.
 #' @format \code{sf feature collection MULTILINESTRING}
 #' @source
-#' Datenquelle: Bayerische Vermessungsverwaltung - www.geodaten.bayern.de
+#' Datenquelle: Bayerische Vermessungsverwaltung - `www.geodaten.bayern.de`
 #' \url{https://www.ldbv.bayern.de/produkte/weitere/opendata.html}
 "trails"
 

@@ -76,15 +76,15 @@ new features:
 
   * new function removeMapJunk to remove control elements from a map (e.g. the zoom control).
   * added tentative support for platform 'leafgl'.
-  * stars method now uses leafem::addGeoRaster. https://github.com/r-spatial/leafem/issues/25
-  * leafem::addCopyExtent now included in all methods.
-  * sf(c) methods now use leafem::addFgb if GDAL >= 3.1.
+  * stars method now uses `leafem::addGeoRaster()`. https://github.com/r-spatial/leafem/issues/25
+  * `leafem::addCopyExtent()` now included in all methods.
+  * sf(c) methods now use `leafem::addFgb()` if GDAL >= 3.1.
   * new | operator to compare two maps side-by-side.
 
 miscellaneous:
 
   * all deprecated functions are now defunct. See ?`mapview-defunct`.
-  * drop viridisLite dependency and use base::hcl.colors instead. We now depend on R >= 3.6.
+  * drop viridisLite dependency and use `base::hcl.colors()` instead. We now depend on R >= 3.6.
 
 ## mapview 2.7.8
 
@@ -112,7 +112,7 @@ miscellaneous:
 
   * addMouseCoordinates now also displays native coordinates for leaflet maps. #205 - now moved to package leafem.
   * deprecated slideview, cubeview, latticeview & sync, plainview, popup* functions.
-  * deprecated addFeatures, garnishMap, addHomeButton, addImageQuery, addLogo, addMouseCoordinates.
+  * deprecated `addFeatures`, `garnishMap`, `addHomeButton`, `addImageQuery`, `addLogo`, `addMouseCoordinates`.
 
 bugfixes:
 
@@ -139,7 +139,7 @@ bugfixes:
   * isFALSE (caused errors on R < 3.5) is now handled properly.
   * mapshot does not unintentionally delete url anymore if saving to png with same name.
   * mapshot now properly deletes temporary url when saving to png (or png and html).
-  * internal function mapview:::nrings now calculates number of polygon rings correctly. #181
+  * internal function `mapview:::nrings` now calculates number of polygon rings correctly. #181
 
 ## mapview 2.5.0
 
@@ -156,12 +156,12 @@ new features:
 
 bugfixes:
 
-  * leaflet::addScalebar would prevent Raster* method from rendering correctly for multiple layers.
+  * `leaflet::addScalebar()` would prevent Raster* method from rendering correctly for multiple layers.
   * cex was not respected when burst = TRUE. #149
-  * popupTable no longer causes a stack overflow with large point data. #154
-  * popupGraph no longer relies on png files on disk but embeds graphs via base64. #156
+  * `popupTable()` no longer causes a stack overflow with large point data. #154
+  * `popupGraph()` no longer relies on png files on disk but embeds graphs via base64. #156
   * in mapshot, remove temporary url files only if remove_url = TRUE. #157
-  * removeMouseCoordinates should work properly now (also exported). #145
+  * `removeMouseCoordinates()` should work properly now (also exported). #145
   * home button for single point now zooms to maximum zoom 18.
 
 miscellaneous:
@@ -227,7 +227,7 @@ new features:
   * we now have mapview method for class 'numeric' which enables interactive plots of a numeric variable.
   * updated slideView to accommodate more than one incident in a flexdashboard #95
   * if supplied data has only one attribute/field column mapview will now colour the plot automatically according to that attribute/field.
-  * new mapview method for class 'bbox' -> mapview(st_bbox(x)) is equivalent to viewExtent(x)
+  * new mapview method for class 'bbox' -> `mapview(st_bbox(x))` is equivalent to `viewExtent(x)`
   * plainview now provides mouse coordinates
 
 enhancements:
@@ -247,22 +247,22 @@ new features:
 
 bugfixes:
 
-  * na.alpha caused list/burst methods to fail.
-  * legend did not work when zcol only had one unique value. This was actually a delibarate choice as for a single map it doesn't really make sense to have a legend for only one color. However, for latticeView/sync this does actually make sense, hence re-enabled.
+  * `na.alpha` caused list/burst methods to fail.
+  * legend did not work when zcol only had one unique value. This was actually a deliberate choice as for a single map it doesn't really make sense to have a legend for only one color. However, for latticeView/sync this does actually make sense, hence re-enabled.
 
 ## mapview 2.1.0
 
 new features:
 
-  * plainview/cubeview now respects/has gained argument na.color.
-  * mapview now supports st_GEOMETRY with truely mixed feature types (e.g. LINESTRING and POLYGON) - fixes #85
-  * addFeatures: one function to add them all. Type agnostic version of leaflet::add* functions for simple features objects.
+  * plainview/cubeview now respects/has gained argument `na.color`.
+  * mapview now supports st_GEOMETRY with truly mixed feature types (e.g. LINESTRING and POLYGON) - fixes #85
+  * `addFeatures()`: one function to add them all. Type agnostic version of leaflet::add* functions for simple features objects.
   * mapview (for vector data only) has gained argument na.alpha to control opacity of missing values.
 
 bugfixes:
 
   * deleted obsolete data.table import.
-  * fixed #79: colnames of popupTables are now converted to utf-8.
+  * fixed #79: colnames of popup Tables are now converted to utf-8.
   * fixed #78: respect explicit setting of 'layer.name' argument.
   * included NEWS file as R-help doesn't render NEWS.md
   * highlight now respects alpha/alpha.regions = 0
@@ -331,7 +331,7 @@ new features:
   * mapshot: to save maps as html page or static image or both.
   * knitr integration (i.e. no need to call the @map slot anymore to render in knitr).
   * cubeView: view raster bricks or stacks hovmoeller style, use keys up & down, left & right, page up & page down to navigate through y, x, z dimensions, respectively.
-  * labels: if zcol is set, mouseover will now show the repesctive values of zcol, if zcol is not set moseover shows feature ID. Only available if suitable leaflet package version is installed.
+  * labels: if zcol is set, mouseover will now show the respective values of zcol, if zcol is not set moseover shows feature ID. Only available if suitable leaflet package version is installed.
   * new popup functions popupTable, popupGraph and popupImage.
   * functions to turn coordinates into spatial lines or spatial polygons.
   * mapview objects now work natively on shiny applications (i.e. renderMapview and mapviewOutput now available).

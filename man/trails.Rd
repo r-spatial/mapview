@@ -8,7 +8,7 @@
 \code{sf feature collection MULTILINESTRING}
 }
 \source{
-Datenquelle: Bayerische Vermessungsverwaltung - www.geodaten.bayern.de
+Datenquelle: Bayerische Vermessungsverwaltung - \code{www.geodaten.bayern.de}
 \url{https://www.ldbv.bayern.de/produkte/weitere/opendata.html}
 }
 \usage{

@@ -21,7 +21,7 @@ viewExtent(
 standard background layers are created.}
 
 \item{popup}{a \code{list} of HTML strings with the popup contents, usually
-created from \code{\link{popupTable}}. See \code{\link{addControl}} for
+created from \code{\link[leafpop]{popupTable}}. See \code{\link[leaflet]{addControl}} for
 details.}
 
 \item{layer.name}{the name of the layer to be shown on the map.}
@@ -29,9 +29,44 @@ details.}
 \item{alpha.regions}{opacity of the fills or the raster layer(s).}
 
 \item{label}{a character vector of labels to be shown on mouseover. See
-\code{\link{addControl}} for details.}
+\code{\link[leaflet]{addControl}} for details.}
 
-\item{...}{additional arguments passed on to \code{\link{addRectangles}}}
+\item{...}{
+  Arguments passed on to \code{\link[leaflet:map-layers]{leaflet::addRectangles}}
+  \describe{
+    \item{\code{layerId}}{the layer id}
+    \item{\code{data}}{the data object from which the argument values are derived; by
+default, it is the \code{data} object provided to \code{leaflet()}
+initially, but can be overridden}
+    \item{\code{group}}{the name of the group the newly created layers should belong to
+(for \code{\link[leaflet]{clearGroup}} and \code{\link[leaflet]{addLayersControl}} purposes).
+Human-friendly group names are permitted--they need not be short,
+identifier-style names. Any number of layers and even different types of
+layers (e.g. markers and polygons) can share the same group name.}
+    \item{\code{options}}{a list of extra options for tile layers, popups, paths
+(circles, rectangles, polygons, ...), or other map elements}
+    \item{\code{popupOptions}}{A Vector of \code{\link[leaflet]{popupOptions}} to provide popups}
+    \item{\code{labelOptions}}{A Vector of \code{\link[leaflet]{labelOptions}} to provide label
+options for each label. Default \code{NULL}}
+    \item{\code{stroke}}{whether to draw stroke along the path (e.g. the borders of
+polygons or circles)}
+    \item{\code{color}}{stroke color}
+    \item{\code{weight}}{stroke width in pixels}
+    \item{\code{opacity}}{stroke opacity (or layer opacity for tile layers)}
+    \item{\code{fill}}{whether to fill the path with color (e.g. filling on polygons or
+circles)}
+    \item{\code{fillColor}}{fill color}
+    \item{\code{fillOpacity}}{fill opacity}
+    \item{\code{dashArray}}{a string that defines the stroke
+\href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray}{dash
+pattern}}
+    \item{\code{highlightOptions}}{Options for highlighting the shape on mouse over.}
+    \item{\code{smoothFactor}}{how much to simplify the polyline on each zoom level
+(more means better performance and less accurate representation)}
+    \item{\code{noClip}}{whether to disable polyline clipping}
+    \item{\code{lng1,lat1,lng2,lat2}}{latitudes and longitudes of the south-west and
+north-east corners of rectangles}
+  }}
 }
 \description{
 This function produces an interactive view of the extent/bbox

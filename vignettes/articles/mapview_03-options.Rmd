@@ -43,7 +43,7 @@ In detail, these are:
 * `legend` - whether to plot a legend -> default `FALSE`
 * `legend.pos` - where to position the legend if shown -> default `topright`
 * `layers.control.pos` - where to position the layers control on the map -> default `topleft`
-* `leafletWidth`, `leafletHeight` - the width and height of the map widget -> defaul `NULL` which means that the browser will be filled if possible
+* `leafletWidth`, `leafletHeight` - the width and height of the map widget -> default `NULL` which means that the browser will be filled if possible
 
 ------
 

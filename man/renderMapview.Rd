@@ -11,7 +11,7 @@ renderMapview(expr, env = parent.frame(), quoted = FALSE)
 
 \item{env}{The environment in which to evaluate expr}
 
-\item{quoted}{Is expr a quoted expression (with quote())?
+\item{quoted}{Is \code{expr} a quoted expression (with \code{quote()})?
 This is useful if you want to save an expression in a variable}
 }
 \description{
