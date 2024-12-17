@@ -28,6 +28,8 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      # prevent rgl issues because no X11 display is available
+      RGL_USE_NULL: true
 
     steps:
       - uses: actions/checkout@v4

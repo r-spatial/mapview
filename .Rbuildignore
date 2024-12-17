@@ -10,3 +10,5 @@
 ^\.ccache$
 ^\.github$
 .vscode
+^_pkgdown\.yml$
+^pkgdown$

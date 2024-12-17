@@ -13,7 +13,7 @@ vignette: >
 
 ```{r setup, echo=FALSE, message=FALSE}
 knitr::opts_chunk$set(fig.width = 8.83, message = FALSE, warning = FALSE)
-remotes::install_github("hrbrmstr/albersusa")
+# remotes::install_github("hrbrmstr/albersusa")
 ```
 
 **mapview** can be used in piped expressions using `%>%`, most likely at the very end of it...
