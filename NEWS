@@ -1,4 +1,4 @@
-mapview 2.11.2.9000 (2024-04-17)
+mapview 2.11.2.9001 (2024-12-20)
 
 features and improvements
 
@@ -44,7 +44,7 @@ new features:
 miscellaneous:
 
   * all deprecated functions are now defunct. See ?mapview-defunct.
-  * drop viridisLite dependency and use base::hcl.colors instead. We now depend on R >= 3.6.
+  * drop viridisLite dependency and use base::hcl.colors() instead. We now depend on R >= 3.6.
 
 mapview 2.7.8
 
@@ -174,21 +174,21 @@ new features:
 bugfixes:
 
   * na.alpha caused list/burst methods to fail.
-  * legend did not work when zcol only had one unique value. This was actually a delibarate choice as for a single map it doesn't really make sense to have a legend for only one color. However, for latticeView/sync this does actually make sense, hence re-enabled.
+  * legend did not work when zcol only had one unique value. This was actually a deliberate choice as for a single map it doesn't really make sense to have a legend for only one color. However, for latticeView/sync this does actually make sense, hence re-enabled.
 
 mapview 2.1.0
 
 new features:
 
   * plainview/cubeview now respects/has gained argument na.color.
-  * mapview now supports st_GEOMETRY with truely mixed feature types (e.g. LINESTRING and POLYGON) - fixes #85
-  * addFeatures: one function to add them all. Type agnostic version of leaflet::add* functions for simple features objects.
+  * mapview now supports st_GEOMETRY with truly mixed feature types (e.g. LINESTRING and POLYGON) - fixes #85
+  * addFeatures(): one function to add them all. Type agnostic version of leaflet::add* functions for simple features objects.
   * mapview (for vector data only) has gained argument na.alpha to control opacity of missing values.
 
 bugfixes:
 
   * deleted obsolete data.table import.
-  * fixed #79: colnames of popupTables are now converted to utf-8.
+  * fixed #79: colnames of popup Tables are now converted to utf-8.
   * fixed #78: respect explicit setting of 'layer.name' argument.
   * included NEWS file as R-help doesn't render NEWS.md
   * highlight now respects alpha/alpha.regions = 0
@@ -257,7 +257,7 @@ new features:
   * mapshot: to save maps as html page or static image or both.
   * knitr integration (i.e. no need to call the @map slot anymore to render in knitr).
   * cubeView: view raster bricks or stacks hovmoeller style, use keys up & down, left & right, page up & page down to navigate through y, x, z dimensions, respectively.
-  * labels: if zcol is set, mouseover will now show the repesctive values of zcol, if zcol is not set moseover shows feature ID. Only available if suitable leaflet package version is installed.
+  * labels: if zcol is set, mouseover will now show the respective values of zcol, if zcol is not set moseover shows feature ID. Only available if suitable leaflet package version is installed.
   * new popup functions popupTable, popupGraph and popupImage.
   * functions to turn coordinates into spatial lines or spatial polygons.
   * mapview objects now work natively on shiny applications (i.e. renderMapview and mapviewOutput now available).

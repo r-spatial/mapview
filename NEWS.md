@@ -1,4 +1,4 @@
-# mapview 2.11.2.9000 (2024-04-17)
+# mapview 2.11.2.9001 (2024-12-20)
 
 #### ✨ features and improvements
 
