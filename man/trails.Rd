@@ -8,8 +8,11 @@
 \code{sf feature collection MULTILINESTRING}
 }
 \source{
-Datenquelle: Bayerische Vermessungsverwaltung - www.geodaten.bayern.de
+Datenquelle: Bayerische Vermessungsverwaltung - \code{www.geodaten.bayern.de}
 \url{https://www.ldbv.bayern.de/produkte/weitere/opendata.html}
+}
+\usage{
+trails
 }
 \description{
 Selected hiking trails in Franconia
@@ -20,3 +23,4 @@ These hiking trails were downloaded on 06/04/2017 from
 These data are published by the owner under Creative Commons Namensnennung 3.0 Deutschland,
 see \url{https://creativecommons.org/licenses/by/3.0/de/} for details.
 }
+\keyword{datasets}

@@ -7,6 +7,9 @@
 \format{
 \code{sf feature collection POINT}
 }
+\usage{
+breweries
+}
 \description{
 Selected breweries in Franconia
 }
@@ -18,5 +21,6 @@ University of Marburg for a seminar called
 and partly consists of breweries downloaded from
 \url{https://www.bierwandern.de/inhalt/brauereiliste.html} with the kind permission
 of Rainer Kastl. Note that use of these data is restricted to  non-commercial use
-and that they are explixitly excluded from the GPL lincense that mapview is licensed under.
+and that they are explicitly excluded from the GPL license that mapview is licensed under.
 }
+\keyword{datasets}

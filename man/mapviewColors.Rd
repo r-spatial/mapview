@@ -31,7 +31,7 @@ specified in at}
 
 \item{na.color}{the color for NA values.}
 
-\item{...}{additional arguments passed on to \code{\link{level.colors}}}
+\item{...}{additional arguments passed on to \code{\link[lattice]{level.colors}}}
 
 \item{name}{Name of the color palette to be used. One of
 "mapviewVectorColors" (default), "mapviewRasterColors",
@@ -43,7 +43,7 @@ mapview version of leaflet::color* functions
 Color palettes for mapview
 }
 \seealso{
-\code{\link{level.colors}}
+\code{\link[lattice]{level.colors}}
 
 \code{\link{colorRampPalette}}
 }

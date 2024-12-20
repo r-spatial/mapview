@@ -2,8 +2,8 @@
 # #'
 # #' @param x a RasterStack or RasterBrick
 # #' @param at the breakpoints used for the visualisation. See
-# #' \code{\link{levelplot}} for details.
-# #' @param col.regions color (palette).See \code{\link{levelplot}} for details.
+# #' \code{\link[lattice]{levelplot}} for details.
+# #' @param col.regions color (palette).See \code{\link[lattice]{levelplot}} for details.
 # #' @param na.color color for missing values.
 # #' @param legend logical. Whether to plot a legend.
 # #' @param ... currently not used.

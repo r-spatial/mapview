@@ -7,13 +7,13 @@
 #' @param map a leaflet or mapview map the extent should be added to. If NULL
 #' standard background layers are created.
 #' @param popup a \code{list} of HTML strings with the popup contents, usually
-#' created from \code{\link{popupTable}}. See \code{\link{addControl}} for
+#' created from \code{\link[leafpop]{popupTable}}. See \code{\link[leaflet]{addControl}} for
 #' details.
 #' @param layer.name the name of the layer to be shown on the map.
 #' @param alpha.regions opacity of the fills or the raster layer(s).
 #' @param label a character vector of labels to be shown on mouseover. See
-#' \code{\link{addControl}} for details.
-#' @param ... additional arguments passed on to \code{\link{addRectangles}}
+#' \code{\link[leaflet]{addControl}} for details.
+#' @inheritDotParams leaflet::addRectangles
 #'
 #' @author
 #' Tim Appelhans
@@ -27,7 +27,6 @@
 #' leaflet() %>% addProviderTiles("OpenStreetMap") %>% leafem::addExtent(breweries)
 #' leaflet() %>% addProviderTiles("OpenStreetMap") %>% leafem::addExtent(breweries)
 #'
-#' @export viewExtent
 #' @name viewExtent
 #' @aliases viewExtent
 #'
@@ -35,6 +34,7 @@ NULL
 
 ## View Extent ============================================================
 #' @rdname viewExtent
+#' @export
 viewExtent <- function(x,
                        map = NULL,
                        popup = NULL,

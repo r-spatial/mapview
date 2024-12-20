@@ -4,7 +4,7 @@
 \alias{knit_print.mapview}
 \title{Print functions for mapview objects used in knitr}
 \usage{
-knit_print.mapview(x, ...)
+\method{knit_print}{mapview}(x, ...)
 }
 \arguments{
 \item{x}{A mapview object}

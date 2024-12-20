@@ -2,15 +2,16 @@
 # mapview
 
 <!-- badges: start -->
-[![tic](https://github.com/r-spatial/mapview/workflows/tic/badge.svg?branch=master)](https://github.com/r-spatial/mapview/actions)
+
+[![R-CMD-check](https://github.com/r-spatial/mapview/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-spatial/mapview/actions/workflows/R-CMD-check.yaml)
 [![cran
 checks](https://badges.cranchecks.info/worst/mapview.svg)](https://cran.r-project.org/web/checks/check_results_mapview.html)
 ![monthly](https://cranlogs.r-pkg.org/badges/mapview)
 ![total](https://cranlogs.r-pkg.org/badges/grand-total/mapview)
 [![CRAN](https://www.r-pkg.org/badges/version/mapview?color=009999)](https://cran.r-project.org/package=mapview)
 [![License](https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat)](https://www.gnu.org/licenses/gpl-3.0.html)
-[![Coverage
-Status](https://img.shields.io/codecov/c/github/r-spatial/mapview/develop.svg)](https://app.codecov.io/github/r-spatial/mapview)
+[![Codecov test
+coverage](https://codecov.io/gh/r-spatial/mapview/graph/badge.svg)](https://app.codecov.io/gh/r-spatial/mapview)
 [![status](https://tinyverse.netlify.com/badge/mapview)](https://CRAN.R-project.org/package=mapview)
 <!-- badges: end -->
 

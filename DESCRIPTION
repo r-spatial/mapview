@@ -78,7 +78,6 @@ Imports:
     sf,
     sp
 Suggests:
-    covr,
     knitr,
     later,
     leaflet.extras2,
@@ -97,5 +96,6 @@ Suggests:
 ByteCompile: yes
 Encoding: UTF-8
 LazyData: TRUE
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 SystemRequirements: GNU make
+Roxygen: list(markdown = TRUE)

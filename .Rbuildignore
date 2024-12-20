@@ -9,5 +9,6 @@
 ^README.Rmd
 ^\.ccache$
 ^\.github$
-^tic\.R$
 .vscode
+^_pkgdown\.yml$
+^pkgdown$

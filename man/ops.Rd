@@ -36,7 +36,7 @@ mapview + data adds spatial data (raster*, sf*, sp*) to a mapview map
 
 mapview + NULL returns the LHS map
 
-[...]
+\link{...}
 
 mapview | mapview provides a slider in the middle to compare two maps.
 

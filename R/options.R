@@ -29,23 +29,23 @@
 #' @param legend logical. Whether or not to show a legend for the layer(s).
 #' @param legend.opacity opacity of the legend.
 #' @param legend.pos Where should the legend be placed?
-#' One of "topleft", "topright", "bottomleft", "bottomright".
+#' One of `"topleft"`, `"topright"`, `"bottomleft"`, `"bottomright"`.
 #' @param default logical. If TRUE all options are set to their default values
 #' @param console logical. Should the options be printed to the console
 #' @param layers.control.pos character. Where should the layer control be
-#' placed? One of "topleft", "topright", "bottomleft", "bottomright".
+#' placed? One of `"topleft"`, `"topright"`, `"bottomleft"`, `"bottomright"`.
 #' @param leafletWidth,leafletHeight height and width of the htmlwidget in px.
 #' @param viewer.suppress whether to render the map in the browser (\code{TRUE})
 #' or the RStudio viewer (\code{FALSE}).
 #' @param homebutton logical, whether to add a zoom-to-layer button to the map.
 #' @param homebutton.pos character. Where should the homebutton(s) be
-#' placed? One of "topleft", "topright", "bottomleft", "bottomright".
+#' placed? One of `"topleft"`, `"topright"`, `"bottomleft"`, `"bottomright"`.
 #' @param native.crs logical whether to reproject to web map coordinate
-#' reference system (web mercator - epsg:3857) or render using native CRS of
+#' reference system (web Mercator - epsg:3857) or render using native CRS of
 #' the supplied data (can also be NA). Default is FALSE which will render in
-#' web mercator. If set to TRUE now background maps will be drawn (but rendering
+#' web Mercator. If set to TRUE now background maps will be drawn (but rendering
 #' may be much quicker as no reprojecting is necessary).
-#' @param raster.size numeric. see the maxBytes argument in \code{\link{addRasterImage}}
+#' @param raster.size numeric. see the maxBytes argument in \code{\link[leaflet]{addRasterImage}}
 #' @param mapview.maxpixels numeric. The maximum amount of pixels allowed for Raster*
 #' objects to be rendered with \code{mapview}. Defaults to 500000.
 #' Set this higher if you have a potent machine or are patient enough to wait a little.
@@ -66,7 +66,7 @@
 #' @param query.digits for raster methods only. The amount of digits to be shown
 #' by raster value query. Ignored if \code{label = FALSE}.
 #' @param query.position for raster methods only. The position of the raster
-#' value query info box. See \code{position} argument of \code{\link{addLegend}}
+#' value query info box. See \code{position} argument of \code{\link[leaflet]{addLegend}}
 #' for possible values. Ignored if \code{label = FALSE}.
 #' @param query.prefix for raster methods only. a character string to be shown
 #' as prefix for the layerId. Ignored if \code{label = FALSE}.
@@ -86,10 +86,10 @@
 #' This means that standard functionality is reduced.
 #' For example adding layers via "+" is not possible anymore.
 #' @param pane name of the map pane in which to render features. See
-#' \code{\link{addMapPane}} for details. Currently only supported for vector layers.
+#' \code{\link[leaflet]{addMapPane}} for details. Currently only supported for vector layers.
 #' Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
 #' for points, lines and polygons such that points overlay lines overlay polygons.
-#' Set to \code{NULL} to get default leaflet behaviour where allfeatures
+#' Set to \code{NULL} to get default leaflet behaviour where all features
 #' are rendered in the same pane and layer order is determined automatically/sequentially.
 #' @param cex numeric or attribute name(s) or column number(s) in attribute table
 #' of the column(s) to be used for defining the size of circles.
@@ -97,11 +97,11 @@
 #' @param watch whether to watch a certain environment and automatically
 #' render changes to the list of spatial data in that environment. See
 #' \link{mapviewWatcher} for details.
-#' @param fgb if set to \code{TRUE} mapview will not use 'clasical' leaflet/htmlwidgets
+#' @param fgb if set to \code{TRUE} mapview will not use 'classical' leaflet/htmlwidgets
 #' rendering (which embeds data directly in the html) but leverage the speed of
 #' a file format called flatgeobuf (hence, fgb). This has the added benefit that
 #' data is being streamed onto the map, which makes for a pleasant user experience.
-#' It should also help to visualise larger data sets due to a reduced memeory footprint.
+#' It should also help to visualise larger data sets due to a reduced memory footprint.
 #' A note of warning, data will be attached to the html
 #' via a <src=...> call which means that the html is not selfcontained anymore
 #' (so it cannot be used without an accompanying folder).
@@ -118,7 +118,7 @@
 #' If no arguments are provided the options are printed.
 #'
 #' @seealso
-#' \code{\link{rasterOptions}}, \code{\link{options}}
+#' \code{\link[raster]{rasterOptions}}, \code{\link{options}}
 #'
 #' @examples
 #' mapviewOptions()

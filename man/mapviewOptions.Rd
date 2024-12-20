@@ -78,10 +78,10 @@ behaviour. Set this to TRUE if you want to see these printed to the console.}
 \item{legend.opacity}{opacity of the legend.}
 
 \item{legend.pos}{Where should the legend be placed?
-One of "topleft", "topright", "bottomleft", "bottomright".}
+One of \code{"topleft"}, \code{"topright"}, \code{"bottomleft"}, \code{"bottomright"}.}
 
 \item{layers.control.pos}{character. Where should the layer control be
-placed? One of "topleft", "topright", "bottomleft", "bottomright".}
+placed? One of \code{"topleft"}, \code{"topright"}, \code{"bottomleft"}, \code{"bottomright"}.}
 
 \item{leafletWidth, leafletHeight}{height and width of the htmlwidget in px.}
 
@@ -91,15 +91,15 @@ or the RStudio viewer (\code{FALSE}).}
 \item{homebutton}{logical, whether to add a zoom-to-layer button to the map.}
 
 \item{homebutton.pos}{character. Where should the homebutton(s) be
-placed? One of "topleft", "topright", "bottomleft", "bottomright".}
+placed? One of \code{"topleft"}, \code{"topright"}, \code{"bottomleft"}, \code{"bottomright"}.}
 
 \item{native.crs}{logical whether to reproject to web map coordinate
-reference system (web mercator - epsg:3857) or render using native CRS of
+reference system (web Mercator - epsg:3857) or render using native CRS of
 the supplied data (can also be NA). Default is FALSE which will render in
-web mercator. If set to TRUE now background maps will be drawn (but rendering
+web Mercator. If set to TRUE now background maps will be drawn (but rendering
 may be much quicker as no reprojecting is necessary).}
 
-\item{raster.size}{numeric. see the maxBytes argument in \code{\link{addRasterImage}}}
+\item{raster.size}{numeric. see the maxBytes argument in \code{\link[leaflet]{addRasterImage}}}
 
 \item{mapview.maxpixels}{numeric. The maximum amount of pixels allowed for Raster*
 objects to be rendered with \code{mapview}. Defaults to 500000.
@@ -128,7 +128,7 @@ on \code{'mousemove'} or \code{'click'}. Ignored if \code{label = FALSE}.}
 by raster value query. Ignored if \code{label = FALSE}.}
 
 \item{query.position}{for raster methods only. The position of the raster
-value query info box. See \code{position} argument of \code{\link{addLegend}}
+value query info box. See \code{position} argument of \code{\link[leaflet]{addLegend}}
 for possible values. Ignored if \code{label = FALSE}.}
 
 \item{query.prefix}{for raster methods only. a character string to be shown
@@ -153,10 +153,10 @@ This means that standard functionality is reduced.
 For example adding layers via "+" is not possible anymore.}
 
 \item{pane}{name of the map pane in which to render features. See
-\code{\link{addMapPane}} for details. Currently only supported for vector layers.
+\code{\link[leaflet]{addMapPane}} for details. Currently only supported for vector layers.
 Ignored if \code{canvas = TRUE}. The default \code{"auto"} will create different panes
 for points, lines and polygons such that points overlay lines overlay polygons.
-Set to \code{NULL} to get default leaflet behaviour where allfeatures
+Set to \code{NULL} to get default leaflet behaviour where all features
 are rendered in the same pane and layer order is determined automatically/sequentially.}
 
 \item{cex}{numeric or attribute name(s) or column number(s) in attribute table
@@ -172,19 +172,19 @@ of the column(s) to be used for defining the size of circles.}
 render changes to the list of spatial data in that environment. See
 \link{mapviewWatcher} for details.}
 
-\item{fgb}{if set to \code{TRUE} mapview will not use 'clasical' leaflet/htmlwidgets
+\item{fgb}{if set to \code{TRUE} mapview will not use 'classical' leaflet/htmlwidgets
 rendering (which embeds data directly in the html) but leverage the speed of
 a file format called flatgeobuf (hence, fgb). This has the added benefit that
 data is being streamed onto the map, which makes for a pleasant user experience.
-It should also help to visualise larger data sets due to a reduced memeory footprint.
+It should also help to visualise larger data sets due to a reduced memory footprint.
 A note of warning, data will be attached to the html
 via a <src=...> call which means that the html is not selfcontained anymore
 (so it cannot be used without an accompanying folder).}
 
 \item{georaster}{whether to use \code{\link[leafem]{addGeoRaster}} instead of
 \code{\link[leaflet]{addRasterImage}}. If set to \code{TRUE} raster image visualisation
- will be more performant for large raster data, but given the nearest neighbor
- resampling results may be slightly distorted.}
+will be more performant for large raster data, but given the nearest neighbor
+resampling results may be slightly distorted.}
 
 \item{param}{character. parameter(s) to be queried.}
 }
@@ -194,7 +194,7 @@ If no arguments are provided the options are printed.
 }
 \description{
 To permanently set any of these options, you can add them to
-<your R installation>/etc/Rprofile.site>. For example,
+\if{html}{\out{<your R installation>}}/etc/Rprofile.site>. For example,
 to change the default number of pixels to be visualised for Raster* objects,
 add a line like this: options(mapviewMaxPixels = 700000) to that file.
 }
@@ -216,7 +216,7 @@ mapviewOptions()
 
 }
 \seealso{
-\code{\link{rasterOptions}}, \code{\link{options}}
+\code{\link[raster]{rasterOptions}}, \code{\link{options}}
 }
 \author{
 Tim Appelhans

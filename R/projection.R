@@ -14,10 +14,12 @@ checkAdjustProjection <- function(x, ...) {
   UseMethod("checkAdjustProjection")
 }
 
+#' @export
 checkAdjustProjection.Raster <- function(x, ...) {
   rasterCheckAdjustProjection(x, ...)
 }
 
+#' @export
 checkAdjustProjection.SpatialPointsDataFrame <-
   checkAdjustProjection.SpatialPolygonsDataFrame <-
   checkAdjustProjection.SpatialLinesDataFrame <-
@@ -27,6 +29,7 @@ checkAdjustProjection.SpatialPointsDataFrame <-
     spCheckAdjustProjection(x)
   }
 
+#' @export
 checkAdjustProjection.sf <-
   checkAdjustProjection.sfc <-
   checkAdjustProjection.sfg <- function(x, ...) {
