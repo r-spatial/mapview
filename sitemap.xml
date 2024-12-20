@@ -1,108 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/mapview_01-basics.html</loc>
-  </url>
-  <url>
-    <loc>/articles/mapview_02-advanced.html</loc>
-  </url>
-  <url>
-    <loc>/articles/mapview_03-options.html</loc>
-  </url>
-  <url>
-    <loc>/articles/mapview_04-popups.html</loc>
-  </url>
-  <url>
-    <loc>/articles/mapview_05-extras.html</loc>
-  </url>
-  <url>
-    <loc>/articles/mapview_06-add.html</loc>
-  </url>
-  <url>
-    <loc>/articles/mapview_07-pipe.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/breweries.html</loc>
-  </url>
-  <url>
-    <loc>/reference/franconia.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/knit_print.mapview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mapView.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mapshot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mapview-class.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mapview-defunct.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mapview-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mapviewColors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mapviewOptions.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mapviewOutput.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mapviewWatcher.html</loc>
-  </url>
-  <url>
-    <loc>/reference/npts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ops.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print-mapview-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/removeMapJunk.html</loc>
-  </url>
-  <url>
-    <loc>/reference/renderMapview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/show-mapview-method.html</loc>
-  </url>
-  <url>
-    <loc>/reference/trails.html</loc>
-  </url>
-  <url>
-    <loc>/reference/viewExtent.html</loc>
-  </url>
-  <url>
-    <loc>/reference/viewRGB.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://r-spatial.github.io/mapview/404.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/LICENSE-text.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/articles/index.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/articles/mapview_01-basics.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/articles/mapview_02-advanced.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/articles/mapview_03-options.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/articles/mapview_04-popups.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/articles/mapview_05-extras.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/articles/mapview_06-add.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/articles/mapview_07-pipe.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/authors.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/index.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/news/index.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/breweries.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/franconia.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/index.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/knit_print.mapview.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/mapView.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/mapshot.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/mapview-class.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/mapview-defunct.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/mapview-package.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/mapviewColors.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/mapviewOptions.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/mapviewOutput.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/mapviewWatcher.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/npts.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/ops.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/print-mapview-method.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/removeMapJunk.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/renderMapview.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/show-mapview-method.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/trails.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/viewExtent.html</loc></url>
+<url><loc>https://r-spatial.github.io/mapview/reference/viewRGB.html</loc></url>
 </urlset>
+
