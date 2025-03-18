@@ -10,7 +10,7 @@
 #' add a line like this: options(mapviewMaxPixels = 700000) to that file.
 #'
 #' @param platform character. The rendering platform to be used.
-#' Current options are "leaflet", "mapdeck", and "leafgl".
+#' Current options are "leaflet", "mapdeck", "leafgl" and "mapgl".
 #' @param basemaps character. The basemaps to be used for rendering data. See
 #' \url{https://leaflet-extras.github.io/leaflet-providers/preview/} for possible
 #' values
@@ -178,7 +178,7 @@ mapviewOptions = function(platform,
 
   ## platform ----
   setPlatform = function(platform) {
-    if (!platform %in% c("leaflet", "leafgl", "mapdeck")) {
+    if (!platform %in% c("leaflet", "leafgl", "mapdeck", "mapgl")) {
       warning(
         sprintf(
           "currently only platforms %s & %s & %s are allowed!

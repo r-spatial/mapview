@@ -50,7 +50,7 @@ mapviewGetOption(param)
 }
 \arguments{
 \item{platform}{character. The rendering platform to be used.
-Current options are "leaflet", "mapdeck", and "leafgl".}
+Current options are "leaflet", "mapdeck", "leafgl" and "mapgl".}
 
 \item{basemaps}{character. The basemaps to be used for rendering data. See
 \url{https://leaflet-extras.github.io/leaflet-providers/preview/} for possible
