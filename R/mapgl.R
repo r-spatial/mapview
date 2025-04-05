@@ -26,6 +26,8 @@ mapgl_sf <- function(
   ...
 ) {
   # Initialize map centered on data if no map is provided
+  # TODO: add switch to the mapgl provider, i.e. support of
+  # mapgl::mapboxgl()
   if (is.null(map)) {
     m <- mapgl::maplibre(bounds = x)
   } else {
