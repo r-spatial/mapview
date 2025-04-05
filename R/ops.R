@@ -32,6 +32,11 @@ setMethod("+",
                     e2 = "mapview"),
           function (e1, e2) {
 
+            # Use the mapgl_plus function for mapgl platform
+            if (mapviewGetOption("platform") == "mapgl") {
+              return(mapgl_plus(e1, e2))
+            }
+
             if (mapviewGetOption("platform") %in% c("leaflet", "leafgl")) {
 
               # if (length(
