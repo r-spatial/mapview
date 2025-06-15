@@ -84,6 +84,7 @@ Suggests:
     leafsync,
     lwgeom,
     mapdeck,
+    mapgl,
     plainview,
     poorman,
     rmarkdown,
