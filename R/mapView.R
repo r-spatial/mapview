@@ -371,7 +371,7 @@ setMethod('mapView', signature(x = 'RasterLayer'),
 
   # check if downsampling is needed
   dims <- dim(x)
-  n_pixels <- dims[1] * dims[2]
+  n_pixels <- as.numeric(dims[1]) * as.numeric(dims[2])
   do.downscale <- if (n_pixels > maxpixels) {
     TRUE
   } else {
