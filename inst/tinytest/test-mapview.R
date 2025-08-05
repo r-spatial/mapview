@@ -293,28 +293,7 @@ expect_true(inherits(map@map, "leaflet"))
 expect_equal(typeof(map@object), "list")
 expect_true(inherits(map@object[[1]], "SpatialPixelsDataFrame"))
 
-### SpatialLines -----
-library(sp)
-library(leaflet)
-
-## mapview
-map = mapview(as(atlStorms2005, "SpatialLines"))
-
-expect_true(inherits(map, "mapview"))
-expect_true(inherits(map@map, "leaflet"))
-expect_equal(typeof(map@object), "list")
-expect_true(inherits(map@object[[1]], "sfc"))
-
-## mapView
-map = mapView(as(atlStorms2005, "SpatialLines"))
-
-expect_true(inherits(map, "mapview"))
-expect_true(inherits(map@map, "leaflet"))
-expect_equal(typeof(map@object), "list")
-expect_true(inherits(map@object[[1]], "sfc"))
-
-### SpatialLinesDataFrame -----
-library(sp)
+### sf SFC_LINESTRING -----
 library(leaflet)
 
 ## mapview
@@ -333,28 +312,7 @@ expect_true(inherits(map@map, "leaflet"))
 expect_equal(typeof(map@object), "list")
 expect_true(inherits(map@object[[1]], "sfc"))
 
-### SpatialPoints -----
-library(sp)
-library(leaflet)
-
-## mapview
-map = mapview(as(breweries91, "SpatialPoints"))
-
-expect_true(inherits(map, "mapview"))
-expect_true(inherits(map@map, "leaflet"))
-expect_equal(typeof(map@object), "list")
-expect_true(inherits(map@object[[1]], "sfc"))
-
-## mapView
-map = mapView(as(breweries91, "SpatialPoints"))
-
-expect_true(inherits(map, "mapview"))
-expect_true(inherits(map@map, "leaflet"))
-expect_equal(typeof(map@object), "list")
-expect_true(inherits(map@object[[1]], "sfc"))
-
-### SpatialPointsDataFrame -----
-library(sp)
+### sf sfc_point -----
 library(leaflet)
 
 ## mapview
