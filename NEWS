@@ -1,10 +1,15 @@
-mapview 2.11.2.9006 (2025-08-27)
+mapview 2.11.2.9007 (2025-08-27)
 
 features and improvements
 
 bug fixes
 
+  * HOTFIX: file attachments (fgb, css) now have valid names. e.g. #505
+
 documentation etc
+
+  * use proper package anchors as requested by CRAN.
+  * update defunct URLs for selected data sets.
 
 miscellaneous
 
