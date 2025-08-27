@@ -4,10 +4,9 @@
 #' Global options for the mapview package
 #'
 #' @description
-#' To permanently set any of these options, you can add them to
-#' <your R installation>/etc/Rprofile.site>. For example,
-#' to change the default number of pixels to be visualised for Raster* objects,
-#' add a line like this: options(mapviewMaxPixels = 700000) to that file.
+#' To permanently set any of these options, you can add them to your Rprofile.site.
+#' For example, to change the default number of pixels to be visualised for
+#' Raster* objects, add a line like this: options(mapviewMaxPixels = 700000) to that file.
 #'
 #' @param platform character. The rendering platform to be used.
 #' Current options are "leaflet", "mapdeck", and "leafgl".

@@ -26,22 +26,23 @@
 #' Administrative district borders of Franconia
 #'
 #' @details The NUTS_2013_01M_SH.zip archive was downloaded on 23/03/2017 from
-#' \url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts}.
+#' the now defunct URL "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts".
+#' The current working URL is \url{https://ec.europa.eu/eurostat/web/gisco/geodata/statistical-units/territorial-units-statistics}.
 #' \url{https://gist.github.com/tim-salabim/2845fa90813fa25c18cf83f9b88cbde0}
 #' @format \code{sf feature collection MULTIPOLYGON}
 #' @source
-#' \url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts}
+#' \url{https://ec.europa.eu/eurostat/web/gisco/geodata}
 "franconia"
 
 #' Selected hiking trails in Franconia
 #'
 #' @details These hiking trails were downloaded on 06/04/2017 from
 #' \url{https://geoportal.bayern.de/bayernatlas}
-#' These data are published by the owner under Creative Commons Namensnennung 3.0 Deutschland,
-#' see \url{https://creativecommons.org/licenses/by/3.0/de/} for details.
+#' These data are published by the owner under Creative Commons Namensnennung 4.0 Deed,
+#' see \url{https://creativecommons.org/licenses/by/4.0/deed.de} for details.
 #' @format \code{sf feature collection MULTILINESTRING}
 #' @source
 #' Datenquelle: Bayerische Vermessungsverwaltung - `www.geodaten.bayern.de`
-#' \url{https://www.ldbv.bayern.de/produkte/weitere/opendata.html}
+#' \url{https://geodaten.bayern.de/opengeodata/OpenDataDetail.html?pn=bvv_wanderwege}
 "trails"
 

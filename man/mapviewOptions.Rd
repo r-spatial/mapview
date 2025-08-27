@@ -193,10 +193,9 @@ list of the current options (invisibly).
 If no arguments are provided the options are printed.
 }
 \description{
-To permanently set any of these options, you can add them to
-\if{html}{\out{<your R installation>}}/etc/Rprofile.site>. For example,
-to change the default number of pixels to be visualised for Raster* objects,
-add a line like this: options(mapviewMaxPixels = 700000) to that file.
+To permanently set any of these options, you can add them to your Rprofile.site.
+For example, to change the default number of pixels to be visualised for
+Raster* objects, add a line like this: options(mapviewMaxPixels = 700000) to that file.
 }
 \section{Functions}{
 \itemize{

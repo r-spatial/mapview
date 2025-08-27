@@ -8,7 +8,7 @@
 \code{sf feature collection MULTIPOLYGON}
 }
 \source{
-\url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts}
+\url{https://ec.europa.eu/eurostat/web/gisco/geodata}
 }
 \usage{
 franconia
@@ -18,7 +18,8 @@ Administrative district borders of Franconia
 }
 \details{
 The NUTS_2013_01M_SH.zip archive was downloaded on 23/03/2017 from
-\url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts}.
+the now defunct URL "https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts".
+The current working URL is \url{https://ec.europa.eu/eurostat/web/gisco/geodata/statistical-units/territorial-units-statistics}.
 \url{https://gist.github.com/tim-salabim/2845fa90813fa25c18cf83f9b88cbde0}
 }
 \keyword{datasets}
