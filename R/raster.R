@@ -157,7 +157,7 @@ leafletRL = function(x,
     if (scalebar) m = leaflet::addScaleBar(m, position = "bottomleft")
     m = leafem::addMouseCoordinates(m)
     m = leafem::addCopyExtent(m)
-    if (homebutton) m = leafem::addHomeButton(m, ext, group = layer.name)
+    if (homebutton) m = leafem::addHomeButton(m, ext, group = gsub("[[:punct:] ]", "_", layer.name))
 
     if (hide) {
       m = leaflet::hideGroup(m, layer.name)

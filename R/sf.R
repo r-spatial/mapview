@@ -347,7 +347,7 @@ leafgl_sf = function(x,
     if (scalebar) list(position = "bottomleft")
     , if (homebutton) list(
       ext = createExtent(x)
-      , group = layer.name
+      , group = gsub("[[:punct:] ]", "_", layer.name)
       , position = mapviewGetOption("homebutton.pos")
     )
     , if (is.null(map)) list(
@@ -672,7 +672,7 @@ leaflet_sfc <- function(x,
     if (scalebar) list(position = "bottomleft")
     , if (homebutton) list(
       ext = createExtent(x)
-      , group = layer.name
+      , group = gsub("[[:punct:] ]", "_", layer.name)
       , position = mapviewGetOption("homebutton.pos")
     )
     , if (is.null(map)) list(
