@@ -29,7 +29,7 @@ Despite the possibility to quickly plot spatial data, `mapview` has a set of arg
 * `legend.opacity` - opacity of the legend -> default `1`
 * `verbose` - whether to print additional information to the console during the rendering -> default `FALSE`
 * `layer.name` - the layer name to be used for plotting -> default depends on call. For a single object the name of the object; if `zcol` is supplied a combination of object name and column name; for raster stack/bricks the layer names
-* ... - further arguments to be passed on to respective **leaflet** functions such as `addRasterImage` or `adCircleMarkers`
+* ... - further arguments to be passed on to respective **leaflet** functions such as `addRasterImage` or `addCircleMarkers`
 
 **raster only**
 
