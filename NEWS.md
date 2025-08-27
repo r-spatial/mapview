@@ -4,7 +4,12 @@
 
 #### 🐛 bug fixes
 
+  * HOTFIX: file attachments (fgb, css) now have valid names. e.g. #505
+
 #### 💬 documentation etc
+
+  * use proper package anchors as requested by CRAN.
+  * update defunct URLs for selected data sets.
 
 #### 🍬 miscellaneous
 
