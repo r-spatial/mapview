@@ -1,6 +1,4 @@
-# mapview 2.11.2.9008 (2025-08-27)
-
-#### ✨ features and improvements
+# mapview 2.11.3 (2025-08-28)
 
 #### 🐛 bug fixes
 
@@ -10,8 +8,6 @@
 
   * use proper package anchors as requested by CRAN.
   * update defunct URLs for selected data sets.
-
-#### 🍬 miscellaneous
 
 
 # mapview 2.11.2 (2023-10-13)
