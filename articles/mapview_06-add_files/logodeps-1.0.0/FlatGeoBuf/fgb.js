@@ -47,7 +47,7 @@ LeafletWidget.methods.addFlatGeoBuf = function (layerId,
     pane = options.pane;
   }
 
-  let data_fl = document.getElementById(group + '-1-attachment');
+  let data_fl = document.getElementById(layerId + '-1-attachment');
 
   if (data_fl === null) {
     data_fl = url;
@@ -332,7 +332,7 @@ LeafletWidget.methods.addFlatGeoBufFiltered = function (layerId,
     pane = options.pane;
   }
 
-  let data_fl = document.getElementById(group + '-1-attachment');
+  let data_fl = document.getElementById(layerId + '-1-attachment');
 
   if (data_fl === null) {
     data_fl = url;
