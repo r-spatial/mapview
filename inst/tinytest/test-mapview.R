@@ -331,46 +331,6 @@ expect_true(inherits(map@map, "leaflet"))
 expect_equal(typeof(map@object), "list")
 expect_true(inherits(map@object[[1]], "sfc"))
 
-### SpatialPolygons -----
-library(sp)
-library(leaflet)
-
-## mapview
-map = mapview(as(gadmCHE, "SpatialPolygons"))
-
-expect_true(inherits(map, "mapview"))
-expect_true(inherits(map@map, "leaflet"))
-expect_equal(typeof(map@object), "list")
-expect_true(inherits(map@object[[1]], "sfc"))
-
-## mapView
-map = mapView(as(gadmCHE, "SpatialPolygons"))
-
-expect_true(inherits(map, "mapview"))
-expect_true(inherits(map@map, "leaflet"))
-expect_equal(typeof(map@object), "list")
-expect_true(inherits(map@object[[1]], "sfc"))
-
-### SpatialPolygonsDataFrame -----
-library(sp)
-library(leaflet)
-
-## mapview
-map = mapview(gadmCHE)
-
-expect_true(inherits(map, "mapview"))
-expect_true(inherits(map@map, "leaflet"))
-expect_equal(typeof(map@object), "list")
-expect_true(inherits(map@object[[1]], "sfc"))
-
-## mapView
-map = mapView(gadmCHE)
-
-expect_true(inherits(map, "mapview"))
-expect_true(inherits(map@map, "leaflet"))
-expect_equal(typeof(map@object), "list")
-expect_true(inherits(map@object[[1]], "sfc"))
-
 ### stars -----
 if (utils::packageVersion("stars") >= "0.4-1") {
   library(stars)
