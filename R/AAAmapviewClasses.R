@@ -17,6 +17,7 @@ setOldClass(c("POINT", "MULTIPOINT",
               "LINESTRING", "MULTILINESTRING"))
 
 setOldClass("XY")
+setOldClass("XYZ")
 setOldClass("sf")
 setOldClass("sfc")
 setOldClass("sfg")
