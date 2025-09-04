@@ -30,11 +30,6 @@ expect_equal(mapview:::makeLabels(franconia), rownames(franconia))
 expect_equal(mapview:::makeLabels(franconia, zcol = "district"),
              franconia[["district"]])
 
-### makeLabelsSP -----
-expect_equal(length(mapview:::makeLabelsSP(leaflet::breweries91$brewery)),
-              nrow(leaflet::breweries91@data))
-expect_true(inherits(mapview:::makeLabelsSP(leaflet::breweries91$founded), "character"))
-
 ### getFeatureIds -----
 expect_equal(mapview:::getFeatureIds(franconia), row.names(franconia))
 expect_equal(mapview:::getFeatureIds(leaflet::gadmCHE), row.names(leaflet::gadmCHE))
@@ -120,3 +115,4 @@ expect_false(mapview:::useCanvas(breweries))
 expect_true(mapview:::is_literally_false(FALSE))
 tst = NULL
 expect_false(mapview:::is_literally_false(tst))
+
