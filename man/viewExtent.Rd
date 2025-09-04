@@ -39,27 +39,25 @@ details.}
 default, it is the \code{data} object provided to \code{leaflet()}
 initially, but can be overridden}
     \item{\code{group}}{the name of the group the newly created layers should belong to
-(for \code{\link[leaflet]{clearGroup}} and \code{\link[leaflet]{addLayersControl}} purposes).
+(for \code{\link[leaflet:clearGroup]{clearGroup()}} and \code{\link[leaflet:addLayersControl]{addLayersControl()}} purposes).
 Human-friendly group names are permitted--they need not be short,
 identifier-style names. Any number of layers and even different types of
-layers (e.g. markers and polygons) can share the same group name.}
+layers (e.g., markers and polygons) can share the same group name.}
     \item{\code{options}}{a list of extra options for tile layers, popups, paths
 (circles, rectangles, polygons, ...), or other map elements}
-    \item{\code{popupOptions}}{A Vector of \code{\link[leaflet]{popupOptions}} to provide popups}
-    \item{\code{labelOptions}}{A Vector of \code{\link[leaflet]{labelOptions}} to provide label
+    \item{\code{popupOptions}}{A Vector of \code{\link[leaflet:popupOptions]{popupOptions()}} to provide popups}
+    \item{\code{labelOptions}}{A Vector of \code{\link[leaflet:labelOptions]{labelOptions()}} to provide label
 options for each label. Default \code{NULL}}
-    \item{\code{stroke}}{whether to draw stroke along the path (e.g. the borders of
+    \item{\code{stroke}}{whether to draw stroke along the path (e.g., the borders of
 polygons or circles)}
     \item{\code{color}}{stroke color}
     \item{\code{weight}}{stroke width in pixels}
     \item{\code{opacity}}{stroke opacity (or layer opacity for tile layers)}
-    \item{\code{fill}}{whether to fill the path with color (e.g. filling on polygons or
+    \item{\code{fill}}{whether to fill the path with color (e.g., filling on polygons or
 circles)}
     \item{\code{fillColor}}{fill color}
     \item{\code{fillOpacity}}{fill opacity}
-    \item{\code{dashArray}}{a string that defines the stroke
-\href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray}{dash
-pattern}}
+    \item{\code{dashArray}}{a string that defines the stroke \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray}{dash pattern}}
     \item{\code{highlightOptions}}{Options for highlighting the shape on mouse over.}
     \item{\code{smoothFactor}}{how much to simplify the polyline on each zoom level
 (more means better performance and less accurate representation)}
