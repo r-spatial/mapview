@@ -101,7 +101,7 @@ get_ide = function() {
 }
 
 is_rstudio = function() {
-  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+  if (rlang::check_installed("rstudioapi")) {
     rstudioapi::isAvailable() && rstudioapi::versionInfo()$mode != "vscode"
   } else {
     FALSE
