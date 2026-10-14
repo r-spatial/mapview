@@ -2,6 +2,8 @@
 
 #### ✨ features and improvements
 
+  * BREAKING CHANGE: new light and dark default base maps (Stadia.AdeladeSmooth). #521
+
 #### 🐛 bug fixes
 
 #### 💬 documentation etc
