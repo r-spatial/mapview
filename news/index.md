@@ -1,8 +1,12 @@
 # Changelog
 
-## mapview 2.11.4.9000 (2026-10-14)
+## mapview 2.11.4.9001 (2026-10-14)
 
 ##### ✨ features and improvements
+
+- BREAKING CHANGE: new light and dark default base maps
+  (Stadia.AdeladeSmooth).
+  [\#521](https://github.com/r-spatial/mapview/issues/521)
 
 ##### 🐛 bug fixes
 

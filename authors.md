@@ -37,12 +37,12 @@ Source:
 
 Appelhans T, Detsch F, Reudenbach C, Woellauer S (2026). *mapview:
 Interactive Viewing of Spatial Data in R*. R package version
-2.11.4.9000, <https://github.com/r-spatial/mapview>.
+2.11.4.9001, <https://github.com/r-spatial/mapview>.
 
     @Manual{,
       title = {mapview: Interactive Viewing of Spatial Data in R},
       author = {Tim Appelhans and Florian Detsch and Christoph Reudenbach and Stefan Woellauer},
       year = {2026},
-      note = {R package version 2.11.4.9000},
+      note = {R package version 2.11.4.9001},
       url = {https://github.com/r-spatial/mapview},
     }
