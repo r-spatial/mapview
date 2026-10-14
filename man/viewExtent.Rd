@@ -32,12 +32,19 @@ details.}
 \code{\link[leaflet]{addControl}} for details.}
 
 \item{...}{
-  Arguments passed on to \code{\link[leaflet:map-layers]{leaflet::addRectangles}}
+  Arguments passed on to \code{\link[leaflet:addRectangles]{leaflet::addRectangles}}
   \describe{
+    \item{\code{html}}{the content of the control. May be provided as string or as HTML
+generated with Shiny/htmltools tags}
+    \item{\code{position}}{position of control: \code{"topleft"}, \code{"topright"},
+\code{"bottomleft"}, or \code{"bottomright"}.}
     \item{\code{layerId}}{the layer id}
+    \item{\code{className}}{extra CSS classes to append to the control, space separated}
     \item{\code{data}}{the data object from which the argument values are derived; by
 default, it is the \code{data} object provided to \code{leaflet()}
 initially, but can be overridden}
+    \item{\code{urlTemplate}}{a character string as the URL template}
+    \item{\code{attribution}}{the attribution text of the tile layer (HTML)}
     \item{\code{group}}{the name of the group the newly created layers should belong to
 (for \code{\link[leaflet:clearGroup]{clearGroup()}} and \code{\link[leaflet:addLayersControl]{addLayersControl()}} purposes).
 Human-friendly group names are permitted--they need not be short,
@@ -45,9 +52,33 @@ identifier-style names. Any number of layers and even different types of
 layers (e.g., markers and polygons) can share the same group name.}
     \item{\code{options}}{a list of extra options for tile layers, popups, paths
 (circles, rectangles, polygons, ...), or other map elements}
+    \item{\code{baseUrl}}{a base URL of the WMS service}
+    \item{\code{layers}}{comma-separated list of WMS layers to show}
+    \item{\code{lng}}{a numeric vector of longitudes, or a one-sided formula of the form
+\code{~x} where \code{x} is a variable in \code{data}; by default (if not
+explicitly provided), it will be automatically inferred from \code{data} by
+looking for a column named \code{lng}, \code{long}, or \code{longitude}
+(case-insensitively)}
+    \item{\code{lat}}{a vector of latitudes or a formula (similar to the \code{lng}
+argument; the names \code{lat} and \code{latitude} are used when guessing
+the latitude column from \code{data})}
+    \item{\code{icon}}{the icon(s) for markers; an icon is represented by an R list of
+the form \code{list(iconUrl = "?", iconSize = c(x, y))}, and you can use
+\code{\link[leaflet:icons]{icons()}} to create multiple icons; note when you use an R list
+that contains images as local files, these local image files will be base64
+encoded into the HTML page so the icon images will still be available even
+when you publish the map elsewhere}
     \item{\code{popupOptions}}{A Vector of \code{\link[leaflet:popupOptions]{popupOptions()}} to provide popups}
     \item{\code{labelOptions}}{A Vector of \code{\link[leaflet:labelOptions]{labelOptions()}} to provide label
 options for each label. Default \code{NULL}}
+    \item{\code{clusterOptions}}{if not \code{NULL}, markers will be clustered using
+\href{https://github.com/Leaflet/Leaflet.markercluster}{Leaflet.markercluster};
+you can use \code{\link[leaflet:markerClusterOptions]{markerClusterOptions()}} to specify marker cluster
+options}
+    \item{\code{clusterId}}{the id for the marker cluster layer}
+    \item{\code{radius}}{a numeric vector of radii for the circles; it can also be a
+one-sided formula, in which case the radius values are derived from the
+\code{data} (units in meters for circles, and pixels for circle markers)}
     \item{\code{stroke}}{whether to draw stroke along the path (e.g., the borders of
 polygons or circles)}
     \item{\code{color}}{stroke color}
@@ -58,12 +89,16 @@ circles)}
     \item{\code{fillColor}}{fill color}
     \item{\code{fillOpacity}}{fill opacity}
     \item{\code{dashArray}}{a string that defines the stroke \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray}{dash pattern}}
+    \item{\code{bringToFront}}{Whether the shape should be brought to front on hover.}
+    \item{\code{sendToBack}}{whether the shape should be sent to back on mouse out.}
     \item{\code{highlightOptions}}{Options for highlighting the shape on mouse over.}
     \item{\code{smoothFactor}}{how much to simplify the polyline on each zoom level
 (more means better performance and less accurate representation)}
     \item{\code{noClip}}{whether to disable polyline clipping}
     \item{\code{lng1,lat1,lng2,lat2}}{latitudes and longitudes of the south-west and
 north-east corners of rectangles}
+    \item{\code{geojson}}{a GeoJSON list, or character vector of length 1}
+    \item{\code{topojson}}{a TopoJSON list, or character vector of length 1}
   }}
 }
 \description{

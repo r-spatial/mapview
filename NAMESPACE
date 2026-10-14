@@ -33,16 +33,20 @@ import(satellite)
 import(scales)
 import(sf)
 import(sp)
-importFrom(grDevices,colorRampPalette)
-importFrom(grDevices,dev.off)
-importFrom(grDevices,grey.colors)
-importFrom(grDevices,png)
-importFrom(grDevices,rgb)
-importFrom(grDevices,svg)
+importFrom(grDevices,
+  colorRampPalette,
+  dev.off,
+  grey.colors,
+  png,
+  rgb,
+  svg
+)
 importFrom(leafem,addRasterRGB)
 importFrom(raster,projection)
 importFrom(sf,st_crs)
 importFrom(stats,na.omit)
-importFrom(utils,find)
-importFrom(utils,glob2rx)
-importFrom(utils,modifyList)
+importFrom(utils,
+  find,
+  glob2rx,
+  modifyList
+)

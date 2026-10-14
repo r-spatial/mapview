@@ -96,6 +96,6 @@ Suggests:
 ByteCompile: yes
 Encoding: UTF-8
 LazyData: TRUE
-RoxygenNote: 7.3.2
 SystemRequirements: GNU make
 Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.1.0

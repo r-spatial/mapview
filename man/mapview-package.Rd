@@ -27,6 +27,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Tim Appelhans \email{tim.appelhans@gmail.com}
   \item Florian Detsch \email{fdetsch@web.de}
   \item Christoph Reudenbach \email{reudenbach@geo.uni-marburg.de}
   \item Stefan Woellauer \email{stephan.woellauer@geo.uni-marburg.de}
