@@ -1,0 +1,155 @@
+# 4. mapview popups
+
+**mapview** provides a few special popup rendering functions. These can
+be used to generate:
+
+- attribute table popups
+- graph popups (i.e. plots in popups)
+  - static (ggplot2, lattice, base)
+  - interactive (htmlwidgets)
+- image popups
+
+## Attribute table popups
+
+`popupTable` is the standard popup function used in mapview. It provides
+a static table rendering of all attributes of the individual features.
+
+``` r
+
+library(mapview)
+library(leaflet)
+library(leafpop)
+
+mapview(breweries, popup = popupTable(breweries,
+                                      zcol = c("brewery",
+                                               "village",
+                                               "founded")))
+```
+
+  
+
+This can also be used with leaflet maps
+
+``` r
+
+leaflet() %>%
+  addTiles() %>%
+  addCircleMarkers(data = breweries,
+                   popup = popupTable(breweries))
+```
+
+------------------------------------------------------------------------
+
+## Graph popups
+
+`popupGraph` allows us to include static or interactive (htmlwidgets)
+plots in popups. In the following example we will show a scatterplot of
+copper ~ cadmium for each individual feature of the famous meuse data
+set
+
+``` r
+
+library(lattice)
+library(sp)
+
+data(meuse)
+coordinates(meuse) <- ~x+y
+proj4string(meuse) <- CRS("+init=epsg:28992")
+```
+
+    ## Warning in CPL_crs_from_input(x): GDAL Message 1: +init=epsg:XXXX syntax is
+    ## deprecated. It might return a CRS with a non-EPSG compliant axis order.
+
+``` r
+
+p <- xyplot(copper ~ cadmium, data = meuse@data, col = "grey", pch = 20, cex = 2)
+p <- mget(rep("p", length(meuse)))
+
+clr <- rep("grey", length(meuse))
+p <- lapply(1:length(p), function(i) {
+  clr[i] <- "red"
+  update(p[[i]], col = clr)
+})
+
+
+mapview(meuse,
+        zcol = "cadmium",
+        popup = popupGraph(p))
+```
+
+------------------------------------------------------------------------
+
+## Interactive popups
+
+Here’s a rather silly example of an interactive popup. I am sure there’s
+many more sensible examples but for the fun of it here’s a map in a map
+popup.
+
+**A WARNING:** Including interactive popups can quickly lead to very
+large files that will take a long time to render and also become rather
+unresponsive.
+
+``` r
+
+brew1 <- breweries91[1, ]
+
+mapview(brew1,
+        popup =  popupGraph(mapview(brew1,
+                                    map.types = "Esri.WorldImagery")@map,
+                            type = "html"))
+```
+
+------------------------------------------------------------------------
+
+## Image popups
+
+`popupImage` can be used to include images in popups. Both local (file)
+and remote (web url) images can be used.
+
+``` r
+
+library(sf)
+```
+
+    ## Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE
+
+``` r
+
+pnt <- data.frame(x = 174.764474, y = -36.877245)
+pnt <- st_as_sf(pnt, coords = c("x", "y"), crs = 4326)
+
+img <- "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Mount_Eden.jpg/640px-Mount_Eden.jpg"
+
+mapview(pnt, map.types = "Esri.WorldImagery",
+        popup = popupImage(img, src = "remote"))
+```
+
+  
+
+**IMPORTANT NOTICE** for those who want to save maps locally (see
+chapter `mapview save maps` for details): With the current
+implementation of `popupImage` (local only) and `popupGraph` we need to
+save the popup files (graphs, images) in a folder called `popup_graphs`
+which needs to be located one level above the map widget. Hence, when
+saving a map locally (with `mapshot` or `saveWisget`) we need to
+manually copy that folder to on elevel above the destination folder
+where the map is saved. This should soon be solved but for the time
+being, in case you don’t see any popup images or graphs in your locally
+saved map, make sure to copy the appropriate folder (which is usually
+generated in your computers `temp` directory).
+
+------------------------------------------------------------------------
+
+There’s also a hidden function that enables us to include all sorts of
+things via Iframe (which is used internally when rendering
+**htmlwidgets** graphs).
+
+But let the Dude show us how this can be used…
+
+``` r
+
+mapview(pnt, popup = leafpop:::popupIframe("https://www.youtube.com/embed/iApz08Bh53w?autoplay=1", width = 300, height = 225))
+```
+
+As with **htmlwidgets** in popups, this may quickly produce html files
+and hence become rather unresponsive.

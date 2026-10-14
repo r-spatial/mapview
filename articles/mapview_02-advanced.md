@@ -1,0 +1,240 @@
+# 2. mapview advanced controls
+
+Despite the possibility to quickly plot spatial data, `mapview` has a
+set of arguments for finer control of the visualization. Depending on
+the object class, these are:
+
+**All types**
+
+- `map` - the **leaflet** or **mapview** map to use -\> default NULL
+- `col.regions` - the color palette for colouring raster, polygon and
+  point areas (points are essentially circles) -\> default `hcl.colors`
+  with palette `"Inferno"` for raster data and palette `"viridis"` for
+  vector data
+- `at` - breakpoints used for the colouring -\> default NULL meaning
+  they are calculated automatically for the range of data
+- `na.color` - the color for NA values -\> default `#BEBEBE80`
+- `map.types` - the types of the background maps -\> default
+  `Stadia.AlidadeSmooth, Stadia.AlidadeSmoothDark, OpenStreetMap, Esri.WorldImagery, OpenTopoMap`
+  see [here](http://leaflet-extras.github.io/leaflet-providers/preview/)
+  for available map types
+- `alpha.regions` - the opacity of raster, polygon and point fills -\>
+  default `0.8` for raster, `0.6` for polygons and `0.9` for points
+- `legend` - whether to add a legend to the plot -\> default `FALSE`
+- `legend.opacity` - opacity of the legend -\> default `1`
+- `verbose` - whether to print additional information to the console
+  during the rendering -\> default `FALSE`
+- `layer.name` - the layer name to be used for plotting -\> default
+  depends on call. For a single object the name of the object; if `zcol`
+  is supplied a combination of object name and column name; for raster
+  stack/bricks the layer names
+- … - further arguments to be passed on to respective **leaflet**
+  functions such as `addRasterImage` or `addCircleMarkers`
+
+**raster only**
+
+- `maxpixels` - the maximum number of pixels to plot -\> default 500k.
+  This is used so rendering doesn’t take forever. This can also be set
+  with
+  [`mapviewOptions()`](https://r-spatial.github.io/mapview/reference/mapviewOptions.md)
+- `use.layer.names` - whether to use the layer names of raster objects
+  -\> default `FALSE`
+- `trim` - should rasters be trimmed off NA values around the edges -\>
+  default `TRUE`
+
+**vector only**
+
+- `zcol` - attribute name(s) or column number(s) in attribute table of
+  the column(s) to be rendered -\> default `NULL`
+- `burst` - whether to show all (TRUE) or only one (FALSE) layer(s) -\>
+  default `FALSE`
+- `color` - color (palette) for lines -\> default
+  `hcl.colors(n, palette = "viridis")`
+- `alpha` - opacity of the lines -\> default `0.9`
+- `cex` - circle size for point data -\> default `6`. This can also be
+  used to map circle size to an attribute from the object’s attribute
+  table by supplying either column name or number
+- `lwd` - line width -\> default `2` for lines and points, `1` for
+  polygons
+- `label` - a character vector of labels to be shown on mouseover -\>
+  default feature IDs, if `zcol` is set the values of `zcol`
+- `popup` - the popup function to use for the popups -\> default
+  `popupTable()`. See chapter on popups for further options
+
+------------------------------------------------------------------------
+
+Here’s a few examples of how selected arguments can be used:
+
+## Adjusting color, col.regions & at
+
+Similar to the good old `spplot`, arguments `col.regions` and `at` can
+be used for finer control of the colouring
+
+``` r
+
+library(mapview)
+library(raster)
+
+pal = mapviewPalette("mapviewTopoColors")
+
+kili_data <- system.file("extdata", "kiliNDVI.tif", package = "mapview")
+kiliNDVI <- stack(kili_data)
+
+mapview(kiliNDVI[[1]], col.regions = pal(100), at = seq(-0.2, 1, 0.2), legend = TRUE)
+```
+
+  
+
+``` r
+
+mapview(breweries, zcol = "founded", at = seq(1400, 2200, 200), legend = TRUE)
+```
+
+------------------------------------------------------------------------
+
+## Changing map.types
+
+To use a different background map, use argument `map.types`
+
+``` r
+
+mapview(breweries, map.types = c("Esri.WorldShadedRelief", "OpenStreetMap.DE"), color = "grey40")
+```
+
+------------------------------------------------------------------------
+
+## Individual layer.name(s)
+
+To individually label the layer names use argument `layer.name`
+
+``` r
+
+mapview(list(franconia, breweries),
+        layer.name = c("Franconian districts", "Franconian breweries"))
+```
+
+------------------------------------------------------------------------
+
+## Using burst
+
+`burst` can be used to plot all layers of an object
+
+``` r
+
+mapview(breweries, burst = TRUE)
+```
+
+  
+
+Note how all layers are shown by default. There is a hidden argument
+`hide` which can be used to hide all layers but the first.
+
+``` r
+
+mapview(breweries, burst = TRUE, hide = TRUE)
+```
+
+  
+
+When `burst` used together with `zcol`, it will produce one layer for
+all unique values of `zcol`.
+
+``` r
+
+library(poorman)
+library(sf)
+
+breweries %>%
+  st_intersection(franconia) %>%
+  mapview(zcol = "district", burst = TRUE)
+```
+
+    ## Warning: attribute variables are assumed to be spatially constant throughout
+    ## all geometries
+
+  
+
+Note that for a column with many values there will likely not be enough
+space for the layers control - we are working on a solution for this
+issue.
+
+------------------------------------------------------------------------
+
+## Setting point size cex
+
+For point data the circle size can be mapped to one of the attributes
+(features with NA values will be shown as dots)
+
+``` r
+
+mapview(breweries, cex = "number.of.types")
+```
+
+------------------------------------------------------------------------
+
+## Adjusting opacity
+
+Opacity of lines and fills (regions) can be adjusted using arguments
+`alpha` and `alpha.regions`
+
+``` r
+
+mapview(breweries, alpha = 0)
+```
+
+  
+
+``` r
+
+mapview(franconia, alpha.regions = 0.2, aplha = 1)
+```
+
+------------------------------------------------------------------------
+
+## Multiple layers
+
+In addition to easily style maps, **mapview** also makes it easy to add
+multiple layers to a (possibly laready existing) map. This can be done
+either by using `+` or by supplying a list of objects (or both).
+
+``` r
+
+library(plainview)
+
+# mapview + object
+mapview(list(franconia, breweries)) + poppendorf[[5]]
+```
+
+  
+
+``` r
+
+# mapview + mapview
+mapview(franconia, zcol = "district") + mapview(breweries, zcol = "founded")
+```
+
+  
+
+``` r
+
+library(plainview)
+
+# mapview w list of objects
+mapview(list(breweries, franconia),
+        zcol = list(NULL, "district"),
+        legend = list(TRUE, FALSE),
+        homebutton = list(FALSE, TRUE)) + poppendorf[[5]]
+```
+
+  
+
+``` r
+
+m1 = mapview(franconia, zcol = "district", col.regions = c("snow", "grey", "red"))
+m1 + breweries
+```
+
+------------------------------------------------------------------------
+
+See chapter `3. mapview options` for instructions on how to set some of
+these styling parameters permanently.

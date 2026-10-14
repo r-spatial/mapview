@@ -1,0 +1,212 @@
+# mapview
+
+### Interactive viewing of spatial data in R
+
+[![](https://github.com/tim-salabim/mvl/blob/cstriestohelp/imagery/animated/box_anim.gif?raw=true)](https://github.com/tim-salabim/mvl)
+
+**mapview** provides functions to very quickly and conveniently create
+interactive visualisations of spatial data. It’s main goal is to fill
+the gap of quick (not presentation grade) interactive plotting to
+examine and visually investigate both aspects of spatial data, the
+geometries and their attributes. It can also be considered a data-driven
+API for the [**leaflet**](https://cran.r-project.org/package=leaflet)
+package as it will automatically render correct map types, depending on
+the type of the data (points, lines, polygons, raster). In addition, it
+makes use of some advanced rendering functionality that will enable
+viewing of much larger data than is possible with **leaflet**.
+Furthermore, if you’re a fan of
+[**mapdeck**](https://cran.r-project.org/package=mapdeck) (which you
+should!), you can choose to use it as the rendering platform instead of
+**leaflet** by setting `mapviewOptions(platform = "mapdeck")`.
+
+The main user relevant functions are:
+
+- `mapview` - view (multiple) spatial objects on a set of background
+  maps
+- `viewExtent` - view extent / bounding box of spatial objects
+- `viewRGB` - view RGB true- or false-color images of raster objects
+- `mapshot` - easily save maps (including leaflet maps) as `html` and/or
+  `png` (or other image formats)
+
+Functions that have been deprecated/deleted recently:
+
+- `addHomeButton` - deprecated, use package
+  [leafem](https://CRAN.R-project.org/package=leafem) instead.
+- `addLogo` - deprecated, use package
+  [leafem](https://CRAN.R-project.org/package=leafem) instead.
+- `addFeatures` - deprecated, use package
+  [leafem](https://CRAN.R-project.org/package=leafem) instead.
+- `addMouseCoordinates` - deprecated, use package
+  [leafem](https://CRAN.R-project.org/package=leafem) instead.
+- `addExtent` - deprecated, use package
+  [leafem](https://CRAN.R-project.org/package=leafem) instead.
+- `addImageQuery` - deprecated, use package
+  [leafem](https://CRAN.R-project.org/package=leafem) instead.
+- `latticeView` & `sync` - deprecated, use package
+  [leafsync](https://CRAN.R-project.org/package=leafsync) instead.
+- `slideView` - deprecated, use package
+  [slideview](https://CRAN.R-project.org/package=slideview) instead.
+- `cubeView` - deprecated, use package
+  [cubeview](https://CRAN.R-project.org/package=cubeview) instead.
+- `plainview` - deprecated, use package
+  [plainview](https://CRAN.R-project.org/package=plainview) instead.
+- `popupTable`, `popupGraph` & `popupImage` - deprecated, use package
+  [leafpop](https://CRAN.R-project.org/package=leafpop) instead.
+- `addLargeFeatures` - use
+  [leafgl](https://CRAN.R-project.org/package=leafgl)`::addGL*`
+  functions instead.
+
+Objects of the following spatial classes are supported:
+
+- [sf](https://cran.r-project.org/package=sf)
+- [raster](https://cran.r-project.org/package=raster) (Layer, Stack,
+  Brick and SpatialPixels\* / SpatialGridDataFrame)
+- [stars](https://cran.r-project.org/package=stars)
+- [sp](https://cran.r-project.org/package=sp) (Points, Polygons, Lines
+  and their DataFrame version)
+- [satellite](https://cran.r-project.org/package=satellite)
+
+## Installation
+
+For CRAN release version of **mapview** use
+
+``` r
+
+install.packages("mapview")
+```
+
+To install the development version you can install the
+[remotes](https://cran.r-project.org/package=remotes) package.
+
+**NOTE:** As of version 2.9.1 development will happen on the `master`
+branch. Please consider the `develop` branch obsolete.
+
+``` r
+
+remotes::install_github("r-spatial/mapview")
+```
+
+## Usage
+
+The most basic call
+
+``` r
+
+mapview(breweries)
+```
+
+will produce a web map visualisation of the breweries data with the
+following components:
+
+![](reference/figures/basic_small.png)
+
+## Contact
+
+Please file bug reports and feature requests at
+<https://github.com/r-spatial/mapview/issues>
+
+# Package index
+
+## All functions
+
+- [`breweries`](https://r-spatial.github.io/mapview/reference/breweries.md)
+  : Selected breweries in Franconia
+- [`franconia`](https://r-spatial.github.io/mapview/reference/franconia.md)
+  : Administrative district borders of Franconia
+- [`knit_print(`*`<mapview>`*`)`](https://r-spatial.github.io/mapview/reference/knit_print.mapview.md)
+  : Print functions for mapview objects used in knitr
+- [`mapView(`*`<RasterLayer>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<stars>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<stars_proxy>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<SpatRaster>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<RasterStackBrick>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<Satellite>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<sf>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<SpatVector>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<sfc>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<character>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<numeric>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<data.frame>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<XY>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<XYZ>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<XYM>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<XYZM>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<bbox>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<missing>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<NULL>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<list>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapview(`*`<ANY>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<SpatialPixelsDataFrame>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<SpatialGridDataFrame>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<SpatialPointsDataFrame>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<SpatialPoints>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<SpatialPolygonsDataFrame>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<SpatialPolygons>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<SpatialLinesDataFrame>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  [`mapView(`*`<SpatialLines>`*`)`](https://r-spatial.github.io/mapview/reference/mapView.md)
+  : View spatial objects interactively
+- [`mapshot()`](https://r-spatial.github.io/mapview/reference/mapshot.md)
+  [`mapshot2()`](https://r-spatial.github.io/mapview/reference/mapshot.md)
+  : Save mapview or leaflet map as HTML and/or image using webshot
+- [`mapview-class`](https://r-spatial.github.io/mapview/reference/mapview-class.md)
+  : Class mapview
+- [`mapview-defunct`](https://r-spatial.github.io/mapview/reference/mapview-defunct.md)
+  : Defunct functions in mapview
+- [`mapview-package`](https://r-spatial.github.io/mapview/reference/mapview-package.md)
+  : mapview: Interactive Viewing of Spatial Data in R
+- [`mapviewColors()`](https://r-spatial.github.io/mapview/reference/mapviewColors.md)
+  [`mapviewPalette()`](https://r-spatial.github.io/mapview/reference/mapviewColors.md)
+  [`mapViewPalette()`](https://r-spatial.github.io/mapview/reference/mapviewColors.md)
+  : mapview version of leaflet::color\* functions
+- [`mapviewOptions()`](https://r-spatial.github.io/mapview/reference/mapviewOptions.md)
+  [`mapviewGetOption()`](https://r-spatial.github.io/mapview/reference/mapviewOptions.md)
+  : Global options for the mapview package
+- [`mapviewOutput()`](https://r-spatial.github.io/mapview/reference/mapviewOutput.md)
+  : Create a mapview UI element for use with shiny
+- [`mapviewWatcher()`](https://r-spatial.github.io/mapview/reference/mapviewWatcher.md)
+  [`startWatching()`](https://r-spatial.github.io/mapview/reference/mapviewWatcher.md)
+  [`stopWatching()`](https://r-spatial.github.io/mapview/reference/mapviewWatcher.md)
+  : Start and/or stop automagic mapviewing of spatial objects in your
+  workspace.
+- [`npts()`](https://r-spatial.github.io/mapview/reference/npts.md) :
+  count the number of points/vertices/nodes of sf objects
+- [`` `+`( ``*`<mapview>`*`,`*`<mapview>`*`)`](https://r-spatial.github.io/mapview/reference/ops.md)
+  [`` `+`( ``*`<mapview>`*`,`*`<ANY>`*`)`](https://r-spatial.github.io/mapview/reference/ops.md)
+  [`` `+`( ``*`<mapview>`*`,`*`<NULL>`*`)`](https://r-spatial.github.io/mapview/reference/ops.md)
+  [`` `+`( ``*`<mapview>`*`,`*`<character>`*`)`](https://r-spatial.github.io/mapview/reference/ops.md)
+  [`` `|`( ``*`<mapview>`*`,`*`<NULL>`*`)`](https://r-spatial.github.io/mapview/reference/ops.md)
+  [`` `|`( ``*`<NULL>`*`,`*`<mapview>`*`)`](https://r-spatial.github.io/mapview/reference/ops.md)
+  : mapview + mapview adds data from the second map to the first
+- [`print(`*`<mapview>`*`)`](https://r-spatial.github.io/mapview/reference/print-mapview-method.md)
+  : Method for printing mapview objects
+- [`removeMapJunk()`](https://r-spatial.github.io/mapview/reference/removeMapJunk.md)
+  : Delete elements from a map.
+- [`renderMapview()`](https://r-spatial.github.io/mapview/reference/renderMapview.md)
+  : Render a mapview widget in shiny
+- [`show(`*`<mapview>`*`)`](https://r-spatial.github.io/mapview/reference/show-mapview-method.md)
+  : Method for printing mapview objects (show)
+- [`trails`](https://r-spatial.github.io/mapview/reference/trails.md) :
+  Selected hiking trails in Franconia
+- [`viewExtent()`](https://r-spatial.github.io/mapview/reference/viewExtent.md)
+  : View extent/bbox of spatial objects interactively
+- [`viewRGB()`](https://r-spatial.github.io/mapview/reference/viewRGB.md)
+  : Red-Green-Blue map view of a multi-layered Raster object
+
+# Articles
+
+### All vignettes
+
+- [1. mapview
+  basics](https://r-spatial.github.io/mapview/articles/mapview_01-basics.md):
+- [2. mapview advanced
+  controls](https://r-spatial.github.io/mapview/articles/mapview_02-advanced.md):
+- [3. mapview
+  options](https://r-spatial.github.io/mapview/articles/mapview_03-options.md):
+- [4. mapview
+  popups](https://r-spatial.github.io/mapview/articles/mapview_04-popups.md):
+- [5. extra
+  functionality](https://r-spatial.github.io/mapview/articles/mapview_05-extras.md):
+- [6. extra leaflet
+  functionality](https://r-spatial.github.io/mapview/articles/mapview_06-add.md):
+- [7. ceci constitue la fin du
+  pipe](https://r-spatial.github.io/mapview/articles/mapview_07-pipe.md):

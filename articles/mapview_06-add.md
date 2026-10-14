@@ -1,0 +1,120 @@
+# 6. extra leaflet functionality
+
+Package **leafem** provides a few extra `add*` functions for use with
+leaflet (and mapview).
+
+- `addMouseCoordinates` - add a box with mouse position, projection
+  information and zoom level information
+- `addLogo` - add images to maps
+- `addHomeButton` - add zoom-to button to a map
+- `addFeatures` - add features to a map, regardless of features type
+  unresponsive
+
+Here are some examples:
+
+## addMouseCoordinates
+
+let’s us add mouse position information along with detailed information
+about the layer’s projection and zoom level information. By default,
+only `lon`, `lat` and `zoom` are shown. To also show info on the
+`epsg code` and the `proj4string` press and hold Ctrl and move the
+mouse. `addMouseCoordinates` also allows us to copy the info about the
+current mouse position to the clipboard by holding the Ctrl and
+left-clicking on the map.
+
+``` r
+
+library(mapview)
+library(leaflet)
+library(leafem)
+
+leaflet() %>% addTiles() %>% leafem::addMouseCoordinates()
+```
+
+------------------------------------------------------------------------
+
+## addLogo
+
+can be used to add logos (or any type of image really) to a map
+
+``` r
+
+library(leafem)
+img <- "https://www.r-project.org/logo/Rlogo.svg"
+leaflet() %>% addTiles() %>% leafem::addLogo(img, url = "https://www.r-project.org/logo/")
+```
+
+  
+
+arguments `offset.x`, `offset.y` together with `position` give control
+about image placement. See
+[`?addLogo`](https://r-spatial.github.io/leafem/reference/addLogo.html)
+for details
+
+``` r
+
+m <- mapview(breweries)
+library(leafem)
+
+leafem::addLogo(m, "https://jeroenooms.github.io/images/banana.gif",
+                position = "bottomleft",
+                offset.x = 5,
+                offset.y = 40,
+                width = 100,
+                height = 100)
+```
+
+------------------------------------------------------------------------
+
+## addHomeButton
+
+can be used to add ‘zoom-to-layer’ buttons to a map. By default located
+in the bottom-right corner of the map (can be changed using argument
+`position`)
+
+``` r
+
+library(raster)
+library(leafem)
+
+leaflet() %>% 
+  addTiles() %>% 
+  addCircleMarkers(data = breweries91) %>% 
+  leafem::addHomeButton(ext = extent(breweries91), group = "Breweries")
+```
+
+------------------------------------------------------------------------
+
+## addFeatures
+
+is a type agnostic `add*` function which will call the appropriate
+`leaflet::add*` function based on the provided feature type (points,
+lines, polygons). It is currently defined for handling objects from
+packages `sf` and `sp`. For `sf` objects, in addition to the standard
+feature types `POINT`, `MULTIPOINT`, `LINESTRING`, `MULTILINESTRING`,
+`POLYGON` and `MULTIPOLYGON` it can also handle features of type
+`sfc_GEOMETRY` which are a collection of mixed types.
+
+``` r
+
+library(leafem)
+
+leaflet() %>% addTiles() %>% leafem::addFeatures(breweries)
+```
+
+  
+
+The standard styling arguments for `leaflet::add*` functions can be used
+just like in the original `add*` function
+
+``` r
+
+library(leafem)
+
+leaflet() %>% 
+  addTiles() %>% 
+  leafem::addFeatures(franconia, weight = 1, fillColor = "grey", color = "black",
+              opacity = 1, fillOpacity = 0.6)
+```
+
+  
