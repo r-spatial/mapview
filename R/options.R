@@ -222,8 +222,8 @@ mapviewOptions = function(platform,
     pf = getOption('mapviewPlatform')
     if (is.null(pf) || pf %in% c("leaflet", "leafgl")) {
       default = c(
-        "CartoDB.Positron"
-        , "CartoDB.DarkMatter"
+        "Stadia.AlidadeSmooth"
+        , "Stadia.AlidadeSmoothDark"
         , "OpenStreetMap"
         , "Esri.WorldImagery"
         , "OpenTopoMap"
