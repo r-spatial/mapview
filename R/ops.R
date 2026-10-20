@@ -227,14 +227,7 @@ setMethod("|",
           function (e1, e2) {
 
             if (mapviewGetOption("platform") %in% c("leaflet")) {
-
-              if (!requireNamespace("leaflet.extras2")) {
-                stop(
-                  "\nPackage 'leaflet.extras2' is needed for the '|' operator to work.\n"
-                  , "Install with install.packages('leaflet.extras2')"
-                  , call. = FALSE
-                )
-              }
+              rlang::check_installed("leaflet.extras2")
 
               e1_tile_idx = getCallEntryFromMap(e1@map, "addProviderTiles")
               if (length(e1_tile_idx) > 1) {

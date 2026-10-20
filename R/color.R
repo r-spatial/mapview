@@ -417,8 +417,7 @@ mapViewPalette <- function(name) {
 # setClassPalette <- function(simple.class) {
 #
 #   pkgs <- c("viridis")
-#   avl <- sapply(pkgs, "requireNamespace",
-#                 quietly = TRUE, USE.NAMES = FALSE)
+#   avl <- rlang::check_installed(pkgs)
 #
 #   if (simple.class == "rst") {
 #

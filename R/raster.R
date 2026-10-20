@@ -35,19 +35,10 @@ leafletRL = function(x,
   if (is.null(layer.name)) layer.name = makeLayerName(x, zcol = NULL)
 
   pkgs = c("leaflet", "raster", "magrittr")
-  tst = sapply(pkgs, "requireNamespace",
-               quietly = TRUE, USE.NAMES = FALSE)
+  rlang::check_installed(pkgs)
 
   if (native.crs) {
-
-    if (!requireNamespace("plainview", quietly = TRUE)) {
-      stop(
-        paste("\nviewing rasters with native CRS requires package 'plainview'.\n",
-              "To install use install.packages('plainview')"),
-        call. = FALSE
-      )
-    }
-
+    rlang::check_installed("plainview")
     plainview::plainView(x,
                          maxpixels = mapviewGetOption("plainview.maxpixels"),
                          col.regions = col.regions,
@@ -205,8 +196,7 @@ leafletRSB = function(x,
                       ...) {
 
   pkgs = c("leaflet", "raster", "magrittr")
-  tst = sapply(pkgs, "requireNamespace",
-               quietly = TRUE, USE.NAMES = FALSE)
+  rlang::check_installed(pkgs)
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
   m = initMap(map, map.types, sp::proj4string(x), viewer.suppress = viewer.suppress)
@@ -334,8 +324,7 @@ leafletPixelsDF = function(x,
                            ...) {
 
   pkgs = c("leaflet", "sp", "magrittr")
-  tst = sapply(pkgs, "requireNamespace",
-               quietly = TRUE, USE.NAMES = FALSE)
+  rlang::check_installed(pkgs)
 
   if (inherits(map, "mapview")) map = mapview2leaflet(map)
   if(!is.null(zcol)) x = x[, zcol]
@@ -388,8 +377,7 @@ leafletPixelsDF = function(x,
 leafletSatellite = function(x, ...) {
 
   pkgs = c("leaflet", "satellite", "magrittr")
-  tst = sapply(pkgs, "requireNamespace",
-               quietly = TRUE, USE.NAMES = FALSE)
+  rlang::check_installed(pkgs)
 
   m = mapView(stack(x), ...)
 

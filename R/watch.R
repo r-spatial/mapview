@@ -56,13 +56,7 @@
 #' @export
 #' @rdname mapviewWatcher
 mapviewWatcher = function(env = .GlobalEnv, ...) {
-
-  if (!requireNamespace("later", quietly = TRUE)) {
-    stop(
-      "Please install.packages('later') to allow mapview to watch your workspace"
-      , call. = FALSE
-    )
-  }
+  rlang::check_installed("later")
 
   last_value = NULL
 

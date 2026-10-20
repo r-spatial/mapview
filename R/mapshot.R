@@ -70,7 +70,7 @@ mapshot = function(x,
                                        "easyButton"),
                    ...) {
 
-  stopifnot(requireNamespace("webshot", quietly = TRUE))
+  rlang::check_installed("webshot")
 
   ## if both 'url' and 'file' are missing, throw an error
   avl_url = !is.null(url)
@@ -219,7 +219,7 @@ mapshot2 = function(x,
                                        "control"),
                    ...) {
 
-  stopifnot(requireNamespace("webshot2", quietly = TRUE))
+  rlang::check_installed("webshot2")
 
   ## if both 'url' and 'file' are missing, throw an error
   avl_url = !is.null(url)

@@ -72,6 +72,7 @@ Imports:
     leafpop,
     png,
     raster (>= 3.6.3),
+    rlang,
     satellite,
     scales (>= 0.2.5),
     servr,
