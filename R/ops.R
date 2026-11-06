@@ -37,13 +37,22 @@ setMethod("+",
               # if (length(
               #   getCallEntryFromMap(e1@map, "addProviderTiles")
               # ) == 0) {
-                idx = getCallEntryFromMap(e2@map, "addProviderTiles")
+                idx = getCallEntryFromMap(e2@map, c("addProviderTiles", "addTiles"))
                 if (length(idx) > 0) {
                   e2@map$x$calls[idx] = NULL
                 }
                 idx = getCallEntryFromMap(e2@map, "addLayersControl")
                 if (length(idx) > 0) {
                   e2@map$x$calls[idx][[1]]$args[[1]] = character(0)
+                }
+                if (is.null(e1@map$jsHooks$render) ||
+                    !any(sapply(e1@map$jsHooks$render, function(h) grepl("_vectorStyleMaps", h$code, fixed = TRUE)))) {
+                  if (!is.null(e2@map$jsHooks$render)) {
+                    e2@map$jsHooks$render = Filter(
+                      function(h) !grepl("_vectorStyleMaps", h$code, fixed = TRUE),
+                      e2@map$jsHooks$render
+                    )
+                  }
                 }
               # }
 
@@ -236,14 +245,20 @@ setMethod("|",
                 )
               }
 
-              e1_tile_idx = getCallEntryFromMap(e1@map, "addProviderTiles")
+              e1_tile_idx = getCallEntryFromMap(e1@map, c("addProviderTiles", "addTiles"))
               if (length(e1_tile_idx) > 1) {
-                e1@map$x$calls[2:length(e1_tile_idx)] = NULL
+                e1@map$x$calls[e1_tile_idx[-1]] = NULL
               }
               e1_tile_idx = e1_tile_idx[1]
               e1_tile_pane_idx = grep("pane", e1@map$x$calls[[e1_tile_idx]]$args)
               e1@map$x$calls[[e1_tile_idx]]$args[[2]] = "left"
-              e1@map$x$calls[[e1_tile_idx]]$args[[e1_tile_pane_idx]][[4]] = "left"
+              e1@map$x$calls[[e1_tile_idx]]$args[[e1_tile_pane_idx]]$pane = "left"
+              if (!is.null(e1@map$jsHooks$render)) {
+                e1@map$jsHooks$render = lapply(e1@map$jsHooks$render, function(h) {
+                  h$code = sub('var pane = "tilePane";', 'var pane = "left";', h$code, fixed = TRUE)
+                  h
+                })
+              }
 
               e1_lyrctrl_idx = getCallEntryFromMap(e1@map, "addLayersControl")
               # bsgrps = e1@map$x$calls[[e1_lyrctrl_idx]]$args[[1]][1]
@@ -283,14 +298,20 @@ setMethod("|",
 
 
               ## e2 - right
-              e2_tile_idx = getCallEntryFromMap(e2@map, "addProviderTiles")
+              e2_tile_idx = getCallEntryFromMap(e2@map, c("addProviderTiles", "addTiles"))
               if (length(e2_tile_idx) > 1) {
-                e2@map$x$calls[2:length(e2_tile_idx)] = NULL
+                e2@map$x$calls[e2_tile_idx[-1]] = NULL
               }
               e2_tile_idx = e2_tile_idx[1]
               e2_tile_pane_idx = grep("pane", e2@map$x$calls[[e2_tile_idx]]$args)
               e2@map$x$calls[[e2_tile_idx]]$args[[2]] = "right"
-              e2@map$x$calls[[e2_tile_idx]]$args[[e2_tile_pane_idx]][[4]] = "right"
+              e2@map$x$calls[[e2_tile_idx]]$args[[e2_tile_pane_idx]]$pane = "right"
+              if (!is.null(e2@map$jsHooks$render)) {
+                e2@map$jsHooks$render = lapply(e2@map$jsHooks$render, function(h) {
+                  h$code = sub('var pane = "tilePane";', 'var pane = "right";', h$code, fixed = TRUE)
+                  h
+                })
+              }
 
               e2_lyrctrl_idx = getCallEntryFromMap(e2@map, "addLayersControl")
               # bsgrps = e2@map$x$calls[[e2_lyrctrl_idx]]$args[[1]][1]
@@ -346,10 +367,16 @@ setMethod("|",
                 , m@map$x$calls
               )
 
-              ### make sure all dependencies are present
+              ### make sure all dependencies and render hooks are present
               m_deps = append(e1_deps, e2_deps)
               m_deps = m_deps[!duplicated(m_deps)]
               m@map$dependencies = m_deps
+
+              m_hooks = append(e1@map$jsHooks$render, e2@map$jsHooks$render)
+              m_hooks = m_hooks[!duplicated(m_hooks)]
+              if (length(m_hooks) > 0) {
+                m@map$jsHooks$render = m_hooks
+              }
 
               m@map = leaflet::addLayersControl(
                 m@map

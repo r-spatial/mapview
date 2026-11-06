@@ -94,7 +94,7 @@ leafletMissing = function(map.types, ...) {
         m = initBaseMaps(map.types)
         m = leaflet::setView(map = m, 8.770862, 50.814772, zoom = 18)
         m = leaflet::addLayersControl(map = m,
-                                      baseGroups = map.types,
+                                      baseGroups = getBasemapLabels(map.types),
                                       position = mapviewGetOption(
                                         "layers.control.pos"))
         if (isAvailableInLeaflet()$scl) m = leaflet::addScaleBar(map = m, position = "bottomleft")

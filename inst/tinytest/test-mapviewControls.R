@@ -68,8 +68,8 @@ expect_equal(mapview:::regionOpacity(franconia), 0.6)
 
 ### basemaps -----
 expect_equal(typeof(mapview:::basemaps("#0000ff")), "character")
-expect_equal(mapview:::basemaps("black")[1], "CartoDB.Positron")
-expect_equal(mapview:::basemaps("white")[1], "CartoDB.DarkMatter")
+expect_equal(mapview:::basemaps("black")[1], c("OpenFreeMap.Positron" = "https://tiles.openfreemap.org/styles/positron"))
+expect_equal(mapview:::basemaps("white")[1], c("OpenFreeMap.Dark" = "https://tiles.openfreemap.org/styles/dark"))
 
 ### getProjection -----
 expect_equal(typeof(mapview:::getProjection(franconia)), "character")

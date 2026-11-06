@@ -184,8 +184,9 @@ regionOpacity = function(x) {
 
 
 basemaps = function(colors, shuffle = mapviewGetOption("basemaps.color.shuffle")) {
-  if (!shuffle) {
-    return(mapviewGetOption("basemaps"))
+  bm = mapviewGetOption("basemaps")
+  if (!shuffle || length(bm) < 2) {
+    return(bm)
   }
 
   ml = mean(as.numeric(sapply(colors, luminence)))
@@ -195,9 +196,9 @@ basemaps = function(colors, shuffle = mapviewGetOption("basemaps.color.shuffle")
     unique_cyan = FALSE
   }
   if (ml > 0.8 | unique_cyan) {
-    mapviewGetOption("basemaps")[c(2, 1, 3:5)]
+    bm[c(2, 1, seq_len(length(bm))[-c(1, 2)])]
   } else {
-    mapviewGetOption("basemaps")
+    bm
   }
 }
 

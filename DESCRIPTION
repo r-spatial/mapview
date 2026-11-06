@@ -66,6 +66,7 @@ Imports:
     base64enc,
     htmltools,
     htmlwidgets,
+    jsonlite,
     lattice,
     leafem,
     leaflet (>= 2.0.0),

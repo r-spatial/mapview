@@ -560,9 +560,11 @@ leaflet_sfc <- function(x,
   if (is.null(map.types) |
       identical(mapviewGetOption("basemaps"), map.types)) {
     if (getGeometryType(x) %in% c("pl", "pt")) {
-      map.types <- as.vector(stats::na.omit(basemaps(col.regions)))
+      bm <- basemaps(col.regions)
+      map.types <- bm[!is.na(bm)]
     } else {
-      map.types <- as.vector(stats::na.omit(basemaps(color)))
+      bm <- basemaps(color)
+      map.types <- bm[!is.na(bm)]
     }
   }
 

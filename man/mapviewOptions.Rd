@@ -54,7 +54,7 @@ Current options are "leaflet", "mapdeck", and "leafgl".}
 
 \item{basemaps}{character. The basemaps to be used for rendering data. See
 \url{https://leaflet-extras.github.io/leaflet-providers/preview/} for possible
-values}
+raster values, or pass (optionally named) vector tile style JSON URLs or file paths.}
 
 \item{basemaps.color.shuffle}{logical. Should basemaps order be changed to
 enhance contrast based on layer coloring. Set to FALSE if you supply custom
@@ -205,6 +205,14 @@ Raster* objects, add a line like this: options(mapviewMaxPixels = 700000) to tha
 \examples{
 mapviewOptions()
 mapviewOptions(na.color = "pink")
+mapviewOptions(
+  basemaps = c(
+    # vector tile style JSON URL (or local file path)
+    "OpenFreeMap.Liberty" = "https://tiles.openfreemap.org/styles/liberty",
+    # raster tile provider from leaflet::providers
+    "OpenStreetMap"
+  )
+)
 mapviewOptions()
 
 mapviewGetOption("platform")

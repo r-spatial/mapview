@@ -105,6 +105,12 @@ appendMapCallEntries_lf <- function(map1, map2) {
   mp_deps = append(m1_deps, m2_deps)
   mp_deps = mp_deps[!duplicated(mp_deps)]
 
+  ## jsHooks (e.g. vector tiles onRender hooks)
+  m1_hooks = map1$jsHooks$render
+  m2_hooks = map2$jsHooks$render
+  mp_hooks = append(m1_hooks, m2_hooks)
+  mp_hooks = mp_hooks[!duplicated(mp_hooks)]
+
   ## base map controls
   ctrls1 <- getLayerControlEntriesFromMap(map1)
   ctrls2 <- getLayerControlEntriesFromMap(map2)
@@ -148,6 +154,9 @@ appendMapCallEntries_lf <- function(map1, map2) {
 
   map1$x$calls <- mpcalls
   map1$dependencies = mp_deps
+  if (length(mp_hooks) > 0) {
+    map1$jsHooks$render = mp_hooks
+  }
   return(map1)
 }
 
@@ -227,19 +236,55 @@ initBaseMaps <- function(map.types, canvas = FALSE, viewer.suppress = FALSE) {
     )
   )
   if (!(is.null(map.types))) {
-    m <- leaflet::addProviderTiles(m, provider = map.types[1],
-                                   layerId = map.types[1], group = map.types[1],
-                                   options = providerTileOptions(
-                                     pane = "tilePane"
-                                   ))
-    if (length(map.types) > 1) {
-      for (i in 2:length(map.types)) {
-        m <- leaflet::addProviderTiles(m, provider = map.types[i],
-                                       layerId = map.types[i], group = map.types[i],
-                                       options = providerTileOptions(
-                                         pane = "tilePane"
-                                       ))
-        m = removeDuplicatedMapDependencies(m)
+    known_providers <- names(leaflet::providers)
+    labels <- getBasemapLabels(map.types)
+    providers <- unname(as.character(map.types))
+    vector_styles <- list()
+
+    for (i in seq_along(providers)) {
+      provider <- providers[i]
+      label <- labels[i]
+      if (!(provider %in% known_providers)) {
+        resolved <- resolveVectorTileStyle(provider)
+        if (!is.null(resolved)) {
+          vector_styles[[label]] <- resolved
+        }
+      }
+    }
+
+    if (length(vector_styles) > 0) {
+      initial_style <- if (labels[1] %in% names(vector_styles)) labels[1] else NULL
+      m <- addVectorTiles(
+        m,
+        initialStyle = initial_style,
+        styles = vector_styles
+      )
+    }
+
+    for (i in seq_along(providers)) {
+      provider <- providers[i]
+      label <- labels[i]
+      if (label %in% names(vector_styles)) {
+        m <- leaflet::addTiles(
+          m,
+          urlTemplate = "",
+          layerId = label,
+          group = label,
+          options = leaflet::tileOptions(pane = "tilePane")
+        )
+      } else {
+        m <- leaflet::addProviderTiles(
+          m,
+          provider = provider,
+          layerId = label,
+          group = label,
+          options = providerTileOptions(
+            pane = "tilePane"
+          )
+        )
+      }
+      if (i > 1) {
+        m <- removeDuplicatedMapDependencies(m)
       }
     }
   }
@@ -496,7 +541,7 @@ mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
   ind = getCallEntryFromMap(map, call = "addLayersControl")
 
   if (!length(ind)) {
-    if (!(is.null(map.types))) bgm = map.types else bgm = character(0)
+    if (!(is.null(map.types))) bgm = getBasemapLabels(map.types) else bgm = character(0)
   } else {
     bgm <- map$x$calls[[ind[1]]]$args[[1]]
   }

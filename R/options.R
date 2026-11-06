@@ -12,7 +12,7 @@
 #' Current options are "leaflet", "mapdeck", and "leafgl".
 #' @param basemaps character. The basemaps to be used for rendering data. See
 #' \url{https://leaflet-extras.github.io/leaflet-providers/preview/} for possible
-#' values
+#' raster values, or pass (optionally named) vector tile style JSON URLs or file paths.
 #' @param basemaps.color.shuffle logical. Should basemaps order be changed to
 #' enhance contrast based on layer coloring. Set to FALSE if you supply custom
 #' basemaps or want to ensure that "CartoDB.Positron" is always the default.
@@ -122,6 +122,14 @@
 #' @examples
 #' mapviewOptions()
 #' mapviewOptions(na.color = "pink")
+#' mapviewOptions(
+#'   basemaps = c(
+#'     # vector tile style JSON URL (or local file path)
+#'     "OpenFreeMap.Liberty" = "https://tiles.openfreemap.org/styles/liberty",
+#'     # raster tile provider from leaflet::providers
+#'     "OpenStreetMap"
+#'   )
+#' )
 #' mapviewOptions()
 #'
 #' mapviewGetOption("platform")
@@ -222,7 +230,9 @@ mapviewOptions = function(platform,
     pf = getOption('mapviewPlatform')
     if (is.null(pf) || pf %in% c("leaflet", "leafgl")) {
       default = c(
-        "Stadia.AlidadeSmooth"
+        "OpenFreeMap.Positron" = "https://tiles.openfreemap.org/styles/positron"
+        , "OpenFreeMap.Dark" = "https://tiles.openfreemap.org/styles/dark"
+        , "Stadia.AlidadeSmooth"
         , "Stadia.AlidadeSmoothDark"
         , "OpenStreetMap"
         , "Esri.WorldImagery"
@@ -825,8 +835,10 @@ mapviewOptions = function(platform,
 
     ## global
     options(mapviewPlatform = "leaflet")
-    options(mapviewBasemaps = c("CartoDB.Positron",
-                                "CartoDB.DarkMatter",
+    options(mapviewBasemaps = c("OpenFreeMap.Positron" = "https://tiles.openfreemap.org/styles/positron",
+                                "OpenFreeMap.Dark" = "https://tiles.openfreemap.org/styles/dark",
+                                "Stadia.AlidadeSmooth",
+                                "Stadia.AlidadeSmoothDark",
                                 "OpenStreetMap",
                                 "Esri.WorldImagery",
                                 "OpenTopoMap"))
@@ -985,7 +997,7 @@ mapviewOptions = function(platform,
       ## global
       cat("\n global options: \n\n")
       cat('platform                :', lst$platform, '\n' )
-      cat('basemaps                :', lst$basemaps, '\n')
+      cat('basemaps                :', getBasemapLabels(lst$basemaps), '\n')
       cat('basemaps.color.shuffle  :', lst$basemaps.color.shuffle, '\n')
       cat('raster.palette          :', format(.rasterPalette())[1], '\n')
       cat('vector.palette          :', format(.vectorPalette())[1], '\n')
